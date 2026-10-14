@@ -41,7 +41,7 @@ Your data lives in `~/.tech-prep` (override with `TECHPREP_HOME`): `progress.db`
 
 ## Setup
 
-Requires Bun, Python 3 and a Claude Code login.
+Requires Bun, Python 3, gitleaks (`brew install gitleaks`, used by the pre-commit hook) and a Claude Code login.
 
 ```sh
 bun install       # all packages; also downloads Electron

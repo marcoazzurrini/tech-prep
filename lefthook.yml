@@ -1,6 +1,9 @@
 pre-commit:
   piped: true
   jobs:
+    # Block secrets (API keys, tokens) before they are committed.
+    - name: secrets
+      run: gitleaks git --pre-commit --staged --redact --no-banner
     - name: format
       glob: "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,css,html,md,mdx,yml,yaml}"
       exclude:
