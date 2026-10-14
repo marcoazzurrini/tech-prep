@@ -14,17 +14,25 @@
   },
   "type": "module",
   "scripts": {
+    "prepare": "[ -n \"$CI\" ] || lefthook install",
     "dev": "bun --filter @tech-prep/desktop dev",
+    "build": "bun --filter '*' build",
+    "typecheck": "bun --filter '*' typecheck",
     "test": "bun --filter '*' test",
-    "typecheck": "bun --filter '*' typecheck"
+    "format": "oxfmt --write",
+    "format:check": "oxfmt --check",
+    "lint": "oxlint --deny-warnings",
+    "lint:fix": "oxlint --fix --deny-warnings",
+    "check": "bun run format:check && bun run lint && bun run typecheck && bun run test && bun run build"
   },
-  "trustedDependencies": [
-    "esbuild"
-  ],
   "devDependencies": {
     "lefthook": "2.2.2",
     "oxfmt": "0.73.0",
     "oxlint": "1.88.0",
     "ultracite": "8.0.1"
-  }
+  },
+  "packageManager": "bun@1.4.2",
+  "trustedDependencies": [
+    "esbuild"
+  ]
 }
