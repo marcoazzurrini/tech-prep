@@ -1,0 +1,6 @@
+{
+  "engine": {
+    "command": "bun",
+    "args": ["${CLAUDE_PLUGIN_ROOT}/node_modules/@tech-prep/engine/src/index.ts"]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@tech-prep/engine",
+  "private": true,
+  "type": "module",
+  "description": "The shared engine: curriculum, progress, FSRS scheduling and the test runner, served over MCP.",
+  "scripts": {
+    "start": "bun src/index.ts",
+    "check": "bun src/cli.ts check",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@tech-prep/starters": "workspace:*",
+    "ts-fsrs": "^5.4.2",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  }
+}

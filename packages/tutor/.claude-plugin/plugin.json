@@ -1,0 +1,9 @@
+{
+  "name": "tech-prep",
+  "version": "0.1.0",
+  "description": "AI tutor: worked examples, hint ladder, teach-back grading and FSRS spaced repetition on concepts.",
+  "author": { "name": "Marco Azzurrini" },
+  "license": "MIT",
+  "mcpServers": "./.mcp.json",
+  "keywords": ["tutor", "spaced-repetition", "fsrs"]
+}

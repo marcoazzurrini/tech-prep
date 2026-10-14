@@ -1,0 +1,5 @@
+{
+  "name": "@tech-prep/starters",
+  "private": true,
+  "description": "Ready-made agents. Each folder holds one agent's curriculum and problems; interview/ is the Blind 75."
+}

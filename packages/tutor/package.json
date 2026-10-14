@@ -1,0 +1,8 @@
+{
+  "name": "@tech-prep/tutor",
+  "private": true,
+  "description": "The Claude Code plugin the agents load: the teaching method (skills) and the engine's MCP server.",
+  "dependencies": {
+    "@tech-prep/engine": "workspace:*"
+  }
+}

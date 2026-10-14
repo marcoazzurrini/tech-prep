@@ -31,7 +31,7 @@ them to lower a grade, never to raise it above what the objective signals allow.
 
 ## Data model
 
-### Curriculum (JSON in `content/curriculum/`, versioned in git)
+### Curriculum (JSON in `packages/starters/interview/curriculum/`, versioned in git)
 
 - **Topics**: roadmap nodes with topic prerequisites. They order the path and group
   progress for display. They are not scheduled.
@@ -45,7 +45,7 @@ them to lower a grade, never to raise it above what the objective signals allow.
 The curriculum is content, so it stays in JSON. Learner state stays in SQLite. They join
 on IDs. A startup check validates the curriculum (unknown IDs, cycles, weights outside
 0-1, encompassings that are not prerequisites) and reports learner state that refers to
-IDs no longer in the curriculum. `content/curriculum/aliases.json` maps renamed IDs so
+IDs no longer in the curriculum. `aliases.json` maps renamed IDs so
 progress follows a rename.
 
 ### Learner state (SQLite)

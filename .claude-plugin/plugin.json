@@ -1,9 +1,0 @@
-{
-  "name": "tech-prep",
-  "version": "0.1.0",
-  "description": "AI coding-interview tutor: guided path, worked examples, hint ladder, teach-back grading and FSRS spaced repetition on concepts. You solve in Neovim; Claude tutors beside you.",
-  "author": { "name": "Marco Azzurrini" },
-  "license": "MIT",
-  "mcpServers": "./.mcp.json",
-  "keywords": ["leetcode", "interview", "tutor", "spaced-repetition", "fsrs", "neovim"]
-}

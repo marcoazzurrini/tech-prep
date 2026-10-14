@@ -1,7 +1,7 @@
 # tech-prep
 
-An AI tutor for the Blind 75. You solve problems in Neovim. Claude Code sits in the next
-tmux pane as a tutor that follows learning science.
+An AI tutor that follows learning science. It runs as a desktop app: a chat with the
+tutor beside the problem. The first subject is the Blind 75.
 
 The design splits the work in two:
 
@@ -37,84 +37,45 @@ Learning science in practice:
 
 ## Layout
 
-```
-.claude-plugin/plugin.json      Claude Code plugin manifest
-.mcp.json                       starts the engine MCP server
-skills/tutor/SKILL.md           the teaching method the tutor follows
-commands/                       /tech-prep:practice, :progress, :roadmap
-content/curriculum/
-  topics.json                   roadmap topics and their prerequisites
-  concepts.json                 concepts: topic, prerequisites, key idea
-  problems.json                 Blind 75 in roadmap order, tagged with concepts
-content/problems/<slug>/        problem.md, spec.json (call shape + tests),
-                                reference.py, reference.ts (the tutor's answer key)
-server/                         engine: Bun + TypeScript, SQLite, ts-fsrs
-  src/index.ts                  MCP tools
-  src/scheduler.ts              FSRS, grading, what-to-do-next planner
-  src/lessons.ts                verifies and writes generated lesson files
-  src/runner.ts, src/harness/   test runner (lists, trees, graphs, design classes)
-  scripts/build-problem.ts      fills expected values and verifies references
-nvim/tech-prep.lua              <leader>tt and autoread for the tp Neovim
-bin/tp                          tmux launcher and CLI wrapper
-app/                            desktop app (Electron): problem, Neovim, tests and tutor
-server/src/bridge.ts            read-only engine queries for the desktop app
-```
+A Bun workspace monorepo. Apps depend on packages; packages never import apps.
 
-State lives in `~/.tech-prep` (override with `TECHPREP_HOME`):
-`progress.db` (SQLite) and `workspace/` (your solution files, e.g. `two-sum.py`).
+- `apps/desktop/`: the Electron app. The problem on the left, the tutor chat on the
+  right, and a Roadmap screen.
+- `packages/engine/`: the engine, served over MCP. It owns curriculum loading,
+  progress in SQLite, FSRS scheduling, grading and the test runner.
+  - `src/index.ts`: the MCP tools.
+  - `src/bridge.ts`: read-only queries for the desktop app.
+  - `src/cli.ts`: `next`, `progress` and `check` from a shell.
+  - `scripts/build-problem.ts`: fills expected test values and verifies references.
+- `packages/tutor/`: the Claude Code plugin the tutor loads. `skills/tutor/SKILL.md` is
+  the teaching method; `.mcp.json` starts the engine.
+- `packages/starters/`: ready-made subjects. `interview/` is the Blind 75: the
+  curriculum JSON and one folder per problem (`problem.md`, `spec.json`, references).
+- `docs/learning-model.md`: the learning model.
+- `PRODUCT.md`, `DESIGN.md`, `.impeccable/`: product and design notes and mockups.
+
+Your data lives in `~/.tech-prep` (override with `TECHPREP_HOME`): `progress.db` and
+`workspace/`, where your solution and lesson files go.
 
 ## Setup
 
-Requires Bun, Python 3, tmux, Neovim and Claude Code.
+Requires Bun, Python 3 and a Claude Code login.
 
 ```sh
-cd server && bun install && cd ..
-ln -s "$PWD/bin/tp" ~/.local/bin/tp   # or anywhere on your PATH
-tp                                    # Neovim left, tutor right
+bun install       # all packages; also downloads Electron
+bun run dev       # open the desktop app
+bun run test      # every package's tests
+bun run typecheck
 ```
 
-`tp` starts Claude Code with `--plugin-dir`, so nothing is installed globally. It also
-writes `~/.tech-prep/workspace/.claude/settings.json` so the engine tools run without
-permission prompts.
+The tutor is Claude Code with the tutor plugin, run through the Claude Agent SDK, so it
+uses your Claude Code login. In the app it may only use the engine tools and read-only
+tools; it never edits files. You edit the files in your own editor and say "test".
 
 Solutions default to TypeScript. Set `TECHPREP_LANG=python` for Python, or ask the
 tutor for a language per problem.
 
-## Desktop app
-
-`tp app` opens the same session in one window instead of tmux:
-
-- left: the problem statement, the lesson step, and (for reviews) a locked concept count;
-- centre: your own Neovim and config, with a test panel under it;
-- right: the tutor chat;
-- a Roadmap screen with the topic graph and each topic's concepts and problems.
-
-The first run installs the app's packages. The tutor is Claude Code with this plugin,
-run through the Claude Agent SDK, so it uses your Claude Code login. In the app it may
-only use the engine tools and read-only tools; it never edits files.
-
-Keys: `⌘1` Today, `⌘2` Roadmap, `⌘E` the editor, `⌘L` the tutor input. `<leader>tt`
-runs the tests as before; the app shows the result and tells the tutor.
-
-The app's Neovim listens on `~/.tech-prep/app-nvim.sock`, so it can run beside a `tp`
-tmux session. Test runs reach the app through `~/.tech-prep/app-events.jsonl`.
-
-## Neovim
-
-`tp` starts Neovim with `--listen ~/.tech-prep/nvim.sock`. The engine uses that socket
-to open lessons, exercises and problems in the left pane, so content is read in Neovim
-and the chat stays short. Without `tp`, the tutor gives you file paths instead.
-
-It also loads `nvim/tech-prep.lua` into that Neovim only. It maps `<leader>tt` to save
-and run the tests (or a lesson file's checks) in a bottom split, and turns on autoread.
-
-## Commands
-
-- `/tech-prep:practice [concept or slug]` starts a session: due reviews first, then the
-  guided path.
-- `/tech-prep:progress` summarises recall per concept and upcoming reviews.
-- `/tech-prep:roadmap` shows the topics and your progress through them.
-- Or just talk to the tutor: "teach me sliding window", "hint", "I give up".
+Keys: `⌘1` Today, `⌘2` Roadmap, `⌘L` the tutor input.
 
 ## How grading works
 
@@ -130,14 +91,17 @@ Each concept of a problem is graded separately, and only in the review phase:
 | Easy | as Good, fast, no hints at all, full explanation, pattern recognised |
 
 The tutor's judgements and your self-rating can lower a grade but never raise it.
-`tp check` validates the curriculum and your progress data.
+`bun run check` (in `packages/engine`) validates the curriculum and your progress data.
 
 ## Adding or changing problems
 
-1. Add the problem to `content/curriculum/problems.json` with its topic and concepts.
-2. Create `content/problems/<slug>/` with `problem.md` (in your own words), `spec.json`,
-   `reference.py` and `reference.ts`. Copy the shape of a similar problem.
-3. Leave `expected` out of new tests, then run `cd server && bun scripts/build-problem.ts <slug>`.
-   It fills `expected` from `reference.py` and checks that both references pass.
+1. Add the problem to `packages/starters/interview/curriculum/problems.json` with its
+   topic and concepts.
+2. Create `packages/starters/interview/problems/<slug>/` with `problem.md` (in your own
+   words), `spec.json`, `reference.py` and `reference.ts`. Copy the shape of a similar
+   problem.
+3. Leave `expected` out of new tests, then run
+   `cd packages/engine && bun scripts/build-problem.ts <slug>`. It fills `expected` from
+   `reference.py` and checks that both references pass.
 
-Run `bun scripts/build-problem.ts --all` and `bun test` before committing.
+Run `bun scripts/build-problem.ts --all` and `bun run test` before committing.

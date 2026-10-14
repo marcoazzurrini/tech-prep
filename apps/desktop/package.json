@@ -1,0 +1,35 @@
+{
+  "name": "@tech-prep/desktop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "tech-prep desktop app.",
+  "main": "out/main/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node node_modules/electron/install.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.296",
+    "@fontsource/atkinson-hyperlegible-next": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@tech-prep/engine": "workspace:*",
+    "@tech-prep/tutor": "workspace:*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-markdown": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "electron": "^44.7.0",
+    "electron-vite": "^5.0.0",
+    "typescript": "catalog:",
+    "vite": "^7.3.7"
+  }
+}

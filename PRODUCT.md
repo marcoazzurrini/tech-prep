@@ -8,8 +8,10 @@ web
 
 ## Stack
 
-Today: a Claude Code plugin (Bun + TypeScript MCP engine, SQLite) running beside Neovim in tmux,
-plus an early Electron app in `app/` (three fixed panels: problem, Neovim, tutor).
+Today: a Bun workspace monorepo. `packages/engine` (Bun + TypeScript MCP engine, SQLite),
+`packages/tutor` (the Claude Code plugin with the teaching skill), `packages/starters` (Blind 75),
+and an early Electron app in `apps/desktop` (two panels: problem and tutor). The tmux and
+Neovim flow was removed on 14 Oct 2026.
 Planned (11 Oct 2026): a chat-first desktop app built with web technology, probably Electron, on
 the user's Claude subscription through the Claude Agent SDK. A fork of t3code is being
 considered as the base. Undecided.
@@ -77,8 +79,8 @@ prerequisites (fractional implicit repetition, as in Math Academy).
 
 ## Evidence on Hand
 
-- Real curriculum: `content/curriculum/` (topics, concepts, problems).
-- Real problem statements: `content/problems/<slug>/problem.md`.
+- Real curriculum: `packages/starters/interview/curriculum/` (topics, concepts, problems).
+- Real problem statements: `packages/starters/interview/problems/<slug>/problem.md`.
 - Learning model spec: `docs/learning-model.md`.
 - Design notes from the owner's vault: "Study app" and "Learning loop" (JavaScript `Set` is the
   worked case).
