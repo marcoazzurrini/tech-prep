@@ -1,10 +1,10 @@
 import { afterAll, describe, expect, test } from "bun:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import path from "node:path";
 
 // Point the engine at a throwaway home before any module reads it.
-const home = mkdtempSync(join(tmpdir(), "tech-prep-test-"));
+const home = mkdtempSync(path.join(tmpdir(), "tech-prep-test-"));
 
 process.env.TECHPREP_HOME = home;
 
@@ -51,10 +51,10 @@ describe("runner", () => {
     expect(runner.equal("abc", ["bab", "aba"], "one-of")).toBe(false);
   });
 
-  const dir = mkdtempSync(join(tmpdir(), "tech-prep-solutions-"));
+  const dir = mkdtempSync(path.join(tmpdir(), "tech-prep-solutions-"));
 
   const write = (name: string, source: string) => {
-    const file = join(dir, name);
+    const file = path.join(dir, name);
     writeFileSync(file, source);
 
     return file;
@@ -62,26 +62,30 @@ describe("runner", () => {
 
   test("python: passing, failing, crashing and syntax errors", () => {
     const twoSum = content.problem("two-sum");
+
     const good = write(
       "good.py",
       "def two_sum(nums, target):\n    seen = {}\n    for i, n in enumerate(nums):\n        if target - n in seen:\n            return [seen[target - n], i]\n        seen[n] = i\n"
     );
+
     expect(runner.runTests(twoSum, "python", good).passed).toBe(
       twoSum.tests.length
     );
+
     const bad = write(
       "bad.py",
       "def two_sum(nums, target):\n    print('debug')\n    return [0, 0]\n"
     );
+
     const badRun = runner.runTests(twoSum, "python", bad);
     expect(badRun.passed).toBeLessThan(badRun.total);
-    expect(badRun.cases.find((c) => !c.ok)!.stdout).toContain("debug");
+    expect(badRun.cases.find((c) => !c.ok)?.stdout).toContain("debug");
     expect(
       runner.runTests(
         twoSum,
         "python",
         write("crash.py", "def two_sum(nums, target):\n    return nums[999]\n")
-      ).cases[0]!.error
+      ).cases[0]?.error
     ).toContain("IndexError");
     expect(
       runner.runTests(
@@ -103,10 +107,12 @@ describe("runner", () => {
     expect(runner.runTests(reverse, "typescript", good).passed).toBe(
       reverse.tests.length
     );
+
     const identity = write(
       "same.ts",
       'import { ListNode } from "./ds.ts";\nexport function reverseList(head: ListNode | null) { return head; }\n'
     );
+
     expect(
       runner.runTests(reverse, "typescript", identity).passed
     ).toBeLessThan(reverse.tests.length);
@@ -128,28 +134,30 @@ const grading = await import("../src/grading.ts");
 const fire = await import("../src/fire.ts");
 const memory = await import("../src/memory.ts");
 
-describe("grading", () => {
-  const hint = (concept_id: string | null, level: number) => ({
-    attempt_id: 0,
-    concept_id,
-    created_at: "",
-    id: 0,
-    level,
-  });
+const hint = (concept_id: string | null, level: number) => ({
+  attempt_id: 0,
+  concept_id,
+  created_at: "",
+  id: 0,
+  level,
+});
 
+describe("grading", () => {
   const base = {
     concepts: ["sorting", "two-pointers-opposite", "skip-duplicates"],
     diagnosis: new Map<string, "ok" | "struggled" | "failed">(),
     difficulty: "medium" as const,
     explanationScore: 2,
     gaveUp: false,
-    hints: [] as ReturnType<typeof hint>[],
+    hints: [],
     minutes: 10,
     recognition: "correct" as const,
     solved: true,
   };
 
-  const grades = (overrides: Partial<typeof base>) =>
+  const grades = (
+    overrides: Partial<Parameters<typeof grading.gradeAttempt>[0]>
+  ) =>
     Object.fromEntries(
       grading
         .gradeAttempt({ ...base, ...overrides })
@@ -191,14 +199,14 @@ describe("grading", () => {
   });
 
   test("judgements and the self-rating only lower grades", () => {
-    expect(grades({ recognition: "wrong" } as never)["sorting"]).toBe(2);
+    expect(grades({ recognition: "wrong" })["sorting"]).toBe(2);
     expect(grades({ explanationScore: 1 })["sorting"]).toBe(2);
     expect(
       grades({ diagnosis: new Map([["sorting", "struggled" as const]]) })[
         "sorting"
       ]
     ).toBe(2);
-    expect(grading.gradeAttempt({ ...base, selfRating: 2 })[0]!.grade).toBe(2);
+    expect(grading.gradeAttempt({ ...base, selfRating: 2 })[0]?.grade).toBe(2);
   });
 });
 
@@ -215,18 +223,19 @@ describe("fractional implicit repetition", () => {
   });
 });
 
+const solve = (slug: string, source: string) => {
+  const started = practice.startProblem(slug, "python");
+  writeFileSync(started.file, source);
+
+  return started;
+};
+
 describe("session flow", () => {
   const DAY = 86_400_000;
 
-  const solve = (slug: string, source: string) => {
-    const started = practice.startProblem(slug, "python");
-    writeFileSync(started.file, source);
-
-    return started;
-  };
-
   const CONTAINS =
     "def contains_duplicate(nums):\n    return len(set(nums)) != len(nums)\n";
+
   const ANAGRAM =
     "from collections import Counter\ndef is_anagram(s, t):\n    return Counter(s) == Counter(t)\n";
 
@@ -259,11 +268,13 @@ describe("session flow", () => {
       action: "resume",
       problem: "contains-duplicate",
     });
+
     const result = practice.finishAttempt({
       attemptId: started.attempt_id,
       explanationScore: 2,
       recognition: "skipped",
     });
+
     expect(result.outcome).toBe("solved");
     expect(scheduler.displayStage("hash-set")).toBe("passed");
     expect(memory.cardOf("hash-set")).not.toBeNull();
@@ -274,10 +285,12 @@ describe("session flow", () => {
     scheduler.completeLesson("hash-map-counting");
     const started = solve("valid-anagram", ANAGRAM);
     practice.logHint(started.attempt_id, 2, "hash-map-counting");
+
     const result = practice.finishAttempt({
       attemptId: started.attempt_id,
       explanationScore: 2,
     });
+
     expect(result.outcome).toBe("solved_with_help");
     expect(scheduler.displayStage("hash-map-counting")).toBe("learning");
     expect(memory.cardOf("hash-map-counting")).toBeNull();
@@ -292,6 +305,7 @@ describe("session flow", () => {
       "valid-anagram",
       "def is_anagram(s, t):\n    return False\n"
     );
+
     practice.finishAttempt({
       attemptId: started.attempt_id,
       explanationScore: 1,
@@ -327,16 +341,23 @@ describe("session flow", () => {
   });
 
   test("practising an encompassing concept gives partial credit to the passed concept below", () => {
-    const before = memory.cardOf("hash-set")!;
+    const before = memory.cardOf("hash-set");
+
+    if (!before) {
+      throw new Error("hash-set should have a card once passed.");
+    }
+
     const later = new Date(Date.now() + 5 * DAY);
+
     const result = fire.propagate(
       0,
       new Map([["sequence-starts", 3 as const]]),
       later
     );
+
     const credited = result.credited.find((c) => c.concept === "hash-set");
     expect(credited?.credit).toBe(1);
-    expect(memory.cardOf("hash-set")!.due.getTime()).toBeGreaterThan(
+    expect(memory.cardOf("hash-set")?.due.getTime()).toBeGreaterThan(
       before.due.getTime()
     );
   });
@@ -345,6 +366,7 @@ describe("session flow", () => {
 describe("generated lessons", () => {
   const code =
     "export function countEven(nums: number[]): number {\n  return nums.filter((n) => n % 2 === 0).length;\n}";
+
   const checks =
     'check("mixed", countEven([1, 2, 4]), 2);\ncheck("empty", countEven([]), 0);';
 
@@ -357,6 +379,7 @@ describe("generated lessons", () => {
       language: "typescript",
       title: "Count even numbers.",
     });
+
     const text = await Bun.file(out.file).text();
     expect(text).toContain("STEP 1 OF 3 · EXAMPLE");
     expect(text).toContain("function check(");
@@ -366,6 +389,7 @@ describe("generated lessons", () => {
   test("a wrong example, a practice-problem name, or a broken exercise is rejected", () => {
     const wrong =
       'check("mixed", countEven([1, 2, 4]), 3);\ncheck("empty", countEven([]), 0);';
+
     expect(() =>
       lessons.writeLessonFile({
         checks: wrong,
@@ -375,10 +399,11 @@ describe("generated lessons", () => {
         language: "typescript",
         title: "x",
       })
-    ).toThrow(/does not pass/);
+    ).toThrow(/does not pass/u);
 
     const reused =
       "export function twoSum(a: number[]): number[] { return a; }";
+
     expect(() =>
       lessons.writeLessonFile({
         checks: 'check("a", twoSum([1]), [1]);\ncheck("b", twoSum([]), []);',
@@ -388,10 +413,11 @@ describe("generated lessons", () => {
         language: "typescript",
         title: "x",
       })
-    ).toThrow(/practice problem/);
+    ).toThrow(/practice problem/u);
 
     const broken =
       "export function countEven(nums: number[]): number {\n  return nums.filter((n) => // TODO\n}";
+
     expect(() =>
       lessons.writeLessonFile({
         checks,
@@ -402,16 +428,19 @@ describe("generated lessons", () => {
         solution: code,
         title: "x",
       })
-    ).toThrow(/must still run/);
+    ).toThrow(/must still run/u);
   });
 
   test("a sound python exercise is written and never overwrites an earlier one", () => {
     const solution =
       "def count_even(nums):\n    return sum(1 for n in nums if n % 2 == 0)";
+
     const blank =
       "def count_even(nums):\n    return 0  # TODO: count the even numbers";
+
     const pyChecks =
       'check("mixed", count_even([1, 2, 4]), 2)\ncheck("empty", count_even([]), 0)';
+
     const input = {
       checks: pyChecks,
       code: blank,
@@ -421,6 +450,7 @@ describe("generated lessons", () => {
       solution,
       title: "Count even numbers.",
     };
+
     const first = lessons.writeLessonFile(input);
     const second = lessons.writeLessonFile(input);
     expect(first.file).not.toBe(second.file);
@@ -436,6 +466,7 @@ describe("reserved names", () => {
       language: "typescript" as const,
       title: "x",
     };
+
     const arrow = "export const twoSum = (a: number[]) => a;";
     expect(() =>
       lessons.writeLessonFile({
@@ -443,9 +474,11 @@ describe("reserved names", () => {
         checks: 'check("a", twoSum([1]), [1]);\ncheck("b", twoSum([]), []);',
         code: arrow,
       })
-    ).toThrow(/practice problem/);
+    ).toThrow(/practice problem/u);
+
     const generic =
       "export function search(a: number[], t: number): number { return a.indexOf(t); }";
+
     expect(() =>
       lessons.writeLessonFile({
         ...base,

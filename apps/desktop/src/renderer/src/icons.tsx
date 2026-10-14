@@ -35,16 +35,14 @@ const paths = {
 
 export type IconName = keyof typeof paths;
 
-export function Icon({
+export const Icon = ({
   name,
   className = "",
 }: {
   name: IconName;
   className?: string;
-}) {
-  return (
-    <svg className={`i ${className}`} viewBox="0 0 24 24" aria-hidden="true">
-      {paths[name]}
-    </svg>
-  );
-}
+}) => (
+  <svg className={`i ${className}`} viewBox="0 0 24 24" aria-hidden="true">
+    {paths[name]}
+  </svg>
+);

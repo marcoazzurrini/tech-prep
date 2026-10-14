@@ -1,21 +1,31 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { Icon } from "./icons";
-import { Roadmap } from "./Roadmap";
-import { ProblemPanel } from "./Today";
-import { Tutor } from "./Tutor";
+import { Roadmap } from "./roadmap";
+import { ProblemPanel } from "./today";
+import { Tutor } from "./tutor";
 import type { Roadmap as RoadmapData, Session } from "./types";
 
 type View = "today" | "roadmap";
 
-export function App() {
+export const App = () => {
   const [view, setView] = useState<View>("today");
   const [session, setSession] = useState<Session | null>(null);
   const [roadmap, setRoadmap] = useState<RoadmapData | null>(null);
 
   const refresh = useCallback(() => {
-    void window.tp.engine("session").then((s) => setSession(s as Session));
-    void window.tp.engine("roadmap").then((r) => setRoadmap(r as RoadmapData));
+    const loadSession = async () => {
+      // SAFETY: the bridge's `session` method returns the engine's Session shape.
+      setSession((await window.tp.engine("session")) as Session);
+    };
+
+    const loadRoadmap = async () => {
+      // SAFETY: the bridge's `roadmap` method returns the engine's Roadmap shape.
+      setRoadmap((await window.tp.engine("roadmap")) as RoadmapData);
+    };
+
+    void loadSession();
+    void loadRoadmap();
   }, []);
 
   useEffect(() => {
@@ -32,6 +42,7 @@ export function App() {
       if (!e.metaKey || e.shiftKey || e.altKey) {
         return;
       }
+
       const action = {
         "1": () => show("today"),
         "2": () => show("roadmap"),
@@ -61,6 +72,7 @@ export function App() {
           <Icon name="logo" />
         </div>
         <button
+          type="button"
           className={`item${view === "today" ? " on" : ""}`}
           title="Today (⌘1)"
           aria-label="Today"
@@ -69,6 +81,7 @@ export function App() {
           <Icon name="today" />
         </button>
         <button
+          type="button"
           className={`item${view === "roadmap" ? " on" : ""}`}
           title="Roadmap (⌘2)"
           aria-label="Roadmap"
@@ -88,4 +101,4 @@ export function App() {
       </main>
     </div>
   );
-}
+};

@@ -1,25 +1,32 @@
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { dirname, join } from "node:path";
+import path from "node:path";
 
 /** The interview starter (Blind 75) from `@tech-prep/starters`. */
-export const CONTENT_DIR = join(
-  dirname(Bun.resolveSync("@tech-prep/starters/package.json", import.meta.dir)),
+export const CONTENT_DIR = path.join(
+  path.dirname(
+    Bun.resolveSync("@tech-prep/starters/package.json", import.meta.dir)
+  ),
   "interview"
 );
-export const CURRICULUM_DIR = join(CONTENT_DIR, "curriculum");
-export const PROBLEMS_DIR = join(CONTENT_DIR, "problems");
+
+export const CURRICULUM_DIR = path.join(CONTENT_DIR, "curriculum");
+export const PROBLEMS_DIR = path.join(CONTENT_DIR, "problems");
+
 export const HOME_DIR =
-  process.env.TECHPREP_HOME ?? join(homedir(), ".tech-prep");
-export const WORKSPACE_DIR = join(HOME_DIR, "workspace");
+  process.env.TECHPREP_HOME ?? path.join(homedir(), ".tech-prep");
+
+export const WORKSPACE_DIR = path.join(HOME_DIR, "workspace");
 
 export type Language = "python" | "typescript";
 
 export const LANGUAGES: Language[] = ["python", "typescript"];
+
 export const EXTENSIONS: Record<Language, string> = {
   python: "py",
   typescript: "ts",
 };
+
 export const DEFAULT_LANGUAGE: Language =
   process.env.TECHPREP_LANG === "python" ? "python" : "typescript";
 
@@ -92,9 +99,10 @@ export interface Problem extends ProblemInfo, CallSpec {
   statement: string;
 }
 
-function readJson<T>(path: string): T {
-  return JSON.parse(readFileSync(path, "utf-8")) as T;
-}
+// SAFETY: callers only read the curriculum and problem files, which are authored to these
+// shapes and checked by `validateCurriculum` and `build-problem`.
+const readJson = <T>(file: string): T =>
+  JSON.parse(readFileSync(file, "utf-8")) as T;
 
 let topicsCache: Topic[] | undefined;
 let conceptsCache: Concept[] | undefined;
@@ -102,88 +110,98 @@ let indexCache: ProblemInfo[] | undefined;
 const problemCache = new Map<string, Problem>();
 
 /** Topics in roadmap order. */
-export function topics(): Topic[] {
-  topicsCache ??= readJson<Topic[]>(join(CURRICULUM_DIR, "topics.json"));
+export const topics = (): Topic[] => {
+  topicsCache ??= readJson<Topic[]>(path.join(CURRICULUM_DIR, "topics.json"));
 
   return topicsCache;
-}
+};
 
-export function concepts(): Concept[] {
-  conceptsCache ??= readJson<Concept[]>(join(CURRICULUM_DIR, "concepts.json"));
+export const concepts = (): Concept[] => {
+  conceptsCache ??= readJson<Concept[]>(
+    path.join(CURRICULUM_DIR, "concepts.json")
+  );
 
   return conceptsCache;
-}
+};
 
-export function concept(id: string): Concept {
+export const concept = (id: string): Concept => {
   const found = concepts().find((c) => c.id === id);
 
   if (!found) {
     throw new Error(`Unknown concept '${id}'.`);
   }
+
   return found;
-}
+};
 
 /** All problems in curriculum order (topic order, then the order within each topic). */
-export function problemIndex(): ProblemInfo[] {
-  indexCache ??= readJson<ProblemInfo[]>(join(CURRICULUM_DIR, "problems.json"));
+export const problemIndex = (): ProblemInfo[] => {
+  indexCache ??= readJson<ProblemInfo[]>(
+    path.join(CURRICULUM_DIR, "problems.json")
+  );
 
   return indexCache;
-}
+};
 
-export function problemInfo(slug: string): ProblemInfo {
+export const problemInfo = (slug: string): ProblemInfo => {
   const found = problemIndex().find((p) => p.slug === slug);
 
   if (!found) {
     throw new Error(`Unknown problem '${slug}'.`);
   }
+
   return found;
-}
+};
 
 /** True when the problem has a statement and tests, so it can be practised. */
-export function isAuthored(slug: string): boolean {
-  return (
-    existsSync(join(PROBLEMS_DIR, slug, "spec.json")) &&
-    existsSync(join(PROBLEMS_DIR, slug, "problem.md"))
-  );
-}
+export const isAuthored = (slug: string): boolean =>
+  existsSync(path.join(PROBLEMS_DIR, slug, "spec.json")) &&
+  existsSync(path.join(PROBLEMS_DIR, slug, "problem.md"));
 
-export function problem(slug: string): Problem {
+export const problem = (slug: string): Problem => {
   const cached = problemCache.get(slug);
 
   if (cached) {
     return cached;
   }
+
   const info = problemInfo(slug);
 
   if (!isAuthored(slug)) {
     throw new Error(`Problem '${slug}' has no tests yet.`);
   }
+
   const spec = readJson<Omit<Problem, keyof ProblemInfo | "statement">>(
-    join(PROBLEMS_DIR, slug, "spec.json")
+    path.join(PROBLEMS_DIR, slug, "spec.json")
   );
+
   const statement = readFileSync(
-    join(PROBLEMS_DIR, slug, "problem.md"),
+    path.join(PROBLEMS_DIR, slug, "problem.md"),
     "utf-8"
   );
+
   const full: Problem = { ...spec, ...info, statement };
   problemCache.set(slug, full);
 
   return full;
-}
+};
 
 /** The tutor's answer key for a problem, if one exists. */
-export function referenceSolution(
+export const referenceSolution = (
   slug: string,
   language: Language
-): string | null {
-  const path = join(PROBLEMS_DIR, slug, `reference.${EXTENSIONS[language]}`);
+): string | null => {
+  const file = path.join(
+    PROBLEMS_DIR,
+    slug,
+    `reference.${EXTENSIONS[language]}`
+  );
 
-  return existsSync(path) ? readFileSync(path, "utf-8") : null;
-}
+  return existsSync(file) ? readFileSync(file, "utf-8") : null;
+};
 
-export function problemsUsing(conceptId: string): ProblemInfo[] {
-  return problemIndex().filter((p) => p.concepts.includes(conceptId));
-}
+export const problemsUsing = (conceptId: string): ProblemInfo[] =>
+  problemIndex().filter((p) => p.concepts.includes(conceptId));
 
 export interface Aliases {
   concepts: Record<string, string>;
@@ -191,19 +209,20 @@ export interface Aliases {
 }
 
 /** Old id -> new id, so learner progress follows a rename. */
-export function aliases(): Aliases {
-  const path = join(CURRICULUM_DIR, "aliases.json");
+export const aliases = (): Aliases => {
+  const file = path.join(CURRICULUM_DIR, "aliases.json");
 
-  if (!existsSync(path)) {
+  if (!existsSync(file)) {
     return { concepts: {}, problems: {} };
   }
-  const raw = readJson<Partial<Aliases>>(path);
+
+  const raw = readJson<Partial<Aliases>>(file);
 
   return { concepts: raw.concepts ?? {}, problems: raw.problems ?? {} };
-}
+};
 
 /** Structural problems in the curriculum files. An empty list means the curriculum is sound. */
-export function validateCurriculum(): string[] {
+export const validateCurriculum = (): string[] => {
   const errors: string[] = [];
   const topicIds = new Set(topics().map((t) => t.id));
   const conceptIds = new Set(concepts().map((c) => c.id));
@@ -211,8 +230,9 @@ export function validateCurriculum(): string[] {
 
   for (const t of topics()) {
     for (const p of t.prereqs) {
-      if (!topicIds.has(p))
+      if (!topicIds.has(p)) {
         errors.push(`topic ${t.id}: unknown prerequisite ${p}`);
+      }
     }
   }
 
@@ -220,21 +240,26 @@ export function validateCurriculum(): string[] {
     if (seen.has(c.id)) {
       errors.push(`concept ${c.id}: duplicate id`);
     }
+
     seen.add(c.id);
 
     if (!topicIds.has(c.topic)) {
       errors.push(`concept ${c.id}: unknown topic ${c.topic}`);
     }
+
     for (const p of c.prereqs) {
-      if (!conceptIds.has(p))
+      if (!conceptIds.has(p)) {
         errors.push(`concept ${c.id}: unknown prerequisite ${p}`);
+      }
     }
+
     for (const e of c.encompasses ?? []) {
       if (!c.prereqs.includes(e.id)) {
         errors.push(
           `concept ${c.id}: encompasses ${e.id}, which is not a prerequisite`
         );
       }
+
       if (!(e.w >= 0 && e.w <= 1)) {
         errors.push(
           `concept ${c.id}: encompassing weight ${e.w} is outside 0-1`
@@ -246,72 +271,81 @@ export function validateCurriculum(): string[] {
   // Prerequisites must form a DAG.
   const state = new Map<string, "visiting" | "done">();
 
-  const visit = (id: string, path: string[]) => {
+  const visit = (id: string, trail: string[]) => {
     if (state.get(id) === "done" || !conceptIds.has(id)) {
       return;
     }
+
     if (state.get(id) === "visiting") {
-      return void errors.push(
-        `prerequisite cycle: ${[...path, id].join(" -> ")}`
-      );
+      errors.push(`prerequisite cycle: ${[...trail, id].join(" -> ")}`);
+
+      return;
     }
+
     state.set(id, "visiting");
 
     for (const p of concept(id).prereqs) {
-      visit(p, [...path, id]);
+      visit(p, [...trail, id]);
     }
+
     state.set(id, "done");
   };
 
   for (const c of concepts()) {
     visit(c.id, []);
   }
+
   const slugs = new Set<string>();
 
   for (const p of problemIndex()) {
     if (slugs.has(p.slug)) {
       errors.push(`problem ${p.slug}: duplicate slug`);
     }
+
     slugs.add(p.slug);
 
     if (!topicIds.has(p.topic)) {
       errors.push(`problem ${p.slug}: unknown topic ${p.topic}`);
     }
+
     for (const c of p.concepts) {
-      if (!conceptIds.has(c))
+      if (!conceptIds.has(c)) {
         errors.push(`problem ${p.slug}: unknown concept ${c}`);
+      }
     }
   }
 
   return errors;
-}
+};
 
 /** A concept plus all of its prerequisites, prerequisites first. */
-export function withPrereqs(conceptIds: string[]): string[] {
+export const withPrereqs = (conceptIds: string[]): string[] => {
   const ordered: string[] = [];
 
   const visit = (id: string) => {
     if (ordered.includes(id)) {
       return;
     }
+
     for (const p of concept(id).prereqs) {
       visit(p);
     }
+
     ordered.push(id);
   };
 
-  conceptIds.forEach(visit);
+  for (const id of conceptIds) {
+    visit(id);
+  }
 
   return ordered;
-}
+};
 
 /** The name the harness calls, for function problems. */
-export function functionName(
+export const functionName = (
   p: Problem,
   language: Language
-): string | undefined {
-  return p.function?.[language];
-}
+): string | undefined => p.function?.[language];
 
 /** Generic names that lessons may define freely, even though a practice problem uses them. */
 const GENERIC_NAMES = new Set([
@@ -327,32 +361,33 @@ const GENERIC_NAMES = new Set([
  * Practice-problem function names a lesson must not define, so generated lessons never
  * solve a practice problem. One-word names (search, merge, rob, ...) are too common to block.
  */
-export function reservedNames(language: Language): Set<string> {
+export const reservedNames = (language: Language): Set<string> => {
   const names = new Set<string>();
 
   for (const info of problemIndex()) {
     if (!isAuthored(info.slug)) {
       continue;
     }
+
     const name = problem(info.slug).function?.[language];
 
-    if (name && /[A-Z_]/.test(name) && !GENERIC_NAMES.has(name)) {
+    if (name && /[A-Z_]/u.test(name) && !GENERIC_NAMES.has(name)) {
       names.add(name);
     }
   }
 
   return names;
-}
+};
 
-export function solutionPath(slug: string, language: Language): string {
-  return join(WORKSPACE_DIR, `${slug}.${EXTENSIONS[language]}`);
-}
+export const solutionPath = (slug: string, language: Language): string =>
+  path.join(WORKSPACE_DIR, `${slug}.${EXTENSIONS[language]}`);
 
 /** Word-wrap one line of prose for comment headers in solution and lesson files. */
-export function wrap(line: string, width: number): string[] {
+export const wrap = (line: string, width: number): string[] => {
   if (line.length <= width) {
     return [line];
   }
+
   const lines: string[] = [];
   let current = "";
 
@@ -366,4 +401,4 @@ export function wrap(line: string, width: number): string[] {
   }
 
   return [...lines, current];
-}
+};

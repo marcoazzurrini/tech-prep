@@ -7,7 +7,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import path from "node:path";
 
 import {
   EXTENSIONS,
@@ -18,7 +18,7 @@ import {
 import type { Language } from "./content.ts";
 import { ensureDataStructures } from "./runner.ts";
 
-export const LESSONS_DIR = join(WORKSPACE_DIR, "lessons");
+export const LESSONS_DIR = path.join(WORKSPACE_DIR, "lessons");
 
 export type LessonKind = "example" | "exercise";
 
@@ -41,21 +41,21 @@ function check(label: string, actual: unknown, expected: unknown): void {
 }`,
 };
 
-function banner(language: Language, lines: string[]): string {
+const banner = (language: Language, lines: string[]): string => {
   const c = language === "python" ? "#" : "//";
   const rule = `${c} ${"═".repeat(59)}`;
 
   return [rule, ...lines.map((l) => `${c}  ${l}`), rule].join("\n");
-}
+};
 
 /** Lay out a lesson file: header, code, tests. Python needs the helper defined before the checks run. */
-function compose(
+const compose = (
   kind: LessonKind,
   language: Language,
   title: string,
   code: string,
   checks: string
-): string {
+): string => {
   const parts = [
     banner(language, [
       kind === "exercise" ? `${HEADERS[kind]}` : HEADERS[kind],
@@ -69,6 +69,7 @@ function compose(
   if (language === "python") {
     parts.push(CHECK_HELPER.python, "", "");
   }
+
   parts.push(
     banner(language, [
       kind === "exercise"
@@ -83,19 +84,22 @@ function compose(
   if (language === "typescript") {
     parts.push(CHECK_HELPER.typescript, "");
   }
+
   return parts.join("\n");
-}
+};
 
 /** Run a lesson file on its own; lesson files print one ✓ or ✗ line per check. */
-export function runLessonFile(file: string, language: Language) {
-  const cmd =
+export const runLessonFile = (file: string, language: Language) => {
+  const [cmd, args]: [string, string[]] =
     language === "python"
       ? ["python3", ["-B", file]]
       : [process.execPath, [file]];
-  const proc = spawnSync(cmd[0] as string, cmd[1] as string[], {
+
+  const proc = spawnSync(cmd, args, {
     encoding: "utf-8",
     timeout: TIMEOUT_MS,
   });
+
   const output = `${proc.stdout ?? ""}${proc.stderr ?? ""}`.trim();
   const lines = output.split("\n");
 
@@ -106,21 +110,21 @@ export function runLessonFile(file: string, language: Language) {
     passed: lines.filter((l) => l.startsWith("✓")).length,
     timedOut: proc.signal === "SIGTERM",
   };
-}
+};
 
-function verify(source: string, language: Language) {
-  const dir = mkdtempSync(join(tmpdir(), "tp-lesson-"));
+const verify = (source: string, language: Language) => {
+  const dir = mkdtempSync(path.join(tmpdir(), "tp-lesson-"));
 
   try {
     ensureDataStructures(dir, language);
-    const file = join(dir, `lesson.${EXTENSIONS[language]}`);
+    const file = path.join(dir, `lesson.${EXTENSIONS[language]}`);
     writeFileSync(file, source);
 
     return runLessonFile(file, language);
   } finally {
     rmSync(dir, { force: true, recursive: true });
   }
-}
+};
 
 export interface LessonInput {
   conceptIds: string[];
@@ -136,29 +140,12 @@ export interface LessonInput {
   solution?: string;
 }
 
-/**
- * Verify a generated lesson file and, only if it is sound, write it to the workspace.
- * Throws with the reason when verification fails, so the
- * tutor can fix the content and try again.
- */
-export function writeLessonFile(input: LessonInput) {
-  for (const id of input.conceptIds) {
-    concept(id);
-  }
-  const { kind, language } = input;
-
-  const checkCount = (input.checks.match(/\bcheck\(/g) ?? []).length;
-
-  if (checkCount < 2) {
-    throw new Error("Add at least two check(...) lines.");
-  }
-
-  const body = `${input.code}\n${input.solution ?? ""}`;
-
+/** Lessons never define a practice problem's function, so they never solve one. */
+const rejectProblemNames = (language: Language, body: string): void => {
   const definition = (name: string) =>
     language === "python"
-      ? new RegExp(`\\bdef\\s+${name}\\b`)
-      : new RegExp(`\\bfunction\\s+${name}\\b|\\b${name}\\s*=(?!=)`);
+      ? new RegExp(`\\bdef\\s+${name}\\b`, "u")
+      : new RegExp(`\\bfunction\\s+${name}\\b|\\b${name}\\s*=(?!=)`, "u");
 
   const reused = [...reservedNames(language)].filter((name) =>
     definition(name).test(body)
@@ -169,6 +156,27 @@ export function writeLessonFile(input: LessonInput) {
       `The code uses ${reused.join(", ")}, the name of a practice problem. Use a different problem so lessons never solve practice problems.`
     );
   }
+};
+
+/**
+ * Verify a generated lesson file and, only if it is sound, write it to the workspace.
+ * Throws with the reason when verification fails, so the
+ * tutor can fix the content and try again.
+ */
+export const writeLessonFile = (input: LessonInput) => {
+  for (const id of input.conceptIds) {
+    concept(id);
+  }
+
+  const { kind, language } = input;
+
+  const checkCount = (input.checks.match(/\bcheck\(/gu) ?? []).length;
+
+  if (checkCount < 2) {
+    throw new Error("Add at least two check(...) lines.");
+  }
+
+  rejectProblemNames(language, `${input.code}\n${input.solution ?? ""}`);
 
   const reference = kind === "exercise" ? input.solution : input.code;
 
@@ -177,6 +185,7 @@ export function writeLessonFile(input: LessonInput) {
       "An exercise needs `solution`: the complete code with the TODO lines filled in."
     );
   }
+
   const proof = verify(
     compose(kind, language, input.title, reference, input.checks),
     language
@@ -196,9 +205,10 @@ export function writeLessonFile(input: LessonInput) {
   const source = compose(kind, language, input.title, input.code, input.checks);
 
   if (kind === "exercise") {
-    if (!/TODO/.test(input.code)) {
+    if (!/TODO/u.test(input.code)) {
       throw new Error("The exercise code has no TODO lines.");
     }
+
     const blank = verify(source, language);
 
     if (blank.timedOut) {
@@ -206,6 +216,7 @@ export function writeLessonFile(input: LessonInput) {
         "The unfilled exercise hangs. Make the TODO placeholders terminate."
       );
     }
+
     if (blank.exitCode !== 0) {
       throw new Error(
         `The unfilled exercise must still run (placeholders that parse):\n${blank.output}`
@@ -216,16 +227,19 @@ export function writeLessonFile(input: LessonInput) {
   mkdirSync(LESSONS_DIR, { recursive: true });
   ensureDataStructures(LESSONS_DIR, language);
   const step = kind === "example" ? 1 : 2;
-  let file = join(
+
+  let file = path.join(
     LESSONS_DIR,
     `${input.conceptIds[0]}-${step}-${kind}.${EXTENSIONS[language]}`
   );
 
-  for (let n = 2; kind === "exercise" && existsSync(file); n++) {
-    file = join(
-      LESSONS_DIR,
-      `${input.conceptIds[0]}-${step}-${kind}-${n}.${EXTENSIONS[language]}`
-    );
+  if (kind === "exercise") {
+    for (let n = 2; existsSync(file); n += 1) {
+      file = path.join(
+        LESSONS_DIR,
+        `${input.conceptIds[0]}-${step}-${kind}-${n}.${EXTENSIONS[language]}`
+      );
+    }
   }
 
   writeFileSync(file, source);
@@ -234,4 +248,4 @@ export function writeLessonFile(input: LessonInput) {
     file,
     verified: `${proof.passed}/${checkCount} checks pass with the ${kind === "exercise" ? "solution" : "example code"}`,
   };
-}
+};

@@ -26,19 +26,20 @@ import { RATING_NAMES, explicitReview } from "./memory.ts";
 import { ensureDataStructures, runTests } from "./runner.ts";
 import { isPassed, pass, recordStruggle, updateMastery } from "./scheduler.ts";
 
-function banner(comment: string, title: string): string {
+const banner = (comment: string, title: string): string => {
   const rule = `${comment} ${"═".repeat(59)}`;
 
   return `${rule}\n${comment} ${title}\n${rule}`;
-}
+};
 
-function stub(p: Problem, language: Language): string {
+const stub = (p: Problem, language: Language): string => {
   const comment = language === "python" ? "#" : "//";
 
   const statement = p.statement
     .trim()
     .split("\n")
-    .slice(1) // the title goes in the banner
+    // the title goes in the banner
+    .slice(1)
     .join("\n")
     .trim()
     .split("\n")
@@ -56,13 +57,13 @@ function stub(p: Problem, language: Language): string {
     "",
     body,
   ].join("\n");
-}
+};
 
 /** Create the solution file if needed and open (or resume) an attempt. */
-export function startProblem(
+export const startProblem = (
   slug: string,
   language: Language = DEFAULT_LANGUAGE
-) {
+) => {
   const p = getProblem(slug);
   mkdirSync(WORKSPACE_DIR, { recursive: true });
   ensureDataStructures(WORKSPACE_DIR, language);
@@ -77,6 +78,12 @@ export function startProblem(
   const resumed = Boolean(current);
 
   if (!current) {
+    const [mainConcept] = p.concepts;
+
+    if (!mainConcept) {
+      throw new Error(`Problem '${slug}' has no concepts.`);
+    }
+
     const phase: Phase = p.concepts.every(isPassed) ? "review" : "learning";
 
     const id = open()
@@ -85,7 +92,7 @@ export function startProblem(
       )
       .run(
         slug,
-        p.concepts[0]!,
+        mainConcept,
         language,
         new Date().toISOString(),
         phase
@@ -104,14 +111,14 @@ export function startProblem(
     resumed,
     title: p.title,
   };
-}
+};
 
 /** Run the tests and, when an attempt is open, record the result on it. */
-export function testSolution(
+export const testSolution = (
   slug: string,
   language: Language = DEFAULT_LANGUAGE,
   file = solutionPath(slug, language)
-) {
+) => {
   const run = runTests(getProblem(slug), language, file);
   const current = openAttempt(slug, language);
 
@@ -124,19 +131,20 @@ export function testSolution(
   }
 
   return { attempt_id: current?.id ?? null, run };
-}
+};
 
 /** Record a hint before it is given. Tie it to the concept it is about whenever possible. */
-export function logHint(
+export const logHint = (
   attemptId: number,
   level: number,
   conceptId: string | null = null
-): AttemptRow {
+): AttemptRow => {
   const current = attempt(attemptId);
 
   if (current.finished_at) {
     throw new Error(`Attempt ${attemptId} is already finished.`);
   }
+
   if (conceptId && !getProblem(current.slug).concepts.includes(conceptId)) {
     throw new Error(
       `'${conceptId}' is not one of this problem's concepts: ${getProblem(current.slug).concepts.join(", ")}`
@@ -146,7 +154,7 @@ export function logHint(
   addHint(attemptId, conceptId, level);
 
   return attempt(attemptId);
-}
+};
 
 export interface FinishInput {
   attemptId: number;
@@ -164,12 +172,13 @@ export interface FinishInput {
  * review-phase concepts get per-concept FSRS grades, then credit flows through the
  * encompassing graph. See docs/learning-model.md.
  */
-export function finishAttempt(input: FinishInput) {
+export const finishAttempt = (input: FinishInput) => {
   const current = attempt(input.attemptId);
 
   if (current.finished_at) {
     throw new Error(`Attempt ${input.attemptId} is already finished.`);
   }
+
   const p = getProblem(current.slug);
   const now = new Date();
 
@@ -187,11 +196,15 @@ export function finishAttempt(input: FinishInput) {
   }
 
   // Re-run so the grade reflects the file as it is now, not the last manual test run.
+  // SAFETY: startProblem opens attempts with a Language, and only it inserts them.
   const { run } = testSolution(current.slug, current.language as Language);
+
   const solved =
     !run.fatal && run.passed === run.total && input.stopped !== "gave_up";
+
   const minutes =
     (now.getTime() - new Date(current.started_at).getTime()) / 60_000;
+
   const diagnosis = new Map<string, Verdict>();
 
   for (const d of input.diagnosis ?? []) {
@@ -200,6 +213,7 @@ export function finishAttempt(input: FinishInput) {
         `'${d.concept_id}' is not one of this problem's concepts.`
       );
     }
+
     diagnosis.set(d.concept_id, d.verdict);
     saveConceptOutcome(current.id, d.concept_id, d.verdict, d.reason ?? null);
   }
@@ -215,12 +229,14 @@ export function finishAttempt(input: FinishInput) {
     hints: hintsFor(current.id),
     minutes,
     recognition,
+    // SAFETY: the self-rating's 1-4 are the FSRS grades Again, Hard, Good and Easy.
     selfRating: input.learnerSelfRating as Grade | undefined,
     solved,
   });
 
   const learning: { concept: string; result: string }[] = [];
   const reviewed = new Map<string, Grade>();
+
   const scheduled: {
     concept: string;
     grade: string;
@@ -253,7 +269,7 @@ export function finishAttempt(input: FinishInput) {
     reviewed.set(g.concept, g.grade);
     scheduled.push({
       concept: g.concept,
-      grade: RATING_NAMES[g.grade]!,
+      grade: RATING_NAMES[g.grade],
       next_review: card.due.toISOString(),
       reasons: g.reasons,
     });
@@ -262,11 +278,13 @@ export function finishAttempt(input: FinishInput) {
   const implicit = propagate(current.id, reviewed, now);
 
   const helped = grades.some((g) => !g.independent);
-  const outcome: Outcome = solved
-    ? helped
-      ? "solved_with_help"
-      : "solved"
-    : "gave_up";
+
+  let outcome: Outcome = "gave_up";
+
+  if (solved) {
+    outcome = helped ? "solved_with_help" : "solved";
+  }
+
   const phase: Phase = reviewed.size ? "review" : "learning";
   const worst = Math.min(...grades.map((g) => g.grade));
   open()
@@ -295,4 +313,4 @@ export function finishAttempt(input: FinishInput) {
     reviews: scheduled,
     tests: `${run.passed}/${run.total}`,
   };
-}
+};

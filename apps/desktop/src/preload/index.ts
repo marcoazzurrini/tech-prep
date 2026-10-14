@@ -1,19 +1,25 @@
 import { contextBridge, ipcRenderer } from "electron";
+import type { IpcRendererEvent } from "electron";
 
-function on<T>(channel: string, callback: (payload: T) => void): () => void {
-  const listener = (_event: unknown, payload: T) => callback(payload);
+import type { TutorEvent } from "../main/tutor";
+
+const on = <T>(
+  channel: string,
+  handler: (payload: T) => void
+): (() => void) => {
+  const listener = (_event: IpcRendererEvent, payload: T) => handler(payload);
   ipcRenderer.on(channel, listener);
 
   return () => ipcRenderer.removeListener(channel, listener);
-}
+};
 
 const api = {
   engine: (method: "session" | "roadmap") =>
     ipcRenderer.invoke("engine", method),
-  onEngineChanged: (callback: () => void) => on("engine:changed", callback),
+  onEngineChanged: (handler: () => void) => on("engine:changed", handler),
   tutor: {
-    onEvent: (callback: (event: unknown) => void) =>
-      on("tutor:event", callback),
+    onEvent: (handler: (event: TutorEvent) => void) =>
+      on("tutor:event", handler),
     send: (text: string) => ipcRenderer.send("tutor:send", text),
     start: () => ipcRenderer.send("tutor:start"),
   },

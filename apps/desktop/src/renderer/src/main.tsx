@@ -6,11 +6,17 @@ import "@fontsource/jetbrains-mono/700.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { App } from "./App";
+import { App } from "./app";
 
 import "./styles.css";
 
-createRoot(document.querySelector("#root")!).render(
+const root = document.querySelector("#root");
+
+if (!root) {
+  throw new Error("index.html has no #root element.");
+}
+
+createRoot(root).render(
   <StrictMode>
     <App />
   </StrictMode>

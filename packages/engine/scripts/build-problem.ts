@@ -17,7 +17,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import path from "node:path";
 
 import {
   EXTENSIONS,
@@ -27,50 +27,143 @@ import {
   problemIndex,
   problemInfo,
 } from "../src/content.ts";
-import type { Language, Problem } from "../src/content.ts";
+import type {
+  Language,
+  Problem,
+  ProblemInfo,
+  TestCase,
+} from "../src/content.ts";
 import { formatRun, runTests } from "../src/runner.ts";
 
-function load(slug: string): { spec: Record<string, any>; problem: Problem } {
+/** spec.json as authored: any field may be missing until `checkSpec` passes. */
+type Spec = Partial<Omit<Problem, keyof ProblemInfo | "statement">>;
+
+const load = (slug: string) => {
+  // SAFETY: every field of `Spec` is optional; `checkSpec` validates the ones the build relies on.
   const spec = JSON.parse(
-    readFileSync(join(PROBLEMS_DIR, slug, "spec.json"), "utf-8")
-  );
+    readFileSync(path.join(PROBLEMS_DIR, slug, "spec.json"), "utf-8")
+  ) as Spec;
+
   const statement = readFileSync(
-    join(PROBLEMS_DIR, slug, "problem.md"),
+    path.join(PROBLEMS_DIR, slug, "problem.md"),
     "utf-8"
   );
 
-  return { problem: { ...spec, ...problemInfo(slug), statement }, spec };
-}
+  // SAFETY: the problem only runs after `checkSpec` has accepted its spec.
+  const problem = { ...spec, ...problemInfo(slug), statement } as Problem;
+
+  return { problem, spec };
+};
 
 /** Pretty JSON with one test case per line, so specs stay readable and diffable. */
-function formatSpec(spec: Record<string, any>): string {
-  const { tests, ...rest } = spec;
+const formatSpec = (spec: Spec, tests: TestCase[]): string => {
+  const { tests: _tests, ...rest } = spec;
   const head = JSON.stringify(rest, null, 2).slice(0, -2);
-  const lines = (tests as unknown[])
-    .map((t) => `    ${JSON.stringify(t)}`)
-    .join(",\n");
+
+  const lines = tests.map((t) => `    ${JSON.stringify(t)}`).join(",\n");
 
   return `${head},\n  "tests": [\n${lines}\n  ]\n}\n`;
-}
+};
 
-function runFile(
+const runFile = (
   problem: Problem,
   language: Language,
   source: string,
   dir: string
-) {
-  const file = join(
+) => {
+  const file = path.join(
     dir,
     `${problem.slug}-${Math.random().toString(36).slice(2)}.${EXTENSIONS[language]}`
   );
+
   writeFileSync(file, source);
 
   return runTests(problem, language, file);
-}
+};
 
-function build(slug: string): string[] {
+/** Fields every spec needs: stubs, function names (for function problems) and enough tests. */
+const checkSpec = (spec: Spec, tests: TestCase[]): string[] => {
   const errors: string[] = [];
-  const dir = mkdtempSync(join(tmpdir(), "tp-build-"));
+
+  for (const language of LANGUAGES) {
+    if (!spec.stubs?.[language]) {
+      errors.push(`missing stubs.${language}`);
+    }
+
+    if (
+      (spec.kind ?? "function") === "function" &&
+      !spec.function?.[language]
+    ) {
+      errors.push(`missing function.${language}`);
+    }
+  }
+
+  if (tests.length < 3) {
+    errors.push("needs at least 3 tests");
+  }
+
+  return errors;
+};
+
+/** Step 1: fill missing expected values from the Python reference and rewrite spec.json. */
+const fillExpected = (
+  slug: string,
+  spec: Spec,
+  tests: TestCase[],
+  problem: Problem,
+  dir: string
+): string[] => {
+  const missing = tests.flatMap((t, i) =>
+    t.expected === undefined ? [i] : []
+  );
+
+  if (!missing.length) {
+    return [];
+  }
+
+  const reference = readFileSync(
+    path.join(PROBLEMS_DIR, slug, "reference.py"),
+    "utf-8"
+  );
+
+  const run = runFile(problem, "python", reference, dir);
+
+  if (run.fatal) {
+    return [`reference.py failed to load:\n${run.fatal}`];
+  }
+
+  const errors: string[] = [];
+
+  for (const i of missing) {
+    const test = tests[i];
+    const result = run.cases[i];
+
+    if (!test || !result) {
+      throw new Error(
+        `${slug}: reference.py returned no result for test ${i + 1}.`
+      );
+    }
+
+    if (result.error) {
+      errors.push(`reference.py crashed on test ${i + 1}:\n${result.error}`);
+    } else {
+      test.expected = result.actual;
+    }
+  }
+
+  if (!errors.length) {
+    writeFileSync(
+      path.join(PROBLEMS_DIR, slug, "spec.json"),
+      formatSpec(spec, tests)
+    );
+  }
+
+  return errors;
+};
+
+const build = (slug: string): string[] => {
+  const errors: string[] = [];
+  const dir = mkdtempSync(path.join(tmpdir(), "tp-build-"));
 
   try {
     for (const name of [
@@ -79,7 +172,7 @@ function build(slug: string): string[] {
       "reference.py",
       "reference.ts",
     ]) {
-      if (!existsSync(join(PROBLEMS_DIR, slug, name))) {
+      if (!existsSync(path.join(PROBLEMS_DIR, slug, name))) {
         errors.push(`missing ${name}`);
       }
     }
@@ -89,57 +182,19 @@ function build(slug: string): string[] {
     }
 
     const { spec, problem } = load(slug);
+    // A spec whose tests are not a list fails the "at least 3 tests" check.
+    const tests = Array.isArray(spec.tests) ? spec.tests : [];
+    const specErrors = checkSpec(spec, tests);
 
-    for (const language of LANGUAGES) {
-      if (!spec.stubs?.[language]) {
-        errors.push(`missing stubs.${language}`);
-      }
-      if (
-        (spec.kind ?? "function") === "function" &&
-        !spec.function?.[language]
-      ) {
-        errors.push(`missing function.${language}`);
-      }
-    }
-
-    if (!Array.isArray(spec.tests) || spec.tests.length < 3) {
-      errors.push("needs at least 3 tests");
-    }
-    if (errors.length) {
-      return errors;
+    if (specErrors.length) {
+      return specErrors;
     }
 
     // 1. Fill missing expected values from the Python reference.
-    const missing = spec.tests
-      .map((t: any, i: number) => (t.expected === undefined ? i : -1))
-      .filter((i: number) => i >= 0);
+    const fillErrors = fillExpected(slug, spec, tests, problem, dir);
 
-    if (missing.length) {
-      const reference = readFileSync(
-        join(PROBLEMS_DIR, slug, "reference.py"),
-        "utf-8"
-      );
-      const run = runFile(problem, "python", reference, dir);
-
-      if (run.fatal) {
-        return [`reference.py failed to load:\n${run.fatal}`];
-      }
-      for (const i of missing) {
-        const result = run.cases[i]!;
-
-        if (result.error) {
-          errors.push(
-            `reference.py crashed on test ${i + 1}:\n${result.error}`
-          );
-        } else {
-          spec.tests[i].expected = result.actual;
-        }
-      }
-
-      if (errors.length) {
-        return errors;
-      }
-      writeFileSync(join(PROBLEMS_DIR, slug, "spec.json"), formatSpec(spec));
+    if (fillErrors.length) {
+      return fillErrors;
     }
 
     // 2. Both references must pass everything.
@@ -147,9 +202,10 @@ function build(slug: string): string[] {
 
     for (const language of LANGUAGES) {
       const source = readFileSync(
-        join(PROBLEMS_DIR, slug, `reference.${EXTENSIONS[language]}`),
+        path.join(PROBLEMS_DIR, slug, `reference.${EXTENSIONS[language]}`),
         "utf-8"
       );
+
       const run = runFile(built, language, source, dir);
 
       if (run.fatal || run.passed !== run.total) {
@@ -170,9 +226,10 @@ function build(slug: string): string[] {
   } finally {
     rmSync(dir, { force: true, recursive: true });
   }
-}
+};
 
 const args = process.argv.slice(2);
+
 const slugs =
   args[0] === "--all"
     ? problemIndex()
@@ -191,7 +248,7 @@ for (const slug of slugs) {
   const errors = build(slug);
 
   if (errors.length) {
-    failed++;
+    failed += 1;
     console.log(
       `✗ ${slug}\n${errors.map((e) => `  ${e.replaceAll("\n", "\n  ")}`).join("\n")}`
     );
