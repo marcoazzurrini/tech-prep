@@ -1,0 +1,21 @@
+{
+  "function": {
+    "python": "length_of_longest_substring",
+    "typescript": "lengthOfLongestSubstring"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def length_of_longest_substring(s: str) -> int:\n    pass\n",
+    "typescript": "export function lengthOfLongestSubstring(s: string): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": ["abcabcbb"], "expected": 3},
+    {"args": ["bbbbb"], "expected": 1},
+    {"args": ["pwwkew"], "expected": 3},
+    {"args": [""], "expected": 0},
+    {"args": [" "], "expected": 1},
+    {"args": ["dvdf"], "expected": 3},
+    {"args": ["abba"], "expected": 2},
+    {"args": ["tmmzuxt"], "expected": 5}
+  ]
+}

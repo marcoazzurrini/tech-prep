@@ -1,0 +1,692 @@
+[
+  {
+    "slug": "contains-duplicate",
+    "title": "Contains Duplicate",
+    "topic": "arrays-hashing",
+    "difficulty": "easy",
+    "concepts": [
+      "hash-set"
+    ]
+  },
+  {
+    "slug": "valid-anagram",
+    "title": "Valid Anagram",
+    "topic": "arrays-hashing",
+    "difficulty": "easy",
+    "concepts": [
+      "hash-map-counting"
+    ]
+  },
+  {
+    "slug": "two-sum",
+    "title": "Two Sum",
+    "topic": "arrays-hashing",
+    "difficulty": "easy",
+    "concepts": [
+      "hash-map-index"
+    ]
+  },
+  {
+    "slug": "group-anagrams",
+    "title": "Group Anagrams",
+    "topic": "arrays-hashing",
+    "difficulty": "medium",
+    "concepts": [
+      "canonical-key"
+    ]
+  },
+  {
+    "slug": "top-k-frequent-elements",
+    "title": "Top K Frequent Elements",
+    "topic": "arrays-hashing",
+    "difficulty": "medium",
+    "concepts": [
+      "hash-map-counting",
+      "bucket-sort"
+    ]
+  },
+  {
+    "slug": "encode-and-decode-strings",
+    "title": "Encode and Decode Strings",
+    "topic": "arrays-hashing",
+    "difficulty": "medium",
+    "concepts": [
+      "string-encoding"
+    ]
+  },
+  {
+    "slug": "product-of-array-except-self",
+    "title": "Product of Array Except Self",
+    "topic": "arrays-hashing",
+    "difficulty": "medium",
+    "concepts": [
+      "prefix-products"
+    ]
+  },
+  {
+    "slug": "longest-consecutive-sequence",
+    "title": "Longest Consecutive Sequence",
+    "topic": "arrays-hashing",
+    "difficulty": "medium",
+    "concepts": [
+      "sequence-starts"
+    ]
+  },
+  {
+    "slug": "valid-palindrome",
+    "title": "Valid Palindrome",
+    "topic": "two-pointers",
+    "difficulty": "easy",
+    "concepts": [
+      "two-pointers-opposite"
+    ]
+  },
+  {
+    "slug": "three-sum",
+    "title": "3Sum",
+    "topic": "two-pointers",
+    "difficulty": "medium",
+    "concepts": [
+      "sorting",
+      "two-pointers-opposite",
+      "skip-duplicates"
+    ]
+  },
+  {
+    "slug": "container-with-most-water",
+    "title": "Container With Most Water",
+    "topic": "two-pointers",
+    "difficulty": "medium",
+    "concepts": [
+      "two-pointers-opposite"
+    ]
+  },
+  {
+    "slug": "valid-parentheses",
+    "title": "Valid Parentheses",
+    "topic": "stack",
+    "difficulty": "easy",
+    "concepts": [
+      "stack-matching"
+    ]
+  },
+  {
+    "slug": "best-time-to-buy-and-sell-stock",
+    "title": "Best Time to Buy and Sell Stock",
+    "topic": "sliding-window",
+    "difficulty": "easy",
+    "concepts": [
+      "running-best"
+    ]
+  },
+  {
+    "slug": "longest-substring-without-repeating-characters",
+    "title": "Longest Substring Without Repeating Characters",
+    "topic": "sliding-window",
+    "difficulty": "medium",
+    "concepts": [
+      "variable-window",
+      "hash-map-index"
+    ]
+  },
+  {
+    "slug": "longest-repeating-character-replacement",
+    "title": "Longest Repeating Character Replacement",
+    "topic": "sliding-window",
+    "difficulty": "medium",
+    "concepts": [
+      "window-counts"
+    ]
+  },
+  {
+    "slug": "minimum-window-substring",
+    "title": "Minimum Window Substring",
+    "topic": "sliding-window",
+    "difficulty": "hard",
+    "concepts": [
+      "window-counts"
+    ]
+  },
+  {
+    "slug": "find-minimum-in-rotated-sorted-array",
+    "title": "Find Minimum in Rotated Sorted Array",
+    "topic": "binary-search",
+    "difficulty": "medium",
+    "concepts": [
+      "binary-search-rotated"
+    ]
+  },
+  {
+    "slug": "search-in-rotated-sorted-array",
+    "title": "Search in Rotated Sorted Array",
+    "topic": "binary-search",
+    "difficulty": "medium",
+    "concepts": [
+      "binary-search-rotated"
+    ]
+  },
+  {
+    "slug": "reverse-linked-list",
+    "title": "Reverse Linked List",
+    "topic": "linked-list",
+    "difficulty": "easy",
+    "concepts": [
+      "list-reversal"
+    ]
+  },
+  {
+    "slug": "merge-two-sorted-lists",
+    "title": "Merge Two Sorted Lists",
+    "topic": "linked-list",
+    "difficulty": "easy",
+    "concepts": [
+      "dummy-node"
+    ]
+  },
+  {
+    "slug": "linked-list-cycle",
+    "title": "Linked List Cycle",
+    "topic": "linked-list",
+    "difficulty": "easy",
+    "concepts": [
+      "fast-slow-pointers"
+    ]
+  },
+  {
+    "slug": "reorder-list",
+    "title": "Reorder List",
+    "topic": "linked-list",
+    "difficulty": "medium",
+    "concepts": [
+      "fast-slow-pointers",
+      "list-reversal"
+    ]
+  },
+  {
+    "slug": "remove-nth-node-from-end-of-list",
+    "title": "Remove Nth Node From End of List",
+    "topic": "linked-list",
+    "difficulty": "medium",
+    "concepts": [
+      "gap-pointers",
+      "dummy-node"
+    ]
+  },
+  {
+    "slug": "merge-k-sorted-lists",
+    "title": "Merge K Sorted Lists",
+    "topic": "linked-list",
+    "difficulty": "hard",
+    "concepts": [
+      "dummy-node",
+      "heap"
+    ]
+  },
+  {
+    "slug": "invert-binary-tree",
+    "title": "Invert Binary Tree",
+    "topic": "trees",
+    "difficulty": "easy",
+    "concepts": [
+      "tree-dfs"
+    ]
+  },
+  {
+    "slug": "maximum-depth-of-binary-tree",
+    "title": "Maximum Depth of Binary Tree",
+    "topic": "trees",
+    "difficulty": "easy",
+    "concepts": [
+      "tree-dfs"
+    ]
+  },
+  {
+    "slug": "same-tree",
+    "title": "Same Tree",
+    "topic": "trees",
+    "difficulty": "easy",
+    "concepts": [
+      "tree-dfs"
+    ]
+  },
+  {
+    "slug": "subtree-of-another-tree",
+    "title": "Subtree of Another Tree",
+    "topic": "trees",
+    "difficulty": "easy",
+    "concepts": [
+      "tree-dfs"
+    ]
+  },
+  {
+    "slug": "lowest-common-ancestor-of-a-binary-search-tree",
+    "title": "Lowest Common Ancestor of a Binary Search Tree",
+    "topic": "trees",
+    "difficulty": "medium",
+    "concepts": [
+      "bst-property"
+    ]
+  },
+  {
+    "slug": "binary-tree-level-order-traversal",
+    "title": "Binary Tree Level Order Traversal",
+    "topic": "trees",
+    "difficulty": "medium",
+    "concepts": [
+      "tree-bfs"
+    ]
+  },
+  {
+    "slug": "validate-binary-search-tree",
+    "title": "Validate Binary Search Tree",
+    "topic": "trees",
+    "difficulty": "medium",
+    "concepts": [
+      "bst-property"
+    ]
+  },
+  {
+    "slug": "kth-smallest-element-in-a-bst",
+    "title": "Kth Smallest Element in a BST",
+    "topic": "trees",
+    "difficulty": "medium",
+    "concepts": [
+      "bst-property"
+    ]
+  },
+  {
+    "slug": "construct-binary-tree-from-preorder-and-inorder-traversal",
+    "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+    "topic": "trees",
+    "difficulty": "medium",
+    "concepts": [
+      "tree-construction"
+    ]
+  },
+  {
+    "slug": "binary-tree-maximum-path-sum",
+    "title": "Binary Tree Maximum Path Sum",
+    "topic": "trees",
+    "difficulty": "hard",
+    "concepts": [
+      "tree-path-max"
+    ]
+  },
+  {
+    "slug": "serialize-and-deserialize-binary-tree",
+    "title": "Serialize and Deserialize Binary Tree",
+    "topic": "trees",
+    "difficulty": "hard",
+    "concepts": [
+      "tree-serialization"
+    ]
+  },
+  {
+    "slug": "implement-trie-prefix-tree",
+    "title": "Implement Trie (Prefix Tree)",
+    "topic": "tries",
+    "difficulty": "medium",
+    "concepts": [
+      "trie"
+    ]
+  },
+  {
+    "slug": "design-add-and-search-words-data-structure",
+    "title": "Design Add and Search Words Data Structure",
+    "topic": "tries",
+    "difficulty": "medium",
+    "concepts": [
+      "trie",
+      "backtracking"
+    ]
+  },
+  {
+    "slug": "word-search-ii",
+    "title": "Word Search II",
+    "topic": "tries",
+    "difficulty": "hard",
+    "concepts": [
+      "trie-search",
+      "grid-dfs"
+    ]
+  },
+  {
+    "slug": "find-median-from-data-stream",
+    "title": "Find Median from Data Stream",
+    "topic": "heap",
+    "difficulty": "hard",
+    "concepts": [
+      "two-heaps"
+    ]
+  },
+  {
+    "slug": "combination-sum",
+    "title": "Combination Sum",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": [
+      "backtracking"
+    ]
+  },
+  {
+    "slug": "word-search",
+    "title": "Word Search",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": [
+      "grid-dfs",
+      "backtracking"
+    ]
+  },
+  {
+    "slug": "number-of-islands",
+    "title": "Number of Islands",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": [
+      "grid-dfs",
+      "graph-traversal"
+    ]
+  },
+  {
+    "slug": "clone-graph",
+    "title": "Clone Graph",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": [
+      "graph-traversal",
+      "hash-map-index"
+    ]
+  },
+  {
+    "slug": "pacific-atlantic-water-flow",
+    "title": "Pacific Atlantic Water Flow",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": [
+      "reverse-search"
+    ]
+  },
+  {
+    "slug": "course-schedule",
+    "title": "Course Schedule",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": [
+      "graph-representation",
+      "cycle-detection"
+    ]
+  },
+  {
+    "slug": "graph-valid-tree",
+    "title": "Graph Valid Tree",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": [
+      "graph-traversal",
+      "union-find"
+    ]
+  },
+  {
+    "slug": "number-of-connected-components-in-an-undirected-graph",
+    "title": "Number of Connected Components in an Undirected Graph",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": [
+      "union-find"
+    ]
+  },
+  {
+    "slug": "climbing-stairs",
+    "title": "Climbing Stairs",
+    "topic": "dp-1d",
+    "difficulty": "easy",
+    "concepts": [
+      "dp-1d"
+    ]
+  },
+  {
+    "slug": "house-robber",
+    "title": "House Robber",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-take-or-skip"
+    ]
+  },
+  {
+    "slug": "house-robber-ii",
+    "title": "House Robber II",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-take-or-skip"
+    ]
+  },
+  {
+    "slug": "longest-palindromic-substring",
+    "title": "Longest Palindromic Substring",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "expand-around-center"
+    ]
+  },
+  {
+    "slug": "palindromic-substrings",
+    "title": "Palindromic Substrings",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "expand-around-center"
+    ]
+  },
+  {
+    "slug": "decode-ways",
+    "title": "Decode Ways",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-segmentation"
+    ]
+  },
+  {
+    "slug": "coin-change",
+    "title": "Coin Change",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-unbounded"
+    ]
+  },
+  {
+    "slug": "maximum-product-subarray",
+    "title": "Maximum Product Subarray",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-min-max"
+    ]
+  },
+  {
+    "slug": "word-break",
+    "title": "Word Break",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-segmentation"
+    ]
+  },
+  {
+    "slug": "longest-increasing-subsequence",
+    "title": "Longest Increasing Subsequence",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-subsequence"
+    ]
+  },
+  {
+    "slug": "insert-interval",
+    "title": "Insert Interval",
+    "topic": "intervals",
+    "difficulty": "medium",
+    "concepts": [
+      "interval-merge"
+    ]
+  },
+  {
+    "slug": "merge-intervals",
+    "title": "Merge Intervals",
+    "topic": "intervals",
+    "difficulty": "medium",
+    "concepts": [
+      "interval-merge"
+    ]
+  },
+  {
+    "slug": "non-overlapping-intervals",
+    "title": "Non-overlapping Intervals",
+    "topic": "intervals",
+    "difficulty": "medium",
+    "concepts": [
+      "interval-greedy"
+    ]
+  },
+  {
+    "slug": "meeting-rooms",
+    "title": "Meeting Rooms",
+    "topic": "intervals",
+    "difficulty": "easy",
+    "concepts": [
+      "interval-merge"
+    ]
+  },
+  {
+    "slug": "meeting-rooms-ii",
+    "title": "Meeting Rooms II",
+    "topic": "intervals",
+    "difficulty": "medium",
+    "concepts": [
+      "interval-sweep"
+    ]
+  },
+  {
+    "slug": "maximum-subarray",
+    "title": "Maximum Subarray",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": [
+      "kadane"
+    ]
+  },
+  {
+    "slug": "jump-game",
+    "title": "Jump Game",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": [
+      "greedy-reach"
+    ]
+  },
+  {
+    "slug": "alien-dictionary",
+    "title": "Alien Dictionary",
+    "topic": "advanced-graphs",
+    "difficulty": "hard",
+    "concepts": [
+      "graph-representation",
+      "topological-sort"
+    ]
+  },
+  {
+    "slug": "unique-paths",
+    "title": "Unique Paths",
+    "topic": "dp-2d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-2d-grid"
+    ]
+  },
+  {
+    "slug": "longest-common-subsequence",
+    "title": "Longest Common Subsequence",
+    "topic": "dp-2d",
+    "difficulty": "medium",
+    "concepts": [
+      "dp-two-strings"
+    ]
+  },
+  {
+    "slug": "number-of-1-bits",
+    "title": "Number of 1 Bits",
+    "topic": "bit-manipulation",
+    "difficulty": "easy",
+    "concepts": [
+      "bit-basics"
+    ]
+  },
+  {
+    "slug": "counting-bits",
+    "title": "Counting Bits",
+    "topic": "bit-manipulation",
+    "difficulty": "easy",
+    "concepts": [
+      "bit-dp"
+    ]
+  },
+  {
+    "slug": "reverse-bits",
+    "title": "Reverse Bits",
+    "topic": "bit-manipulation",
+    "difficulty": "easy",
+    "concepts": [
+      "bit-basics"
+    ]
+  },
+  {
+    "slug": "missing-number",
+    "title": "Missing Number",
+    "topic": "bit-manipulation",
+    "difficulty": "easy",
+    "concepts": [
+      "xor-tricks"
+    ]
+  },
+  {
+    "slug": "sum-of-two-integers",
+    "title": "Sum of Two Integers",
+    "topic": "bit-manipulation",
+    "difficulty": "medium",
+    "concepts": [
+      "bit-arithmetic"
+    ]
+  },
+  {
+    "slug": "rotate-image",
+    "title": "Rotate Image",
+    "topic": "math-geometry",
+    "difficulty": "medium",
+    "concepts": [
+      "matrix-traversal"
+    ]
+  },
+  {
+    "slug": "spiral-matrix",
+    "title": "Spiral Matrix",
+    "topic": "math-geometry",
+    "difficulty": "medium",
+    "concepts": [
+      "matrix-traversal"
+    ]
+  },
+  {
+    "slug": "set-matrix-zeroes",
+    "title": "Set Matrix Zeroes",
+    "topic": "math-geometry",
+    "difficulty": "medium",
+    "concepts": [
+      "in-place-markers"
+    ]
+  }
+]

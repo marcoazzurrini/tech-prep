@@ -1,0 +1,705 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T21:29:32.703Z",
+  "title": "Design System: tech-prep",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Ground",
+        "canonical": "#0c0c0e",
+        "oklch": "oklch(15.5% 0.004 286)",
+        "tonalRamp": [
+          "oklch(15% 0.004 286)",
+          "oklch(26% 0.004 286)",
+          "oklch(38% 0.004 286)",
+          "oklch(49% 0.004 286)",
+          "oklch(61% 0.004 286)",
+          "oklch(72% 0.004 286)",
+          "oklch(84% 0.004 286)",
+          "oklch(95% 0.004 286)"
+        ]
+      },
+      "side": {
+        "role": "neutral",
+        "displayName": "Sidebar Grey",
+        "canonical": "#101013",
+        "oklch": "oklch(17.4% 0.006 286)",
+        "tonalRamp": [
+          "oklch(15% 0.006 286)",
+          "oklch(26% 0.006 286)",
+          "oklch(38% 0.006 286)",
+          "oklch(49% 0.006 286)",
+          "oklch(61% 0.006 286)",
+          "oklch(72% 0.006 286)",
+          "oklch(84% 0.006 286)",
+          "oklch(95% 0.006 286)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Panel Grey",
+        "canonical": "#16161a",
+        "oklch": "oklch(20.2% 0.008 286)",
+        "tonalRamp": [
+          "oklch(15% 0.008 286)",
+          "oklch(26% 0.008 286)",
+          "oklch(38% 0.008 286)",
+          "oklch(49% 0.008 286)",
+          "oklch(61% 0.008 286)",
+          "oklch(72% 0.008 286)",
+          "oklch(84% 0.008 286)",
+          "oklch(95% 0.008 286)"
+        ]
+      },
+      "raise": {
+        "role": "neutral",
+        "displayName": "Raised Grey",
+        "canonical": "#1d1d22",
+        "oklch": "oklch(23.3% 0.010 286)",
+        "tonalRamp": [
+          "oklch(15% 0.010 286)",
+          "oklch(26% 0.010 286)",
+          "oklch(38% 0.010 286)",
+          "oklch(49% 0.010 286)",
+          "oklch(61% 0.010 286)",
+          "oklch(72% 0.010 286)",
+          "oklch(84% 0.010 286)",
+          "oklch(95% 0.010 286)"
+        ]
+      },
+      "hover": {
+        "role": "neutral",
+        "displayName": "Hover Grey",
+        "canonical": "#222228",
+        "oklch": "oklch(25.5% 0.011 286)",
+        "tonalRamp": [
+          "oklch(15% 0.011 286)",
+          "oklch(26% 0.011 286)",
+          "oklch(38% 0.011 286)",
+          "oklch(49% 0.011 286)",
+          "oklch(61% 0.011 286)",
+          "oklch(72% 0.011 286)",
+          "oklch(84% 0.011 286)",
+          "oklch(95% 0.011 286)"
+        ]
+      },
+      "code": {
+        "role": "neutral",
+        "displayName": "Code Well",
+        "canonical": "#111114",
+        "oklch": "oklch(17.9% 0.006 286)",
+        "tonalRamp": [
+          "oklch(15% 0.006 286)",
+          "oklch(26% 0.006 286)",
+          "oklch(38% 0.006 286)",
+          "oklch(49% 0.006 286)",
+          "oklch(61% 0.006 286)",
+          "oklch(72% 0.006 286)",
+          "oklch(84% 0.006 286)",
+          "oklch(95% 0.006 286)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#26262c",
+        "oklch": "oklch(27.1% 0.011 286)",
+        "tonalRamp": [
+          "oklch(15% 0.011 286)",
+          "oklch(26% 0.011 286)",
+          "oklch(38% 0.011 286)",
+          "oklch(49% 0.011 286)",
+          "oklch(61% 0.011 286)",
+          "oklch(72% 0.011 286)",
+          "oklch(84% 0.011 286)",
+          "oklch(95% 0.011 286)"
+        ]
+      },
+      "line2": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "#323239",
+        "oklch": "oklch(32.0% 0.012 286)",
+        "tonalRamp": [
+          "oklch(15% 0.012 286)",
+          "oklch(26% 0.012 286)",
+          "oklch(38% 0.012 286)",
+          "oklch(49% 0.012 286)",
+          "oklch(61% 0.012 286)",
+          "oklch(72% 0.012 286)",
+          "oklch(84% 0.012 286)",
+          "oklch(95% 0.012 286)"
+        ]
+      },
+      "line-focus": {
+        "role": "neutral",
+        "displayName": "Focus Hairline",
+        "canonical": "#4a4a55",
+        "oklch": "oklch(41.3% 0.018 286)",
+        "tonalRamp": [
+          "oklch(15% 0.018 286)",
+          "oklch(26% 0.018 286)",
+          "oklch(38% 0.018 286)",
+          "oklch(49% 0.018 286)",
+          "oklch(61% 0.018 286)",
+          "oklch(72% 0.018 286)",
+          "oklch(84% 0.018 286)",
+          "oklch(95% 0.018 286)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#ececf1",
+        "oklch": "oklch(94.5% 0.007 286)",
+        "tonalRamp": [
+          "oklch(15% 0.007 286)",
+          "oklch(26% 0.007 286)",
+          "oklch(38% 0.007 286)",
+          "oklch(49% 0.007 286)",
+          "oklch(61% 0.007 286)",
+          "oklch(72% 0.007 286)",
+          "oklch(84% 0.007 286)",
+          "oklch(95% 0.007 286)"
+        ]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Prose",
+        "canonical": "#d4d4db",
+        "oklch": "oklch(87.2% 0.010 286)",
+        "tonalRamp": [
+          "oklch(15% 0.010 286)",
+          "oklch(26% 0.010 286)",
+          "oklch(38% 0.010 286)",
+          "oklch(49% 0.010 286)",
+          "oklch(61% 0.010 286)",
+          "oklch(72% 0.010 286)",
+          "oklch(84% 0.010 286)",
+          "oklch(95% 0.010 286)"
+        ]
+      },
+      "mute": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#9d9da8",
+        "oklch": "oklch(69.9% 0.016 286)",
+        "tonalRamp": [
+          "oklch(15% 0.016 286)",
+          "oklch(26% 0.016 286)",
+          "oklch(38% 0.016 286)",
+          "oklch(49% 0.016 286)",
+          "oklch(61% 0.016 286)",
+          "oklch(72% 0.016 286)",
+          "oklch(84% 0.016 286)",
+          "oklch(95% 0.016 286)"
+        ]
+      },
+      "dim": {
+        "role": "neutral",
+        "displayName": "Dim",
+        "canonical": "#85858f",
+        "oklch": "oklch(62.0% 0.015 286)",
+        "tonalRamp": [
+          "oklch(15% 0.015 286)",
+          "oklch(26% 0.015 286)",
+          "oklch(38% 0.015 286)",
+          "oklch(49% 0.015 286)",
+          "oklch(61% 0.015 286)",
+          "oklch(72% 0.015 286)",
+          "oklch(84% 0.015 286)",
+          "oklch(95% 0.015 286)"
+        ]
+      },
+      "blue": {
+        "role": "primary",
+        "displayName": "Tutor Blue",
+        "canonical": "#7aa2ff",
+        "oklch": "oklch(72.3% 0.143 265)",
+        "tonalRamp": [
+          "oklch(15% 0.143 265)",
+          "oklch(26% 0.143 265)",
+          "oklch(38% 0.143 265)",
+          "oklch(49% 0.143 265)",
+          "oklch(61% 0.143 265)",
+          "oklch(72% 0.143 265)",
+          "oklch(84% 0.143 265)",
+          "oklch(95% 0.143 265)"
+        ]
+      },
+      "blue-bg": {
+        "role": "primary",
+        "displayName": "Tutor Blue Wash",
+        "canonical": "#141a2b",
+        "oklch": "oklch(22.1% 0.035 269)",
+        "tonalRamp": [
+          "oklch(15% 0.035 269)",
+          "oklch(26% 0.035 269)",
+          "oklch(38% 0.035 269)",
+          "oklch(49% 0.035 269)",
+          "oklch(61% 0.035 269)",
+          "oklch(72% 0.035 269)",
+          "oklch(84% 0.035 269)",
+          "oklch(95% 0.035 269)"
+        ]
+      },
+      "blue-line": {
+        "role": "primary",
+        "displayName": "Tutor Blue Line",
+        "canonical": "#34477a",
+        "oklch": "oklch(40.8% 0.089 267)",
+        "tonalRamp": [
+          "oklch(15% 0.089 267)",
+          "oklch(26% 0.089 267)",
+          "oklch(38% 0.089 267)",
+          "oklch(49% 0.089 267)",
+          "oklch(61% 0.089 267)",
+          "oklch(72% 0.089 267)",
+          "oklch(84% 0.089 267)",
+          "oklch(95% 0.089 267)"
+        ]
+      },
+      "blue-ink": {
+        "role": "primary",
+        "displayName": "Tutor Blue Ink",
+        "canonical": "#b9c9ee",
+        "oklch": "oklch(83.6% 0.055 267)",
+        "tonalRamp": [
+          "oklch(15% 0.055 267)",
+          "oklch(26% 0.055 267)",
+          "oklch(38% 0.055 267)",
+          "oklch(49% 0.055 267)",
+          "oklch(61% 0.055 267)",
+          "oklch(72% 0.055 267)",
+          "oklch(84% 0.055 267)",
+          "oklch(95% 0.055 267)"
+        ]
+      },
+      "green": {
+        "role": "tertiary",
+        "displayName": "Pass Green",
+        "canonical": "#5fd39a",
+        "oklch": "oklch(78.5% 0.135 160)",
+        "tonalRamp": [
+          "oklch(15% 0.135 160)",
+          "oklch(26% 0.135 160)",
+          "oklch(38% 0.135 160)",
+          "oklch(49% 0.135 160)",
+          "oklch(61% 0.135 160)",
+          "oklch(72% 0.135 160)",
+          "oklch(84% 0.135 160)",
+          "oklch(95% 0.135 160)"
+        ]
+      },
+      "green-line": {
+        "role": "tertiary",
+        "displayName": "Pass Green Line",
+        "canonical": "#244a38",
+        "oklch": "oklch(37.5% 0.054 162)",
+        "tonalRamp": [
+          "oklch(15% 0.054 162)",
+          "oklch(26% 0.054 162)",
+          "oklch(38% 0.054 162)",
+          "oklch(49% 0.054 162)",
+          "oklch(61% 0.054 162)",
+          "oklch(72% 0.054 162)",
+          "oklch(84% 0.054 162)",
+          "oklch(95% 0.054 162)"
+        ]
+      },
+      "amber": {
+        "role": "tertiary",
+        "displayName": "Learning Amber",
+        "canonical": "#f0b450",
+        "oklch": "oklch(80.7% 0.135 77)",
+        "tonalRamp": [
+          "oklch(15% 0.135 77)",
+          "oklch(26% 0.135 77)",
+          "oklch(38% 0.135 77)",
+          "oklch(49% 0.135 77)",
+          "oklch(61% 0.135 77)",
+          "oklch(72% 0.135 77)",
+          "oklch(84% 0.135 77)",
+          "oklch(95% 0.135 77)"
+        ]
+      },
+      "amber-line": {
+        "role": "tertiary",
+        "displayName": "Learning Amber Line",
+        "canonical": "#5a4520",
+        "oklch": "oklch(40.4% 0.060 80)",
+        "tonalRamp": [
+          "oklch(15% 0.060 80)",
+          "oklch(26% 0.060 80)",
+          "oklch(38% 0.060 80)",
+          "oklch(49% 0.060 80)",
+          "oklch(61% 0.060 80)",
+          "oklch(72% 0.060 80)",
+          "oklch(84% 0.060 80)",
+          "oklch(95% 0.060 80)"
+        ]
+      },
+      "red": {
+        "role": "tertiary",
+        "displayName": "Fail Red",
+        "canonical": "#ff7a7a",
+        "oklch": "oklch(73.5% 0.163 22)",
+        "tonalRamp": [
+          "oklch(15% 0.163 22)",
+          "oklch(26% 0.163 22)",
+          "oklch(38% 0.163 22)",
+          "oklch(49% 0.163 22)",
+          "oklch(61% 0.163 22)",
+          "oklch(72% 0.163 22)",
+          "oklch(84% 0.163 22)",
+          "oklch(95% 0.163 22)"
+        ]
+      },
+      "red-bg": {
+        "role": "tertiary",
+        "displayName": "Fail Red Wash",
+        "canonical": "#2a1517",
+        "oklch": "oklch(22.6% 0.034 14)",
+        "tonalRamp": [
+          "oklch(15% 0.034 14)",
+          "oklch(26% 0.034 14)",
+          "oklch(38% 0.034 14)",
+          "oklch(49% 0.034 14)",
+          "oklch(61% 0.034 14)",
+          "oklch(72% 0.034 14)",
+          "oklch(84% 0.034 14)",
+          "oklch(95% 0.034 14)"
+        ]
+      },
+      "syntax-keyword": {
+        "role": "code-syntax",
+        "displayName": "Keyword Violet",
+        "canonical": "#c79bff",
+        "oklch": "oklch(76.8% 0.146 303)",
+        "tonalRamp": [
+          "oklch(15% 0.146 303)",
+          "oklch(26% 0.146 303)",
+          "oklch(38% 0.146 303)",
+          "oklch(49% 0.146 303)",
+          "oklch(61% 0.146 303)",
+          "oklch(72% 0.146 303)",
+          "oklch(84% 0.146 303)",
+          "oklch(95% 0.146 303)"
+        ]
+      },
+      "syntax-string": {
+        "role": "code-syntax",
+        "displayName": "String Green",
+        "canonical": "#9fd59b",
+        "oklch": "oklch(82.1% 0.098 143)",
+        "tonalRamp": [
+          "oklch(15% 0.098 143)",
+          "oklch(26% 0.098 143)",
+          "oklch(38% 0.098 143)",
+          "oklch(49% 0.098 143)",
+          "oklch(61% 0.098 143)",
+          "oklch(72% 0.098 143)",
+          "oklch(84% 0.098 143)",
+          "oklch(95% 0.098 143)"
+        ]
+      },
+      "syntax-number": {
+        "role": "code-syntax",
+        "displayName": "Number Orange",
+        "canonical": "#f2b47a",
+        "oklch": "oklch(81.5% 0.104 64)",
+        "tonalRamp": [
+          "oklch(15% 0.104 64)",
+          "oklch(26% 0.104 64)",
+          "oklch(38% 0.104 64)",
+          "oklch(49% 0.104 64)",
+          "oklch(61% 0.104 64)",
+          "oklch(72% 0.104 64)",
+          "oklch(84% 0.104 64)",
+          "oklch(95% 0.104 64)"
+        ]
+      },
+      "syntax-comment": {
+        "role": "code-syntax",
+        "displayName": "Comment Grey",
+        "canonical": "#8a8a95",
+        "oklch": "oklch(63.7% 0.016 286)",
+        "tonalRamp": [
+          "oklch(15% 0.016 286)",
+          "oklch(26% 0.016 286)",
+          "oklch(38% 0.016 286)",
+          "oklch(49% 0.016 286)",
+          "oklch(61% 0.016 286)",
+          "oklch(72% 0.016 286)",
+          "oklch(84% 0.016 286)",
+          "oklch(95% 0.016 286)"
+        ]
+      },
+      "syntax-function": {
+        "role": "code-syntax",
+        "displayName": "Function Blue",
+        "canonical": "#7fc4ff",
+        "oklch": "oklch(79.7% 0.109 246)",
+        "tonalRamp": [
+          "oklch(15% 0.109 246)",
+          "oklch(26% 0.109 246)",
+          "oklch(38% 0.109 246)",
+          "oklch(49% 0.109 246)",
+          "oklch(61% 0.109 246)",
+          "oklch(72% 0.109 246)",
+          "oklch(84% 0.109 246)",
+          "oklch(95% 0.109 246)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Title of an open panel."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Chat header topic name; brand name at 700."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Tutor prose (capped at 62ch) and the composer."
+      },
+      "body-compact": {
+        "displayName": "Body Compact",
+        "purpose": "Panel instructions, result callouts, learner bubble, concept names."
+      },
+      "ui": {
+        "displayName": "UI",
+        "purpose": "Session rows, tabs, chip labels, test names."
+      },
+      "ui-strong": {
+        "displayName": "UI Strong",
+        "purpose": "Buttons and chip titles."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Author lines, tool lines, tags, notes, stage text."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Sidebar group labels and due counts."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Editor and predict snippet; ligatures off."
+      },
+      "code-compact": {
+        "displayName": "Code Compact",
+        "purpose": "Chat code blocks and Parsons lines; inline code at 0.86em."
+      },
+      "code-status": {
+        "displayName": "Code Status",
+        "purpose": "Vim status line; failure reasons at 13px."
+      }
+    },
+    "shadows": [
+      {
+        "name": "composer-float",
+        "value": "0 10px 30px #00000066",
+        "purpose": "The only shadow in the world: lifts the chat composer above the thread."
+      }
+    ],
+    "focus": [
+      {
+        "name": "focus-ring",
+        "value": "2px solid #7aa2ff; outline-offset: 2px; border-radius: 6px",
+        "purpose": "Every :focus-visible element."
+      },
+      {
+        "name": "selection",
+        "value": "#7aa2ff40",
+        "purpose": "Text selection background."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Panel arrival, chip and tab state changes, Parsons drop nudge."
+      },
+      {
+        "name": "panel-open",
+        "value": "0.45s; from translateX(18px), opacity .35",
+        "purpose": "A panel opened from the thread slides in from the right."
+      },
+      {
+        "name": "chip-tab-state",
+        "value": "0.3s border-color, background, color",
+        "purpose": "Chip and tab cross-fade to their active state together."
+      },
+      {
+        "name": "hover",
+        "value": "0.15s",
+        "purpose": "Hover fills on quiet controls and the composer border."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation:none; transition:none",
+        "purpose": "prefers-reduced-motion removes all motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "app-min",
+        "value": "1180px",
+        "purpose": "Minimum window width; below it the app scrolls rather than reflowing."
+      }
+    ],
+    "layout": {
+      "sidebar": "232px",
+      "chatColumnMin": "420px",
+      "threadMax": "680px",
+      "panel": "clamp(460px, 44vw, 680px)",
+      "topBand": "52px"
+    }
+  },
+  "components": [
+    {
+      "name": "Session Sidebar",
+      "kind": "nav",
+      "refersTo": "sidebar",
+      "description": "Left column of sessions: new-session button, sentence-case group labels, quiet rows, current row on raised grey.",
+      "html": "<nav class=\"ds-side\"><button class=\"ds-side-new\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 3v10M3 8h10\"/></svg>New session<kbd>⌘N</kbd></button><div class=\"ds-side-grp\">Today</div><button class=\"ds-side-row\" aria-current=\"page\"><span>JavaScript Set</span></button><button class=\"ds-side-row\"><span>Review</span><span class=\"ds-side-due\">4 due</span></button><div class=\"ds-side-grp\">This week</div><button class=\"ds-side-row\"><span>Two Sum · hash map</span></button><button class=\"ds-side-row\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2 4l4-1.5 4 1.5 4-1.5v9.5L10 13.5 6 12 2 13.5zM6 2.5V12M10 4v9.5\"/></svg><span>Roadmap</span></button></nav>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-side{width:232px;background:var(--side, #101013);border-right:1px solid var(--line, #26262c);padding:16px 10px 12px;display:flex;flex-direction:column;gap:2px;font-family:var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);color:var(--ink, #ececf1)}.ds-side button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}.ds-side-new{display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border:1px solid var(--line, #26262c)!important;border-radius:9px;font-size:14px;margin-bottom:14px;transition:background .15s}.ds-side-new:hover{background:var(--hover, #222228)!important}.ds-side-new kbd{margin-left:auto;font:11px var(--mono, \"JetBrains Mono\", ui-monospace, monospace);color:var(--dim, #85858f)}.ds-side-grp{font-size:12px;color:var(--dim, #85858f);padding:12px 10px 6px}.ds-side-row{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border-radius:8px;font-size:14px;color:var(--mute, #9d9da8)!important;width:100%;text-align:left;white-space:nowrap}.ds-side-row:hover{background:var(--hover, #222228)!important;color:var(--ink, #ececf1)!important}.ds-side-row[aria-current]{background:var(--raise, #1d1d22)!important;color:var(--ink, #ececf1)!important}.ds-side-due{margin-left:auto;font-size:12px;color:var(--amber, #f0b450)}.ds-side button:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}"
+    },
+    {
+      "name": "Chat Messages",
+      "kind": "custom",
+      "refersTo": "message-tutor",
+      "description": "Tutor prose with a blue-dot author line and inline code; learner reply as a raised bubble with a 4px tail corner; a dim tool line.",
+      "html": "<div class=\"ds-thread\"><div class=\"ds-me\">Does has() use the same rule?</div><div class=\"ds-tutor\"><div class=\"ds-who\"><i></i>Tutor</div><p>Yes. <code>add</code>, <code>has</code> and <code>delete</code> all use <code>SameValueZero</code>.</p></div><div class=\"ds-tool\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 3.5v9l7-4.5z\"/></svg><b>Ran the tests</b> · 3 of 4 passed</div></div>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-thread{max-width:680px;padding:24px 28px;display:flex;flex-direction:column;gap:22px;background:var(--bg, #0c0c0e);font:16px/1.6 var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);color:var(--ink, #ececf1)}.ds-me{align-self:flex-end;max-width:78%;background:var(--raise, #1d1d22);border:1px solid var(--line, #26262c);border-radius:14px 14px 4px 14px;padding:9px 14px;font-size:15px}.ds-who{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim, #85858f);margin-bottom:6px}.ds-who i{width:6px;height:6px;border-radius:50%;background:var(--blue, #7aa2ff)}.ds-tutor p{color:var(--body, #d4d4db);max-width:62ch;margin:0}.ds-tutor code{font-family:var(--mono, \"JetBrains Mono\", ui-monospace, monospace);font-variant-ligatures:none;background:var(--raise, #1d1d22);border:1px solid var(--line, #26262c);padding:0 5px;border-radius:5px;font-size:.86em;color:var(--ink, #ececf1)}.ds-tool{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim, #85858f)}.ds-tool b{font-weight:500;color:var(--mute, #9d9da8)}"
+    },
+    {
+      "name": "Panel Chip",
+      "kind": "chip",
+      "refersTo": "panel-chip",
+      "description": "Signature: the thread line a panel hangs from. Status in result colours; lights up in blue when its panel is shown. Click to toggle the active state.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"false\" onclick=\"this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true')\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z\"/><circle cx=\"8\" cy=\"8\" r=\"2\"/></svg><b>Predict the output</b><span class=\"ds-st ds-miss\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"8\" cy=\"8\" r=\"6\"/><path d=\"M8 5v3.5M8 11v.01\"/></svg>4, it was 5</span></button><button class=\"ds-chip\" aria-pressed=\"false\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 4h10M3 8h10M3 12h10\"/></svg><b>Arrange the lines</b><span class=\"ds-st ds-ok\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 8.5 6.5 12 13 4.5\"/></svg>right first time</span></button><button class=\"ds-chip\" aria-pressed=\"true\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5.5 4.5 2 8l3.5 3.5M10.5 4.5 14 8l-3.5 3.5\"/></svg><b>Write uniqueBy</b><span class=\"ds-st\">in progress</span></button></div>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-chips{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:20px;background:var(--bg, #0c0c0e)}.ds-chip{display:inline-flex;align-items:center;gap:10px;height:38px;padding:0 12px;border:1px solid var(--line, #26262c);border-radius:10px;background:none;cursor:pointer;font:14px/1.6 var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);color:var(--mute, #9d9da8);transition:border-color .3s cubic-bezier(.16,1,.3,1),background .3s cubic-bezier(.16,1,.3,1),color .3s cubic-bezier(.16,1,.3,1)}.ds-chip b{color:var(--ink, #ececf1);font-weight:600}.ds-chip:hover{background:var(--hover, #222228)}.ds-chip[aria-pressed=\"true\"]{border-color:var(--blue-line, #34477a);background:var(--blue-bg, #141a2b);color:var(--blue-ink, #b9c9ee)}.ds-st{display:inline-flex;align-items:center;gap:6px}.ds-st.ds-ok{color:var(--green, #5fd39a)}.ds-st.ds-miss{color:var(--amber, #f0b450)}.ds-chip:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}@media (prefers-reduced-motion:reduce){.ds-chip{transition:none}}"
+    },
+    {
+      "name": "Panel Tabs",
+      "kind": "nav",
+      "refersTo": "panel-tab",
+      "description": "Tab strip for every panel the tutor opened; result dots; the active tab merges into the panel body and its icon turns blue.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z\"/><circle cx=\"8\" cy=\"8\" r=\"2\"/></svg>Predict<span class=\"ds-dot ds-miss\"></span></button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 4h10M3 8h10M3 12h10\"/></svg>Arrange<span class=\"ds-dot ds-ok\"></span></button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5.5 4.5 2 8l3.5 3.5M10.5 4.5 14 8l-3.5 3.5\"/></svg>uniqueBy<span class=\"ds-dot ds-bad\"></span></button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2.5 13.5h11M4.5 11V8M8 11V4.5M11.5 11V6.5\"/></svg>Progress</button></div><div class=\"ds-tabbody\"></div>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-tabs{height:52px;display:flex;align-items:flex-end;gap:2px;padding:0 10px;background:var(--side, #101013);border-bottom:1px solid var(--line, #26262c);font-family:var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif)}.ds-tab{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;font:14px var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);color:var(--mute, #9d9da8);background:none;cursor:pointer;border:1px solid transparent;border-bottom:0;border-radius:9px 9px 0 0;white-space:nowrap;transition:border-color .3s cubic-bezier(.16,1,.3,1),background .3s cubic-bezier(.16,1,.3,1),color .3s cubic-bezier(.16,1,.3,1)}.ds-tab:hover{color:var(--ink, #ececf1)}.ds-tab[aria-selected=\"true\"]{background:var(--panel, #16161a);color:var(--ink, #ececf1);border-color:var(--line, #26262c);margin-bottom:-1px;height:41px}.ds-tab[aria-selected=\"true\"] .ds-i{color:var(--blue, #7aa2ff)}.ds-dot{width:7px;height:7px;border-radius:50%}.ds-dot.ds-ok{background:var(--green, #5fd39a)}.ds-dot.ds-miss{background:var(--amber, #f0b450)}.ds-dot.ds-bad{background:var(--red, #ff7a7a)}.ds-tabbody{height:40px;background:var(--panel, #16161a)}.ds-tab:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}"
+    },
+    {
+      "name": "Task Header and Tags",
+      "kind": "card",
+      "refersTo": "task-header",
+      "description": "Top of every panel: headline, one-line instruction, concept tags (amber for Learning, green for Passed, muted otherwise).",
+      "html": "<div class=\"ds-task\"><h2>Write uniqueBy</h2><p>Return the items whose key you have not seen before, in their original order.</p><div class=\"ds-tags\"><span class=\"ds-tag ds-learning\">Uniqueness rule</span><span class=\"ds-tag\">Insertion order</span><span class=\"ds-tag ds-passed\">Passed</span></div></div>",
+      "css": ".ds-task{padding:20px 24px 18px;background:var(--panel, #16161a);border-bottom:1px solid var(--line, #26262c);font:16px/1.6 var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);color:var(--ink, #ececf1)}.ds-task h2{font-size:18px;font-weight:600;margin:0 0 4px}.ds-task p{font-size:15px;color:var(--body, #d4d4db);margin:0}.ds-tags{display:flex;gap:6px;margin-top:12px}.ds-tag{font-size:13px;height:24px;display:inline-flex;align-items:center;padding:0 8px;border-radius:99px;border:1px solid var(--line2, #323239);color:var(--mute, #9d9da8)}.ds-tag.ds-learning{color:var(--amber, #f0b450);border-color:var(--amber-line, #5a4520)}.ds-tag.ds-passed{color:var(--green, #5fd39a);border-color:var(--green-line, #244a38)}"
+    },
+    {
+      "name": "Editor with Vim Status Line",
+      "kind": "custom",
+      "refersTo": "editor",
+      "description": "Mini code editor: ligature-free mono, dim gutter, faint current line, block cursor, and a Vim status line with a green NORMAL badge.",
+      "html": "<div class=\"ds-ed\"><div class=\"ds-code\"><div class=\"ds-ln\"><span>7</span><span>    <span class=\"ds-k\">const</span> k = <span class=\"ds-f\">key</span>(t);</span></div><div class=\"ds-ln ds-cur\"><span>8</span><span>    <span class=\"ds-k\">if</span> (seen.<span class=\"ds-f\">has</span>(k)) <span class=\"ds-k\">return</span> <span class=\"ds-n\">false</span>;<span class=\"ds-cursor\"></span></span></div><div class=\"ds-ln\"><span>9</span><span>    <span class=\"ds-k\">return</span> <span class=\"ds-n\">true</span>;</span></div></div><div class=\"ds-vim\"><span class=\"ds-mode\">NORMAL</span><span>unique-by.ts</span><span class=\"ds-pos\">8:34</span></div></div>",
+      "css": ".ds-ed{background:var(--code, #111114);font-family:var(--mono, \"JetBrains Mono\", ui-monospace, monospace);font-variant-ligatures:none;font-feature-settings:\"calt\" 0,\"liga\" 0}.ds-code{padding:14px 0;font-size:15px;line-height:1.75;color:var(--ink, #ececf1)}.ds-ln{display:grid;grid-template-columns:52px max-content;padding-right:20px;white-space:pre}.ds-ln>span:first-child{color:var(--dim, #85858f);text-align:right;padding-right:18px}.ds-ln.ds-cur{background:#ffffff07}.ds-ln.ds-cur>span:first-child{color:var(--mute, #9d9da8)}.ds-cursor{display:inline-block;width:9px;height:19px;background:#d9d9e0;vertical-align:-4px}.ds-k{color:var(--syntax-keyword, #c79bff)}.ds-f{color:var(--syntax-function, #7fc4ff)}.ds-n{color:var(--syntax-number, #f2b47a)}.ds-vim{display:flex;align-items:center;gap:10px;height:28px;padding:0 14px;font-size:12px;color:var(--mute, #9d9da8);border-top:1px solid var(--line, #26262c);background:var(--side, #101013)}.ds-mode{color:var(--bg, #0c0c0e);background:var(--green, #5fd39a);padding:0 7px;border-radius:4px;font-weight:500}.ds-pos{margin-left:auto}"
+    },
+    {
+      "name": "Tests List",
+      "kind": "custom",
+      "refersTo": "tests",
+      "description": "Test results under the editor: amber partial summary, primary Run button, tick and cross rows, failure reason in mono.",
+      "html": "<div class=\"ds-tests\"><div class=\"ds-thead\"><b>Tests</b><span class=\"ds-sum\">3 of 4 passed</span><button class=\"ds-btn\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 3.5v9l7-4.5z\"/></svg>Run tests <kbd>⌘↵</kbd></button></div><div class=\"ds-t\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 8.5 6.5 12 13 4.5\"/></svg><span>keeps the original order</span></div><div class=\"ds-t ds-x\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 4l8 8M12 4l-8 8\"/></svg><span>drops later duplicates<span class=\"ds-why\">expected 2 items, got 3</span></span></div></div>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-tests{background:var(--panel, #16161a);border-top:1px solid var(--line, #26262c);padding:14px 24px 16px;font:16px/1.6 var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);color:var(--ink, #ececf1)}.ds-thead{display:flex;align-items:center;gap:12px;margin-bottom:8px}.ds-thead b{font-weight:600}.ds-sum{font-size:14px;color:var(--amber, #f0b450)}.ds-btn{margin-left:auto;height:36px;padding:0 14px;border-radius:9px;border:0;cursor:pointer;background:var(--ink, #ececf1);color:var(--bg, #0c0c0e);font:600 14px var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);display:inline-flex;align-items:center;gap:8px}.ds-btn:hover{background:#fff}.ds-btn kbd{font:11px var(--mono, \"JetBrains Mono\", ui-monospace, monospace);opacity:.6}.ds-btn:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}.ds-t{display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:14px;color:var(--mute, #9d9da8);padding:4px 0}.ds-t .ds-i{width:14px;height:14px;margin-top:4px;color:var(--green, #5fd39a)}.ds-t.ds-x{color:var(--ink, #ececf1)}.ds-t.ds-x .ds-i{color:var(--red, #ff7a7a)}.ds-why{display:block;font:13px var(--mono, \"JetBrains Mono\", ui-monospace, monospace);color:var(--mute, #9d9da8);margin-top:2px}"
+    },
+    {
+      "name": "Buttons",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary (ink fill, white on hover) and ghost (strong hairline, hover grey) at 36px with 9px corners.",
+      "html": "<div class=\"ds-row\"><button class=\"ds-b ds-b-primary\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 3.5v9l7-4.5z\"/></svg>Run tests</button><button class=\"ds-b ds-b-ghost\">Try a similar one</button><button class=\"ds-b ds-b-primary\" disabled>Running…</button></div>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-row{display:flex;gap:10px;padding:16px;background:var(--panel, #16161a)}.ds-b{height:36px;padding:0 14px;border-radius:9px;font:600 14px var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:0;transition:background .15s}.ds-b-primary{background:var(--ink, #ececf1);color:var(--bg, #0c0c0e)}.ds-b-primary:hover{background:#fff}.ds-b-ghost{background:none;color:var(--ink, #ececf1);border:1px solid var(--line2, #323239)}.ds-b-ghost:hover{background:var(--hover, #222228)}.ds-b:disabled{opacity:.5;cursor:default}.ds-b:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}"
+    },
+    {
+      "name": "Composer",
+      "kind": "input",
+      "refersTo": "composer",
+      "description": "The one floating element: auto-growing message field with blue caret, model pill and send button that wakes when there is text.",
+      "html": "<div class=\"ds-composer\"><textarea rows=\"1\" placeholder=\"Ask the tutor, or say &quot;hint&quot;…\" aria-label=\"Message the tutor\" oninput=\"this.nextElementSibling.lastElementChild.disabled=!this.value.trim()\"></textarea><div class=\"ds-cbar\"><button class=\"ds-pill\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 2v3M8 11v3M2 8h3M11 8h3M4 4l2 2M10 10l2 2M12 4l-2 2M6 10l-2 2\"/></svg>Opus 5.5</button><span>Claude subscription</span><button class=\"ds-send\" aria-label=\"Send\" disabled><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 13V3M4 7l4-4 4 4\"/></svg></button></div></div>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-composer{max-width:620px;border:1px solid var(--line2, #323239);background:var(--panel, #16161a);border-radius:16px;padding:12px 14px 10px;box-shadow:0 10px 30px #00000066;transition:border-color .15s;font-family:var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif)}.ds-composer:focus-within{border-color:var(--line-focus, #4a4a55)}.ds-composer textarea{width:100%;resize:none;background:none;border:0;outline:0;color:var(--ink, #ececf1);font:16px/1.5 var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);height:28px;caret-color:var(--blue, #7aa2ff)}.ds-composer textarea::placeholder{color:var(--dim, #85858f)}.ds-cbar{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px;color:var(--mute, #9d9da8)}.ds-pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:8px;border:0;background:none;color:inherit;font:inherit;cursor:pointer}.ds-pill:hover{background:var(--hover, #222228);color:var(--ink, #ececf1)}.ds-send{margin-left:auto;width:32px;height:32px;border-radius:9px;border:0;background:var(--ink, #ececf1);color:var(--bg, #0c0c0e);display:grid;place-items:center;cursor:pointer}.ds-send:disabled{background:var(--raise, #1d1d22);color:var(--dim, #85858f);cursor:default}.ds-pill:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}.ds-send:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}"
+    },
+    {
+      "name": "Answer Field and Result Callout",
+      "kind": "card",
+      "refersTo": "result-callout",
+      "description": "Predict answer field (red when wrong) and the inset callout that names the concept the mistake shows.",
+      "html": "<div class=\"ds-answer\"><input class=\"ds-ain ds-wrong\" value=\"4\" aria-label=\"Your answer\"><div class=\"ds-result\"><svg class=\"ds-i\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"8\" cy=\"8\" r=\"6\"/><path d=\"M8 5v3.5M8 11v.01\"/></svg><div><p><b>It prints 5.</b> The two NaN merge, and the two {} stay apart.</p><div class=\"ds-concept\">Shows a gap in: Uniqueness rule · stays at Learning</div></div></div></div>",
+      "css": ".ds-i{width:16px;height:16px;flex:none}.ds-answer{padding:20px 24px;display:flex;flex-direction:column;gap:14px;background:var(--panel, #16161a);font:16px/1.6 var(--sans, \"Atkinson Hyperlegible Next\", system-ui, sans-serif);color:var(--ink, #ececf1)}.ds-ain{width:110px;height:44px;border-radius:9px;border:1px solid var(--line2, #323239);background:var(--code, #111114);color:var(--ink, #ececf1);font:500 16px var(--mono, \"JetBrains Mono\", ui-monospace, monospace);padding:0 14px;outline:0}.ds-ain:focus-visible{outline:2px solid var(--blue, #7aa2ff);outline-offset:2px}.ds-ain.ds-wrong{border-color:var(--red, #ff7a7a);background:var(--red-bg, #2a1517)}.ds-result{border:1px solid var(--line, #26262c);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:20px 1fr;gap:10px;background:var(--bg, #0c0c0e)}.ds-result .ds-i{margin-top:3px;color:var(--amber, #f0b450)}.ds-result p{font-size:15px;color:var(--body, #d4d4db);margin:0}.ds-result b{font-weight:600;color:var(--ink, #ececf1)}.ds-concept{margin-top:8px;font-size:13px;color:var(--mute, #9d9da8)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tutor's Workbench",
+    "overview": "The conversation is the spine and the tutor drives the workbench. Every exercise opens as a panel the tutor placed beside the chat, and every panel stays linked to the message that opened it. The world is a quiet near-black room with three surfaces in it: a session sidebar on the left, the thread in the middle, and a tabbed panel on the right that holds whatever the tutor has opened. Nothing competes with the words; the learner reads a lot of tutor prose, so prose gets the best seat.\n\nDensity is calm rather than compact. Text sits on near-black at a comfortable 16px with generous line height, messages are short blocks separated by clear gaps, and every surface is separated by a hairline rather than a shadow or a colour block. Colour is almost absent: one calm blue says \"the tutor opened this, and it is here\", and green, amber and red appear only when there is a result or a concept stage to report. The world rejects the fixed three-panel IDE, where the editor dominates and the tutor is a sidebar.\n\nThe family is t3code and assistant-ui: dark, sleek, minimal, standard desktop controls, no ornament. What makes it this product is the panel chip: the line in the thread and the tab in the panel are one object, and they light up together.",
+    "keyCharacteristics": [
+      "Near-black neutral ground with two raised greys for sidebar and panels, separated by 1px hairlines.",
+      "One accent, a calm blue, reserved for tutor-opened objects, the current tab and focus.",
+      "Green, amber and red only for results and concept stages; amber, never red, for \"still learning\".",
+      "Atkinson Hyperlegible Next for every word of prose and UI; JetBrains Mono only for code, with ligatures off.",
+      "Rounded but restrained corners (8 to 16px), flat surfaces, one floating shadow under the composer.",
+      "A signature link between chat chip and panel tab, animated with a single soft slide."
+    ],
+    "rules": [
+      {
+        "name": "The One Blue Rule",
+        "body": "Blue means only \"the tutor placed this here\", \"this is the one you are on\", or focus. Never use it for links, decoration, headings or a primary button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Results-Only Rule",
+        "body": "Green, amber and red report outcomes and concept stages, nothing else. The single exception is the Vim NORMAL badge, which borrows green from editor convention.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Failure Mark Rule",
+        "body": "A concept is never red. Missed predictions and Learning stages are amber; red is reserved for a concrete failing test or a wrong value in an answer field.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Atkinson Hyperlegible Next for all prose and UI; JetBrains Mono only for code, file names, key hints and the Vim status line. Code always has `calt` and `liga` off.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "Every label is sentence case at normal tracking. The only capitals in the interface are the Vim mode name.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Shadow Rule",
+        "body": "Only the composer casts a shadow. Panels, chips, bubbles, tabs and buttons are flat and separated by hairlines.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** separate every surface with a 1px hairline and a step in the grey stack, not with gaps or shadows.",
+      "**Do** keep tutor prose at 16px with 1.6 line height in the prose grey, capped at 62ch.",
+      "**Do** make every exercise a panel that has a chip in the thread and a tab in the panel, and keep the two in sync.",
+      "**Do** report outcomes with icon plus colour plus words (\"4, it was 5\", \"3 of 4 passed\"), never colour alone.",
+      "**Do** turn code ligatures off everywhere code appears.",
+      "**Do** honour reduced motion by removing every transition and animation."
+    ],
+    "donts": [
+      "**Don't** build the fixed three-panel IDE layout where the editor dominates and the tutor is a sidebar; the conversation stays the spine.",
+      "**Don't** use blue for anything that is not tutor-opened, current or focused.",
+      "**Don't** mark a concept, stage or learner in red; \"still learning\" is amber.",
+      "**Don't** add shadows to panels, chips, bubbles or buttons; only the composer floats.",
+      "**Don't** set prose or UI labels in JetBrains Mono, or code in Atkinson.",
+      "**Don't** use all-caps or letter-spaced labels; the Vim mode name is the only capitalised word."
+    ]
+  }
+}

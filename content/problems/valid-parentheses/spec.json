@@ -1,0 +1,22 @@
+{
+  "function": {
+    "python": "is_valid",
+    "typescript": "isValid"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def is_valid(s: str) -> bool:\n    pass\n",
+    "typescript": "export function isValid(s: string): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": ["()"], "expected": true},
+    {"args": ["()[]{}"], "expected": true},
+    {"args": ["(]"], "expected": false},
+    {"args": ["([])"], "expected": true},
+    {"args": ["([)]"], "expected": false},
+    {"args": ["("], "expected": false},
+    {"args": ["]"], "expected": false},
+    {"args": ["{[]}()"], "expected": true},
+    {"args": ["(("], "expected": false}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "function": {
+    "python": "count_substrings",
+    "typescript": "countSubstrings"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def count_substrings(s: str) -> int:\n    pass\n",
+    "typescript": "export function countSubstrings(s: string): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["abc"],"expected":3},
+    {"args":["aaa"],"expected":6},
+    {"args":["abba"],"expected":6},
+    {"args":["z"],"expected":1},
+    {"args":["racecar"],"expected":10},
+    {"args":["aaaaaaaaaa"],"expected":55},
+    {"args":["babbbbcbbbcbbbaaaaccccbabbaccccbbacacbaaaaabcbaccaaaaaaabcbcccaabbabcaaccabcbccabbbbbacccaacccbcccbcabbaaaaaccabbbcbbcbabcabcaaaacacbbbaacbcbcccbaababaabbccacbbcbabcabacbbcbcccacacaabaacccbccbbbbcccbcccbcbbaacbabbacbaaccbcccbaaccacbbbabaacbccbcbbacbaabbccacbbbcccaaaabbbbbaccbbcccbbabbcbbabcccccabacbcbbccbacbaacbbacbccacbacaabcbcccbaccaabbbbcbcabcbbcaababbaacaabbacacacbabbabaaaacabcaaacacacbaccaacbaaacbabcbccbaccaacbbaabcabbccbbcaacbaaaaccbababcbccbacbbcbcbaaccaccabbbcaaacbccaaabbbcbccccbbbbcbbbcababaaabcabababacaccaabbbcbcaaababbbcbacbaaacabbcabcbcaacaaccabccccaaacaaccbbabcaabcacacacabcababbcccabcccbabcbabbbcbcbabababbcccaacabcbbcbcaabaaaabccccabbbbbbabacccbcabaabaabaabacbaaacbaccabcacbcbcaaababbccbccacaccbcbcacbcbaaabbbbababccccbbbcccabcbaacacbbbccbbbaccacbbcccabaaacbbbcacbccccabcbcacabcaaacaabaaccbbacbbcbababcabcbcacabbcabbbaacbacbbbbbaaacabcbaccaccbcbcbcabaacabbabcbbaabccbcccbbababbabcaabbacaabbababbcaccaacbcccabcbcaaacaacaaabcabccaabaabccbabbabbaccbacccaaaacacccbababaccababcaacbcbccacbbccabbaccaaccbacaaccbacaccbbcbbbcbbcabcbabcbbcabbacaccaaaccbbbbbbacaacbccccbbbbcbccacbabaaccbbaccbabacabccabbbbcbacbbcabccccbaacabcbccbbbcaacbababbbbcabbcbbbbcaabccabcaccabbbababbabbbacaababbbccbcabaccabaaacccbbccabcccbcbccacbcaaccaaccaabbabbaccccbcbababaccbcabcaacbacabbbbbaccbbaccbccabccbccabbbabcccbcabacbaccbaacacbbcacbbccabcbabbbcbacabbbaacaaacbacacababcacccccaaacacacbcabacabcacabacaccabcacbbcabbbcacabacbabbccbbccaacabcaaccccabcccccacbaabbaaaabcaccabacaccbaaaccbbaaabcaaaccababcbbabbbacabc"],"expected":2986}
+  ]
+}

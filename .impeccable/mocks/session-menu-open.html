@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>tech-prep · Session (menu open)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--page:#1a1a1a;--panel:#262626;--raised:#303030;--line:#363636;--text:#eff1f6;--muted:#a8adb7;--accent:#ffa116;--green:#2cbb5d;--amber:#ffc01e;--red:#ef4743;--mono:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:var(--page);color:var(--text);font:400 15px/1.5 "Atkinson Hyperlegible Next",system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;display:grid;grid-template-columns:64px 1fr}
+::selection{background:rgba(255,161,22,.35)}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* Collapsed rail: icons only, labels appear when it expands */
+.rail{position:relative;z-index:2;width:64px;height:900px;background:var(--page);display:flex;flex-direction:column;align-items:stretch;padding:14px 10px;gap:4px;transition:width .2s cubic-bezier(.2,.8,.2,1)}
+.mark{height:44px;display:flex;align-items:center;gap:12px;padding:0 10px;margin-bottom:14px;color:var(--accent)}
+.mark b{font-weight:700;font-size:16px;color:var(--text)}
+.item{height:44px;display:flex;align-items:center;gap:14px;padding:0 12px;border-radius:10px;color:var(--muted);white-space:nowrap;overflow:hidden}
+.item.on{background:var(--raised);color:var(--text)}.item.on svg{color:var(--accent)}
+.item span,.mark b,.rail .foot span{opacity:0}
+.rail .foot{margin-top:auto}
+.open .rail{width:232px;box-shadow:12px 0 32px rgba(0,0,0,.45)}
+.open .item span,.open .mark b,.open .rail .foot span{opacity:1}
+.sub{font-size:13px;color:var(--muted);margin-left:auto}
+
+main{display:grid;grid-template-columns:360px 1fr 400px;gap:8px;padding:8px 8px 8px 0;height:900px;min-width:0}
+.col{display:grid;gap:8px;grid-template-rows:1fr auto;min-height:0}
+.panel{background:var(--panel);border-radius:10px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.ph{height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--line);font-size:14px;font-weight:500;color:var(--text)}
+.ph svg.i{width:16px;height:16px;color:var(--accent)}
+.ph .aside{margin-left:auto;color:var(--muted);font-weight:400;font-size:13px}
+
+/* Left: session, then the problem */
+.session{padding:20px 28px 0}
+.track{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.track i{height:4px;border-radius:2px;background:var(--raised)}.track i.on{background:var(--accent)}
+.srow{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--muted)}
+.srow b{color:var(--text);font-weight:500}
+.desc{padding:36px 28px 24px;overflow:hidden}
+h1{font-size:23px;line-height:1.3;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+.pills{display:flex;gap:8px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.pill{font-size:13px;font-weight:500;padding:3px 11px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.med{color:var(--amber);border-color:rgba(255,192,30,.4)}
+.lock{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-top:12px}
+.lock svg.i{width:14px;height:14px}
+.desc p{margin-top:28px;font-size:17px;line-height:1.65;max-width:60ch;text-wrap:pretty}
+code{font-family:var(--mono);font-size:14px;background:var(--raised);border-radius:4px;padding:1px 5px}
+.exs{margin-top:32px;display:grid;gap:20px}
+.ex{font:14px/1.7 var(--mono);color:var(--text)}
+.ex div{color:var(--muted);font:500 13px/1 "Atkinson Hyperlegible Next",sans-serif;margin-bottom:8px}
+.ex em{font-style:normal;color:var(--muted)}
+
+/* Centre: Neovim and test results */
+.ed{background:#202020}
+.code{flex:1;padding:14px 0;font:14px/23px var(--mono);color:#d4d7dd;white-space:pre;overflow:hidden}
+.ln{display:block;padding-left:14px}.ln i{font-style:normal;display:inline-block;width:3ch;text-align:right;color:#80858e;margin-right:20px}
+.ln.cur{background:#2b2b2b}.ln.cur i{color:var(--accent)}.ln i.tl{color:#5b7a9c;text-align:left}
+.c{color:#8b919c}.k{color:#d38fe6}.f{color:#62b0f5}.y{color:#e8c47c}.n{color:#e5a46e}
+.cur-ch{background:var(--text);color:var(--page)}
+.status{height:26px;flex:none;display:flex;align-items:center;font:500 12px var(--mono);background:var(--raised);color:var(--muted)}
+.mode{background:var(--accent);color:#1a1a1a;font-weight:600;padding:0 12px;height:100%;display:flex;align-items:center}
+.status span{padding:0 12px}.status .grow{flex:1}
+.tests{padding:18px 20px 20px}
+.sum{display:flex;align-items:center;gap:14px}
+.sum strong{font-size:17px;font-weight:700;color:var(--green)}
+.dots{display:flex;gap:5px}.dots b{width:8px;height:8px;border-radius:50%;background:var(--green)}.dots b.x{background:var(--red)}
+.sum .aside{margin-left:auto;font-size:13px;color:var(--muted)}
+.fail{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-top:16px}
+.fail label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.fail div div{font:14px var(--mono);background:var(--raised);border-radius:8px;padding:9px 12px}
+.fail .bad{color:#ff7a76;box-shadow:inset 0 0 0 1px rgba(239,71,67,.45)}
+
+/* Right: tutor */
+.chat{flex:1;padding:32px 28px 16px;display:flex;flex-direction:column;gap:30px;overflow:hidden}
+.who{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.msg{font-size:17px;line-height:1.65;max-width:60ch}
+.msg p+p{margin-top:12px}.msg p{text-wrap:pretty}.msg code{font-size:15px}
+.me{background:var(--raised);border-radius:12px;padding:14px 18px;margin-left:28px}
+.turn{font-weight:700;padding-top:4px}
+.input{margin:0 16px 16px;display:flex;align-items:center;gap:8px;background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:8px 8px 8px 16px}
+.input .ph-t{flex:1;color:var(--muted);font-size:16px}
+.send{width:34px;height:34px;border-radius:8px;background:var(--accent);color:#1a1a1a;display:grid;place-items:center}
+.send svg.i{width:18px;height:18px}
+</style></head>
+<body class="open">
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="logo" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"/></symbol>
+<symbol id="today" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="map" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h6.5"/></symbol>
+<symbol id="concepts" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+<symbol id="history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></symbol>
+<symbol id="gear" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+<symbol id="doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></symbol>
+<symbol id="code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 3 3 5-6"/></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7M12 19V5"/></symbol>
+</defs></svg>
+
+<nav class="rail" aria-label="Main">
+  <div class="mark"><svg class="i"><use href="#logo"/></svg><b>tech-prep</b></div>
+  <a class="item on" title="Today"><svg class="i"><use href="#today"/></svg><span>Today</span><span class="sub">3 due</span></a>
+  <a class="item" title="Roadmap"><svg class="i"><use href="#map"/></svg><span>Roadmap</span><span class="sub">7 / 75</span></a>
+  <a class="item" title="Concepts"><svg class="i"><use href="#concepts"/></svg><span>Concepts</span><span class="sub">9 / 62</span></a>
+  <a class="item" title="History"><svg class="i"><use href="#history"/></svg><span>History</span></a>
+  <div class="foot"><a class="item" title="Settings"><svg class="i"><use href="#gear"/></svg><span>Settings</span></a></div>
+</nav>
+
+<main>
+  <section class="panel">
+    <div class="session">
+      <div class="track"><i class="on"></i><i></i><i></i></div>
+      <div class="srow"><span><b>Review</b> · 1 of 3</span><span>Next: Learn Window with Counts</span></div>
+    </div>
+    <div class="desc">
+      <h1>Longest Substring Without Repeating Characters</h1>
+      <div class="pills"><span class="pill med">Medium</span><span class="pill">Review</span></div>
+      <div class="lock"><svg class="i"><use href="#lock"/></svg>2 concepts · revealed when you finish</div>
+      <p>Given a string <code>s</code>, return the length of the longest substring (contiguous) that contains no repeated character.</p>
+      <div class="exs">
+        <div class="ex"><div>Example 1</div>s = "abcabcbb"  →  3   <em>"abc"</em></div>
+        <div class="ex"><div>Example 2</div>s = "bbbbb"  →  1</div>
+        <div class="ex"><div>Example 3</div>s = "pwwkew"  →  3   <em>"wke"</em></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="col">
+    <section class="panel ed">
+      <div class="ph"><svg class="i"><use href="#code"/></svg>longest-substring.ts<span class="aside">Neovim</span></div>
+<div class="code"><span class="ln"><i>1</i><span class="c">// ═══ PROBLEM ════════════════════════════════════════</span></span><span class="ln"><i>2</i><span class="c">// Longest Substring Without Repeating Characters (medium)</span></span><span class="ln"><i>3</i><span class="c">//</span></span><span class="ln"><i>4</i><span class="c">// Given a string s, return the length of the longest</span></span><span class="ln"><i>5</i><span class="c">// substring (contiguous) with no repeated character.</span></span><span class="ln"><i>6</i><span class="c">//   "abcabcbb" -> 3    "bbbbb" -> 1    "pwwkew" -> 3</span></span><span class="ln"><i>7</i><span class="c">// ═══ YOUR SOLUTION ══════════════════════════════════</span></span><span class="ln"><i>8</i><span class="k">export function</span> <span class="f">lengthOfLongestSubstring</span>(s: <span class="y">string</span>): <span class="y">number</span> {</span><span class="ln"><i>9</i>  <span class="k">const</span> last = <span class="k">new</span> <span class="y">Map</span>&lt;<span class="y">string</span>, <span class="y">number</span>&gt;();</span><span class="ln"><i>10</i>  <span class="k">let</span> left = <span class="n">0</span>;</span><span class="ln"><i>11</i>  <span class="k">let</span> best = <span class="n">0</span>;</span><span class="ln"><i>12</i>  <span class="k">for</span> (<span class="k">let</span> right = <span class="n">0</span>; right &lt; s.length; right++) {</span><span class="ln"><i>13</i>    <span class="k">const</span> ch = s[right];</span><span class="ln cur"><i>14</i>    <span class="k">if</span> (last.<span class="f">has</span>(ch)) left = <span class="cur-ch">l</span>ast.<span class="f">get</span>(ch)! + <span class="n">1</span>;</span><span class="ln"><i>15</i>    last.<span class="f">set</span>(ch, right);</span><span class="ln"><i>16</i>    best = <span class="y">Math</span>.<span class="f">max</span>(best, right - left + <span class="n">1</span>);</span><span class="ln"><i>17</i>  }</span><span class="ln"><i>18</i>  <span class="k">return</span> best;</span><span class="ln"><i>19</i>}</span><span class="ln"><i class="tl">~</i></span><span class="ln"><i class="tl">~</i></span><span class="ln"><i class="tl">~</i></span></div>
+      <div class="status"><span class="mode">NORMAL</span><span style="color:var(--text)">longest-substring.ts</span><span class="grow"></span><span>typescript</span><span style="color:var(--text)">14:28</span></div>
+    </section>
+    <section class="panel">
+      <div class="tests">
+        <div class="sum"><strong>7 / 8 passed</strong><span class="dots"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b class="x"></b></span><span class="aside">ran with <code>&lt;leader&gt;tt</code></span></div>
+        <div class="fail"><div><label>Input</label><div>s = "abba"</div></div><div><label>Expected</label><div>2</div></div><div><label>Got</label><div class="bad">3</div></div></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="ph"><svg class="i"><use href="#chat"/></svg>Tutor</div>
+    <div class="chat">
+      <div class="msg"><span class="who">Tutor</span><p>Before you code: which approach would you use, and why?</p></div>
+      <div class="msg me"><span class="who">You</span><p>Sliding window. Grow the right edge, and jump left past the last copy of the character.</p></div>
+      <div class="msg"><span class="who">Tutor</span><p>Good call. 7 of 8 tests pass. The failing case is "abba".</p><p>On line 14, when you reach the second "a", where does <code>left</code> go? Is that to the right of where it was?</p></div>
+      <div class="msg turn"><p>Your turn: trace "abba" by hand and watch <code>left</code>.</p></div>
+    </div>
+    <div class="input"><span class="ph-t">Ask the tutor…</span><span class="send" title="Send"><svg class="i"><use href="#up"/></svg></span></div>
+  </section>
+</main>
+</body></html>

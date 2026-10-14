@@ -1,0 +1,20 @@
+{
+  "function": {
+    "python": "is_anagram",
+    "typescript": "isAnagram"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def is_anagram(s: str, t: str) -> bool:\n    pass\n",
+    "typescript": "export function isAnagram(s: string, t: string): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": ["anagram", "nagaram"], "expected": true},
+    {"args": ["rat", "car"], "expected": false},
+    {"args": ["a", "ab"], "expected": false},
+    {"args": ["", ""], "expected": true},
+    {"args": ["aacc", "ccac"], "expected": false},
+    {"args": ["listen", "silent"], "expected": true},
+    {"args": ["abc", "cba"], "expected": true}
+  ]
+}

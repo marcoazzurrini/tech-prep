@@ -1,0 +1,21 @@
+{
+  "function": {
+    "python": "exist",
+    "typescript": "exist"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def exist(board: list[list[str]], word: str) -> bool:\n    pass\n",
+    "typescript": "export function exist(board: string[][], word: string): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]],"ABCCED"],"expected":true},
+    {"args":[[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]],"SEE"],"expected":true},
+    {"args":[[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]],"ABCB"],"expected":false},
+    {"args":[[["a"]],"a"],"expected":true},
+    {"args":[[["a"]],"ab"],"expected":false},
+    {"args":[[["a","b"],["c","d"]],"acdb"],"expected":true},
+    {"args":[[["C","A","A"],["A","A","A"],["B","C","D"]],"AAB"],"expected":true},
+    {"args":[[["A","a"],["a","A"]],"AaA"],"expected":true}
+  ]
+}

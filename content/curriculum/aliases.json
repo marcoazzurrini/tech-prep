@@ -1,0 +1,7 @@
+{
+  "_comment": "Old concept or problem id -> new id, so learner progress follows a rename.",
+  "concepts": {
+    "hashing": "hash-set"
+  },
+  "problems": {}
+}

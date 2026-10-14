@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chat with side panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0e;--side:#101013;--panel:#16161a;--raise:#1d1d22;--line:#26262c;--ink:#ececf1;--mute:#8b8b96;--dim:#5e5e68;--blue:#7aa2ff;--green:#5fd39a;--amber:#f0b450;--red:#ff7a7a}
+*{box-sizing:border-box;margin:0}
+html,body{width:1440px;height:900px;overflow:hidden;background:var(--bg);color:var(--ink);font:16px/1.6 "Atkinson Hyperlegible Next",system-ui,sans-serif}
+code,pre{font-family:"JetBrains Mono",monospace}
+.app{display:grid;grid-template-columns:232px 1fr 640px;height:100%}
+aside{background:var(--side);border-right:1px solid var(--line);padding:44px 12px 16px;display:flex;flex-direction:column;gap:2px}
+.brand{font-weight:700;font-size:15px;padding:0 10px 18px}
+.new{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:18px}
+.grp{font-size:12px;color:var(--dim);padding:10px 10px 6px}
+.it{padding:7px 10px;border-radius:7px;font-size:14px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it.on{background:var(--raise);color:var(--ink)}
+.foot{margin-top:auto;padding:10px;font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
+.chat{display:flex;flex-direction:column;height:100%;min-width:0}
+.top{height:48px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--line);font-size:14px;color:var(--mute)}
+.top b{color:var(--ink);font-weight:600;margin-right:8px}
+.msgs{flex:1;padding:26px 28px 0;display:flex;flex-direction:column;gap:20px;overflow:hidden}
+.me{align-self:flex-end;background:var(--raise);border-radius:12px;padding:10px 14px;font-size:15px;max-width:80%}
+.meta{font-size:13px;color:var(--dim);display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.meta i{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.tu p{font-size:16px}
+.tu p+p{margin-top:10px}
+.tu code{background:var(--raise);padding:1px 6px;border-radius:5px;font-size:14px}
+.chip{margin-top:12px;display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:14px;color:var(--mute)}
+.chip b{color:var(--ink);font-weight:600}
+.chip.on{border-color:#34477a;background:#141a2b}
+.composer{margin:16px 28px 22px;border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px 10px}
+.ph{color:var(--dim);font-size:15px;height:28px}
+.bar{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mute)}
+.send{margin-left:auto;width:30px;height:30px;border-radius:8px;background:var(--ink)}
+.side{border-left:1px solid var(--line);background:var(--side);display:flex;flex-direction:column;height:100%}
+.tabs{height:48px;display:flex;align-items:flex-end;gap:2px;padding:0 12px;border-bottom:1px solid var(--line)}
+.tab{padding:8px 14px;font-size:14px;color:var(--mute);border-radius:8px 8px 0 0}
+.tab.on{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-bottom-color:var(--panel);margin-bottom:-1px}
+.task{padding:20px 24px 16px;border-bottom:1px solid var(--line)}
+.task b{font-size:17px;font-weight:600;display:block;margin-bottom:4px}
+.task p{font-size:15px;color:#c9c9d1}
+.ed{flex:1;background:#111114;padding:16px 0;font:15px/1.75 "JetBrains Mono",monospace;position:relative}
+.ln{display:grid;grid-template-columns:44px 1fr;padding-right:20px}
+.ln>span:last-child{white-space:pre}.ln span:first-child{color:var(--dim);text-align:right;padding-right:16px}
+.ln.cur{background:#ffffff08}
+.cursor{display:inline-block;width:9px;height:19px;background:var(--ink);vertical-align:-3px}
+.k{color:#c79bff}.s{color:#9fd59b}.n{color:#f2b47a}.c{color:#6c6c78}.f{color:#7fc4ff}
+.status{display:flex;justify-content:space-between;padding:6px 16px;font:12px "JetBrains Mono",monospace;color:var(--mute);border-top:1px solid var(--line);background:var(--side)}
+.status b{color:#0c0c0e;background:var(--green);padding:0 6px;border-radius:3px;font-weight:500}
+.tests{padding:14px 24px 18px;border-top:1px solid var(--line)}
+.th{display:flex;align-items:center;gap:12px;font-size:15px;margin-bottom:10px}
+.th b{font-weight:600}.th .r{color:var(--amber)}
+.run{margin-left:auto;height:34px;padding:0 14px;border-radius:8px;background:var(--ink);color:#0c0c0e;font-weight:600;font-size:14px;display:flex;align-items:center}
+.t{display:flex;gap:10px;font-size:14px;color:var(--mute);padding:3px 0}
+.t i{width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:8px}
+.t.x i{background:var(--red)}.t.x{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand">tech-prep</div>
+  <div class="new"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="vertical-align:-2px;margin-right:8px"><path d="M8 3v10M3 8h10"/></svg>New session</div>
+  <div class="grp">Today</div>
+  <div class="it on">JavaScript Set · uniqueness</div>
+  <div class="it">Review · 4 concepts due</div>
+  <div class="grp">This week</div>
+  <div class="it">Two Sum · hash map</div>
+  <div class="it">jq · filters and pipes</div>
+  <div class="foot"><span>Roadmap</span><span>Settings</span></div>
+</aside>
+<section class="chat">
+  <div class="top"><b>JavaScript Set</b> Uniqueness rule</div>
+  <div class="msgs">
+    <div class="tu"><div class="meta"><i></i>Tutor</div>
+      <p>Right: 5. Two <code>NaN</code> collapse to one, but two <code>{}</code> are separate objects.</p>
+      <div class="chip"><b>Predict the output</b> · answered 4, then 5</div>
+    </div>
+    <div class="tu"><div class="meta"><i></i>Tutor</div>
+      <p>Now use it. Write <code>uniqueBy</code>: keep the first item for each key, in order.</p>
+      <p>A Set of keys you have already seen does most of the work.</p>
+      <div class="chip on"><b>Write uniqueBy</b> · open in the panel</div>
+    </div>
+    <div class="me">Does has() also use SameValueZero?</div>
+    <div class="tu"><div class="meta"><i></i>Tutor</div><p>Yes. <code>add</code>, <code>has</code> and <code>delete</code> all use the same rule.</p></div>
+  </div>
+  <div class="composer">
+    <div class="ph">Ask the tutor…</div>
+    <div class="bar"><span>Claude Opus · subscription</span><span class="send"></span></div>
+  </div>
+</section>
+<section class="side">
+  <div class="tabs"><span class="tab on">Write uniqueBy</span><span class="tab">Roadmap</span></div>
+  <div class="task"><b>Write uniqueBy</b><p>Return the items whose key you have not seen before, keeping their order.</p></div>
+  <div class="ed">
+    <div class="ln"><span>1</span><span><span class="k">export function</span> <span class="f">uniqueBy</span>&lt;T, K&gt;(items: T[], key: (t: T) =&gt; K) {</span></div>
+    <div class="ln"><span>2</span><span>  <span class="k">const</span> seen = <span class="k">new</span> Set();</span></div>
+    <div class="ln"><span>3</span><span>  <span class="k">return</span> items.filter((t) =&gt; {</span></div>
+    <div class="ln"><span>4</span><span>    <span class="k">const</span> k = key(t);</span></div>
+    <div class="ln cur"><span>5</span><span>    <span class="k">if</span> (seen.has(k)) <span class="k">return</span> <span class="n">false</span>;<span class="cursor"></span></span></div>
+    <div class="ln"><span>6</span><span>    <span class="k">return</span> <span class="n">true</span>;</span></div>
+    <div class="ln"><span>7</span><span>  });</span></div>
+    <div class="ln"><span>8</span><span>}</span></div>
+  </div>
+  <div class="status"><span><b>NORMAL</b>  unique-by.ts</span><span>5:31</span></div>
+  <div class="tests">
+    <div class="th"><b>Tests</b><span class="r">3 of 4 passed</span><span class="run">Run tests</span></div>
+    <div class="t"><i></i>keeps the first item for each key</div>
+    <div class="t"><i></i>keeps the original order</div>
+    <div class="t x"><i></i>drops later duplicates: expected 2 items, got 3</div>
+  </div>
+</section>
+</div>
+</body>
+</html>

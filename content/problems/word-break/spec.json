@@ -1,0 +1,21 @@
+{
+  "function": {
+    "python": "word_break",
+    "typescript": "wordBreak"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def word_break(s: str, word_dict: list[str]) -> bool:\n    pass\n",
+    "typescript": "export function wordBreak(s: string, wordDict: string[]): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["leetcode",["leet","code"]],"expected":true},
+    {"args":["applepenapple",["apple","pen"]],"expected":true},
+    {"args":["catsandog",["cats","dog","sand","and","cat"]],"expected":false},
+    {"args":["a",["b"]],"expected":false},
+    {"args":["aaaaaaa",["aaaa","aaa"]],"expected":true},
+    {"args":["cars",["car","ca","rs"]],"expected":true},
+    {"args":["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]],"expected":false},
+    {"args":["abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab",["a","b","ab","ba","aba","bab"]],"expected":true}
+  ]
+}

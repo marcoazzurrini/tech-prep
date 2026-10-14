@@ -1,0 +1,21 @@
+{
+  "function": {
+    "python": "longest_palindrome",
+    "typescript": "longestPalindrome"
+  },
+  "compare": "one-of",
+  "stubs": {
+    "python": "def longest_palindrome(s: str) -> str:\n    pass\n",
+    "typescript": "export function longestPalindrome(s: string): string {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": ["babad"], "expected": ["aba", "bab"]},
+    {"args": ["cbbd"], "expected": ["bb"]},
+    {"args": ["a"], "expected": ["a"]},
+    {"args": ["ac"], "expected": ["a", "c"]},
+    {"args": ["forgeeksskeegfor"], "expected": ["geeksskeeg"]},
+    {"args": ["aaaa"], "expected": ["aaaa"]},
+    {"args": ["abacdfgdcaba"], "expected": ["aba"]},
+    {"args": ["grytqrabcwfkhkfwbckfsffuvfutveobyfianfbkqiubjqsjsmykdxqbujmycabuvvlkpzhcteooemgecsjfsxsecgyncivduwvryjnfunutveadrfzeurdnzaplxbwemefipluoifbchlzttjbrtlrusipgutyhtokrzhyfvhlzcbpughynsjdseetfsvkqhaqculkuwzeyzlgvnnkoydidvyscjzhdeiqlalhfuvszphuqpdtdfpooukiptdfzpedsxgbmjnyxifsrydjcbwgdqwxuixvuniphwksbfhhcqpdgxpdroitsdalxvravokmfaoqlctdzrbblbxgafuttljjwpnmydpqiteeodwpeqxtwqocffagscdemgmhnnnclwqfztmofuyyqoggmguwpfnuvxkzmoptyeidceakufmshhyjezcslljwmbotbupdtdcldpsrhsufamyhltepeijjbgeygpdnavooudydmaidpgecmqyfvbvrggmyoglmvgzmjqszgvuncpyuxavnqtdytjeudgpaqflveaoshxkojscuuzhktahmcwedcnhlujfzgxeocsiouswjpkxksoqgnyqtvigjxctrpehwptecbrvlsmhvnlkbjzxmumsrydbaiidxqjhfpnzrrzhvukkluyrgzdwaztburxjbfyjvgcvudkrpuqablqzakruocaxgqepgujxwnbtkiqnahtasmjdrxgyczihxnotarxfwgpzftbviyygwfhrzhfcnazgvkfpwpivkbidzijaufmefompzadqxzcaerdbjuyttqldzlsexwfwprnrengccnqiklyvbvbltxxhgqhklzffpcrvwmdtocvauglgjesjvwosivjecqinomqgtlxjylkwhhpoctiecuyyqkgiozpxohlynsutnmgwfiouskpishlczinuixhbqglmfpytfvtaxzdorpmytmaivjpcpeibvvugoaxxxgvakicybrwswomwvzjvnigsmeqemsginvjzvwmowswrbycpqdmaqnfsswimwxhtvrcqcwiuhulwnqtwcjcvsxsxkmtqpjavxsjlcsvmdumhthsaeathamlcksahxglaxcooirshttcdpdkhqeomisewilnefysegyhiadhcmzhedhxypwbbkafvvtmqbdltwlttrcwiezwfzgmirxglzpjpbrpvpjwokfgepibnkavflkzxxjtsbrcwdgxcbleywvbafkurqwccvquazawbpqhrpossbwfdkystrjzwyszcrvvatabxfwkpnpxltaummqpprvptsvmlkrudjarqjulcdhipsafcstiupzsvgxhiiyfnbfisdbsthnlswtkfunxnhejkkkxqqghezzfhdrndjsevmdhnrpsrjckzpyklmmmzuxeufxmacuvjcycgjgiwivfntadwuzpvwktawggasakgmgpvbkblilsqthykyxumwikhsgbxqjglqshdpsurivdqpbhvatzjontkmvquydtzujiyljboiwmjlvorqysjufoiqrzuoewmwxvfjhceoygqtkvsbsloujshkpylgsfuhhybncphsipkjcotdluwkylnmgpqeycntedirwcemrqdfdcrjnaxusygayiaojzapikgqovagntiulbqtxdilaxzkupxlrgufbndkzdzjsqaudkpfgawvpybzvvzvnzhxnieurkankbxeqzjzadvjjbwrliizchofrwwyhbktouvooimzumyxmehnixdhceyfqxhcwgtjpdgimripnjejgjphawbzdjjdqcewqhxxzlfibwtkbwdbkxuncvsxnotssdgmhcmdhqbkplicojdphsszvmbntdayvodmlbbbgxgcevasstgzxxxjbhhpqwbghrdnjmjpysxrusvooungzeqrfsagslfuacqxsukyhbjribmkbrfeafcgkguoksmmslxtuxrctawjbiwanyyuaitwuvlizyzywplnc"], "expected": ["cybrwswomwvzjvnigsmeqemsginvjzvwmowswrbyc"]}
+  ]
+}

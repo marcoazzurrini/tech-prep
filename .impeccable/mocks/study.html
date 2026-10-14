@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tech-prep · JavaScript Set</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c0e; --side:#101013; --panel:#16161a; --raise:#1d1d22; --hover:#222228; --line:#26262c; --line2:#323239;
+  --ink:#ececf1; --body:#d4d4db; --mute:#9d9da8; --dim:#85858f;
+  --blue:#7aa2ff; --blue-bg:#141a2b; --blue-line:#34477a;
+  --green:#5fd39a; --green-bg:#11241b; --amber:#f0b450; --amber-bg:#2a2112; --red:#ff7a7a; --red-bg:#2a1517;
+  --code:#111114; --sans:"Atkinson Hyperlegible Next",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+::selection{background:#7aa2ff40;color:var(--ink)}
+*{scrollbar-width:thin;scrollbar-color:#2c2c33 transparent}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#2c2c33;border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+code,pre,kbd,.codeblock,.editor,.line{font-family:var(--mono);font-variant-ligatures:none;font-feature-settings:"calt" 0,"liga" 0}
+svg.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+.app{overflow:hidden;display:grid;grid-template-columns:232px minmax(420px,1fr) clamp(460px,44vw,680px);height:100vh;min-width:1180px}
+
+/* Sidebar */
+.sidebar{background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:44px 10px 12px;gap:2px;min-height:0}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding:0 10px 16px}
+.brand .mark{width:18px;height:18px;border-radius:5px;background:var(--ink);display:grid;place-items:center;color:var(--bg)}
+.brand .mark svg{width:12px;height:12px;stroke-width:2.2}
+.new{display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;margin-bottom:14px;transition:background .15s}
+.new:hover{background:var(--hover)}
+.new kbd{margin-left:auto;font-size:11px;color:var(--dim)}
+.grp{font-size:12px;color:var(--dim);padding:12px 10px 6px}
+.sess{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border-radius:8px;font-size:14px;color:var(--mute);white-space:nowrap;overflow:hidden;text-align:left;width:100%}
+.sess span{overflow:hidden;text-overflow:ellipsis}
+.sess:hover{background:var(--hover);color:var(--ink)}
+.sess[aria-current]{background:var(--raise);color:var(--ink)}
+.sess .due{margin-left:auto;font-size:12px;color:var(--amber)}
+.sample{margin-top:auto;padding:8px 10px;font-size:13px;color:var(--dim)}
+.sidefoot{display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--line);padding-top:10px}
+
+/* Chat */
+.chat{display:flex;flex-direction:column;min-width:0;min-height:0}
+.chathead::after{content:"";position:absolute;left:0;right:0;top:100%;height:28px;background:linear-gradient(var(--bg),transparent);pointer-events:none}
+.chathead{position:relative;z-index:1;height:52px;flex:none;display:flex;align-items:center;gap:10px;padding:0 24px;border-bottom:1px solid var(--line)}
+.chathead h1{font-size:15px;font-weight:600}
+.chathead .sub{font-size:14px;color:var(--mute)}
+.iconbtn{margin-left:auto;width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:var(--mute)}
+.iconbtn:hover{background:var(--hover);color:var(--ink)}
+.thread{flex:1;overflow-y:auto;padding:28px 0 24px}
+.col{max-width:680px;margin:0 auto;padding:0 28px;display:flex;flex-direction:column;gap:22px}
+.who{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);margin-bottom:6px}
+.who i{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.tutor p{color:var(--body);max-width:62ch}
+.tutor p+p,.tutor p+pre,.tutor pre+p,.chip+p{margin-top:12px}
+.tutor code,.panel p code,.task code{background:var(--raise);border:1px solid var(--line);padding:0 5px;border-radius:5px;font-size:.86em;color:var(--ink)}
+.tutor pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14px;line-height:1.7;overflow-x:auto}
+.me{align-self:flex-end;max-width:78%;background:var(--raise);border:1px solid var(--line);border-radius:14px 14px 4px 14px;padding:9px 14px;font-size:15px}
+.tool{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim)}
+.tool b{font-weight:500;color:var(--mute)}
+.chip{margin-top:12px;display:inline-flex;align-items:center;gap:10px;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;color:var(--mute);transition:border-color .2s,background .2s,color .2s}
+.chip b{color:var(--ink);font-weight:600}
+.chip:hover{background:var(--hover)}
+.chip[aria-pressed="true"]{border-color:var(--blue-line);background:var(--blue-bg);color:#b9c9ee}
+.chip .st{display:inline-flex;align-items:center;gap:6px}
+.chip .st.ok{color:var(--green)}.chip .st.miss{color:var(--amber)}
+.k{color:#c79bff}.s{color:#9fd59b}.n{color:#f2b47a}.c{color:#8a8a95}.f{color:#7fc4ff}
+
+.composer{flex:none;max-width:680px;width:calc(100% - 56px);margin:0 auto 20px;border:1px solid var(--line2);background:var(--panel);border-radius:16px;padding:12px 14px 10px;box-shadow:0 10px 30px #00000066;transition:border-color .15s}
+.composer:focus-within{border-color:#4a4a55}
+.composer textarea{width:100%;resize:none;background:none;border:0;outline:0;color:var(--ink);font:16px/1.5 var(--sans);height:28px;caret-color:var(--blue)}
+.composer textarea::placeholder{color:var(--dim)}
+.cbar{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px;color:var(--mute)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:8px}
+.pill:hover{background:var(--hover);color:var(--ink)}
+.send{margin-left:auto;width:32px;height:32px;border-radius:9px;background:var(--ink);color:var(--bg);display:grid;place-items:center}
+.send:disabled{background:var(--raise);color:var(--dim);cursor:default}
+
+/* Panel */
+.panel{border-left:1px solid var(--line);background:var(--side);display:flex;flex-direction:column;min-width:0;min-height:0}
+.view.enter{animation:open .45s var(--ease)}
+@keyframes open{from{transform:translateX(18px);opacity:.35}}
+.chip,.tab{transition:border-color .3s var(--ease),background .3s var(--ease),color .3s var(--ease)}
+.tabs{height:52px;flex:none;display:flex;align-items:flex-end;gap:2px;padding:0 10px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;font-size:14px;color:var(--mute);border-radius:9px 9px 0 0;border:1px solid transparent;border-bottom:0;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--panel);color:var(--ink);border-color:var(--line);margin-bottom:-1px;height:41px}
+.tab[aria-selected="true"] svg.i{color:var(--blue)}
+.tab .dot{width:7px;height:7px;border-radius:50%}
+.dot.ok{background:var(--green)}.dot.miss{background:var(--amber)}.dot.bad{background:var(--red)}
+.view{flex:1;display:none;flex-direction:column;min-height:0;background:var(--panel)}
+.view.on{display:flex}
+.task{padding:20px 24px 18px;border-bottom:1px solid var(--line)}
+.task h2{font-size:18px;font-weight:600;margin-bottom:4px}
+.task p{font-size:15px;color:var(--body)}
+.tags{display:flex;gap:6px;margin-top:12px}
+.tag{font-size:13px;height:24px;display:inline-flex;align-items:center;padding:0 8px;border-radius:99px;border:1px solid var(--line2);color:var(--mute)}
+.tag.learning{color:var(--amber);border-color:#5a4520}
+.scroll{flex:1;overflow-y:auto}
+.btn{height:36px;padding:0 14px;border-radius:9px;background:var(--ink);color:var(--bg);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{background:#fff}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line2)}
+.btn.ghost:hover{background:var(--hover)}
+.btn:disabled{opacity:.5;cursor:default}
+.actions{flex:none;display:flex;align-items:center;gap:10px;padding:14px 24px;border-top:1px solid var(--line)}
+.actions .note{font-size:13px;color:var(--dim)}
+.actions .btn:first-of-type{margin-left:auto}
+
+/* Predict */
+.codeblock{background:var(--code);padding:18px 24px;font:15px/1.8 var(--mono);border-bottom:1px solid var(--line);white-space:pre}
+.answer{padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.answer label{font-size:15px;color:var(--body)}
+.arow{display:flex;gap:10px;align-items:center}
+.ain{width:110px;height:44px;border-radius:9px;border:1px solid var(--line2);background:var(--code);color:var(--ink);font:500 16px var(--mono);padding:0 14px;outline:0}
+.ain.wrong{border-color:var(--red);background:var(--red-bg)}
+.result{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:20px 1fr;gap:10px;background:var(--bg)}
+.result svg.i{margin-top:3px;color:var(--amber)}
+.result b{font-weight:600}
+.result p{font-size:15px;color:var(--body)}
+.result .concept{margin-top:8px;font-size:13px;color:var(--mute)}
+
+/* Parsons */
+.lines{padding:18px 24px;display:flex;flex-direction:column;gap:8px}
+.line{display:flex;align-items:center;gap:12px;height:46px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--code);font:14px var(--mono);cursor:grab;transition:border-color .15s,transform .2s var(--ease)}
+.line:hover{border-color:var(--line2)}
+.line.dragging{opacity:.4}
+.line.over{border-color:var(--blue-line);transform:translateY(2px)}
+.line .grip{color:var(--dim)}
+.line .num{margin-left:auto;font:12px var(--sans);color:var(--dim)}
+.hint{padding:0 24px 18px;font-size:15px;color:var(--body);max-width:62ch}
+.hint code{background:var(--raise);border:1px solid var(--line);padding:0 5px;border-radius:5px;font-size:.86em;color:var(--ink)}
+.line.ok{border-color:#244a38}
+.line.spare{color:var(--mute)}
+.unused{font-size:13px;color:var(--dim);margin:8px 0 0}
+.actions .note.ok{display:inline-flex;align-items:center;gap:6px;color:var(--green)}
+
+/* Editor */
+.editor{flex:1;background:var(--code);padding:14px 0;font:15px/1.75 var(--mono);overflow:auto;min-height:0}
+.ln{display:grid;grid-template-columns:52px max-content;padding-right:20px;white-space:pre}
+.ln>span:first-child{color:var(--dim);text-align:right;padding-right:18px}
+.ln.cur{background:#ffffff07}.ln.cur>span:first-child{color:var(--mute)}
+.cursor{display:inline-block;width:9px;height:19px;background:#d9d9e0;vertical-align:-4px}
+.vim{flex:none;display:flex;align-items:center;gap:10px;height:28px;padding:0 14px;font:12px var(--mono);color:var(--mute);border-top:1px solid var(--line);background:var(--side)}
+.vim .mode{color:var(--bg);background:var(--green);padding:0 7px;border-radius:4px;font-weight:500}
+.vim .pos{margin-left:auto}
+.tests{flex:none;border-top:1px solid var(--line);padding:14px 24px 16px}
+.thead{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.thead b{font-weight:600}
+.thead .sum{font-size:14px;color:var(--amber)}
+.thead .btn{margin-left:auto}
+.thead kbd{font-size:11px;opacity:.6}
+.t{display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:14px;color:var(--mute);padding:4px 0}
+.t svg.i{width:14px;height:14px;margin-top:4px;color:var(--green)}
+.t.x{color:var(--ink)}.t.x svg.i{color:var(--red)}
+.t .why{display:block;font:13px var(--mono);color:var(--mute);margin-top:2px}
+
+/* Progress */
+.prog{padding:20px 24px;display:flex;flex-direction:column}
+.cn{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.cn:last-child{border-bottom:0}
+.cn .name{font-weight:600;font-size:15px}
+.cn .key{grid-column:1;font-size:14px;color:var(--mute)}
+.cn .stage{grid-row:1/3;grid-column:2;align-self:center;text-align:right;font-size:13px;color:var(--mute)}
+.stage .tag{margin-bottom:4px}
+.stage .tag.passed{color:var(--green);border-color:#244a38}
+.synthetic{font-size:13px;color:var(--dim);padding:0 24px 16px}
+
+/* After the font shorthands, which reset ligatures. */
+code,pre,kbd,.codeblock,.editor,.line{font-variant-ligatures:none;font-feature-settings:"calt" 0,"liga" 0}
+.tutor pre{white-space:pre;overflow-x:auto}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="map" viewBox="0 0 16 16"><path d="M2 4l4-1.5 4 1.5 4-1.5v9.5L10 13.5 6 12 2 13.5zM6 2.5V12M10 4v9.5"/></symbol>
+  <symbol id="gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.8v1.6M8 12.6v1.6M1.8 8h1.6M12.6 8h1.6M3.6 3.6l1.1 1.1M11.3 11.3l1.1 1.1M3.6 12.4l1.1-1.1M11.3 4.7l1.1-1.1"/></symbol>
+  <symbol id="eye" viewBox="0 0 16 16"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></symbol>
+  <symbol id="rows" viewBox="0 0 16 16"><path d="M3 4h10M3 8h10M3 12h10"/></symbol>
+  <symbol id="code" viewBox="0 0 16 16"><path d="M5.5 4.5 2 8l3.5 3.5M10.5 4.5 14 8l-3.5 3.5"/></symbol>
+  <symbol id="chart" viewBox="0 0 16 16"><path d="M2.5 13.5h11M4.5 11V8M8 11V4.5M11.5 11V6.5"/></symbol>
+  <symbol id="panel" viewBox="0 0 16 16"><rect x="2" y="2.5" width="12" height="11" rx="2"/><path d="M9.5 2.5v11"/></symbol>
+  <symbol id="up" viewBox="0 0 16 16"><path d="M8 13V3M4 7l4-4 4 4"/></symbol>
+  <symbol id="tick" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></symbol>
+  <symbol id="cross" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></symbol>
+  <symbol id="warn" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5M8 11v.01"/></symbol>
+  <symbol id="grip" viewBox="0 0 16 16"><path d="M6 4v.01M10 4v.01M6 8v.01M10 8v.01M6 12v.01M10 12v.01"/></symbol>
+  <symbol id="play" viewBox="0 0 16 16"><path d="M5 3.5v9l7-4.5z"/></symbol>
+  <symbol id="spark" viewBox="0 0 16 16"><path d="M8 2v3M8 11v3M2 8h3M11 8h3M4 4l2 2M10 10l2 2M12 4l-2 2M6 10l-2 2"/></symbol>
+</svg>
+
+<div class="app">
+  <nav class="sidebar" aria-label="Sessions">
+    <div class="brand"><span class="mark"><svg class="i"><use href="#code"/></svg></span>tech-prep</div>
+    <button class="new"><svg class="i"><use href="#plus"/></svg>New session<kbd>⌘N</kbd></button>
+    <div class="grp">Today</div>
+    <button class="sess" aria-current="page"><span>JavaScript Set</span></button>
+    <button class="sess" title="Sample data"><span>Review</span><span class="due">4 due</span></button>
+    <div class="grp">This week</div>
+    <button class="sess"><span>Two Sum · hash map</span></button>
+    <button class="sess"><span>jq · filters and pipes</span></button>
+    <button class="sess"><span>Event loop, in your words</span></button>
+    <button class="sess"><span>Valid Anagram</span></button>
+    <p class="sample">Mockup · counts are sample data</p>
+    <div class="sidefoot">
+      <button class="sess"><svg class="i"><use href="#map"/></svg><span>Roadmap</span></button>
+      <button class="sess"><svg class="i"><use href="#gear"/></svg><span>Settings</span></button>
+    </div>
+  </nav>
+
+  <main class="chat">
+    <header class="chathead">
+      <h1>JavaScript Set</h1><span class="sub">Lesson · 3 concepts</span>
+      <button class="iconbtn" title="Hide panel" aria-label="Hide panel"><svg class="i"><use href="#panel"/></svg></button>
+    </header>
+    <div class="thread" id="thread">
+      <div class="col">
+        <div class="me">I want to learn Set properly. I use it but I'm not sure of the rules.</div>
+
+        <div class="tutor">
+          <div class="who"><i></i>Tutor</div>
+          <p>Good place to start. Set has six concepts here, and you have passed one of them.</p>
+          <button class="chip" data-panel="progress"><svg class="i"><use href="#chart"/></svg><b>JavaScript Set</b><span class="st">1 of 6 passed</span></button>
+          <p>Before I explain anything, one quick check, so I know what you already have.</p>
+          <button class="chip" data-panel="predict"><svg class="i"><use href="#eye"/></svg><b>Predict the output</b><span class="st miss"><svg class="i"><use href="#warn"/></svg>4, it was 5</span></button>
+        </div>
+
+        <div class="tutor">
+          <div class="who"><i></i>Tutor</div>
+          <p>The two <code>NaN</code> were right to merge. The miss was the objects.</p>
+          <p>A Set compares values with a rule called <code>SameValueZero</code>. For objects, that means "is it the same object", not "does it look the same".</p>
+<pre><span class="k">const</span> a = {};
+<span class="k">new</span> Set([a, a]).size;   <span class="c">// 1</span>
+<span class="k">new</span> Set([{}, {}]).size; <span class="c">// 2</span></pre>
+          <p>A Set also remembers the order values were first added. Put these lines in order.</p>
+          <button class="chip" data-panel="arrange"><svg class="i"><use href="#rows"/></svg><b>Arrange the lines</b><span class="st ok"><svg class="i"><use href="#tick"/></svg>right first time</span></button>
+        </div>
+
+        <div class="tutor">
+          <div class="who"><i></i>Tutor</div>
+          <p>Now put both rules to work.</p>
+          <button class="chip" data-panel="write"><svg class="i"><use href="#code"/></svg><b>Write uniqueBy</b><span class="st">in progress</span></button>
+        </div>
+
+        <div class="me">Does has() use the same rule?</div>
+
+        <div class="tutor">
+          <div class="who"><i></i>Tutor</div>
+          <p>Yes. <code>add</code>, <code>has</code> and <code>delete</code> all use <code>SameValueZero</code>.</p>
+        </div>
+
+        <div class="tool"><svg class="i"><use href="#play"/></svg><b>Ran the tests</b> · 3 of 4 passed</div>
+
+        <div class="tutor">
+          <div class="who"><i></i>Tutor</div>
+          <p>Close. The failing test keeps a later duplicate. Line 8 asks <code>seen</code> about each key. Which line adds a key to <code>seen</code>?</p>
+        </div>
+      </div>
+    </div>
+    <div class="composer">
+      <textarea id="msg" rows="1" placeholder="Ask the tutor, or say &quot;hint&quot;…" aria-label="Message the tutor"></textarea>
+      <div class="cbar">
+        <button class="pill"><svg class="i"><use href="#spark"/></svg>Opus 5.5</button>
+        <span>Claude subscription</span>
+        <button class="send" id="send" aria-label="Send" disabled><svg class="i"><use href="#up"/></svg></button>
+      </div>
+    </div>
+  </main>
+
+  <aside class="panel" aria-label="Exercise panels">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-panel="predict"><svg class="i"><use href="#eye"/></svg>Predict<span class="dot miss"></span></button>
+      <button class="tab" role="tab" data-panel="arrange"><svg class="i"><use href="#rows"/></svg>Arrange<span class="dot ok"></span></button>
+      <button class="tab" role="tab" data-panel="write"><svg class="i"><use href="#code"/></svg>uniqueBy<span class="dot bad"></span></button>
+      <button class="tab" role="tab" data-panel="progress"><svg class="i"><use href="#chart"/></svg>Progress</button>
+    </div>
+
+    <section class="view" id="v-predict" role="tabpanel">
+      <div class="task"><h2>Predict the output</h2><p>What does this print?</p>
+        <div class="tags"><span class="tag learning">Uniqueness rule</span></div></div>
+<div class="codeblock"><span class="k">const</span> s = <span class="k">new</span> Set([<span class="n">1</span>, <span class="s">"1"</span>, NaN, NaN, {}, {}]);
+console.log(s.size);</div>
+      <div class="answer">
+        <label for="ans">Your answer</label>
+        <div class="arow"><input class="ain wrong" id="ans" value="4" readonly></div>
+        <div class="result"><svg class="i"><use href="#warn"/></svg><div>
+          <p><b>It prints 5.</b> <code>1</code> and <code>"1"</code> differ, the two <code>NaN</code> merge, and the two <code>{}</code> stay apart.</p>
+          <div class="concept">Shows a gap in: Uniqueness rule · stays at Learning</div>
+        </div></div>
+      </div>
+      <div class="scroll"></div>
+      <div class="actions"><span class="note">Answered 2 minutes ago</span><button class="btn ghost">Try a similar one</button></div>
+    </section>
+
+    <section class="view" id="v-arrange" role="tabpanel">
+      <div class="task"><h2>Arrange the lines</h2><p>Order the lines so it logs each tag once, in the order first seen. One line is not needed.</p>
+        <div class="tags"><span class="tag">Insertion order</span><span class="tag learning">Uniqueness rule</span></div></div>
+      <div class="scroll"><div class="lines" id="lines">
+        <div class="line ok" draggable="true"><svg class="i grip"><use href="#grip"/></svg>const seen = new Set();</div>
+        <div class="line ok" draggable="true"><svg class="i grip"><use href="#grip"/></svg>for (const t of tags) seen.add(t);</div>
+        <div class="line ok" draggable="true"><svg class="i grip"><use href="#grip"/></svg>for (const t of seen) console.log(t);</div>
+        <p class="unused">Not needed</p>
+        <div class="line spare" draggable="true"><svg class="i grip"><use href="#grip"/></svg>seen.sort();</div>
+      </div>
+      <p class="hint"><code>seen.sort()</code> is not needed: a Set has no <code>sort</code>, and it already keeps first-seen order.</p></div>
+      <div class="actions"><span class="note ok"><svg class="i"><use href="#tick"/></svg>Correct on the first try</span><button class="btn ghost">Try a similar one</button></div>
+    </section>
+
+    <section class="view" id="v-write" role="tabpanel">
+      <div class="task"><h2>Write uniqueBy</h2><p>Return the items whose key you have not seen before, in their original order.</p>
+        <div class="tags"><span class="tag learning">Uniqueness rule</span><span class="tag">Insertion order</span></div></div>
+      <div class="editor" aria-label="Editor, unique-by.ts">
+        <div class="ln"><span>1</span><span><span class="k">export function</span> <span class="f">uniqueBy</span>&lt;T, K&gt;(</span></div>
+        <div class="ln"><span>2</span><span>  items: T[],</span></div>
+        <div class="ln"><span>3</span><span>  key: (t: T) =&gt; K,</span></div>
+        <div class="ln"><span>4</span><span>): T[] {</span></div>
+        <div class="ln"><span>5</span><span>  <span class="k">const</span> seen = <span class="k">new</span> Set&lt;K&gt;();</span></div>
+        <div class="ln"><span>6</span><span>  <span class="k">return</span> items.<span class="f">filter</span>((t) =&gt; {</span></div>
+        <div class="ln"><span>7</span><span>    <span class="k">const</span> k = <span class="f">key</span>(t);</span></div>
+        <div class="ln cur"><span>8</span><span>    <span class="k">if</span> (seen.<span class="f">has</span>(k)) <span class="k">return</span> <span class="n">false</span>;<span class="cursor"></span></span></div>
+        <div class="ln"><span>9</span><span>    <span class="k">return</span> <span class="n">true</span>;</span></div>
+        <div class="ln"><span>10</span><span>  });</span></div>
+        <div class="ln"><span>11</span><span>}</span></div>
+      </div>
+      <div class="vim"><span class="mode">NORMAL</span><span>unique-by.ts</span><span class="pos">8:34</span></div>
+      <div class="tests">
+        <div class="thead"><b>Tests</b><span class="sum" id="sum">3 of 4 passed</span><button class="btn" id="run"><svg class="i"><use href="#play"/></svg>Run tests <kbd>⌘↵</kbd></button></div>
+        <div class="t"><svg class="i"><use href="#tick"/></svg><span>keeps the first item for each key</span></div>
+        <div class="t"><svg class="i"><use href="#tick"/></svg><span>keeps the original order</span></div>
+        <div class="t"><svg class="i"><use href="#tick"/></svg><span>returns [] for an empty list</span></div>
+        <div class="t x"><svg class="i"><use href="#cross"/></svg><span>drops later duplicates<span class="why">expected 2 items, got 3</span></span></div>
+      </div>
+    </section>
+
+    <section class="view" id="v-progress" role="tabpanel">
+      <div class="task"><h2>JavaScript Set</h2><p>1 of 6 passed, 2 learning. Next review: tomorrow.</p></div>
+      <div class="scroll"><div class="prog">
+        <div class="cn"><span class="name">Uniqueness rule</span><span class="key">NaN counts once; objects match only by reference.</span><span class="stage"><span class="tag learning">Learning</span><br>retry tomorrow</span></div>
+        <div class="cn"><span class="name"><code>size</code>, not <code>length</code></span><span class="key">A Set has no length and no index.</span><span class="stage"><span class="tag passed">Passed</span><br>review in 6 days</span></div>
+        <div class="cn"><span class="name">Insertion order</span><span class="key">Iteration follows the order values were first added.</span><span class="stage"><span class="tag learning">Learning</span><br>this lesson</span></div>
+        <div class="cn"><span class="name"><code>add</code> returns the set</span><span class="key">So calls can be chained.</span><span class="stage"><span class="tag">Available</span></span></div>
+        <div class="cn"><span class="name"><code>delete</code> returns a boolean</span><span class="key">True only if the value was there.</span><span class="stage"><span class="tag">Available</span></span></div>
+        <div class="cn"><span class="name">Set methods</span><span class="key"><code>union</code>, <code>intersection</code>, <code>difference</code>.</span><span class="stage"><span class="tag">Locked</span><br>after Uniqueness rule</span></div>
+      </div>
+      <p class="synthetic">Progress, due counts and review dates on this screen are sample data.</p></div>
+    </section>
+  </aside>
+</div>
+
+<script>
+const tabs=[...document.querySelectorAll('.tab')], chips=[...document.querySelectorAll('.chip')];
+function show(id,animate){
+  const view=document.getElementById('v-'+id);
+  if(animate){view.classList.remove('enter');void view.offsetWidth;view.classList.add('enter')}
+  tabs.forEach(t=>t.setAttribute('aria-selected',t.dataset.panel===id));
+  chips.forEach(c=>c.setAttribute('aria-pressed',c.dataset.panel===id));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+id));
+}
+tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.panel)));
+chips.forEach(c=>c.addEventListener('click',()=>show(c.dataset.panel,true)));
+const q=new URLSearchParams(location.search);
+show(q.get('panel')||'write');
+// ?open=<panel> replays the tutor opening a panel.
+if(q.get('open'))setTimeout(()=>show(q.get('open'),true),700);
+const thread=document.getElementById('thread');thread.scrollTop=thread.scrollHeight;
+
+const msg=document.getElementById('msg'),send=document.getElementById('send');
+msg.addEventListener('input',()=>{send.disabled=!msg.value.trim();msg.style.height='auto';msg.style.height=Math.min(msg.scrollHeight,160)+'px'});
+
+const run=document.getElementById('run'),sum=document.getElementById('sum');
+run.addEventListener('click',()=>{run.disabled=true;sum.textContent='Running…';sum.style.color='var(--mute)';
+  setTimeout(()=>{run.disabled=false;sum.textContent='3 of 4 passed';sum.style.color=''},900)});
+
+let drag;const lines=document.getElementById('lines');
+lines.addEventListener('dragstart',e=>{drag=e.target.closest('.line');drag.classList.add('dragging')});
+lines.addEventListener('dragend',()=>{drag.classList.remove('dragging');lines.querySelectorAll('.over').forEach(l=>l.classList.remove('over'))});
+lines.addEventListener('dragover',e=>{e.preventDefault();const o=e.target.closest('.line');lines.querySelectorAll('.over').forEach(l=>l.classList.toggle('over',l===o))});
+lines.addEventListener('drop',e=>{e.preventDefault();const o=e.target.closest('.line');if(o&&o!==drag){const r=o.getBoundingClientRect();o[e.clientY>r.top+r.height/2?'after':'before'](drag)}});
+</script>
+</body>
+</html>

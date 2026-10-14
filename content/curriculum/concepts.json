@@ -1,0 +1,973 @@
+[
+  {
+    "id": "dynamic-arrays",
+    "name": "Dynamic Arrays",
+    "topic": "arrays-hashing",
+    "prereqs": [],
+    "encompasses": [],
+    "key_idea": "Index, iterate, append and slice arrays and strings; know which operations are O(1) and which are O(n)."
+  },
+  {
+    "id": "hash-set",
+    "name": "Hash Set Lookup",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "A set answers 'have I seen this value?' in O(1), replacing an inner search loop."
+  },
+  {
+    "id": "hash-map-counting",
+    "name": "Frequency Counting",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "hash-set"
+    ],
+    "encompasses": [
+      {
+        "id": "hash-set",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Map each value to how often it appears; compare or rank values by their counts."
+  },
+  {
+    "id": "hash-map-index",
+    "name": "Value-to-Index Map",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "hash-set"
+    ],
+    "encompasses": [
+      {
+        "id": "hash-set",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Map a value to where you saw it, so a partner or complement can be found in one pass."
+  },
+  {
+    "id": "canonical-key",
+    "name": "Canonical Keys",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "hash-map-counting"
+    ],
+    "encompasses": [
+      {
+        "id": "hash-map-counting",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Group items by a signature that is equal for equivalent items, such as sorted letters or a count tuple."
+  },
+  {
+    "id": "bucket-sort",
+    "name": "Bucket Sort by Count",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "hash-map-counting"
+    ],
+    "encompasses": [
+      {
+        "id": "hash-map-counting",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "When values are bounded by n, use them as array indices to sort or rank in O(n)."
+  },
+  {
+    "id": "prefix-products",
+    "name": "Prefix and Suffix Accumulation",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Precompute running totals or products from the left and from the right, then combine them per index."
+  },
+  {
+    "id": "string-encoding",
+    "name": "String Encoding",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Make a reversible encoding by prefixing each piece with its length, so no delimiter can be ambiguous."
+  },
+  {
+    "id": "sequence-starts",
+    "name": "Sequence Starts",
+    "topic": "arrays-hashing",
+    "prereqs": [
+      "hash-set"
+    ],
+    "encompasses": [
+      {
+        "id": "hash-set",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Only start counting a run at elements whose predecessor is absent, so each run is walked once."
+  },
+  {
+    "id": "sorting",
+    "name": "Sort First",
+    "topic": "two-pointers",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Sorting costs O(n log n) but unlocks ordered reasoning: pointers, binary search and easy duplicate skipping."
+  },
+  {
+    "id": "two-pointers-opposite",
+    "name": "Opposite-End Pointers",
+    "topic": "two-pointers",
+    "prereqs": [
+      "sorting"
+    ],
+    "encompasses": [
+      {
+        "id": "sorting",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "Start at both ends and move the pointer whose move can still improve the answer; each step rules out a set of pairs."
+  },
+  {
+    "id": "skip-duplicates",
+    "name": "Skipping Duplicates",
+    "topic": "two-pointers",
+    "prereqs": [
+      "two-pointers-opposite"
+    ],
+    "encompasses": [
+      {
+        "id": "two-pointers-opposite",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "In a sorted array, advance past equal neighbours so each distinct combination is produced once."
+  },
+  {
+    "id": "stack-matching",
+    "name": "Stack Matching",
+    "topic": "stack",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Push openers and pop on closers; the most recent unmatched item is always on top."
+  },
+  {
+    "id": "running-best",
+    "name": "Running Minimum / Maximum",
+    "topic": "sliding-window",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Carry the best value seen so far as you scan, so each position is compared once."
+  },
+  {
+    "id": "variable-window",
+    "name": "Variable Sliding Window",
+    "topic": "sliding-window",
+    "prereqs": [
+      "two-pointers-opposite",
+      "hash-set"
+    ],
+    "encompasses": [
+      {
+        "id": "two-pointers-opposite",
+        "w": 0.3
+      },
+      {
+        "id": "hash-set",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Grow the right edge every step; shrink the left edge only while the window breaks the rule."
+  },
+  {
+    "id": "window-counts",
+    "name": "Window with Counts",
+    "topic": "sliding-window",
+    "prereqs": [
+      "variable-window",
+      "hash-map-counting"
+    ],
+    "encompasses": [
+      {
+        "id": "variable-window",
+        "w": 1.0
+      },
+      {
+        "id": "hash-map-counting",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "Keep a frequency map of the window and a cheap validity check, updated as items enter and leave."
+  },
+  {
+    "id": "binary-search",
+    "name": "Binary Search",
+    "topic": "binary-search",
+    "prereqs": [
+      "sorting"
+    ],
+    "encompasses": [
+      {
+        "id": "sorting",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "Keep an interval where the answer must lie and halve it with each comparison; get the loop bounds exactly right."
+  },
+  {
+    "id": "binary-search-rotated",
+    "name": "Search in Rotated Order",
+    "topic": "binary-search",
+    "prereqs": [
+      "binary-search"
+    ],
+    "encompasses": [
+      {
+        "id": "binary-search",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "In a rotated sorted array one half around mid is always sorted; decide which half can hold the target."
+  },
+  {
+    "id": "linked-list-traversal",
+    "name": "Linked List Traversal",
+    "topic": "linked-list",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "Walk nodes through next pointers; there is no indexing, so track the nodes you need in variables."
+  },
+  {
+    "id": "list-reversal",
+    "name": "Reversing Links",
+    "topic": "linked-list",
+    "prereqs": [
+      "linked-list-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "linked-list-traversal",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Reverse with three pointers: prev, current and next, re-pointing one link per step."
+  },
+  {
+    "id": "dummy-node",
+    "name": "Dummy Head Node",
+    "topic": "linked-list",
+    "prereqs": [
+      "linked-list-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "linked-list-traversal",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Start a result list at a dummy node so inserting or deleting at the head needs no special case."
+  },
+  {
+    "id": "fast-slow-pointers",
+    "name": "Fast and Slow Pointers",
+    "topic": "linked-list",
+    "prereqs": [
+      "linked-list-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "linked-list-traversal",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Move one pointer twice as fast: they meet inside a cycle, and the slow one stops at the middle."
+  },
+  {
+    "id": "gap-pointers",
+    "name": "Fixed-Gap Pointers",
+    "topic": "linked-list",
+    "prereqs": [
+      "linked-list-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "linked-list-traversal",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Advance a lead pointer n steps first; when it reaches the end, the trailing pointer is n from the end."
+  },
+  {
+    "id": "recursion",
+    "name": "Recursion",
+    "topic": "trees",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [],
+    "key_idea": "Solve a problem by trusting the same function on smaller inputs; define the base case first."
+  },
+  {
+    "id": "tree-dfs",
+    "name": "Tree Depth-First Search",
+    "topic": "trees",
+    "prereqs": [
+      "recursion",
+      "linked-list-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "recursion",
+        "w": 1.0
+      },
+      {
+        "id": "linked-list-traversal",
+        "w": 0.2
+      }
+    ],
+    "key_idea": "Compute a node's answer from its children's answers, or pass information down as arguments."
+  },
+  {
+    "id": "tree-bfs",
+    "name": "Tree Level-Order Search",
+    "topic": "trees",
+    "prereqs": [
+      "tree-dfs"
+    ],
+    "encompasses": [
+      {
+        "id": "tree-dfs",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "Process a tree level by level with a queue, taking the current queue length as one level."
+  },
+  {
+    "id": "bst-property",
+    "name": "Binary Search Tree Property",
+    "topic": "trees",
+    "prereqs": [
+      "tree-dfs",
+      "binary-search"
+    ],
+    "encompasses": [
+      {
+        "id": "tree-dfs",
+        "w": 1.0
+      },
+      {
+        "id": "binary-search",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "Left subtree < node < right subtree everywhere, so in-order is sorted and you can steer by comparison."
+  },
+  {
+    "id": "tree-construction",
+    "name": "Building Trees from Traversals",
+    "topic": "trees",
+    "prereqs": [
+      "tree-dfs",
+      "hash-map-index"
+    ],
+    "encompasses": [
+      {
+        "id": "tree-dfs",
+        "w": 1.0
+      },
+      {
+        "id": "hash-map-index",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Preorder gives the root first; its position in inorder splits the left and right subtrees."
+  },
+  {
+    "id": "tree-path-max",
+    "name": "Path Values through a Node",
+    "topic": "trees",
+    "prereqs": [
+      "tree-dfs"
+    ],
+    "encompasses": [
+      {
+        "id": "tree-dfs",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Return the best one-sided path to the parent, while updating a global answer with the two-sided path."
+  },
+  {
+    "id": "tree-serialization",
+    "name": "Tree Serialization",
+    "topic": "trees",
+    "prereqs": [
+      "tree-dfs",
+      "string-encoding"
+    ],
+    "encompasses": [
+      {
+        "id": "tree-dfs",
+        "w": 1.0
+      },
+      {
+        "id": "string-encoding",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Write a traversal that records null children, so the exact shape can be rebuilt."
+  },
+  {
+    "id": "trie",
+    "name": "Trie",
+    "topic": "tries",
+    "prereqs": [
+      "tree-dfs",
+      "hash-map-index"
+    ],
+    "encompasses": [
+      {
+        "id": "tree-dfs",
+        "w": 0.3
+      },
+      {
+        "id": "hash-map-index",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A tree of characters where each path from the root spells a prefix; lookups cost O(word length)."
+  },
+  {
+    "id": "trie-search",
+    "name": "Searching with a Trie",
+    "topic": "tries",
+    "prereqs": [
+      "trie",
+      "backtracking"
+    ],
+    "encompasses": [
+      {
+        "id": "trie",
+        "w": 1.0
+      },
+      {
+        "id": "backtracking",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "Walk a trie alongside a DFS so whole branches stop as soon as no word has that prefix."
+  },
+  {
+    "id": "heap",
+    "name": "Heap / Priority Queue",
+    "topic": "heap",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "A heap gives the smallest (or largest) item in O(1) and push or pop in O(log n)."
+  },
+  {
+    "id": "two-heaps",
+    "name": "Two Heaps",
+    "topic": "heap",
+    "prereqs": [
+      "heap"
+    ],
+    "encompasses": [
+      {
+        "id": "heap",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Keep the lower half in a max-heap and the upper half in a min-heap, balanced in size, to read the median."
+  },
+  {
+    "id": "backtracking",
+    "name": "Backtracking",
+    "topic": "backtracking",
+    "prereqs": [
+      "recursion"
+    ],
+    "encompasses": [
+      {
+        "id": "recursion",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Build a candidate step by step: choose, recurse, then undo the choice before trying the next."
+  },
+  {
+    "id": "grid-dfs",
+    "name": "Grid Search",
+    "topic": "backtracking",
+    "prereqs": [
+      "recursion"
+    ],
+    "encompasses": [
+      {
+        "id": "recursion",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Treat cells as nodes with up to four neighbours; mark visited cells and check bounds before recursing."
+  },
+  {
+    "id": "graph-representation",
+    "name": "Graph Representation",
+    "topic": "graphs",
+    "prereqs": [
+      "hash-map-index"
+    ],
+    "encompasses": [
+      {
+        "id": "hash-map-index",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Store a graph as an adjacency list built from an edge list."
+  },
+  {
+    "id": "graph-traversal",
+    "name": "Graph DFS and BFS",
+    "topic": "graphs",
+    "prereqs": [
+      "graph-representation",
+      "grid-dfs"
+    ],
+    "encompasses": [
+      {
+        "id": "graph-representation",
+        "w": 1.0
+      },
+      {
+        "id": "grid-dfs",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "Visit every reachable node once using a visited set; count components by starting a traversal at each unvisited node."
+  },
+  {
+    "id": "reverse-search",
+    "name": "Searching from the Targets",
+    "topic": "graphs",
+    "prereqs": [
+      "graph-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "graph-traversal",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Instead of asking where each cell can reach, search backwards from the targets and see which cells they reach."
+  },
+  {
+    "id": "cycle-detection",
+    "name": "Cycle Detection",
+    "topic": "graphs",
+    "prereqs": [
+      "graph-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "graph-traversal",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "In a directed graph, a node seen again while still on the current DFS path means a cycle."
+  },
+  {
+    "id": "topological-sort",
+    "name": "Topological Sort",
+    "topic": "advanced-graphs",
+    "prereqs": [
+      "cycle-detection"
+    ],
+    "encompasses": [
+      {
+        "id": "cycle-detection",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Repeatedly take nodes with no remaining incoming edges (Kahn's algorithm); leftovers mean a cycle."
+  },
+  {
+    "id": "union-find",
+    "name": "Union-Find",
+    "topic": "graphs",
+    "prereqs": [
+      "graph-representation"
+    ],
+    "encompasses": [
+      {
+        "id": "graph-representation",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Track connected groups with parent pointers; union merges groups and find returns a group's root."
+  },
+  {
+    "id": "dp-1d",
+    "name": "1-D Dynamic Programming",
+    "topic": "dp-1d",
+    "prereqs": [
+      "recursion"
+    ],
+    "encompasses": [
+      {
+        "id": "recursion",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Define dp[i] in words, write its recurrence from smaller indices, and fill it in order (or memoise)."
+  },
+  {
+    "id": "dp-take-or-skip",
+    "name": "Take or Skip",
+    "topic": "dp-1d",
+    "prereqs": [
+      "dp-1d"
+    ],
+    "encompasses": [
+      {
+        "id": "dp-1d",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "At each item choose the better of taking it (with its constraint) or skipping it."
+  },
+  {
+    "id": "expand-around-center",
+    "name": "Expanding around Centres",
+    "topic": "dp-1d",
+    "prereqs": [
+      "two-pointers-opposite"
+    ],
+    "encompasses": [
+      {
+        "id": "two-pointers-opposite",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Every palindrome has a centre; expand from each of the 2n-1 centres while both ends match."
+  },
+  {
+    "id": "dp-unbounded",
+    "name": "Unbounded Choices",
+    "topic": "dp-1d",
+    "prereqs": [
+      "dp-1d"
+    ],
+    "encompasses": [
+      {
+        "id": "dp-1d",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Build each amount from smaller amounts, allowing every choice to be reused."
+  },
+  {
+    "id": "dp-segmentation",
+    "name": "Prefix Segmentation",
+    "topic": "dp-1d",
+    "prereqs": [
+      "dp-1d",
+      "hash-set"
+    ],
+    "encompasses": [
+      {
+        "id": "dp-1d",
+        "w": 1.0
+      },
+      {
+        "id": "hash-set",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "dp[i] says whether (or how many ways) the first i characters split into valid pieces."
+  },
+  {
+    "id": "dp-min-max",
+    "name": "Tracking Min and Max",
+    "topic": "dp-1d",
+    "prereqs": [
+      "dp-1d"
+    ],
+    "encompasses": [
+      {
+        "id": "dp-1d",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "When a negative can flip the best into the worst, carry both the max and the min ending here."
+  },
+  {
+    "id": "dp-subsequence",
+    "name": "Subsequence DP",
+    "topic": "dp-1d",
+    "prereqs": [
+      "dp-1d"
+    ],
+    "encompasses": [
+      {
+        "id": "dp-1d",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "dp[i] is the best subsequence ending at i, built from all earlier j that can come before it."
+  },
+  {
+    "id": "dp-2d-grid",
+    "name": "2-D Grid DP",
+    "topic": "dp-2d",
+    "prereqs": [
+      "dp-1d"
+    ],
+    "encompasses": [
+      {
+        "id": "dp-1d",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "A cell's value comes from its top and left neighbours; one row of memory is often enough."
+  },
+  {
+    "id": "dp-two-strings",
+    "name": "DP over Two Strings",
+    "topic": "dp-2d",
+    "prereqs": [
+      "dp-2d-grid"
+    ],
+    "encompasses": [
+      {
+        "id": "dp-2d-grid",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "dp[i][j] answers the question for prefixes a[:i] and b[:j]; match or skip a character from either string."
+  },
+  {
+    "id": "kadane",
+    "name": "Kadane's Algorithm",
+    "topic": "greedy",
+    "prereqs": [
+      "running-best"
+    ],
+    "encompasses": [
+      {
+        "id": "running-best",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Extend the current subarray only while its sum helps; otherwise restart at the current element."
+  },
+  {
+    "id": "greedy-reach",
+    "name": "Greedy Reach",
+    "topic": "greedy",
+    "prereqs": [
+      "running-best"
+    ],
+    "encompasses": [
+      {
+        "id": "running-best",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Track the farthest index reachable so far; if you ever stand beyond it, you are stuck."
+  },
+  {
+    "id": "interval-merge",
+    "name": "Sorting and Merging Intervals",
+    "topic": "intervals",
+    "prereqs": [
+      "sorting"
+    ],
+    "encompasses": [
+      {
+        "id": "sorting",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Sort by start; an interval overlaps the previous merged one exactly when it starts before that one ends."
+  },
+  {
+    "id": "interval-greedy",
+    "name": "Greedy by End Time",
+    "topic": "intervals",
+    "prereqs": [
+      "interval-merge"
+    ],
+    "encompasses": [
+      {
+        "id": "interval-merge",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Keep the interval that ends first; it leaves the most room for the rest."
+  },
+  {
+    "id": "interval-sweep",
+    "name": "Counting Overlaps",
+    "topic": "intervals",
+    "prereqs": [
+      "interval-merge",
+      "heap"
+    ],
+    "encompasses": [
+      {
+        "id": "interval-merge",
+        "w": 0.7
+      },
+      {
+        "id": "heap",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "Process starts in order and release rooms whose end has passed (a min-heap of ends, or sorted starts and ends)."
+  },
+  {
+    "id": "bit-basics",
+    "name": "Bits and Masks",
+    "topic": "bit-manipulation",
+    "prereqs": [],
+    "encompasses": [],
+    "key_idea": "Use &, |, ^, << and >> to read and set bits; n & (n - 1) clears the lowest set bit."
+  },
+  {
+    "id": "xor-tricks",
+    "name": "XOR Tricks",
+    "topic": "bit-manipulation",
+    "prereqs": [
+      "bit-basics"
+    ],
+    "encompasses": [
+      {
+        "id": "bit-basics",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "x ^ x = 0 and x ^ 0 = x, so XOR-ing everything cancels pairs and leaves the odd one out."
+  },
+  {
+    "id": "bit-dp",
+    "name": "DP on Bits",
+    "topic": "bit-manipulation",
+    "prereqs": [
+      "bit-basics",
+      "dp-1d"
+    ],
+    "encompasses": [
+      {
+        "id": "bit-basics",
+        "w": 1.0
+      },
+      {
+        "id": "dp-1d",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Reuse answers for smaller numbers: bits(i) = bits(i >> 1) + (i & 1)."
+  },
+  {
+    "id": "bit-arithmetic",
+    "name": "Arithmetic with Bits",
+    "topic": "bit-manipulation",
+    "prereqs": [
+      "bit-basics"
+    ],
+    "encompasses": [
+      {
+        "id": "bit-basics",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Addition is XOR for the sum without carry, plus AND shifted left for the carry, repeated until no carry is left."
+  },
+  {
+    "id": "matrix-traversal",
+    "name": "Matrix Index Tricks",
+    "topic": "math-geometry",
+    "prereqs": [
+      "dynamic-arrays"
+    ],
+    "encompasses": [
+      {
+        "id": "dynamic-arrays",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Express moves as index transformations: transpose, reverse rows, or walk layers with four boundaries."
+  },
+  {
+    "id": "in-place-markers",
+    "name": "In-Place Markers",
+    "topic": "math-geometry",
+    "prereqs": [
+      "matrix-traversal"
+    ],
+    "encompasses": [
+      {
+        "id": "matrix-traversal",
+        "w": 1.0
+      }
+    ],
+    "key_idea": "Reuse part of the input (a first row or column, or a sign) as flags to avoid extra memory."
+  }
+]

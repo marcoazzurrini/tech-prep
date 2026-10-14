@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>tech-prep · Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--page:#1a1a1a;--panel:#262626;--raised:#303030;--line:#363636;--text:#eff1f6;--muted:#a8adb7;--accent:#ffa116;--green:#2cbb5d;--amber:#ffc01e;--red:#ef4743;--mono:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:var(--page);color:var(--text);font:400 15px/1.5 "Atkinson Hyperlegible Next",system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;display:grid;grid-template-columns:64px 1fr}
+::selection{background:rgba(255,161,22,.35)}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+.rail{width:64px;height:900px;display:flex;flex-direction:column;padding:14px 10px;gap:4px}
+.mark{height:44px;display:grid;place-items:center;margin-bottom:14px;color:var(--accent)}
+.item{height:44px;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.item.on{background:var(--raised);color:var(--accent)}
+.rail .foot{margin-top:auto}
+
+main{display:grid;grid-template-columns:1fr 420px;gap:8px;padding:8px 8px 8px 0;height:900px;min-width:0}
+.panel{background:var(--panel);border-radius:10px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+
+/* Graph */
+.head{padding:28px 26px 0;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+h1{font-size:23px;line-height:1.3;font-weight:700;letter-spacing:-.01em}
+.summary{margin-top:6px;font-size:15px;color:var(--muted)}
+.summary b{color:var(--text);font-weight:500}
+.tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:1px}
+.legend{display:flex;gap:18px;font-size:13px;color:var(--muted);padding-bottom:3px}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend i{width:10px;height:10px;border-radius:3px;background:var(--raised)}
+.legend i.cur{box-shadow:0 0 0 1.5px var(--accent);background:var(--panel)}
+.legend i.on{background:var(--green)}
+.legend i.lk{background:transparent;box-shadow:inset 0 0 0 1px #4a4a4a}
+.graph{position:relative;width:880px;height:700px;margin:40px auto 0}
+.graph svg.edges{position:absolute;inset:0;overflow:visible}
+.e{fill:none;stroke:#4a4a4a;stroke-width:1.5}.e.lit{stroke:#71757d}
+.node{position:absolute;width:164px;height:58px;border-radius:10px;padding:9px 12px;background:var(--raised);display:flex;flex-direction:column;justify-content:space-between}
+.node b{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.bar{flex:1;height:4px;border-radius:2px;background:#454545;overflow:hidden}.bar i{display:block;height:100%;background:var(--green);border-radius:2px}
+.cnt{white-space:nowrap}
+.node.current{box-shadow:0 0 0 2px var(--accent),0 8px 24px rgba(0,0,0,.35)}
+.node.locked{background:var(--page);box-shadow:inset 0 0 0 1px #3a3a3a}
+.node.locked b{color:#b4b8c0;font-weight:500}
+.node .lk{width:13px;height:13px}
+
+/* Topic detail */
+.ph{height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 20px;border-bottom:1px solid var(--line);font-size:14px;font-weight:500;color:var(--muted)}
+.detail{flex:1;padding:24px 28px 0;overflow:hidden}
+h2{font-size:23px;line-height:1.3;font-weight:700;letter-spacing:-.01em}
+.needs{margin-top:6px;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.needs svg.i{width:15px;height:15px;color:var(--green)}
+h3{font-size:14px;font-weight:700;color:var(--muted);margin:22px 0 2px}
+.row{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .t{font-size:16px;font-weight:500;line-height:1.4}
+.row .k{grid-column:1;font-size:14px;line-height:1.55;color:var(--muted);max-width:44ch}
+.row .s{grid-column:2;grid-row:1/3;align-self:start;font-size:13px;white-space:nowrap;text-align:right;color:var(--muted)}
+.pill{display:inline-block;font-size:12px;font-weight:500;padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.pass{color:var(--green);border-color:rgba(44,187,93,.45)}
+.pill.due{color:var(--accent);border-color:rgba(255,161,22,.5)}
+.pill.next{color:var(--text);border-color:#555}
+.when{display:block;margin-top:5px;font-size:12px;color:var(--muted)}
+.diff{font-size:13px;font-weight:500}.easy{color:var(--green)}.med{color:var(--amber)}.hard{color:var(--red)}
+.prob .s{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.prob .st{display:flex;align-items:center;gap:5px}
+.prob .s svg.i{width:15px;height:15px}
+.ok{color:var(--green)}.now{color:var(--accent)}
+.foot-btn{padding:16px;display:flex}
+.btn{flex:1;height:44px;border-radius:10px;background:var(--accent);color:#1a1a1a;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn svg.i{width:18px;height:18px}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="logo" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"/></symbol>
+<symbol id="today" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="map" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h6.5"/></symbol>
+<symbol id="concepts" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+<symbol id="history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></symbol>
+<symbol id="gear" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="tick" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+<symbol id="dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/></symbol>
+<symbol id="play" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></symbol>
+</defs></svg>
+
+<nav class="rail" aria-label="Main">
+  <div class="mark"><svg class="i"><use href="#logo"/></svg></div>
+  <a class="item" title="Today"><svg class="i"><use href="#today"/></svg></a>
+  <a class="item on" title="Roadmap"><svg class="i"><use href="#map"/></svg></a>
+  <a class="item" title="Concepts"><svg class="i"><use href="#concepts"/></svg></a>
+  <a class="item" title="History"><svg class="i"><use href="#history"/></svg></a>
+  <div class="foot"><a class="item" title="Settings"><svg class="i"><use href="#gear"/></svg></a></div>
+</nav>
+
+<main>
+  <section class="panel">
+    <div class="head">
+      <div>
+        <h1>Roadmap</h1>
+        <p class="summary"><b>7 of 75</b> problems solved · <b>9 of 62</b> concepts passed · <b>2</b> mastered<span class="tag">sample data</span></p>
+      </div>
+      <div class="legend"><span><i class="cur"></i>Now</span><span><i class="on"></i>Solved</span><span><i></i>Open</span><span><i class="lk"></i>Locked</span></div>
+    </div>
+    <div class="graph">
+      <svg class="edges" width="880" height="700">
+<path class="e lit" d="M440 58 C440 74 317 74 317 90"/>
+<path class="e lit" d="M440 58 C440 74 563 74 563 90"/>
+<path class="e lit" d="M317 148 C317 164 108 164 108 180"/>
+<path class="e lit" d="M317 148 C317 164 317 164 317 180"/>
+<path class="e lit" d="M317 148 C317 164 586 164 586 180"/>
+<path class="e" d="M317 238 C317 254 440 254 440 270"/>
+<path class="e" d="M586 238 C586 254 440 254 440 270"/>
+<path class="e" d="M440 328 C440 344 224 344 224 360"/>
+<path class="e" d="M440 328 C440 344 656 344 656 360"/>
+<path class="e" d="M440 328 C440 344 440 344 440 360"/>
+<path class="e" d="M440 418 C440 434 264 434 264 450"/>
+<path class="e" d="M440 418 C440 434 88 434 88 450"/>
+<path class="e" d="M656 418 C656 434 616 434 616 450"/>
+<path class="e" d="M656 418 C656 434 792 434 792 450"/>
+<path class="e" d="M656 418 C656 434 440 434 440 450"/>
+<path class="e" d="M346 479 H358"/>
+<path class="e" d="M264 508 C264 524 264 524 264 540"/>
+<path class="e" d="M88 508 C88 524 264 524 264 540"/>
+<path class="e" d="M88 508 C88 524 88 524 88 540"/>
+<path class="e" d="M88 598 C88 614 88 614 88 630"/>
+      </svg>
+<div class="node progress" style="left:358px;top:0px"><b>Arrays & Hashing</b><div class="meta"><span class="bar"><i style="width:50%"></i></span><span class="cnt">4 / 8</span></div></div>
+<div class="node progress" style="left:235px;top:90px"><b>Two Pointers</b><div class="meta"><span class="bar"><i style="width:33%"></i></span><span class="cnt">1 / 3</span></div></div>
+<div class="node open" style="left:481px;top:90px"><b>Stack</b><div class="meta"><span class="bar"><i style="width:0%"></i></span><span class="cnt">0 / 1</span></div></div>
+<div class="node current" style="left:26px;top:180px"><b>Sliding Window</b><div class="meta"><span class="bar"><i style="width:50%"></i></span><span class="cnt">2 / 4</span></div></div>
+<div class="node open" style="left:235px;top:180px"><b>Binary Search</b><div class="meta"><span class="bar"><i style="width:0%"></i></span><span class="cnt">0 / 2</span></div></div>
+<div class="node open" style="left:504px;top:180px"><b>Linked List</b><div class="meta"><span class="bar"><i style="width:0%"></i></span><span class="cnt">0 / 6</span></div></div>
+<div class="node locked" style="left:358px;top:270px"><b>Trees</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">11 problems</span></div></div>
+<div class="node locked" style="left:142px;top:360px"><b>Tries</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">3 problems</span></div></div>
+<div class="node locked" style="left:574px;top:360px"><b>Heap</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">1 problem</span></div></div>
+<div class="node locked" style="left:358px;top:360px"><b>Backtracking</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">2 problems</span></div></div>
+<div class="node locked" style="left:182px;top:450px"><b>Graphs</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">6 problems</span></div></div>
+<div class="node locked" style="left:6px;top:450px"><b>1-D DP</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">10 problems</span></div></div>
+<div class="node locked" style="left:534px;top:450px"><b>Intervals</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">5 problems</span></div></div>
+<div class="node locked" style="left:710px;top:450px"><b>Greedy</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">2 problems</span></div></div>
+<div class="node locked" style="left:358px;top:450px"><b>Advanced Graphs</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">1 problem</span></div></div>
+<div class="node locked" style="left:182px;top:540px"><b>2-D DP</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">2 problems</span></div></div>
+<div class="node locked" style="left:6px;top:540px"><b>Bit Manipulation</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">5 problems</span></div></div>
+<div class="node locked" style="left:6px;top:630px"><b>Math & Geometry</b><div class="meta"><svg class="i lk"><use href="#lock"/></svg><span class="cnt">3 problems</span></div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph">Topic</div>
+    <div class="detail">
+      <h2>Sliding Window</h2>
+      <p class="needs"><svg class="i"><use href="#tick"/></svg>Unlocked by Two Pointers · 2 of 4 solved</p>
+
+      <h3>Concepts</h3>
+      <div class="row"><span class="t">Running Minimum / Maximum</span><span class="s"><span class="pill pass">Passed</span><span class="when">review in 6 days</span></span><span class="k">Carry the best value seen so far as you scan, so each position is compared once.</span></div>
+      <div class="row"><span class="t">Variable Sliding Window</span><span class="s"><span class="pill due">Due today</span><span class="when">in this session</span></span><span class="k">Grow the right edge every step; shrink the left edge only while the window breaks the rule.</span></div>
+      <div class="row"><span class="t">Window with Counts</span><span class="s"><span class="pill next">Next to learn</span><span class="when">today</span></span><span class="k">Keep a frequency map of the window and a cheap validity check, updated as items enter and leave.</span></div>
+
+      <h3>Problems</h3>
+      <div class="row prob"><span class="t">Best Time to Buy and Sell Stock</span><span class="s ok"><span class="diff easy">Easy</span><span class="st"><svg class="i"><use href="#tick"/></svg>Solved</span></span></div>
+      <div class="row prob"><span class="t">Longest Substring Without Repeating Characters</span><span class="s now"><span class="diff med">Medium</span><span class="st"><svg class="i"><use href="#dot"/></svg>In review now</span></span></div>
+      <div class="row prob"><span class="t">Longest Repeating Character Replacement</span><span class="s"><span class="diff med">Medium</span><span class="st">After the lesson</span></span></div>
+      <div class="row prob"><span class="t">Minimum Window Substring</span><span class="s"><span class="diff hard">Hard</span><span class="st">Not started</span></span></div>
+    </div>
+    <div class="foot-btn"><span class="btn"><svg class="i"><use href="#play"/></svg>Continue today's session</span></div>
+  </section>
+</main>
+</body></html>

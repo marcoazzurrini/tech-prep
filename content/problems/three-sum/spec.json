@@ -1,0 +1,20 @@
+{
+  "function": {
+    "python": "three_sum",
+    "typescript": "threeSum"
+  },
+  "compare": "deep-unordered",
+  "stubs": {
+    "python": "def three_sum(nums: list[int]) -> list[list[int]]:\n    pass\n",
+    "typescript": "export function threeSum(nums: number[]): number[][] {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": [[-1, 0, 1, 2, -1, -4]], "expected": [[-1, -1, 2], [-1, 0, 1]]},
+    {"args": [[0, 1, 1]], "expected": []},
+    {"args": [[0, 0, 0]], "expected": [[0, 0, 0]]},
+    {"args": [[0, 0, 0, 0]], "expected": [[0, 0, 0]]},
+    {"args": [[-2, 0, 1, 1, 2]], "expected": [[-2, 0, 2], [-2, 1, 1]]},
+    {"args": [[-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6]], "expected": [[-4, -2, 6], [-4, 0, 4], [-4, 1, 3], [-4, 2, 2], [-2, -2, 4], [-2, 0, 2]]},
+    {"args": [[1, 2, -2, -1]], "expected": []}
+  ]
+}

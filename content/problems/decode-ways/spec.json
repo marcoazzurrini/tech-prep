@@ -1,0 +1,22 @@
+{
+  "function": {
+    "python": "num_decodings",
+    "typescript": "numDecodings"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def num_decodings(s: str) -> int:\n    pass\n",
+    "typescript": "export function numDecodings(s: string): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["12"],"expected":2},
+    {"args":["226"],"expected":3},
+    {"args":["06"],"expected":0},
+    {"args":["0"],"expected":0},
+    {"args":["10"],"expected":1},
+    {"args":["2101"],"expected":1},
+    {"args":["100"],"expected":0},
+    {"args":["27"],"expected":1},
+    {"args":["1111022121210122222121110111211212221112211102111022122221212112211112212102"],"expected":2018712163104}
+  ]
+}

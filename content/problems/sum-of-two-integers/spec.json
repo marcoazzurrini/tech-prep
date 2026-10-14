@@ -1,0 +1,21 @@
+{
+  "function": {
+    "python": "get_sum",
+    "typescript": "getSum"
+  },
+  "stubs": {
+    "python": "def get_sum(a: int, b: int) -> int:\n    pass\n",
+    "typescript": "export function getSum(a: number, b: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[1,2],"expected":3},
+    {"args":[2,3],"expected":5},
+    {"args":[-7,4],"expected":-3},
+    {"args":[0,0],"expected":0},
+    {"args":[-1,1],"expected":0},
+    {"args":[-1000,-1000],"expected":-2000},
+    {"args":[1000,-1],"expected":999},
+    {"args":[-5,-3],"expected":-8},
+    {"args":[999,1000],"expected":1999}
+  ]
+}

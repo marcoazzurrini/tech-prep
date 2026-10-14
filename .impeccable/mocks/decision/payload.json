@@ -1,0 +1,89 @@
+{
+  "title": "Choose the visual world for the tech-prep desktop app",
+  "question": "The roll assigned the Dojo Name Board. Keep it, take an alternate, or re-roll. Three more catalog worlds wait in the re-roll pool (convention catalog grid, Crouwel grid specimen, variable-font specimen).",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Dojo Name Board",
+      "kicker": "THE ROLL",
+      "lineage": "the nafudakake: wooden name plates hung on a dojo wall in order of rank",
+      "thesis": "Every concept is a wooden name plate that climbs the wall as you earn it.",
+      "palette": ["#1c2540", "#131a2e", "#e0c492", "#16181d", "#d9a441", "#6f9a5b"],
+      "materials": ["aizome indigo cloth", "hinoki wood plates", "sumi ink", "belt-colour tape"],
+      "viewport": "Indigo rail and tutor pane frame a dark Neovim pane; the problem's concept plates hang face-down above it until the review ends.",
+      "risk": "Can slide into Japanese kitsch if brush fonts or ornaments creep in; plates must stay small and functional.",
+      "raised": [
+        {"from": "challenger-lexicon", "raise": "Tutor prose is held to a fixed 60-character measure; extra width becomes margin, never longer lines."},
+        {"from": "challenger-ticket-wallet", "raise": "Today's session strip always shows what remains, and finished tasks stay visible as done."}
+      ],
+      "html": ".impeccable/mocks/decision/assigned.html"
+    },
+    {
+      "id": "model-pick",
+      "label": "Field Guide Plates",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Peterson field guides: field marks arrowed on facing plates",
+      "thesis": "Recognition is the skill, so every problem shows its field marks: the cues that identify the pattern.",
+      "palette": ["#f3f4ef", "#1f2622", "#4a5a3a", "#3f7fa6", "#c8902d", "#b5532f"],
+      "materials": ["olive cloth binding", "plate paper", "fine pointer lines"],
+      "viewport": "Light page with an olive rail; after the review, thin pointer lines tie cue phrases in the statement to the concept they reveal.",
+      "risk": "A light shell can clash with a dark Neovim theme, and plates can read as a book instead of a working screen.",
+      "html": ".impeccable/mocks/decision/model-pick.html"
+    },
+    {
+      "id": "challenger-metro",
+      "label": "Metro Tiles",
+      "verdict": "competitive",
+      "lineage": "the Metro design language: flat tiles and giant lowercase type",
+      "thesis": "Type is the interface: giant lowercase headings and flat colour tiles, with no chrome.",
+      "palette": ["#000000", "#1ba1e2", "#8cbf26", "#d80073", "#f0a30a", "#ffffff"],
+      "materials": ["flat colour fields", "light-weight lowercase type"],
+      "viewport": "Black ground, a cropped giant 'today' heading, session tasks as flat tiles, tutor prose in large type beside the editor.",
+      "case": "Fuses well: big type and flat state colours read at a glance; loses on audience fit because it reads as 2012 Windows.",
+      "risk": "Giant type eats space a coding screen needs, and the association is dated.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-metro-typographic-tiles-hero.webp",
+      "html": ".impeccable/mocks/decision/challenger-metro.html"
+    },
+    {
+      "id": "challenger-lexicon",
+      "label": "Lexicon Shoulder and Plate",
+      "verdict": "declined",
+      "lineage": "nineteenth-century lexicon pages with colour plates",
+      "thesis": "Black text to a fixed measure, guide words naming the span in view, colour only inside plates.",
+      "palette": ["#f1ead8", "#141414", "#d2452b", "#2f56a6"],
+      "materials": ["engraving black", "uncoated stock", "chromolithograph plates"],
+      "viewport": "A roadmap set as lexicon columns with guide words at the head.",
+      "case": "Fuses poorly: a coding learner does not identify with a dictionary, and quarantined colour fights state colours.",
+      "risk": "Reads as a book, not a tool.",
+      "kept": "Its measure discipline: prose never runs past 60 characters.",
+      "hero": "https://impeccable.style/worlds/cards/rw-lexicon-shoulder-and-plate-hero.webp"
+    },
+    {
+      "id": "challenger-ticket-wallet",
+      "label": "Jet-Age Ticket Wallet",
+      "verdict": "declined",
+      "lineage": "1960s airline ticket wallets with carbon coupons",
+      "thesis": "A session as a coupon book: each task tears off and the wallet shows what remains.",
+      "palette": ["#1b2c5a", "#c8202f", "#ffffff", "#5b3f8c"],
+      "materials": ["coupon stock", "carbon copies", "rubber stamps"],
+      "viewport": "Today's tasks as coupons, the current one open.",
+      "case": "Fuses poorly: VOID stamps clash with a product that has no failure state, and travel has nothing to do with learning.",
+      "risk": "Costume of paper ephemera on a working screen.",
+      "kept": "Its sequence discipline: the session always shows what remains.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-jet-age-ticket-wallet-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "LeetCode's three-column dark IDE, executed cleanly: statement, editor, chat.",
+    "palette": ["#1a1a1a", "#282828", "#3e3e3e", "#eff1f6", "#ffa116", "#2cbb5d"],
+    "materials": ["flat dark panels", "tabs", "hairline dividers"],
+    "viewport": "Problem tabs left, Neovim centre, tutor chat right, test console under the editor.",
+    "risk": "Indistinguishable from LeetCode by design.",
+    "html": ".impeccable/mocks/decision/canon.html"
+  },
+  "steer": true
+}

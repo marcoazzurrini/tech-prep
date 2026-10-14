@@ -1,0 +1,15 @@
+{
+  "kind": "design",
+  "class": "Trie",
+  "compare": "exact",
+  "stubs": {
+    "python": "class Trie:\n    def __init__(self):\n        pass\n\n    def insert(self, word: str) -> None:\n        pass\n\n    def search(self, word: str) -> bool:\n        pass\n\n    def startsWith(self, prefix: str) -> bool:\n        pass\n",
+    "typescript": "export class Trie {\n  constructor() {}\n\n  insert(word: string): void {\n    throw new Error(\"not implemented\");\n  }\n\n  search(word: string): boolean {\n    throw new Error(\"not implemented\");\n  }\n\n  startsWith(prefix: string): boolean {\n    throw new Error(\"not implemented\");\n  }\n}\n"
+  },
+  "tests": [
+    {"ops":["Trie","insert","search","search","startsWith","insert","search"],"args":[[],["apple"],["apple"],["app"],["app"],["app"],["app"]],"expected":[null,null,true,false,true,null,true]},
+    {"ops":["Trie","search","startsWith"],"args":[[],["a"],["a"]],"expected":[null,false,false]},
+    {"ops":["Trie","insert","insert","search","search","startsWith","startsWith"],"args":[[],["car"],["card"],["ca"],["card"],["card"],["cards"]],"expected":[null,null,null,false,true,true,false]},
+    {"ops":["Trie","insert","startsWith","search","insert","search"],"args":[[],["a"],["a"],["b"],["b"],["b"]],"expected":[null,null,true,false,null,true]}
+  ]
+}

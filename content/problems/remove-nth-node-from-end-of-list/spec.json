@@ -1,0 +1,25 @@
+{
+  "function": {
+    "python": "remove_nth_from_end",
+    "typescript": "removeNthFromEnd"
+  },
+  "params": [
+    "ListNode",
+    "json"
+  ],
+  "returns": "ListNode",
+  "compare": "exact",
+  "stubs": {
+    "python": "from ds import ListNode\n\n\ndef remove_nth_from_end(head: ListNode | None, n: int) -> ListNode | None:\n    pass\n",
+    "typescript": "import { ListNode } from \"./ds.ts\";\n\nexport function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[1,2,3,4,5],2],"expected":[1,2,3,5]},
+    {"args":[[1],1],"expected":[]},
+    {"args":[[1,2],1],"expected":[1]},
+    {"args":[[1,2],2],"expected":[2]},
+    {"args":[[1,2,3,4,5],5],"expected":[2,3,4,5]},
+    {"args":[[4,4,4,7],3],"expected":[4,4,7]},
+    {"args":[[0,10,20,30,40,50,60,70,80,90],1],"expected":[0,10,20,30,40,50,60,70,80]}
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "function": {
+    "python": "alien_order",
+    "typescript": "alienOrder"
+  },
+  "compare": "one-of",
+  "stubs": {
+    "python": "def alien_order(words: list[str]) -> str:\n    pass\n",
+    "typescript": "export function alienOrder(words: string[]): string {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[["wrt","wrf","er","ett","rftt"]],"expected":["wertf"]},
+    {"args":[["z","x"]],"expected":["zx"]},
+    {"args":[["z","x","z"]],"expected":[""]},
+    {"args":[["abc","ab"]],"expected":[""]},
+    {"args":[["z","z"]],"expected":["z"]},
+    {"args":[["ac","ab","b"]],"expected":["acb","cab"]},
+    {"args":[["ba","bc","ac","cab"]],"expected":["bac"]},
+    {"args":[["m","melte","mi","t","tmez","ttb","tfq","tfo","tiqzn","tod","xkxyazlb","xjmukzkr","xlpdar","xzh","cx","cl","cu","cipf","e","kuh","kfpljfi","ksvhqyzl","ksf","jxn","vt","vkwzbkb","vlnpy","vhhuicqg","va","la","djmnoq","doeuny","dnwugbm","ymyzdi","yc","yuqhklc","yfoaks","rywqb","rgki","hchvsj","hji","q","qjvnprf","qvf","qvzfoz","qlkyjz","qbd","u","ukcqq","ukaemhge","uyt","ugptry","ubrmqazr","ubrdlx","uswz","ft","fxbnz","fvhmuua","fdwfmrlo","ffou","fnqfrx","i","iqwwdngo","iithgb","w","wrerb","wgk","ojw","ofxqc","oww","oglw","gdqtcf","gow","atu","achggmkg","akyoj","ajvydol","aobwhe","azwmgiv","apudkv","asrx","z","zqpv","zzhsjxwn","zpbkyizf","znvn","pxm","pqdwzeuk","pn","n","nx","nyetut","no","b","bjm","bah","bsj","sxh","suqdkn"]],"expected":["mtxcekjvldyrhqufiwogazpnbs"]}
+  ]
+}

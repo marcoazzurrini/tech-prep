@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tech-prep · today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#fff;--dim:#b8b8b8;--cyan:#1ba1e2;--lime:#8cbf26;--mag:#d80073;--amber:#f0a30a;--tile:#1f1f1f;--ed:#0b0b0b;
+  --kw:#7cc9ee;--str:#b9da6e;--num:#f6c35a;--ty:#ef8cc4;--com:#8f8f8f;--m:48px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden;background:#000}
+body{color:var(--ink);font:400 15px/1.5 "Open Sans",sans-serif;display:grid;grid-template-rows:132px 120px 1fr;row-gap:24px;padding-bottom:32px;position:relative}
+::selection{background:var(--cyan);color:#000}
+a{color:inherit;text-decoration:none}
+svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;display:block}
+/* pivot navigation */
+.pivot{display:flex;align-items:baseline;gap:64px;padding-left:var(--m);white-space:nowrap;overflow:hidden;height:132px;padding-top:12px}
+.pivot a{font-weight:300;letter-spacing:-.03em;line-height:1;color:#9c9c9c;font-size:92px}
+.pivot a[aria-current]{color:var(--ink);font-size:120px}
+.pivot a:not([aria-current]):hover{color:var(--ink)}
+.settings{position:absolute;top:4px;right:36px;width:40px;height:40px;display:grid;place-items:center;color:var(--ink);background:#000}
+.settings:hover{background:var(--tile)}
+/* session tiles: the signature move */
+.strip{display:grid;grid-template-columns:806px 498px;column-gap:40px;padding:0 var(--m)}
+.tiles{display:flex;gap:8px}
+.t{height:120px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;color:#000}
+.t b{font-weight:300;font-size:30px;line-height:1;letter-spacing:-.02em}
+.t span{font-weight:600;font-size:14px;line-height:1.3}
+.t.now{background:var(--cyan);width:376px}
+.t.learn{background:var(--amber);width:144px}
+.t.next{background:var(--tile);width:144px;color:var(--dim)}
+.t .row{display:flex;justify-content:space-between;align-items:baseline}
+.t .row span{font-weight:400;font-size:14px}
+.live{background:var(--tile);height:120px;padding:12px 18px 10px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr;gap:6px 16px}
+.live .v{font-size:26px;font-weight:300;line-height:1.15;font-variant-numeric:tabular-nums}
+.live .v small{font-size:14px;font-weight:400;color:var(--dim);margin-left:6px}
+.live .v.ok{color:var(--lime)}
+.live em{grid-column:1/3;align-self:end;font-style:normal;font-size:12px;color:var(--dim)}
+/* main */
+main{display:grid;grid-template-columns:806px 498px;column-gap:40px;padding:0 var(--m);min-height:0}
+.work{display:grid;grid-template-rows:auto 1fr auto;row-gap:10px;min-height:0}
+.ph{display:flex;align-items:baseline;gap:18px;font-size:14px;color:var(--dim);height:24px}
+.ph h1{font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-.005em}
+.ph .mode{color:var(--cyan);font-weight:600}
+.nvim{background:var(--ed);display:flex;flex-direction:column;font:400 14px/22px "JetBrains Mono",monospace;min-height:0}
+.code{flex:1;padding:10px 0;white-space:pre;color:#e6e6e6}
+.code i{font-style:normal;display:inline-block;width:46px;padding-right:14px;text-align:right;color:#8a8a8a}
+.code .cl{background:#171717;display:block}.code .cl i{color:var(--ink)}
+.c{color:var(--com)}.k{color:var(--kw)}.s{color:var(--str)}.n{color:var(--num)}.y{color:var(--ty)}.f{color:#fff;font-weight:600}
+.cur{background:var(--ink);color:#000}
+.sl{display:flex;height:26px;line-height:26px;background:var(--tile);color:var(--dim);font-size:13px}
+.sl .md{background:var(--cyan);color:#000;font-weight:600;padding:0 12px}
+.sl .fn{color:var(--ink);padding:0 14px}.sl .sp{flex:1}.sl .ft,.sl .pos{padding:0 14px}.sl .pos{background:#2c2c2c;color:var(--ink)}
+.tests{display:flex;height:64px;background:var(--tile)}
+.tests .fail{background:var(--mag);width:64px;display:grid;place-items:center;color:#fff}
+.tests .body{flex:1;display:flex;align-items:center;gap:28px;padding:0 20px}
+.tests strong{font-weight:300;font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tests p{font-size:15px;color:var(--dim)}.tests p code{font:600 14px "JetBrains Mono",monospace;color:var(--ink)}
+.seg{display:flex;gap:3px;margin-left:auto}.seg u{width:14px;height:14px;background:var(--lime)}.seg u.x{background:var(--mag)}
+/* tutor */
+.tutor{display:flex;flex-direction:column;min-height:0}
+.tutor h2{font-size:17px;font-weight:600;height:24px;line-height:24px;margin-bottom:22px}
+.msg{font-size:18px;line-height:1.6;max-width:60ch;margin-bottom:26px}
+.msg.you{background:var(--tile);padding:14px 18px;margin-left:40px}
+.msg.you small{display:block;font-size:13px;color:var(--dim);line-height:1.4;margin-bottom:4px}
+.msg.turn{font-weight:600;margin-bottom:0}
+.ask{margin-top:auto;display:flex;height:64px}
+.ask label{flex:1;display:flex;align-items:center;background:var(--tile);padding:0 18px;font-size:16px;color:var(--dim);box-shadow:inset 0 -2px 0 var(--ink)}
+.ask button{width:64px;border:0;background:var(--cyan);color:#000;display:grid;place-items:center;cursor:pointer}
+.ask button:focus-visible,.pivot a:focus-visible,.settings:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+</style>
+</head>
+<body>
+<nav class="pivot" aria-label="Main">
+  <a href="#" aria-current="page">today</a>
+  <a href="#">roadmap</a>
+  <a href="#">concepts</a>
+  <a href="#">history</a>
+</nav>
+<a class="settings" href="#" aria-label="Settings"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
+
+<section class="strip" aria-label="Today's session">
+  <div class="tiles">
+    <a class="t now" href="#" aria-current="step"><div class="row"><b>review</b><span>1 of 3</span></div><span>Longest Substring Without Repeating Characters</span></a>
+    <a class="t learn" href="#"><b>learn</b><span>Window with Counts</span></a>
+    <a class="t next" href="#"><b>review</b><span></span></a>
+  </div>
+  <div class="live" aria-label="Progress, sample data">
+    <div class="v ok">9/62<small>concepts passed</small></div>
+    <div class="v">2<small>mastered</small></div>
+    <div class="v">3<small>due today</small></div>
+    <div class="v">7/75<small>problems solved</small></div>
+    <em>sample data</em>
+  </div>
+</section>
+
+<main>
+  <section class="work">
+    <header class="ph"><h1>Longest Substring Without Repeating Characters</h1><span>medium</span><span class="mode">review</span><span>2 concepts · revealed when you finish</span></header>
+    <div class="nvim">
+<div class="code"><i>1</i><span class="c">// ═══ PROBLEM ════════════════════════════════════════</span>
+<i>2</i><span class="c">// Longest Substring Without Repeating Characters (medium)</span>
+<i>3</i><span class="c">//</span>
+<i>4</i><span class="c">// Given a string s, return the length of the longest</span>
+<i>5</i><span class="c">// substring (contiguous) with no repeated character.</span>
+<i>6</i><span class="c">//   "abcabcbb" -&gt; 3    "bbbbb" -&gt; 1    "pwwkew" -&gt; 3</span>
+<i>7</i><span class="c">// ═══ YOUR SOLUTION ══════════════════════════════════</span>
+<i>8</i><span class="k">export function</span> <span class="f">lengthOfLongestSubstring</span>(s: <span class="y">string</span>): <span class="y">number</span> {
+<i>9</i>  <span class="k">const</span> last = <span class="k">new</span> <span class="y">Map</span>&lt;<span class="y">string</span>, <span class="y">number</span>&gt;();
+<i>10</i>  <span class="k">let</span> left = <span class="n">0</span>;
+<i>11</i>  <span class="k">let</span> best = <span class="n">0</span>;
+<i>12</i>  <span class="k">for</span> (<span class="k">let</span> right = <span class="n">0</span>; right &lt; s.length; right++) {
+<i>13</i>    <span class="k">const</span> ch = s[right];
+<span class="cl"><i>14</i>    <span class="k">if</span> (last.<span class="f">has</span>(ch)) left = <span class="cur">l</span>ast.<span class="f">get</span>(ch)! + <span class="n">1</span>;</span><i>15</i>    last.<span class="f">set</span>(ch, right);
+<i>16</i>    best = <span class="y">Math</span>.<span class="f">max</span>(best, right - left + <span class="n">1</span>);
+<i>17</i>  }
+<i>18</i>  <span class="k">return</span> best;
+<i>19</i>}</div>
+      <div class="sl"><span class="md">NORMAL</span><span class="fn">longest-substring.ts</span><span class="sp"></span><span class="ft">typescript</span><span class="pos">14:28</span></div>
+    </div>
+    <div class="tests" role="status">
+      <div class="fail" aria-label="1 failing"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+      <div class="body"><strong>7 / 8 passed</strong><p>failing: <code>s = "abba"</code> expected <code>2</code>, got <code>3</code></p>
+        <div class="seg" aria-hidden="true"><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u class="x"></u></div></div>
+    </div>
+  </section>
+
+  <aside class="tutor" aria-label="Tutor">
+    <h2>tutor</h2>
+    <p class="msg">Before you code: which approach would you use, and why?</p>
+    <p class="msg you"><small>You</small>Sliding window. Grow the right edge, and jump left past the last copy of the character.</p>
+    <p class="msg">Good call. 7 of 8 tests pass. The failing case is “abba”. On line 14, when you reach the second “a”, where does <code style="font:600 16px 'JetBrains Mono',monospace">left</code> go? Is that to the right of where it was?</p>
+    <p class="msg turn">Your turn: trace “abba” by hand and watch <code style="font:600 16px 'JetBrains Mono',monospace">left</code>.</p>
+    <form class="ask" action="#"><label>Ask the tutor…</label><button type="submit" aria-label="Send"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
+  </aside>
+</main>
+</body>
+</html>

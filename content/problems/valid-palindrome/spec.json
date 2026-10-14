@@ -1,0 +1,20 @@
+{
+  "function": {
+    "python": "is_palindrome",
+    "typescript": "isPalindrome"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def is_palindrome(s: str) -> bool:\n    pass\n",
+    "typescript": "export function isPalindrome(s: string): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": ["A man, a plan, a canal: Panama"], "expected": true},
+    {"args": ["race a car"], "expected": false},
+    {"args": [" "], "expected": true},
+    {"args": ["0P"], "expected": false},
+    {"args": ["ab_a"], "expected": true},
+    {"args": ["No 'x' in Nixon"], "expected": true},
+    {"args": ["a."], "expected": true}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Choose the layout for the chat-first study app",
+  "question": "Three ways the tutor can open exercise panels in a chat. Same dark, minimal look in all three; only the layout differs. The moment shown: learning JavaScript Set.",
+  "options": [
+    {
+      "id": "stage",
+      "label": "Exercise stage",
+      "kicker": "THE ROLL",
+      "thesis": "The current exercise takes the stage; the chat sits under it as a short thread.",
+      "palette": ["#0c0c0e", "#16161a", "#ececf1", "#8b8b96", "#7aa2ff"],
+      "materials": ["one centred column", "exercise card on top", "thread and composer below"],
+      "viewport": "Thin session sidebar. A large predict-the-output card fills the top of the centre column; the tutor's reply and the composer sit under it.",
+      "risk": "Long explanations push the exercise up and out of view.",
+      "html": ".impeccable/mocks/decision2/stage.html"
+    },
+    {
+      "id": "track",
+      "label": "Lesson track",
+      "thesis": "The lesson reads like one page of steps, as in Execute Program; the chat answers inline under each step.",
+      "palette": ["#0c0c0e", "#16161a", "#ececf1", "#8b8b96", "#7aa2ff"],
+      "materials": ["step rail on the left", "single reading column", "inline exercises"],
+      "viewport": "Left rail lists the lesson steps and concept states. The centre column flows explanation, worked example, then the open exercise, with the tutor's reply under it.",
+      "risk": "Feels more like a course than a conversation; free questions have less room.",
+      "html": ".impeccable/mocks/decision2/track.html"
+    },
+    {
+      "id": "canvas",
+      "label": "Chat with side panel",
+      "thesis": "A normal chat on the left; the tutor opens the exercise in a panel on the right, like t3code's side browser.",
+      "palette": ["#0c0c0e", "#16161a", "#ececf1", "#8b8b96", "#7aa2ff"],
+      "materials": ["session sidebar", "chat column", "panel opened by the tutor"],
+      "viewport": "Sidebar, then the chat column with the tutor's explanation, then a wide panel with a mini editor (Vim keys) and test results.",
+      "risk": "Three columns get tight on a laptop; the eye moves between chat and panel.",
+      "html": ".impeccable/mocks/decision2/canvas.html"
+    }
+  ],
+  "reroll": true,
+  "steer": true,
+  "buildPath": { "value": "code" }
+}

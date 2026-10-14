@@ -1,0 +1,25 @@
+{
+  "function": {
+    "python": "is_subtree",
+    "typescript": "isSubtree"
+  },
+  "params": [
+    "TreeNode",
+    "TreeNode"
+  ],
+  "compare": "exact",
+  "stubs": {
+    "python": "from ds import TreeNode\n\n\ndef is_subtree(root: TreeNode | None, sub_root: TreeNode | None) -> bool:\n    pass\n",
+    "typescript": "import { TreeNode } from \"./ds.ts\";\n\nexport function isSubtree(root: TreeNode | null, subRoot: TreeNode | null): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[3,4,5,1,2],[4,1,2]],"expected":true},
+    {"args":[[3,4,5,1,2,null,null,null,null,0],[4,1,2]],"expected":false},
+    {"args":[[1,1],[1]],"expected":true},
+    {"args":[[1,2,3],[1,2,3]],"expected":true},
+    {"args":[[1,2,3],[2,3]],"expected":false},
+    {"args":[[12],[2]],"expected":false},
+    {"args":[[1,null,1,null,1,null,1,2],[1,null,1,2]],"expected":true},
+    {"args":[[4,4,4,4,4,null,4],[4,4]],"expected":false}
+  ]
+}

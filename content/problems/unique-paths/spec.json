@@ -1,0 +1,21 @@
+{
+  "function": {
+    "python": "unique_paths",
+    "typescript": "uniquePaths"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def unique_paths(m: int, n: int) -> int:\n    pass\n",
+    "typescript": "export function uniquePaths(m: number, n: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[3,7],"expected":28},
+    {"args":[3,2],"expected":3},
+    {"args":[1,1],"expected":1},
+    {"args":[1,100],"expected":1},
+    {"args":[100,1],"expected":1},
+    {"args":[10,10],"expected":48620},
+    {"args":[23,12],"expected":193536720},
+    {"args":[51,9],"expected":1916797311}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "function": {
+    "python": "reverse_bits",
+    "typescript": "reverseBits"
+  },
+  "stubs": {
+    "python": "def reverse_bits(n: int) -> int:\n    pass\n",
+    "typescript": "export function reverseBits(n: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[43261596],"expected":964176192},
+    {"args":[1],"expected":2147483648},
+    {"args":[4294967293],"expected":3221225471},
+    {"args":[0],"expected":0},
+    {"args":[4294967295],"expected":4294967295},
+    {"args":[2147483648],"expected":1},
+    {"args":[2863311530],"expected":1431655765},
+    {"args":[305419896],"expected":510274632}
+  ]
+}

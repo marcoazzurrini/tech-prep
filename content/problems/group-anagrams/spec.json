@@ -1,0 +1,19 @@
+{
+  "function": {
+    "python": "group_anagrams",
+    "typescript": "groupAnagrams"
+  },
+  "compare": "deep-unordered",
+  "stubs": {
+    "python": "def group_anagrams(strs: list[str]) -> list[list[str]]:\n    pass\n",
+    "typescript": "export function groupAnagrams(strs: string[]): string[][] {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": [["eat", "tea", "tan", "ate", "nat", "bat"]], "expected": [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]},
+    {"args": [[""]], "expected": [[""]]},
+    {"args": [["a"]], "expected": [["a"]]},
+    {"args": [["", ""]], "expected": [["", ""]]},
+    {"args": [["abc", "bca", "cab", "xyz", "zyx", "q"]], "expected": [["abc", "bca", "cab"], ["xyz", "zyx"], ["q"]]},
+    {"args": [["ab", "ba", "abb", "bab"]], "expected": [["ab", "ba"], ["abb", "bab"]]}
+  ]
+}

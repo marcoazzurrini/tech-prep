@@ -1,0 +1,19 @@
+{
+  "kind": "roundtrip",
+  "class": "Codec",
+  "encode": "serialize",
+  "decode": "deserialize",
+  "type": "TreeNode",
+  "compare": "exact",
+  "stubs": {
+    "python": "from ds import TreeNode\n\n\nclass Codec:\n    def serialize(self, root: TreeNode | None) -> str:\n        pass\n\n    def deserialize(self, data: str) -> TreeNode | None:\n        pass\n",
+    "typescript": "import { TreeNode } from \"./ds.ts\";\n\nexport class Codec {\n  serialize(root: TreeNode | null): string {\n    throw new Error(\"not implemented\");\n  }\n\n  deserialize(data: string): TreeNode | null {\n    throw new Error(\"not implemented\");\n  }\n}\n"
+  },
+  "tests": [
+    {"args": [[1, 2, 3, null, null, 4, 5]], "expected": [1, 2, 3, null, null, 4, 5]},
+    {"args": [[]], "expected": []},
+    {"args": [[-1]], "expected": [-1]},
+    {"args": [[1, null, 2, null, 3]], "expected": [1, null, 2, null, 3]},
+    {"args": [[5, 4, 7, 3, null, 2, null, -1, null, 9]], "expected": [5, 4, 7, 3, null, 2, null, -1, null, 9]}
+  ]
+}

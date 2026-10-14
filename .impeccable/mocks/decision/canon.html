@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>tech-prep · Session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--page:#1a1a1a;--panel:#262626;--raised:#303030;--line:#3a3a3a;--text:#eff1f6;--muted:#a8adb7;--accent:#ffa116;--green:#2cbb5d;--amber:#ffc01e;--red:#ef4743;--mono:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:var(--page);color:var(--text);font:400 14px/1.5 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+::selection{background:rgba(255,161,22,.35)}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.top{height:48px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;padding:0 16px;white-space:nowrap}
+.l,.r{display:flex;align-items:center;gap:4px}.r{justify-content:flex-end;gap:12px}
+.brand{font-weight:600;font-size:15px;margin-right:16px;letter-spacing:-.01em}
+.nav{color:var(--muted);font-weight:500;padding:6px 10px;border-radius:6px}
+.nav.on{color:var(--text);background:var(--raised)}
+.steps{justify-self:center;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.step{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:999px}
+.step.on{background:var(--raised);color:var(--text);font-weight:500}
+.dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted)}.on .dot{background:var(--accent);border-color:var(--accent)}
+.steps svg.i{width:14px;height:14px;color:#6f747c}
+.stats{font-size:12px;color:var(--muted);display:flex;gap:12px;align-items:center}.stats b{color:var(--text);font-weight:600}
+.tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.iconbtn{width:32px;height:32px;border-radius:6px;display:grid;place-items:center;color:var(--muted)}
+.grid{display:grid;grid-template-columns:360px 1fr 400px;gap:6px;padding:0 6px 6px;height:852px}
+.col{display:grid;gap:6px;grid-template-rows:1fr 232px;min-height:0}
+.panel{background:var(--panel);border-radius:8px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.ph{height:40px;flex:none;display:flex;align-items:center;gap:4px;padding:0 8px;background:var(--raised);border-bottom:1px solid var(--line);font-size:13px}
+.tab{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;color:var(--muted);font-weight:500}
+.tab.on{color:var(--text)}.tab.on svg{color:var(--accent)}
+.sep{width:1px;height:14px;background:var(--line)}
+.ph .aside{margin-left:auto;color:var(--muted);font-size:12px;padding-right:8px}
+.desc{padding:24px 24px;overflow:hidden}
+h1{font-size:20px;line-height:1.35;font-weight:600;letter-spacing:-.015em;text-wrap:balance}
+.pills{display:flex;gap:8px;margin:16px 0 8px}
+.pill{font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;background:var(--raised);color:var(--muted)}
+.pill.med{color:var(--amber);background:rgba(255,192,30,.12)}
+.hidden{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);padding-bottom:24px;border-bottom:1px solid var(--line)}
+.hidden svg.i{width:14px;height:14px}
+.desc p{margin-top:24px;font-size:15px;line-height:1.6}
+code{font-family:var(--mono);font-size:13px;background:var(--raised);border-radius:4px;padding:1px 5px}
+.ex{margin-top:20px}.ex h3{font-size:14px;font-weight:600;margin-bottom:8px}
+.ex pre{font:13px/1.7 var(--mono);background:var(--raised);border-radius:8px;padding:10px 14px;color:var(--text);white-space:pre-wrap}
+.ex pre span{color:var(--muted)}
+.ed{background:#202020}.ed .ph{background:var(--raised)}
+.code{flex:1;padding:12px 0;font:14px/22px var(--mono);color:#d4d7dd;white-space:pre;overflow:hidden}
+.ln{display:block;padding-left:12px}.ln i{font-style:normal;display:inline-block;width:3ch;text-align:right;color:#8a8f98;margin-right:20px}
+.ln.cur{background:#2b2b2b}.ln.cur i{color:var(--accent)}
+.t{color:#80858e}.ln i.tl{color:#5b7a9c;text-align:left}
+.c{color:#8b919c}.k{color:#d38fe6}.f{color:#62b0f5}.y{color:#e8c47c}.n{color:#e5a46e}.s{color:#9fcf7c}
+.cur-ch{background:var(--text);color:var(--page)}
+.status{height:26px;flex:none;display:flex;align-items:center;font:500 12px var(--mono);background:var(--raised);border-top:1px solid var(--line);color:var(--muted)}
+.mode{background:var(--accent);color:#1a1a1a;font-weight:600;padding:0 12px;height:100%;display:flex;align-items:center}
+.status span{padding:0 12px}.status .grow{flex:1}
+.con{padding:16px 20px}
+.sum{display:flex;align-items:baseline;gap:12px}
+.sum strong{font-size:18px;font-weight:600;color:var(--green)}.sum span{font-size:13px;color:var(--muted)}
+.cases{display:flex;gap:8px;margin:12px 0 16px}
+.case{white-space:nowrap;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--muted);padding:4px 8px;border-radius:6px}
+.case.on{background:var(--raised);color:var(--text)}
+.case b{width:6px;height:6px;border-radius:50%;background:var(--green)}.case.on b{background:var(--red)}
+.io{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px}
+.io label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.io div div{font:14px var(--mono);background:var(--raised);border-radius:6px;padding:9px 12px}
+.io .bad{color:#ff6f6b;box-shadow:inset 0 0 0 1px rgba(239,71,67,.45)}
+.chat{flex:1;padding:32px 24px 16px;display:flex;flex-direction:column;gap:28px;overflow:hidden}
+.msg{font-size:16px;line-height:1.6;max-width:60ch}
+.msg p+p{margin-top:12px}.msg p{text-wrap:pretty}.msg code{font-size:14px;padding:1px 4px}
+.me{align-self:flex-end;max-width:300px;background:var(--raised);border-radius:12px 12px 4px 12px;padding:12px 16px}
+.turn{font-weight:600}
+.input{margin:0 16px 16px;display:flex;align-items:center;gap:8px;background:var(--raised);border:1px solid var(--line);border-radius:8px;padding:8px 8px 8px 16px}
+.input .ph-t{flex:1;color:var(--muted);font-size:15px}
+.send{width:32px;height:32px;border-radius:6px;background:var(--accent);color:#1a1a1a;display:grid;place-items:center}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 3 3 5-6"/></symbol>
+<symbol id="note" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+<symbol id="code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+<symbol id="term" viewBox="0 0 24 24"><path d="m4 17 6-5-6-5M12 19h8"/></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+<symbol id="gear" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+<symbol id="up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7M12 19V5"/></symbol>
+</defs></svg>
+
+<header class="top">
+  <nav class="l"><span class="brand">tech-prep</span><span class="nav on">Today</span><span class="nav">Roadmap</span><span class="nav">Concepts</span><span class="nav">History</span></nav>
+  <div class="steps">
+    <span class="step on"><span class="dot"></span>Review · 1 of 3</span><svg class="i"><use href="#chev"/></svg>
+    <span class="step"><span class="dot"></span>Learn: Window with Counts</span><svg class="i"><use href="#chev"/></svg>
+    <span class="step"><span class="dot"></span>Review</span>
+  </div>
+  <div class="r">
+    <div class="stats"><span><b>9</b> / 62 concepts passed</span><span><b>2</b> mastered</span><span><b>3</b> due today</span><span><b>7</b> / 75 solved</span><span class="tag">sample data</span></div>
+    <span class="iconbtn" title="Settings"><svg class="i" style="width:18px;height:18px"><use href="#gear"/></svg></span>
+  </div>
+</header>
+
+<main class="grid">
+  <section class="panel">
+    <div class="ph"><span class="tab on"><svg class="i"><use href="#doc"/></svg>Description</span><span class="sep"></span><span class="tab"><svg class="i"><use href="#check"/></svg>Tests</span><span class="sep"></span><span class="tab"><svg class="i"><use href="#note"/></svg>Notes</span></div>
+    <div class="desc">
+      <h1>Longest Substring Without Repeating Characters</h1>
+      <div class="pills"><span class="pill med">Medium</span><span class="pill">Review</span></div>
+      <div class="hidden"><svg class="i"><use href="#lock"/></svg>2 concepts · revealed when you finish</div>
+      <p>Given a string <code>s</code>, return the length of the longest substring (contiguous) that contains no repeated character.</p>
+      <div class="ex"><h3>Example 1</h3><pre><span>Input:</span>  s = "abcabcbb"
+<span>Output:</span> 3
+<span>Why:</span>    "abc"</pre></div>
+      <div class="ex"><h3>Example 2</h3><pre><span>Input:</span>  s = "bbbbb"
+<span>Output:</span> 1</pre></div>
+      <div class="ex"><h3>Example 3</h3><pre><span>Input:</span>  s = "pwwkew"
+<span>Output:</span> 3
+<span>Why:</span>    "wke"; "pwke" is a subsequence, not a substring</pre></div>
+    </div>
+  </section>
+
+  <div class="col">
+    <section class="panel ed">
+      <div class="ph"><span class="tab on"><svg class="i"><use href="#code"/></svg>longest-substring.ts</span><span class="aside">Neovim</span></div>
+<div class="code"><span class="ln"><i>1</i><span class="c">// ═══ PROBLEM ════════════════════════════════════════</span></span><span class="ln"><i>2</i><span class="c">// Longest Substring Without Repeating Characters (medium)</span></span><span class="ln"><i>3</i><span class="c">//</span></span><span class="ln"><i>4</i><span class="c">// Given a string s, return the length of the longest</span></span><span class="ln"><i>5</i><span class="c">// substring (contiguous) with no repeated character.</span></span><span class="ln"><i>6</i><span class="c">//   "abcabcbb" -> 3    "bbbbb" -> 1    "pwwkew" -> 3</span></span><span class="ln"><i>7</i><span class="c">// ═══ YOUR SOLUTION ══════════════════════════════════</span></span><span class="ln"><i>8</i><span class="k">export function</span> <span class="f">lengthOfLongestSubstring</span>(s: <span class="y">string</span>): <span class="y">number</span> {</span><span class="ln"><i>9</i>  <span class="k">const</span> last = <span class="k">new</span> <span class="y">Map</span>&lt;<span class="y">string</span>, <span class="y">number</span>&gt;();</span><span class="ln"><i>10</i>  <span class="k">let</span> left = <span class="n">0</span>;</span><span class="ln"><i>11</i>  <span class="k">let</span> best = <span class="n">0</span>;</span><span class="ln"><i>12</i>  <span class="k">for</span> (<span class="k">let</span> right = <span class="n">0</span>; right &lt; s.length; right++) {</span><span class="ln"><i>13</i>    <span class="k">const</span> ch = s[right];</span><span class="ln cur"><i>14</i>    <span class="k">if</span> (last.<span class="f">has</span>(ch)) left = <span class="cur-ch">l</span>ast.<span class="f">get</span>(ch)! + <span class="n">1</span>;</span><span class="ln"><i>15</i>    last.<span class="f">set</span>(ch, right);</span><span class="ln"><i>16</i>    best = <span class="y">Math</span>.<span class="f">max</span>(best, right - left + <span class="n">1</span>);</span><span class="ln"><i>17</i>  }</span><span class="ln"><i>18</i>  <span class="k">return</span> best;</span><span class="ln"><i>19</i>}</span><span class="ln"><i class="tl">~</i></span><span class="ln"><i class="tl">~</i></span><span class="ln"><i class="tl">~</i></span><span class="ln"><i class="tl">~</i></span><span class="ln"><i class="tl">~</i></span></div>
+      <div class="status"><span class="mode">NORMAL</span><span style="color:var(--text)">longest-substring.ts</span><span class="grow"></span><span>typescript</span><span style="color:var(--text)">14:28</span></div>
+    </section>
+    <section class="panel">
+      <div class="ph"><span class="tab on"><svg class="i"><use href="#check"/></svg>Test results</span><span class="sep"></span><span class="tab"><svg class="i"><use href="#term"/></svg>Output</span><span class="aside">ran with <code>&lt;leader&gt;tt</code></span></div>
+      <div class="con">
+        <div class="sum"><strong>7 / 8 passed</strong><span>1 case to look at</span></div>
+        <div class="cases"><span class="case"><b></b>Case 1</span><span class="case"><b></b>Case 2</span><span class="case"><b></b>Case 3</span><span class="case"><b></b>Case 4</span><span class="case"><b></b>Case 5</span><span class="case"><b></b>Case 6</span><span class="case"><b></b>Case 7</span><span class="case on"><b></b>Case 8</span></div>
+        <div class="io"><div><label>Input</label><div>s = "abba"</div></div><div><label>Expected</label><div>2</div></div><div><label>Got</label><div class="bad">3</div></div></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="ph"><span class="tab on"><svg class="i"><use href="#chat"/></svg>Tutor</span></div>
+    <div class="chat">
+      <div class="msg"><p>Before you code: which approach would you use, and why?</p></div>
+      <div class="msg me"><p>Sliding window. Grow the right edge, and jump left past the last copy of the character.</p></div>
+      <div class="msg"><p>Good call. 7 of 8 tests pass. The failing case is "abba".</p><p>On line 14, when you reach the second "a", where does <code>left</code> go? Is that to the right of where it was?</p></div>
+      <div class="msg turn"><p>Your turn: trace "abba" by hand and watch <code>left</code>.</p></div>
+    </div>
+    <div class="input"><span class="ph-t">Ask the tutor…</span><span class="send" title="Send"><svg class="i"><use href="#up"/></svg></span></div>
+  </section>
+</main>
+</body></html>

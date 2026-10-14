@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exercise stage</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0e;--side:#101013;--panel:#16161a;--raise:#1d1d22;--line:#26262c;--ink:#ececf1;--mute:#8b8b96;--dim:#5e5e68;--blue:#7aa2ff;--green:#5fd39a;--amber:#f0b450;--red:#ff7a7a}
+*{box-sizing:border-box;margin:0}
+html,body{width:1440px;height:900px;overflow:hidden;background:var(--bg);color:var(--ink);font:16px/1.6 "Atkinson Hyperlegible Next",system-ui,sans-serif}
+code,pre{font-family:"JetBrains Mono",monospace}
+.app{display:grid;grid-template-columns:248px 1fr;height:100%}
+aside{background:var(--side);border-right:1px solid var(--line);padding:44px 12px 16px;display:flex;flex-direction:column;gap:2px}
+.brand{font-weight:700;font-size:15px;padding:0 10px 18px;color:var(--ink)}
+.new{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;color:var(--ink);font-size:14px;margin-bottom:18px}
+.grp{font-size:12px;color:var(--dim);padding:10px 10px 6px}
+.it{padding:7px 10px;border-radius:7px;font-size:14px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it.on{background:var(--raise);color:var(--ink)}
+.foot{margin-top:auto;padding:10px;font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
+main{display:flex;flex-direction:column;height:100%}
+.top{height:48px;display:flex;align-items:center;gap:10px;padding:0 28px;border-bottom:1px solid var(--line);font-size:14px;color:var(--mute)}
+.top b{color:var(--ink);font-weight:600}
+.dots{margin-left:auto;display:flex;gap:6px;align-items:center}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--green)}.dots i.now{background:var(--blue)}
+.col{width:760px;margin:0 auto;flex:1;display:flex;flex-direction:column;padding-top:28px;min-height:0}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sh{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:14px;color:var(--mute)}
+.sh b{color:var(--ink);font-weight:600}
+.tag{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--mute)}
+.sh .tag{margin-left:auto}
+pre{padding:20px 24px;font-size:15px;line-height:1.75;background:#111114;border-bottom:1px solid var(--line)}
+.k{color:#c79bff}.s{color:#9fd59b}.n{color:#f2b47a}.c{color:var(--dim)}
+.ask{padding:18px 20px 20px}
+.ask p{font-size:17px;margin-bottom:14px}
+.row{display:flex;gap:10px;align-items:center}
+.ans{flex:0 0 120px;height:44px;border-radius:9px;border:1px solid var(--red);background:#1b1416;display:flex;align-items:center;padding:0 14px;font:500 16px "JetBrains Mono",monospace}
+.verdict{font-size:15px;color:var(--mute)}
+.verdict b{color:var(--red);font-weight:600}
+.btn{margin-left:auto;height:40px;padding:0 16px;border-radius:9px;background:var(--ink);color:#0c0c0e;font-weight:600;font-size:14px;display:flex;align-items:center}
+.thread{flex:1;padding:26px 4px 0;display:flex;flex-direction:column;gap:18px;overflow:hidden}
+.me{align-self:flex-end;background:var(--raise);border-radius:12px;padding:10px 14px;font-size:15px;max-width:70%}
+.tu p{font-size:16px;max-width:66ch}
+.tu p+p{margin-top:10px}
+.tu code{background:var(--raise);padding:1px 6px;border-radius:5px;font-size:14px}
+.meta{font-size:13px;color:var(--dim);display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.meta i{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.composer{margin:16px 0 22px;border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px 10px}
+.composer .ph{color:var(--dim);font-size:15px;height:28px}
+.composer .bar{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mute)}
+.send{margin-left:auto;width:30px;height:30px;border-radius:8px;background:var(--ink)}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand">tech-prep</div>
+  <div class="new"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="vertical-align:-2px;margin-right:8px"><path d="M8 3v10M3 8h10"/></svg>New session</div>
+  <div class="grp">Today</div>
+  <div class="it on">JavaScript Set · uniqueness</div>
+  <div class="it">Review · 4 concepts due</div>
+  <div class="grp">This week</div>
+  <div class="it">Two Sum · hash map</div>
+  <div class="it">jq · filters and pipes</div>
+  <div class="it">Event loop question</div>
+  <div class="foot"><span>Roadmap</span><span>Settings</span></div>
+</aside>
+<main>
+  <div class="top"><b>JavaScript Set</b> / Uniqueness rule
+    <div class="dots"><i class="ok"></i><i class="now"></i><i></i><i></i><span style="margin-left:6px">Step 2 of 4</span></div>
+  </div>
+  <div class="col">
+    <section class="stage">
+      <div class="sh"><b>Predict the output</b><span class="tag">Opened by the tutor</span></div>
+<pre><span class="k">const</span> s = <span class="k">new</span> Set([<span class="n">1</span>, <span class="s">"1"</span>, NaN, NaN, {}, {}]);
+console.log(s.size);</pre>
+      <div class="ask">
+        <p>What does this print?</p>
+        <div class="row">
+          <div class="ans">4</div>
+          <div class="verdict"><b>Not quite.</b> It prints 5.</div>
+          <div class="btn">Try a similar one</div>
+        </div>
+      </div>
+    </section>
+    <div class="thread">
+      <div class="me">I thought the two empty objects would count once.</div>
+      <div class="tu">
+        <div class="meta"><i></i>Tutor</div>
+        <p>Close. A Set compares values with <code>SameValueZero</code>. Two <code>NaN</code> values count as equal, so they collapse to one.</p>
+        <p>Objects are different: two <code>{}</code> are two separate objects. They only match if they are the same object.</p>
+      </div>
+    </div>
+    <div class="composer">
+      <div class="ph">Ask about this, or say "next"…</div>
+      <div class="bar"><span>Claude Opus · subscription</span><span class="send"></span></div>
+    </div>
+  </div>
+</main>
+</div>
+</body>
+</html>

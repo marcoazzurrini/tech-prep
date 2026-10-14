@@ -1,0 +1,18 @@
+{
+  "function": {
+    "python": "top_k_frequent",
+    "typescript": "topKFrequent"
+  },
+  "compare": "unordered",
+  "stubs": {
+    "python": "def top_k_frequent(nums: list[int], k: int) -> list[int]:\n    pass\n",
+    "typescript": "export function topKFrequent(nums: number[], k: number): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": [[1, 1, 1, 2, 2, 3], 2], "expected": [1, 2]},
+    {"args": [[1], 1], "expected": [1]},
+    {"args": [[4, 4, 4, 4, 5, 5, 5, 6, 6, 7], 3], "expected": [4, 5, 6]},
+    {"args": [[-1, -1, 2, 2, 2, 3], 1], "expected": [2]},
+    {"args": [[5, 3, 5, 3, 5, 9], 2], "expected": [5, 3]}
+  ]
+}

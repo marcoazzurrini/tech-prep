@@ -1,0 +1,20 @@
+{
+  "function": {
+    "python": "character_replacement",
+    "typescript": "characterReplacement"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def character_replacement(s: str, k: int) -> int:\n    pass\n",
+    "typescript": "export function characterReplacement(s: string, k: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args": ["ABAB", 2], "expected": 4},
+    {"args": ["AABABBA", 1], "expected": 4},
+    {"args": ["A", 0], "expected": 1},
+    {"args": ["AAAA", 0], "expected": 4},
+    {"args": ["ABCDE", 1], "expected": 2},
+    {"args": ["ABBB", 2], "expected": 4},
+    {"args": ["BAAAB", 2], "expected": 5}
+  ]
+}

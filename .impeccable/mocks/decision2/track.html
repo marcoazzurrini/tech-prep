@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lesson track</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0e;--side:#101013;--panel:#16161a;--raise:#1d1d22;--line:#26262c;--ink:#ececf1;--mute:#8b8b96;--dim:#5e5e68;--blue:#7aa2ff;--green:#5fd39a;--amber:#f0b450;--red:#ff7a7a}
+*{box-sizing:border-box;margin:0}
+html,body{width:1440px;height:900px;overflow:hidden;background:var(--bg);color:var(--ink);font:16px/1.6 "Atkinson Hyperlegible Next",system-ui,sans-serif}
+code,pre{font-family:"JetBrains Mono",monospace}
+.app{display:grid;grid-template-columns:300px 1fr;height:100%}
+aside{background:var(--side);border-right:1px solid var(--line);padding:44px 20px 18px;display:flex;flex-direction:column}
+.back{font-size:13px;color:var(--mute);margin-bottom:22px}
+h2{font-size:20px;font-weight:700}
+.sub{font-size:14px;color:var(--mute);margin:4px 0 26px}
+.steps{display:flex;flex-direction:column}
+.st{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:0 0 18px;position:relative}
+.st:not(:last-child)::before{content:"";position:absolute;left:10px;top:24px;bottom:2px;width:2px;background:var(--line)}
+.st.done:not(:last-child)::before{background:#2f5c47}
+.b{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--side);margin-top:2px}
+.done .b{background:var(--green);border-color:var(--green)}
+.now .b{border-color:var(--blue);box-shadow:0 0 0 4px #7aa2ff22}
+.st b{display:block;font-size:15px;font-weight:600}
+.st span{font-size:13px;color:var(--mute)}
+.st:not(.done):not(.now) b{color:var(--mute);font-weight:500}
+.grp{font-size:12px;color:var(--dim);margin:14px 0 10px}
+.cn{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;color:var(--mute)}
+.cn em{font-style:normal;font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid var(--line)}
+.cn em.l{color:var(--amber);border-color:#5a4520}.cn em.p{color:var(--green);border-color:#244a38}
+main{position:relative;height:100%;overflow:hidden}
+.doc{width:720px;margin:0 auto;padding:56px 0 160px}
+.label{font-size:13px;color:var(--dim);margin-bottom:8px}
+h1{font-size:30px;font-weight:700;letter-spacing:-.01em;margin-bottom:14px}
+.doc>p{font-size:17px;max-width:64ch;color:#d6d6dc}
+.doc code{background:var(--raise);padding:1px 6px;border-radius:5px;font-size:14px}
+pre{margin:18px 0 0;padding:16px 20px;border-radius:12px;background:#111114;border:1px solid var(--line);font-size:15px;line-height:1.75}
+.k{color:#c79bff}.s{color:#9fd59b}.n{color:#f2b47a}.c{color:#6c6c78}
+.ex{margin-top:40px;border:1px solid var(--line);background:var(--panel);border-radius:14px;overflow:hidden}
+.exh{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);font-size:14px;color:var(--mute)}
+.exh b{color:var(--ink);font-weight:600}
+.exh .tag{margin-left:auto;font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--line)}
+.ex pre{margin:0;border:0;border-radius:0;border-bottom:1px solid var(--line)}
+.ask{padding:16px 18px;display:flex;gap:10px;align-items:center}
+.ans{width:120px;height:42px;border-radius:9px;border:1px solid var(--red);background:#1b1416;display:flex;align-items:center;padding:0 14px;font:500 16px "JetBrains Mono",monospace}
+.v{font-size:15px;color:var(--mute)}.v b{color:var(--red)}
+.reply{margin-top:18px;display:grid;grid-template-columns:28px 1fr;gap:12px}
+.av{width:28px;height:28px;border-radius:8px;background:var(--raise);border:1px solid var(--line)}
+.reply p{font-size:16px;max-width:62ch}
+.reply p+p{margin-top:8px}
+.composer{position:absolute;left:50%;transform:translateX(-50%);bottom:24px;width:720px;border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px 10px;box-shadow:0 12px 32px #0009}
+.ph{color:var(--dim);font-size:15px;height:28px}
+.bar{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mute)}
+.send{margin-left:auto;width:30px;height:30px;border-radius:8px;background:var(--ink)}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="back"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M10 3 5 8l5 5"/></svg>All sessions</div>
+  <h2>JavaScript Set</h2>
+  <div class="sub">Lesson · about 10 minutes</div>
+  <div class="steps">
+    <div class="st done"><i class="b"></i><div><b>What a Set keeps</b><span>Explanation and example</span></div></div>
+    <div class="st now"><i class="b"></i><div><b>Predict the size</b><span>Predict the output</span></div></div>
+    <div class="st"><i class="b"></i><div><b>Order the lines</b><span>Arrange the lines</span></div></div>
+    <div class="st"><i class="b"></i><div><b>Write uniqueBy</b><span>Mini editor</span></div></div>
+  </div>
+  <div class="grp">Concepts in this lesson</div>
+  <div class="cn">Uniqueness rule<em class="l">Learning</em></div>
+  <div class="cn"><span><code style="font-size:13px">size</code>, not <code style="font-size:13px">length</code></span><em class="p">Passed</em></div>
+  <div class="cn">Insertion order<em>New</em></div>
+</aside>
+<main>
+  <div class="doc">
+    <div class="label">Step 1 · Explanation</div>
+    <h1>What a Set keeps</h1>
+    <p>A Set stores each value once. Adding a value it already has does nothing. It checks "already has" with a rule called <code>SameValueZero</code>.</p>
+<pre><span class="k">const</span> tags = <span class="k">new</span> Set([<span class="s">"ts"</span>, <span class="s">"js"</span>, <span class="s">"ts"</span>]);
+tags.size; <span class="c">// 2</span></pre>
+    <section class="ex">
+      <div class="exh"><b>Step 2 · Predict the output</b><span class="tag">Opened by the tutor</span></div>
+<pre><span class="k">const</span> s = <span class="k">new</span> Set([<span class="n">1</span>, <span class="s">"1"</span>, NaN, NaN, {}, {}]);
+console.log(s.size);</pre>
+      <div class="ask"><div class="ans">4</div><div class="v"><b>Not quite.</b> It prints 5.</div></div>
+    </section>
+    <div class="reply"><i class="av"></i><div>
+      <p>Two <code>NaN</code> values count as equal, so they collapse to one.</p>
+      <p>But two <code>{}</code> are two separate objects. They only match if they are the same object.</p>
+    </div></div>
+  </div>
+  <div class="composer">
+    <div class="ph">Ask about this step, or say "next"…</div>
+    <div class="bar"><span>Claude Opus · subscription</span><span class="send"></span></div>
+  </div>
+</main>
+</div>
+</body>
+</html>
