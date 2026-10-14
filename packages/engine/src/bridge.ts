@@ -23,25 +23,25 @@ import {
 } from "./scheduler.ts";
 
 /** The problem the learner is on: the open attempt, else the one next_up points at. */
-function session() {
+const session = () => {
   const next = nextUp();
-  const open =
-    attemptsFor({})
-      .filter((a) => !a.finished_at)
-      .at(-1) ?? null;
+
+  const open = attemptsFor({}).findLast((a) => !a.finished_at) ?? null;
+
   const slug = open?.slug ?? ("problem" in next ? next.problem : null);
 
   if (!slug) {
-    return { next, attempt: null, problem: null };
+    return { attempt: null, next, problem: null };
   }
+
   const info = problemInfo(slug);
 
   return {
     attempt: open && {
       id: open.id,
-      slug: open.slug,
-      phase: open.phase,
       language: open.language,
+      phase: open.phase,
+      slug: open.slug,
     },
     next,
     problem: {
@@ -54,10 +54,10 @@ function session() {
       topic: info.topic,
     },
   };
-}
+};
 
 /** Topics with their concepts and problems, for the roadmap screen. */
-function roadmap() {
+const roadmap = () => {
   const current = session().problem?.topic ?? null;
 
   return {
@@ -99,24 +99,36 @@ function roadmap() {
       };
     }),
   };
-}
+};
 
-const methods: Record<string, () => unknown> = { roadmap, session };
+const methods = new Map<string, () => object>([
+  ["roadmap", roadmap],
+  ["session", session],
+]);
+
+/** One request line from the app. */
+interface BridgeRequest {
+  id: unknown;
+  method: string;
+}
 
 for await (const line of console) {
   if (!line.trim()) {
     continue;
   }
-  let id: unknown = null;
+
+  let id: BridgeRequest["id"] = null;
 
   try {
-    const request = JSON.parse(line) as { id: unknown; method: string };
-    id = request.id;
-    const method = methods[request.method];
+    // SAFETY: `id` is only echoed back, and a `method` that is not a known name misses the table below.
+    const request = JSON.parse(line) as BridgeRequest;
+    ({ id } = request);
+    const method = methods.get(request.method);
 
     if (!method) {
       throw new Error(`Unknown method '${request.method}'.`);
     }
+
     console.log(JSON.stringify({ id, result: method() }));
   } catch (error) {
     console.log(

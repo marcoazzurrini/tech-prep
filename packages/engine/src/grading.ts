@@ -41,41 +41,53 @@ export interface ConceptGrade {
 }
 
 /** Highest hint level about this concept. Hints not tied to a concept count for every concept. */
-function hintLevel(hints: HintRow[], concept: string): number {
-  return Math.max(
-    0,
-    ...hints
-      .filter((h) => h.concept_id === concept || h.concept_id === null)
-      .map((h) => h.level)
-  );
-}
+const hintLevel = (hints: HintRow[], concept: string): number => {
+  let level = 0;
+
+  for (const h of hints) {
+    if (h.concept_id === concept || h.concept_id === null) {
+      level = Math.max(level, h.level);
+    }
+  }
+
+  return level;
+};
 
 /**
  * When the learner gave up, blame is conjunctive: only the concepts that caused it get Again.
  * The tutor's "failed" verdicts name them; without a diagnosis, the concepts with the
  * strongest hints take the blame, and with no hints at all, every concept does.
  */
-function culprits(e: AttemptEvidence): Set<string> {
+const culprits = (e: AttemptEvidence): Set<string> => {
   const named = e.concepts.filter((c) => e.diagnosis.get(c) === "failed");
 
   if (named.length) {
     return new Set(named);
   }
+
   const levels = e.concepts.map((c) => hintLevel(e.hints, c));
   const top = Math.max(...levels);
 
   return new Set(
     top > 0 ? e.concepts.filter((_, i) => levels[i] === top) : e.concepts
   );
-}
+};
 
+// SAFETY: the smaller of two grades is one of them.
 const cap = (grade: Grade, limit: Grade): Grade =>
   Math.min(grade, limit) as Grade;
 
-export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
+/** Fast, with no hints at all, a strong explanation and no misnamed pattern. */
+const isConfidentSolve = (e: AttemptEvidence): boolean =>
+  e.hints.length === 0 &&
+  e.explanationScore >= 3 &&
+  e.recognition !== "wrong" &&
+  e.recognition !== "partial" &&
+  e.minutes <= TARGET_MINUTES[e.difficulty];
+
+export const gradeAttempt = (e: AttemptEvidence): ConceptGrade[] => {
   const failed = e.gaveUp || !e.solved;
   const blamed = failed ? culprits(e) : new Set<string>();
-  const anyHints = e.hints.length > 0;
 
   return e.concepts.map((concept) => {
     const reasons: string[] = [];
@@ -123,14 +135,7 @@ export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
       reasons.push("the explanation was weak");
     }
 
-    if (
-      grade === Rating.Good &&
-      !anyHints &&
-      e.explanationScore >= 3 &&
-      e.recognition !== "wrong" &&
-      e.recognition !== "partial" &&
-      e.minutes <= TARGET_MINUTES[e.difficulty]
-    ) {
+    if (grade === Rating.Good && isConfidentSolve(e)) {
       grade = Rating.Easy;
       reasons.push("fast, no hints, strong explanation");
     }
@@ -148,4 +153,4 @@ export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
 
     return { concept, grade, independent, reasons };
   });
-}
+};

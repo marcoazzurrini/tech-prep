@@ -3,7 +3,6 @@ import type { KeyboardEvent } from "react";
 import Markdown from "react-markdown";
 
 import { Icon } from "./icons";
-import type { TutorEvent } from "./types";
 
 interface Item {
   role: "tutor" | "you" | "error";
@@ -11,13 +10,15 @@ interface Item {
 }
 
 const link = {
-  a: (props: React.ComponentProps<"a">) => (
-    <a {...props} target="_blank" rel="noreferrer" />
+  a: ({ children, ...props }: React.ComponentProps<"a">) => (
+    <a {...props} target="_blank" rel="noreferrer">
+      {children}
+    </a>
   ),
 };
 
 /** Chat with the tutor (Claude Code with the tech-prep plugin, run by the main process). */
-export function Tutor() {
+export const Tutor = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [busy, setBusy] = useState(false);
   const [activity, setActivity] = useState("");
@@ -26,9 +27,7 @@ export function Tutor() {
   const input = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    const off = window.tp.tutor.onEvent((payload) => {
-      const event = payload as TutorEvent;
-
+    const off = window.tp.tutor.onEvent((event) => {
       if (event.type === "message") {
         setItems((all) => [...all, { role: "tutor", text: event.text }]);
         setActivity("");
@@ -60,6 +59,7 @@ export function Tutor() {
       behavior: "smooth",
       top: chat.current.scrollHeight,
     });
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- items and busy are the triggers, not inputs: scroll to the bottom whenever a message or the activity line appears.
   }, [items, busy]);
 
   const send = () => {
@@ -68,6 +68,7 @@ export function Tutor() {
     if (!text) {
       return;
     }
+
     window.tp.tutor.send(text);
     setItems((all) => [...all, { role: "you", text }]);
     setDraft("");
@@ -131,6 +132,7 @@ export function Tutor() {
           onKeyDown={onKey}
         />
         <button
+          type="button"
           className="send"
           title="Send"
           aria-label="Send"
@@ -142,4 +144,4 @@ export function Tutor() {
       </div>
     </section>
   );
-}
+};

@@ -1,21 +1,21 @@
 import { Icon } from "./icons";
-import { Statement } from "./Statement";
+import { Statement } from "./statement";
 import type { Session } from "./types";
 
 const DIFFICULTY = { easy: "Easy", hard: "Hard", medium: "Medium" };
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(undefined, {
+const formatDate = (iso: string): string =>
+  new Date(iso).toLocaleDateString(undefined, {
     day: "numeric",
     month: "long",
     weekday: "long",
   });
-}
 
-export function ProblemPanel({ session }: { session: Session | null }) {
+export const ProblemPanel = ({ session }: { session: Session | null }) => {
   if (!session) {
     return <section className="panel" />;
   }
+
   const { problem, attempt, next } = session;
 
   if (!problem) {
@@ -36,8 +36,15 @@ export function ProblemPanel({ session }: { session: Session | null }) {
   const review = attempt
     ? attempt.phase === "review"
     : next.action === "review";
+
   const inLesson = !review && problem.new_concepts.length > 0;
-  const phase = review ? "Review" : inLesson ? "Learn" : "Practise";
+  let phase = "Practise";
+
+  if (review) {
+    phase = "Review";
+  } else if (inLesson) {
+    phase = "Learn";
+  }
 
   return (
     <section className="panel scroll">
@@ -79,4 +86,4 @@ export function ProblemPanel({ session }: { session: Session | null }) {
       </div>
     </section>
   );
-}
+};

@@ -76,9 +76,3 @@ export interface Roadmap {
     }[];
   }[];
 }
-
-export type TutorEvent =
-  | { type: "message"; text: string }
-  | { type: "activity"; label: string }
-  | { type: "busy"; busy: boolean }
-  | { type: "error"; text: string };

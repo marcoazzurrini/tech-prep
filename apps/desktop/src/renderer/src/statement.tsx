@@ -1,17 +1,18 @@
 import type { ReactNode } from "react";
 
 /** `code` and **bold**, the only inline marks problem statements use. */
-export function inline(text: string): ReactNode[] {
-  return text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g).map((part, i) => {
+export const inline = (text: string): ReactNode[] =>
+  text.split(/(?<mark>`[^`]+`|\*\*[^*]+\*\*)/gu).map((part, i) => {
     if (part.startsWith("`") && part.endsWith("`")) {
       return <code key={i}>{part.slice(1, -1)}</code>;
     }
+
     if (part.startsWith("**") && part.endsWith("**")) {
       return <b key={i}>{part.slice(2, -2)}</b>;
     }
+
     return part;
   });
-}
 
 type Block =
   | { kind: "p"; text: string }
@@ -19,12 +20,38 @@ type Block =
   | { kind: "example"; label: string; lines: string[] }
   | { kind: "extra"; label: string; text: string };
 
+/** The block an "Example 1:" or "Constraints:" style line starts, if it is one. */
+const heading = (line: string): Block | null => {
+  const example = line.match(
+    /^(?<label>Example(?: \d+)?):\s*(?<text>.*)$/u
+  )?.groups;
+
+  if (example?.label !== undefined) {
+    return {
+      kind: "example",
+      label: example.label,
+      lines: example.text ? [example.text] : [],
+    };
+  }
+
+  const extra = line.match(
+    /^(?<label>Constraints|Follow-up|Note):\s*(?<text>.*)$/u
+  )?.groups;
+
+  if (extra?.label !== undefined && extra.text !== undefined) {
+    return { kind: "extra", label: extra.label, text: extra.text };
+  }
+
+  return null;
+};
+
 /**
  * Split a problem.md body (title line already shown) into paragraphs, bullet lists,
  * examples and the trailing notes ("Constraints:", "Follow-up:").
  */
-function parse(statement: string): Block[] {
+const parse = (statement: string): Block[] => {
   const blocks: Block[] = [];
+
   const lines = statement
     .split("\n")
     .filter((line, i) => !(i === 0 && line.startsWith("# ")));
@@ -38,27 +65,21 @@ function parse(statement: string): Block[] {
       if (!(last?.kind === "p" && !last.text)) {
         blocks.push({ kind: "p", text: "" });
       }
+
       continue;
     }
 
-    const example = line.match(/^(Example(?: \d+)?):\s*(.*)$/);
-    const extra = line.match(/^(Constraints|Follow-up|Note):\s*(.*)$/);
+    const head = heading(line);
 
-    if (example) {
-      blocks.push({
-        kind: "example",
-        label: example[1]!,
-        lines: example[2] ? [example[2]] : [],
-      });
-    } else if (extra) {
-      blocks.push({ kind: "extra", label: extra[1]!, text: extra[2]! });
-    } else if (last?.kind === "example" && /^\s/.test(raw)) {
-      last.lines.push(line.replace(/^ {2}/, ""));
+    if (head) {
+      blocks.push(head);
+    } else if (last?.kind === "example" && /^\s/u.test(raw)) {
+      last.lines.push(line.replace(/^ {2}/u, ""));
     } else if (line.startsWith("- ")) {
       if (last?.kind === "list") {
         last.items.push(line.slice(2));
       } else {
-        blocks.push({ kind: "list", items: [line.slice(2)] });
+        blocks.push({ items: [line.slice(2)], kind: "list" });
       }
     } else if (last?.kind === "p" && last.text) {
       last.text += ` ${line.trim()}`;
@@ -70,44 +91,50 @@ function parse(statement: string): Block[] {
   }
 
   return blocks.filter((b) => b.kind !== "p" || b.text);
-}
+};
 
 /** "s = "abc"  ->  3   ("abc")": arrow for ->, and the trailing note in muted text. */
-function exampleLine(line: string, key: number) {
-  const shown = line.replaceAll(/\s*->\s*/g, "  →  ");
-  const note = shown.match(/^(.*?)\s{2,}(\(.*\))$/);
+const exampleLine = (line: string, key: number) => {
+  const shown = line.replaceAll(/\s*->\s*/gu, "  →  ");
+  const parts = shown.match(/^(?<text>.*?)\s{2,}(?<note>\(.*\))$/u)?.groups;
 
   return (
     <div key={key}>
-      {note ? (
+      {parts?.text !== undefined && parts.note !== undefined ? (
         <>
-          {note[1]} <em>{note[2]!.slice(1, -1)}</em>
+          {parts.text} <em>{parts.note.slice(1, -1)}</em>
         </>
       ) : (
         shown
       )}
     </div>
   );
-}
+};
 
-export function Statement({ text }: { text: string }) {
+export const Statement = ({ text }: { text: string }) => {
   const blocks = parse(text);
   const examples = blocks.filter((b) => b.kind === "example");
   const extras = blocks.filter((b) => b.kind === "extra");
 
   return (
     <div className="statement">
-      {blocks.map((b, i) =>
-        b.kind === "p" ? (
-          <p key={i}>{inline(b.text)}</p>
-        ) : b.kind === "list" ? (
-          <ul key={i}>
-            {b.items.map((item, j) => (
-              <li key={j}>{inline(item)}</li>
-            ))}
-          </ul>
-        ) : null
-      )}
+      {blocks.map((b, i) => {
+        if (b.kind === "p") {
+          return <p key={i}>{inline(b.text)}</p>;
+        }
+
+        if (b.kind === "list") {
+          return (
+            <ul key={i}>
+              {b.items.map((item, j) => (
+                <li key={j}>{inline(item)}</li>
+              ))}
+            </ul>
+          );
+        }
+
+        return null;
+      })}
       {examples.length > 0 && (
         <div className="exs">
           {examples.map((b, i) => (
@@ -125,4 +152,4 @@ export function Statement({ text }: { text: string }) {
       ))}
     </div>
   );
-}
+};

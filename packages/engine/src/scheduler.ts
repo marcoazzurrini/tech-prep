@@ -44,23 +44,40 @@ const isPassedStage = (s: Stage) => s === "passed" || s === "mastered";
 export const isPassed = (id: string) => isPassedStage(conceptRow(id).stage);
 
 /** Locked and available are derived: a concept unlocks when all its prerequisites are passed. */
-export function displayStage(id: string): DisplayStage {
+export const displayStage = (id: string): DisplayStage => {
   const { stage } = conceptRow(id);
 
   if (stage !== "unseen") {
     return stage;
   }
+
   return concept(id).prereqs.every(isPassed) ? "available" : "locked";
-}
+};
 
 /** Concepts that no problem practises directly are passed by their lesson alone. */
 const hasOwnProblems = (id: string) => problemsUsing(id).length > 0;
 
+/** First independent success: the concept starts its FSRS schedule and its dependents may unlock. */
+export const pass = (
+  conceptId: string,
+  attemptId: number,
+  now = new Date()
+): void => {
+  saveConceptRow({
+    ...conceptRow(conceptId),
+    card: JSON.stringify(createEmptyCard(now)),
+    fail_count: 0,
+    passed_at: now.toISOString(),
+    stage: "passed",
+  });
+  explicitReview(conceptId, attemptId, Rating.Good, now);
+};
+
 /** Mark concepts as taught. Re-teaching resets the struggle count. */
-export function completeLesson(
+export const completeLesson = (
   conceptId: string,
   now = new Date()
-): DisplayStage {
+): DisplayStage => {
   const row = conceptRow(conceptId);
 
   if (row.stage === "unseen") {
@@ -80,39 +97,24 @@ export function completeLesson(
   ) {
     pass(conceptId, 0, now);
   }
+
   return displayStage(conceptId);
-}
+};
 
-/** First independent success: the concept starts its FSRS schedule and its dependents may unlock. */
-export function pass(
-  conceptId: string,
-  attemptId: number,
-  now = new Date()
-): void {
-  saveConceptRow({
-    ...conceptRow(conceptId),
-    card: JSON.stringify(createEmptyCard(now)),
-    fail_count: 0,
-    passed_at: now.toISOString(),
-    stage: "passed",
-  });
-  explicitReview(conceptId, attemptId, Rating.Good, now);
-}
-
-export function recordStruggle(conceptId: string): number {
+export const recordStruggle = (conceptId: string): number => {
   const row = conceptRow(conceptId);
   saveConceptRow({ ...row, fail_count: row.fail_count + 1 });
 
   return row.fail_count + 1;
-}
+};
 
 /** Mastered after a later, unaided success on an unlabelled review; a lapse drops it back to passed. */
-export function updateMastery(
+export const updateMastery = (
   conceptId: string,
   grade: number,
   recognitionOk: boolean,
   now = new Date()
-): void {
+): void => {
   const row = conceptRow(conceptId);
 
   if (
@@ -134,7 +136,7 @@ export function updateMastery(
   } else if (row.stage === "mastered" && grade === Rating.Again) {
     saveConceptRow({ ...row, mastered_at: null, stage: "passed" });
   }
-}
+};
 
 // ── Problem status ───────────────────────────────────────────────────────
 
@@ -150,62 +152,64 @@ const solvedAlone = (a: AttemptRow) =>
   a.outcome === "solved" ||
   (a.outcome === null && (a.rating ?? 0) >= Rating.Hard);
 
-export function problemStatus(slug: string): ProblemStatus {
+export const problemStatus = (slug: string): ProblemStatus => {
   const attempts = attemptsFor({ slug });
 
   if (attempts.some(solvedAlone)) {
     return "solved";
   }
+
   if (attempts.some((a) => !a.finished_at)) {
     return "in_progress";
   }
+
   if (attempts.some((a) => a.outcome === "solved_with_help")) {
     return "solved_with_help";
   }
+
   return attempts.some((a) => a.outcome !== "paused")
     ? "attempted"
     : "unattempted";
-}
+};
 
 /** After a struggle, a problem waits at least a day before it is served again. */
-function waitingForRetry(slug: string, now: Date): boolean {
+const waitingForRetry = (slug: string, now: Date): boolean => {
   const last = attemptsFor({ slug }).at(-1);
 
   if (!last?.finished_at || last.outcome === "paused" || solvedAlone(last)) {
     return false;
   }
-  return now.getTime() - new Date(last.finished_at).getTime() < DAY_MS;
-}
 
-function attemptedRecently(slug: string, now: Date): boolean {
+  return now.getTime() - new Date(last.finished_at).getTime() < DAY_MS;
+};
+
+const attemptedRecently = (slug: string, now: Date): boolean => {
   const last = attemptsFor({ slug }).at(-1);
 
   return Boolean(
     last && now.getTime() - new Date(last.started_at).getTime() < DAY_MS
   );
-}
+};
 
 /** Concepts (with prerequisites) the learner has not been taught yet, prerequisites first. */
-export function newConceptsFor(slug: string): string[] {
-  return withPrereqs(problemInfo(slug).concepts).filter(
+export const newConceptsFor = (slug: string): string[] =>
+  withPrereqs(problemInfo(slug).concepts).filter(
     (id) => conceptRow(id).stage === "unseen"
   );
-}
 
 /**
  * A problem is open when every prerequisite of its concepts is passed, or is an untaught
  * concept with no problems of its own (its lesson passes it). A prerequisite that is still
  * being learned blocks the problem until the learner passes it on its own problems.
  */
-export function isUnlocked(p: ProblemInfo): boolean {
-  return withPrereqs(p.concepts)
+export const isUnlocked = (p: ProblemInfo): boolean =>
+  withPrereqs(p.concepts)
     .filter((id) => !p.concepts.includes(id))
     .every(
       (id) =>
         isPassed(id) ||
         (conceptRow(id).stage === "unseen" && !hasOwnProblems(id))
     );
-}
 
 // ── Choosing the next task ───────────────────────────────────────────────
 
@@ -222,11 +226,21 @@ export type NextAction =
   | { action: "practice"; problem: string; why: string }
   | { action: "done_for_now"; next_due: string | null; why: string };
 
-function dueConcepts(now: Date): { id: string; weight: number }[] {
-  return concepts()
+interface DueConcept {
+  id: string;
+  weight: number;
+}
+
+const dueConcepts = (now: Date): DueConcept[] =>
+  concepts()
     .filter((c) => isPassed(c.id) && isDue(c.id, now))
     .map((c) => {
-      const card = cardOf(c.id)!;
+      const card = cardOf(c.id);
+
+      if (!card) {
+        throw new Error(`Concept '${c.id}' is due but has no card.`);
+      }
+
       const overdueDays = (now.getTime() - card.due.getTime()) / DAY_MS;
 
       return {
@@ -234,13 +248,9 @@ function dueConcepts(now: Date): { id: string; weight: number }[] {
         weight: 1 + overdueDays / Math.max(1, card.scheduled_days),
       };
     });
-}
 
 /** Repetition compression: how much of the due set one problem would knock out. */
-function coverage(
-  p: ProblemInfo,
-  due: { id: string; weight: number }[]
-): { score: number; covers: string[] } {
+const coverage = (p: ProblemInfo, due: DueConcept[]) => {
   let score = 0;
   const covers: string[] = [];
 
@@ -254,50 +264,72 @@ function coverage(
   }
 
   return { covers, score };
-}
+};
 
-function nextNewProblem(now: Date): ProblemInfo | null {
-  return (
-    problemIndex().find(
-      (p) =>
-        isAuthored(p.slug) &&
-        problemStatus(p.slug) !== "solved" &&
-        !waitingForRetry(p.slug, now) &&
-        isUnlocked(p)
-    ) ?? null
-  );
-}
+const nextNewProblem = (now: Date): ProblemInfo | null =>
+  problemIndex().find(
+    (p) =>
+      isAuthored(p.slug) &&
+      problemStatus(p.slug) !== "solved" &&
+      !waitingForRetry(p.slug, now) &&
+      isUnlocked(p)
+  ) ?? null;
 
-function newAction(p: ProblemInfo, why: string): NextAction {
+const newAction = (p: ProblemInfo, why: string): NextAction => {
   const fresh = newConceptsFor(p.slug);
 
   return fresh.length
     ? { action: "learn", new_concepts: fresh, problem: p.slug, why }
     : { action: "practice", problem: p.slug, why };
-}
+};
 
-function reviewsInARow(): number {
+const reviewsInARow = (): number => {
   let n = 0;
 
-  for (const a of [...attemptsFor({})].reverse()) {
+  for (const a of attemptsFor({}).toReversed()) {
     if (!a.finished_at || a.outcome === "paused") {
       continue;
     }
+
     if (a.phase !== "review") {
       break;
     }
-    n++;
+
+    n += 1;
   }
 
   return n;
-}
+};
 
-export function nextUp(now = new Date()): NextAction {
-  const open = attemptsFor({})
-    .filter((a) => !a.finished_at)
-    .at(-1);
+/** The already-practised problem that knocks out the most of the due set, if any. */
+const bestReview = (due: DueConcept[], now: Date) => {
+  let best: { p: ProblemInfo; score: number; covers: string[] } | null = null;
+
+  for (const p of problemIndex()) {
+    if (
+      !isAuthored(p.slug) ||
+      !p.concepts.every(isPassed) ||
+      attemptedRecently(p.slug, now)
+    ) {
+      continue;
+    }
+
+    const { score, covers } = coverage(p, due);
+    const bonus = problemStatus(p.slug) === "unattempted" ? UNSEEN_BONUS : 1;
+
+    if (score > 0 && (!best || score * bonus > best.score)) {
+      best = { covers, p, score: score * bonus };
+    }
+  }
+
+  return best;
+};
+
+export const nextUp = (now = new Date()): NextAction => {
+  const open = attemptsFor({}).findLast((a) => !a.finished_at);
 
   if (open) {
+    // oxlint-disable-next-line sort-keys -- shown to the model as-is; keep the action first and the problem before its attempt id
     return {
       action: "resume",
       problem: open.slug,
@@ -328,23 +360,7 @@ export function nextUp(now = new Date()): NextAction {
   const due = dueConcepts(now);
 
   if (due.length && !(fresh && reviewsInARow() >= REVIEWS_BEFORE_NEW)) {
-    let best: { p: ProblemInfo; score: number; covers: string[] } | null = null;
-
-    for (const p of problemIndex()) {
-      if (
-        !isAuthored(p.slug) ||
-        !p.concepts.every(isPassed) ||
-        attemptedRecently(p.slug, now)
-      ) {
-        continue;
-      }
-      const { score, covers } = coverage(p, due);
-      const bonus = problemStatus(p.slug) === "unattempted" ? UNSEEN_BONUS : 1;
-
-      if (score > 0 && (!best || score * bonus > best.score)) {
-        best = { p, score: score * bonus, covers };
-      }
-    }
+    const best = bestReview(due, now);
 
     // New material that knocks out the same reviews is better than a pure review.
     if (fresh) {
@@ -379,18 +395,18 @@ export function nextUp(now = new Date()): NextAction {
     );
   }
 
-  const nextDue = concepts()
+  const [nextDue] = concepts()
     .filter((c) => isPassed(c.id))
     .map((c) => cardOf(c.id)?.due.toISOString())
     .filter((d): d is string => Boolean(d))
-    .sort()[0];
+    .toSorted();
 
   return {
     action: "done_for_now",
     next_due: nextDue ?? null,
     why: "Nothing is due and nothing new is open right now.",
   };
-}
+};
 
 // ── Reporting ────────────────────────────────────────────────────────────
 
@@ -406,7 +422,9 @@ export interface ConceptStatus {
   lapses: number;
 }
 
-export function conceptStatus(id: string, now = new Date()): ConceptStatus {
+const round = (n: number): number => Math.round(n * 100) / 100;
+
+export const conceptStatus = (id: string, now = new Date()): ConceptStatus => {
   const c = concept(id);
   const card = cardOf(id);
   const scheduled = isPassed(id) && card;
@@ -422,14 +440,13 @@ export function conceptStatus(id: string, now = new Date()): ConceptStatus {
     stage: displayStage(id),
     topic: c.topic,
   };
-}
+};
 
-export function conceptStatuses(now = new Date()): ConceptStatus[] {
-  return concepts().map((c) => conceptStatus(c.id, now));
-}
+export const conceptStatuses = (now = new Date()): ConceptStatus[] =>
+  concepts().map((c) => conceptStatus(c.id, now));
 
 /** Roadmap progress: per topic, solved problems and concept stages. */
-export function topicProgress() {
+export const topicProgress = () => {
   const statuses = conceptStatuses();
 
   return topics().map((t) => {
@@ -438,6 +455,7 @@ export function topicProgress() {
     return {
       concepts: statuses
         .filter((s) => s.topic === t.id)
+        // oxlint-disable-next-line sort-keys -- shown to the model as-is; keep the id first
         .map((s) => ({
           id: s.id,
           stage: s.stage,
@@ -451,8 +469,4 @@ export function topicProgress() {
       total: ps.length,
     };
   });
-}
-
-function round(n: number): number {
-  return Math.round(n * 100) / 100;
-}
+};

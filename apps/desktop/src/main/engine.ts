@@ -1,12 +1,21 @@
 import { spawn } from "node:child_process";
 import type { ChildProcessWithoutNullStreams } from "node:child_process";
-import { join } from "node:path";
+import path from "node:path";
 import { createInterface } from "node:readline";
 
 import { ENGINE_DIR, ENV } from "./paths";
 
+/** A value the bridge sends back: whatever its method returned, as JSON. */
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | Json[]
+  | { [key: string]: Json };
+
 interface Pending {
-  resolve: (value: unknown) => void;
+  resolve: (value: Json | undefined) => void;
   reject: (error: Error) => void;
 }
 
@@ -20,11 +29,12 @@ export class Engine {
   private nextId = 1;
 
   private start(): ChildProcessWithoutNullStreams {
-    const child = spawn("bun", [join(ENGINE_DIR, "src", "bridge.ts")], {
+    const child = spawn("bun", [path.join(ENGINE_DIR, "src", "bridge.ts")], {
       env: ENV,
     });
+
     createInterface({ input: child.stdout }).on("line", (line) => {
-      let reply: { id: number; result?: unknown; error?: string };
+      let reply: { id: number; result?: Json; error?: string };
 
       try {
         reply = JSON.parse(line);
@@ -37,6 +47,7 @@ export class Engine {
       if (!waiting) {
         return;
       }
+
       this.pending.delete(reply.id);
 
       if (reply.error) {
@@ -52,6 +63,7 @@ export class Engine {
       for (const waiting of this.pending.values()) {
         waiting.reject(new Error("The engine stopped."));
       }
+
       this.pending.clear();
       this.child = null;
     });
@@ -59,13 +71,16 @@ export class Engine {
     return child;
   }
 
-  request(method: string): Promise<unknown> {
+  request(method: string): Promise<Json | undefined> {
     this.child ??= this.start();
-    const id = this.nextId++;
+    const { child } = this;
+    const id = this.nextId;
+    this.nextId += 1;
 
+    // oxlint-disable-next-line promise/avoid-new -- the reply arrives later as a line on the child's stdout, so a pending promise is the bridge between the two.
     return new Promise((resolve, reject) => {
       this.pending.set(id, { reject, resolve });
-      this.child!.stdin.write(`${JSON.stringify({ id, method })}\n`);
+      child.stdin.write(`${JSON.stringify({ id, method })}\n`);
     });
   }
 
