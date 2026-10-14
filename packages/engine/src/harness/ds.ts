@@ -4,7 +4,7 @@
 export class ListNode {
   constructor(
     public val: number = 0,
-    public next: ListNode | null = null,
+    public next: ListNode | null = null
   ) {}
 }
 
@@ -12,13 +12,13 @@ export class TreeNode {
   constructor(
     public val: number = 0,
     public left: TreeNode | null = null,
-    public right: TreeNode | null = null,
+    public right: TreeNode | null = null
   ) {}
 }
 
 export class GraphNode {
   constructor(
     public val: number = 0,
-    public neighbors: GraphNode[] = [],
+    public neighbors: GraphNode[] = []
   ) {}
 }

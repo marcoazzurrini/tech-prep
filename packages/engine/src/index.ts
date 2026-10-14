@@ -4,10 +4,12 @@
 // test runs, grading and FSRS scheduling. The tutor (Claude) owns the teaching:
 // it generates explanations and lesson files on the spot, and the engine verifies them.
 
+import { resolve } from "node:path";
+
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { resolve } from "node:path";
 import { z } from "zod";
+
 import {
   DEFAULT_LANGUAGE,
   WORKSPACE_DIR,
@@ -19,21 +21,39 @@ import {
   topics,
   validateCurriculum,
   withPrereqs,
-  type Language,
 } from "./content.ts";
+import type { Language } from "./content.ts";
 import { addNote, attemptsFor, notesFor, orphans } from "./db.ts";
-import { LESSONS_DIR, runLessonFile, writeLessonFile, type LessonKind } from "./lessons.ts";
-import { finishAttempt, logHint, startProblem, testSolution } from "./practice.ts";
+import { LESSONS_DIR, runLessonFile, writeLessonFile } from "./lessons.ts";
+import type { LessonKind } from "./lessons.ts";
+import {
+  finishAttempt,
+  logHint,
+  startProblem,
+  testSolution,
+} from "./practice.ts";
 import { formatRun } from "./runner.ts";
-import { completeLesson, conceptStatus, newConceptsFor, nextUp, problemStatus, topicProgress } from "./scheduler.ts";
+import {
+  completeLesson,
+  conceptStatus,
+  newConceptsFor,
+  nextUp,
+  problemStatus,
+  topicProgress,
+} from "./scheduler.ts";
 
 const server = new McpServer({ name: "tech-prep", version: "0.2.0" });
 
-const language = z.enum(["python", "typescript"]).optional().describe(`Defaults to ${DEFAULT_LANGUAGE}.`);
+const language = z
+  .enum(["python", "typescript"])
+  .optional()
+  .describe(`Defaults to ${DEFAULT_LANGUAGE}.`);
 
 function reply(value: unknown) {
-  const text = typeof value === "string" ? value : JSON.stringify(value, null, 2);
-  return { content: [{ type: "text" as const, text }] };
+  const text =
+    typeof value === "string" ? value : JSON.stringify(value, null, 2);
+
+  return { content: [{ text, type: "text" as const }] };
 }
 
 function safely<A>(fn: (args: A) => unknown) {
@@ -41,7 +61,10 @@ function safely<A>(fn: (args: A) => unknown) {
     try {
       return reply(fn(args));
     } catch (error) {
-      return { ...reply(error instanceof Error ? error.message : String(error)), isError: true };
+      return {
+        ...reply(error instanceof Error ? error.message : String(error)),
+        isError: true,
+      };
     }
   };
 }
@@ -49,16 +72,17 @@ function safely<A>(fn: (args: A) => unknown) {
 function conceptView(id: string) {
   const c = concept(id);
   const s = conceptStatus(id);
+
   return {
-    id,
-    name: c.name,
-    topic: c.topic,
-    key_idea: c.key_idea,
-    prereqs: c.prereqs,
-    stage: s.stage,
-    recall: s.retrievability,
     due: s.due,
+    id,
+    key_idea: c.key_idea,
     learner_notes: notesFor(id, 5).map((n) => n.text),
+    name: c.name,
+    prereqs: c.prereqs,
+    recall: s.retrievability,
+    stage: s.stage,
+    topic: c.topic,
   };
 }
 
@@ -73,13 +97,14 @@ server.registerTool(
   },
   safely(() => {
     const problems = [...validateCurriculum(), ...orphans()];
+
     return {
       ...nextUp(),
-      workspace: WORKSPACE_DIR,
       language: DEFAULT_LANGUAGE,
+      workspace: WORKSPACE_DIR,
       ...(problems.length ? { data_warnings: problems } : {}),
     };
-  }),
+  })
 );
 
 server.registerTool(
@@ -89,31 +114,45 @@ server.registerTool(
       "The roadmap: topics in order with prerequisites, solved/total problems per topic, and each concept's stage (unseen, learning, practicing), recall and due date.",
     inputSchema: {},
   },
-  safely(() => topicProgress()),
+  safely(() => topicProgress())
 );
 
 server.registerTool(
   "get_progress",
   {
-    description: "Totals, concepts due soon, the weakest concepts, and recent tutor notes about the learner.",
+    description:
+      "Totals, concepts due soon, the weakest concepts, and recent tutor notes about the learner.",
     inputSchema: {},
   },
   safely(() => {
     const roadmap = topicProgress();
-    const all = roadmap.flatMap((t) => t.concepts.map((c) => ({ ...c, topic: t.name })));
-    const practiced = all.filter((c) => c.stage === "passed" || c.stage === "mastered");
+    const all = roadmap.flatMap((t) =>
+      t.concepts.map((c) => ({ ...c, topic: t.name }))
+    );
+    const practiced = all.filter(
+      (c) => c.stage === "passed" || c.stage === "mastered"
+    );
+
     return {
+      concepts_learning: all.filter((c) => c.stage === "learning").length,
+      concepts_mastered: all.filter((c) => c.stage === "mastered").length,
+      concepts_passed: practiced.length,
+      concepts_total: all.length,
+      due_soon: [...practiced]
+        .sort((a, b) => (a.due ?? "").localeCompare(b.due ?? ""))
+        .slice(0, 5),
+      recent_notes: notesFor(undefined, 10).map((n) => ({
+        concept: n.concept_id,
+        problem: n.slug,
+        text: n.text,
+      })),
       solved: roadmap.reduce((n, t) => n + t.solved, 0),
       total: roadmap.reduce((n, t) => n + t.total, 0),
-      concepts_passed: practiced.length,
-      concepts_mastered: all.filter((c) => c.stage === "mastered").length,
-      concepts_learning: all.filter((c) => c.stage === "learning").length,
-      concepts_total: all.length,
-      due_soon: [...practiced].sort((a, b) => (a.due ?? "").localeCompare(b.due ?? "")).slice(0, 5),
-      weakest: [...practiced].sort((a, b) => (a.recall ?? 0) - (b.recall ?? 0)).slice(0, 5),
-      recent_notes: notesFor(undefined, 10).map((n) => ({ concept: n.concept_id, problem: n.slug, text: n.text })),
+      weakest: [...practiced]
+        .sort((a, b) => (a.recall ?? 0) - (b.recall ?? 0))
+        .slice(0, 5),
     };
-  }),
+  })
 );
 
 // ── Curriculum queries ──────────────────────────────────────────────────
@@ -123,16 +162,18 @@ server.registerTool(
   {
     description:
       "Everything about a problem for teaching it: statement, topic, difficulty, its concepts (key idea, prerequisites, learner stage, recall, notes), concepts not taught yet, past attempts, and the reference solution. The reference is your answer key: never show it unless the learner asks for the solution (hint level 4).",
-    inputSchema: { slug: z.string().describe("The problem slug, e.g. next_up's `problem` field."), language },
+    inputSchema: {
+      language,
+      slug: z
+        .string()
+        .describe("The problem slug, e.g. next_up's `problem` field."),
+    },
   },
   safely(({ slug, language }: { slug: string; language?: Language }) => {
     const info = problemInfo(slug);
+
     return {
       ...info,
-      authored: isAuthored(slug),
-      status: problemStatus(slug),
-      concepts: info.concepts.map(conceptView),
-      not_yet_taught: newConceptsFor(slug),
       attempts: attemptsFor({ slug }).map((a) => ({
         started_at: a.started_at,
         finished: Boolean(a.finished_at),
@@ -140,9 +181,13 @@ server.registerTool(
         rating: a.rating,
         notes: a.notes,
       })),
+      authored: isAuthored(slug),
+      concepts: info.concepts.map(conceptView),
+      not_yet_taught: newConceptsFor(slug),
       reference_solution: referenceSolution(slug, language ?? DEFAULT_LANGUAGE),
+      status: problemStatus(slug),
     };
-  }),
+  })
 );
 
 server.registerTool(
@@ -157,14 +202,20 @@ server.registerTool(
     prerequisite_chain: withPrereqs([concept_id])
       .slice(0, -1)
       .map((id) => ({ id, stage: conceptStatus(id).stage })),
-    problems: problemsUsing(concept_id).map((p) => ({ slug: p.slug, title: p.title, status: problemStatus(p.slug) })),
-  })),
+    problems: problemsUsing(concept_id).map((p) => ({
+      slug: p.slug,
+      status: problemStatus(p.slug),
+      title: p.title,
+    })),
+  }))
 );
 
 server.registerTool(
   "list_topics",
   { description: "Topic ids and names in roadmap order.", inputSchema: {} },
-  safely(() => topics().map((t) => ({ id: t.id, name: t.name, prereqs: t.prereqs }))),
+  safely(() =>
+    topics().map((t) => ({ id: t.id, name: t.name, prereqs: t.prereqs }))
+  )
 );
 
 // ── Lessons (generated by the tutor, verified here) ─────────────────────
@@ -180,13 +231,27 @@ server.registerTool(
       "Keep it short: one small function, at most ~4 short comments, 3-5 checks. Never use a Blind 75 problem.",
     ].join(" "),
     inputSchema: {
-      concept_ids: z.array(z.string()).min(1).describe("The concepts this lesson teaches; the first names the file."),
+      checks: z
+        .string()
+        .describe('One check per line: check("label", fn(args), expected)'),
+      code: z
+        .string()
+        .describe("Only the function(s). No banners, no check helper."),
+      concept_ids: z
+        .array(z.string())
+        .min(1)
+        .describe(
+          "The concepts this lesson teaches; the first names the file."
+        ),
       kind: z.enum(["example", "exercise"]),
       language,
-      title: z.string().describe("One line, e.g. 'Count pairs whose difference is k.'"),
-      code: z.string().describe("Only the function(s). No banners, no check helper."),
-      checks: z.string().describe('One check per line: check("label", fn(args), expected)'),
-      solution: z.string().optional().describe("Exercise only: the complete code with the TODOs filled in."),
+      solution: z
+        .string()
+        .optional()
+        .describe("Exercise only: the complete code with the TODOs filled in."),
+      title: z
+        .string()
+        .describe("One line, e.g. 'Count pairs whose difference is k.'"),
     },
   },
   safely(
@@ -200,15 +265,15 @@ server.registerTool(
       solution?: string;
     }) =>
       writeLessonFile({
+        checks: args.checks,
+        code: args.code,
         conceptIds: args.concept_ids,
         kind: args.kind,
         language: args.language ?? DEFAULT_LANGUAGE,
-        title: args.title,
-        code: args.code,
-        checks: args.checks,
         solution: args.solution,
-      }),
-  ),
+        title: args.title,
+      })
+  )
 );
 
 server.registerTool(
@@ -216,14 +281,23 @@ server.registerTool(
   {
     description:
       "Run the checks in a lesson file from write_lesson_file, after the learner has filled in the TODO lines. Prints ✓ or ✗ per check.",
-    inputSchema: { file: z.string().describe("The path write_lesson_file returned.") },
+    inputSchema: {
+      file: z.string().describe("The path write_lesson_file returned."),
+    },
   },
   safely(({ file }: { file: string }) => {
     const path = resolve(file);
-    if (!path.startsWith(`${LESSONS_DIR}/`)) throw new Error(`Only lesson files under ${LESSONS_DIR} can run.`);
-    const run = runLessonFile(path, path.endsWith(".py") ? "python" : "typescript");
+
+    if (!path.startsWith(`${LESSONS_DIR}/`)) {
+      throw new Error(`Only lesson files under ${LESSONS_DIR} can run.`);
+    }
+    const run = runLessonFile(
+      path,
+      path.endsWith(".py") ? "python" : "typescript"
+    );
+
     return `${run.passed}/${run.passed + run.failed} checks passed${run.timedOut ? " (timed out)" : ""}\n\n${run.output}`;
-  }),
+  })
 );
 
 server.registerTool(
@@ -234,9 +308,11 @@ server.registerTool(
     inputSchema: { concept_ids: z.array(z.string()).min(1) },
   },
   safely(({ concept_ids }: { concept_ids: string[] }) => {
-    for (const id of concept_ids) concept(id);
+    for (const id of concept_ids) {
+      concept(id);
+    }
     return concept_ids.map((id) => ({ id, stage: completeLesson(id) }));
-  }),
+  })
 );
 
 // ── Practice ────────────────────────────────────────────────────────────
@@ -246,9 +322,16 @@ server.registerTool(
   {
     description:
       "Create the learner's solution file (statement on top, skeleton below) and open an attempt (or resume the open one). Tell the learner the returned path.",
-    inputSchema: { slug: z.string().describe("The problem slug, e.g. next_up's `problem` field."), language },
+    inputSchema: {
+      language,
+      slug: z
+        .string()
+        .describe("The problem slug, e.g. next_up's `problem` field."),
+    },
   },
-  safely(({ slug, language }: { slug: string; language?: Language }) => startProblem(slug, language)),
+  safely(({ slug, language }: { slug: string; language?: Language }) =>
+    startProblem(slug, language)
+  )
 );
 
 server.registerTool(
@@ -256,12 +339,18 @@ server.registerTool(
   {
     description:
       "Run the learner's solution against the hidden tests and record the result on the open attempt. Shows input, expected and actual output for the first failures.",
-    inputSchema: { slug: z.string().describe("The problem slug, e.g. next_up's `problem` field."), language },
+    inputSchema: {
+      language,
+      slug: z
+        .string()
+        .describe("The problem slug, e.g. next_up's `problem` field."),
+    },
   },
   safely(({ slug, language }: { slug: string; language?: Language }) => {
     const { run, attempt_id } = testSolution(slug, language);
+
     return `${formatRun(run)}\n\nattempt_id: ${attempt_id ?? "none open"}`;
-  }),
+  })
 );
 
 server.registerTool(
@@ -271,14 +360,34 @@ server.registerTool(
       "Record a hint before giving it, tagged with the concept it is about (one of the problem's concepts) whenever possible; this is how the engine knows which concept needed help. Levels: 1 = guiding question, 2 = name the concept or data structure, 3 = outline the approach, 4 = show solution code.",
     inputSchema: {
       attempt_id: z.number().int(),
+      concept_id: z
+        .string()
+        .optional()
+        .describe(
+          "The problem concept this hint is about. Omit only if it is about no particular concept."
+        ),
       level: z.number().int().min(1).max(4),
-      concept_id: z.string().optional().describe("The problem concept this hint is about. Omit only if it is about no particular concept."),
     },
   },
-  safely(({ attempt_id, level, concept_id }: { attempt_id: number; level: number; concept_id?: string }) => {
-    const a = logHint(attempt_id, level, concept_id ?? null);
-    return { attempt_id, hints_used: a.hints_used, max_hint_level: a.max_hint_level };
-  }),
+  safely(
+    ({
+      attempt_id,
+      level,
+      concept_id,
+    }: {
+      attempt_id: number;
+      level: number;
+      concept_id?: string;
+    }) => {
+      const a = logHint(attempt_id, level, concept_id ?? null);
+
+      return {
+        attempt_id,
+        hints_used: a.hints_used,
+        max_hint_level: a.max_hint_level,
+      };
+    }
+  )
 );
 
 server.registerTool(
@@ -292,26 +401,43 @@ server.registerTool(
     ].join(" "),
     inputSchema: {
       attempt_id: z.number().int(),
-      stopped: z.enum(["gave_up", "paused"]).optional(),
+      diagnosis: z
+        .array(
+          z.object({
+            concept_id: z.string(),
+            verdict: z.enum(["ok", "struggled", "failed"]),
+            reason: z.string().optional(),
+          })
+        )
+        .optional()
+        .describe(
+          "From your review of their final code and the session: how they handled each concept. On a give-up, mark the concept(s) that caused it as 'failed'."
+        ),
       explanation_score: z
         .number()
         .int()
         .min(0)
         .max(3)
-        .describe("0 wrong/missing, 1 vague or wrong complexity, 2 correct approach and complexity, 3 also why it works and edge cases."),
-      recognition: z
-        .enum(["correct", "partial", "wrong", "skipped"])
-        .optional()
-        .describe("Reviews: did the learner name the right approach before coding? 'skipped' if not asked (lessons)."),
-      diagnosis: z
-        .array(z.object({ concept_id: z.string(), verdict: z.enum(["ok", "struggled", "failed"]), reason: z.string().optional() }))
-        .optional()
-        .describe("From your review of their final code and the session: how they handled each concept. On a give-up, mark the concept(s) that caused it as 'failed'."),
+        .describe(
+          "0 wrong/missing, 1 vague or wrong complexity, 2 correct approach and complexity, 3 also why it works and edge cases."
+        ),
       learner_self_rating: z
         .union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])
         .optional()
-        .describe("Learner's own rating 1-4 (Again/Hard/Good/Easy). It can only lower grades."),
-      notes: z.string().optional().describe("Short note on what went well or wrong in this attempt."),
+        .describe(
+          "Learner's own rating 1-4 (Again/Hard/Good/Easy). It can only lower grades."
+        ),
+      notes: z
+        .string()
+        .optional()
+        .describe("Short note on what went well or wrong in this attempt."),
+      recognition: z
+        .enum(["correct", "partial", "wrong", "skipped"])
+        .optional()
+        .describe(
+          "Reviews: did the learner name the right approach before coding? 'skipped' if not asked (lessons)."
+        ),
+      stopped: z.enum(["gave_up", "paused"]).optional(),
     },
   },
   safely(
@@ -320,20 +446,24 @@ server.registerTool(
       stopped?: "gave_up" | "paused";
       explanation_score: number;
       recognition?: "correct" | "partial" | "wrong" | "skipped";
-      diagnosis?: { concept_id: string; verdict: "ok" | "struggled" | "failed"; reason?: string }[];
+      diagnosis?: {
+        concept_id: string;
+        verdict: "ok" | "struggled" | "failed";
+        reason?: string;
+      }[];
       learner_self_rating?: 1 | 2 | 3 | 4;
       notes?: string;
     }) =>
       finishAttempt({
         attemptId: args.attempt_id,
-        stopped: args.stopped,
-        explanationScore: args.explanation_score,
-        recognition: args.recognition,
         diagnosis: args.diagnosis,
+        explanationScore: args.explanation_score,
         learnerSelfRating: args.learner_self_rating,
         notes: args.notes,
-      }),
-  ),
+        recognition: args.recognition,
+        stopped: args.stopped,
+      })
+  )
 );
 
 server.registerTool(
@@ -341,14 +471,32 @@ server.registerTool(
   {
     description:
       "Save a durable observation about the learner for a concept, such as a misconception or a recurring bug. It shows up in get_problem, get_concept and get_progress in later sessions.",
-    inputSchema: { concept_id: z.string(), text: z.string(), slug: z.string().optional() },
+    inputSchema: {
+      concept_id: z.string(),
+      slug: z.string().optional(),
+      text: z.string(),
+    },
   },
-  safely(({ concept_id, text, slug }: { concept_id: string; text: string; slug?: string }) => {
-    concept(concept_id);
-    if (slug) problemInfo(slug);
-    addNote(concept_id, text, slug ?? null);
-    return "saved";
-  }),
+  safely(
+    ({
+      concept_id,
+      text,
+      slug,
+    }: {
+      concept_id: string;
+      text: string;
+      slug?: string;
+    }) => {
+      concept(concept_id);
+
+      if (slug) {
+        problemInfo(slug);
+      }
+      addNote(concept_id, text, slug ?? null);
+
+      return "saved";
+    }
+  )
 );
 
 await server.connect(new StdioServerTransport());

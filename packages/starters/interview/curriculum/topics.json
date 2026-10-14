@@ -1,20 +1,56 @@
 [
   { "id": "arrays-hashing", "name": "Arrays & Hashing", "prereqs": [] },
-  { "id": "two-pointers", "name": "Two Pointers", "prereqs": ["arrays-hashing"] },
+  {
+    "id": "two-pointers",
+    "name": "Two Pointers",
+    "prereqs": ["arrays-hashing"]
+  },
   { "id": "stack", "name": "Stack", "prereqs": ["arrays-hashing"] },
-  { "id": "sliding-window", "name": "Sliding Window", "prereqs": ["two-pointers"] },
-  { "id": "binary-search", "name": "Binary Search", "prereqs": ["two-pointers"] },
+  {
+    "id": "sliding-window",
+    "name": "Sliding Window",
+    "prereqs": ["two-pointers"]
+  },
+  {
+    "id": "binary-search",
+    "name": "Binary Search",
+    "prereqs": ["two-pointers"]
+  },
   { "id": "linked-list", "name": "Linked List", "prereqs": ["two-pointers"] },
-  { "id": "trees", "name": "Trees", "prereqs": ["binary-search", "linked-list"] },
+  {
+    "id": "trees",
+    "name": "Trees",
+    "prereqs": ["binary-search", "linked-list"]
+  },
   { "id": "tries", "name": "Tries", "prereqs": ["trees"] },
   { "id": "heap", "name": "Heap / Priority Queue", "prereqs": ["trees"] },
   { "id": "backtracking", "name": "Backtracking", "prereqs": ["trees"] },
   { "id": "graphs", "name": "Graphs", "prereqs": ["backtracking"] },
-  { "id": "dp-1d", "name": "1-D Dynamic Programming", "prereqs": ["backtracking"] },
+  {
+    "id": "dp-1d",
+    "name": "1-D Dynamic Programming",
+    "prereqs": ["backtracking"]
+  },
   { "id": "intervals", "name": "Intervals", "prereqs": ["heap"] },
   { "id": "greedy", "name": "Greedy", "prereqs": ["heap"] },
-  { "id": "advanced-graphs", "name": "Advanced Graphs", "prereqs": ["heap", "graphs"] },
-  { "id": "dp-2d", "name": "2-D Dynamic Programming", "prereqs": ["graphs", "dp-1d"] },
-  { "id": "bit-manipulation", "name": "Bit Manipulation", "prereqs": ["dp-1d"] },
-  { "id": "math-geometry", "name": "Math & Geometry", "prereqs": ["bit-manipulation"] }
+  {
+    "id": "advanced-graphs",
+    "name": "Advanced Graphs",
+    "prereqs": ["heap", "graphs"]
+  },
+  {
+    "id": "dp-2d",
+    "name": "2-D Dynamic Programming",
+    "prereqs": ["graphs", "dp-1d"]
+  },
+  {
+    "id": "bit-manipulation",
+    "name": "Bit Manipulation",
+    "prereqs": ["dp-1d"]
+  },
+  {
+    "id": "math-geometry",
+    "name": "Math & Geometry",
+    "prereqs": ["bit-manipulation"]
+  }
 ]
