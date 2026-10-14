@@ -2,12 +2,18 @@
 // judgements (diagnosis, explanation, recognition) and the learner's self-rating can only
 // lower it. See docs/learning-model.md, "Review phase".
 
-import { Rating, type Grade } from "ts-fsrs";
+import { Rating } from "ts-fsrs";
+import type { Grade } from "ts-fsrs";
+
 import type { Difficulty } from "./content.ts";
 import type { HintRow, Recognition } from "./db.ts";
 
 /** Minutes a confident solve should take; beating it (with no hints) can earn Easy. */
-const TARGET_MINUTES: Record<Difficulty, number> = { easy: 15, medium: 25, hard: 40 };
+const TARGET_MINUTES: Record<Difficulty, number> = {
+  easy: 15,
+  hard: 40,
+  medium: 25,
+};
 
 /** The tutor's view of how the learner handled one concept. */
 export type Verdict = "ok" | "struggled" | "failed";
@@ -36,7 +42,12 @@ export interface ConceptGrade {
 
 /** Highest hint level about this concept. Hints not tied to a concept count for every concept. */
 function hintLevel(hints: HintRow[], concept: string): number {
-  return Math.max(0, ...hints.filter((h) => h.concept_id === concept || h.concept_id === null).map((h) => h.level));
+  return Math.max(
+    0,
+    ...hints
+      .filter((h) => h.concept_id === concept || h.concept_id === null)
+      .map((h) => h.level)
+  );
 }
 
 /**
@@ -46,13 +57,20 @@ function hintLevel(hints: HintRow[], concept: string): number {
  */
 function culprits(e: AttemptEvidence): Set<string> {
   const named = e.concepts.filter((c) => e.diagnosis.get(c) === "failed");
-  if (named.length) return new Set(named);
+
+  if (named.length) {
+    return new Set(named);
+  }
   const levels = e.concepts.map((c) => hintLevel(e.hints, c));
   const top = Math.max(...levels);
-  return new Set(top > 0 ? e.concepts.filter((_, i) => levels[i] === top) : e.concepts);
+
+  return new Set(
+    top > 0 ? e.concepts.filter((_, i) => levels[i] === top) : e.concepts
+  );
 }
 
-const cap = (grade: Grade, limit: Grade): Grade => Math.min(grade, limit) as Grade;
+const cap = (grade: Grade, limit: Grade): Grade =>
+  Math.min(grade, limit) as Grade;
 
 export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
   const failed = e.gaveUp || !e.solved;
@@ -68,7 +86,11 @@ export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
     if (failed) {
       if (blamed.has(concept)) {
         grade = Rating.Again;
-        reasons.push(e.gaveUp ? "gave up on this part" : "tests did not pass because of this part");
+        reasons.push(
+          e.gaveUp
+            ? "gave up on this part"
+            : "tests did not pass because of this part"
+        );
       } else {
         grade = Rating.Hard;
         reasons.push("handled this part, but the problem was not finished");
@@ -81,6 +103,7 @@ export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
         grade = Rating.Hard;
         reasons.push(`needed a level ${level} hint on it`);
       }
+
       if (verdict === "failed") {
         grade = Rating.Again;
         reasons.push("the tutor's review found this part wrong");
@@ -94,10 +117,12 @@ export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
       grade = cap(grade, Rating.Hard);
       reasons.push("named the wrong pattern first");
     }
+
     if (e.explanationScore <= 1) {
       grade = cap(grade, Rating.Hard);
       reasons.push("the explanation was weak");
     }
+
     if (
       grade === Rating.Good &&
       !anyHints &&
@@ -109,13 +134,18 @@ export function gradeAttempt(e: AttemptEvidence): ConceptGrade[] {
       grade = Rating.Easy;
       reasons.push("fast, no hints, strong explanation");
     }
+
     if (e.selfRating && e.selfRating < grade) {
       grade = e.selfRating;
       reasons.push("lowered by your self-rating");
     }
-    if (!reasons.length) reasons.push("solved it on your own");
+
+    if (!reasons.length) {
+      reasons.push("solved it on your own");
+    }
 
     const independent = !failed && level <= 1 && verdict === "ok";
+
     return { concept, grade, independent, reasons };
   });
 }

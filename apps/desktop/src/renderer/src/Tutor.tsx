@@ -1,11 +1,20 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import Markdown from "react-markdown";
+
 import { Icon } from "./icons";
 import type { TutorEvent } from "./types";
 
-type Item = { role: "tutor" | "you" | "error"; text: string };
+interface Item {
+  role: "tutor" | "you" | "error";
+  text: string;
+}
 
-const link = { a: (props: React.ComponentProps<"a">) => <a {...props} target="_blank" rel="noreferrer" /> };
+const link = {
+  a: (props: React.ComponentProps<"a">) => (
+    <a {...props} target="_blank" rel="noreferrer" />
+  ),
+};
 
 /** Chat with the tutor (Claude Code with the tech-prep plugin, run by the main process). */
 export function Tutor() {
@@ -19,18 +28,27 @@ export function Tutor() {
   useEffect(() => {
     const off = window.tp.tutor.onEvent((payload) => {
       const event = payload as TutorEvent;
+
       if (event.type === "message") {
         setItems((all) => [...all, { role: "tutor", text: event.text }]);
         setActivity("");
-      } else if (event.type === "activity") setActivity(event.label);
-      else if (event.type === "busy") {
+      } else if (event.type === "activity") {
+        setActivity(event.label);
+      } else if (event.type === "busy") {
         setBusy(event.busy);
-        if (!event.busy) setActivity("");
-      } else setItems((all) => [...all, { role: "error", text: event.text }]);
+
+        if (!event.busy) {
+          setActivity("");
+        }
+      } else {
+        setItems((all) => [...all, { role: "error", text: event.text }]);
+      }
     });
+
     window.tp.tutor.start();
     const focus = () => input.current?.focus();
     window.addEventListener("tp:focus-tutor", focus);
+
     return () => {
       off();
       window.removeEventListener("tp:focus-tutor", focus);
@@ -38,16 +56,25 @@ export function Tutor() {
   }, []);
 
   useEffect(() => {
-    chat.current?.scrollTo({ top: chat.current.scrollHeight, behavior: "smooth" });
+    chat.current?.scrollTo({
+      behavior: "smooth",
+      top: chat.current.scrollHeight,
+    });
   }, [items, busy]);
 
   const send = () => {
     const text = draft.trim();
-    if (!text) return;
+
+    if (!text) {
+      return;
+    }
     window.tp.tutor.send(text);
     setItems((all) => [...all, { role: "you", text }]);
     setDraft("");
-    if (input.current) input.current.style.height = "auto";
+
+    if (input.current) {
+      input.current.style.height = "auto";
+    }
   };
 
   const onKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -71,10 +98,16 @@ export function Tutor() {
             </div>
           ) : (
             <div className={`msg${item.role === "you" ? " me" : ""}`} key={i}>
-              <span className="who">{item.role === "you" ? "You" : "Tutor"}</span>
-              {item.role === "you" ? <p>{item.text}</p> : <Markdown components={link}>{item.text}</Markdown>}
+              <span className="who">
+                {item.role === "you" ? "You" : "Tutor"}
+              </span>
+              {item.role === "you" ? (
+                <p>{item.text}</p>
+              ) : (
+                <Markdown components={link}>{item.text}</Markdown>
+              )}
             </div>
-          ),
+          )
         )}
         {busy && (
           <div className="activity">
@@ -97,7 +130,13 @@ export function Tutor() {
           }}
           onKeyDown={onKey}
         />
-        <button className="send" title="Send" aria-label="Send" disabled={!draft.trim()} onClick={send}>
+        <button
+          className="send"
+          title="Send"
+          aria-label="Send"
+          disabled={!draft.trim()}
+          onClick={send}
+        >
           <Icon name="up" />
         </button>
       </div>

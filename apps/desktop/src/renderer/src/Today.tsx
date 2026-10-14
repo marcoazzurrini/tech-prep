@@ -2,14 +2,20 @@ import { Icon } from "./icons";
 import { Statement } from "./Statement";
 import type { Session } from "./types";
 
-const DIFFICULTY = { easy: "Easy", medium: "Medium", hard: "Hard" };
+const DIFFICULTY = { easy: "Easy", hard: "Hard", medium: "Medium" };
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
+  return new Date(iso).toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "long",
+    weekday: "long",
+  });
 }
 
 export function ProblemPanel({ session }: { session: Session | null }) {
-  if (!session) return <section className="panel" />;
+  if (!session) {
+    return <section className="panel" />;
+  }
   const { problem, attempt, next } = session;
 
   if (!problem) {
@@ -27,7 +33,9 @@ export function ProblemPanel({ session }: { session: Session | null }) {
     );
   }
 
-  const review = attempt ? attempt.phase === "review" : next.action === "review";
+  const review = attempt
+    ? attempt.phase === "review"
+    : next.action === "review";
   const inLesson = !review && problem.new_concepts.length > 0;
   const phase = review ? "Review" : inLesson ? "Learn" : "Practise";
 
@@ -41,19 +49,24 @@ export function ProblemPanel({ session }: { session: Session | null }) {
           <span>
             <b>{phase}</b>
           </span>
-          {inLesson && problem.new_concepts.length > 0 && <span>New: {problem.new_concepts.join(", ")}</span>}
+          {inLesson && problem.new_concepts.length > 0 && (
+            <span>New: {problem.new_concepts.join(", ")}</span>
+          )}
         </div>
       </div>
       <div className="desc">
         <h1>{problem.title}</h1>
         <div className="pills">
-          <span className={`pill ${problem.difficulty}`}>{DIFFICULTY[problem.difficulty]}</span>
+          <span className={`pill ${problem.difficulty}`}>
+            {DIFFICULTY[problem.difficulty]}
+          </span>
           <span className="pill">{phase}</span>
         </div>
         {review && (
           <div className="note">
             <Icon name="lock" />
-            {problem.concept_count} concept{problem.concept_count === 1 ? "" : "s"} · revealed when you finish
+            {problem.concept_count} concept
+            {problem.concept_count === 1 ? "" : "s"} · revealed when you finish
           </div>
         )}
         {problem.statement ? (

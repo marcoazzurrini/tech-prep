@@ -11,9 +11,7 @@
     "id": "hash-set",
     "name": "Hash Set Lookup",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -26,9 +24,7 @@
     "id": "hash-map-counting",
     "name": "Frequency Counting",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "hash-set"
-    ],
+    "prereqs": ["hash-set"],
     "encompasses": [
       {
         "id": "hash-set",
@@ -41,9 +37,7 @@
     "id": "hash-map-index",
     "name": "Value-to-Index Map",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "hash-set"
-    ],
+    "prereqs": ["hash-set"],
     "encompasses": [
       {
         "id": "hash-set",
@@ -56,9 +50,7 @@
     "id": "canonical-key",
     "name": "Canonical Keys",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "hash-map-counting"
-    ],
+    "prereqs": ["hash-map-counting"],
     "encompasses": [
       {
         "id": "hash-map-counting",
@@ -71,9 +63,7 @@
     "id": "bucket-sort",
     "name": "Bucket Sort by Count",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "hash-map-counting"
-    ],
+    "prereqs": ["hash-map-counting"],
     "encompasses": [
       {
         "id": "hash-map-counting",
@@ -86,9 +76,7 @@
     "id": "prefix-products",
     "name": "Prefix and Suffix Accumulation",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -101,9 +89,7 @@
     "id": "string-encoding",
     "name": "String Encoding",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -116,9 +102,7 @@
     "id": "sequence-starts",
     "name": "Sequence Starts",
     "topic": "arrays-hashing",
-    "prereqs": [
-      "hash-set"
-    ],
+    "prereqs": ["hash-set"],
     "encompasses": [
       {
         "id": "hash-set",
@@ -131,9 +115,7 @@
     "id": "sorting",
     "name": "Sort First",
     "topic": "two-pointers",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -146,9 +128,7 @@
     "id": "two-pointers-opposite",
     "name": "Opposite-End Pointers",
     "topic": "two-pointers",
-    "prereqs": [
-      "sorting"
-    ],
+    "prereqs": ["sorting"],
     "encompasses": [
       {
         "id": "sorting",
@@ -161,9 +141,7 @@
     "id": "skip-duplicates",
     "name": "Skipping Duplicates",
     "topic": "two-pointers",
-    "prereqs": [
-      "two-pointers-opposite"
-    ],
+    "prereqs": ["two-pointers-opposite"],
     "encompasses": [
       {
         "id": "two-pointers-opposite",
@@ -176,9 +154,7 @@
     "id": "stack-matching",
     "name": "Stack Matching",
     "topic": "stack",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -191,9 +167,7 @@
     "id": "running-best",
     "name": "Running Minimum / Maximum",
     "topic": "sliding-window",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -206,10 +180,7 @@
     "id": "variable-window",
     "name": "Variable Sliding Window",
     "topic": "sliding-window",
-    "prereqs": [
-      "two-pointers-opposite",
-      "hash-set"
-    ],
+    "prereqs": ["two-pointers-opposite", "hash-set"],
     "encompasses": [
       {
         "id": "two-pointers-opposite",
@@ -226,10 +197,7 @@
     "id": "window-counts",
     "name": "Window with Counts",
     "topic": "sliding-window",
-    "prereqs": [
-      "variable-window",
-      "hash-map-counting"
-    ],
+    "prereqs": ["variable-window", "hash-map-counting"],
     "encompasses": [
       {
         "id": "variable-window",
@@ -246,9 +214,7 @@
     "id": "binary-search",
     "name": "Binary Search",
     "topic": "binary-search",
-    "prereqs": [
-      "sorting"
-    ],
+    "prereqs": ["sorting"],
     "encompasses": [
       {
         "id": "sorting",
@@ -261,9 +227,7 @@
     "id": "binary-search-rotated",
     "name": "Search in Rotated Order",
     "topic": "binary-search",
-    "prereqs": [
-      "binary-search"
-    ],
+    "prereqs": ["binary-search"],
     "encompasses": [
       {
         "id": "binary-search",
@@ -276,9 +240,7 @@
     "id": "linked-list-traversal",
     "name": "Linked List Traversal",
     "topic": "linked-list",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -291,9 +253,7 @@
     "id": "list-reversal",
     "name": "Reversing Links",
     "topic": "linked-list",
-    "prereqs": [
-      "linked-list-traversal"
-    ],
+    "prereqs": ["linked-list-traversal"],
     "encompasses": [
       {
         "id": "linked-list-traversal",
@@ -306,9 +266,7 @@
     "id": "dummy-node",
     "name": "Dummy Head Node",
     "topic": "linked-list",
-    "prereqs": [
-      "linked-list-traversal"
-    ],
+    "prereqs": ["linked-list-traversal"],
     "encompasses": [
       {
         "id": "linked-list-traversal",
@@ -321,9 +279,7 @@
     "id": "fast-slow-pointers",
     "name": "Fast and Slow Pointers",
     "topic": "linked-list",
-    "prereqs": [
-      "linked-list-traversal"
-    ],
+    "prereqs": ["linked-list-traversal"],
     "encompasses": [
       {
         "id": "linked-list-traversal",
@@ -336,9 +292,7 @@
     "id": "gap-pointers",
     "name": "Fixed-Gap Pointers",
     "topic": "linked-list",
-    "prereqs": [
-      "linked-list-traversal"
-    ],
+    "prereqs": ["linked-list-traversal"],
     "encompasses": [
       {
         "id": "linked-list-traversal",
@@ -351,9 +305,7 @@
     "id": "recursion",
     "name": "Recursion",
     "topic": "trees",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [],
     "key_idea": "Solve a problem by trusting the same function on smaller inputs; define the base case first."
   },
@@ -361,10 +313,7 @@
     "id": "tree-dfs",
     "name": "Tree Depth-First Search",
     "topic": "trees",
-    "prereqs": [
-      "recursion",
-      "linked-list-traversal"
-    ],
+    "prereqs": ["recursion", "linked-list-traversal"],
     "encompasses": [
       {
         "id": "recursion",
@@ -381,9 +330,7 @@
     "id": "tree-bfs",
     "name": "Tree Level-Order Search",
     "topic": "trees",
-    "prereqs": [
-      "tree-dfs"
-    ],
+    "prereqs": ["tree-dfs"],
     "encompasses": [
       {
         "id": "tree-dfs",
@@ -396,10 +343,7 @@
     "id": "bst-property",
     "name": "Binary Search Tree Property",
     "topic": "trees",
-    "prereqs": [
-      "tree-dfs",
-      "binary-search"
-    ],
+    "prereqs": ["tree-dfs", "binary-search"],
     "encompasses": [
       {
         "id": "tree-dfs",
@@ -416,10 +360,7 @@
     "id": "tree-construction",
     "name": "Building Trees from Traversals",
     "topic": "trees",
-    "prereqs": [
-      "tree-dfs",
-      "hash-map-index"
-    ],
+    "prereqs": ["tree-dfs", "hash-map-index"],
     "encompasses": [
       {
         "id": "tree-dfs",
@@ -436,9 +377,7 @@
     "id": "tree-path-max",
     "name": "Path Values through a Node",
     "topic": "trees",
-    "prereqs": [
-      "tree-dfs"
-    ],
+    "prereqs": ["tree-dfs"],
     "encompasses": [
       {
         "id": "tree-dfs",
@@ -451,10 +390,7 @@
     "id": "tree-serialization",
     "name": "Tree Serialization",
     "topic": "trees",
-    "prereqs": [
-      "tree-dfs",
-      "string-encoding"
-    ],
+    "prereqs": ["tree-dfs", "string-encoding"],
     "encompasses": [
       {
         "id": "tree-dfs",
@@ -471,10 +407,7 @@
     "id": "trie",
     "name": "Trie",
     "topic": "tries",
-    "prereqs": [
-      "tree-dfs",
-      "hash-map-index"
-    ],
+    "prereqs": ["tree-dfs", "hash-map-index"],
     "encompasses": [
       {
         "id": "tree-dfs",
@@ -491,10 +424,7 @@
     "id": "trie-search",
     "name": "Searching with a Trie",
     "topic": "tries",
-    "prereqs": [
-      "trie",
-      "backtracking"
-    ],
+    "prereqs": ["trie", "backtracking"],
     "encompasses": [
       {
         "id": "trie",
@@ -511,9 +441,7 @@
     "id": "heap",
     "name": "Heap / Priority Queue",
     "topic": "heap",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -526,9 +454,7 @@
     "id": "two-heaps",
     "name": "Two Heaps",
     "topic": "heap",
-    "prereqs": [
-      "heap"
-    ],
+    "prereqs": ["heap"],
     "encompasses": [
       {
         "id": "heap",
@@ -541,9 +467,7 @@
     "id": "backtracking",
     "name": "Backtracking",
     "topic": "backtracking",
-    "prereqs": [
-      "recursion"
-    ],
+    "prereqs": ["recursion"],
     "encompasses": [
       {
         "id": "recursion",
@@ -556,9 +480,7 @@
     "id": "grid-dfs",
     "name": "Grid Search",
     "topic": "backtracking",
-    "prereqs": [
-      "recursion"
-    ],
+    "prereqs": ["recursion"],
     "encompasses": [
       {
         "id": "recursion",
@@ -571,9 +493,7 @@
     "id": "graph-representation",
     "name": "Graph Representation",
     "topic": "graphs",
-    "prereqs": [
-      "hash-map-index"
-    ],
+    "prereqs": ["hash-map-index"],
     "encompasses": [
       {
         "id": "hash-map-index",
@@ -586,10 +506,7 @@
     "id": "graph-traversal",
     "name": "Graph DFS and BFS",
     "topic": "graphs",
-    "prereqs": [
-      "graph-representation",
-      "grid-dfs"
-    ],
+    "prereqs": ["graph-representation", "grid-dfs"],
     "encompasses": [
       {
         "id": "graph-representation",
@@ -606,9 +523,7 @@
     "id": "reverse-search",
     "name": "Searching from the Targets",
     "topic": "graphs",
-    "prereqs": [
-      "graph-traversal"
-    ],
+    "prereqs": ["graph-traversal"],
     "encompasses": [
       {
         "id": "graph-traversal",
@@ -621,9 +536,7 @@
     "id": "cycle-detection",
     "name": "Cycle Detection",
     "topic": "graphs",
-    "prereqs": [
-      "graph-traversal"
-    ],
+    "prereqs": ["graph-traversal"],
     "encompasses": [
       {
         "id": "graph-traversal",
@@ -636,9 +549,7 @@
     "id": "topological-sort",
     "name": "Topological Sort",
     "topic": "advanced-graphs",
-    "prereqs": [
-      "cycle-detection"
-    ],
+    "prereqs": ["cycle-detection"],
     "encompasses": [
       {
         "id": "cycle-detection",
@@ -651,9 +562,7 @@
     "id": "union-find",
     "name": "Union-Find",
     "topic": "graphs",
-    "prereqs": [
-      "graph-representation"
-    ],
+    "prereqs": ["graph-representation"],
     "encompasses": [
       {
         "id": "graph-representation",
@@ -666,9 +575,7 @@
     "id": "dp-1d",
     "name": "1-D Dynamic Programming",
     "topic": "dp-1d",
-    "prereqs": [
-      "recursion"
-    ],
+    "prereqs": ["recursion"],
     "encompasses": [
       {
         "id": "recursion",
@@ -681,9 +588,7 @@
     "id": "dp-take-or-skip",
     "name": "Take or Skip",
     "topic": "dp-1d",
-    "prereqs": [
-      "dp-1d"
-    ],
+    "prereqs": ["dp-1d"],
     "encompasses": [
       {
         "id": "dp-1d",
@@ -696,9 +601,7 @@
     "id": "expand-around-center",
     "name": "Expanding around Centres",
     "topic": "dp-1d",
-    "prereqs": [
-      "two-pointers-opposite"
-    ],
+    "prereqs": ["two-pointers-opposite"],
     "encompasses": [
       {
         "id": "two-pointers-opposite",
@@ -711,9 +614,7 @@
     "id": "dp-unbounded",
     "name": "Unbounded Choices",
     "topic": "dp-1d",
-    "prereqs": [
-      "dp-1d"
-    ],
+    "prereqs": ["dp-1d"],
     "encompasses": [
       {
         "id": "dp-1d",
@@ -726,10 +627,7 @@
     "id": "dp-segmentation",
     "name": "Prefix Segmentation",
     "topic": "dp-1d",
-    "prereqs": [
-      "dp-1d",
-      "hash-set"
-    ],
+    "prereqs": ["dp-1d", "hash-set"],
     "encompasses": [
       {
         "id": "dp-1d",
@@ -746,9 +644,7 @@
     "id": "dp-min-max",
     "name": "Tracking Min and Max",
     "topic": "dp-1d",
-    "prereqs": [
-      "dp-1d"
-    ],
+    "prereqs": ["dp-1d"],
     "encompasses": [
       {
         "id": "dp-1d",
@@ -761,9 +657,7 @@
     "id": "dp-subsequence",
     "name": "Subsequence DP",
     "topic": "dp-1d",
-    "prereqs": [
-      "dp-1d"
-    ],
+    "prereqs": ["dp-1d"],
     "encompasses": [
       {
         "id": "dp-1d",
@@ -776,9 +670,7 @@
     "id": "dp-2d-grid",
     "name": "2-D Grid DP",
     "topic": "dp-2d",
-    "prereqs": [
-      "dp-1d"
-    ],
+    "prereqs": ["dp-1d"],
     "encompasses": [
       {
         "id": "dp-1d",
@@ -791,9 +683,7 @@
     "id": "dp-two-strings",
     "name": "DP over Two Strings",
     "topic": "dp-2d",
-    "prereqs": [
-      "dp-2d-grid"
-    ],
+    "prereqs": ["dp-2d-grid"],
     "encompasses": [
       {
         "id": "dp-2d-grid",
@@ -806,9 +696,7 @@
     "id": "kadane",
     "name": "Kadane's Algorithm",
     "topic": "greedy",
-    "prereqs": [
-      "running-best"
-    ],
+    "prereqs": ["running-best"],
     "encompasses": [
       {
         "id": "running-best",
@@ -821,9 +709,7 @@
     "id": "greedy-reach",
     "name": "Greedy Reach",
     "topic": "greedy",
-    "prereqs": [
-      "running-best"
-    ],
+    "prereqs": ["running-best"],
     "encompasses": [
       {
         "id": "running-best",
@@ -836,9 +722,7 @@
     "id": "interval-merge",
     "name": "Sorting and Merging Intervals",
     "topic": "intervals",
-    "prereqs": [
-      "sorting"
-    ],
+    "prereqs": ["sorting"],
     "encompasses": [
       {
         "id": "sorting",
@@ -851,9 +735,7 @@
     "id": "interval-greedy",
     "name": "Greedy by End Time",
     "topic": "intervals",
-    "prereqs": [
-      "interval-merge"
-    ],
+    "prereqs": ["interval-merge"],
     "encompasses": [
       {
         "id": "interval-merge",
@@ -866,10 +748,7 @@
     "id": "interval-sweep",
     "name": "Counting Overlaps",
     "topic": "intervals",
-    "prereqs": [
-      "interval-merge",
-      "heap"
-    ],
+    "prereqs": ["interval-merge", "heap"],
     "encompasses": [
       {
         "id": "interval-merge",
@@ -894,9 +773,7 @@
     "id": "xor-tricks",
     "name": "XOR Tricks",
     "topic": "bit-manipulation",
-    "prereqs": [
-      "bit-basics"
-    ],
+    "prereqs": ["bit-basics"],
     "encompasses": [
       {
         "id": "bit-basics",
@@ -909,10 +786,7 @@
     "id": "bit-dp",
     "name": "DP on Bits",
     "topic": "bit-manipulation",
-    "prereqs": [
-      "bit-basics",
-      "dp-1d"
-    ],
+    "prereqs": ["bit-basics", "dp-1d"],
     "encompasses": [
       {
         "id": "bit-basics",
@@ -929,9 +803,7 @@
     "id": "bit-arithmetic",
     "name": "Arithmetic with Bits",
     "topic": "bit-manipulation",
-    "prereqs": [
-      "bit-basics"
-    ],
+    "prereqs": ["bit-basics"],
     "encompasses": [
       {
         "id": "bit-basics",
@@ -944,9 +816,7 @@
     "id": "matrix-traversal",
     "name": "Matrix Index Tricks",
     "topic": "math-geometry",
-    "prereqs": [
-      "dynamic-arrays"
-    ],
+    "prereqs": ["dynamic-arrays"],
     "encompasses": [
       {
         "id": "dynamic-arrays",
@@ -959,9 +829,7 @@
     "id": "in-place-markers",
     "name": "In-Place Markers",
     "topic": "math-geometry",
-    "prereqs": [
-      "matrix-traversal"
-    ],
+    "prereqs": ["matrix-traversal"],
     "encompasses": [
       {
         "id": "matrix-traversal",

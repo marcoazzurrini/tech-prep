@@ -1,8 +1,8 @@
 {
   "name": "@tech-prep/engine",
   "private": true,
-  "type": "module",
   "description": "The shared engine: curriculum, progress, FSRS scheduling and the test runner, served over MCP.",
+  "type": "module",
   "scripts": {
     "start": "bun src/index.ts",
     "check": "bun src/cli.ts check",

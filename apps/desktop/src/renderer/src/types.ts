@@ -7,8 +7,20 @@ declare global {
 }
 
 export type Difficulty = "easy" | "medium" | "hard";
-export type ConceptStage = "locked" | "available" | "learning" | "passed" | "mastered";
-export type ProblemStatus = "unattempted" | "in_progress" | "attempted" | "solved_with_help" | "solved";
+
+export type ConceptStage =
+  | "locked"
+  | "available"
+  | "learning"
+  | "passed"
+  | "mastered";
+
+export type ProblemStatus =
+  | "unattempted"
+  | "in_progress"
+  | "attempted"
+  | "solved_with_help"
+  | "solved";
 
 export type NextAction =
   | { action: "resume"; problem: string; why: string }
@@ -21,7 +33,12 @@ export type NextAction =
 /** From the engine bridge's `session` method. */
 export interface Session {
   next: NextAction;
-  attempt: { id: number; slug: string; phase: "learning" | "review" | null; language: string } | null;
+  attempt: {
+    id: number;
+    slug: string;
+    phase: "learning" | "review" | null;
+    language: string;
+  } | null;
   problem: {
     slug: string;
     title: string;
@@ -42,8 +59,21 @@ export interface Roadmap {
     prereqs: string[];
     solved: number;
     total: number;
-    concepts: { id: string; name: string; key_idea: string; stage: ConceptStage; due: string | null; recall: number | null }[];
-    problems: { slug: string; title: string; difficulty: Difficulty; status: ProblemStatus; unlocked: boolean }[];
+    concepts: {
+      id: string;
+      name: string;
+      key_idea: string;
+      stage: ConceptStage;
+      due: string | null;
+      recall: number | null;
+    }[];
+    problems: {
+      slug: string;
+      title: string;
+      difficulty: Difficulty;
+      status: ProblemStatus;
+      unlocked: boolean;
+    }[];
   }[];
 }
 
