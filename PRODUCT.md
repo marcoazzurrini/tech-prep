@@ -4,11 +4,7 @@
 
 ## Platform
 
-web
-
-## Stack
-
-Today: a Bun workspace monorepo. `packages/engine` (Bun + TypeScript MCP engine, SQLite), `packages/tutor` (the Claude Code plugin with the teaching skill), `packages/starters` (Blind 75), and an early Electron app in `apps/desktop` (two panels: problem and tutor). The tmux and Neovim flow was removed on 14 Oct 2026. Planned (11 Oct 2026): a chat-first desktop app built with web technology, probably Electron, on the user's Claude subscription through the Claude Agent SDK. A fork of t3code is being considered as the base. Undecided. Design exploration: static HTML/CSS mockups (delegated).
+Desktop app.
 
 ## Users
 
@@ -20,11 +16,11 @@ One person: the owner, a TypeScript developer who studies in focused sessions at
 
 ## Product Purpose
 
-A study app for deliberate practice, "a gym for coding" now that AI writes most code. The core is a chat with an AI tutor. The tutor teaches, then opens small interactive panels inside the conversation for each exercise, and decides what to practise next from a learning model. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
+A study app for deliberate practice, "a gym for coding" now that AI writes most code. Each subject has its own permanent tutor agent, for example a TypeScript agent or a jq agent, with its own environment. There are no throwaway chats. The tutor teaches, opens small interactive panels beside the conversation for each exercise, and decides what to practise next from a learning model. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
 
 ## Positioning
 
-The agent does as much of the work as possible. The app is a harness the agent manipulates: it renders exercise panels on demand, while skills hold the teaching method and the engine holds the tracking data. Exercises are generated fresh, never stored as the unit.
+The agent does as much of the work as possible. The app is a harness the agent drives: it renders exercise panels on demand, while skills hold the teaching method and the engine holds the tracking data. Exercises are generated fresh, never stored as the unit.
 
 The engine schedules **concepts**, not questions, with spaced repetition (FSRS). One exercise can refresh several due concepts, and practising an advanced concept partly refreshes its prerequisites (fractional implicit repetition, as in Math Academy).
 
@@ -40,23 +36,20 @@ The engine schedules **concepts**, not questions, with spaced repetition (FSRS).
 
 ## Capabilities and Constraints
 
-- The tutor is Claude, running through Claude Code on the user's subscription; it never writes the learner's solution during practice.
-- Panels the agent can open (planned): explanation with worked example, predict-the-output, Parsons (arrange lines), mini code editor with Vim keys and runnable tests, conceptual answer, roadmap or progress. Mechanism undecided (MCP Apps style UI from tools is the leading idea).
-- Writing tasks use a light in-app editor with Vim keybindings, not the full Neovim.
+- The tutor is Claude, running through Claude Code on the user's subscription. It never writes the learner's solution during practice.
+- Panels the tutor can open: explanation with worked example, predict the output, Parsons (arrange lines), mini code editor with Vim keys and runnable tests, conceptual answer, roadmap or progress.
+- Writing tasks use a light in-app editor with Vim keybindings.
 - Default language TypeScript; Python is supported.
 - No failure state while learning. Help or giving up only delays a retry.
 
 ## Brand Commitments
 
-- Look: dark, sleek, minimal, in the family of t3code and assistant-ui (stated 11 Oct 2026). Earlier approved mockups (LeetCode-dark three-panel layout) are superseded as a layout.
+Dark, sleek and minimal, in the family of Linear, t3code and assistant-ui. The look is defined in `DESIGN.md` and the Paper file.
 
 ## Evidence on Hand
 
-- Real curriculum: `packages/starters/interview/curriculum/` (topics, concepts, problems).
-- Real problem statements: `packages/starters/interview/problems/<slug>/problem.md`.
-- Learning model spec: `docs/learning-model.md`.
-- Design notes from the owner's vault: "Study app" and "Learning loop" (JavaScript `Set` is the worked case).
-- No branding, logo or real progress data worth showing yet. Mockup progress numbers are synthetic and must be labelled as such.
+- The real curriculum and problem statements live in `packages/starters/`.
+- Sample progress numbers in designs must be labelled as sample data.
 
 ## Product Principles
 
