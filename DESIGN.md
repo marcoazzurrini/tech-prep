@@ -23,6 +23,11 @@ colors:
   green: "#4CB782"
   amber: "#F2C94C"
   red: "#EB5757"
+  syntax-keyword: "#C79BFF"
+  syntax-string: "#9FD59B"
+  syntax-number: "#F2B47A"
+  syntax-comment: "#8A8F98"
+  syntax-function: "#7FC4FF"
 typography:
   display:
     fontFamily: "Atkinson Hyperlegible Next, system-ui, sans-serif"
@@ -106,4 +111,6 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 **One bright shape.** The primary button and the send button are the only light fills: a `light` pill with `on-light` text.
 
-**Chat.** The learner speaks in a right-aligned bubble on `raised`. The tutor replies in plain `body` text with no container, so long answers stay easy to read.
+**Syntax colours stay in code.** The `syntax-*` colours appear only inside code.
+
+**Chat.** Messages use the `body` style. The learner speaks in a right-aligned bubble on `raised`. The tutor replies in plain `body` text with no container, so long answers stay easy to read.
