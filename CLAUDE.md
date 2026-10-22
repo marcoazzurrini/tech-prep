@@ -5,7 +5,7 @@ How we work in this repo. The code is the source of truth for how things work; t
 ## Docs
 
 - `PRODUCT.md`: who the app is for, what it does, and the product principles.
-- `DESIGN.md`: design tokens and visual rules, mirrored from Paper.
+- `DESIGN.md`: design tokens and visual rules, mirrored from the OpenPencil file.
 - `docs/learning-model.md`: the learning model the engine implements.
 - `README.md`: what the project is and how to run it.
 
@@ -21,9 +21,10 @@ Keep them lean:
 
 ## Design
 
-- The Paper file "Tech Prep" is the source of truth for visual design. Read its tokens and components with the Paper MCP tools before building UI.
-- Prototype new screens and components in Paper first, using its tokens. Build them in code after the user approves.
-- Keep Paper, `DESIGN.md` and the code in sync. A design change in one lands in the others in the same task.
+- The OpenPencil file `design/tech-prep.fig` is the source of truth for visual design. Read its variables and components with the OpenPencil MCP tools before building UI.
+- Prototype new screens and components in that file first, using its variables and components. Build them in code after the user approves.
+- Keep the OpenPencil file, `DESIGN.md` and the code in sync. A design change in one lands in the others in the same task.
+- Edits in OpenPencil reach the disk only when the file is saved. Save it before you commit, and ask the user to save any edits they made in the app.
 
 ## Workflow
 

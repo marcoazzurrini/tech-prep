@@ -5,7 +5,7 @@ colors:
   canvas: "#08090A"
   sidebar: "#121314"
   surface: "#17181A"
-  panel: "#191A1B"
+  panel: "#121314"
   hover: "#1D1E1F"
   card: "#1C1C1D"
   raised: "#232426"
@@ -87,7 +87,7 @@ spacing:
 
 # Design System: tech-prep
 
-The Paper file "Tech Prep" is the source of truth. This file mirrors its tokens for code and states the rules behind them. See the components in Paper.
+The OpenPencil file `design/tech-prep.fig` is the source of truth. This file mirrors its tokens for code and states the rules behind them. See the components in that file.
 
 ## Look
 
@@ -95,7 +95,7 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 ## Rules
 
-**Surfaces step up.** Each layer sits one step lighter than the one behind it: canvas, sidebar, surface, panel, raised. Separate surfaces with a 1px `border` hairline, not with gaps or colour blocks.
+**Surfaces step up.** The chat sits on `canvas`, the darkest surface. The sidebar and the exercise panel frame it, one step lighter, on `sidebar` and `panel`. Content inside steps up again: `surface`, then `raised`. A light grey covers small cards only, never a whole region. Separate surfaces with a 1px `border` hairline, not with gaps or colour blocks.
 
 **One blue.** `accent` marks only what the tutor opened, the current item, and focus. Never use it for decoration or headings.
 

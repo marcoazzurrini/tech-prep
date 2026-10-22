@@ -20,7 +20,7 @@ A study app for deliberate practice, "a gym for coding" now that AI writes most 
 
 ## Positioning
 
-The agent does as much of the work as possible. The app is a harness the agent drives: it renders exercise panels on demand, while skills hold the teaching method and the engine holds the tracking data. Exercises are generated fresh, never stored as the unit.
+The agent does as much of the work as possible. The app is a harness the agent drives: it shows exercises and takes the learner's input, stores the learner's state (such as review schedules) and stores each subject's curriculum. Skills hold the teaching method. When a high-quality source exists, such as Blind 75 or NeetCode 150 for algorithms, the curriculum and exercises come from it. Otherwise the agent writes them.
 
 The engine schedules **concepts**, not questions, with spaced repetition (FSRS). One exercise can refresh several due concepts, and practising an advanced concept partly refreshes its prerequisites (fractional implicit repetition, as in Math Academy).
 
@@ -39,21 +39,21 @@ The engine schedules **concepts**, not questions, with spaced repetition (FSRS).
 - The tutor is Claude, running through Claude Code on the user's subscription. It never writes the learner's solution during practice.
 - Panels the tutor can open: explanation with worked example, predict the output, Parsons (arrange lines), mini code editor with Vim keys and runnable tests, conceptual answer, roadmap or progress.
 - Writing tasks use a light in-app editor with Vim keybindings.
+- Coding tasks have Run, which only runs the tests, and Submit, which hands in the answer. Predict and arrange have Submit only: the first answer is the evidence, so there is no trial run.
 - Default language TypeScript; Python is supported.
 - No failure state while learning. Help or giving up only delays a retry.
 
 ## Brand Commitments
 
-Dark, sleek and minimal, in the family of Linear, t3code and assistant-ui. The look is defined in `DESIGN.md` and the Paper file.
+Dark, sleek and minimal, in the family of Linear, t3code and assistant-ui. The look is defined in `DESIGN.md` and the OpenPencil file `design/tech-prep.fig`.
 
 ## Evidence on Hand
 
 - The real curriculum and problem statements live in `packages/starters/`.
-- Sample progress numbers in designs must be labelled as sample data.
 
 ## Product Principles
 
-1. The conversation is the spine; panels appear when an exercise needs them and get out of the way.
+1. The conversation is the spine; panels appear when an exercise needs them and get out of the way. The tutor shows one panel at a time and chooses what it holds. The learner doesn't switch between panels.
 2. Teach, never hand over answers during practice.
 3. Show where the learner stands and what comes next, without pressure or failure marks.
 4. Every screen must be easy to read at a glance.
