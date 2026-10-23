@@ -16,6 +16,7 @@
   "scripts": {
     "prepare": "[ -n \"$CI\" ] || lefthook install",
     "dev": "bun --filter @tech-prep/desktop dev",
+    "storybook": "bun --filter @tech-prep/demo dev",
     "build": "bun --filter '*' build",
     "typecheck": "bun --filter '*' typecheck",
     "test": "bun --filter '*' test",

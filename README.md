@@ -11,9 +11,10 @@ A desktop study app with an AI tutor that follows learning science. Each subject
 Requires Bun, Python 3, gitleaks (`brew install gitleaks`) and a Claude Code login. The tutor runs on your Claude Code login through the Claude Agent SDK.
 
 ```sh
-bun install     # all packages
-bun run dev     # open the desktop app
-bun run check   # format, lint, typecheck, test and build, as CI does
+bun install        # all packages
+bun run dev        # open the desktop app
+bun run storybook  # browse UI components at localhost:6006
+bun run check      # format, lint, typecheck, test and build, as CI does
 ```
 
 Your data lives in `~/.tech-prep`. Set `TECHPREP_HOME` to use another folder.

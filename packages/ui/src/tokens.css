@@ -1,0 +1,95 @@
+/* Design tokens mirrored from DESIGN.md, and the base styles that use them. */
+:root {
+  --color-canvas: #08090a;
+  --color-sidebar: #121314;
+  --color-surface: #17181a;
+  --color-panel: #121314;
+  --color-hover: #1d1e1f;
+  --color-card: #1c1c1d;
+  --color-raised: #232426;
+  --color-border: #2a2b2d;
+  --color-border-strong: #3a3b3c;
+  --color-ink: #f7f8f8;
+  --color-body: #d0d6e0;
+  --color-mute: #8a8f98;
+  --color-dim: #62666d;
+  --color-light: #e5e5e6;
+  --color-on-light: #08090a;
+  --color-accent: #7c8cff;
+  --color-accent-bg: #1a1d33;
+  --color-accent-line: #363e73;
+  --color-green: #4cb782;
+  --color-amber: #f2c94c;
+  --color-red: #eb5757;
+  --color-syntax-keyword: #c79bff;
+  --color-syntax-string: #9fd59b;
+  --color-syntax-number: #f2b47a;
+  --color-syntax-comment: #8a8f98;
+  --color-syntax-function: #7fc4ff;
+
+  --font-sans: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Only floating panels cast a shadow. */
+  --shadow-float: 0 12px 32px rgb(0 0 0 / 60%);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-body);
+  font: 400 16px/26px var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  font-feature-settings:
+    "calt" 0,
+    "liga" 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--color-accent-line);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

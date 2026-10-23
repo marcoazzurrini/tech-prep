@@ -23,6 +23,7 @@ Keep them lean:
 
 - The OpenPencil file `design/tech-prep.fig` is the source of truth for visual design. Read its variables and components with the OpenPencil MCP tools before building UI.
 - Prototype new screens and components in that file first, using its variables and components. Build them in code after the user approves.
+- Build UI from the components in `packages/ui`. A new component goes there with a Storybook story, and a new screen gets a story in `apps/demo`.
 - Keep the OpenPencil file, `DESIGN.md` and the code in sync. A design change in one lands in the others in the same task.
 - Edits in OpenPencil reach the disk only when the file is saved. Save it before you commit, and ask the user to save any edits they made in the app.
 

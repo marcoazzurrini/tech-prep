@@ -1,0 +1,19 @@
+.tp-shell {
+  display: grid;
+  grid-template-columns: 56px 280px minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-canvas);
+}
+
+.tp-shell--tutor {
+  grid-template-columns: 56px 280px minmax(0, 1fr) 380px;
+}
+
+.tp-shell__tutor {
+  min-height: 0;
+}
+
+.tp-shell__tutor[hidden] {
+  display: none;
+}

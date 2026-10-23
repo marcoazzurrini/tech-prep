@@ -1,0 +1,73 @@
+.tp-button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font: 500 14px/20px var(--font-sans);
+  cursor: pointer;
+}
+
+.tp-button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.tp-button--primary {
+  background: var(--color-light);
+  color: var(--color-on-light);
+}
+
+.tp-button--secondary {
+  background: var(--color-raised);
+  border-color: var(--color-border-strong);
+  color: var(--color-ink);
+}
+
+.tp-button--ghost {
+  padding: 0 10px;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-mute);
+}
+
+.tp-button--ghost:hover:not(:disabled) {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+
+.tp-icon-button {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--color-body);
+  cursor: pointer;
+}
+
+.tp-icon-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.tp-icon-button--outline {
+  border-color: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+.tp-icon-button--ghost {
+  border-radius: var(--radius-md);
+  color: var(--color-mute);
+}
+
+.tp-icon-button:hover:not(:disabled) {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}

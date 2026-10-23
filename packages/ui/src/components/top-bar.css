@@ -1,0 +1,68 @@
+.tp-top-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--color-border);
+  font: 400 14px/20px var(--font-sans);
+}
+
+.tp-top-bar__chapter {
+  flex: none;
+  color: var(--color-mute);
+}
+
+.tp-top-bar__sep {
+  flex: none;
+  color: var(--color-dim);
+}
+
+.tp-top-bar__lesson {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-ink);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-top-bar__position {
+  flex: none;
+  color: var(--color-mute);
+  font-size: 13px;
+}
+
+.tp-top-bar__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+}
+
+.tp-tutor-toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-mute);
+  font: 500 13px/18px var(--font-sans);
+  cursor: pointer;
+}
+
+.tp-tutor-toggle:hover {
+  color: var(--color-ink);
+}
+
+.tp-tutor-toggle--on,
+.tp-tutor-toggle--on:hover {
+  border-color: var(--color-accent-line);
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}

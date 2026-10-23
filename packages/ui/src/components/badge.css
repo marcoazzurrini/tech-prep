@@ -1,0 +1,31 @@
+.tp-badge {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-body);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tp-badge--sm {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-sm);
+  font-size: 7px;
+}
+
+.tp-badge--md {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-md);
+  font-size: 10px;
+}
+
+.tp-badge--active {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-on-light);
+  font-family: var(--font-sans);
+}

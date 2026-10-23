@@ -1,0 +1,40 @@
+.tp-chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-body);
+  font: 400 13px/18px var(--font-sans);
+  white-space: nowrap;
+}
+
+.tp-chip svg {
+  color: var(--color-mute);
+}
+
+.tp-chip--muted {
+  color: var(--color-mute);
+}
+
+.tp-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+}
+
+.tp-dot--green {
+  background: var(--color-green);
+}
+
+.tp-dot--amber {
+  background: var(--color-amber);
+}
+
+.tp-dot--red {
+  background: var(--color-red);
+}
