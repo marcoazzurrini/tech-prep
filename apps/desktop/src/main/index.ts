@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs";
 import path from "node:path";
 
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, ipcMain, screen, shell } from "electron";
 
 import { Engine } from "./engine";
 import type { Json } from "./engine";
@@ -22,9 +22,12 @@ const tutor = new Tutor(
 );
 
 const createWindow = (): void => {
+  // Open across the whole screen, so a large display gets the scaled layout.
+  const { height, width, x, y } = screen.getPrimaryDisplay().workArea;
+
   window = new BrowserWindow({
     backgroundColor: "#08090a",
-    height: 900,
+    height,
     minHeight: 720,
     minWidth: 1180,
     title: "tech-prep",
@@ -35,7 +38,9 @@ const createWindow = (): void => {
       preload: path.join(import.meta.dirname, "../preload/index.mjs"),
       sandbox: false,
     },
-    width: 1440,
+    width,
+    x,
+    y,
   });
   // Links in tutor messages open in the browser, never inside the app.
   window.webContents.setWindowOpenHandler(({ url }) => {
