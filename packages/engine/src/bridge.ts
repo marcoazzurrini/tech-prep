@@ -2,6 +2,7 @@
 // Read-only JSON-lines bridge for the desktop app. The app's main process runs on Node and
 // cannot open bun:sqlite, so it spawns this process and sends one request per line:
 //   {"id": 1, "method": "session"}  ->  {"id": 1, "result": {...}}
+//   {"id": 2, "method": "problem", "params": {"slug": "two-sum"}}  ->  {"id": 2, "result": {...}}
 // The tutor still changes state only through the MCP tools.
 
 import {
@@ -22,6 +23,21 @@ import {
   problemStatus,
 } from "./scheduler.ts";
 
+/** One problem as the app shows it: title, statement and what it teaches. */
+const problemView = (slug: string) => {
+  const info = problemInfo(slug);
+
+  return {
+    concept_count: info.concepts.length,
+    difficulty: info.difficulty,
+    new_concepts: newConceptsFor(slug).map((id) => concept(id).name),
+    slug,
+    statement: isAuthored(slug) ? problem(slug).statement : null,
+    title: info.title,
+    topic: info.topic,
+  };
+};
+
 /** The problem the learner is on: the open attempt, else the one next_up points at. */
 const session = () => {
   const next = nextUp();
@@ -34,8 +50,6 @@ const session = () => {
     return { attempt: null, next, problem: null };
   }
 
-  const info = problemInfo(slug);
-
   return {
     attempt: open && {
       id: open.id,
@@ -44,15 +58,7 @@ const session = () => {
       slug: open.slug,
     },
     next,
-    problem: {
-      concept_count: info.concepts.length,
-      difficulty: info.difficulty,
-      new_concepts: newConceptsFor(slug).map((id) => concept(id).name),
-      slug,
-      statement: isAuthored(slug) ? problem(slug).statement : null,
-      title: info.title,
-      topic: info.topic,
-    },
+    problem: problemView(slug),
   };
 };
 
@@ -101,16 +107,27 @@ const roadmap = () => {
   };
 };
 
-const methods = new Map<string, () => object>([
-  ["roadmap", roadmap],
-  ["session", session],
-]);
-
 /** One request line from the app. */
 interface BridgeRequest {
   id: unknown;
   method: string;
+  params?: { slug?: string };
 }
+
+/** Any problem by slug, so the learner can read one before the tutor gets there. */
+const problemBySlug = (params: BridgeRequest["params"]) => {
+  if (!params?.slug) {
+    throw new Error("The problem method needs a slug.");
+  }
+
+  return problemView(params.slug);
+};
+
+const methods = new Map<string, (params: BridgeRequest["params"]) => object>([
+  ["problem", problemBySlug],
+  ["roadmap", roadmap],
+  ["session", session],
+]);
 
 for await (const line of console) {
   if (!line.trim()) {
@@ -120,7 +137,7 @@ for await (const line of console) {
   let id: BridgeRequest["id"] = null;
 
   try {
-    // SAFETY: `id` is only echoed back, and a `method` that is not a known name misses the table below.
+    // SAFETY: `id` is only echoed back, a `method` that is not a known name misses the table below, and an unknown slug fails the curriculum lookup.
     const request = JSON.parse(line) as BridgeRequest;
     ({ id } = request);
     const method = methods.get(request.method);
@@ -129,7 +146,7 @@ for await (const line of console) {
       throw new Error(`Unknown method '${request.method}'.`);
     }
 
-    console.log(JSON.stringify({ id, result: method() }));
+    console.log(JSON.stringify({ id, result: method(request.params) }));
   } catch (error) {
     console.log(
       JSON.stringify({
