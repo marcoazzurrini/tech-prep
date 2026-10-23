@@ -133,21 +133,22 @@ const EXERCISE: Record<Exercise, () => ReactNode> = {
   write: Write,
 };
 
-const SampleTutor = ({ onClose }: { onClose: () => void }) => {
-  const [draft, setDraft] = useState("");
-
-  return (
-    <TutorPane
-      composer={
-        <Composer
-          value={draft}
-          onChange={setDraft}
-          onSend={() => setDraft("")}
-        />
-      }
-      context="Uniqueness rule"
-      onClose={onClose}
-    >
+const THREAD: Record<Exercise, ReactNode> = {
+  arrange: (
+    <>
+      <Message from="tutor">
+        A Set also keeps the order values were first added. Put these lines in
+        order.
+      </Message>
+      <Message from="learner">Do I need to sort the Set at the end?</Message>
+      <Message from="tutor">
+        Think about the order a Set gives values back in. Does first-seen order
+        need any help?
+      </Message>
+    </>
+  ),
+  predict: (
+    <>
       <Message from="tutor">
         This one is about how a Set decides two values are the same. Make a
         guess before you submit.
@@ -163,6 +164,48 @@ const SampleTutor = ({ onClose }: { onClose: () => void }) => {
         I won’t give you the count. Look at the two {"{}"} next: are they the
         same object?
       </Message>
+    </>
+  ),
+  write: (
+    <>
+      <Message from="tutor">
+        Now put both rules to work. The key decides whether an item counts as
+        seen.
+      </Message>
+      <Message from="learner">Does has() use the same rule?</Message>
+      <Message from="tutor">
+        Yes. add, has and delete all use the same rule, so two keys match when
+        SameValueZero says they do.
+      </Message>
+      <Message from="tutor">
+        Run the tests when you think line 8 is right.
+      </Message>
+    </>
+  ),
+};
+
+const SampleTutor = ({
+  exercise,
+  onClose,
+}: {
+  exercise: Exercise;
+  onClose: () => void;
+}) => {
+  const [draft, setDraft] = useState("");
+
+  return (
+    <TutorPane
+      composer={
+        <Composer
+          value={draft}
+          onChange={setDraft}
+          onSend={() => setDraft("")}
+        />
+      }
+      context={LESSON[exercise].title}
+      onClose={onClose}
+    >
+      {THREAD[exercise]}
     </TutorPane>
   );
 };
@@ -182,7 +225,7 @@ const CourseScreen = ({
     <AppShell
       nav={<SampleNav current={lesson.index} />}
       rail={<SampleRail />}
-      tutor={<SampleTutor onClose={() => setOpen(false)} />}
+      tutor={<SampleTutor exercise={exercise} onClose={() => setOpen(false)} />}
       tutorOpen={open}
     >
       <LessonPane>
@@ -232,3 +275,23 @@ export const ArrangeTheLines: Story = { args: { exercise: "arrange" } };
 export const WriteCode: Story = { args: { exercise: "write" } };
 
 export const WithTutor: Story = { args: { tutor: true } };
+
+// The 27" Studio Display at its default "looks like 2560 x 1440" resolution.
+const studioDisplay = {
+  viewport: { isRotated: false, value: "studioDisplay" },
+};
+
+export const StudioDisplayPredict: Story = {
+  args: { tutor: true },
+  globals: studioDisplay,
+};
+
+export const StudioDisplayArrange: Story = {
+  args: { exercise: "arrange", tutor: true },
+  globals: studioDisplay,
+};
+
+export const StudioDisplayWrite: Story = {
+  args: { exercise: "write", tutor: true },
+  globals: studioDisplay,
+};
