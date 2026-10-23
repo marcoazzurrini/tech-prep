@@ -1,0 +1,24 @@
+.tp-progress {
+  display: block;
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-raised);
+  appearance: none;
+}
+
+.tp-progress::-webkit-progress-bar {
+  background: var(--color-raised);
+}
+
+.tp-progress::-webkit-progress-value {
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+
+.tp-progress::-moz-progress-bar {
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}

@@ -1,0 +1,75 @@
+.tp-answer {
+  width: 112px;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font: 400 16px/24px var(--font-sans);
+}
+
+.tp-answer:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.tp-line-slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-canvas);
+  color: var(--color-dim);
+}
+
+.tp-line-slot code {
+  flex: 1;
+  color: var(--color-ink);
+  font: 400 14px/20px var(--font-mono);
+  white-space: pre;
+}
+
+.tp-line-slot__index {
+  font: 400 13px/18px var(--font-mono);
+}
+
+.tp-line-slot--spare {
+  border-color: var(--color-border-strong);
+  background: none;
+}
+
+.tp-line-slot--spare code {
+  color: var(--color-dim);
+}
+
+.tp-test {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  align-items: center;
+  column-gap: 10px;
+  min-height: 24px;
+  color: var(--color-body);
+  font: 400 14px/20px var(--font-sans);
+}
+
+.tp-test svg {
+  color: var(--color-dim);
+}
+
+.tp-test--pass svg {
+  color: var(--color-green);
+}
+
+.tp-test--fail svg {
+  color: var(--color-red);
+}
+
+.tp-test code {
+  grid-column: 2;
+  color: var(--color-mute);
+  font: 400 13px/18px var(--font-mono);
+}

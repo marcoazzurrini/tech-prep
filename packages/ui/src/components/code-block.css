@@ -1,0 +1,94 @@
+.tp-code {
+  margin: 0;
+  padding: 20px 32px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-canvas);
+  color: var(--color-body);
+  font: 400 14px/22px var(--font-mono);
+  font-feature-settings:
+    "calt" 0,
+    "liga" 0;
+}
+
+.tp-code--grow {
+  flex: 1;
+  border-bottom: 0;
+}
+
+.tp-code--numbered {
+  padding: 16px 0;
+}
+
+.tp-code__line {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+}
+
+.tp-code__line--current {
+  background: var(--color-hover);
+}
+
+.tp-code__number {
+  flex: none;
+  width: 52px;
+  padding-right: 16px;
+  color: var(--color-dim);
+  text-align: right;
+  user-select: none;
+}
+
+.tp-code__line--current .tp-code__number {
+  color: var(--color-body);
+}
+
+.tp-code__text {
+  white-space: pre;
+}
+
+.tp-code--numbered .tp-code__text {
+  padding-left: 8px;
+}
+
+.tp-syntax--keyword {
+  color: var(--color-syntax-keyword);
+}
+
+.tp-syntax--string {
+  color: var(--color-syntax-string);
+}
+
+.tp-syntax--number {
+  color: var(--color-syntax-number);
+}
+
+.tp-syntax--comment {
+  color: var(--color-syntax-comment);
+}
+
+.tp-syntax--function {
+  color: var(--color-syntax-function);
+}
+
+.tp-editor-status {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  height: 28px;
+  padding: 0 16px;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-canvas);
+  color: var(--color-mute);
+  font: 400 13px/18px var(--font-mono);
+}
+
+.tp-editor-status b {
+  color: var(--color-ink);
+}
+
+.tp-editor-status__file {
+  flex: 1;
+}
