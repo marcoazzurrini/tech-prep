@@ -1,32 +1,64 @@
-import { useCallback, useEffect, useState } from "react";
+import { AppShell, Badge, Rail, RailDivider, RailItem } from "@tech-prep/ui";
+import { CalendarCheck } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Icon } from "./icons";
-import { Roadmap } from "./roadmap";
-import { ProblemPanel } from "./today";
+import { dueCount } from "./course";
+import { LessonView } from "./lesson";
+import { Lessons } from "./lessons";
 import { Tutor } from "./tutor";
-import type { Roadmap as RoadmapData, Session } from "./types";
+import type { Problem, Roadmap, Session } from "./types";
 
-type View = "today" | "roadmap";
+/** The only subject so far. */
+const SUBJECT = { initials: "75", name: "Blind 75" };
 
 export const App = () => {
-  const [view, setView] = useState<View>("today");
   const [session, setSession] = useState<Session | null>(null);
-  const [roadmap, setRoadmap] = useState<RoadmapData | null>(null);
+  const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
+  /** A problem the learner picked; null follows the tutor's current problem. */
+  const pickedSlug = useRef<string | null>(null);
+  const [picked, setPicked] = useState<Problem | null>(null);
+  const [open, setOpen] = useState<Set<string>>(new Set());
+  const [tutorOpen, setTutorOpen] = useState(true);
+
+  const load = useCallback(async (slug: string) => {
+    // SAFETY: the bridge's `problem` method returns the engine's Problem shape.
+    const problem = (await window.tp.engine("problem", { slug })) as Problem;
+
+    // Skip a reply that arrives after the learner picked something else.
+    if (pickedSlug.current === slug) {
+      setPicked(problem);
+    }
+  }, []);
+
+  const followTutor = useCallback(() => {
+    pickedSlug.current = null;
+    setPicked(null);
+  }, []);
 
   const refresh = useCallback(() => {
     const loadSession = async () => {
       // SAFETY: the bridge's `session` method returns the engine's Session shape.
-      setSession((await window.tp.engine("session")) as Session);
+      const next = (await window.tp.engine("session")) as Session;
+      setSession(next);
+      const topic = next.problem?.topic;
+
+      if (topic) {
+        setOpen((all) => (all.has(topic) ? all : new Set([...all, topic])));
+      }
     };
 
     const loadRoadmap = async () => {
       // SAFETY: the bridge's `roadmap` method returns the engine's Roadmap shape.
-      setRoadmap((await window.tp.engine("roadmap")) as RoadmapData);
+      setRoadmap((await window.tp.engine("roadmap")) as Roadmap);
     };
 
     void loadSession();
     void loadRoadmap();
-  }, []);
+
+    if (pickedSlug.current) {
+      void load(pickedSlug.current);
+    }
+  }, [load]);
 
   useEffect(() => {
     refresh();
@@ -34,71 +66,104 @@ export const App = () => {
     return window.tp.onEngineChanged(refresh);
   }, [refresh]);
 
-  const show = useCallback((next: View) => setView(next), []);
+  const select = useCallback(
+    (slug: string) => {
+      if (slug === session?.problem?.slug) {
+        followTutor();
+      } else {
+        pickedSlug.current = slug;
+        void load(slug);
+      }
+    },
+    [followTutor, load, session]
+  );
 
-  // Cmd+1 Today, Cmd+2 Roadmap, Cmd+L the tutor.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!e.metaKey || e.shiftKey || e.altKey) {
-        return;
+  const toggleTopic = useCallback((topic: string) => {
+    setOpen((all) => {
+      const next = new Set(all);
+
+      if (!next.delete(topic)) {
+        next.add(topic);
       }
 
-      const action = {
-        "1": () => show("today"),
-        "2": () => show("roadmap"),
-        l: () => {
-          setView("today");
-          requestAnimationFrame(() =>
-            window.dispatchEvent(new Event("tp:focus-tutor"))
-          );
-        },
-      }[e.key.toLowerCase()];
+      return next;
+    });
+  }, []);
 
-      if (action) {
+  // Cmd+L opens the tutor and puts the cursor in it.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (
+        e.metaKey &&
+        !e.shiftKey &&
+        !e.altKey &&
+        e.key.toLowerCase() === "l"
+      ) {
         e.preventDefault();
-        action();
+        setTutorOpen(true);
+        requestAnimationFrame(() =>
+          window.dispatchEvent(new Event("tp:focus-tutor"))
+        );
       }
     };
 
     window.addEventListener("keydown", onKey, true);
 
     return () => window.removeEventListener("keydown", onKey, true);
-  }, [show]);
+  }, []);
+
+  if (!session || !roadmap) {
+    return null;
+  }
+
+  const shown = picked ?? session.problem;
+  const due = dueCount(roadmap);
 
   return (
-    <div className="app">
-      <nav className="rail" aria-label="Main">
-        <div className="mark">
-          <Icon name="logo" />
-        </div>
-        <button
-          type="button"
-          className={`item${view === "today" ? " on" : ""}`}
-          title="Today (⌘1)"
-          aria-label="Today"
-          onClick={() => show("today")}
-        >
-          <Icon name="today" />
-        </button>
-        <button
-          type="button"
-          className={`item${view === "roadmap" ? " on" : ""}`}
-          title="Roadmap (⌘2)"
-          aria-label="Roadmap"
-          onClick={() => show("roadmap")}
-        >
-          <Icon name="map" />
-        </button>
-      </nav>
-
-      {/* Today stays mounted so the chat keeps running while the roadmap is open. */}
-      <main className={`view today${view === "today" ? " on" : ""}`}>
-        <ProblemPanel session={session} />
-        <Tutor />
-      </main>
-      <main className={`view roadmap${view === "roadmap" ? " on" : ""}`}>
-        {roadmap && <Roadmap data={roadmap} onContinue={() => show("today")} />}
-      </main>
-    </div>
+    <AppShell
+      nav={
+        <Lessons
+          current={session.problem?.slug ?? null}
+          open={open}
+          roadmap={roadmap}
+          selected={shown?.slug ?? null}
+          subject={SUBJECT.name}
+          onSelect={select}
+          onToggle={toggleTopic}
+        />
+      }
+      rail={
+        <Rail>
+          <RailItem
+            active={!picked}
+            count={due || undefined}
+            label="Today"
+            onClick={followTutor}
+          >
+            <CalendarCheck size={16} />
+          </RailItem>
+          <RailDivider />
+          <RailItem active label={SUBJECT.name}>
+            <Badge active initials={SUBJECT.initials} />
+          </RailItem>
+        </Rail>
+      }
+      tutor={
+        <Tutor
+          context={session.problem?.title}
+          onClose={() => setTutorOpen(false)}
+        />
+      }
+      tutorOpen={tutorOpen}
+    >
+      <LessonView
+        problem={shown}
+        roadmap={roadmap}
+        session={session}
+        tutorOpen={tutorOpen}
+        onSelect={select}
+        onToggleTutor={() => setTutorOpen((o) => !o)}
+      />
+    </AppShell>
   );
 };

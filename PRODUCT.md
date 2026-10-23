@@ -16,7 +16,7 @@ One person: the owner, a TypeScript developer who studies in focused sessions at
 
 ## Product Purpose
 
-A study app for deliberate practice, "a gym for coding" now that AI writes most code. Each subject has its own permanent tutor agent, for example a TypeScript agent or a jq agent, with its own environment. There are no throwaway chats. The tutor teaches, opens small interactive panels beside the conversation for each exercise, and decides what to practise next from a learning model. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
+A study app for deliberate practice, "a gym for coding" now that AI writes most code. Each subject has its own permanent tutor agent, for example a TypeScript agent or a jq agent, with its own environment. There are no throwaway chats. Each subject is a course with chapters and lessons, laid out like a programming course. The lesson fills the screen, and the tutor sits in a pane beside it. The tutor teaches, writes the exercises and decides what to practise next from a learning model. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
 
 ## Positioning
 
@@ -32,12 +32,12 @@ The engine schedules **concepts**, not questions, with spaced repetition (FSRS).
 - Exercise ladder, based on PRIMM: predict the output; fix or modify working code; arrange given lines in order (Parsons problem); write code from a need. Conceptual questions are answered in the learner's own words.
 - Cycle for one concept: probe (a short test first if there is prior knowledge), teach on failure (short explanation and one worked example built around the exact mistake), retry with a new surface, schedule. A completely new concept starts with a worked example.
 - Review: when concepts are due, the agent writes one new exercise covering as many as possible; on failure it names which concept the mistake shows and fails only that one.
-- Progress: a roadmap of topics and concepts with stages locked, available, learning, passed, mastered, and recall per concept.
+- Progress: the lessons column shows each chapter and lesson with its status. Concepts have the stages locked, available, learning, passed and mastered, and a recall score.
 
 ## Capabilities and Constraints
 
 - The tutor is Claude, running through Claude Code on the user's subscription. It never writes the learner's solution during practice.
-- Panels the tutor can open: explanation with worked example, predict the output, Parsons (arrange lines), mini code editor with Vim keys and runnable tests, conceptual answer, roadmap or progress.
+- Lesson types: explanation with worked example, predict the output, Parsons (arrange lines), mini code editor with Vim keys and runnable tests, conceptual answer.
 - Writing tasks use a light in-app editor with Vim keybindings.
 - Coding tasks have Run, which only runs the tests, and Submit, which hands in the answer. Predict and arrange have Submit only: the first answer is the evidence, so there is no trial run.
 - Default language TypeScript; Python is supported.
@@ -53,7 +53,7 @@ Dark, sleek and minimal, in the family of Linear, t3code and assistant-ui. The l
 
 ## Product Principles
 
-1. The conversation is the spine; panels appear when an exercise needs them and get out of the way. The tutor shows one panel at a time and chooses what it holds. The learner doesn't switch between panels.
+1. The curriculum is the spine. The learner works through chapters and lessons, one lesson at a time in the main pane. The tutor sits beside the lesson: it explains, hints and chooses what comes next. The learner can close it.
 2. Teach, never hand over answers during practice.
 3. Show where the learner stands and what comes next, without pressure or failure marks.
 4. Every screen must be easy to read at a glance.

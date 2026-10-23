@@ -1,6 +1,6 @@
 # tech-prep
 
-A desktop study app with an AI tutor that follows learning science. Each subject has its own tutor. The tutor teaches in a chat, opens small exercises beside the conversation, and schedules reviews of what you've learned. The first subject is the Blind 75.
+A desktop study app with an AI tutor that follows learning science. Each subject is a course of chapters and lessons, with a tutor in a pane beside the lesson. The tutor teaches, writes the exercises and schedules reviews of what you've learned. The first subject is the Blind 75.
 
 - [PRODUCT.md](PRODUCT.md): what the app is for and how it should behave.
 - [docs/learning-model.md](docs/learning-model.md): the learning model.

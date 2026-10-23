@@ -30,6 +30,17 @@ export type NextAction =
   | { action: "practice"; problem: string; why: string }
   | { action: "done_for_now"; next_due: string | null; why: string };
 
+/** From the engine bridge's `problem` method, and the `problem` field of a session. */
+export interface Problem {
+  slug: string;
+  title: string;
+  topic: string;
+  difficulty: Difficulty;
+  statement: string | null;
+  concept_count: number;
+  new_concepts: string[];
+}
+
 /** From the engine bridge's `session` method. */
 export interface Session {
   next: NextAction;
@@ -39,15 +50,7 @@ export interface Session {
     phase: "learning" | "review" | null;
     language: string;
   } | null;
-  problem: {
-    slug: string;
-    title: string;
-    topic: string;
-    difficulty: Difficulty;
-    statement: string | null;
-    concept_count: number;
-    new_concepts: string[];
-  } | null;
+  problem: Problem | null;
 }
 
 /** From the engine bridge's `roadmap` method. */
