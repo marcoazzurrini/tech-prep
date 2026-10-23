@@ -12,6 +12,13 @@ body {
   padding-top: 44px;
 }
 
+/* The buttons don't zoom with the UI on large displays, so the gap shrinks to match. */
+@media (min-width: 2200px) {
+  .tp-rail {
+    padding-top: calc(44px / 1.25);
+  }
+}
+
 /* The bars along the top drag the window, as a native title bar would. */
 .tp-rail,
 .tp-course-header,

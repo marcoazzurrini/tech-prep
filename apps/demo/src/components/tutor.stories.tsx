@@ -7,7 +7,7 @@ const Tutor = ({ busy }: { busy: boolean }) => {
   const [draft, setDraft] = useState("");
 
   return (
-    <div style={{ height: 640 }}>
+    <div style={{ height: 640, width: 380 }}>
       <TutorPane
         composer={
           <Composer

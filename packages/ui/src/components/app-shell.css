@@ -10,6 +10,13 @@
   grid-template-columns: 56px 280px minmax(0, 1fr) 380px;
 }
 
+/* Large displays have room for longer chat lines. */
+@media (min-width: 2200px) {
+  .tp-shell--tutor {
+    grid-template-columns: 56px 280px minmax(0, 1fr) 576px;
+  }
+}
+
 .tp-shell__tutor {
   min-height: 0;
 }

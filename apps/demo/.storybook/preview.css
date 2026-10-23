@@ -1,0 +1,4 @@
+/* Full-screen stories fill the viewport through percentage heights, which stay right under the large-display zoom. */
+.sb-main-fullscreen #storybook-root {
+  height: 100%;
+}

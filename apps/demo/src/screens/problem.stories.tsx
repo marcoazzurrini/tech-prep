@@ -63,7 +63,7 @@ const meta = {
   component: ProblemScreen,
   decorators: [
     (Story) => (
-      <div style={{ height: "100vh" }}>
+      <div style={{ height: "100%" }}>
         <Story />
       </div>
     ),
