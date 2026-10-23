@@ -212,7 +212,7 @@ const meta = {
   component: CourseScreen,
   decorators: [
     (Story) => (
-      <div style={{ height: "100vh" }}>
+      <div style={{ height: "100%" }}>
         <Story />
       </div>
     ),
