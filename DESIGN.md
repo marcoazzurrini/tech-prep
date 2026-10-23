@@ -87,7 +87,7 @@ spacing:
 
 # Design System: tech-prep
 
-The OpenPencil file `design/tech-prep.fig` is the source of truth. This file mirrors its tokens for code and states the rules behind them. See the components in that file.
+The OpenPencil file `design/tech-prep.fig` is the source of truth. This file mirrors its tokens for code and states the rules behind them. The components are built in `packages/ui` and shown in Storybook (`bun run storybook`).
 
 ## Look
 
@@ -95,7 +95,9 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 ## Rules
 
-**Surfaces step up.** The chat sits on `canvas`, the darkest surface. The sidebar and the exercise panel frame it, one step lighter, on `sidebar` and `panel`. Content inside steps up again: `surface`, then `raised`. A light grey covers small cards only, never a whole region. Separate surfaces with a 1px `border` hairline, not with gaps or colour blocks.
+**Course layout.** An icon rail on the left opens Today and switches subjects. The lessons column lists chapters and lessons. The lesson fills the main pane. The tutor pane sits on the right, and the learner can close it.
+
+**Surfaces step up.** The rail and the lessons column sit on `sidebar`, the lesson on `panel`, and the tutor on `canvas`, the darkest surface. Content inside steps up again: `surface`, then `raised`. A light grey covers small cards only, never a whole region. Separate surfaces with a 1px `border` hairline, not with gaps or colour blocks.
 
 **One blue.** `accent` marks only what the tutor opened, the current item, and focus. Never use it for decoration or headings.
 
@@ -103,7 +105,7 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 **No red for concepts.** A concept or learning stage is never red. "Still learning" is amber or neutral. Red is only for a concrete wrong answer or failing test.
 
-**Two fonts.** Atkinson Hyperlegible Next for all prose and UI. JetBrains Mono only for code, with ligatures off. Text is never smaller than 13px.
+**Two fonts.** Atkinson Hyperlegible Next for all prose and UI. JetBrains Mono only for code, with ligatures off. Text is never smaller than 13px. Subject badges are icons, so their initials can be smaller.
 
 **Text greys have jobs.** `ink` for titles, `body` for prose, `mute` for metadata and icons, `dim` only for placeholders and disabled text.
 

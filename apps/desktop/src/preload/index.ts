@@ -14,8 +14,10 @@ const on = <T>(
 };
 
 const api = {
-  engine: (method: "session" | "roadmap") =>
-    ipcRenderer.invoke("engine", method),
+  engine: (
+    method: "session" | "roadmap" | "problem",
+    params?: { slug: string }
+  ) => ipcRenderer.invoke("engine", method, params),
   onEngineChanged: (handler: () => void) => on("engine:changed", handler),
   tutor: {
     onEvent: (handler: (event: TutorEvent) => void) =>

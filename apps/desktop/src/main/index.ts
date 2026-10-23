@@ -4,6 +4,7 @@ import path from "node:path";
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 
 import { Engine } from "./engine";
+import type { Json } from "./engine";
 import { ensureWorkspace } from "./paths";
 import { Tutor } from "./tutor";
 import type { TutorEvent } from "./tutor";
@@ -22,7 +23,7 @@ const tutor = new Tutor(
 
 const createWindow = (): void => {
   window = new BrowserWindow({
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#08090a",
     height: 900,
     minHeight: 720,
     minWidth: 1180,
@@ -86,7 +87,9 @@ const createWindow = (): void => {
   }
 };
 
-ipcMain.handle("engine", (_event, method: string) => engine.request(method));
+ipcMain.handle("engine", (_event, method: string, params?: Json) =>
+  engine.request(method, params)
+);
 
 ipcMain.on("tutor:send", (_event, text: string) => tutor.send(text));
 

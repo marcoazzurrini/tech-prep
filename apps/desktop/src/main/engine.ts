@@ -21,7 +21,7 @@ interface Pending {
 
 /**
  * Client for the engine's `src/bridge.ts`, a Bun process that answers read-only questions
- * (the current session, the roadmap) from the engine's SQLite state.
+ * (the current session, the roadmap, one problem) from the engine's SQLite state.
  */
 export class Engine {
   private child: ChildProcessWithoutNullStreams | null = null;
@@ -71,7 +71,7 @@ export class Engine {
     return child;
   }
 
-  request(method: string): Promise<Json | undefined> {
+  request(method: string, params?: Json): Promise<Json | undefined> {
     this.child ??= this.start();
     const { child } = this;
     const id = this.nextId;
@@ -80,7 +80,7 @@ export class Engine {
     // oxlint-disable-next-line promise/avoid-new -- the reply arrives later as a line on the child's stdout, so a pending promise is the bridge between the two.
     return new Promise((resolve, reject) => {
       this.pending.set(id, { reject, resolve });
-      child.stdin.write(`${JSON.stringify({ id, method })}\n`);
+      child.stdin.write(`${JSON.stringify({ id, method, params })}\n`);
     });
   }
 

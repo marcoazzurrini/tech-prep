@@ -1,11 +1,9 @@
+import { Activity, Composer, Message, TutorPane } from "@tech-prep/ui";
 import { useEffect, useRef, useState } from "react";
-import type { KeyboardEvent } from "react";
 import Markdown from "react-markdown";
 
-import { Icon } from "./icons";
-
 interface Item {
-  role: "tutor" | "you" | "error";
+  role: "tutor" | "learner" | "error";
   text: string;
 }
 
@@ -17,13 +15,19 @@ const link = {
   ),
 };
 
+interface TutorProps {
+  /** What the learner is looking at, shown in the header. */
+  context?: string;
+  onClose: () => void;
+}
+
 /** Chat with the tutor (Claude Code with the tech-prep plugin, run by the main process). */
-export const Tutor = () => {
+export const Tutor = ({ context, onClose }: TutorProps) => {
   const [items, setItems] = useState<Item[]>([]);
   const [busy, setBusy] = useState(false);
   const [activity, setActivity] = useState("");
   const [draft, setDraft] = useState("");
-  const chat = useRef<HTMLDivElement>(null);
+  const thread = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -55,9 +59,9 @@ export const Tutor = () => {
   }, []);
 
   useEffect(() => {
-    chat.current?.scrollTo({
+    thread.current?.scrollTo({
       behavior: "smooth",
-      top: chat.current.scrollHeight,
+      top: thread.current.scrollHeight,
     });
     // oxlint-disable-next-line react/exhaustive-effect-dependencies -- items and busy are the triggers, not inputs: scroll to the bottom whenever a message or the activity line appears.
   }, [items, busy]);
@@ -70,7 +74,7 @@ export const Tutor = () => {
     }
 
     window.tp.tutor.send(text);
-    setItems((all) => [...all, { role: "you", text }]);
+    setItems((all) => [...all, { role: "learner", text }]);
     setDraft("");
 
     if (input.current) {
@@ -78,70 +82,31 @@ export const Tutor = () => {
     }
   };
 
-  const onKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      send();
-    }
-  };
-
   return (
-    <section className="panel">
-      <div className="ph">
-        <Icon name="chat" />
-        Tutor
-      </div>
-      <div className="chat scroll" ref={chat} aria-live="polite">
-        {items.map((item, i) =>
-          item.role === "error" ? (
-            <div className="msg err" key={i}>
-              {item.text}
-            </div>
-          ) : (
-            <div className={`msg${item.role === "you" ? " me" : ""}`} key={i}>
-              <span className="who">
-                {item.role === "you" ? "You" : "Tutor"}
-              </span>
-              {item.role === "you" ? (
-                <p>{item.text}</p>
-              ) : (
-                <Markdown components={link}>{item.text}</Markdown>
-              )}
-            </div>
-          )
-        )}
-        {busy && (
-          <div className="activity">
-            <i />
-            {activity || "Thinking"}
-          </div>
-        )}
-      </div>
-      <div className="input">
-        <textarea
-          ref={input}
-          rows={1}
-          value={draft}
+    <TutorPane
+      composer={
+        <Composer
           placeholder="Ask the tutor…"
-          aria-label="Message the tutor"
-          onChange={(e) => {
-            setDraft(e.target.value);
-            e.target.style.height = "auto";
-            e.target.style.height = `${e.target.scrollHeight}px`;
-          }}
-          onKeyDown={onKey}
+          textareaRef={input}
+          value={draft}
+          onChange={setDraft}
+          onSend={send}
         />
-        <button
-          type="button"
-          className="send"
-          title="Send"
-          aria-label="Send"
-          disabled={!draft.trim()}
-          onClick={send}
-        >
-          <Icon name="up" />
-        </button>
-      </div>
-    </section>
+      }
+      context={context}
+      threadRef={thread}
+      onClose={onClose}
+    >
+      {items.map((item, i) => (
+        <Message from={item.role} key={i}>
+          {item.role === "tutor" ? (
+            <Markdown components={link}>{item.text}</Markdown>
+          ) : (
+            item.text
+          )}
+        </Message>
+      ))}
+      {busy && <Activity>{activity || "Thinking"}</Activity>}
+    </TutorPane>
   );
 };
