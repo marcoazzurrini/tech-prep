@@ -1,0 +1,24 @@
+# Packages the app for macOS. `bun run package` makes a DMG and a zip for a release;
+# `bun run app:install` at the repo root builds the app and installs it in /Applications.
+appId: app.tech-prep.desktop
+productName: tech-prep
+directories:
+  output: dist
+files:
+  - out/main/**
+  - out/preload/**
+  - out/renderer/**
+extraResources:
+  - from: out/resources
+    to: .
+mac:
+  category: public.app-category.education
+  target:
+    - target: dmg
+      arch: arm64
+    - target: zip
+      arch: arm64
+  # Ad-hoc signing needs no Apple Developer account. macOS runs an app built on this Mac
+  # without asking; a downloaded copy needs "Open Anyway" once in Privacy & Security.
+  identity: "-"
+  hardenedRuntime: false

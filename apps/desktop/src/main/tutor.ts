@@ -6,7 +6,7 @@ import type {
   SDKUserMessage,
 } from "@anthropic-ai/claude-agent-sdk";
 
-import { ENV, TUTOR_PLUGIN, WORKSPACE } from "./paths";
+import { CLAUDE, ENV, TUTOR_PLUGIN, WORKSPACE } from "./paths";
 
 const ENGINE = "mcp__plugin_tech-prep_engine__";
 
@@ -96,8 +96,8 @@ export class Tutor {
       },
     };
 
-    if (process.env.TECHPREP_CLAUDE_PATH) {
-      options.pathToClaudeCodeExecutable = process.env.TECHPREP_CLAUDE_PATH;
+    if (CLAUDE) {
+      options.pathToClaudeCodeExecutable = CLAUDE;
     }
 
     this.session = query({ options, prompt: this.input() });
