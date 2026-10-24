@@ -9,6 +9,7 @@ pre-commit:
       exclude:
         - bun.lock
         - "packages/starters/*/problems/**"
+        - ".penna/**"
       run: bunx oxfmt --write {staged_files}
       stage_fixed: true
     - name: lint
