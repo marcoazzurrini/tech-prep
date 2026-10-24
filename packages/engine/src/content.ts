@@ -2,13 +2,18 @@ import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
 
-/** The interview starter (Blind 75) from `@tech-prep/starters`. */
-export const CONTENT_DIR = path.join(
+/**
+ * The starters folder. The packaged app ships its own copy and points `TECHPREP_STARTERS`
+ * at it; from the repo it is the `@tech-prep/starters` package.
+ */
+const STARTERS_DIR =
+  process.env.TECHPREP_STARTERS ??
   path.dirname(
     Bun.resolveSync("@tech-prep/starters/package.json", import.meta.dir)
-  ),
-  "interview"
-);
+  );
+
+/** The interview starter (Blind 75). */
+export const CONTENT_DIR = path.join(STARTERS_DIR, "interview");
 
 export const CURRICULUM_DIR = path.join(CONTENT_DIR, "curriculum");
 export const PROBLEMS_DIR = path.join(CONTENT_DIR, "problems");

@@ -1,9 +1,8 @@
 import { spawn } from "node:child_process";
 import type { ChildProcessWithoutNullStreams } from "node:child_process";
-import path from "node:path";
 import { createInterface } from "node:readline";
 
-import { ENGINE_DIR, ENV } from "./paths";
+import { BUN, ENV, engineEntry } from "./paths";
 
 /** A value the bridge sends back: whatever its method returned, as JSON. */
 export type Json =
@@ -20,7 +19,7 @@ interface Pending {
 }
 
 /**
- * Client for the engine's `src/bridge.ts`, a Bun process that answers read-only questions
+ * Client for the engine's bridge, a Bun process that answers read-only questions
  * (the current session, the roadmap, one problem) from the engine's SQLite state.
  */
 export class Engine {
@@ -29,9 +28,7 @@ export class Engine {
   private nextId = 1;
 
   private start(): ChildProcessWithoutNullStreams {
-    const child = spawn("bun", [path.join(ENGINE_DIR, "src", "bridge.ts")], {
-      env: ENV,
-    });
+    const child = spawn(BUN, [engineEntry("bridge")], { env: ENV });
 
     createInterface({ input: child.stdout }).on("line", (line) => {
       let reply: { id: number; result?: Json; error?: string };
