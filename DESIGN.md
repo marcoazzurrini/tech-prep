@@ -87,7 +87,7 @@ spacing:
 
 # Design System: tech-prep
 
-The OpenPencil file `design/tech-prep.fig` is the source of truth. This file mirrors its tokens for code and states the rules behind them. The components are built in `packages/ui` and shown in Storybook (`bun run storybook`).
+The penna design in `.penna/` is the source of truth. This file mirrors its tokens for code and states the rules behind them. The components are built in `packages/ui` and shown in Storybook (`bun run storybook`).
 
 ## Look
 

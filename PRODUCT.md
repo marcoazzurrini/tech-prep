@@ -45,7 +45,7 @@ The engine schedules **concepts**, not questions, with spaced repetition (FSRS).
 
 ## Brand Commitments
 
-Dark, sleek and minimal, in the family of Linear, t3code and assistant-ui. The look is defined in `DESIGN.md` and the OpenPencil file `design/tech-prep.fig`.
+Dark, sleek and minimal, in the family of Linear, t3code and assistant-ui. The look is defined in `DESIGN.md` and the penna design in `.penna/`.
 
 ## Evidence on Hand
 

@@ -5,7 +5,7 @@ How we work in this repo. The code is the source of truth for how things work; t
 ## Docs
 
 - `PRODUCT.md`: who the app is for, what it does, and the product principles.
-- `DESIGN.md`: design tokens and visual rules, mirrored from the OpenPencil file.
+- `DESIGN.md`: design tokens and visual rules, mirrored from the penna design.
 - `docs/learning-model.md`: the learning model the engine implements.
 - `README.md`: what the project is and how to run it.
 
@@ -21,11 +21,11 @@ Keep them lean:
 
 ## Design
 
-- The OpenPencil file `design/tech-prep.fig` is the source of truth for visual design. Read its variables and components with the OpenPencil MCP tools before building UI.
-- Prototype new screens and components in that file first, using its variables and components. Build them in code after the user approves.
+- The penna design in `.penna/` is the source of truth for visual design. Read its variables and components with the penna MCP tools before building UI.
+- Prototype new screens and components in penna first, using its variables and components. Build them in code after the user approves.
 - Build UI from the components in `packages/ui`. A new component goes there with a Storybook story, and a new screen gets a story in `apps/demo`.
-- Keep the OpenPencil file, `DESIGN.md` and the code in sync. A design change in one lands in the others in the same task.
-- Edits in OpenPencil reach the disk only when the file is saved. Save it before you commit, and ask the user to save any edits they made in the app.
+- Keep the penna design, `DESIGN.md` and the code in sync. A design change in one lands in the others in the same task.
+- penna writes every edit to `.penna/` straight away. Commit `.penna/` with the change it belongs to.
 
 ## Workflow
 
