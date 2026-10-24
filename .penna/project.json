@@ -2,7 +2,8 @@
  "version": 2,
  "pages": [
   "foundations",
-  "screens"
+  "chat-layout",
+  "course-layout"
  ],
  "variables": {
   "color-canvas": "#08090a",
