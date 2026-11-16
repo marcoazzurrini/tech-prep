@@ -26,21 +26,23 @@ const ACTIVITY = new Map([
   ["complete_lesson", "Saving the lesson"],
   ["finish_attempt", "Grading the attempt"],
   ["get_concept", "Reading the concept"],
+  ["get_exercise", "Reading your answer"],
+  ["grade_answer", "Grading your answer"],
   ["get_problem", "Reading the problem"],
   ["get_progress", "Checking your progress"],
   ["get_roadmap", "Checking your progress"],
   ["log_hint", "Noting the hint"],
   ["next_up", "Checking what is next"],
-  ["run_lesson_file", "Running your checks"],
   ["run_tests", "Running your tests"],
+  ["show_exercise", "Writing an exercise"],
   ["start_problem", "Opening the problem"],
-  ["write_lesson_file", "Writing a lesson"],
 ]);
 
 const APP_NOTE = `
-You are running inside the tech-prep desktop app. The window has two panels: the problem
-statement on the left and you on the right. The learner edits files in their own editor.
-Your messages render as Markdown in a narrow panel: keep them short, avoid wide tables,
+You are running inside the tech-prep desktop app. The main pane shows the exercise or the
+problem you opened, with its own editor, Run and Submit. You are in a narrow pane beside it.
+Messages that start with "[app]" come from the app, not from the learner.
+Your messages render as Markdown in a narrow pane: keep them short, avoid tables,
 and never paste the learner's whole file back to them.
 `.trim();
 
@@ -86,6 +88,7 @@ export class Tutor {
         ),
       cwd: WORKSPACE,
       env: ENV,
+      pathToClaudeCodeExecutable: CLAUDE,
       permissionMode: "default",
       plugins: [{ path: TUTOR_PLUGIN, type: "local" }],
       settingSources: ["user", "project", "local"],
@@ -96,11 +99,18 @@ export class Tutor {
       },
     };
 
-    if (CLAUDE) {
-      options.pathToClaudeCodeExecutable = CLAUDE;
+    try {
+      this.session = query({ options, prompt: this.input() });
+    } catch (error) {
+      // Say why in the tutor pane; a silent pane looks like a tutor that is thinking.
+      this.emit({
+        text: `The tutor could not start: ${error instanceof Error ? error.message : String(error)}`,
+        type: "error",
+      });
+
+      return;
     }
 
-    this.session = query({ options, prompt: this.input() });
     void this.read(this.session);
     this.send(START);
   }

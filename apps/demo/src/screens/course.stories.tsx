@@ -2,13 +2,14 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   AnswerInput,
   AppShell,
+  Arranger,
   Button,
   Chip,
   CodeBlock,
+  CodeEditor,
   Composer,
-  EditorStatus,
+  Confidence,
   LessonPane,
-  LineSlot,
   Message,
   PaneBody,
   PaneFooter,
@@ -18,6 +19,7 @@ import {
   TopBar,
   TutorPane,
 } from "@tech-prep/ui";
+import type { ConfidenceLevel } from "@tech-prep/ui";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { fn } from "storybook/test";
@@ -47,58 +49,75 @@ const UNIQUE_BY = `export function uniqueBy<T, K>(
 const learning = <Chip tone="amber">Uniqueness rule · Learning</Chip>;
 const insertion = <Chip muted>Insertion order</Chip>;
 
-const Predict = () => (
-  <>
-    <PaneBody>
-      <TaskHeader
-        chips={learning}
-        description="A Set keeps each value once. What does this print?"
-        title="Predict the output"
-      />
-      <CodeBlock
-        code={
-          'const s = new Set([1, "1", NaN, NaN, {}, {}]);\nconsole.log(s.size);'
-        }
-      />
-      <PaneSection label="Your answer">
-        <AnswerInput aria-label="Your answer" defaultValue="4" />
-      </PaneSection>
-    </PaneBody>
-    <PaneFooter>
-      <Button>Show hint</Button>
-      <Button variant="primary">Submit</Button>
-    </PaneFooter>
-  </>
-);
+const Predict = () => {
+  const [sure, setSure] = useState<ConfidenceLevel | null>(null);
 
-const Arrange = () => (
-  <>
-    <PaneBody>
-      <TaskHeader
-        chips={
-          <>
-            {insertion}
-            {learning}
-          </>
-        }
-        description="Order the lines so it logs each tag once, in the order first seen. One line is not needed."
-        title="Arrange the lines"
-      />
-      <PaneSection>
-        <LineSlot code="const seen = new Set();" index={1} />
-        <LineSlot code="for (const t of tags) seen.add(t);" index={2} />
-        <LineSlot code="for (const t of seen) console.log(t);" index={3} />
-      </PaneSection>
-      <PaneSection label="Not needed">
-        <LineSlot code="seen.sort();" spare />
-      </PaneSection>
-    </PaneBody>
-    <PaneFooter>
-      <Button>Show hint</Button>
-      <Button variant="primary">Submit</Button>
-    </PaneFooter>
-  </>
-);
+  return (
+    <>
+      <PaneBody>
+        <TaskHeader
+          chips={learning}
+          description="A Set keeps each value once. What does this print?"
+          title="Predict the output"
+        />
+        <CodeBlock
+          code={
+            'const s = new Set([1, "1", NaN, NaN, {}, {}]);\nconsole.log(s.size);'
+          }
+        />
+        <PaneSection label="Your answer">
+          <AnswerInput aria-label="Your answer" defaultValue="4" />
+        </PaneSection>
+        <PaneSection label="How sure are you?">
+          <Confidence value={sure} onChange={setSure} />
+        </PaneSection>
+      </PaneBody>
+      <PaneFooter start={<Button>Show hint</Button>}>
+        <Button disabled={!sure} variant="primary">
+          Submit
+        </Button>
+      </PaneFooter>
+    </>
+  );
+};
+
+const Arrange = () => {
+  const [lines, setLines] = useState([
+    "const seen = new Set();",
+    "for (const t of tags) seen.add(t);",
+    "for (const t of seen) console.log(t);",
+  ]);
+
+  const [spare, setSpare] = useState(["seen.sort();"]);
+
+  return (
+    <>
+      <PaneBody>
+        <TaskHeader
+          chips={
+            <>
+              {insertion}
+              {learning}
+            </>
+          }
+          description="Order the lines so it logs each tag once, in the order first seen. One line is not needed."
+          title="Arrange the lines"
+        />
+        <Arranger
+          lines={lines}
+          spare={spare}
+          onChange={(nextLines, nextSpare) => {
+            setLines(nextLines);
+            setSpare(nextSpare);
+          }}
+        />
+      </PaneBody>
+      <PaneFooter start={<Button>Show hint</Button>}>
+        <Button variant="primary">Submit</Button>
+      </PaneFooter>
+    </>
+  );
+};
 
 const Write = () => (
   <>
@@ -112,15 +131,18 @@ const Write = () => (
       description="Return the items whose key you have not seen before, in their original order."
       title="Write uniqueBy"
     />
-    <CodeBlock code={UNIQUE_BY} currentLine={8} grow lineNumbers />
-    <EditorStatus cursor="8:34" file="unique-by.ts" mode="NORMAL" />
-    <PaneSection label="Tests · not run yet">
+    <CodeEditor
+      file="unique-by.ts"
+      initialValue={UNIQUE_BY}
+      language="typescript"
+    />
+    <PaneSection dock label="Tests · not run yet">
       <TestRow name="keeps the first item for each key" status="pending" />
       <TestRow name="keeps the original order" status="pending" />
       <TestRow name="returns [] for an empty list" status="pending" />
       <TestRow name="drops later duplicates" status="pending" />
     </PaneSection>
-    <PaneFooter>
+    <PaneFooter start={<Button>Show hint</Button>}>
       <Button>Run tests</Button>
       <Button variant="primary">Submit</Button>
     </PaneFooter>

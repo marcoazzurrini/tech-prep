@@ -15,11 +15,26 @@ const on = <T>(
 
 const api = {
   engine: (
-    method: "session" | "roadmap" | "problem",
-    params?: { slug: string }
+    method:
+      | "session"
+      | "roadmap"
+      | "problem"
+      | "code.read"
+      | "code.save"
+      | "code.run"
+      | "exercise.submit",
+    params?: {
+      slug?: string;
+      text?: string;
+      id?: number;
+      response?: string | string[];
+      confidence?: "low" | "medium" | "high" | null;
+    }
   ) => ipcRenderer.invoke("engine", method, params),
   onEngineChanged: (handler: () => void) => on("engine:changed", handler),
   tutor: {
+    /** Tell the tutor what happened in the app. It is not shown as a learner message. */
+    notify: (text: string) => ipcRenderer.send("tutor:send", `[app] ${text}`),
     onEvent: (handler: (event: TutorEvent) => void) =>
       on("tutor:event", handler),
     send: (text: string) => ipcRenderer.send("tutor:send", text),

@@ -1,5 +1,6 @@
 .tp-answer {
-  width: 112px;
+  width: 100%;
+  max-width: 320px;
   height: 44px;
   padding: 0 14px;
   border: 1px solid var(--color-border-strong);
@@ -14,7 +15,158 @@
   outline: none;
 }
 
+.tp-answer--green {
+  border-color: var(--color-green);
+}
+
+.tp-answer--red {
+  border-color: var(--color-red);
+}
+
+.tp-answer-text {
+  width: 100%;
+  max-width: 68ch;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font: 400 16px/26px var(--font-sans);
+  resize: vertical;
+}
+
+.tp-answer-text:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.tp-line-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 44px;
+}
+
+.tp-line-list__empty {
+  padding: 9px 16px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--color-dim);
+  font-size: 14px;
+}
+
+.tp-line-slot--movable:not(:disabled) {
+  cursor: grab;
+}
+
+.tp-line-slot--movable:not(:disabled):hover {
+  border-color: var(--color-border-strong);
+}
+
+.tp-line-slot--dragging {
+  opacity: 0.4;
+}
+
+.tp-confidence {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* The section label above already asks the question. */
+.tp-confidence legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.tp-confidence input {
+  position: absolute;
+  opacity: 0;
+}
+
+.tp-confidence label {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-body);
+  font: 400 14px/20px var(--font-sans);
+  cursor: pointer;
+}
+
+.tp-confidence:not(:disabled) label:hover {
+  background: var(--color-hover);
+}
+
+.tp-confidence label:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.tp-confidence label:has(input:checked) {
+  border-color: var(--color-accent-line);
+  background: var(--color-accent-bg);
+  color: var(--color-ink);
+}
+
+.tp-confidence:disabled label {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.tp-result {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 68ch;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.tp-result h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--color-ink);
+  font: 600 15px/22px var(--font-sans);
+}
+
+.tp-result__body {
+  color: var(--color-body);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.tp-result__body pre {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+  font: 400 14px/22px var(--font-mono);
+}
+
+.tp-result__note {
+  margin: 4px 0 0;
+  color: var(--color-mute);
+  font-size: 13px;
+  line-height: 18px;
+}
+
 .tp-line-slot {
+  width: 100%;
+  font: inherit;
+  text-align: left;
   display: flex;
   align-items: center;
   gap: 12px;

@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { cx } from "../lib/cx";
+
 import "./lesson-pane.css";
 
 /** The main pane: top bar, then the exercise. */
@@ -7,9 +9,17 @@ export const LessonPane = ({ children }: { children: ReactNode }) => (
   <main className="tp-lesson-pane">{children}</main>
 );
 
+interface PaneBodyProps {
+  children: ReactNode;
+  /** Take part of the height and leave the rest to an editor below. */
+  share?: boolean;
+}
+
 /** A scrolling region inside the lesson pane. */
-export const PaneBody = ({ children }: { children: ReactNode }) => (
-  <div className="tp-pane-body">{children}</div>
+export const PaneBody = ({ children, share = false }: PaneBodyProps) => (
+  <div className={cx("tp-pane-body", share && "tp-pane-body--share")}>
+    {children}
+  </div>
 );
 
 interface TaskHeaderProps {
@@ -31,11 +41,14 @@ export const TaskHeader = ({ title, description, chips }: TaskHeaderProps) => (
 export const PaneSection = ({
   children,
   label,
+  dock = false,
 }: {
   children: ReactNode;
-  label?: string;
+  label?: ReactNode;
+  /** Sit under an editor at a fixed share of the height, scrolling inside. */
+  dock?: boolean;
 }) => (
-  <section className="tp-pane-section">
+  <section className={cx("tp-pane-section", dock && "tp-pane-section--dock")}>
     {label && <h2>{label}</h2>}
     {children}
   </section>
