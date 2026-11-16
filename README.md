@@ -12,10 +12,11 @@ The app runs on Apple Silicon Macs. It ships its own Bun, Claude Code, engine an
 
 ```sh
 bun install
-bun run app:install   # build the app and install it in /Applications
+bun run install-app          # build the app and install it in /Applications
+bun run install-app --open   # the same, then open it
 ```
 
-To update, run `git pull`, then `bun run app:install` again.
+To update, run `git pull`, then `bun run install-app` again. It quits the running app, backs up your progress and replaces the app. Your progress lives outside the app, so it survives every install.
 
 The app is signed ad hoc, without an Apple Developer account. A copy you build yourself opens normally. A copy downloaded from elsewhere needs "Open Anyway" once, in System Settings, Privacy & Security.
 

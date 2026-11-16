@@ -1,5 +1,5 @@
 # Packages the app for macOS. `bun run package` makes a DMG and a zip for a release;
-# `bun run app:install` at the repo root builds the app and installs it in /Applications.
+# `bun run install-app` at the repo root builds the app and installs it in /Applications.
 appId: app.tech-prep.desktop
 productName: tech-prep
 directories:
