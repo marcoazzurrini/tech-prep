@@ -23,13 +23,6 @@ const scheduler = fsrs(
 
 const DAY_MS = 86_400_000;
 
-export const RATING_NAMES = {
-  [Rating.Again]: "Again",
-  [Rating.Hard]: "Hard",
-  [Rating.Good]: "Good",
-  [Rating.Easy]: "Easy",
-} satisfies Record<Grade, string>;
-
 export const parseCard = (json: string): Card => {
   const raw = JSON.parse(json);
 
@@ -54,30 +47,37 @@ export const retrievability = (card: Card, now = new Date()): number => {
   return scheduler.get_retrievability(card, now, false);
 };
 
+/** What a review came from: a problem attempt or a tutor-made exercise. */
+export interface Source {
+  attemptId?: number;
+  exerciseId?: number;
+}
+
 const log = (
   conceptId: string,
-  attemptId: number,
+  source: Source,
   rating: number,
   card: Card,
   now: Date,
   credit: number | null,
-  source: string | null
+  sourceConcept: string | null
 ) => {
   open()
     .query(
-      `INSERT INTO reviews (concept_id, attempt_id, rating, reviewed_at, due, stability, difficulty, implicit_credit, source_concept)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO reviews (concept_id, attempt_id, exercise_id, rating, reviewed_at, due, stability, difficulty, implicit_credit, source_concept)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       conceptId,
-      attemptId,
+      source.attemptId ?? 0,
+      source.exerciseId ?? null,
       rating,
       now.toISOString(),
       card.due.toISOString(),
       card.stability,
       card.difficulty,
       credit,
-      source
+      sourceConcept
     );
 };
 
@@ -88,14 +88,14 @@ const save = (conceptId: string, card: Card): void => {
 /** A full review of a concept with an FSRS grade. Creates the card if needed. */
 export const explicitReview = (
   conceptId: string,
-  attemptId: number,
+  source: Source,
   rating: Grade,
   now = new Date()
 ): Card => {
   const card: Card = cardOf(conceptId) ?? createEmptyCard<Card>(now);
   const next = scheduler.next(card, now, rating).card;
   save(conceptId, next);
-  log(conceptId, attemptId, rating, next, now, null, null);
+  log(conceptId, source, rating, next, now, null, null);
 
   return next;
 };
@@ -107,9 +107,9 @@ export const explicitReview = (
  */
 export const implicitReview = (
   conceptId: string,
-  attemptId: number,
+  source: Source,
   credit: number,
-  source: string,
+  sourceConcept: string,
   now = new Date()
 ): Card | null => {
   const card = cardOf(conceptId);
@@ -138,7 +138,7 @@ export const implicitReview = (
   }
 
   save(conceptId, next);
-  log(conceptId, attemptId, Rating.Good, next, now, credit, source);
+  log(conceptId, source, Rating.Good, next, now, credit, sourceConcept);
 
   return next;
 };

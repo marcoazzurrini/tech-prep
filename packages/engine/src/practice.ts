@@ -1,63 +1,26 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-
-import type { Grade } from "ts-fsrs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import {
   DEFAULT_LANGUAGE,
   WORKSPACE_DIR,
   problem as getProblem,
   solutionPath,
-  wrap,
 } from "./content.ts";
-import type { Language, Problem } from "./content.ts";
+import type { Language } from "./content.ts";
 import {
   addHint,
   attempt,
-  hintsFor,
+  attemptsFor,
+  closeExercises,
   open,
   openAttempt,
-  saveConceptOutcome,
+  openExercise,
 } from "./db.ts";
-import type { AttemptRow, Outcome, Phase, Recognition } from "./db.ts";
-import { propagate } from "./fire.ts";
-import { gradeAttempt } from "./grading.ts";
-import type { Verdict } from "./grading.ts";
-import { RATING_NAMES, explicitReview } from "./memory.ts";
+import type { Outcome, Phase, Recognition } from "./db.ts";
+import { INDEPENDENT_HINT_LEVEL, grade } from "./grading.ts";
+import { applyResults } from "./outcomes.ts";
 import { ensureDataStructures, runTests } from "./runner.ts";
-import { isPassed, pass, recordStruggle, updateMastery } from "./scheduler.ts";
-
-const banner = (comment: string, title: string): string => {
-  const rule = `${comment} ${"═".repeat(59)}`;
-
-  return `${rule}\n${comment} ${title}\n${rule}`;
-};
-
-const stub = (p: Problem, language: Language): string => {
-  const comment = language === "python" ? "#" : "//";
-
-  const statement = p.statement
-    .trim()
-    .split("\n")
-    // the title goes in the banner
-    .slice(1)
-    .join("\n")
-    .trim()
-    .split("\n")
-    .flatMap((line) => wrap(line, 80))
-    .map((line) => `${comment} ${line}`.trimEnd())
-    .join("\n");
-
-  const body = p.stubs[language];
-
-  return [
-    banner(comment, `PROBLEM · ${p.title} (${p.difficulty})`),
-    statement,
-    "",
-    banner(comment, "YOUR SOLUTION · write it below"),
-    "",
-    body,
-  ].join("\n");
-};
+import { isPassed } from "./scheduler.ts";
 
 /** Create the solution file if needed and open (or resume) an attempt. */
 export const startProblem = (
@@ -71,7 +34,7 @@ export const startProblem = (
   const created = !existsSync(file);
 
   if (created) {
-    writeFileSync(file, stub(p, language));
+    writeFileSync(file, `${p.stubs[language].trimEnd()}\n`);
   }
 
   let current = openAttempt(slug, language);
@@ -85,6 +48,7 @@ export const startProblem = (
     }
 
     const phase: Phase = p.concepts.every(isPassed) ? "review" : "learning";
+    closeExercises();
 
     const id = open()
       .query(
@@ -133,44 +97,76 @@ export const testSolution = (
   return { attempt_id: current?.id ?? null, run };
 };
 
-/** Record a hint before it is given. Tie it to the concept it is about whenever possible. */
-export const logHint = (
-  attemptId: number,
-  level: number,
-  conceptId: string | null = null
-): AttemptRow => {
-  const current = attempt(attemptId);
+/** The attempt the learner is working on, if any. */
+export const currentAttempt = () =>
+  attemptsFor({}).findLast((a) => !a.finished_at) ?? null;
 
-  if (current.finished_at) {
-    throw new Error(`Attempt ${attemptId} is already finished.`);
+/** The learner's code for a problem, as the in-app editor shows it. */
+export const readSolution = (slug: string, language: Language): string => {
+  const file = solutionPath(slug, language);
+
+  return existsSync(file) ? readFileSync(file, "utf-8") : "";
+};
+
+/** Save the editor's text. Only the open attempt's file can change. */
+export const saveSolution = (
+  slug: string,
+  language: Language,
+  text: string
+): void => {
+  if (!openAttempt(slug, language)) {
+    throw new Error(`No attempt is open for '${slug}'.`);
   }
 
-  if (conceptId && !getProblem(current.slug).concepts.includes(conceptId)) {
-    throw new Error(
-      `'${conceptId}' is not one of this problem's concepts: ${getProblem(current.slug).concepts.join(", ")}`
-    );
+  writeFileSync(solutionPath(slug, language), text);
+};
+
+/**
+ * Record a hint before it is given. It counts for whatever is on screen: the open
+ * exercise, else the open problem attempt.
+ */
+export const logHint = (level: number) => {
+  const exercise = openExercise();
+
+  if (exercise && !exercise.graded_at && exercise.kind !== "example") {
+    open()
+      .query(
+        "UPDATE exercises SET max_hint_level = MAX(max_hint_level, ?) WHERE id = ?"
+      )
+      .run(level, exercise.id);
+
+    return {
+      on: `exercise ${exercise.id}`,
+      still_counts_as_alone: level <= INDEPENDENT_HINT_LEVEL,
+    };
   }
 
-  addHint(attemptId, conceptId, level);
+  const current = currentAttempt();
 
-  return attempt(attemptId);
+  if (!current) {
+    throw new Error("Nothing is open, so there is nothing to hint on.");
+  }
+
+  addHint(current.id, null, level);
+
+  return {
+    on: `problem ${current.slug}`,
+    still_counts_as_alone:
+      Math.max(level, current.max_hint_level) <= INDEPENDENT_HINT_LEVEL,
+  };
 };
 
 export interface FinishInput {
   attemptId: number;
   /** Set when the tests do not pass: the learner gave up, or stopped for outside reasons (no grade). */
   stopped?: "gave_up" | "paused";
-  explanationScore: number;
   recognition?: Recognition;
-  diagnosis?: { concept_id: string; verdict: Verdict; reason?: string }[];
-  learnerSelfRating?: 1 | 2 | 3 | 4;
   notes?: string;
 }
 
 /**
- * Close an attempt. Learning-phase concepts pass on an independent solve or count a struggle;
- * review-phase concepts get per-concept FSRS grades, then credit flows through the
- * encompassing graph. See docs/learning-model.md.
+ * Close an attempt. Every target concept gets the same pass or fail: a pass needs the tests
+ * to pass with no hint beyond a guiding question. See docs/learning-model.md.
  */
 export const finishAttempt = (input: FinishInput) => {
   const current = attempt(input.attemptId);
@@ -202,95 +198,44 @@ export const finishAttempt = (input: FinishInput) => {
   const solved =
     !run.fatal && run.passed === run.total && input.stopped !== "gave_up";
 
-  const minutes =
-    (now.getTime() - new Date(current.started_at).getTime()) / 60_000;
-
-  const diagnosis = new Map<string, Verdict>();
-
-  for (const d of input.diagnosis ?? []) {
-    if (!p.concepts.includes(d.concept_id)) {
-      throw new Error(
-        `'${d.concept_id}' is not one of this problem's concepts.`
-      );
-    }
-
-    diagnosis.set(d.concept_id, d.verdict);
-    saveConceptOutcome(current.id, d.concept_id, d.verdict, d.reason ?? null);
+  if (!solved && input.stopped !== "gave_up") {
+    throw new Error(
+      `The tests do not pass (${run.passed}/${run.total}). Let the learner keep going, or set stopped to 'gave_up' or 'paused'.`
+    );
   }
+
+  const results = grade({
+    correct: solved,
+    maxHintLevel: current.max_hint_level,
+    targets: p.concepts,
+  });
 
   const recognition = input.recognition ?? "skipped";
 
-  const grades = gradeAttempt({
-    concepts: p.concepts,
-    diagnosis,
-    difficulty: p.difficulty,
-    explanationScore: input.explanationScore,
-    gaveUp: input.stopped === "gave_up",
-    hints: hintsFor(current.id),
-    minutes,
-    recognition,
-    // SAFETY: the self-rating's 1-4 are the FSRS grades Again, Hard, Good and Easy.
-    selfRating: input.learnerSelfRating as Grade | undefined,
-    solved,
+  const applied = applyResults({
+    fromProblem: true,
+    now,
+    recognitionOk: recognition === "correct",
+    results,
+    source: { attemptId: current.id },
   });
 
-  const learning: { concept: string; result: string }[] = [];
-  const reviewed = new Map<string, Grade>();
-
-  const scheduled: {
-    concept: string;
-    grade: string;
-    reasons: string[];
-    next_review: string;
-  }[] = [];
-
-  for (const g of grades) {
-    if (!isPassed(g.concept)) {
-      // Learning phase: instruction, not assessment. FSRS starts at the first independent solve.
-      if (g.independent) {
-        pass(g.concept, current.id, now);
-        learning.push({
-          concept: g.concept,
-          result: "passed: solved independently, reviews start now",
-        });
-      } else {
-        const count = recordStruggle(g.concept);
-        learning.push({
-          concept: g.concept,
-          result: `still learning (needed help ${count} time(s))`,
-        });
-      }
-
-      continue;
-    }
-
-    const card = explicitReview(g.concept, current.id, g.grade, now);
-    updateMastery(g.concept, g.grade, recognition === "correct", now);
-    reviewed.set(g.concept, g.grade);
-    scheduled.push({
-      concept: g.concept,
-      grade: RATING_NAMES[g.grade],
-      next_review: card.due.toISOString(),
-      reasons: g.reasons,
-    });
-  }
-
-  const implicit = propagate(current.id, reviewed, now);
-
-  const helped = grades.some((g) => !g.independent);
-
+  const alone = results.every((r) => r.result === "pass");
   let outcome: Outcome = "gave_up";
 
   if (solved) {
-    outcome = helped ? "solved_with_help" : "solved";
+    outcome = alone ? "solved" : "solved_with_help";
   }
 
-  const phase: Phase = reviewed.size ? "review" : "learning";
-  const worst = Math.min(...grades.map((g) => g.grade));
+  const phase: Phase = applied.reviewed ? "review" : "learning";
+
+  const minutes =
+    (now.getTime() - new Date(current.started_at).getTime()) / 60_000;
+
   open()
     .query(
       `UPDATE attempts SET finished_at = ?, phase = ?, outcome = ?, recognition = ?, gave_up = ?,
-         explanation_score = ?, rating = ?, notes = ? WHERE id = ?`
+         rating = ?, notes = ? WHERE id = ?`
     )
     .run(
       now.toISOString(),
@@ -298,19 +243,17 @@ export const finishAttempt = (input: FinishInput) => {
       outcome,
       recognition,
       outcome === "gave_up" ? 1 : 0,
-      input.explanationScore,
-      worst,
+      alone ? 3 : 1,
       input.notes ?? null,
       current.id
     );
 
   return {
-    implicit_credit: implicit.credited,
-    learning,
+    concepts: applied.concepts,
+    implicit_credit: applied.implicit_credit,
     minutes: Math.round(minutes),
     outcome,
-    pulled_forward: implicit.pulled_forward,
-    reviews: scheduled,
+    pulled_forward: applied.pulled_forward,
     tests: `${run.passed}/${run.total}`,
   };
 };

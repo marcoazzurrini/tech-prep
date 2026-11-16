@@ -18,6 +18,7 @@ import { attemptsFor, conceptRow, saveConceptRow } from "./db.ts";
 import type { AttemptRow, Stage } from "./db.ts";
 import { problemCredit } from "./fire.ts";
 import { cardOf, explicitReview, isDue, retrievability } from "./memory.ts";
+import type { Source } from "./memory.ts";
 
 const DAY_MS = 86_400_000;
 
@@ -29,6 +30,9 @@ const RETEACH_AFTER = 2;
 
 /** Unseen problems are preferred for reviews, so the learner recalls the concept, not one answer. */
 const UNSEEN_BONUS = 1.25;
+
+/** One exercise reviews at most this many concepts. */
+export const MAX_TARGETS = 3;
 
 /** A review counts as mastery evidence only this long after the concept was first passed. */
 const MASTERY_GAP_DAYS = 3;
@@ -55,12 +59,12 @@ export const displayStage = (id: string): DisplayStage => {
 };
 
 /** Concepts that no problem practises directly are passed by their lesson alone. */
-const hasOwnProblems = (id: string) => problemsUsing(id).length > 0;
+export const hasOwnProblems = (id: string) => problemsUsing(id).length > 0;
 
 /** First independent success: the concept starts its FSRS schedule and its dependents may unlock. */
 export const pass = (
   conceptId: string,
-  attemptId: number,
+  source: Source,
   now = new Date()
 ): void => {
   saveConceptRow({
@@ -70,7 +74,7 @@ export const pass = (
     passed_at: now.toISOString(),
     stage: "passed",
   });
-  explicitReview(conceptId, attemptId, Rating.Good, now);
+  explicitReview(conceptId, source, Rating.Good, now);
 };
 
 /** Mark concepts as taught. Re-teaching resets the struggle count. */
@@ -95,7 +99,7 @@ export const completeLesson = (
     !hasOwnProblems(conceptId) &&
     conceptRow(conceptId).stage === "learning"
   ) {
-    pass(conceptId, 0, now);
+    pass(conceptId, {}, now);
   }
 
   return displayStage(conceptId);
@@ -111,18 +115,13 @@ export const recordStruggle = (conceptId: string): number => {
 /** Mastered after a later, unaided success on an unlabelled review; a lapse drops it back to passed. */
 export const updateMastery = (
   conceptId: string,
-  grade: number,
+  passed: boolean,
   recognitionOk: boolean,
   now = new Date()
 ): void => {
   const row = conceptRow(conceptId);
 
-  if (
-    row.stage === "passed" &&
-    grade >= Rating.Good &&
-    recognitionOk &&
-    row.passed_at
-  ) {
+  if (row.stage === "passed" && passed && recognitionOk && row.passed_at) {
     if (
       now.getTime() - new Date(row.passed_at).getTime() >=
       MASTERY_GAP_DAYS * DAY_MS
@@ -133,7 +132,7 @@ export const updateMastery = (
         stage: "mastered",
       });
     }
-  } else if (row.stage === "mastered" && grade === Rating.Again) {
+  } else if (row.stage === "mastered" && !passed) {
     saveConceptRow({ ...row, mastered_at: null, stage: "passed" });
   }
 };
@@ -222,6 +221,7 @@ export type NextAction =
       why: string;
     }
   | { action: "review"; problem: string; covers: string[]; why: string }
+  | { action: "review_exercise"; concepts: string[]; why: string }
   | { action: "learn"; problem: string; new_concepts: string[]; why: string }
   | { action: "practice"; problem: string; why: string }
   | { action: "done_for_now"; next_due: string | null; why: string };
@@ -382,6 +382,16 @@ export const nextUp = (now = new Date()): NextAction => {
         why: `${due.length} concept(s) due; this problem reviews ${best.covers.length} of them.`,
       };
     }
+
+    // No problem covers what is due, so the tutor writes an exercise for the most overdue.
+    return {
+      action: "review_exercise",
+      concepts: due
+        .toSorted((a, b) => b.weight - a.weight)
+        .slice(0, MAX_TARGETS)
+        .map((d) => d.id),
+      why: `${due.length} concept(s) due and no problem reviews them; write one new exercise that needs these.`,
+    };
   }
 
   if (fresh) {

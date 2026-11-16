@@ -13,6 +13,14 @@ export type Outcome = "solved" | "solved_with_help" | "gave_up" | "paused";
 
 export type Recognition = "correct" | "partial" | "wrong" | "skipped";
 
+/** What a tutor-made exercise asks the learner to do. An example is only read. */
+export type ExerciseKind = "example" | "predict" | "arrange" | "answer";
+
+export type Confidence = "low" | "medium" | "high";
+
+/** Pass or fail for one concept. */
+export type Result = "pass" | "fail";
+
 export interface ConceptRow {
   concept_id: string;
   stage: Stage;
@@ -60,10 +68,36 @@ export interface NoteRow {
   created_at: string;
 }
 
+/** A tutor-made exercise. JSON columns hold text; `exercises.ts` parses them. */
+export interface ExerciseRow {
+  id: number;
+  kind: ExerciseKind;
+  /** JSON list of target concept ids. */
+  concepts: string;
+  language: string;
+  title: string;
+  prompt: string;
+  /** What the learner sees: the code to read, or a JSON list of shuffled lines. */
+  body: string;
+  /** The hidden answer key, as JSON. */
+  answer: string;
+  created_at: string;
+  response: string | null;
+  confidence: Confidence | null;
+  submitted_at: string | null;
+  /** JSON list of `{ concept, result, reason }`, set once graded. */
+  results: string | null;
+  graded_at: string | null;
+  closed_at: string | null;
+  max_hint_level: number;
+}
+
 export interface ReviewRow {
   id: number;
   concept_id: string;
+  /** 0 when the review came from an exercise. */
   attempt_id: number;
+  exercise_id: number | null;
   rating: number;
   reviewed_at: string;
   due: string;
@@ -140,6 +174,24 @@ const migrate = (database: Database): void => {
       level      INTEGER NOT NULL,
       created_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS exercises (
+      id             INTEGER PRIMARY KEY AUTOINCREMENT,
+      kind           TEXT NOT NULL,
+      concepts       TEXT NOT NULL,
+      language       TEXT NOT NULL,
+      title          TEXT NOT NULL,
+      prompt         TEXT NOT NULL,
+      body           TEXT NOT NULL,
+      answer         TEXT NOT NULL,
+      created_at     TEXT NOT NULL,
+      response       TEXT,
+      confidence     TEXT,
+      submitted_at   TEXT,
+      results        TEXT,
+      graded_at      TEXT,
+      closed_at      TEXT,
+      max_hint_level INTEGER NOT NULL DEFAULT 0
+    );
     CREATE TABLE IF NOT EXISTS concept_outcomes (
       attempt_id INTEGER NOT NULL,
       concept_id TEXT NOT NULL,
@@ -161,6 +213,7 @@ const migrate = (database: Database): void => {
   addColumn(database, "attempts", "recognition", "TEXT");
   addColumn(database, "reviews", "implicit_credit", "REAL");
   addColumn(database, "reviews", "source_concept", "TEXT");
+  addColumn(database, "reviews", "exercise_id", "INTEGER");
   // The first version called passed concepts "practicing".
   database.exec(
     "UPDATE concept_state SET stage = 'passed' WHERE stage = 'practicing'"
@@ -312,13 +365,6 @@ export const attemptsFor = (where: {
     .all();
 };
 
-export const hintsFor = (attemptId: number): HintRow[] =>
-  open()
-    .query<HintRow, [number]>(
-      "SELECT * FROM hints WHERE attempt_id = ? ORDER BY id"
-    )
-    .all(attemptId);
-
 export const addHint = (
   attemptId: number,
   conceptId: string | null,
@@ -334,19 +380,6 @@ export const addHint = (
       "UPDATE attempts SET hints_used = hints_used + 1, max_hint_level = MAX(max_hint_level, ?) WHERE id = ?"
     )
     .run(level, attemptId);
-};
-
-export const saveConceptOutcome = (
-  attemptId: number,
-  conceptId: string,
-  verdict: string,
-  reason: string | null
-): void => {
-  open()
-    .query(
-      "INSERT OR REPLACE INTO concept_outcomes (attempt_id, concept_id, verdict, reason) VALUES (?, ?, ?, ?)"
-    )
-    .run(attemptId, conceptId, verdict, reason);
 };
 
 export const lastExplicitReview = (conceptId: string): ReviewRow | null =>
@@ -381,3 +414,38 @@ export const addNote = (
     )
     .run(conceptId, slug, text, new Date().toISOString());
 };
+
+export const exerciseRow = (id: number): ExerciseRow => {
+  const row = open()
+    .query<ExerciseRow, [number]>("SELECT * FROM exercises WHERE id = ?")
+    .get(id);
+
+  if (!row) {
+    throw new Error(`Unknown exercise ${id}`);
+  }
+
+  return row;
+};
+
+/** The exercise on screen: the newest one the tutor has not moved on from. */
+export const openExercise = (): ExerciseRow | null =>
+  open()
+    .query<ExerciseRow, []>(
+      "SELECT * FROM exercises WHERE closed_at IS NULL ORDER BY id DESC LIMIT 1"
+    )
+    .get();
+
+/** The tutor moved on: nothing stays on screen from earlier exercises. */
+export const closeExercises = (now = new Date()): void => {
+  open()
+    .query("UPDATE exercises SET closed_at = ? WHERE closed_at IS NULL")
+    .run(now.toISOString());
+};
+
+export const exercisesFor = (conceptId: string, limit = 5): ExerciseRow[] =>
+  open()
+    .query<ExerciseRow, [string, number]>(
+      `SELECT * FROM exercises WHERE EXISTS (SELECT 1 FROM json_each(exercises.concepts) WHERE value = ?)
+       ORDER BY id DESC LIMIT ?`
+    )
+    .all(conceptId, limit);

@@ -8,6 +8,7 @@ import type { Grade } from "ts-fsrs";
 import { concepts } from "./content.ts";
 import { conceptRow, lastExplicitReview } from "./db.ts";
 import { cardOf, implicitReview, pullForward } from "./memory.ts";
+import type { Source } from "./memory.ts";
 
 /** Credit below this is too small to matter and stops propagating. */
 const MIN_CREDIT = 0.15;
@@ -99,9 +100,9 @@ export interface Propagation {
   pulled_forward: { concept: string; weight: number; next_review: string }[];
 }
 
-/** Credit down from passing grades: Hard counts half. */
+/** Credit down from passes. */
 const creditDown = (
-  attemptId: number,
+  from: Source,
   grades: Map<string, Grade>,
   now: Date
 ): Propagation["credited"] => {
@@ -113,13 +114,9 @@ const creditDown = (
       continue;
     }
 
-    const scale = grade === Rating.Hard ? 0.5 : 1;
-
     for (const [target, credit] of creditBelow(source)) {
-      const value = credit * scale;
-
-      if (value >= MIN_CREDIT && value > (incoming.get(target)?.credit ?? 0)) {
-        incoming.set(target, { credit: value, source });
+      if (credit > (incoming.get(target)?.credit ?? 0)) {
+        incoming.set(target, { credit, source });
       }
     }
   }
@@ -129,7 +126,7 @@ const creditDown = (
       continue;
     }
 
-    const card = implicitReview(target, attemptId, credit, source, now);
+    const card = implicitReview(target, from, credit, source, now);
 
     if (card) {
       credited.push({
@@ -182,15 +179,15 @@ const penaltiesUp = (
 };
 
 /**
- * Apply FIRe after an attempt's explicit reviews. `grades` holds the explicit grade of each
- * reviewed concept; concepts reviewed explicitly in this attempt get no implicit credit.
+ * Apply FIRe after explicit reviews. `grades` holds the explicit grade of each reviewed
+ * concept; concepts reviewed explicitly at the same time get no implicit credit.
  */
 export const propagate = (
-  attemptId: number,
+  from: Source,
   grades: Map<string, Grade>,
   now = new Date()
 ): Propagation => {
-  const credited = creditDown(attemptId, grades, now);
+  const credited = creditDown(from, grades, now);
 
   return { credited, pulled_forward: penaltiesUp(grades, now) };
 };
