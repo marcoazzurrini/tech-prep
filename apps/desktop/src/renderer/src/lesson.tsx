@@ -10,7 +10,9 @@ import {
 import { Lock } from "lucide-react";
 
 import { DIFFICULTY, isOpen } from "./course";
-import type { Problem, Roadmap, Session } from "./types";
+import { ExercisePane } from "./exercise";
+import type { Exercise, Problem, Roadmap, Session } from "./types";
+import { Workbench } from "./workbench";
 
 const formatDate = (iso: string): string =>
   new Date(iso).toLocaleDateString(undefined, {
@@ -66,8 +68,85 @@ interface LessonViewProps {
   problem: Problem | null;
   tutorOpen: boolean;
   onToggleTutor: () => void;
+  onOpenTutor: () => void;
   onSelect: (slug: string) => void;
 }
+
+interface ExerciseLessonProps {
+  exercise: Exercise;
+  /** The chapter the exercise belongs to, if it is part of a lesson. */
+  chapter?: string;
+  tutorOpen: boolean;
+  onToggleTutor: () => void;
+  onOpenTutor: () => void;
+  /** Called after the learner hands in, so the app reloads its state. */
+  onChanged: () => void;
+}
+
+/** The main pane while the tutor's exercise is on screen. */
+export const ExerciseLesson = ({
+  exercise,
+  chapter,
+  tutorOpen,
+  onToggleTutor,
+  onOpenTutor,
+  onChanged,
+}: ExerciseLessonProps) => (
+  <LessonPane>
+    <TopBar
+      chapter={chapter ?? "Review"}
+      lesson={exercise.title}
+      tutorOpen={tutorOpen}
+      onToggleTutor={onToggleTutor}
+    />
+    <ExercisePane
+      exercise={exercise}
+      key={exercise.id}
+      onAskTutor={onOpenTutor}
+      onChanged={onChanged}
+    />
+  </LessonPane>
+);
+
+/** What to say when there is no problem to show. */
+const idleText = (next: Session["next"]): string => {
+  if (next.action === "review_exercise") {
+    return "The tutor is writing your next exercise.";
+  }
+
+  return next.action === "done_for_now" && next.next_due
+    ? `Your next review is on ${formatDate(next.next_due)}.`
+    : next.why;
+};
+
+interface IdleLessonProps {
+  next: Session["next"];
+  tutorOpen: boolean;
+  onToggleTutor: () => void;
+}
+
+/** The main pane when there is no problem to show. */
+const IdleLesson = ({ next, tutorOpen, onToggleTutor }: IdleLessonProps) => (
+  <LessonPane>
+    <TopBar
+      chapter="Today"
+      lesson={next.action === "review_exercise" ? "Review" : "All done"}
+      tutorOpen={tutorOpen}
+      onToggleTutor={onToggleTutor}
+    />
+    <PaneBody>
+      <EmptyState
+        title={
+          next.action === "review_exercise"
+            ? "One moment"
+            : "Nothing to do right now"
+        }
+      >
+        {idleText(next)}
+      </EmptyState>
+    </PaneBody>
+  </LessonPane>
+);
 
 export const LessonView = ({
   session,
@@ -75,27 +154,16 @@ export const LessonView = ({
   problem,
   tutorOpen,
   onToggleTutor,
+  onOpenTutor,
   onSelect,
 }: LessonViewProps) => {
   if (!problem) {
-    const { next } = session;
-
     return (
-      <LessonPane>
-        <TopBar
-          chapter="Today"
-          lesson="All done"
-          tutorOpen={tutorOpen}
-          onToggleTutor={onToggleTutor}
-        />
-        <PaneBody>
-          <EmptyState title="Nothing to do right now">
-            {next.action === "done_for_now" && next.next_due
-              ? `Your next review is on ${formatDate(next.next_due)}.`
-              : next.why}
-          </EmptyState>
-        </PaneBody>
-      </LessonPane>
+      <IdleLesson
+        next={session.next}
+        tutorOpen={tutorOpen}
+        onToggleTutor={onToggleTutor}
+      />
     );
   }
 
@@ -110,6 +178,9 @@ export const LessonView = ({
 
   const phase =
     problem.slug === session.problem?.slug ? phaseOf(session, problem) : null;
+
+  // The editor opens once the tutor has opened this problem.
+  const working = session.attempt?.slug === problem.slug;
 
   return (
     <LessonPane>
@@ -126,7 +197,7 @@ export const LessonView = ({
         onPrevious={previous && (() => onSelect(previous.slug))}
         onToggleTutor={onToggleTutor}
       />
-      <PaneBody>
+      <PaneBody share={working}>
         <TaskHeader
           chips={<LessonChips phase={phase} problem={problem} />}
           title={problem.title}
@@ -139,6 +210,13 @@ export const LessonView = ({
           </EmptyState>
         )}
       </PaneBody>
+      {working && (
+        <Workbench
+          key={session.attempt?.id}
+          problem={problem}
+          onAskTutor={onOpenTutor}
+        />
+      )}
     </LessonPane>
   );
 };

@@ -19,9 +19,19 @@ export {
 
 export type { LessonStatus } from "./components/course-nav";
 
-export { AnswerInput, LineSlot, TestRow } from "./components/exercise";
+export { CodeEditor } from "./components/code-editor";
 
-export type { TestStatus } from "./components/exercise";
+export {
+  AnswerInput,
+  AnswerText,
+  Arranger,
+  Confidence,
+  LineSlot,
+  ResultCard,
+  TestRow,
+} from "./components/exercise";
+
+export type { ConfidenceLevel, TestStatus } from "./components/exercise";
 
 export {
   EmptyState,

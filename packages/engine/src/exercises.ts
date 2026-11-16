@@ -307,6 +307,7 @@ export const exerciseView = (row: ExerciseRow) => {
   return {
     code: row.kind === "arrange" ? null : row.body || null,
     concepts: (labelled ? targets : []).map((id) => ({
+      effect: results?.find((r) => r.concept === id)?.effect ?? null,
       id,
       name: concept(id).name,
       result: results?.find((r) => r.concept === id)?.result ?? null,

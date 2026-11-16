@@ -26,10 +26,23 @@ const RESOURCES = app.isPackaged ? process.resourcesPath : null;
 /** The Bun runtime that runs the engine and the learner's TypeScript. */
 export const BUN = RESOURCES ? path.join(RESOURCES, "bin", "bun") : "bun";
 
-/** Claude Code, for the Agent SDK. Undefined means the SDK's own copy. */
+/**
+ * Claude Code in a development build: the copy in the Agent SDK's package for this platform.
+ * The SDK is bundled into the main process, so it cannot find that package by itself.
+ */
+const sdkClaude = (): string =>
+  path.join(
+    createRequire(require.resolve("@anthropic-ai/claude-agent-sdk")).resolve(
+      `@anthropic-ai/claude-agent-sdk-${process.platform}-${process.arch}/package.json`
+    ),
+    "..",
+    "claude"
+  );
+
+/** Claude Code, for the Agent SDK. */
 export const CLAUDE =
   process.env.TECHPREP_CLAUDE_PATH ??
-  (RESOURCES ? path.join(RESOURCES, "bin", "claude") : undefined);
+  (RESOURCES ? path.join(RESOURCES, "bin", "claude") : sdkClaude());
 
 /** The engine: bundled JavaScript when packaged, the TypeScript sources in development. */
 const ENGINE_DIR = RESOURCES

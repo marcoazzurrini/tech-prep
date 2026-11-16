@@ -3,7 +3,7 @@ import { CalendarCheck } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { dueCount } from "./course";
-import { LessonView } from "./lesson";
+import { ExerciseLesson, LessonView } from "./lesson";
 import { Lessons } from "./lessons";
 import { Tutor } from "./tutor";
 import type { Problem, Roadmap, Session } from "./types";
@@ -117,6 +117,8 @@ export const App = () => {
   }
 
   const shown = picked ?? session.problem;
+  // The tutor's exercise takes the main pane unless the learner picked a problem to read.
+  const exercise = picked ? null : session.exercise;
   const due = dueCount(roadmap);
 
   return (
@@ -150,20 +152,34 @@ export const App = () => {
       }
       tutor={
         <Tutor
-          context={session.problem?.title}
+          context={session.exercise?.title ?? session.problem?.title}
           onClose={() => setTutorOpen(false)}
         />
       }
       tutorOpen={tutorOpen}
     >
-      <LessonView
-        problem={shown}
-        roadmap={roadmap}
-        session={session}
-        tutorOpen={tutorOpen}
-        onSelect={select}
-        onToggleTutor={() => setTutorOpen((o) => !o)}
-      />
+      {exercise ? (
+        <ExerciseLesson
+          chapter={
+            roadmap.topics.find((t) => t.id === session.problem?.topic)?.name
+          }
+          exercise={exercise}
+          tutorOpen={tutorOpen}
+          onChanged={refresh}
+          onOpenTutor={() => setTutorOpen(true)}
+          onToggleTutor={() => setTutorOpen((o) => !o)}
+        />
+      ) : (
+        <LessonView
+          problem={shown}
+          roadmap={roadmap}
+          session={session}
+          tutorOpen={tutorOpen}
+          onOpenTutor={() => setTutorOpen(true)}
+          onSelect={select}
+          onToggleTutor={() => setTutorOpen((o) => !o)}
+        />
+      )}
     </AppShell>
   );
 };

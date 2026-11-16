@@ -26,6 +26,7 @@ export type NextAction =
   | { action: "resume"; problem: string; why: string }
   | { action: "reteach"; concept: string; why: string }
   | { action: "review"; problem: string; covers: string[]; why: string }
+  | { action: "review_exercise"; concepts: string[]; why: string }
   | { action: "learn"; problem: string; new_concepts: string[]; why: string }
   | { action: "practice"; problem: string; why: string }
   | { action: "done_for_now"; next_due: string | null; why: string };
@@ -41,9 +42,70 @@ export interface Problem {
   new_concepts: string[];
 }
 
+export type ExerciseKind = "example" | "predict" | "arrange" | "answer";
+
+export type Confidence = "low" | "medium" | "high";
+
+/** A tutor-made exercise, from the engine bridge. The answer appears once it is graded. */
+export interface Exercise {
+  id: number;
+  kind: ExerciseKind;
+  language: "typescript" | "python";
+  title: string;
+  prompt: string;
+  code: string | null;
+  /** Arrange: the lines, shuffled. */
+  lines: string[] | null;
+  /** Empty for a review until it is graded, so the concepts are not given away. */
+  concepts: {
+    id: string;
+    name: string;
+    result: "pass" | "fail" | null;
+    /** What the result changed, in words. */
+    effect: string | null;
+  }[];
+  status: "open" | "submitted" | "graded";
+  response: string | null;
+  confidence: Confidence | null;
+  correct: boolean | null;
+  correct_answer: string | string[] | null;
+}
+
+/** What handing in an exercise did, from the bridge's `exercise.submit` method. */
+export interface Submission {
+  exercise: Exercise;
+  result: {
+    status: "submitted" | "graded";
+    correct?: boolean;
+    concepts?: { name: string; result: "pass" | "fail"; effect: string }[];
+  };
+}
+
+/** From the bridge's `code.read` method. */
+export interface Code {
+  text: string;
+  language: "typescript" | "python";
+  editable: boolean;
+}
+
+/** From the bridge's `code.run` method. */
+export interface Run {
+  passed: number;
+  total: number;
+  fatal: string | null;
+  cases: {
+    ok: boolean;
+    input: string;
+    expected: string;
+    actual: string | null;
+    error: string | null;
+  }[];
+}
+
 /** From the engine bridge's `session` method. */
 export interface Session {
   next: NextAction;
+  exercise: Exercise | null;
   attempt: {
     id: number;
     slug: string;

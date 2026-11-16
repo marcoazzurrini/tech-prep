@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { appendFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { app, BrowserWindow, ipcMain, screen, shell } from "electron";
@@ -17,7 +17,17 @@ const send = (channel: string, payload?: TutorEvent) =>
 const engine = new Engine();
 
 const tutor = new Tutor(
-  (event) => send("tutor:event", event),
+  (event) => {
+    // For checking the tutor from a script: TECHPREP_DEBUG=/path/log.txt logs each event.
+    if (process.env.TECHPREP_DEBUG) {
+      appendFileSync(
+        process.env.TECHPREP_DEBUG,
+        `${JSON.stringify(event).slice(0, 400)}\n`
+      );
+    }
+
+    send("tutor:event", event);
+  },
   () => send("engine:changed")
 );
 
