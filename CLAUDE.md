@@ -33,3 +33,4 @@ Keep them lean:
 - Run `bun run check` before pushing. It runs what CI runs.
 - Git hooks format, lint, typecheck and scan for secrets on commit, and run tests on push. Don't bypass them.
 - The repo is public. Keep personal details out of code, docs and commits.
+- After a merge that changes the app, pull `main` and run `bun run install-app`, so the installed app matches `main`.
