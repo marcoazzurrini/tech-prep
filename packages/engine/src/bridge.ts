@@ -1,11 +1,13 @@
 #!/usr/bin/env bun
-// Read-only JSON-lines bridge for the desktop app. The app's main process runs on Node and
-// cannot open bun:sqlite, so it spawns this process and sends one request per line:
+// JSON-lines bridge for the desktop app. The app's main process runs on Node and cannot open
+// bun:sqlite, so it spawns this process and sends one request per line:
 //   {"id": 1, "method": "session"}  ->  {"id": 1, "result": {...}}
 //   {"id": 2, "method": "problem", "params": {"slug": "two-sum"}}  ->  {"id": 2, "result": {...}}
-// The tutor still changes state only through the MCP tools.
+// It reads what the app shows and takes what the learner hands in: code, test runs and
+// exercise answers. Everything else changes only through the tutor's MCP tools.
 
 import {
+  DEFAULT_LANGUAGE,
   concept,
   concepts,
   isAuthored,
@@ -14,7 +16,18 @@ import {
   problemInfo,
   topics,
 } from "./content.ts";
-import { attemptsFor } from "./db.ts";
+import type { Language } from "./content.ts";
+import { exerciseRow, openAttempt, openExercise } from "./db.ts";
+import type { Confidence } from "./db.ts";
+import { exerciseView, submitExercise } from "./exercises.ts";
+import {
+  currentAttempt,
+  readSolution,
+  saveSolution,
+  testSolution,
+} from "./practice.ts";
+import { short } from "./runner.ts";
+import type { RunResult } from "./runner.ts";
 import {
   conceptStatus,
   isUnlocked,
@@ -38,17 +51,12 @@ const problemView = (slug: string) => {
   };
 };
 
-/** The problem the learner is on: the open attempt, else the one next_up points at. */
+/** What the learner is on: the tutor's exercise if one is on screen, and the open or next problem. */
 const session = () => {
   const next = nextUp();
-
-  const open = attemptsFor({}).findLast((a) => !a.finished_at) ?? null;
-
+  const open = currentAttempt();
+  const shown = openExercise();
   const slug = open?.slug ?? ("problem" in next ? next.problem : null);
-
-  if (!slug) {
-    return { attempt: null, next, problem: null };
-  }
 
   return {
     attempt: open && {
@@ -57,8 +65,9 @@ const session = () => {
       phase: open.phase,
       slug: open.slug,
     },
+    exercise: shown && exerciseView(shown),
     next,
-    problem: problemView(slug),
+    problem: slug ? problemView(slug) : null,
   };
 };
 
@@ -111,20 +120,92 @@ const roadmap = () => {
 interface BridgeRequest {
   id: unknown;
   method: string;
-  params?: { slug?: string };
+  params?: {
+    slug?: string;
+    text?: string;
+    id?: number;
+    response?: string | string[];
+    confidence?: Confidence | null;
+  };
 }
 
-/** Any problem by slug, so the learner can read one before the tutor gets there. */
-const problemBySlug = (params: BridgeRequest["params"]) => {
+type Params = BridgeRequest["params"];
+
+const slugOf = (params: Params): string => {
   if (!params?.slug) {
-    throw new Error("The problem method needs a slug.");
+    throw new Error("This method needs a slug.");
   }
 
-  return problemView(params.slug);
+  return params.slug;
 };
 
-const methods = new Map<string, (params: BridgeRequest["params"]) => object>([
-  ["problem", problemBySlug],
+/** The language of the open attempt on a problem, else the default. */
+const languageOf = (slug: string): Language => {
+  const open = currentAttempt();
+
+  // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
+  return open?.slug === slug ? (open.language as Language) : DEFAULT_LANGUAGE;
+};
+
+/** The learner's code for a problem. It can be edited only while the tutor has the problem open. */
+const readCode = (params: Params) => {
+  const slug = slugOf(params);
+  const language = languageOf(slug);
+
+  return {
+    editable: Boolean(openAttempt(slug, language)),
+    language,
+    text: readSolution(slug, language),
+  };
+};
+
+const saveCode = (params: Params) => {
+  const slug = slugOf(params);
+  saveSolution(slug, languageOf(slug), params?.text ?? "");
+
+  return { saved: true };
+};
+
+/** A test run as the app lists it: one row per case, details only where it failed. */
+const runView = (run: RunResult) => ({
+  cases: run.cases.map((c) => ({
+    actual: c.ok ? null : short(c.actual, 120),
+    error: c.error?.trim().split("\n").at(-1) ?? null,
+    expected: short(c.expected, 120),
+    input: short(c.args, 120),
+    ok: c.ok,
+  })),
+  fatal: run.fatal ?? null,
+  passed: run.passed,
+  total: run.total,
+});
+
+const runCode = (params: Params) => {
+  const slug = slugOf(params);
+
+  return runView(testSolution(slug, languageOf(slug)).run);
+};
+
+const submit = (params: Params) => {
+  if (params?.id === undefined || params.response === undefined) {
+    throw new Error("Submitting an exercise needs its id and the response.");
+  }
+
+  const result = submitExercise(
+    params.id,
+    params.response,
+    params.confidence ?? null
+  );
+
+  return { exercise: exerciseView(exerciseRow(params.id)), result };
+};
+
+const methods = new Map<string, (params: Params) => object>([
+  ["code.read", readCode],
+  ["code.run", runCode],
+  ["code.save", saveCode],
+  ["exercise.submit", submit],
+  ["problem", (params) => problemView(slugOf(params))],
   ["roadmap", roadmap],
   ["session", session],
 ]);

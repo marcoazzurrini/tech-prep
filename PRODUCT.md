@@ -22,21 +22,22 @@ A study app for deliberate practice, "a gym for coding" now that AI writes most 
 
 The agent does as much of the work as possible. The app is a harness the agent drives: it shows exercises and takes the learner's input, stores the learner's state (such as review schedules) and stores each subject's curriculum. Skills hold the teaching method. When a high-quality source exists, such as Blind 75 or NeetCode 150 for algorithms, the curriculum and exercises come from it. Otherwise the agent writes them.
 
-The engine schedules **concepts**, not questions, with spaced repetition (FSRS). One exercise can refresh several due concepts, and practising an advanced concept partly refreshes its prerequisites (fractional implicit repetition, as in Math Academy).
+The engine schedules **concepts**, not questions, with spaced repetition (FSRS). One exercise can refresh up to three due concepts, and practising an advanced concept partly refreshes its prerequisites (fractional implicit repetition, as in Math Academy). The rules are in `docs/learning-model.md`.
 
 ## Operating Context
 
-- Structure: topic (a group, not scheduled), concept (the smallest rule you could get wrong on its own; scheduled), exercise (generated fresh; can cover several concepts). Concepts link to prerequisites, forming a graph.
+- Structure: topic (a group, not scheduled), concept (the smallest rule you could get wrong on its own; scheduled), exercise (from the curriculum, or written by the tutor; targets one to three concepts). Concepts link to prerequisites, forming a graph. A subject's curriculum is built once, not as the learner goes.
 - Content and exercise types are independent. Interview prep is one fixed content set (Blind 75), not a separate mode. A curriculum can also be built from a body of knowledge (docs, man pages).
 - Target skill for a library or language: read first (predict the output), write second.
 - Exercise ladder, based on PRIMM: predict the output; fix or modify working code; arrange given lines in order (Parsons problem); write code from a need. Conceptual questions are answered in the learner's own words.
 - Cycle for one concept: probe (a short test first if there is prior knowledge), teach on failure (short explanation and one worked example built around the exact mistake), retry with a new surface, schedule. A completely new concept starts with a worked example.
-- Review: when concepts are due, the agent writes one new exercise covering as many as possible; on failure it names which concept the mistake shows and fails only that one.
+- Review: when concepts are due, the learner gets one exercise that covers as many as possible, without being told what it reviews. Each concept is pass or fail.
+- Every answer comes with a confidence level. A wrong answer the learner was sure of shows a wrong idea, and the tutor teaches that idea.
 - Progress: the lessons column shows each chapter and lesson with its status. Concepts have the stages locked, available, learning, passed and mastered, and a recall score.
 
 ## Capabilities and Constraints
 
-- The tutor is Claude, running through Claude Code on the user's subscription. It never writes the learner's solution during practice.
+- The tutor is Claude, running through Claude Code on the user's subscription. It never writes the learner's solution during practice. Hints go one small step at a time.
 - Lesson types: explanation with worked example, predict the output, Parsons (arrange lines), mini code editor with Vim keys and runnable tests, conceptual answer.
 - Writing tasks use a light in-app editor with Vim keybindings.
 - Coding tasks have Run, which only runs the tests, and Submit, which hands in the answer. Predict and arrange have Submit only: the first answer is the evidence, so there is no trial run.

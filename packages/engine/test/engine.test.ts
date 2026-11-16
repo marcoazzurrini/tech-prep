@@ -12,7 +12,7 @@ const content = await import("../src/content.ts");
 const practice = await import("../src/practice.ts");
 const scheduler = await import("../src/scheduler.ts");
 const runner = await import("../src/runner.ts");
-const lessons = await import("../src/lessons.ts");
+const exercises = await import("../src/exercises.ts");
 
 afterAll(() => rmSync(home, { force: true, recursive: true }));
 
@@ -134,79 +134,31 @@ const grading = await import("../src/grading.ts");
 const fire = await import("../src/fire.ts");
 const memory = await import("../src/memory.ts");
 
-const hint = (concept_id: string | null, level: number) => ({
-  attempt_id: 0,
-  concept_id,
-  created_at: "",
-  id: 0,
-  level,
-});
-
 describe("grading", () => {
-  const base = {
-    concepts: ["sorting", "two-pointers-opposite", "skip-duplicates"],
-    diagnosis: new Map<string, "ok" | "struggled" | "failed">(),
-    difficulty: "medium" as const,
-    explanationScore: 2,
-    gaveUp: false,
-    hints: [],
-    minutes: 10,
-    recognition: "correct" as const,
-    solved: true,
-  };
+  const targets = ["sorting", "two-pointers-opposite"];
 
-  const grades = (
-    overrides: Partial<Parameters<typeof grading.gradeAttempt>[0]>
-  ) =>
-    Object.fromEntries(
-      grading
-        .gradeAttempt({ ...base, ...overrides })
-        .map((g) => [g.concept, g.grade])
-    );
+  const results = (overrides: Partial<Parameters<typeof grading.grade>[0]>) =>
+    grading
+      .grade({ correct: true, maxHintLevel: 0, targets, ...overrides })
+      .map((r) => r.result);
 
-  test("a clean solve is Good for every concept, Easy when fast with a full explanation", () => {
-    expect(grades({})).toEqual({
-      "skip-duplicates": 3,
-      sorting: 3,
-      "two-pointers-opposite": 3,
-    });
-    expect(grades({ explanationScore: 3 })["sorting"]).toBe(4);
+  test("every target shares the result of the exercise", () => {
+    expect(results({})).toEqual(["pass", "pass"]);
+    expect(results({ correct: false })).toEqual(["fail", "fail"]);
   });
 
-  test("hints only lower the concept they were about", () => {
-    expect(grades({ hints: [hint("skip-duplicates", 2)] })).toEqual({
-      "skip-duplicates": 2,
-      sorting: 3,
-      "two-pointers-opposite": 3,
-    });
-    expect(
-      grades({ hints: [hint("skip-duplicates", 3)] })["skip-duplicates"]
-    ).toBe(1);
-    expect(grades({ hints: [hint(null, 2)] })).toEqual({
-      "skip-duplicates": 2,
-      sorting: 2,
-      "two-pointers-opposite": 2,
-    });
+  test("a guiding question still counts as alone; a stronger hint fails", () => {
+    expect(results({ maxHintLevel: 1 })).toEqual(["pass", "pass"]);
+    expect(results({ maxHintLevel: 2 })).toEqual(["fail", "fail"]);
   });
 
-  test("giving up blames only the diagnosed culprit", () => {
-    const diagnosis = new Map([["skip-duplicates", "failed" as const]]);
-    expect(grades({ diagnosis, gaveUp: true, solved: false })).toEqual({
-      "skip-duplicates": 1,
-      sorting: 2,
-      "two-pointers-opposite": 2,
-    });
-  });
+  test("an open answer is graded per concept", () => {
+    const verdicts = new Map([
+      ["sorting", { result: "pass" as const }],
+      ["two-pointers-opposite", { result: "fail" as const }],
+    ]);
 
-  test("judgements and the self-rating only lower grades", () => {
-    expect(grades({ recognition: "wrong" })["sorting"]).toBe(2);
-    expect(grades({ explanationScore: 1 })["sorting"]).toBe(2);
-    expect(
-      grades({ diagnosis: new Map([["sorting", "struggled" as const]]) })[
-        "sorting"
-      ]
-    ).toBe(2);
-    expect(grading.gradeAttempt({ ...base, selfRating: 2 })[0]?.grade).toBe(2);
+    expect(results({ correct: false, verdicts })).toEqual(["pass", "fail"]);
   });
 });
 
@@ -271,7 +223,6 @@ describe("session flow", () => {
 
     const result = practice.finishAttempt({
       attemptId: started.attempt_id,
-      explanationScore: 2,
       recognition: "skipped",
     });
 
@@ -284,12 +235,9 @@ describe("session flow", () => {
   test("help in the learning phase does not touch FSRS, and the problem waits a day", () => {
     scheduler.completeLesson("hash-map-counting");
     const started = solve("valid-anagram", ANAGRAM);
-    practice.logHint(started.attempt_id, 2, "hash-map-counting");
+    practice.logHint(2);
 
-    const result = practice.finishAttempt({
-      attemptId: started.attempt_id,
-      explanationScore: 2,
-    });
+    const result = practice.finishAttempt({ attemptId: started.attempt_id });
 
     expect(result.outcome).toBe("solved_with_help");
     expect(scheduler.displayStage("hash-map-counting")).toBe("learning");
@@ -306,9 +254,11 @@ describe("session flow", () => {
       "def is_anagram(s, t):\n    return False\n"
     );
 
+    expect(() =>
+      practice.finishAttempt({ attemptId: started.attempt_id })
+    ).toThrow(/do not pass/u);
     practice.finishAttempt({
       attemptId: started.attempt_id,
-      explanationScore: 1,
       stopped: "gave_up",
     });
     expect(scheduler.nextUp()).toMatchObject({
@@ -324,7 +274,6 @@ describe("session flow", () => {
     expect(
       practice.finishAttempt({
         attemptId: started.attempt_id,
-        explanationScore: 0,
         stopped: "paused",
       }).outcome
     ).toBe("paused");
@@ -350,7 +299,7 @@ describe("session flow", () => {
     const later = new Date(Date.now() + 5 * DAY);
 
     const result = fire.propagate(
-      0,
+      {},
       new Map([["sequence-starts", 3 as const]]),
       later
     );
@@ -363,129 +312,161 @@ describe("session flow", () => {
   });
 });
 
-describe("generated lessons", () => {
-  const code =
-    "export function countEven(nums: number[]): number {\n  return nums.filter((n) => n % 2 === 0).length;\n}";
+const db = () => import("../src/db.ts");
 
-  const checks =
-    'check("mixed", countEven([1, 2, 4]), 2);\ncheck("empty", countEven([]), 0);';
-
-  test("a correct example is written with banners and the helper", async () => {
-    const out = lessons.writeLessonFile({
-      checks,
-      code,
-      conceptIds: ["dynamic-arrays"],
-      kind: "example",
-      language: "typescript",
-      title: "Count even numbers.",
+describe("exercises", () => {
+  test("predict: the engine runs the code to find the answer and hides it until graded", async () => {
+    const shown = exercises.showExercise({
+      code: "const s = new Set([1, 1, 2]);\nconsole.log(s.size);",
+      conceptIds: ["sequence-starts"],
+      kind: "predict",
+      prompt: "What does this print?",
+      title: "Predict the output",
     });
 
-    const text = await Bun.file(out.file).text();
-    expect(text).toContain("STEP 1 OF 3 · EXAMPLE");
-    expect(text).toContain("function check(");
-    expect(out.verified).toContain("2/2");
+    expect(shown.verified_output).toBe("2");
+
+    const { exerciseRow } = await db();
+    const before = exercises.exerciseView(exerciseRow(shown.exercise_id));
+    expect(before.correct_answer).toBeNull();
+
+    const result = exercises.submitExercise(shown.exercise_id, " 2 ", "high");
+    expect(result).toMatchObject({ correct: true, status: "graded" });
+    expect(() =>
+      exercises.submitExercise(shown.exercise_id, "3", null)
+    ).toThrow(/already submitted/u);
+
+    const after = exercises.exerciseView(exerciseRow(shown.exercise_id));
+    expect(after.correct_answer).toBe("2");
+    expect(after.concepts[0]?.result).toBe("pass");
   });
 
-  test("a wrong example, a practice-problem name, or a broken exercise is rejected", () => {
-    const wrong =
-      'check("mixed", countEven([1, 2, 4]), 3);\ncheck("empty", countEven([]), 0);';
-
-    expect(() =>
-      lessons.writeLessonFile({
-        checks: wrong,
-        code,
-        conceptIds: ["dynamic-arrays"],
-        kind: "example",
-        language: "typescript",
-        title: "x",
-      })
-    ).toThrow(/does not pass/u);
-
-    const reused =
-      "export function twoSum(a: number[]): number[] { return a; }";
-
-    expect(() =>
-      lessons.writeLessonFile({
-        checks: 'check("a", twoSum([1]), [1]);\ncheck("b", twoSum([]), []);',
-        code: reused,
-        conceptIds: ["hash-set"],
-        kind: "example",
-        language: "typescript",
-        title: "x",
-      })
-    ).toThrow(/practice problem/u);
-
-    const broken =
-      "export function countEven(nums: number[]): number {\n  return nums.filter((n) => // TODO\n}";
-
-    expect(() =>
-      lessons.writeLessonFile({
-        checks,
-        code: broken,
-        conceptIds: ["dynamic-arrays"],
-        kind: "exercise",
-        language: "typescript",
-        solution: code,
-        title: "x",
-      })
-    ).toThrow(/must still run/u);
+  test("a right answer on an untaught concept skips its lesson and its prerequisites' lessons", () => {
+    // The predict above targeted sequence-starts, which needs hash-set (passed earlier).
+    expect(scheduler.displayStage("sequence-starts")).toBe("learning");
   });
 
-  test("a sound python exercise is written and never overwrites an earlier one", () => {
-    const solution =
-      "def count_even(nums):\n    return sum(1 for n in nums if n % 2 == 0)";
-
-    const blank =
-      "def count_even(nums):\n    return 0  # TODO: count the even numbers";
-
-    const pyChecks =
-      'check("mixed", count_even([1, 2, 4]), 2)\ncheck("empty", count_even([]), 0)';
-
-    const input = {
-      checks: pyChecks,
-      code: blank,
-      conceptIds: ["dynamic-arrays"],
-      kind: "exercise" as const,
-      language: "python" as const,
-      solution,
-      title: "Count even numbers.",
-    };
-
-    const first = lessons.writeLessonFile(input);
-    const second = lessons.writeLessonFile(input);
-    expect(first.file).not.toBe(second.file);
-    expect(lessons.runLessonFile(first.file, "python").failed).toBe(1);
-  });
-});
-
-describe("reserved names", () => {
-  test("only definitions of distinctive practice names are blocked", () => {
+  test("code that fails or prints nothing is rejected", () => {
     const base = {
-      conceptIds: ["dynamic-arrays"],
-      kind: "example" as const,
-      language: "typescript" as const,
+      conceptIds: ["hash-set"],
+      kind: "predict" as const,
+      prompt: "x",
       title: "x",
     };
 
-    const arrow = "export const twoSum = (a: number[]) => a;";
     expect(() =>
-      lessons.writeLessonFile({
+      exercises.showExercise({ ...base, code: "const a: number = ;" })
+    ).toThrow(/does not run/u);
+    expect(() =>
+      exercises.showExercise({ ...base, code: "const a = 1;" })
+    ).toThrow(/prints nothing/u);
+    expect(() =>
+      exercises.showExercise({
         ...base,
-        checks: 'check("a", twoSum([1]), [1]);\ncheck("b", twoSum([]), []);',
-        code: arrow,
+        code: "console.log(1)",
+        conceptIds: [],
       })
-    ).toThrow(/practice problem/u);
+    ).toThrow(/1 to 3/u);
+  });
 
-    const generic =
-      "export function search(a: number[], t: number): number { return a.indexOf(t); }";
+  test("arrange: shuffled lines, and another order that prints the same also passes", async () => {
+    const lines = [
+      "const seen = new Set<number>();",
+      "seen.add(2);",
+      "seen.add(1);",
+      "console.log(seen.size);",
+    ];
+
+    const make = () =>
+      exercises.showExercise({
+        conceptIds: ["hash-set"],
+        distractors: ["seen.clear();"],
+        kind: "arrange",
+        lines,
+        prompt: "Order the lines.",
+        title: "Arrange the lines",
+      });
+
+    const { exerciseRow } = await db();
+    const first = make();
+    const view = exercises.exerciseView(exerciseRow(first.exercise_id));
+    expect(view.lines?.toSorted()).toEqual(
+      [...lines, "seen.clear();"].toSorted()
+    );
+
+    const [a = "", b = "", c = "", d = ""] = lines;
+    // Passing reviews hash-set; it was passed earlier, so this is the review phase.
+    expect(
+      exercises.submitExercise(first.exercise_id, [a, c, b, d], "medium")
+    ).toMatchObject({ correct: true });
+
+    const second = make();
+    expect(
+      exercises.submitExercise(
+        second.exercise_id,
+        [a, b, "seen.clear();", d],
+        "high"
+      )
+    ).toMatchObject({ confident_miss: true, correct: false });
+  });
+
+  test("a concept is reviewed once a day: a same-day retry is practice only", async () => {
+    const { exerciseRow } = await db();
+    const { openExercise } = await db();
+    const last = openExercise();
+
+    if (!last) {
+      throw new Error("An exercise should be on screen.");
+    }
+
+    const view = exercises.exerciseView(exerciseRow(last.id));
+    expect(view.status).toBe("graded");
+    // SAFETY: results are written by the engine as a list of applied results.
+    const applied = JSON.parse(last.results ?? "[]") as { effect: string }[];
+    expect(applied[0]?.effect).toContain("practice only");
+  });
+
+  test("open answer: the tutor grades each concept, and a hint beyond a question fails", () => {
+    const shown = exercises.showExercise({
+      conceptIds: ["hash-set", "hash-map-counting"],
+      kind: "answer",
+      modelAnswer: "A set gives O(1) membership checks.",
+      prompt: "Why use a set here?",
+      rubric: [
+        { concept_id: "hash-set", points: ["O(1) membership"] },
+        { concept_id: "hash-map-counting", points: ["counts per value"] },
+      ],
+      title: "Explain",
+    });
 
     expect(() =>
-      lessons.writeLessonFile({
-        ...base,
-        checks:
-          'check("a", search([1, 2], 2), 1);\ncheck("b", search([], 1), -1);',
-        code: generic,
-      })
-    ).not.toThrow();
+      exercises.gradeAnswer(shown.exercise_id, [
+        { concept_id: "hash-set", result: "pass" },
+      ])
+    ).toThrow(/not submitted/u);
+
+    expect(
+      exercises.submitExercise(
+        shown.exercise_id,
+        "Because lookups are O(1).",
+        null
+      )
+    ).toMatchObject({ status: "submitted" });
+    expect(() =>
+      exercises.gradeAnswer(shown.exercise_id, [
+        { concept_id: "hash-set", result: "pass" },
+      ])
+    ).toThrow(/one verdict for each/u);
+
+    const graded = exercises.gradeAnswer(shown.exercise_id, [
+      { concept_id: "hash-set", result: "pass" },
+      {
+        concept_id: "hash-map-counting",
+        reason: "not mentioned",
+        result: "fail",
+      },
+    ]);
+
+    expect(graded.concepts.map((c) => c.result)).toEqual(["pass", "fail"]);
   });
 });

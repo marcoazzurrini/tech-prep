@@ -186,7 +186,7 @@ export const runTests = (
 };
 
 // oxlint-disable-next-line anti-slop/no-unknown-parameters -- prints any JSON value
-const short = (value: unknown, max = 300): string => {
+export const short = (value: unknown, max = 300): string => {
   const text = JSON.stringify(value) ?? "undefined";
 
   return text.length <= max
