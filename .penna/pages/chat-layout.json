@@ -1356,7 +1356,7 @@
                 "background": "var(--color-canvas)",
                 "borderRadius": 6,
                 "border": "1px solid var(--color-accent)",
-                "width": 112,
+                "width": 320,
                 "flexShrink": 0,
                 "height": 44
                }
@@ -1459,9 +1459,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       },
       {
@@ -2820,7 +2821,7 @@
                 "background": "var(--color-canvas)",
                 "borderRadius": 6,
                 "border": "1px solid var(--color-green)",
-                "width": 112,
+                "width": 320,
                 "flexShrink": 0,
                 "height": 44
                }
@@ -3003,9 +3004,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       },
       {
@@ -4518,7 +4520,7 @@
                 "background": "var(--color-canvas)",
                 "borderRadius": 6,
                 "border": "1px solid var(--color-red)",
-                "width": 112,
+                "width": 320,
                 "flexShrink": 0,
                 "height": 44
                }
@@ -4713,9 +4715,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       }
      ],
@@ -6463,9 +6466,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       },
       {
@@ -8289,9 +8293,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       },
       {
@@ -10127,9 +10132,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       }
      ],
@@ -10148,7 +10154,7 @@
     "background": "#00000000"
    },
    "x": 0,
-   "y": 1300
+   "y": 1700
   },
   {
    "id": "nyeha",
@@ -13230,9 +13236,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       },
       {
@@ -16455,9 +16462,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       },
       {
@@ -19858,9 +19866,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       }
      ],
@@ -19879,7 +19888,7 @@
     "background": "#00000000"
    },
    "x": 0,
-   "y": 2600
+   "y": 3400
   },
   {
    "id": "vYEaH",
@@ -21573,9 +21582,10 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 1440,
+        "width": 2048,
         "flexShrink": 0,
-        "height": 900
+        "height": 1152,
+        "zoom": 1.25
        }
       }
      ],
@@ -21594,7 +21604,7 @@
     "background": "#00000000"
    },
    "x": 0,
-   "y": 3900
+   "y": 5100
   }
  ]
 }

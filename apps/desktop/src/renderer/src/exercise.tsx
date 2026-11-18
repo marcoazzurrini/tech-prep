@@ -326,13 +326,12 @@ export const ExercisePane = ({
       </PaneBody>
       <PaneFooter
         start={
-          open ? (
-            <Button onClick={hint}>Show hint</Button>
-          ) : (
+          open ? undefined : (
             <span className="tp-pane-footer__note">Answered</span>
           )
         }
       >
+        {open && <Button onClick={hint}>Show hint</Button>}
         <Button
           disabled={!open || !filled || !confidence || sending}
           variant="primary"

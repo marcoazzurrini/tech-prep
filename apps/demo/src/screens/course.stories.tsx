@@ -72,7 +72,8 @@ const Predict = () => {
           <Confidence value={sure} onChange={setSure} />
         </PaneSection>
       </PaneBody>
-      <PaneFooter start={<Button>Show hint</Button>}>
+      <PaneFooter>
+        <Button>Show hint</Button>
         <Button disabled={!sure} variant="primary">
           Submit
         </Button>
@@ -89,6 +90,7 @@ const Arrange = () => {
   ]);
 
   const [spare, setSpare] = useState(["seen.sort();"]);
+  const [sure, setSure] = useState<ConfidenceLevel | null>(null);
 
   return (
     <>
@@ -111,9 +113,15 @@ const Arrange = () => {
             setSpare(nextSpare);
           }}
         />
+        <PaneSection label="How sure are you?">
+          <Confidence value={sure} onChange={setSure} />
+        </PaneSection>
       </PaneBody>
-      <PaneFooter start={<Button>Show hint</Button>}>
-        <Button variant="primary">Submit</Button>
+      <PaneFooter>
+        <Button>Show hint</Button>
+        <Button disabled={!sure} variant="primary">
+          Submit
+        </Button>
       </PaneFooter>
     </>
   );
@@ -142,7 +150,8 @@ const Write = () => (
       <TestRow name="returns [] for an empty list" status="pending" />
       <TestRow name="drops later duplicates" status="pending" />
     </PaneSection>
-    <PaneFooter start={<Button>Show hint</Button>}>
+    <PaneFooter>
+      <Button>Show hint</Button>
       <Button>Run tests</Button>
       <Button variant="primary">Submit</Button>
     </PaneFooter>
