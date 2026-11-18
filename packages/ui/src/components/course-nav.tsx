@@ -75,12 +75,12 @@ export const Chapter = ({
         type="button"
         onClick={onToggle}
       >
-        <Chevron size={14} aria-hidden />
+        <Chevron size={16} aria-hidden />
         <span className="tp-chapter__label">{label}</span>
         {done ? (
           <CircleCheck
             className="tp-chapter__done"
-            size={14}
+            size={16}
             aria-label="Done"
           />
         ) : (
@@ -141,7 +141,7 @@ export const Lesson = ({
       >
         <StatusIcon
           className="tp-lesson__status"
-          size={14}
+          size={16}
           aria-label={statusLabel}
         />
         <span className="tp-lesson__label">{label}</span>
