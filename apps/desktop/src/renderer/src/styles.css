@@ -8,17 +8,38 @@ body {
 }
 
 /*
- * The macOS window buttons are wider than the rail, so they also cover the start of the
- * lessons column. Both leave the same strip free at the top.
+ * The macOS window buttons are wider than the rail. A title strip across the rail and the
+ * lessons column holds them, so no line or text sits behind the buttons. Its bottom line
+ * meets the line under the lesson's top bar.
  */
-.tp-rail,
-.tp-course-header {
-  padding-top: 44px;
+.tp-shell {
+  grid-template-rows: 48px minmax(0, 1fr);
+}
+
+.tp-shell > * {
+  grid-row: 1 / span 2;
+}
+
+.tp-shell > .tp-rail,
+.tp-shell > .tp-course-nav {
+  grid-row: 2;
+}
+
+.tp-shell::before {
+  grid-row: 1;
+  grid-column: 1 / span 2;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-sidebar);
+  content: "";
+  -webkit-app-region: drag;
+}
+
+.tp-rail {
+  padding-top: 12px;
 }
 
 /* The bars along the top drag the window, as a native title bar would. */
-.tp-rail,
-.tp-course-header,
 .tp-top-bar,
 .tp-tutor__header {
   -webkit-app-region: drag;

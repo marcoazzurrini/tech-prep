@@ -95,7 +95,7 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 ## Rules
 
-**Course layout.** An icon rail on the left opens Today and switches subjects. The lessons column lists chapters and lessons, in the same text size as the lesson, so it is as easy to read. The lesson fills the main pane. The tutor pane sits on the right, and the learner can close it.
+**Course layout.** An icon rail on the left opens Today and switches subjects. The lessons column lists chapters and lessons, in the same text size as the lesson, so it is as easy to read. The lesson fills the main pane. The tutor pane sits on the right, and the learner can close it. In the desktop window, a title strip across the rail and the lessons column holds the window buttons, so nothing sits behind them.
 
 **Large displays.** The UI keeps its size on every display: nothing scales up. A wider window gives the extra room to the lesson. On windows 2200px wide or more, the tutor pane also widens, from 380px to 576px, for longer chat lines. Lesson content stays aligned to the left edge of the pane, as on smaller screens.
 
