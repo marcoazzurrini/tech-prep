@@ -1459,10 +1459,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       },
       {
@@ -3004,10 +3003,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       },
       {
@@ -4715,10 +4713,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       }
      ],
@@ -6466,10 +6463,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       },
       {
@@ -8293,10 +8289,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       },
       {
@@ -10132,10 +10127,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       }
      ],
@@ -13236,10 +13230,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       },
       {
@@ -16462,10 +16455,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       },
       {
@@ -19866,10 +19858,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       }
      ],
@@ -21582,10 +21573,9 @@
         "alignItems": "flex-start",
         "background": "var(--color-canvas)",
         "overflow": "hidden",
-        "width": 2048,
+        "width": 2560,
         "flexShrink": 0,
-        "height": 1152,
-        "zoom": 1.25
+        "height": 1440
        }
       }
      ],

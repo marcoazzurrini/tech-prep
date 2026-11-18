@@ -97,7 +97,7 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 **Course layout.** An icon rail on the left opens Today and switches subjects. The lessons column lists chapters and lessons. The lesson fills the main pane. The tutor pane sits on the right, and the learner can close it.
 
-**Large displays.** On windows 2200px wide or more, the whole UI scales by 1.25, so a 27" display keeps the proportions of the base layout. The tutor pane also widens, from 380px to 576px before scaling, for longer chat lines. Lesson content stays aligned to the left edge of the pane, as on smaller screens.
+**Large displays.** The UI keeps its size on every display: nothing scales up. A wider window gives the extra room to the lesson. On windows 2200px wide or more, the tutor pane also widens, from 380px to 576px, for longer chat lines. Lesson content stays aligned to the left edge of the pane, as on smaller screens.
 
 **Surfaces step up.** The rail and the lessons column sit on `sidebar`, the lesson on `panel`, and the tutor on `canvas`, the darkest surface. Content inside steps up again: `surface`, then `raised`. A light grey covers small cards only, never a whole region. Separate surfaces with a 1px `border` hairline, not with gaps or colour blocks.
 

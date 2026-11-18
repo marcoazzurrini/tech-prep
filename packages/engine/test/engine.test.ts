@@ -314,6 +314,29 @@ describe("session flow", () => {
 
 const db = () => import("../src/db.ts");
 
+describe("solution files", () => {
+  test("the old statement banner is removed and the code is kept", () => {
+    const rule = `// ${"═".repeat(40)}`;
+    const code = "export function f(): number {\n  return 1;\n}\n";
+
+    const old = [
+      rule,
+      "// PROBLEM · Example (easy)",
+      rule,
+      "// Return one.",
+      "",
+      rule,
+      "// YOUR SOLUTION · write it below",
+      rule,
+      "",
+      code,
+    ].join("\n");
+
+    expect(practice.withoutBanner(old)).toBe(code);
+    expect(practice.withoutBanner(code)).toBe(code);
+  });
+});
+
 describe("exercises", () => {
   test("predict: the engine runs the code to find the answer and hides it until graded", async () => {
     const shown = exercises.showExercise({

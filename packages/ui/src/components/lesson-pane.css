@@ -15,8 +15,10 @@
   overflow-y: auto;
 }
 
+/* The statement takes the height it needs, and never more than the editor below it. */
 .tp-pane-body--share {
-  flex: 0 1 42%;
+  flex: none;
+  max-height: 42%;
   border-bottom: 1px solid var(--color-border);
 }
 

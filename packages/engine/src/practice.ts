@@ -22,6 +22,16 @@ import { applyResults } from "./outcomes.ts";
 import { ensureDataStructures, runTests } from "./runner.ts";
 import { isPassed } from "./scheduler.ts";
 
+/**
+ * Solution files once began with the problem statement as a comment banner. The app shows
+ * the statement itself, so the banner only pushed the code down.
+ */
+const BANNER =
+  /^(?<mark>\/\/|#) [═=]{10,}\n\k<mark> PROBLEM · [\s\S]*?\n\k<mark> YOUR SOLUTION ·[^\n]*\n\k<mark> [═=]{10,}\n+/u;
+
+/** A solution file's text without the old banner. */
+export const withoutBanner = (text: string): string => text.replace(BANNER, "");
+
 /** Create the solution file if needed and open (or resume) an attempt. */
 export const startProblem = (
   slug: string,
@@ -35,6 +45,13 @@ export const startProblem = (
 
   if (created) {
     writeFileSync(file, `${p.stubs[language].trimEnd()}\n`);
+  } else {
+    const text = readFileSync(file, "utf-8");
+    const clean = withoutBanner(text);
+
+    if (clean !== text) {
+      writeFileSync(file, clean);
+    }
   }
 
   let current = openAttempt(slug, language);
