@@ -7,8 +7,12 @@ body {
   overflow: hidden;
 }
 
-/* Leave room for the macOS window buttons, which sit over the rail's top. */
-.tp-rail {
+/*
+ * The macOS window buttons are wider than the rail, so they also cover the start of the
+ * lessons column. Both leave the same strip free at the top.
+ */
+.tp-rail,
+.tp-course-header {
   padding-top: 44px;
 }
 
