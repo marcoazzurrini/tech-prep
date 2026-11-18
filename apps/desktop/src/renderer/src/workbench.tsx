@@ -189,11 +189,10 @@ export const Workbench = ({ problem, onAskTutor }: WorkbenchProps) => {
         start={
           submitted ? (
             <span className="tp-pane-footer__note">Submitted</span>
-          ) : (
-            <Button onClick={hint}>Show hint</Button>
-          )
+          ) : undefined
         }
       >
+        {!submitted && <Button onClick={hint}>Show hint</Button>}
         <Button
           disabled={locked}
           onClick={() => {

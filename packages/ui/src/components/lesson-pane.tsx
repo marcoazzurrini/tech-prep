@@ -55,7 +55,7 @@ export const PaneSection = ({
 );
 
 interface PaneFooterProps {
-  /** Secondary actions, kept on the left. */
+  /** A status note, kept on the left. */
   start?: ReactNode;
   children: ReactNode;
 }
