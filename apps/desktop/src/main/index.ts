@@ -42,7 +42,8 @@ const createWindow = (): void => {
     minWidth: 1180,
     title: "tech-prep",
     titleBarStyle: "hiddenInset",
-    trafficLightPosition: { x: 12, y: 16 },
+    // Centred in the 48px title strip.
+    trafficLightPosition: { x: 12, y: 18 },
     webPreferences: {
       contextIsolation: true,
       preload: path.join(import.meta.dirname, "../preload/index.mjs"),
