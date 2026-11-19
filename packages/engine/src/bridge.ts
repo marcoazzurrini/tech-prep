@@ -27,19 +27,14 @@ import {
   soloSlugs,
   topics,
 } from "./content.ts";
-import type { Course, Difficulty, Language } from "./content.ts";
-import {
-  addHint,
-  closeExercises,
-  exerciseRow,
-  openAttempt,
-  openExercise,
-} from "./db.ts";
+import type { Course, Difficulty } from "./content.ts";
+import { addHint, closeExercises, exerciseRow, openExercise } from "./db.ts";
 import type { AttemptRow, Confidence } from "./db.ts";
 import { exerciseView, submitExercise } from "./exercises.ts";
 import { previewJq, showJson } from "./jq.ts";
 import { cardOf } from "./memory.ts";
 import {
+  attemptOn,
   currentAttempt,
   giveUp,
   pauseAttempt,
@@ -426,23 +421,21 @@ const slugOf = (params: Params): string => {
   return params.slug;
 };
 
-/** The language of the open attempt on a problem, else the default. */
-const languageOf = (course: Course, slug: string): Language => {
+/** The open attempt, when it is on this problem. Null for a problem that is only shown. */
+const openOn = (course: Course, slug: string): AttemptRow | null => {
   const open = currentAttempt(course);
 
-  // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
-  return open?.slug === slug
-    ? (open.language as Language)
-    : courseLanguage(course);
+  return open?.slug === slug ? open : null;
 };
 
 /** The learner's code for a problem. It can be edited only while the tutor has the problem open. */
 const readCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
-  const language = languageOf(course, slug);
+  const open = openOn(course, slug);
+  const language = open?.language ?? courseLanguage(course);
 
   return {
-    editable: Boolean(openAttempt(course, slug, language)),
+    editable: Boolean(open),
     language,
     text: readSolution(course, slug, language),
   };
@@ -454,7 +447,7 @@ const preview = (course: Course, params: Params) =>
 
 const saveCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
-  saveSolution(course, slug, languageOf(course, slug), params?.text ?? "");
+  saveSolution(course, attemptOn(course, slug), params?.text ?? "");
 
   return { saved: true };
 };
@@ -476,7 +469,9 @@ const runView = (run: RunResult) => ({
 const runCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
 
-  return runView(testSolution(course, slug, languageOf(course, slug)).run);
+  const language = openOn(course, slug)?.language ?? courseLanguage(course);
+
+  return runView(testSolution(course, slug, language).run);
 };
 
 /** What grading an attempt did, as the app shows it. */
@@ -504,30 +499,29 @@ const resultView = (
 
 /** The learner pressed Submit on a problem. */
 const submitCode = (course: Course, params: Params) => {
-  const slug = slugOf(params);
-  const language = languageOf(course, slug);
-  const mode = openAttempt(course, slug, language)?.mode ?? null;
-  const handed = submitProblem(course, slug, language);
+  const open = attemptOn(course, slugOf(params));
+  const handed = submitProblem(course, open);
 
   return {
     finished: handed.finished,
-    result: handed.result && resultView(course, handed.result, mode),
+    result: handed.result && resultView(course, handed.result, open.mode),
     run: runView(handed.run),
   };
 };
 
 const giveUpCode = (course: Course, params: Params) => {
-  const slug = slugOf(params);
-  const language = languageOf(course, slug);
-  const mode = openAttempt(course, slug, language)?.mode ?? null;
-  const { result, solution } = giveUp(course, slug, language);
+  const open = attemptOn(course, slugOf(params));
+  const { result, solution } = giveUp(course, open);
 
-  return { result: resultView(course, result, mode), solution };
+  return { result: resultView(course, result, open.mode), solution };
 };
 
 const pauseCode = (course: Course, params: Params) => {
-  const slug = slugOf(params);
-  pauseAttempt(course, slug, languageOf(course, slug));
+  const open = openOn(course, slugOf(params));
+
+  if (open) {
+    pauseAttempt(course, open);
+  }
 
   return { paused: true };
 };

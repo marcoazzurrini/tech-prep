@@ -153,8 +153,7 @@ server.registerTool(
         ? null
         : (guidedConcept(open.slug) ?? soloConcept(course, open.slug));
 
-    // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
-    const language = open.language as Language;
+    const { language } = open;
 
     return {
       attempt_id: open.id,

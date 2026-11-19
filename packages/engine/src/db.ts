@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, renameSync } from "node:fs";
 import path from "node:path";
 
 import { HOME_DIR, aliases, concepts, problemIndex } from "./content.ts";
-import type { Course } from "./content.ts";
+import type { Course, Language } from "./content.ts";
 
 /** Stored stages. "locked" and "available" are derived from prerequisites, never stored. */
 export type Stage = "unseen" | "learning" | "passed" | "mastered";
@@ -39,7 +39,7 @@ export interface AttemptRow {
   id: number;
   slug: string;
   concept_id: string;
-  language: string;
+  language: Language;
   started_at: string;
   finished_at: string | null;
   phase: Phase | null;

@@ -186,9 +186,20 @@ export const pauseUnknownAttempts = (course: Course): void => {
   }
 };
 
-/** The attempt the learner is working on, if any. */
+/** The attempt the learner is working on, if any. Only one is open at a time. */
 export const currentAttempt = (course: Course) =>
   attemptsFor(course, {}).findLast((a) => !a.finished_at) ?? null;
+
+/** The open attempt on a problem. Throws when the learner is not working on that problem. */
+export const attemptOn = (course: Course, slug: string): AttemptRow => {
+  const current = currentAttempt(course);
+
+  if (current?.slug !== slug) {
+    throw new Error(`No attempt is open for '${slug}'.`);
+  }
+
+  return current;
+};
 
 /** The learner's code for a problem, as the in-app editor shows it. */
 export const readSolution = (
@@ -201,19 +212,13 @@ export const readSolution = (
   return existsSync(file) ? readFileSync(file, "utf-8") : "";
 };
 
-/** Save the editor's text. Only the open attempt's file can change. */
+/** Save the editor's text to an open attempt's file. */
 export const saveSolution = (
   course: Course,
-  slug: string,
-  language: Language,
+  current: AttemptRow,
   text: string
-): void => {
-  if (!openAttempt(course, slug, language)) {
-    throw new Error(`No attempt is open for '${slug}'.`);
-  }
-
-  writeFileSync(solutionPath(course, slug, language), text);
-};
+): void =>
+  writeFileSync(solutionPath(course, current.slug, current.language), text);
 
 /**
  * Record a hint before it is given. It counts for whatever is on screen: the open
@@ -362,11 +367,7 @@ export const finishAttempt = (course: Course, input: FinishInput) => {
 
   // Re-run so the grade reflects the file as it is now, not the last manual test run.
   // SAFETY: startProblem opens attempts with a Language, and only it inserts them.
-  const { run } = testSolution(
-    course,
-    current.slug,
-    current.language as Language
-  );
+  const { run } = testSolution(course, current.slug, current.language);
 
   const solved =
     !run.fatal && run.passed === run.total && input.stopped !== "gave_up";
@@ -465,18 +466,8 @@ export interface Handed {
  * In a review the learner chose the approach unprompted, so an unaided solve counts as
  * recognising it.
  */
-export const submitProblem = (
-  course: Course,
-  slug: string,
-  language: Language
-): Handed => {
-  const current = openAttempt(course, slug, language);
-
-  if (!current) {
-    throw new Error(`No attempt is open for '${slug}'.`);
-  }
-
-  const { run } = testSolution(course, slug, language);
+export const submitProblem = (course: Course, current: AttemptRow): Handed => {
+  const { run } = testSolution(course, current.slug, current.language);
 
   if (run.fatal || run.passed !== run.total) {
     return { finished: false, result: null, run };
@@ -493,30 +484,19 @@ export const submitProblem = (
 };
 
 /** The learner gave up: the attempt closes as a struggle, and a worked solution is shown. */
-export const giveUp = (course: Course, slug: string, language: Language) => {
-  const current = openAttempt(course, slug, language);
-
-  if (!current) {
-    throw new Error(`No attempt is open for '${slug}'.`);
-  }
-
+export const giveUp = (course: Course, current: AttemptRow) => {
   const result = finishAttempt(course, {
     attemptId: current.id,
     stopped: "gave_up",
   });
 
-  return { result, solution: referenceSolution(course, slug, language) };
+  return {
+    result,
+    solution: referenceSolution(course, current.slug, current.language),
+  };
 };
 
 /** Set the open attempt aside with no grade, for example when the learner ends a review session. */
-export const pauseAttempt = (
-  course: Course,
-  slug: string,
-  language: Language
-): void => {
-  const current = openAttempt(course, slug, language);
-
-  if (current) {
-    finishAttempt(course, { attemptId: current.id, stopped: "paused" });
-  }
+export const pauseAttempt = (course: Course, current: AttemptRow): void => {
+  finishAttempt(course, { attemptId: current.id, stopped: "paused" });
 };

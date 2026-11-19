@@ -377,10 +377,16 @@ const solve = (
 /** Do both steps of a lesson without help. */
 const learn = (course: Course, conceptId: string) => {
   solve(course, content.guidedSlug(conceptId), "guided");
-  practice.submitProblem(course, content.guidedSlug(conceptId), "python");
+  practice.submitProblem(
+    course,
+    practice.attemptOn(course, content.guidedSlug(conceptId))
+  );
   solve(course, soloOf(course, conceptId), "solo");
 
-  return practice.submitProblem(course, soloOf(course, conceptId), "python");
+  return practice.submitProblem(
+    course,
+    practice.attemptOn(course, soloOf(course, conceptId))
+  );
 };
 
 describe("lessons", () => {
@@ -398,7 +404,11 @@ describe("lessons", () => {
   test("solving the guided problem teaches the concept without passing it", () => {
     const guided = content.guidedSlug("dynamic-arrays");
     solve(course, guided, "guided");
-    const handed = practice.submitProblem(course, guided, "python");
+
+    const handed = practice.submitProblem(
+      course,
+      practice.attemptOn(course, guided)
+    );
 
     expect(handed.finished).toBe(true);
     expect(handed.result?.outcome).toBe("solved");
@@ -410,7 +420,11 @@ describe("lessons", () => {
   test("a submit with failing tests keeps the attempt open", () => {
     const solo = soloOf(course, "dynamic-arrays");
     const started = practice.startProblem(course, solo, "python", "solo");
-    const handed = practice.submitProblem(course, solo, "python");
+
+    const handed = practice.submitProblem(
+      course,
+      practice.attemptOn(course, solo)
+    );
 
     expect(handed.finished).toBe(false);
     expect(practice.currentAttempt(course)?.id).toBe(started.attempt_id);
@@ -420,7 +434,11 @@ describe("lessons", () => {
   test("an unaided solo solve passes the concept, starts its reviews and opens the next lesson", () => {
     const solo = soloOf(course, "dynamic-arrays");
     solve(course, solo, "solo");
-    const handed = practice.submitProblem(course, solo, "python");
+
+    const handed = practice.submitProblem(
+      course,
+      practice.attemptOn(course, solo)
+    );
 
     expect(handed.result?.outcome).toBe("solved");
     expect(scheduler.lessonStatus(course, "dynamic-arrays")).toBe("done");
@@ -435,10 +453,14 @@ describe("lessons", () => {
 
     const guided = content.guidedSlug("hash-map-counting");
     solve(course, guided, "guided");
-    practice.submitProblem(course, guided, "python");
+    practice.submitProblem(course, practice.attemptOn(course, guided));
     solve(course, "valid-anagram", "solo");
     practice.logHint(course, 2);
-    const handed = practice.submitProblem(course, "valid-anagram", "python");
+
+    const handed = practice.submitProblem(
+      course,
+      practice.attemptOn(course, "valid-anagram")
+    );
 
     expect(handed.result?.outcome).toBe("solved_with_help");
     expect(scheduler.lessonStatus(course, "hash-map-counting")).toBe("partial");
@@ -454,7 +476,11 @@ describe("lessons", () => {
   test("giving up closes the attempt and returns a solution", () => {
     const guided = content.guidedSlug("hash-map-index");
     practice.startProblem(course, guided, "python", "guided");
-    const { result, solution } = practice.giveUp(course, guided, "python");
+
+    const { result, solution } = practice.giveUp(
+      course,
+      practice.attemptOn(course, guided)
+    );
 
     expect(result.outcome).toBe("gave_up");
     expect(solution).toBe(content.referenceSolution(course, guided, "python"));
@@ -468,7 +494,7 @@ describe("lessons", () => {
     practice.startProblem(course, "two-sum", "python", "solo");
 
     expect(practice.currentAttempt(course)?.slug).toBe("two-sum");
-    practice.pauseAttempt(course, "two-sum", "python");
+    practice.pauseAttempt(course, practice.attemptOn(course, "two-sum"));
     expect(practice.currentAttempt(course)).toBeNull();
     expect(scheduler.problemStatus(course, "two-sum")).toBe("unattempted");
   });
@@ -510,7 +536,7 @@ describe("reviews", () => {
       content.problem(course, solo).stubs.python.trim()
     );
     expect(started.phase).toBe("review");
-    practice.pauseAttempt(course, solo, "python");
+    practice.pauseAttempt(course, practice.attemptOn(course, solo));
   });
 
   test("practising an encompassing concept gives partial credit to the passed concept below", () => {
@@ -760,7 +786,7 @@ const answer = (
     content.referenceSolution(course, slug, "jq") ?? ""
   );
 
-  return practice.submitProblem(course, slug, "jq");
+  return practice.submitProblem(course, practice.attemptOn(course, slug));
 };
 
 describe("jq course", () => {
@@ -978,9 +1004,10 @@ describe("jq course", () => {
       content.referenceSolution(course, soloOne, "jq") ?? ""
     );
 
-    expect(practice.submitProblem(course, soloOne, "jq").result?.outcome).toBe(
-      "solved_with_help"
-    );
+    expect(
+      practice.submitProblem(course, practice.attemptOn(course, soloOne)).result
+        ?.outcome
+    ).toBe("solved_with_help");
     expect(scheduler.isPassed(course, "reading-json")).toBe(false);
     expect(scheduler.lessonStatus(course, "reading-json")).toBe("partial");
     expect(scheduler.soloWait(course, "reading-json")).not.toBeNull();
