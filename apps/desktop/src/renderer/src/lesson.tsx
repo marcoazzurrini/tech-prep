@@ -11,17 +11,23 @@ import {
   Split,
   SplitSide,
   TaskHeader,
+  TaskText,
   TopBar,
   YourTurn,
 } from "@tech-prep/ui";
-import { BookOpen } from "lucide-react";
+import { BookOpen, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
+import { JqInput, JqWorkbench } from "./jq-workbench";
 import type { Code, Lesson } from "./types";
 import { Workbench } from "./workbench";
 import type { Finished } from "./workbench";
+
+/** " · Task 2 of 3" for a step with several tasks, else nothing. */
+const taskOf = ({ done, total }: { done: number; total: number }): string =>
+  total > 1 ? ` · Task ${Math.min(done + 1, total)} of ${total}` : "";
 
 /** What the footer says once the solo problem is finished. */
 const soloNote = (lesson: Lesson, { result }: Finished): string => {
@@ -90,9 +96,63 @@ const GuidedStep = ({
   onContinue,
 }: GuidedProps) => {
   const working = lesson.attempt?.slug === lesson.guided.slug;
+  const gaveUp = finished?.result.outcome === "gave_up";
+  const lead = gaveUp ? "A solution is shown" : "Solved";
+  const { jq } = lesson.guided;
+  const { done, total } = lesson.guided_tasks;
 
-  const lead =
-    finished?.result.outcome === "gave_up" ? "A solution is shown" : "Solved";
+  if (jq && (working || finished)) {
+    // The lesson was loaded before this task was finished, so `done` does not count it yet.
+    const last = done + 1 >= total;
+
+    let next = {
+      label: "Next task",
+      note: `Right. It also passed ${jq.hidden} hidden inputs.`,
+    };
+
+    if (gaveUp) {
+      next = {
+        label: "Try again",
+        note: "A solution is shown. Do the task again to move on.",
+      };
+    } else if (last) {
+      next = {
+        label: "Continue on your own",
+        note: "Right. Next: tasks without the lesson beside you.",
+      };
+    }
+
+    return (
+      <Split>
+        <SplitSide>{text}</SplitSide>
+        <SplitSide stack>
+          <JqWorkbench
+            done={
+              finished
+                ? {
+                    actions: (
+                      <Button variant="primary" onClick={onContinue}>
+                        {next.label}
+                      </Button>
+                    ),
+                    note: next.note,
+                  }
+                : undefined
+            }
+            jq={jq}
+            key={lesson.guided.slug}
+            problem={lesson.guided}
+            strip={{
+              label: `Task ${Math.min(done + 1, total)} of ${total} · with the lesson`,
+              tasks: { done: finished && !gaveUp ? done + 1 : done, total },
+            }}
+            onAskTutor={onOpenTutor}
+            onFinished={onFinished}
+          />
+        </SplitSide>
+      </Split>
+    );
+  }
 
   return (
     <Split>
@@ -131,8 +191,10 @@ interface SoloProps extends StepProps {
   /** The lesson after this one, for the "Next lesson" button. */
   next: string | null;
   onSelect: (lesson: string) => void;
-  /** Start the solo problem again on a lesson that is already learned. */
+  /** Start the solo problem again on a lesson that is already learned, or its next solo task. */
   onPractise: () => void;
+  /** For a jq task: show the task above the filter, when the statement is not beside it. */
+  strip?: { label: string; tasks?: { done: number; total: number } };
 }
 
 /** What sits under the statement in step 2: the editor, the saved code, or a note to come back. */
@@ -144,6 +206,7 @@ const SoloWork = ({
   next,
   onSelect,
   onPractise,
+  strip,
 }: SoloProps) => {
   const learned = lesson.status === "done";
 
@@ -152,6 +215,43 @@ const SoloWork = ({
       Next lesson
     </Button>
   );
+
+  const { jq } = lesson.solo;
+
+  if (jq && (lesson.attempt?.slug === lesson.solo.slug || finished)) {
+    // One more solo task is left when this one was solved alone and was not the last.
+    const more =
+      finished?.result.outcome === "solved" &&
+      lesson.solo_tasks.done + 1 < lesson.solo_tasks.total;
+
+    let footer = finished && {
+      actions: nextButton,
+      note: soloNote(lesson, finished),
+    };
+
+    if (more) {
+      footer = {
+        actions: (
+          <Button variant="primary" onClick={onPractise}>
+            Next task
+          </Button>
+        ),
+        note: "Solved without help. One more task on your own.",
+      };
+    }
+
+    return (
+      <JqWorkbench
+        done={footer ?? undefined}
+        jq={jq}
+        key={lesson.solo.slug}
+        problem={lesson.solo}
+        strip={strip}
+        onAskTutor={onOpenTutor}
+        onFinished={onFinished}
+      />
+    );
+  }
 
   if (lesson.attempt?.slug === lesson.solo.slug || finished) {
     return (
@@ -327,11 +427,11 @@ export const LessonScreen = ({
       }
       chapter={lesson.topic}
       lesson={lesson.name}
-      position={
+      position={`${
         step === 1
           ? "Step 1 of 2 · With the lesson"
           : "Step 2 of 2 · On your own"
-      }
+      }${taskOf(step === 1 ? lesson.guided_tasks : lesson.solo_tasks)}`}
       steps={{ at: step - 1, count: 2 }}
       tutorOpen={tutorOpen}
       onToggleTutor={onToggleTutor}
@@ -357,7 +457,7 @@ export const LessonScreen = ({
       text={lesson.text}
       title={lesson.name}
     >
-      {step === 1 && (
+      {step === 1 && !lesson.guided.jq && (
         <YourTurn
           label="Your turn · with the lesson"
           title={lesson.guided.title}
@@ -380,6 +480,60 @@ export const LessonScreen = ({
           onFinished={finish}
           onOpenTutor={onOpenTutor}
         />
+      </LessonPane>
+    );
+  }
+
+  const soloTask = `Task ${Math.min(lesson.solo_tasks.done + 1, lesson.solo_tasks.total)} of ${lesson.solo_tasks.total}`;
+
+  // A jq task is short: its statement and input sit on the left, the filter on the right.
+  // With the lesson reopened, the lesson takes the left and the task moves above the filter.
+  if (lesson.solo.jq) {
+    return (
+      <LessonPane>
+        {bar}
+        <Split>
+          <SplitSide>
+            {peeking ? (
+              text
+            ) : (
+              <TaskText
+                chips={
+                  <>
+                    <Chip icon={User}>On your own</Chip>
+                    <Chip muted>{soloTask}</Chip>
+                    {lesson.status === "done" && (
+                      <Chip tone="green">{lesson.name} · Learned</Chip>
+                    )}
+                  </>
+                }
+                title={lesson.solo.title}
+              >
+                <ProblemStatement text={lesson.solo.statement ?? ""} />
+                <JqInput jq={lesson.solo.jq} />
+                {lesson.status !== "done" && (
+                  <p className="tp-task-text__note">
+                    The lesson is closed. Opening it counts as help.
+                  </p>
+                )}
+              </TaskText>
+            )}
+          </SplitSide>
+          <SplitSide stack>
+            <SoloWork
+              finished={finished}
+              lesson={lesson}
+              next={next}
+              strip={
+                peeking ? { label: `${soloTask} · on your own` } : undefined
+              }
+              onFinished={finish}
+              onOpenTutor={onOpenTutor}
+              onPractise={() => setRequest({ start: true })}
+              onSelect={onSelect}
+            />
+          </SplitSide>
+        </Split>
       </LessonPane>
     );
   }

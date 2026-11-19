@@ -81,12 +81,17 @@ const practice = await import("../src/practice.ts");
 const scheduler = await import("../src/scheduler.ts");
 const runner = await import("../src/runner.ts");
 const exercises = await import("../src/exercises.ts");
+const jq = await import("../src/jq.ts");
 
 afterAll(() => rmSync(home, { force: true, recursive: true }));
 
 describe("courses", () => {
   test("the app's own courses come first, then the ones beside it", () => {
-    expect(content.courses().map((c) => c.id)).toEqual(["interview", "mini"]);
+    expect(content.courses().map((c) => c.id)).toEqual([
+      "interview",
+      "jq",
+      "mini",
+    ]);
     expect(content.course().id).toBe("interview");
   });
 
@@ -312,6 +317,17 @@ describe("fractional implicit repetition", () => {
   });
 });
 
+/** The problem a code lesson ends on. */
+const soloOf = (conceptId: string): string => {
+  const [solo] = content.soloSlugs(conceptId);
+
+  if (!solo) {
+    throw new Error(`'${conceptId}' has no solo problem.`);
+  }
+
+  return solo;
+};
+
 /** Open a problem and write its reference solution as the learner's code. */
 const solve = (slug: string, mode: "guided" | "solo" | "review") => {
   const started = practice.startProblem(slug, "python", mode);
@@ -330,9 +346,9 @@ const solve = (slug: string, mode: "guided" | "solo" | "review") => {
 const learn = (conceptId: string) => {
   solve(content.guidedSlug(conceptId), "guided");
   practice.submitProblem(content.guidedSlug(conceptId), "python");
-  solve(content.concept(conceptId).solo, "solo");
+  solve(soloOf(conceptId), "solo");
 
-  return practice.submitProblem(content.concept(conceptId).solo, "python");
+  return practice.submitProblem(soloOf(conceptId), "python");
 };
 
 describe("lessons", () => {
@@ -358,7 +374,7 @@ describe("lessons", () => {
   });
 
   test("a submit with failing tests keeps the attempt open", () => {
-    const { solo } = content.concept("dynamic-arrays");
+    const solo = soloOf("dynamic-arrays");
     const started = practice.startProblem(solo, "python", "solo");
     const handed = practice.submitProblem(solo, "python");
 
@@ -368,7 +384,7 @@ describe("lessons", () => {
   });
 
   test("an unaided solo solve passes the concept, starts its reviews and opens the next lesson", () => {
-    const { solo } = content.concept("dynamic-arrays");
+    const solo = soloOf("dynamic-arrays");
     solve(solo, "solo");
     const handed = practice.submitProblem(solo, "python");
 
@@ -449,7 +465,7 @@ describe("reviews", () => {
   });
 
   test("a review starts from the empty stub, even on a solved problem", () => {
-    const { solo } = content.concept("dynamic-arrays");
+    const solo = soloOf("dynamic-arrays");
     const started = practice.startProblem(solo, "python", "review");
 
     expect(readFileSync(started.file, "utf-8").trim()).toBe(
@@ -661,5 +677,196 @@ describe("exercises", () => {
     ]);
 
     expect(graded.concepts.map((c) => c.result)).toEqual(["pass", "fail"]);
+  });
+});
+
+/** Open a jq task and write its reference as the learner's answer. */
+const answer = (slug: string, mode: "guided" | "solo" | "review") => {
+  const started = practice.startProblem(slug, "jq", mode);
+  writeFileSync(started.file, content.referenceSolution(slug, "jq") ?? "");
+
+  return practice.submitProblem(slug, "jq");
+};
+
+describe("jq course", () => {
+  test("a command line splits the way a shell splits it", () => {
+    expect(jq.splitArgs("-r '.[] | .name'")).toEqual(["-r", ".[] | .name"]);
+    expect(jq.splitArgs(`--arg who "Ada Lee" '.x == $who'`)).toEqual([
+      "--arg",
+      "who",
+      "Ada Lee",
+      ".x == $who",
+    ]);
+    expect(jq.splitArgs("-n ''")).toEqual(["-n", ""]);
+    expect(() => jq.splitArgs("-r '.name")).toThrow("not closed");
+  });
+
+  test("JSON for reading keeps short values on one line", () => {
+    expect(jq.showJson({ items: [{ name: "pen" }], shop: "North" })).toBe(
+      '{"items": [{"name": "pen"}], "shop": "North"}'
+    );
+    expect(
+      jq.showJson([
+        { active: true, name: "Ada", team: "qa" },
+        { active: false, name: "Bo", team: "ops" },
+      ])
+    ).toBe(
+      '[\n  {"active": true, "name": "Ada", "team": "qa"},\n  {"active": false, "name": "Bo", "team": "ops"}\n]'
+    );
+  });
+
+  test("the curriculum is sound and every lesson is written", () => {
+    content.inCourse("jq", () => {
+      expect(content.validateCurriculum()).toEqual([]);
+      expect(
+        content
+          .concepts()
+          .filter((c) => !content.hasLesson(c.id))
+          .map((c) => c.id)
+      ).toEqual([]);
+      expect(
+        content
+          .problemIndex()
+          .filter((p) => !content.isAuthored(p.slug))
+          .map((p) => p.slug)
+      ).toEqual([]);
+    });
+  });
+
+  test("every reference solves its task, and the starting text does not", () => {
+    content.inCourse("jq", () => {
+      const slugs = [
+        ...content.problemIndex().map((p) => p.slug),
+        ...content.concepts().flatMap((c) => content.guidedSlugs(c.id)),
+      ];
+
+      const wrong = slugs.filter((slug) => {
+        const task = content.problem(slug);
+
+        const solved = jq.runJq(
+          task,
+          content.referenceSolution(slug, "jq") ?? ""
+        );
+
+        const untouched = jq.runJq(task, task.stubs.jq);
+
+        return (
+          solved.passed !== solved.total || untouched.passed === untouched.total
+        );
+      });
+
+      expect(wrong).toEqual([]);
+    });
+  }, 60_000);
+
+  test("a filter task compares values, and a command task compares text", () => {
+    content.inCourse("jq", () => {
+      const filter = content.problem("object-construction-solo-1");
+      const [shown] = filter.jq?.tests ?? [];
+
+      if (!filter.jq || !shown?.expected) {
+        throw new Error("The task has no shown test.");
+      }
+
+      // The same values with another key order and spacing still match.
+      const reordered = JSON.stringify(
+        Object.fromEntries(
+          Object.entries(JSON.parse(shown.expected)).toReversed()
+        )
+      );
+
+      expect(jq.sameOutput(filter.jq, reordered, shown.expected)).toBe(true);
+      expect(jq.sameOutput(filter.jq, "{}", shown.expected)).toBe(false);
+
+      const command = content.problem("compact-output-solo-1");
+      const pretty = jq.previewJq(command, "'.'");
+
+      expect(pretty.error).toBeNull();
+      expect(pretty.matches).toBe(false);
+      expect(
+        jq.previewJq(
+          command,
+          content.referenceSolution("compact-output-solo-1", "jq") ?? ""
+        ).matches
+      ).toBe(true);
+    });
+  });
+
+  test("jq's own error text reaches the learner", () => {
+    content.inCourse("jq", () => {
+      const seen = jq.previewJq(
+        content.problem("select-solo-1"),
+        ".items | select(.stock > 0)"
+      );
+
+      expect(seen.matches).toBe(false);
+      expect(seen.error).toBe(
+        'jq: error: Cannot index array with string "stock"'
+      );
+    });
+  });
+
+  test("a lesson is taught after its three guided tasks and learned after both solo tasks", () => {
+    content.setCourse("jq");
+
+    try {
+      const [first, second, third] = content.guidedSlugs("fields");
+      const [soloOne, soloTwo] = content.soloSlugs("fields");
+
+      if (!first || !second || !third || !soloOne || !soloTwo) {
+        throw new Error("The fields lesson is missing tasks.");
+      }
+
+      expect(content.guidedConcept(third)).toBe("fields");
+      expect(answer(first, "guided").result?.outcome).toBe("solved");
+      answer(second, "guided");
+      expect(scheduler.lessonStep("fields")).toBe(1);
+      answer(third, "guided");
+      expect(scheduler.lessonStep("fields")).toBe(2);
+
+      const one = answer(soloOne, "solo");
+      expect(one.result?.outcome).toBe("solved");
+      expect(one.result?.concepts).toEqual([]);
+      expect(scheduler.isPassed("fields")).toBe(false);
+
+      const two = answer(soloTwo, "solo");
+      expect(two.result?.outcome).toBe("solved");
+      expect(scheduler.isPassed("fields")).toBe(true);
+      expect(scheduler.nextLesson()).toBe("array-index");
+    } finally {
+      content.setCourse("interview");
+    }
+  });
+
+  test("a solo task solved with help holds the lesson back for a day", () => {
+    content.setCourse("jq");
+
+    try {
+      for (const slug of content.guidedSlugs("array-index")) {
+        answer(slug, "guided");
+      }
+
+      const [soloOne] = content.soloSlugs("array-index");
+
+      if (!soloOne) {
+        throw new Error("The array-index lesson has no solo task.");
+      }
+
+      practice.startProblem(soloOne, "jq", "solo");
+      practice.logHint(2);
+      writeFileSync(
+        content.solutionPath(soloOne, "jq"),
+        content.referenceSolution(soloOne, "jq") ?? ""
+      );
+
+      expect(practice.submitProblem(soloOne, "jq").result?.outcome).toBe(
+        "solved_with_help"
+      );
+      expect(scheduler.isPassed("array-index")).toBe(false);
+      expect(scheduler.lessonStatus("array-index")).toBe("partial");
+      expect(scheduler.soloWait("array-index")).not.toBeNull();
+    } finally {
+      content.setCourse("interview");
+    }
   });
 });

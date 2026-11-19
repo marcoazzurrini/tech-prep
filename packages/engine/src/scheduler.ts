@@ -9,6 +9,7 @@ import {
   hasLesson,
   isAuthored,
   problemIndex,
+  soloSlugs,
   topics,
 } from "./content.ts";
 import type { ProblemInfo } from "./content.ts";
@@ -187,7 +188,7 @@ export const lessonStatus = (id: string): LessonStatus => {
   }
 
   if (stage === "learning") {
-    return problemStatus(concept(id).solo) === "solved_with_help"
+    return soloSlugs(id).some((s) => problemStatus(s) === "solved_with_help")
       ? "partial"
       : "started";
   }
@@ -201,14 +202,20 @@ export const lessonStep = (id: string): 1 | 2 =>
 
 /** When the solo problem may be tried again after a struggle, or null when it is free now. */
 export const soloWait = (id: string, now = new Date()): string | null => {
-  const { solo } = concept(id);
-  const last = attemptsFor({ slug: solo }).at(-1);
-
-  if (isPassed(id) || !last?.finished_at || !waitingForRetry(solo, now)) {
+  if (isPassed(id)) {
     return null;
   }
 
-  return new Date(new Date(last.finished_at).getTime() + DAY_MS).toISOString();
+  // Any solo task of the lesson that waits holds the lesson back.
+  const waits = soloSlugs(id).flatMap((solo) => {
+    const last = attemptsFor({ slug: solo }).at(-1);
+
+    return last?.finished_at && waitingForRetry(solo, now)
+      ? [new Date(last.finished_at).getTime() + DAY_MS]
+      : [];
+  });
+
+  return waits.length ? new Date(Math.max(...waits)).toISOString() : null;
 };
 
 /** The next lesson: the first concept, in course order, that is open, written and not waiting. */

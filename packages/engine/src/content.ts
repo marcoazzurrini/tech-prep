@@ -32,6 +32,8 @@ export const WORKSPACE_DIR = path.join(HOME_DIR, "workspace");
 /** The newest course format this engine reads. A course that needs a newer one is skipped. */
 export const COURSE_FORMAT = 1;
 
+export type CourseKind = "code" | "jq";
+
 /** A course: one folder with a `course.json` manifest, a curriculum, lessons and problems. */
 export interface Course {
   /** Stable id. Progress is stored under it, so it never changes. */
@@ -41,6 +43,8 @@ export interface Course {
   initials: string;
   /** Rises with every content change. The highest version of a course id is the one used. */
   version: number;
+  /** What a task is: code checked by tests, or a jq filter checked by its output. */
+  kind: CourseKind;
   dir: string;
   /** True when the course ships with the app. */
   builtin: boolean;
@@ -58,6 +62,7 @@ const Manifest = z.object({
     .string()
     .regex(/^[a-z0-9][a-z0-9-]*$/u, "use lowercase letters, digits and dashes"),
   initials: z.string().min(1).max(3),
+  kind: z.enum(["code", "jq"]).default("code"),
   name: z.string().trim().min(1),
   version: z.number().int(),
 });
@@ -76,7 +81,7 @@ const readCourse = (dir: string, builtin: boolean): Course => {
     );
   }
 
-  const { format, id, initials, name, version } = parsed.data;
+  const { format, id, initials, kind, name, version } = parsed.data;
 
   if (format > COURSE_FORMAT) {
     throw new Error(
@@ -90,7 +95,7 @@ const readCourse = (dir: string, builtin: boolean): Course => {
     }
   }
 
-  return { builtin, dir, id, initials, name, version };
+  return { builtin, dir, id, initials, kind, name, version };
 };
 
 interface Found {
@@ -238,17 +243,24 @@ const lessonsDir = (): string => path.join(course().dir, "lessons");
 /** Where the learner's solution files for the open course live. */
 export const solutionsDir = (): string => path.join(WORKSPACE_DIR, course().id);
 
-export type Language = "python" | "typescript";
+export type Language = "python" | "typescript" | "jq";
 
+/** The languages a code problem is solved in. */
 export const LANGUAGES: Language[] = ["python", "typescript"];
 
 export const EXTENSIONS: Record<Language, string> = {
+  jq: "jq",
   python: "py",
   typescript: "ts",
 };
 
+/** The language of code problems. */
 export const DEFAULT_LANGUAGE: Language =
   process.env.TECHPREP_LANG === "python" ? "python" : "typescript";
+
+/** The language the open course's tasks are written in. */
+export const courseLanguage = (): Language =>
+  course().kind === "jq" ? "jq" : DEFAULT_LANGUAGE;
 
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -268,8 +280,13 @@ export interface Concept {
   /** "Practising this concept also practises w of that one." Hand-set, only on prerequisite edges. */
   encompasses: { id: string; w: number }[];
   key_idea: string;
-  /** The curriculum problem its lesson ends on, solved without the lesson. */
-  solo: string;
+  /**
+   * The curriculum problems its lesson ends on, solved without the lesson: one slug, or a
+   * list when the lesson has several short tasks. Read them with `soloSlugs`.
+   */
+  solo: string | string[];
+  /** How many guided tasks the lesson has. One when left out. */
+  guided?: number;
 }
 
 /**
@@ -282,6 +299,7 @@ export type ProblemSource = "extra" | "guided";
 /** A problem's place in the curriculum: always available, even before its tests are written. */
 export interface ProblemInfo {
   slug: string;
+  /** A jq task may leave it out of the index: its file holds the title. */
   title: string;
   topic: string;
   difficulty: Difficulty;
@@ -322,11 +340,55 @@ export interface CallSpec {
   output?: "return" | "arg0";
 }
 
+/** One input a jq task is checked on, with the output the reference filter gives. */
+export interface JqTest {
+  /** The input as JSON. */
+  input?: unknown;
+  /** The input as raw text, for line-delimited JSON and `-R` tasks. */
+  input_text?: string;
+  expected?: string;
+}
+
+/**
+ * How a jq task is answered.
+ * - filter: the learner writes the filter. The task sets the flags.
+ * - command: the learner writes everything after `jq`, flags included.
+ */
+export type JqMode = "filter" | "command";
+
+/** A jq task as its file holds it. */
+export interface JqTask {
+  title?: string;
+  /** The task, in the statement subset of Markdown. */
+  statement: string;
+  mode?: JqMode;
+  /** Flags the task sets in filter mode, such as `["-r"]` or `["--arg", "name", "Ada"]`. */
+  flags?: string[];
+  /** What the editor starts with. */
+  stub?: string;
+  /** The answer key: a filter, or the text after `jq` in command mode. */
+  reference: string;
+  /** The first test is the one shown to the learner. The others are hidden. */
+  tests: JqTest[];
+  /** True when the output cannot depend on the input, as with `-n`. */
+  constant?: boolean;
+}
+
+/** The jq part of a problem. */
+export interface JqSpec {
+  mode: JqMode;
+  flags: string[];
+  tests: JqTest[];
+}
+
 export interface Problem extends ProblemInfo, CallSpec {
   compare: CompareMode;
+  /** A code problem has no `jq` stub, and a jq task has only that one. */
   stubs: Record<Language, string>;
   tests: TestCase[];
   statement: string;
+  /** Set for a jq task. */
+  jq?: JqSpec;
 }
 
 /** What was read from one course's files. */
@@ -388,15 +450,58 @@ export const problemIndex = (): ProblemInfo[] => {
   return c.index;
 };
 
-/** A lesson's guided problem has the slug `guided-<concept id>` and lives in the lesson's folder. */
+/**
+ * A lesson's guided problem has the slug `guided-<concept id>` and lives in the lesson's
+ * folder. A lesson with several guided tasks numbers the later ones: `guided-<concept id>.2`.
+ */
 const GUIDED_PREFIX = "guided-";
+const GUIDED_NUMBER = /\.(?<n>\d+)$/u;
 
-export const guidedSlug = (conceptId: string): string =>
-  `${GUIDED_PREFIX}${conceptId}`;
+export const guidedSlug = (conceptId: string, n = 1): string =>
+  n === 1
+    ? `${GUIDED_PREFIX}${conceptId}`
+    : `${GUIDED_PREFIX}${conceptId}.${n}`;
 
 /** The concept a guided problem belongs to, or null for a curriculum problem. */
 export const guidedConcept = (slug: string): string | null =>
-  slug.startsWith(GUIDED_PREFIX) ? slug.slice(GUIDED_PREFIX.length) : null;
+  slug.startsWith(GUIDED_PREFIX)
+    ? slug.slice(GUIDED_PREFIX.length).replace(GUIDED_NUMBER, "")
+    : null;
+
+/** Which of its lesson's guided tasks a guided slug is, counted from 1. */
+const guidedNumber = (slug: string): number =>
+  Number(GUIDED_NUMBER.exec(slug)?.groups?.n ?? 1);
+
+/** A lesson's guided tasks, in order. */
+export const guidedSlugs = (conceptId: string): string[] =>
+  Array.from({ length: concept(conceptId).guided ?? 1 }, (_, i) =>
+    guidedSlug(conceptId, i + 1)
+  );
+
+/** The problems a lesson ends on, in order. */
+export const soloSlugs = (conceptId: string): string[] =>
+  [concept(conceptId).solo].flat();
+
+/** The concept whose lesson ends on this problem, if any. */
+export const soloConcept = (slug: string): string | null =>
+  concepts().find((c) => [c.solo].flat().includes(slug))?.id ?? null;
+
+/** A jq task's file content, or null when it is not written. */
+const jqTask = (slug: string): JqTask | null => {
+  const conceptId = guidedConcept(slug);
+
+  if (conceptId) {
+    const file = path.join(lessonsDir(), conceptId, "guided.json");
+
+    return existsSync(file)
+      ? (readJson<JqTask[]>(file)[guidedNumber(slug) - 1] ?? null)
+      : null;
+  }
+
+  const file = path.join(problemsDir(), `${slug}.json`);
+
+  return existsSync(file) ? readJson<JqTask>(file) : null;
+};
 
 /** The folder holding a problem's statement, spec and reference solutions. */
 export const problemDir = (slug: string): string => {
@@ -409,6 +514,19 @@ export const problemDir = (slug: string): string => {
 
 export const problemInfo = (slug: string): ProblemInfo => {
   const conceptId = guidedConcept(slug);
+
+  if (conceptId && course().kind === "jq") {
+    const c = concept(conceptId);
+
+    return {
+      concepts: [conceptId],
+      difficulty: "easy",
+      slug,
+      source: "guided",
+      title: jqTask(slug)?.title ?? c.name,
+      topic: c.topic,
+    };
+  }
 
   if (conceptId) {
     const c = concept(conceptId);
@@ -432,13 +550,27 @@ export const problemInfo = (slug: string): ProblemInfo => {
     throw new Error(`Unknown problem '${slug}'.`);
   }
 
-  return found;
+  // A jq task carries its own title, so the index need not repeat it.
+  return course().kind === "jq"
+    ? { ...found, title: jqTask(slug)?.title ?? found.title ?? slug }
+    : found;
 };
 
 /** True when the problem has a statement and tests, so it can be practised. */
-export const isAuthored = (slug: string): boolean =>
-  existsSync(path.join(problemDir(slug), "spec.json")) &&
-  existsSync(path.join(problemDir(slug), "problem.md"));
+export const isAuthored = (slug: string): boolean => {
+  if (course().kind === "jq") {
+    const task = jqTask(slug);
+
+    return Boolean(
+      task?.tests.length && task.tests.every((t) => t.expected !== undefined)
+    );
+  }
+
+  return (
+    existsSync(path.join(problemDir(slug), "spec.json")) &&
+    existsSync(path.join(problemDir(slug), "problem.md"))
+  );
+};
 
 /** The lesson text for a concept, or null when it is not written yet. */
 export const lessonText = (conceptId: string): string | null => {
@@ -450,8 +582,29 @@ export const lessonText = (conceptId: string): string | null => {
 /** True when a concept has its lesson text, its guided problem and its solo problem. */
 export const hasLesson = (conceptId: string): boolean =>
   lessonText(conceptId) !== null &&
-  isAuthored(guidedSlug(conceptId)) &&
-  isAuthored(concept(conceptId).solo);
+  guidedSlugs(conceptId).every(isAuthored) &&
+  soloSlugs(conceptId).every(isAuthored);
+
+/** A jq task as a problem: the filter is its only "language", and its tests are jq runs. */
+const jqProblem = (slug: string, info: ProblemInfo): Problem => {
+  const task = jqTask(slug);
+
+  if (!task) {
+    throw new Error(`Task '${slug}' is not written yet.`);
+  }
+
+  const mode = task.mode ?? "filter";
+  const stub = task.stub ?? (mode === "filter" ? "." : "");
+
+  return {
+    ...info,
+    compare: "exact",
+    jq: { flags: task.flags ?? [], mode, tests: task.tests },
+    statement: task.statement,
+    stubs: { jq: stub, python: "", typescript: "" },
+    tests: [],
+  };
+};
 
 export const problem = (slug: string): Problem => {
   const cached = cache().problems.get(slug);
@@ -464,6 +617,13 @@ export const problem = (slug: string): Problem => {
 
   if (!isAuthored(slug)) {
     throw new Error(`Problem '${slug}' has no tests yet.`);
+  }
+
+  if (course().kind === "jq") {
+    const task = jqProblem(slug, info);
+    cache().problems.set(slug, task);
+
+    return task;
   }
 
   const spec = readJson<Omit<Problem, keyof ProblemInfo | "statement">>(
@@ -486,6 +646,10 @@ export const referenceSolution = (
   slug: string,
   language: Language
 ): string | null => {
+  if (course().kind === "jq") {
+    return jqTask(slug)?.reference ?? null;
+  }
+
   const file = path.join(problemDir(slug), `reference.${EXTENSIONS[language]}`);
 
   return existsSync(file) ? readFileSync(file, "utf-8") : null;
@@ -535,36 +699,38 @@ export const withPrereqs = (conceptIds: string[]): string[] => {
   return ordered;
 };
 
-/** Every lesson ends on its own problem, and that problem needs nothing taught later. */
+/** Every lesson ends on its own problems, and they need nothing taught later. */
 const soloErrors = (conceptIds: Set<string>): string[] => {
   const errors: string[] = [];
   const solos = new Set<string>();
 
   for (const c of concepts()) {
-    const solo = problemIndex().find((p) => p.slug === c.solo);
-
-    if (!solo) {
-      errors.push(`concept ${c.id}: unknown solo problem ${c.solo}`);
-      continue;
-    }
-
-    if (solos.has(c.solo)) {
-      errors.push(`concept ${c.id}: solo problem ${c.solo} is used twice`);
-    }
-
-    solos.add(c.solo);
-
-    if (!solo.concepts.includes(c.id)) {
-      errors.push(`concept ${c.id}: solo problem ${c.solo} does not use it`);
-    }
-
     const known = new Set(conceptIds.has(c.id) ? withPrereqs([c.id]) : []);
 
-    for (const other of solo.concepts) {
-      if (!known.has(other)) {
-        errors.push(
-          `concept ${c.id}: solo problem ${c.solo} needs ${other}, which is not a prerequisite`
-        );
+    for (const slug of [c.solo].flat()) {
+      const solo = problemIndex().find((p) => p.slug === slug);
+
+      if (!solo) {
+        errors.push(`concept ${c.id}: unknown solo problem ${slug}`);
+        continue;
+      }
+
+      if (solos.has(slug)) {
+        errors.push(`concept ${c.id}: solo problem ${slug} is used twice`);
+      }
+
+      solos.add(slug);
+
+      if (!solo.concepts.includes(c.id)) {
+        errors.push(`concept ${c.id}: solo problem ${slug} does not use it`);
+      }
+
+      for (const other of solo.concepts) {
+        if (!known.has(other)) {
+          errors.push(
+            `concept ${c.id}: solo problem ${slug} needs ${other}, which is not a prerequisite`
+          );
+        }
       }
     }
   }

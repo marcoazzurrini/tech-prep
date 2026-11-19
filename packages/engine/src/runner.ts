@@ -4,6 +4,7 @@ import path from "node:path";
 
 import { EXTENSIONS, functionName } from "./content.ts";
 import type { CompareMode, Language, Problem } from "./content.ts";
+import { runJq } from "./jq.ts";
 
 const TIMEOUT_MS = 10_000;
 const HARNESS_DIR = path.join(import.meta.dir, "harness");
@@ -98,7 +99,7 @@ export const runTests = (
   language: Language,
   file: string
 ): RunResult => {
-  const total = problem.tests.length;
+  const total = problem.jq?.tests.length ?? problem.tests.length;
 
   if (!existsSync(file)) {
     return {
@@ -107,6 +108,10 @@ export const runTests = (
       passed: 0,
       total,
     };
+  }
+
+  if (language === "jq") {
+    return runJq(problem, readFileSync(file, "utf-8"));
   }
 
   ensureDataStructures(path.dirname(file), language);

@@ -1,0 +1,174 @@
+.tp-task-strip {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-accent-line);
+  background: var(--color-accent-bg);
+}
+
+.tp-task-strip__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tp-task-strip__label {
+  flex: 1;
+  margin: 0;
+  color: var(--color-accent);
+  font: 600 12px/16px var(--font-sans);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tp-task-strip__dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tp-task-strip__dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-line);
+}
+
+.tp-task-strip__dots .tp-task-strip__dot--done {
+  background: var(--color-green);
+}
+
+.tp-task-strip__dots .tp-task-strip__dot--now {
+  width: 20px;
+  background: var(--color-accent);
+}
+
+.tp-task-strip h2 {
+  margin: 0;
+  color: var(--color-ink);
+  font: 600 18px/26px var(--font-sans);
+}
+
+/* The statement inside the strip needs no padding of its own. */
+.tp-task-strip .tp-statement {
+  max-width: none;
+  padding: 0;
+}
+
+.tp-outputs {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid var(--color-border);
+  container-type: inline-size;
+}
+
+.tp-outputs__grid {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+
+/* With the input: beside the outputs when there is room, above them when there is not. */
+.tp-outputs__grid--input {
+  grid-template-rows: minmax(0, auto) minmax(0, 1fr);
+}
+
+.tp-outputs__grid--input > .tp-output {
+  max-height: 40cqh;
+  border-bottom: 1px solid var(--color-border);
+}
+
+@container (min-width: 760px) {
+  .tp-outputs__grid--input {
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .tp-outputs__grid--input > .tp-output {
+    max-height: none;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 0;
+  }
+}
+
+.tp-outputs__pair {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 0;
+}
+
+.tp-outputs__pair > .tp-output + .tp-output {
+  border-top: 1px solid var(--color-border);
+}
+
+.tp-output {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 16px 24px;
+  overflow: auto;
+}
+
+.tp-output header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+}
+
+.tp-output h3 {
+  flex: 1;
+  margin: 0;
+  color: var(--color-mute);
+  font: 600 12px/16px var(--font-sans);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tp-output__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 13px/18px var(--font-sans);
+}
+
+.tp-output__state--matches {
+  color: var(--color-green);
+}
+
+.tp-output__state--differs {
+  color: var(--color-amber);
+}
+
+.tp-output__state--error {
+  color: var(--color-red);
+}
+
+.tp-output pre {
+  margin: 0;
+  color: var(--color-body);
+  font: 400 14px/24px var(--font-mono);
+  font-feature-settings:
+    "calt" 0,
+    "liga" 0;
+  white-space: pre;
+}
+
+.tp-output pre.tp-output__text--error {
+  color: var(--color-red);
+  white-space: pre-wrap;
+}
+
+.tp-output__empty {
+  margin: 0;
+  color: var(--color-dim);
+  font: 400 14px/24px var(--font-sans);
+}

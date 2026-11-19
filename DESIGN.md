@@ -99,6 +99,8 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 **Lesson layout.** A lesson's first step splits the main pane in two: the lesson text on the left, the work on the right. The text ends in a "Your turn" box on `accent-bg`, which holds the task. Its second step shows the problem alone. The top bar shows the two steps as dots.
 
+**jq task.** A jq task is short, so everything about it sits in one pane: a task strip on `accent-bg` with a dot per task, a filter editor a few lines tall, then the input, the learner's output and the wanted output on the canvas colour. The output updates as the learner types and says "Matches" in green, "Differs" in amber or "Error" in red, with jq's own error text. The input sits beside the outputs when the pane is wide and above them when it is narrow. On their own, the learner sees the statement and the input on the left and the filter on the right.
+
 **Focused screens.** Reviews have no lessons column, no chapter name and no lesson, so nothing on screen names the approach. A review puts the problem on the left and the editor on the right. Screens that are read, not worked in, such as the list of reviews, use one centred column.
 
 **Large displays.** The UI keeps its size on every display: nothing scales up. A wider window gives the extra room to the lesson. On windows 2200px wide or more, the tutor pane also widens, from 380px to 576px, for longer chat lines. Lesson content stays aligned to the left edge of the pane, as on smaller screens.

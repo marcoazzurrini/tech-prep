@@ -32,6 +32,10 @@ export {
 
 export type { TestStatus } from "./components/exercise";
 
+export { OutputPanel, OutputPanels, TaskStrip } from "./components/jq";
+
+export type { OutputState } from "./components/jq";
+
 export {
   EmptyState,
   LessonPane,

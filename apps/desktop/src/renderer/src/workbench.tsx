@@ -15,7 +15,7 @@ import type { Code, GaveUp, Handed, Problem, Result, Run } from "./types";
 /** Wait this long after the last keystroke before saving. */
 const SAVE_DELAY_MS = 400;
 
-const EXTENSION = { python: "py", typescript: "ts" };
+const EXTENSION = { jq: "jq", python: "py", typescript: "ts" };
 
 /** Why a case failed, in one line. */
 const detail = (c: Run["cases"][number]): string | undefined => {

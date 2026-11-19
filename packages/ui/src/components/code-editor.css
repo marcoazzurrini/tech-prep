@@ -11,3 +11,10 @@
   overflow: hidden;
   background: var(--color-canvas);
 }
+
+/* A short answer: five lines and the status strip. */
+.tp-editor--compact {
+  flex: none;
+  height: 132px;
+  min-height: 0;
+}
