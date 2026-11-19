@@ -45,7 +45,9 @@ const shownOutput = (preview: JqPreview): string =>
 /** A jq task's input, for the column that holds its statement. */
 export const JqInput = ({ jq }: { jq: JqTask }) => (
   <>
-    <p className="tp-task-text__label">Input · {jq.file}</p>
+    <p className="tp-task-text__label">
+      Input<code> · {jq.file}</code>
+    </p>
     <CodeBlock code={jq.input} />
     {jq.command && (
       <>
@@ -120,7 +122,7 @@ const Asked = ({
   shown: boolean;
 }) => (
   <OutputStack>
-    {shown && <OutputPanel label={`Input · ${jq.file}`} text={jq.input} />}
+    {shown && <OutputPanel file={jq.file} label="Input" text={jq.input} />}
     {shown && jq.command && <OutputPanel label="Command" text={jq.command} />}
   </OutputStack>
 );
@@ -369,7 +371,7 @@ export const JqWorkbench = ({
         <OutputPanels
           input={
             strip && (
-              <OutputPanel label={`Input · ${jq.file}`} text={jq.input} />
+              <OutputPanel file={jq.file} label="Input" text={jq.input} />
             )
           }
           wanted={
