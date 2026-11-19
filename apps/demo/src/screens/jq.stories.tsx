@@ -63,14 +63,20 @@ const JqScreen = ({ screen }: { screen: Screen }) => {
   return (
     <LessonPane>
       <TopBar
-        chapter="Streams and Arrays"
-        lesson="Keep Items with select"
-        position={
-          solo
-            ? "Step 2 of 2 · On your own · Task 1 of 2"
-            : "Step 1 of 2 · With the lesson · Task 1 of 3"
-        }
-        steps={{ at: solo ? 1 : 0, count: 2 }}
+        trail={[
+          { label: "Keep what passes a test", onSelect: fn(), state: "done" },
+          {
+            label: "Compare a field",
+            onSelect: fn(),
+            state: solo ? "done" : "current",
+          },
+          {
+            label: "Take one field",
+            onSelect: solo ? fn() : undefined,
+            state: solo ? "done" : "todo",
+          },
+          { label: "On your own", state: solo ? "current" : "todo" },
+        ]}
         tutorOpen={false}
         onToggleTutor={fn()}
       />
@@ -103,11 +109,7 @@ const JqScreen = ({ screen }: { screen: Screen }) => {
         </SplitSide>
         <SplitSide stack>
           {!solo && (
-            <TaskStrip
-              label="Task 1 of 3 · with the lesson"
-              tasks={{ done: right ? 1 : 0, total: 3 }}
-              title="Active users"
-            >
+            <TaskStrip label="Try it" title="Active users">
               <ProblemStatement text="Give the name of every user who is active." />
             </TaskStrip>
           )}

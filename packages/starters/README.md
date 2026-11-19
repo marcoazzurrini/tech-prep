@@ -53,7 +53,7 @@ The course takes a learner who has never seen jq to fluent use. A lesson starts 
 
 Tasks are short, so a lesson has several: a concept in `curriculum/concepts.json` sets how many guided tasks it has in `"guided"` and lists its solo tasks in `"solo"`. The other tasks in `curriculum/problems.json` are for reviews. A concept can be listed before its lesson is written; the app shows it as not written yet.
 
-- `lessons/<concept id>/lesson.md`: the lesson, written in parts. Each part teaches one small idea and ends with a line that holds only `<!-- task -->`. The first part goes with the first guided task, and so on. The text after the last marker is the summary. The app shows a part when its task comes up, so reading and doing alternate.
+- `lessons/<concept id>/lesson.md`: the lesson, written in parts. Each part teaches one small idea and ends with a line that holds only `<!-- task -->`. The first part goes with the first guided task, and so on. The text after the last marker is the summary; the app shows it under the last part. The app shows one part at a time, beside its task, so reading and doing alternate. A part is named by its first `## ` heading, and the app lists these names in the top bar. Start every part after the first with that heading, and keep it short.
 - `lessons/<concept id>/guided.json`: the guided tasks, in order.
 - `problems/<slug>.json`: one solo or review task.
 

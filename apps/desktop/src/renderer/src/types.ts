@@ -207,6 +207,8 @@ export interface Lesson {
   step: 1 | 2;
   /** The guided task to do now, and how many of the step's tasks are done. */
   guided: Problem;
+  /** Every guided task in order: one per part of the lesson. */
+  guided_slugs: string[];
   guided_tasks: { done: number; total: number };
   /** The solo task to do now, and how many of the step's tasks are solved alone. */
   solo: Problem;

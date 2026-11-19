@@ -41,6 +41,23 @@ export const WithSteps: Story = {
   },
 };
 
+/** A lesson in parts lists them in place of the chapter and the lesson, which the sidebar names. */
+export const WithTrail: Story = {
+  args: {
+    chapter: undefined,
+    lesson: undefined,
+    onNext: undefined,
+    onPrevious: undefined,
+    position: undefined,
+    trail: [
+      { label: "Keep what passes a test", onSelect: fn(), state: "done" },
+      { label: "Compare a field", onSelect: fn(), state: "current" },
+      { label: "Take one field", state: "todo" },
+      { label: "On your own", state: "todo" },
+    ],
+  },
+};
+
 /** A review names no chapter, so nothing gives its pattern away. */
 export const Review: Story = {
   args: {

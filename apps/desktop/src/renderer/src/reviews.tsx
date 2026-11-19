@@ -363,11 +363,6 @@ export const ReviewSession = ({
 
   const number = done.length + 1;
 
-  const finish = (result: Finished) => {
-    setFinished(result);
-    onChanged();
-  };
-
   const end = async () => {
     if (!finished) {
       await engine("attempt.pause", { slug: problem.slug });
@@ -377,18 +372,29 @@ export const ReviewSession = ({
     onEnd();
   };
 
-  const advance = async () => {
-    if (finished) {
-      setDone((all) => [
-        ...all,
-        { result: finished.result, title: problem.title },
-      ]);
+  /** Open the next review, after noting how this one ended. */
+  const advance = async (last: Finished | null) => {
+    if (last) {
+      setDone((all) => [...all, { result: last.result, title: problem.title }]);
     }
 
     const upcoming = await nextReview(only);
     setFinished(null);
     setProblem(upcoming);
     onChanged();
+  };
+
+  /**
+   * A review solved without help opens the next one by itself; the closing summary lists it.
+   * One that needed help stays on screen, so the learner can read what it reviewed.
+   */
+  const finish = (result: Finished) => {
+    if (result.result.outcome === "solved") {
+      void advance(result);
+    } else {
+      setFinished(result);
+      onChanged();
+    }
   };
 
   return (
@@ -443,7 +449,7 @@ export const ReviewSession = ({
                           <Button
                             variant="primary"
                             onClick={() => {
-                              void advance();
+                              void advance(finished);
                             }}
                           >
                             Next review
@@ -470,7 +476,7 @@ export const ReviewSession = ({
                           <Button
                             variant="primary"
                             onClick={() => {
-                              void advance();
+                              void advance(finished);
                             }}
                           >
                             Next review

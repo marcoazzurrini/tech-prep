@@ -141,20 +141,3 @@
   color: var(--color-mute);
   font: 400 14px/22px var(--font-sans);
 }
-
-/* A lesson read in parts: each part goes with one task. */
-.tp-lesson-text__part {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  scroll-margin-top: 24px;
-}
-
-.tp-lesson-text__part + .tp-lesson-text__part {
-  padding-top: 28px;
-  border-top: 1px solid var(--color-border);
-}
-
-.tp-lesson-text__part > h2:first-child {
-  margin-top: 0;
-}
