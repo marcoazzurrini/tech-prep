@@ -6,8 +6,6 @@ import { createEmptyCard, Rating } from "ts-fsrs";
 import {
   concept,
   concepts,
-  hasLesson,
-  isAuthored,
   problemIndex,
   soloSlugs,
   topics,
@@ -18,6 +16,7 @@ import type { AttemptRow, Stage } from "./db.ts";
 import { problemCredit } from "./fire.ts";
 import { cardOf, explicitReview, isDue, retrievability } from "./memory.ts";
 import type { Source } from "./memory.ts";
+import { hasLesson, isAuthored } from "./tasks.ts";
 
 const DAY_MS = 86_400_000;
 

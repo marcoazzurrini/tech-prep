@@ -28,12 +28,20 @@ export interface Problem {
   difficulty: Difficulty;
   statement: string | null;
   status: ProblemStatus;
-  /** Set for a jq task: what it shows beside the statement. */
-  jq: JqTask | null;
+  /** What the workbench of this kind of task shows. Null while the task is not written. */
+  task: TaskView | null;
 }
+
+/** What a task shows beyond its statement. Each kind of task has its own workbench. */
+export type TaskView = { kind: "code" } | JqTask;
+
+/** The jq part of a problem, when its course's tasks are jq commands. */
+export const jqOf = (problem: Problem): JqTask | null =>
+  problem.task?.kind === "jq" ? problem.task : null;
 
 /** A jq task: its input, the output to produce, and how the learner answers. */
 export interface JqTask {
+  kind: "jq";
   /**
    * False: the learner types the whole jq command, as in a terminal. True: they type the
    * value that comes out, and see no output while typing.
@@ -49,7 +57,7 @@ export interface JqTask {
   hidden: number;
 }
 
-/** From the bridge's `jq.preview` method: what the learner's text prints on the shown input. */
+/** From the bridge's `task.preview` method: what the learner's text prints on the shown input. */
 export interface JqPreview {
   output: string;
   error: string | null;
@@ -162,8 +170,8 @@ export interface Course {
     id: string;
     name: string;
     initials: string;
-    /** What a task is: code checked by tests, or a jq filter checked by its output. */
-    kind: "code" | "jq";
+    /** What the course calls its tasks. */
+    noun: "problems" | "tasks";
   };
   /** Every course the app found, with its concepts due for review. */
   courses: { id: string; name: string; initials: string; due: number }[];

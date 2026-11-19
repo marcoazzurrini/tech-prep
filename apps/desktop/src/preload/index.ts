@@ -27,14 +27,14 @@ const api = {
       | "course.select"
       | "exercise.close"
       | "exercise.submit"
-      | "jq.preview"
       | "lesson"
       | "lesson.open"
       | "lesson.peek"
       | "problem"
       | "review.next"
       | "reviews"
-      | "session",
+      | "session"
+      | "task.preview",
     params?: {
       slug?: string;
       text?: string;

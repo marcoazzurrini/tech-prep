@@ -11,16 +11,11 @@ import {
   concept,
   concepts,
   courseErrors,
-  courseLanguage,
   courses,
   guidedConcept,
   guidedSlugs,
-  hasLesson,
-  isAuthored,
   lessonText,
-  problem,
   problemIndex,
-  problemInfo,
   savedCourse,
   selectCourse,
   soloConcept,
@@ -31,7 +26,6 @@ import type { Course, Difficulty } from "./content.ts";
 import { addHint, closeExercises, exerciseRow, openExercise } from "./db.ts";
 import type { AttemptRow, Confidence } from "./db.ts";
 import { exerciseView, submitExercise } from "./exercises.ts";
-import { previewJq, showJson } from "./jq.ts";
 import { cardOf } from "./memory.ts";
 import {
   attemptOn,
@@ -61,45 +55,27 @@ import {
   reviewPlan,
   soloWait,
 } from "./scheduler.ts";
+import {
+  courseLanguage,
+  hasLesson,
+  isAuthored,
+  previewTask,
+  problem,
+  problemInfo,
+  taskType,
+  taskView,
+} from "./tasks.ts";
 
 /** A course as the app names it. */
 const subject = (course: Course) => {
-  const { id, initials, kind, name } = course;
+  const { id, initials, name } = course;
 
-  return { id, initials, kind, name };
+  return { id, initials, name, noun: taskType(course).noun };
 };
 
-/** A rough time to solve a problem, for the review estimate. A jq task is much shorter. */
-const MINUTES: Record<Difficulty, number> = { easy: 8, hard: 25, medium: 15 };
-const JQ_MINUTES: Record<Difficulty, number> = { easy: 2, hard: 6, medium: 4 };
-
+/** A rough time to solve a problem, for the review estimate. */
 const minutes = (course: Course, difficulty: Difficulty): number =>
-  (course.kind === "jq" ? JQ_MINUTES : MINUTES)[difficulty];
-
-/** What a jq task shows beside its statement: the input, the wanted output and how to answer. */
-const jqView = (course: Course, slug: string) => {
-  const spec = isAuthored(course, slug) ? problem(course, slug).jq : undefined;
-  const [shown] = spec?.tests ?? [];
-
-  if (!spec || !shown) {
-    return null;
-  }
-
-  const { predict } = spec;
-
-  return {
-    /** The command a predict task asks about, when it shows one. */
-    command: spec.shown,
-    /** The file the input is in. The learner's command names it. */
-    file: spec.file,
-    /** How many inputs Submit checks beyond the one shown. */
-    hidden: predict ? 0 : spec.tests.length - 1,
-    input: shown.input_text?.trimEnd() ?? showJson(shown.input),
-    predict,
-    // A predict task asks for the output, so it is not sent.
-    wanted: predict ? "" : (shown.expected ?? ""),
-  };
-};
+  taskType(course).minutes[difficulty];
 
 /** One problem as the app shows it. It carries no topic, so a review does not give its pattern away. */
 const problemView = (course: Course, slug: string) => {
@@ -107,12 +83,13 @@ const problemView = (course: Course, slug: string) => {
 
   return {
     difficulty: info.difficulty,
-    jq: jqView(course, slug),
     slug,
     statement: isAuthored(course, slug)
       ? problem(course, slug).statement
       : null,
     status: problemStatus(course, slug),
+    // What the workbench of this kind of task shows. Null while the task is not written.
+    task: taskView(course, slug),
     title: info.title,
   };
 };
@@ -441,9 +418,16 @@ const readCode = (course: Course, params: Params) => {
   };
 };
 
-/** What the learner's filter prints on the shown input, as they type. Nothing is recorded. */
-const preview = (course: Course, params: Params) =>
-  previewJq(problem(course, slugOf(params)), params?.text ?? "");
+/** What the learner's text prints on the shown input, as they type. Nothing is recorded. */
+const preview = (course: Course, params: Params) => {
+  const seen = previewTask(course, slugOf(params), params?.text ?? "");
+
+  if (!seen) {
+    throw new Error("This kind of task shows no output while typing.");
+  }
+
+  return seen;
+};
 
 const saveCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
@@ -562,7 +546,7 @@ const methods = new Map<string, (course: Course, params: Params) => object>([
   ["course.select", select],
   ["exercise.close", closeExercise],
   ["exercise.submit", submit],
-  ["jq.preview", preview],
+  ["task.preview", preview],
   ["lesson", lesson],
   ["lesson.open", openLesson],
   ["lesson.peek", peekLesson],

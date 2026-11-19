@@ -1,13 +1,127 @@
-// Runs jq tasks. The learner types a whole jq command, as in a terminal. It runs on each
+// The jq task type. The learner types a whole jq command, as in a terminal. It runs on each
 // test input, and what it prints is compared with what the reference command printed.
 
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import type { JqSpec, JqTest, Problem } from "./content.ts";
+import {
+  guidedConcept,
+  guidedNumber,
+  lessonsDir,
+  problemsDir,
+  readJson,
+} from "./content.ts";
+import type { Course, ProblemInfo } from "./content.ts";
 import type { CaseResult, RunResult } from "./runner.ts";
+import type { Preview, Problem, TaskType } from "./tasks.ts";
+
+/** One input a jq task is checked on, with the output the reference filter gives. */
+export interface JqTest {
+  /** The input as JSON. */
+  input?: unknown;
+  /** The input as raw text, for line-delimited JSON and `-R` tasks. */
+  input_text?: string;
+  expected?: string;
+}
+
+/**
+ * How a jq task is written. The learner always types the whole command, as in a terminal:
+ * `jq 'filter' data.json`. The mode says what the task's `reference` and `stub` hold.
+ * - filter: the filter alone. The engine adds `jq`, the quotes and the file name.
+ * - command: everything after `jq` except the file name, flags included. The output text
+ *   must then match exactly, because the flags are the point.
+ * - predict: a filter. The learner reads the input, and the command when it is shown, and
+ *   types the value that comes out. Nothing runs while they type.
+ */
+export type JqMode = "filter" | "command" | "predict";
+
+/** A jq task as its file holds it. */
+export interface JqTask {
+  title?: string;
+  /** The task, in the statement subset of Markdown. */
+  statement: string;
+  mode?: JqMode;
+  /** Flags a filter task's command needs, such as `["-r"]`. The learner types them. */
+  flags?: string[];
+  /** The file the input is in. `data.json` when left out. */
+  file?: string;
+  /**
+   * What the editor starts with, in the same form as `reference`. Left out, the editor
+   * starts empty and the learner types the whole command.
+   */
+  stub?: string;
+  /** The answer key: a filter, or the text after `jq` in command mode. */
+  reference: string;
+  /** In a predict task: show the command, so the learner works out what it prints. */
+  show_filter?: boolean;
+  /** The first test is the one shown to the learner. The others are hidden. */
+  tests: JqTest[];
+  /** True when the output cannot depend on the input, as with `-n`. */
+  constant?: boolean;
+}
+
+/** The jq part of a problem. */
+export interface JqSpec {
+  /** True when the learner types the output and not a command. */
+  predict: boolean;
+  /** True when the output text must match exactly. Otherwise outputs are compared as values. */
+  exact: boolean;
+  /** The name of the file the input is in. The learner's command reads it. */
+  file: string;
+  tests: JqTest[];
+  /** The command a predict task shows, when it shows one. */
+  shown: string | null;
+}
+
+const NO_INPUT = /(?:^|\s)(?:-n|--null-input)(?:\s|$)/u;
+
+/** The file a jq task's input is in. */
+const jqFile = (task: JqTask): string =>
+  task.file ??
+  (task.tests[0]?.input_text === undefined ? "data.json" : "data.jsonl");
+
+/**
+ * The whole command for a task's filter, or for its text after `jq`: what a learner would
+ * type in a terminal. A command that reads no input gets no file name.
+ */
+export const jqCommand = (task: JqTask, text: string): string => {
+  const head =
+    task.mode === "command"
+      ? text
+      : [...(task.flags ?? []), `'${text}'`].join(" ");
+
+  return `jq ${head}${NO_INPUT.test(head) ? "" : ` ${jqFile(task)}`}`;
+};
+
+/** What the editor starts with: empty, or a whole command to change. */
+export const jqProblemStub = (task: JqTask): string => {
+  const stub = task.stub?.trim() ?? "";
+
+  // `.` and `'.'` are the "nothing yet" filters: the learner then starts from an empty line.
+  return !stub || stub === "." || stub === "'.'" || task.mode === "predict"
+    ? ""
+    : jqCommand(task, stub);
+};
+
+/** How a jq task is run and checked. */
+export const jqSpec = (task: JqTask): JqSpec => ({
+  exact: task.mode === "command" || Boolean(task.flags?.length),
+  file: jqFile(task),
+  predict: task.mode === "predict",
+  shown:
+    task.mode === "predict" && task.show_filter
+      ? jqCommand(task, task.reference)
+      : null,
+  tests: task.tests,
+});
 
 const TIMEOUT_MS = 5000;
 
@@ -282,13 +396,7 @@ const predicted = (spec: JqSpec, text: string): RunResult => {
 };
 
 /** Run the learner's text on every test of a jq task. */
-export const runJq = (problem: Problem, text: string): RunResult => {
-  const spec = problem.jq;
-
-  if (!spec) {
-    throw new Error(`'${problem.slug}' is not a jq task.`);
-  }
-
+export const runJq = (spec: JqSpec, text: string): RunResult => {
   if (spec.predict) {
     return predicted(spec, text);
   }
@@ -315,16 +423,11 @@ export const runJq = (problem: Problem, text: string): RunResult => {
 };
 
 /** What the learner's text prints on the shown input, for the live output panel. */
-export const previewJq = (problem: Problem, text: string) => {
-  const spec = problem.jq;
-  const [shown] = spec?.tests ?? [];
-
-  if (!spec || !shown) {
-    throw new Error(`'${problem.slug}' is not a jq task.`);
-  }
+export const previewJq = (spec: JqSpec, text: string): Preview => {
+  const [shown] = spec.tests;
 
   // Nothing typed yet is not an error, and a predict task shows no output at all.
-  if (!text.trim() || spec.predict) {
+  if (!shown || !text.trim() || spec.predict) {
     return { error: null, matches: false, output: "" };
   }
 
@@ -335,4 +438,129 @@ export const previewJq = (problem: Problem, text: string) => {
     matches: !ran.error && sameOutput(spec, ran.output, shown.expected ?? ""),
     output: ran.output,
   };
+};
+
+/** A jq task's file content, or null when it is not written. */
+const taskFile = (course: Course, slug: string): JqTask | null => {
+  const conceptId = guidedConcept(slug);
+
+  // A lesson's guided tasks share one file, in order.
+  if (conceptId) {
+    const file = path.join(lessonsDir(course), conceptId, "guided.json");
+
+    return existsSync(file)
+      ? (readJson<JqTask[]>(file)[guidedNumber(slug) - 1] ?? null)
+      : null;
+  }
+
+  const file = path.join(problemsDir(course), `${slug}.json`);
+
+  return existsSync(file) ? readJson<JqTask>(file) : null;
+};
+
+/** A jq task as a problem: its command is its only "language", and its tests are jq runs. */
+interface JqProblem extends Problem {
+  jq: JqSpec;
+}
+
+/** Every jq task read so far, per course. */
+const loaded = new WeakMap<Course, Map<string, JqProblem>>();
+
+const load = (course: Course, info: ProblemInfo): JqProblem => {
+  const cached = loaded.get(course)?.get(info.slug);
+
+  if (cached) {
+    return cached;
+  }
+
+  const task = taskFile(course, info.slug);
+
+  if (!task) {
+    throw new Error(`Task '${info.slug}' is not written yet.`);
+  }
+
+  const read: JqProblem = {
+    ...info,
+    jq: jqSpec(task),
+    statement: task.statement,
+    stubs: { jq: jqProblemStub(task) },
+  };
+
+  loaded.set(course, (loaded.get(course) ?? new Map()).set(info.slug, read));
+
+  return read;
+};
+
+export const jqTasks: TaskType = {
+  appView: (course, info) => {
+    const spec = load(course, info).jq;
+    const [shown] = spec.tests;
+    const { predict } = spec;
+
+    return {
+      command: spec.shown,
+      file: spec.file,
+      hidden: predict ? 0 : spec.tests.length - 1,
+      input: shown?.input_text?.trimEnd() ?? showJson(shown?.input),
+      kind: "jq",
+      predict,
+      // A predict task asks for the output, so it is not sent.
+      wanted: predict ? "" : (shown?.expected ?? ""),
+    };
+  },
+  isAuthored: (course, slug) => {
+    const task = taskFile(course, slug);
+
+    return Boolean(
+      task?.tests.length && task.tests.every((t) => t.expected !== undefined)
+    );
+  },
+  language: "jq",
+  load,
+  minutes: { easy: 2, hard: 6, medium: 4 },
+  noun: "tasks",
+  preview: (course, info, text) => previewJq(load(course, info).jq, text),
+  reference: (course, slug) => {
+    const task = taskFile(course, slug);
+
+    if (!task) {
+      return null;
+    }
+
+    // The answer to a predict task is the output, not the command that made it.
+    return task.mode === "predict"
+      ? (task.tests[0]?.expected ?? null)
+      : jqCommand(task, task.reference);
+  },
+  retakeFromStub: true,
+  run: (course, info, _language, file) => {
+    const spec = load(course, info).jq;
+
+    return existsSync(file)
+      ? runJq(spec, readFileSync(file, "utf-8"))
+      : {
+          cases: [],
+          fatal: `Solution file not found: ${file}`,
+          passed: 0,
+          total: spec.tests.length,
+        };
+  },
+  // The engine checks an exercise by running its code, and it runs TypeScript and Python only.
+  runsExerciseCode: false,
+  title: (course, slug) => taskFile(course, slug)?.title,
+  tutorView: (course, info) => {
+    const spec = load(course, info).jq;
+    const [shown] = spec.tests;
+
+    return shown
+      ? {
+          answer_is: spec.predict
+            ? "the value that comes out, typed as JSON. They cannot see the wanted output, so never state it."
+            : `the whole jq command, as in a terminal, reading the file ${spec.file}`,
+          input: inputText(shown),
+          input_file: spec.file,
+          wanted_output: shown.expected,
+        }
+      : null;
+  },
 };

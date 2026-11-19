@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
 import { JqInput, JqWorkbench } from "./jq-workbench";
+import { jqOf } from "./types";
 import type { Lesson, Problem, Result, Reviews } from "./types";
 import { Workbench } from "./workbench";
 import type { Finished } from "./workbench";
@@ -430,16 +431,15 @@ export const ReviewSession = ({
             title={problem.title}
           >
             <ProblemStatement text={problem.statement ?? ""} />
-            {problem.jq && <JqInput jq={problem.jq} />}
+            <JqInput problem={problem} />
             {finished && (
               <Verdict finished={finished} onOpenLesson={onOpenLesson} />
             )}
           </TaskText>
         </SplitSide>
         <SplitSide stack>
-          {problem.jq ? (
+          {jqOf(problem) ? (
             <JqWorkbench
-              jq={problem.jq}
               done={
                 finished
                   ? {
