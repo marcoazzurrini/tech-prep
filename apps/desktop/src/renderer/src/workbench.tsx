@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { engine } from "./course";
-import type { Code, GaveUp, Handed, Problem, Result, Run } from "./types";
+import type { Code, Problem, Result, Run } from "./types";
 
 /** Wait this long after the last keystroke before saving. */
 const SAVE_DELAY_MS = 400;
@@ -98,7 +98,7 @@ export const Workbench = ({
     let current = true;
 
     const load = async () => {
-      const loaded = await engine<Code>("code.read", { slug });
+      const loaded = await engine("code.read", { slug });
 
       if (current) {
         text.current = loaded.text;
@@ -157,12 +157,12 @@ export const Workbench = ({
 
   const test = () =>
     act(async () => {
-      setRun(await engine<Run>("code.run", { slug }));
+      setRun(await engine("code.run", { slug }));
     });
 
   const submit = () =>
     act(async () => {
-      const handed = await engine<Handed>("code.submit", { slug });
+      const handed = await engine("code.submit", { slug });
       setRun(handed.run);
 
       if (handed.result) {
@@ -172,7 +172,7 @@ export const Workbench = ({
 
   const giveUp = () =>
     act(async () => {
-      const gave = await engine<GaveUp>("attempt.give_up", { slug });
+      const gave = await engine("attempt.give_up", { slug });
       setSolution(gave.solution);
       onFinished(gave);
     });

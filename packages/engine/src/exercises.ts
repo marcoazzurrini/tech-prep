@@ -415,7 +415,7 @@ export const submitExercise = (
   }
 
   // SAFETY: `showExercise` stores the language as a Language.
-  const language = row.language as Language;
+  const { language } = row;
 
   const correct =
     key.kind === "predict"

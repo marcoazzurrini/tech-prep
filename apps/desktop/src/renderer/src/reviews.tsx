@@ -59,7 +59,7 @@ export const ReviewsScreen = ({
 
   useEffect(() => {
     const load = async () => {
-      setReviews(await engine<Reviews>("reviews"));
+      setReviews(await engine("reviews"));
       setToday(formatDay(new Date().toISOString()));
     };
 
@@ -147,7 +147,7 @@ export const ReviewsScreen = ({
 
 /** Open the next review in the engine, of one track or of all. Null when nothing is left. */
 const nextReview = async (course?: string): Promise<Problem | null> => {
-  const reply = await engine<{ problem: Problem | null }>("review.next", {
+  const reply = await engine("review.next", {
     course,
   });
 

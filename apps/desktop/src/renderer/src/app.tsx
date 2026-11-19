@@ -8,7 +8,7 @@ import { LessonScreen } from "./lesson";
 import { Lessons } from "./lessons";
 import { ReviewSession, ReviewsScreen } from "./reviews";
 import { Tutor } from "./tutor";
-import type { Course, Reviews, Session } from "./types";
+import type { Course, Session } from "./types";
 
 /** What the main pane shows. */
 type View =
@@ -31,8 +31,8 @@ export const App = () => {
   const refresh = useCallback(() => {
     const load = async () => {
       const [nextCourse, nextSession] = await Promise.all([
-        engine<Course>("course"),
-        engine<Session>("session"),
+        engine("course"),
+        engine("session"),
       ]);
 
       setCourse(nextCourse);
@@ -121,7 +121,7 @@ export const App = () => {
   /** Start the reviews of one track, or of every track when none is named. */
   const startReviews = useCallback((track?: string) => {
     const start = async () => {
-      const reviews = await engine<Reviews>("reviews");
+      const reviews = await engine("reviews");
       const chosen = reviews.tracks.find((t) => t.id === track);
 
       setView({
@@ -140,7 +140,7 @@ export const App = () => {
       const change = async () => {
         await engine("exercise.close");
         await engine("course.select", { course: id });
-        const next = await engine<Course>("course");
+        const next = await engine("course");
         const lesson = next.next_lesson ?? next.topics[0]?.lessons[0]?.id;
 
         setCourse(next);

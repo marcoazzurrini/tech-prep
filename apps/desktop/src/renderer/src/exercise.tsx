@@ -250,7 +250,7 @@ export const ExercisePane = ({
     setSending(true);
 
     try {
-      const submission = await engine<Submission>("exercise.submit", {
+      const submission = await engine("exercise.submit", {
         id: exercise.id,
         response: exercise.kind === "arrange" ? order : answer.trim(),
       });
