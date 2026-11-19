@@ -11,10 +11,9 @@ import { z } from "zod";
 import {
   DEFAULT_LANGUAGE,
   concept,
-  course,
   courseLanguage,
   courseErrors,
-  followSavedCourse,
+  savedCourse,
   guidedConcept,
   isAuthored,
   problem as getProblem,
@@ -28,7 +27,7 @@ import {
   validateCurriculum,
   withPrereqs,
 } from "./content.ts";
-import type { Language } from "./content.ts";
+import type { Course, Language } from "./content.ts";
 import { addNote, attemptsFor, notesFor, orphans } from "./db.ts";
 import type { ExerciseKind, Result } from "./db.ts";
 import { currentExercise, gradeAnswer, showExercise } from "./exercises.ts";
@@ -55,13 +54,12 @@ const reply = (text: string) => ({
 
 /** Wrap a handler that answers in plain text; a thrown error becomes an error reply. */
 const safelyText =
-  <A>(fn: (args: A) => string) =>
+  <A>(fn: (course: Course, args: A) => string) =>
   (args: A) => {
     try {
-      // The learner may have switched course in the app since the last call.
-      followSavedCourse();
-
-      return reply(fn(args));
+      // The learner may have switched course in the app since the last call, so every
+      // call asks which course is open.
+      return reply(fn(savedCourse(), args));
     } catch (error) {
       return {
         ...reply(error instanceof Error ? error.message : String(error)),
@@ -71,18 +69,18 @@ const safelyText =
   };
 
 /** Wrap a handler whose result is shown to the model as pretty-printed JSON. */
-const safely = <A>(fn: (args: A) => object) =>
-  safelyText((args: A) => JSON.stringify(fn(args), null, 2));
+const safely = <A>(fn: (course: Course, args: A) => object) =>
+  safelyText((course, args: A) => JSON.stringify(fn(course, args), null, 2));
 
-const conceptView = (id: string) => {
-  const c = concept(id);
-  const s = conceptStatus(id);
+const conceptView = (course: Course, id: string) => {
+  const c = concept(course, id);
+  const s = conceptStatus(course, id);
 
   return {
     due: s.due,
     id,
     key_idea: c.key_idea,
-    learner_notes: notesFor(id, 5).map((n) => n.text),
+    learner_notes: notesFor(course, id, 5).map((n) => n.text),
     name: c.name,
     prereqs: c.prereqs,
     recall: s.retrievability,
@@ -92,8 +90,8 @@ const conceptView = (id: string) => {
 };
 
 /** A jq task as the learner sees it: the input, the output to produce, and how they answer. */
-const jqTaskView = (slug: string) => {
-  const spec = getProblem(slug).jq;
+const jqTaskView = (course: Course, slug: string) => {
+  const spec = getProblem(course, slug).jq;
   const [shown] = spec?.tests ?? [];
 
   if (!spec || !shown) {
@@ -128,20 +126,24 @@ server.registerTool(
       "What the learner has on screen right now: the problem they are solving, why it is open (a lesson's guided problem, a lesson's solo problem, or a review), the lesson it belongs to, their code, and your exercise if one is showing. Call it first, every time the learner writes to you, because the app moves on without you. In a review, never say which concept or lesson the problem is about.",
     inputSchema: {},
   },
-  safely(() => {
-    const open = currentAttempt();
+  safely((course) => {
+    const open = currentAttempt(course);
 
     // Empty unless a course, the curriculum or the progress data is inconsistent.
     const extra = {
-      course: course().name,
-      data_warnings: [...courseErrors(), ...validateCurriculum(), ...orphans()],
+      course: course.name,
+      data_warnings: [
+        ...courseErrors(),
+        ...validateCurriculum(course),
+        ...orphans(course),
+      ],
     };
 
     if (!open) {
       return {
         on_screen:
           "No problem is open. The learner is between lessons or reviews.",
-        workspace: solutionsDir(),
+        workspace: solutionsDir(course),
         ...extra,
       };
     }
@@ -149,25 +151,25 @@ server.registerTool(
     const lessonId =
       open.mode === "review"
         ? null
-        : (guidedConcept(open.slug) ?? soloConcept(open.slug));
+        : (guidedConcept(open.slug) ?? soloConcept(course, open.slug));
 
     // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
     const language = open.language as Language;
 
     return {
       attempt_id: open.id,
-      code: readSolution(open.slug, language),
-      exercise_on_screen: Boolean(currentExercise()),
-      file: solutionPath(open.slug, language),
+      code: readSolution(course, open.slug, language),
+      exercise_on_screen: Boolean(currentExercise(course)),
+      file: solutionPath(course, open.slug, language),
       hints_so_far: open.max_hint_level,
-      jq_task: jqTaskView(open.slug),
+      jq_task: jqTaskView(course, open.slug),
       language,
-      lesson: lessonId && conceptView(lessonId),
+      lesson: lessonId && conceptView(course, lessonId),
       mode: open.mode,
       problem: open.slug,
       rules: MODE_RULES[open.mode ?? "review"],
-      title: problemInfo(open.slug).title,
-      workspace: solutionsDir(),
+      title: problemInfo(course, open.slug).title,
+      workspace: solutionsDir(course),
       ...extra,
     };
   })
@@ -180,7 +182,7 @@ server.registerTool(
       "The roadmap: topics in order with prerequisites, solved/total problems per topic, and each concept's stage (locked, available, learning, passed, mastered), recall and due date.",
     inputSchema: {},
   },
-  safely(() => topicProgress())
+  safely((course) => topicProgress(course))
 );
 
 server.registerTool(
@@ -190,8 +192,8 @@ server.registerTool(
       "Totals, concepts due soon, the weakest concepts, and recent tutor notes about the learner.",
     inputSchema: {},
   },
-  safely(() => {
-    const roadmap = topicProgress();
+  safely((course) => {
+    const roadmap = topicProgress(course);
 
     const all = roadmap.flatMap((t) =>
       t.concepts.map((c) => ({ ...c, topic: t.name }))
@@ -209,7 +211,7 @@ server.registerTool(
       due_soon: practiced
         .toSorted((a, b) => (a.due ?? "").localeCompare(b.due ?? ""))
         .slice(0, 5),
-      recent_notes: notesFor(undefined, 10).map((n) => ({
+      recent_notes: notesFor(course, undefined, 10).map((n) => ({
         concept: n.concept_id,
         problem: n.slug,
         text: n.text,
@@ -237,25 +239,31 @@ server.registerTool(
         .describe("The problem slug, e.g. get_session's `problem` field."),
     },
   },
-  safely(({ slug, language }: { slug: string; language?: Language }) => {
-    const info = problemInfo(slug);
+  safely(
+    (course, { slug, language }: { slug: string; language?: Language }) => {
+      const info = problemInfo(course, slug);
 
-    return {
-      ...info,
-      // oxlint-disable-next-line sort-keys -- shown to the model as-is; keep each attempt in reading order, start time first
-      attempts: attemptsFor({ slug }).map((a) => ({
-        started_at: a.started_at,
-        finished: Boolean(a.finished_at),
-        hints: a.hints_used,
-        outcome: a.outcome,
-        notes: a.notes,
-      })),
-      authored: isAuthored(slug),
-      concepts: info.concepts.map(conceptView),
-      reference_solution: referenceSolution(slug, language ?? courseLanguage()),
-      status: problemStatus(slug),
-    };
-  })
+      return {
+        ...info,
+        // oxlint-disable-next-line sort-keys -- shown to the model as-is; keep each attempt in reading order, start time first
+        attempts: attemptsFor(course, { slug }).map((a) => ({
+          started_at: a.started_at,
+          finished: Boolean(a.finished_at),
+          hints: a.hints_used,
+          outcome: a.outcome,
+          notes: a.notes,
+        })),
+        authored: isAuthored(course, slug),
+        concepts: info.concepts.map((id) => conceptView(course, id)),
+        reference_solution: referenceSolution(
+          course,
+          slug,
+          language ?? courseLanguage(course)
+        ),
+        status: problemStatus(course, slug),
+      };
+    }
+  )
 );
 
 server.registerTool(
@@ -265,14 +273,14 @@ server.registerTool(
       "A concept's key idea, its prerequisites (with the learner's stage for each), the learner's notes, and every curriculum problem that uses it, with status. Use it to plan a lesson or an exercise and to avoid problems the learner will practise.",
     inputSchema: { concept_id: z.string() },
   },
-  safely(({ concept_id }: { concept_id: string }) => ({
-    ...conceptView(concept_id),
-    prerequisite_chain: withPrereqs([concept_id])
+  safely((course, { concept_id }: { concept_id: string }) => ({
+    ...conceptView(course, concept_id),
+    prerequisite_chain: withPrereqs(course, [concept_id])
       .slice(0, -1)
-      .map((id) => ({ id, stage: conceptStatus(id).stage })),
-    problems: problemsUsing(concept_id).map((p) => ({
+      .map((id) => ({ id, stage: conceptStatus(course, id).stage })),
+    problems: problemsUsing(course, concept_id).map((p) => ({
       slug: p.slug,
-      status: problemStatus(p.slug),
+      status: problemStatus(course, p.slug),
       title: p.title,
     })),
   }))
@@ -281,8 +289,8 @@ server.registerTool(
 server.registerTool(
   "list_topics",
   { description: "Topic ids and names in roadmap order.", inputSchema: {} },
-  safely(() =>
-    topics().map((t) => ({ id: t.id, name: t.name, prereqs: t.prereqs }))
+  safely((course) =>
+    topics(course).map((t) => ({ id: t.id, name: t.name, prereqs: t.prereqs }))
   )
 );
 
@@ -342,19 +350,22 @@ server.registerTool(
     },
   },
   safely(
-    (args: {
-      kind: ExerciseKind;
-      concept_ids: string[];
-      language?: Language;
-      title: string;
-      prompt: string;
-      code?: string;
-      lines?: string[];
-      distractors?: string[];
-      rubric?: { concept_id: string; points: string[] }[];
-      model_answer?: string;
-    }) =>
-      showExercise({
+    (
+      course,
+      args: {
+        kind: ExerciseKind;
+        concept_ids: string[];
+        language?: Language;
+        title: string;
+        prompt: string;
+        code?: string;
+        lines?: string[];
+        distractors?: string[];
+        rubric?: { concept_id: string; points: string[] }[];
+        model_answer?: string;
+      }
+    ) =>
+      showExercise(course, {
         code: args.code,
         conceptIds: args.concept_ids,
         distractors: args.distractors,
@@ -376,7 +387,9 @@ server.registerTool(
       "The exercise on screen with its answer key, the learner's answer and confidence, and the result if graded. Never show the key before the learner submits.",
     inputSchema: {},
   },
-  safely(() => currentExercise() ?? { note: "No exercise is on screen." })
+  safely(
+    (course) => currentExercise(course) ?? { note: "No exercise is on screen." }
+  )
 );
 
 server.registerTool(
@@ -399,13 +412,16 @@ server.registerTool(
     },
   },
   safely(
-    ({
-      exercise_id,
-      verdicts,
-    }: {
-      exercise_id: number;
-      verdicts: { concept_id: string; result: Result; reason?: string }[];
-    }) => gradeAnswer(exercise_id, verdicts)
+    (
+      course,
+      {
+        exercise_id,
+        verdicts,
+      }: {
+        exercise_id: number;
+        verdicts: { concept_id: string; result: Result; reason?: string }[];
+      }
+    ) => gradeAnswer(course, exercise_id, verdicts)
   )
 );
 
@@ -423,11 +439,13 @@ server.registerTool(
         .describe("The problem slug, e.g. get_session's `problem` field."),
     },
   },
-  safelyText(({ slug, language }: { slug: string; language?: Language }) => {
-    const { run, attempt_id } = testSolution(slug, language);
+  safelyText(
+    (course, { slug, language }: { slug: string; language?: Language }) => {
+      const { run, attempt_id } = testSolution(course, slug, language);
 
-    return `${formatRun(run)}\n\nattempt_id: ${attempt_id ?? "none open"}`;
-  })
+      return `${formatRun(run)}\n\nattempt_id: ${attempt_id ?? "none open"}`;
+    }
+  )
 );
 
 server.registerTool(
@@ -437,7 +455,7 @@ server.registerTool(
       "Record a hint before you give it. It counts for whatever is on screen: the exercise, else the problem. Levels: 1 = a question that redirects attention, 2 = name the concept or data structure, 3 = outline the approach, 4 = show the solution. Level 1 still counts as working alone; from level 2 the exercise cannot pass.",
     inputSchema: { level: z.number().int().min(1).max(4) },
   },
-  safely(({ level }: { level: number }) => logHint(level))
+  safely((course, { level }: { level: number }) => logHint(course, level))
 );
 
 server.registerTool(
@@ -452,22 +470,25 @@ server.registerTool(
     },
   },
   safelyText(
-    ({
-      concept_id,
-      text,
-      slug,
-    }: {
-      concept_id: string;
-      text: string;
-      slug?: string;
-    }) => {
-      concept(concept_id);
+    (
+      course,
+      {
+        concept_id,
+        text,
+        slug,
+      }: {
+        concept_id: string;
+        text: string;
+        slug?: string;
+      }
+    ) => {
+      concept(course, concept_id);
 
       if (slug) {
-        problemInfo(slug);
+        problemInfo(course, slug);
       }
 
-      addNote(concept_id, text, slug ?? null);
+      addNote(course, concept_id, text, slug ?? null);
 
       return "saved";
     }
