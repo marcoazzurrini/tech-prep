@@ -42,11 +42,11 @@ That is already useful. `jq '.'` turns dense JSON into something you can read.
 
 ## In this course
 
-The app runs jq for you. You type only the filter: the part between the single quotes. You leave out `jq`, the quotes and the file name.
+You type the whole command, as you would in a terminal: `jq`, then the filter in single quotes, then the name of the file.
 
-For the command above, you would type one character: the dot.
+The input of a task is in a file. Its name is shown above the input. In most tasks it is `data.json`.
 
-On the right you see the input, what your filter prints, and the output the task wants.
+On the right you see the input, what your command prints, and the output the task wants.
 
 <!-- task -->
 
@@ -99,7 +99,7 @@ A number has no quotes. Neither do `true` and `false`.
 
 This helps you check your work. If you expect a number and you see quotes, you took the wrong value.
 
-In the next task nothing runs while you type. You read the input and the filter, and you type what jq will print.
+In the next task nothing runs while you type. You read the input and the command, and you type what jq will print.
 
 <!-- task -->
 

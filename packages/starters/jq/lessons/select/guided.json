@@ -1,7 +1,7 @@
 [
   {
     "title": "Builds that failed",
-    "statement": "Print the builds that failed, each as its own output.\n\nThe filter below prints the builds with the status `\"passed\"`. Change it so that it prints the builds with the status `\"failed\"`.",
+    "statement": "Print the builds that failed, each as its own output.\n\nThe command below prints the builds with the status `\"passed\"`. Change it so that it prints the builds with the status `\"failed\"`.",
     "stub": ".[] | select(.status == \"passed\")",
     "reference": ".[] | select(.status == \"failed\")",
     "tests": [
@@ -56,7 +56,7 @@
   },
   {
     "title": "Sold out",
-    "statement": "Print the products that are sold out, as one array.\n\nA product is sold out when its `stock` is `0`. The filter below should do the job, but jq stops with an error. Read the error, then fix the filter.",
+    "statement": "Print the products that are sold out, as one array.\n\nA product is sold out when its `stock` is `0`. The command below should do the job, but jq stops with an error. Read the error, then fix the filter.",
     "stub": "select(.stock == 0)",
     "reference": "map(select(.stock == 0))",
     "tests": [

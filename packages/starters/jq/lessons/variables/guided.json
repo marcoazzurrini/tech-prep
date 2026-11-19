@@ -1,7 +1,7 @@
 [
   {
     "title": "Region of each server",
-    "statement": "Print every server as its own output, with its `host` and the `region` of the whole group.\n\nThe filter below stores the region in the variable `$region`, but it never uses it. So it prints `null` for the region. Fix the last step.",
+    "statement": "Print every server as its own output, with its `host` and the `region` of the whole group.\n\nThe command below stores the region in the variable `$region`, but it never uses it. So it prints `null` for the region. Fix the last step.",
     "stub": ".region as $region | .servers[] | {host, region: .region}",
     "reference": ".region as $region | .servers[] | {host, region: $region}",
     "tests": [

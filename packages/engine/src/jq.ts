@@ -1,8 +1,8 @@
-// Runs jq tasks. A task is checked by its output: the learner's filter runs on each test
-// input, and what it prints is compared with what the reference filter printed.
+// Runs jq tasks. The learner types a whole jq command, as in a terminal. It runs on each
+// test input, and what it prints is compared with what the reference command printed.
 
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -10,15 +10,6 @@ import type { JqSpec, JqTest, Problem } from "./content.ts";
 import type { CaseResult, RunResult } from "./runner.ts";
 
 const TIMEOUT_MS = 5000;
-
-/** Flags that make jq print text that is not JSON, so outputs are compared as text. */
-const RAW_FLAGS = new Set([
-  "-r",
-  "-j",
-  "--raw-output",
-  "--raw-output0",
-  "--join-output",
-]);
 
 /**
  * Split a command line into arguments the way a shell does: spaces separate, single quotes
@@ -78,38 +69,37 @@ export const splitArgs = (text: string): string[] => {
   return args;
 };
 
-/** The arguments jq gets for the learner's text. */
+const NO_INPUT_FLAGS = new Set(["-n", "--null-input"]);
+
+/**
+ * The arguments jq gets for the command the learner typed. The command is written as in a
+ * terminal: `jq`, flags, the filter in quotes, then the file to read.
+ */
 const argsFor = (spec: JqSpec, text: string): string[] => {
-  if (spec.mode !== "command") {
-    if (!text.trim()) {
-      throw new Error("The filter is empty.");
-    }
-
-    // A beginner often types the whole command, as the lesson shows it for a terminal.
-    if (/^\s*jq\s/u.test(text)) {
-      throw new Error(
-        "Type only the filter. Leave out `jq`, the quotes and the file name: the app adds those for you."
-      );
-    }
-
-    if (/^\s*'/u.test(text)) {
-      throw new Error(
-        "Leave out the single quotes. Type only what goes between them: the app adds the quotes for you."
-      );
-    }
-
-    return [...spec.flags, text];
-  }
-
   const args = splitArgs(text.trim());
 
-  // Learners often type the program name too.
-  if (args[0] === "jq") {
-    args.shift();
+  if (!args.length) {
+    throw new Error("The command is empty. Start with `jq`.");
   }
 
-  if (!args.length) {
-    throw new Error("The command is empty. Write what comes after `jq`.");
+  if (args.shift() !== "jq") {
+    throw new Error(
+      `Start the command with \`jq\`, as in a terminal. For example: jq '.' ${spec.file}`
+    );
+  }
+
+  const noInput = args.some((a) => NO_INPUT_FLAGS.has(a));
+
+  if (!noInput && !args.includes(spec.file)) {
+    throw new Error(
+      `jq needs a file to read. Add \`${spec.file}\` at the end of the command.`
+    );
+  }
+
+  if (args.every((a) => a === spec.file || a.startsWith("-"))) {
+    throw new Error(
+      `The filter is missing. Put it in single quotes after \`jq\`: jq '.' ${spec.file}`
+    );
   }
 
   return args;
@@ -176,11 +166,19 @@ process.on("exit", () => {
   }
 });
 
-const spawnJq = (args: string[], input: string): Ran => {
+/**
+ * Run jq in the scratch folder. With a `file`, the input is written there under that name
+ * for the command to read, as it would be in a terminal. Otherwise it goes to standard input.
+ */
+const spawnJq = (args: string[], input: string, file?: string): Ran => {
+  if (file) {
+    writeFileSync(path.join(scratchDir(), file), input);
+  }
+
   const proc = spawnSync("jq", args, {
     cwd: scratchDir(),
     encoding: "utf-8",
-    input,
+    input: file ? "" : input,
     maxBuffer: 8 * 1024 * 1024,
     timeout: TIMEOUT_MS,
   });
@@ -196,8 +194,9 @@ const spawnJq = (args: string[], input: string): Ran => {
     };
   }
 
-  // "(at <stdin>:17)" counts lines of the input jq was fed, which the learner never sees.
-  const stderr = proc.stderr.trim().replaceAll(/ \(at <stdin>:\d+\)/gu, "");
+  // "(at data.json:17)" counts lines of the file as jq was fed it, one key per line, which
+  // is not how the app shows the input. The lessons leave it out too.
+  const stderr = proc.stderr.trim().replaceAll(/ \(at [^)\s]+:\d+\)/gu, "");
 
   return {
     error: proc.status === 0 && !stderr ? null : stderr || "jq failed.",
@@ -208,7 +207,7 @@ const spawnJq = (args: string[], input: string): Ran => {
 /** Run the learner's text on one test input. */
 export const runOnce = (spec: JqSpec, text: string, test: JqTest): Ran => {
   try {
-    return spawnJq(argsFor(spec, text), inputText(test));
+    return spawnJq(argsFor(spec, text), inputText(test), spec.file);
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : String(error),
@@ -238,7 +237,7 @@ export const sameOutput = (
     return true;
   }
 
-  if (spec.mode === "command" || spec.flags.some((f) => RAW_FLAGS.has(f))) {
+  if (spec.exact) {
     return false;
   }
 
@@ -290,7 +289,7 @@ export const runJq = (problem: Problem, text: string): RunResult => {
     throw new Error(`'${problem.slug}' is not a jq task.`);
   }
 
-  if (spec.mode === "predict") {
+  if (spec.predict) {
     return predicted(spec, text);
   }
 
@@ -325,7 +324,7 @@ export const previewJq = (problem: Problem, text: string) => {
   }
 
   // Nothing typed yet is not an error, and a predict task shows no output at all.
-  if (!text.trim() || spec.mode === "predict") {
+  if (!text.trim() || spec.predict) {
     return { error: null, matches: false, output: "" };
   }
 

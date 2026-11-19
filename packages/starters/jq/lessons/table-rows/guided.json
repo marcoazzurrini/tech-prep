@@ -1,7 +1,7 @@
 [
   {
     "title": "One product row",
-    "statement": "Print one CSV line for the product: its `sku`, its `name` and its `price`, in that order.\n\nThis task runs jq with `-r`. The filter below prints a row with only the `sku`. Add the other two values to the array.",
+    "statement": "Print one CSV line for the product: its `sku`, its `name` and its `price`, in that order.\n\nUse the `-r` flag, so that jq prints plain text. The command below prints a row with only the `sku`. Add the other two values to the array.",
     "flags": [
       "-r"
     ],
@@ -39,7 +39,7 @@
   },
   {
     "title": "Fix the filter",
-    "statement": "Print one CSV line for each task: its `id`, its `title` and its `done` value, in that order.\n\nThis task runs jq with `-r`. The filter below stops with an error, because it gives `@csv` an object. Add the step that builds a row from each task.",
+    "statement": "Print one CSV line for each task: its `id`, its `title` and its `done` value, in that order.\n\nUse the `-r` flag, so that jq prints plain text. The command below stops with an error, because it gives `@csv` an object. Add the step that builds a row from each task.",
     "flags": [
       "-r"
     ],
@@ -95,7 +95,7 @@
   },
   {
     "title": "Servers with tabs",
-    "statement": "Print one line for each server: its `host`, its `port` and its `region`, in that order, with a tab between the values.\n\nThis task runs jq with `-r`. Use `@tsv`. Strings have no quotes.",
+    "statement": "Print one line for each server: its `host`, its `port` and its `region`, in that order, with a tab between the values.\n\nUse the `-r` flag, so that jq prints plain text. Use `@tsv`. Strings have no quotes.",
     "flags": [
       "-r"
     ],

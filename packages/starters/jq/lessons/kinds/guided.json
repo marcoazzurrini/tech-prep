@@ -39,7 +39,7 @@
   },
   {
     "title": "Is the port a number?",
-    "statement": "Print `true` when the port is a number, and `false` when it is not.\n\nThe filter below should do that, but it stops with an error. Find the mistake and fix it.",
+    "statement": "Print `true` when the port is a number, and `false` when it is not.\n\nThe command below should do that, but it stops with an error. Find the mistake and fix it.",
     "stub": ".port | type == number",
     "reference": ".port | type == \"number\"",
     "tests": [

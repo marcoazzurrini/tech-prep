@@ -1,7 +1,7 @@
 [
   {
     "title": "Labels of the issue",
-    "statement": "Print the labels of the issue, each label once.\n\nThe filter below prints the labels in order, but some appear twice. Change `sort` to `unique`.",
+    "statement": "Print the labels of the issue, each label once.\n\nThe command below prints the labels in order, but some appear twice. Change `sort` to `unique`.",
     "stub": ".labels | sort",
     "reference": ".labels | unique",
     "tests": [

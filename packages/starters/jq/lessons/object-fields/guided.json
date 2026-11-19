@@ -32,7 +32,7 @@
   },
   {
     "title": "Fix the filter",
-    "statement": "Print the user's email.\n\nThe filter below should do that, but it prints `null`. Find the mistake and fix it.",
+    "statement": "Print the user's email.\n\nThe command below should do that, but it prints `null`. Find the mistake and fix it.",
     "stub": ".Email",
     "reference": ".email",
     "tests": [

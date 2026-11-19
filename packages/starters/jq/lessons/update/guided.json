@@ -1,7 +1,7 @@
 [
   {
     "title": "One ticket sold",
-    "statement": "One ticket was sold. Print the whole event, with `seats_left` one lower.\n\nThe filter below does the sum, but it prints only the number. The rest of the event is lost. Fix it so that the whole event is printed.",
+    "statement": "One ticket was sold. Print the whole event, with `seats_left` one lower.\n\nThe command below does the sum, but it prints only the number. The rest of the event is lost. Fix it so that the whole event is printed.",
     "stub": ".seats_left | . - 1",
     "reference": ".seats_left |= . - 1",
     "tests": [

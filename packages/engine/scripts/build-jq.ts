@@ -20,6 +20,9 @@ import {
   concepts,
   course,
   guidedSlugs,
+  jqCommand,
+  jqProblemStub,
+  jqSpec,
   problemIndex,
   setCourse,
 } from "../src/content.ts";
@@ -73,15 +76,9 @@ const check = (task: JqTask): string[] => {
     return [...errors, `needs at least ${needed} tests`];
   }
 
-  // A predict task's reference is a plain filter: it makes the output the learner must type.
-  const spec = {
-    filter: null,
-    flags: task.flags ?? [],
-    mode: predict ? ("filter" as const) : (task.mode ?? "filter"),
-    tests: task.tests,
-  };
-
-  const stub = task.stub ?? (spec.mode === "filter" ? "." : "");
+  // The reference of a predict task is run as a command, to make the output to type.
+  const spec = { ...jqSpec(task), predict: false };
+  const stub = predict ? "" : jqProblemStub(task);
   let stubPasses = true;
 
   task.tests = task.tests.map((test, i): JqTest => {
@@ -91,7 +88,7 @@ const check = (task: JqTask): string[] => {
       return test;
     }
 
-    const ran = runOnce(spec, task.reference, test);
+    const ran = runOnce(spec, jqCommand(task, task.reference), test);
 
     if (ran.error) {
       errors.push(`test ${i + 1}: the reference fails: ${ran.error}`);
@@ -99,7 +96,7 @@ const check = (task: JqTask): string[] => {
       return test;
     }
 
-    const tried = stub.trim() ? runOnce(spec, stub, test) : null;
+    const tried = stub ? runOnce(spec, stub, test) : null;
 
     if (!tried || tried.error || !sameOutput(spec, tried.output, ran.output)) {
       stubPasses = false;

@@ -1,7 +1,7 @@
 [
   {
     "title": "Labels of an issue",
-    "statement": "Print the labels of the issue as an array of strings.\n\nThe filter below almost works, but some labels come out with a space at the front. Look at what stands between two labels in the input. Then fix the separator.",
+    "statement": "Print the labels of the issue as an array of strings.\n\nThe command below almost works, but some labels come out with a space at the front. Look at what stands between two labels in the input. Then fix the separator.",
     "stub": ".labels | split(\",\")",
     "reference": ".labels | split(\", \")",
     "tests": [

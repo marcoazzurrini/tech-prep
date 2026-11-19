@@ -1,7 +1,7 @@
 [
   {
     "title": "Count every value",
-    "statement": "Print how many values the document holds: the document itself and every value inside it, at any depth.\n\nThe filter below puts only the whole input in an array, so it prints `1`. Change `.` into the filter that gives every value.",
+    "statement": "Print how many values the document holds: the document itself and every value inside it, at any depth.\n\nThe command below puts only the whole input in an array, so it prints `1`. Change `.` into the filter that gives every value.",
     "stub": "[.] | length",
     "reference": "[..] | length",
     "tests": [

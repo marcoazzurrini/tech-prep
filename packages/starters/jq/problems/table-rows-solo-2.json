@@ -1,6 +1,6 @@
 {
   "title": "Files and their sizes",
-  "statement": "Print one line for each file: its `path` and then its `bytes`, with a tab between the two values.\n\nThis task runs jq with `-r`. The path has no quotes around it.",
+  "statement": "Print one line for each file: its `path` and then its `bytes`, with a tab between the two values.\n\nUse the `-r` flag, so that jq prints plain text. The path has no quotes around it.",
   "flags": [
     "-r"
   ],

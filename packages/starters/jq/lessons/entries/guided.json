@@ -39,7 +39,7 @@
   },
   {
     "title": "Packages and versions",
-    "statement": "Print the dependencies as an array of objects. Each object has `name` and `version`.\n\nThe filter below should do that, but jq stops with an error. Read the error, then fix the filter.",
+    "statement": "Print the dependencies as an array of objects. Each object has `name` and `version`.\n\nThe command below should do that, but jq stops with an error. Read the error, then fix the filter.",
     "stub": ".dependencies | map({name: .key, version: .value})",
     "reference": ".dependencies | to_entries | map({name: .key, version: .value})",
     "tests": [

@@ -1,6 +1,6 @@
 {
   "title": "Orders for a CSV file",
-  "statement": "Print one CSV line for each order: its `id`, its `customer` and its `total`, in that order.\n\nThis task runs jq with `-r`. The orders are in `orders`. In a CSV line, commas separate the values and strings have double quotes.",
+  "statement": "Print one CSV line for each order: its `id`, its `customer` and its `total`, in that order.\n\nUse the `-r` flag, so that jq prints plain text. The orders are in `orders`. In a CSV line, commas separate the values and strings have double quotes.",
   "flags": [
     "-r"
   ],

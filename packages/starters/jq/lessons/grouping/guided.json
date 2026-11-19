@@ -1,7 +1,7 @@
 [
   {
     "title": "Tickets by status",
-    "statement": "Split the tickets into groups, one array for each status.\n\nThe filter below prints the tickets ordered by status, all in one array. Change `sort_by` to `group_by`, so that each status gets its own array of tickets.",
+    "statement": "Split the tickets into groups, one array for each status.\n\nThe command below prints the tickets ordered by status, all in one array. Change `sort_by` to `group_by`, so that each status gets its own array of tickets.",
     "stub": "sort_by(.status)",
     "reference": "group_by(.status)",
     "tests": [
@@ -60,7 +60,7 @@
   },
   {
     "title": "What comes out?",
-    "statement": "Type what jq prints for this input and this filter.\n\nFirst work out the groups. Then count the items of each group.",
+    "statement": "Type what jq prints for this input and this command.\n\nFirst work out the groups. Then count the items of each group.",
     "mode": "predict",
     "show_filter": true,
     "reference": "group_by(.plan) | map(length)",

@@ -1,7 +1,7 @@
 [
   {
     "title": "Region of a server",
-    "statement": "Print the region of the server. When the server has no region, print `\"unknown\"`.\n\nThe filter below prints `null` for this server, because the key `region` is missing. Add a default to it.",
+    "statement": "Print the region of the server. When the server has no region, print `\"unknown\"`.\n\nThe command below prints `null` for this server, because the key `region` is missing. Add a default to it.",
     "stub": ".region",
     "reference": ".region // \"unknown\"",
     "tests": [
@@ -40,7 +40,7 @@
   },
   {
     "title": "What comes out?",
-    "statement": "Type what jq prints for this input and this filter.\n\njq goes from left to right. It gives the first value that is not `null` or `false`.",
+    "statement": "Type what jq prints for this input and this command.\n\njq goes from left to right. It gives the first value that is not `null` or `false`.",
     "mode": "predict",
     "show_filter": true,
     "reference": ".mobile // .landline // \"no phone\"",

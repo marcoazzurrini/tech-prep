@@ -1,6 +1,6 @@
 {
   "title": "What comes out?",
-  "statement": "Type what jq prints for this input and this filter.",
+  "statement": "Type what jq prints for this input and this command.",
   "mode": "predict",
   "show_filter": true,
   "reference": ".replicas | type",

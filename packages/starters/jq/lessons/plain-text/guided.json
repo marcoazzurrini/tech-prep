@@ -1,7 +1,7 @@
 [
   {
     "title": "Host without quotes",
-    "statement": "Print the server's host as plain text, with no quotes.\n\nYou type what comes after `jq`. The text below prints the host with quotes. Add the flag `-r` in front of the filter.",
+    "statement": "Print the server's host as plain text, with no quotes.\n\nThe command below prints the host with quotes. Add the flag `-r` in front of the filter.",
     "mode": "command",
     "stub": "'.host'",
     "reference": "-r '.host'",

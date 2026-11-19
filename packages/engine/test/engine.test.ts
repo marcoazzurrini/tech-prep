@@ -777,19 +777,44 @@ describe("jq course", () => {
   test("a filter task compares values, and a command task compares text", () => {
     const want = '{\n  "id": 7,\n  "name": "Ada"\n}';
     const tests = [{ expected: want, input: {} }];
-    const filter = { filter: null, flags: [], mode: "filter" as const, tests };
-    const command = { ...filter, mode: "command" as const };
+
+    const loose = {
+      exact: false,
+      file: "data.json",
+      predict: false,
+      shown: null,
+      tests,
+    };
+
+    const exact = { ...loose, exact: true };
 
     // The same values with another key order and spacing still match.
-    expect(jq.sameOutput(filter, '{"name":"Ada","id":7}', want)).toBe(true);
-    expect(jq.sameOutput(filter, "{}", want)).toBe(false);
-    expect(jq.sameOutput(command, '{"name":"Ada","id":7}', want)).toBe(false);
-    expect(jq.runOnce(command, "-c '.'", { input: { id: 7 } }).output).toBe(
-      '{"id":7}'
-    );
-    expect(jq.runOnce(command, "'.'", { input: { id: 7 } }).output).toBe(
-      '{\n  "id": 7\n}'
-    );
+    expect(jq.sameOutput(loose, '{"name":"Ada","id":7}', want)).toBe(true);
+    expect(jq.sameOutput(loose, "{}", want)).toBe(false);
+    expect(jq.sameOutput(exact, '{"name":"Ada","id":7}', want)).toBe(false);
+  });
+
+  test("the learner types the whole command, and jq reads the named file", () => {
+    const spec = {
+      exact: true,
+      file: "data.json",
+      predict: false,
+      shown: null,
+      tests: [],
+    };
+
+    const run = (text: string) => jq.runOnce(spec, text, { input: { id: 7 } });
+
+    expect(run("jq -c '.' data.json").output).toBe('{"id":7}');
+    expect(run("jq '.id' data.json")).toEqual({ error: null, output: "7" });
+    // Double quotes around the filter work as in a shell.
+    expect(run('jq ".id" data.json').output).toBe("7");
+    expect(run("jq -n '1 + 1'").output).toBe("2");
+    expect(run("'.id' data.json").error).toContain("Start the command with");
+    expect(run("jq '.id'").error).toContain("Add `data.json`");
+    expect(run("jq data.json").error).toContain("The filter is missing");
+    expect(run("jq '.id' other.json").error).toContain("Add `data.json`");
+    expect(run("jq '.id data.json").error).toContain("not closed");
   });
 
   test("jq's own error text reaches the learner", () => {
@@ -801,12 +826,11 @@ describe("jq course", () => {
       expect(seen.error).toBe(
         'jq: error: Cannot index string with string "name"'
       );
-      // The whole command, or the filter in quotes, gets a plain hint and not a syntax error.
-      expect(jq.previewJq(task, 'jq "." user.json').error).toContain(
-        "Type only the filter"
-      );
-      expect(jq.previewJq(task, "'.server.host'").error).toContain(
-        "Leave out the single quotes"
+      // A filter task starts from a whole command to fix, or from an empty line.
+      expect(task.stubs.jq).toBe("jq '.server.host.name' data.json");
+      expect(content.problem("pipes-solo-1").stubs.jq).toBe("");
+      expect(content.referenceSolution("pipes-solo-1", "jq")).toBe(
+        "jq '.results | length' data.json"
       );
       // Nothing typed yet is not an error.
       expect(jq.previewJq(task, "  ")).toEqual({
@@ -821,7 +845,7 @@ describe("jq course", () => {
     content.inCourse("jq", () => {
       const task = content.problem("reading-json-solo-2");
 
-      expect(task.jq?.filter).toBeNull();
+      expect(task.jq?.shown).toBeNull();
       expect(jq.runJq(task, "[ 5432,\n 6432 ]").passed).toBe(1);
       expect(jq.runJq(task, "[5432]").passed).toBe(0);
       expect(jq.runJq(task, "[5432, 6432").cases[0]?.error).toContain(
@@ -833,8 +857,8 @@ describe("jq course", () => {
         "[\n  5432,\n  6432\n]"
       );
       expect(
-        content.problem(content.guidedSlug("what-jq-does", 3)).jq?.filter
-      ).toBe(".pages");
+        content.problem(content.guidedSlug("what-jq-does", 3)).jq?.shown
+      ).toBe("jq '.pages' data.json");
     });
   });
 

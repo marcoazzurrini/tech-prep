@@ -90,7 +90,7 @@
   },
   {
     "title": "One step too far",
-    "statement": "Print the host of the server.\n\nThe filter below should do that, but jq stops with an error. Read the error, then fix the filter.",
+    "statement": "Print the host of the server.\n\nThe command below should do that, but jq stops with an error. Read the error, then fix the filter.",
     "stub": ".server.host.name",
     "reference": ".server.host",
     "tests": [

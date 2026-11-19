@@ -1,6 +1,6 @@
 {
   "title": "Scores for a spreadsheet",
-  "statement": "Print one CSV line for each result: the user's name, the user's email and the score, in that order.\n\nThis task runs jq with `-r`. The results are in `results`. The name and the email are inside `user`. In a CSV line, commas separate the values and strings have double quotes.",
+  "statement": "Print one CSV line for each result: the user's name, the user's email and the score, in that order.\n\nUse the `-r` flag, so that jq prints plain text. The results are in `results`. The name and the email are inside `user`. In a CSV line, commas separate the values and strings have double quotes.",
   "flags": [
     "-r"
   ],

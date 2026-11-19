@@ -59,6 +59,8 @@ const STATES = {
 interface OutputPanelProps {
   /** Such as "Input" or "Wanted output". */
   label: string;
+  /** The file the text is in, shown after the label as it is spelled. */
+  file?: string;
   /** How the learner's output compares with the wanted one. */
   state?: OutputState;
   /** JSON or plain text, shown as jq prints it. */
@@ -70,6 +72,7 @@ interface OutputPanelProps {
 /** One block of jq input or output, on the darkest surface. A jq error shows in red. */
 export const OutputPanel = ({
   label,
+  file,
   state,
   text,
   empty,
@@ -79,7 +82,10 @@ export const OutputPanel = ({
   return (
     <section className="tp-output">
       <header>
-        <h3>{label}</h3>
+        <h3>
+          {label}
+          {file && <code> · {file}</code>}
+        </h3>
         {shown && (
           <span className={`tp-output__state tp-output__state--${state}`}>
             <shown.icon size={14} aria-hidden />

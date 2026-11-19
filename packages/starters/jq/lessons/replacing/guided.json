@@ -30,7 +30,7 @@
   },
   {
     "title": "Name for a file",
-    "statement": "Print the name of the document with every space replaced by `_`.\n\nThe filter below replaces only the first space. Change it so that it replaces every space.",
+    "statement": "Print the name of the document with every space replaced by `_`.\n\nThe command below replaces only the first space. Change it so that it replaces every space.",
     "stub": ".doc | sub(\" \"; \"_\")",
     "reference": ".doc | gsub(\" \"; \"_\")",
     "tests": [

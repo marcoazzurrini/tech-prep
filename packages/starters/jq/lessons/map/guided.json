@@ -1,7 +1,7 @@
 [
   {
     "title": "Versions of the releases",
-    "statement": "Print the version of every release, as one array.\n\nThe filter below runs `.` on every item, so it changes nothing. Replace the `.` inside the round brackets so that the array holds only the versions.",
+    "statement": "Print the version of every release, as one array.\n\nThe command below runs `.` on every item, so it changes nothing. Replace the `.` inside the round brackets so that the array holds only the versions.",
     "stub": "map(.)",
     "reference": "map(.version)",
     "tests": [

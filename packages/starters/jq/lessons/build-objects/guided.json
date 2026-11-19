@@ -1,7 +1,7 @@
 [
   {
     "title": "A smaller account",
-    "statement": "Print an object with two keys: `id` and `name`. The `name` is the account's `login`.\n\nThe filter below builds an object with only the `id`. Add the second pair.",
+    "statement": "Print an object with two keys: `id` and `name`. The `name` is the account's `login`.\n\nThe command below builds an object with only the `id`. Add the second pair.",
     "stub": "{id: .id}",
     "reference": "{id: .id, name: .login}",
     "tests": [
@@ -36,7 +36,7 @@
   },
   {
     "title": "Short package summary",
-    "statement": "Print an object with three keys: `name`, `version` and `repo`. The `repo` is the `url` inside `repository`.\n\nThe filter below builds an object with only the `name`. Add the other two pairs. Use the short form where you can.",
+    "statement": "Print an object with three keys: `name`, `version` and `repo`. The `repo` is the `url` inside `repository`.\n\nThe command below builds an object with only the `name`. Add the other two pairs. Use the short form where you can.",
     "stub": "{name}",
     "reference": "{name, version, repo: .repository.url}",
     "tests": [
