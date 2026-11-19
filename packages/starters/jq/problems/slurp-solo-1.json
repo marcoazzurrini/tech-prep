@@ -1,0 +1,25 @@
+{
+  "title": "Last reading",
+  "statement": "Give the temperature of the last reading in the input.\n\nThe input holds many readings, one JSON object per line. Each has a `temp`. Print one number: the `temp` of the last line.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-s '.[-1].temp'",
+  "tests": [
+    {
+      "input_text": "{\"time\":\"08:00\",\"temp\":17}\n{\"time\":\"09:00\",\"temp\":19}\n{\"time\":\"10:00\",\"temp\":22}\n",
+      "expected": "22"
+    },
+    {
+      "input_text": "{\"time\":\"23:00\",\"temp\":11}\n",
+      "expected": "11"
+    },
+    {
+      "input_text": "{\"time\":\"13:00\",\"temp\":25}\n{\"time\":\"14:00\",\"temp\":24}\n",
+      "expected": "24"
+    },
+    {
+      "input_text": "{\"time\":\"01:00\",\"temp\":3}\n{\"time\":\"02:00\",\"temp\":2}\n{\"time\":\"03:00\",\"temp\":2}\n{\"time\":\"04:00\",\"temp\":1}\n",
+      "expected": "1"
+    }
+  ]
+}

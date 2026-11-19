@@ -1,0 +1,46 @@
+{
+  "title": "Team roster",
+  "statement": "Build an object with the keys `team` and `members`.\n\nThe input is a team. `team` is the team's `name`. `members` is an array with the `login` of every member, in the same order.",
+  "reference": "{team: .name, members: [.members[] | .login]}",
+  "tests": [
+    {
+      "input": {
+        "name": "core",
+        "members": [
+          {
+            "login": "ada",
+            "role": "lead"
+          },
+          {
+            "login": "bo",
+            "role": "dev"
+          },
+          {
+            "login": "cy",
+            "role": "dev"
+          }
+        ]
+      },
+      "expected": "{\n  \"team\": \"core\",\n  \"members\": [\n    \"ada\",\n    \"bo\",\n    \"cy\"\n  ]\n}"
+    },
+    {
+      "input": {
+        "name": "docs",
+        "members": []
+      },
+      "expected": "{\n  \"team\": \"docs\",\n  \"members\": []\n}"
+    },
+    {
+      "input": {
+        "name": "infra",
+        "members": [
+          {
+            "login": "dee",
+            "role": "lead"
+          }
+        ]
+      },
+      "expected": "{\n  \"team\": \"infra\",\n  \"members\": [\n    \"dee\"\n  ]\n}"
+    }
+  ]
+}

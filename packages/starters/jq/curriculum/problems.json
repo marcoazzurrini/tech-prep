@@ -1,0 +1,914 @@
+[
+  {
+    "slug": "fields-solo-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["fields"]
+  },
+  {
+    "slug": "fields-solo-2",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["fields"]
+  },
+  {
+    "slug": "fields-review-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["fields"]
+  },
+  {
+    "slug": "fields-review-2",
+    "topic": "paths",
+    "difficulty": "medium",
+    "concepts": ["fields"]
+  },
+  {
+    "slug": "array-index-solo-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["array-index"]
+  },
+  {
+    "slug": "array-index-solo-2",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["array-index"]
+  },
+  {
+    "slug": "array-index-review-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["array-index"]
+  },
+  {
+    "slug": "array-index-review-2",
+    "topic": "paths",
+    "difficulty": "medium",
+    "concepts": ["array-index", "fields"]
+  },
+  {
+    "slug": "pipe-solo-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["pipe"]
+  },
+  {
+    "slug": "pipe-solo-2",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["pipe"]
+  },
+  {
+    "slug": "pipe-review-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["pipe"]
+  },
+  {
+    "slug": "pipe-review-2",
+    "topic": "paths",
+    "difficulty": "medium",
+    "concepts": ["pipe", "array-index"]
+  },
+  {
+    "slug": "iterate-solo-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["iterate"]
+  },
+  {
+    "slug": "iterate-solo-2",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["iterate"]
+  },
+  {
+    "slug": "iterate-review-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["iterate"]
+  },
+  {
+    "slug": "iterate-review-2",
+    "topic": "paths",
+    "difficulty": "medium",
+    "concepts": ["iterate", "pipe"]
+  },
+  {
+    "slug": "optional-solo-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["optional"]
+  },
+  {
+    "slug": "optional-solo-2",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["optional"]
+  },
+  {
+    "slug": "optional-review-1",
+    "topic": "paths",
+    "difficulty": "easy",
+    "concepts": ["optional"]
+  },
+  {
+    "slug": "optional-review-2",
+    "topic": "paths",
+    "difficulty": "medium",
+    "concepts": ["optional", "iterate"]
+  },
+  {
+    "slug": "array-construction-solo-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["array-construction"]
+  },
+  {
+    "slug": "array-construction-solo-2",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["array-construction"]
+  },
+  {
+    "slug": "array-construction-review-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["array-construction"]
+  },
+  {
+    "slug": "array-construction-review-2",
+    "topic": "building",
+    "difficulty": "medium",
+    "concepts": ["array-construction", "iterate"]
+  },
+  {
+    "slug": "object-construction-solo-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["object-construction"]
+  },
+  {
+    "slug": "object-construction-solo-2",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["object-construction"]
+  },
+  {
+    "slug": "object-construction-review-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["object-construction"]
+  },
+  {
+    "slug": "object-construction-review-2",
+    "topic": "building",
+    "difficulty": "medium",
+    "concepts": ["object-construction", "array-construction"]
+  },
+  {
+    "slug": "comma-solo-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["comma"]
+  },
+  {
+    "slug": "comma-solo-2",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["comma"]
+  },
+  {
+    "slug": "comma-review-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["comma"]
+  },
+  {
+    "slug": "comma-review-2",
+    "topic": "building",
+    "difficulty": "medium",
+    "concepts": ["comma", "iterate"]
+  },
+  {
+    "slug": "string-interpolation-solo-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["string-interpolation"]
+  },
+  {
+    "slug": "string-interpolation-solo-2",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["string-interpolation"]
+  },
+  {
+    "slug": "string-interpolation-review-1",
+    "topic": "building",
+    "difficulty": "easy",
+    "concepts": ["string-interpolation"]
+  },
+  {
+    "slug": "string-interpolation-review-2",
+    "topic": "building",
+    "difficulty": "medium",
+    "concepts": ["string-interpolation", "object-construction"]
+  },
+  {
+    "slug": "map-solo-1",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["map"]
+  },
+  {
+    "slug": "map-solo-2",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["map"]
+  },
+  {
+    "slug": "map-review-1",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["map"]
+  },
+  {
+    "slug": "map-review-2",
+    "topic": "streams",
+    "difficulty": "medium",
+    "concepts": ["map", "array-construction"]
+  },
+  {
+    "slug": "select-solo-1",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["select"]
+  },
+  {
+    "slug": "select-solo-2",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["select"]
+  },
+  {
+    "slug": "select-review-1",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["select"]
+  },
+  {
+    "slug": "select-review-2",
+    "topic": "streams",
+    "difficulty": "medium",
+    "concepts": ["select", "map"]
+  },
+  {
+    "slug": "length-solo-1",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["length"]
+  },
+  {
+    "slug": "length-solo-2",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["length"]
+  },
+  {
+    "slug": "length-review-1",
+    "topic": "streams",
+    "difficulty": "easy",
+    "concepts": ["length"]
+  },
+  {
+    "slug": "length-review-2",
+    "topic": "streams",
+    "difficulty": "medium",
+    "concepts": ["length", "select"]
+  },
+  {
+    "slug": "raw-output-solo-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["raw-output"]
+  },
+  {
+    "slug": "raw-output-solo-2",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["raw-output"]
+  },
+  {
+    "slug": "raw-output-review-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["raw-output"]
+  },
+  {
+    "slug": "raw-output-review-2",
+    "topic": "cli",
+    "difficulty": "medium",
+    "concepts": ["raw-output", "iterate"]
+  },
+  {
+    "slug": "compact-output-solo-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["compact-output"]
+  },
+  {
+    "slug": "compact-output-solo-2",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["compact-output"]
+  },
+  {
+    "slug": "compact-output-review-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["compact-output"]
+  },
+  {
+    "slug": "compact-output-review-2",
+    "topic": "cli",
+    "difficulty": "medium",
+    "concepts": ["compact-output", "raw-output"]
+  },
+  {
+    "slug": "arg-solo-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["arg"]
+  },
+  {
+    "slug": "arg-solo-2",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["arg"]
+  },
+  {
+    "slug": "arg-review-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["arg"]
+  },
+  {
+    "slug": "arg-review-2",
+    "topic": "cli",
+    "difficulty": "medium",
+    "concepts": ["arg", "raw-output"]
+  },
+  {
+    "slug": "slurp-solo-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["slurp"]
+  },
+  {
+    "slug": "slurp-solo-2",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["slurp"]
+  },
+  {
+    "slug": "slurp-review-1",
+    "topic": "cli",
+    "difficulty": "easy",
+    "concepts": ["slurp"]
+  },
+  {
+    "slug": "slurp-review-2",
+    "topic": "cli",
+    "difficulty": "medium",
+    "concepts": ["slurp", "compact-output"]
+  },
+  {
+    "slug": "alternative-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["alternative"]
+  },
+  {
+    "slug": "alternative-solo-2",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["alternative"]
+  },
+  {
+    "slug": "alternative-review-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["alternative"]
+  },
+  {
+    "slug": "alternative-review-2",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["alternative", "optional"]
+  },
+  {
+    "slug": "arithmetic-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["arithmetic"]
+  },
+  {
+    "slug": "arithmetic-solo-2",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["arithmetic"]
+  },
+  {
+    "slug": "arithmetic-review-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["arithmetic"]
+  },
+  {
+    "slug": "arithmetic-review-2",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["arithmetic", "object-construction"]
+  },
+  {
+    "slug": "comparisons-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["comparisons"]
+  },
+  {
+    "slug": "comparisons-solo-2",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["comparisons"]
+  },
+  {
+    "slug": "comparisons-review-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["comparisons"]
+  },
+  {
+    "slug": "comparisons-review-2",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["comparisons", "select"]
+  },
+  {
+    "slug": "if-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["if"]
+  },
+  {
+    "slug": "if-solo-2",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["if"]
+  },
+  {
+    "slug": "if-review-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["if"]
+  },
+  {
+    "slug": "if-review-2",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["if", "comparisons"]
+  },
+  {
+    "slug": "keys-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["keys"]
+  },
+  {
+    "slug": "keys-solo-2",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["keys"]
+  },
+  {
+    "slug": "keys-review-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["keys"]
+  },
+  {
+    "slug": "keys-review-2",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["keys", "select"]
+  },
+  {
+    "slug": "type-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["type"]
+  },
+  {
+    "slug": "type-solo-2",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["type"]
+  },
+  {
+    "slug": "type-review-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["type"]
+  },
+  {
+    "slug": "type-review-2",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["type", "comparisons"]
+  },
+  {
+    "slug": "split-join-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["split-join"]
+  },
+  {
+    "slug": "split-join-solo-2",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["split-join"]
+  },
+  {
+    "slug": "split-join-review-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["split-join"]
+  },
+  {
+    "slug": "split-join-review-2",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["split-join", "map"]
+  },
+  {
+    "slug": "test-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["test"]
+  },
+  {
+    "slug": "test-solo-2",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["test"]
+  },
+  {
+    "slug": "test-review-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["test"]
+  },
+  {
+    "slug": "test-review-2",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["test", "select"]
+  },
+  {
+    "slug": "sub-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["sub"]
+  },
+  {
+    "slug": "sub-solo-2",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["sub"]
+  },
+  {
+    "slug": "sub-review-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["sub"]
+  },
+  {
+    "slug": "sub-review-2",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["sub", "split-join"]
+  },
+  {
+    "slug": "tostring-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["tostring"]
+  },
+  {
+    "slug": "tostring-solo-2",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["tostring"]
+  },
+  {
+    "slug": "tostring-review-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["tostring"]
+  },
+  {
+    "slug": "tostring-review-2",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["tostring", "string-interpolation"]
+  },
+  {
+    "slug": "formats-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["formats"]
+  },
+  {
+    "slug": "formats-solo-2",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["formats"]
+  },
+  {
+    "slug": "formats-review-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["formats"]
+  },
+  {
+    "slug": "formats-review-2",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["formats", "raw-output"]
+  },
+  {
+    "slug": "sort-solo-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["sort"]
+  },
+  {
+    "slug": "sort-solo-2",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["sort"]
+  },
+  {
+    "slug": "sort-review-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["sort"]
+  },
+  {
+    "slug": "sort-review-2",
+    "topic": "aggregation",
+    "difficulty": "medium",
+    "concepts": ["sort", "map"]
+  },
+  {
+    "slug": "add-solo-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["add"]
+  },
+  {
+    "slug": "add-solo-2",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["add"]
+  },
+  {
+    "slug": "add-review-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["add"]
+  },
+  {
+    "slug": "add-review-2",
+    "topic": "aggregation",
+    "difficulty": "medium",
+    "concepts": ["add", "map"]
+  },
+  {
+    "slug": "unique-solo-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["unique"]
+  },
+  {
+    "slug": "unique-solo-2",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["unique"]
+  },
+  {
+    "slug": "unique-review-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["unique"]
+  },
+  {
+    "slug": "unique-review-2",
+    "topic": "aggregation",
+    "difficulty": "medium",
+    "concepts": ["unique", "sort"]
+  },
+  {
+    "slug": "group-by-solo-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["group-by"]
+  },
+  {
+    "slug": "group-by-solo-2",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["group-by"]
+  },
+  {
+    "slug": "group-by-review-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["group-by"]
+  },
+  {
+    "slug": "group-by-review-2",
+    "topic": "aggregation",
+    "difficulty": "medium",
+    "concepts": ["group-by", "object-construction"]
+  },
+  {
+    "slug": "entries-solo-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["entries"]
+  },
+  {
+    "slug": "entries-solo-2",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["entries"]
+  },
+  {
+    "slug": "entries-review-1",
+    "topic": "aggregation",
+    "difficulty": "easy",
+    "concepts": ["entries"]
+  },
+  {
+    "slug": "entries-review-2",
+    "topic": "aggregation",
+    "difficulty": "medium",
+    "concepts": ["entries", "map"]
+  },
+  {
+    "slug": "update-solo-1",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["update"]
+  },
+  {
+    "slug": "update-solo-2",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["update"]
+  },
+  {
+    "slug": "update-review-1",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["update"]
+  },
+  {
+    "slug": "update-review-2",
+    "topic": "updating",
+    "difficulty": "medium",
+    "concepts": ["update", "map"]
+  },
+  {
+    "slug": "del-solo-1",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["del"]
+  },
+  {
+    "slug": "del-solo-2",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["del"]
+  },
+  {
+    "slug": "del-review-1",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["del"]
+  },
+  {
+    "slug": "del-review-2",
+    "topic": "updating",
+    "difficulty": "medium",
+    "concepts": ["del", "update"]
+  },
+  {
+    "slug": "recurse-solo-1",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["recurse"]
+  },
+  {
+    "slug": "recurse-solo-2",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["recurse"]
+  },
+  {
+    "slug": "recurse-review-1",
+    "topic": "updating",
+    "difficulty": "easy",
+    "concepts": ["recurse"]
+  },
+  {
+    "slug": "recurse-review-2",
+    "topic": "updating",
+    "difficulty": "medium",
+    "concepts": ["recurse", "type"]
+  },
+  {
+    "slug": "variables-solo-1",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["variables"]
+  },
+  {
+    "slug": "variables-solo-2",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["variables"]
+  },
+  {
+    "slug": "variables-review-1",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["variables"]
+  },
+  {
+    "slug": "variables-review-2",
+    "topic": "control",
+    "difficulty": "medium",
+    "concepts": ["variables", "map"]
+  },
+  {
+    "slug": "reduce-solo-1",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["reduce"]
+  },
+  {
+    "slug": "reduce-solo-2",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["reduce"]
+  },
+  {
+    "slug": "reduce-review-1",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["reduce"]
+  },
+  {
+    "slug": "reduce-review-2",
+    "topic": "control",
+    "difficulty": "medium",
+    "concepts": ["reduce", "variables"]
+  },
+  {
+    "slug": "functions-solo-1",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["functions"]
+  },
+  {
+    "slug": "functions-solo-2",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["functions"]
+  },
+  {
+    "slug": "functions-review-1",
+    "topic": "control",
+    "difficulty": "easy",
+    "concepts": ["functions"]
+  },
+  {
+    "slug": "functions-review-2",
+    "topic": "control",
+    "difficulty": "medium",
+    "concepts": ["functions", "variables"]
+  }
+]

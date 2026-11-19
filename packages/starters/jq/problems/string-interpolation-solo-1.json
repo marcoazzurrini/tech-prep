@@ -1,0 +1,31 @@
+{
+  "title": "Server address",
+  "statement": "Give the address of the server in the form `host:port`.\n\nThe input has a `host` and a `port`. The output is one string, for example `\"db1.example.com:5432\"`.",
+  "reference": "\"\\(.host):\\(.port)\"",
+  "tests": [
+    {
+      "input": {
+        "host": "db1.example.com",
+        "port": 5432,
+        "tls": true
+      },
+      "expected": "\"db1.example.com:5432\""
+    },
+    {
+      "input": {
+        "host": "localhost",
+        "port": 8080,
+        "tls": false
+      },
+      "expected": "\"localhost:8080\""
+    },
+    {
+      "input": {
+        "host": "cache.example.com",
+        "port": 6379,
+        "tls": true
+      },
+      "expected": "\"cache.example.com:6379\""
+    }
+  ]
+}

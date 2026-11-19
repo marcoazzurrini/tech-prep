@@ -1,0 +1,37 @@
+{
+  "title": "Names in one line",
+  "statement": "Give the names of all users as one string.\n\nThe input is an array of users. Each user has a `name`. Put `, ` (a comma and a space) between the names. Keep the order. An empty array gives an empty string.",
+  "reference": "map(.name) | join(\", \")",
+  "tests": [
+    {
+      "input": [
+        {
+          "id": 1,
+          "name": "Ada"
+        },
+        {
+          "id": 2,
+          "name": "Bo"
+        },
+        {
+          "id": 3,
+          "name": "Cy"
+        }
+      ],
+      "expected": "\"Ada, Bo, Cy\""
+    },
+    {
+      "input": [],
+      "expected": "\"\""
+    },
+    {
+      "input": [
+        {
+          "id": 9,
+          "name": "Dee"
+        }
+      ],
+      "expected": "\"Dee\""
+    }
+  ]
+}

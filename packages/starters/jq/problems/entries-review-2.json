@@ -1,0 +1,33 @@
+{
+  "title": "Disk usage report",
+  "statement": "Give one line of text for each folder, largest folder first.\n\nThe input is an object. Each key is a folder name and each value is its size in MB. No two folders have the same size. Give an array of strings. Each string looks like `logs: 512 MB`.",
+  "reference": "to_entries | sort_by(.value) | reverse | map(\"\\(.key): \\(.value) MB\")",
+  "tests": [
+    {
+      "input": {
+        "cache": 2048,
+        "logs": 512,
+        "tmp": 96,
+        "uploads": 7300
+      },
+      "expected": "[\n  \"uploads: 7300 MB\",\n  \"cache: 2048 MB\",\n  \"logs: 512 MB\",\n  \"tmp: 96 MB\"\n]"
+    },
+    {
+      "input": {},
+      "expected": "[]"
+    },
+    {
+      "input": {
+        "home": 1
+      },
+      "expected": "[\n  \"home: 1 MB\"\n]"
+    },
+    {
+      "input": {
+        "a": 5,
+        "b": 50
+      },
+      "expected": "[\n  \"b: 50 MB\",\n  \"a: 5 MB\"\n]"
+    }
+  ]
+}

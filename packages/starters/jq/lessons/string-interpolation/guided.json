@@ -1,0 +1,93 @@
+[
+  {
+    "title": "Greeting",
+    "statement": "Build a greeting for the user.\n\nThe input has a `first` name and a `last` name. Give one string in the form `Hello, FIRST LAST!`, for example `\"Hello, Ada Lovelace!\"`. Write `\\(.first)` inside the string.",
+    "reference": "\"Hello, \\(.first) \\(.last)!\"",
+    "tests": [
+      {
+        "input": {
+          "first": "Ada",
+          "last": "Lovelace"
+        },
+        "expected": "\"Hello, Ada Lovelace!\""
+      },
+      {
+        "input": {
+          "first": "Bo",
+          "last": "Berg"
+        },
+        "expected": "\"Hello, Bo Berg!\""
+      },
+      {
+        "input": {
+          "first": "Cy",
+          "last": "Stone"
+        },
+        "expected": "\"Hello, Cy Stone!\""
+      }
+    ]
+  },
+  {
+    "title": "Package label",
+    "statement": "Give the package in the form `name@version`.\n\nThe input is a package file with a `name` and a `version`. The output is one string, for example `\"left-pad@1.3.0\"`.",
+    "reference": "\"\\(.name)@\\(.version)\"",
+    "tests": [
+      {
+        "input": {
+          "name": "left-pad",
+          "version": "1.3.0",
+          "license": "MIT"
+        },
+        "expected": "\"left-pad@1.3.0\""
+      },
+      {
+        "input": {
+          "name": "api",
+          "version": "0.1.0",
+          "private": true
+        },
+        "expected": "\"api@0.1.0\""
+      },
+      {
+        "input": {
+          "name": "ui",
+          "version": "2.0.0"
+        },
+        "expected": "\"ui@2.0.0\""
+      }
+    ]
+  },
+  {
+    "title": "File sizes",
+    "statement": "Give one line of text for every file.\n\nThe input is an array of files with a `path` and a `size`. Each line has the form `PATH (SIZE bytes)`, for example `\"a.log (4200 bytes)\"`. Print each string as its own output. Start with `.[] |`, then build the string.",
+    "reference": ".[] | \"\\(.path) (\\(.size) bytes)\"",
+    "tests": [
+      {
+        "input": [
+          {
+            "path": "a.log",
+            "size": 4200
+          },
+          {
+            "path": "b.txt",
+            "size": 12
+          }
+        ],
+        "expected": "\"a.log (4200 bytes)\"\n\"b.txt (12 bytes)\""
+      },
+      {
+        "input": [],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "path": "c.bin",
+            "size": 1001
+          }
+        ],
+        "expected": "\"c.bin (1001 bytes)\""
+      }
+    ]
+  }
+]

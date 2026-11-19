@@ -1,0 +1,56 @@
+{
+  "title": "Progress in percent",
+  "statement": "Give the progress of every course in percent, as one array of numbers.\n\nThe input is an array of courses. Each course has `done` lessons out of `total` lessons. The percent is `done` times 100, divided by `total`. `total` is never 0. Keep the order.",
+  "reference": "map(.done * 100 / .total)",
+  "tests": [
+    {
+      "input": [
+        {
+          "course": "jq",
+          "done": 3,
+          "total": 4
+        },
+        {
+          "course": "git",
+          "done": 0,
+          "total": 10
+        },
+        {
+          "course": "sql",
+          "done": 5,
+          "total": 5
+        }
+      ],
+      "expected": "[\n  75,\n  0,\n  100\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "course": "bash",
+          "done": 1,
+          "total": 2
+        }
+      ],
+      "expected": "[\n  50\n]"
+    },
+    {
+      "input": [
+        {
+          "course": "vim",
+          "done": 9,
+          "total": 20
+        },
+        {
+          "course": "tmux",
+          "done": 1,
+          "total": 8
+        }
+      ],
+      "expected": "[\n  45,\n  12.5\n]"
+    }
+  ]
+}

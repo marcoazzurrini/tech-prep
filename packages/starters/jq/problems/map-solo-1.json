@@ -1,0 +1,67 @@
+{
+  "title": "First tag of posts",
+  "statement": "Give the first tag of every post, as one array.\n\nThe input is an array of posts. Each post has a `tags` array with at least one tag. Keep the order of the posts.",
+  "reference": "map(.tags[0])",
+  "tests": [
+    {
+      "input": [
+        {
+          "title": "Hello jq",
+          "tags": [
+            "json",
+            "cli"
+          ]
+        },
+        {
+          "title": "Shell tips",
+          "tags": [
+            "bash"
+          ]
+        },
+        {
+          "title": "Slow builds",
+          "tags": [
+            "ci",
+            "cache",
+            "docker"
+          ]
+        }
+      ],
+      "expected": "[\n  \"json\",\n  \"bash\",\n  \"ci\"\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "title": "Notes",
+          "tags": [
+            "misc",
+            "draft"
+          ]
+        }
+      ],
+      "expected": "[\n  \"misc\"\n]"
+    },
+    {
+      "input": [
+        {
+          "title": "One",
+          "tags": [
+            "cli",
+            "json"
+          ]
+        },
+        {
+          "title": "Two",
+          "tags": [
+            "cli"
+          ]
+        }
+      ],
+      "expected": "[\n  \"cli\",\n  \"cli\"\n]"
+    }
+  ]
+}

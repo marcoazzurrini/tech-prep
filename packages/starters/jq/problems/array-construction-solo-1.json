@@ -1,0 +1,48 @@
+{
+  "title": "Reviewer emails",
+  "statement": "Give one array with the email of every reviewer.\n\nThe reviewers are in the `reviewers` array of the input. Each reviewer has a `user` object with an `email`. Keep the order.",
+  "reference": "[.reviewers[] | .user.email]",
+  "tests": [
+    {
+      "input": {
+        "pr": 12,
+        "reviewers": [
+          {
+            "user": {
+              "email": "ada@example.com"
+            },
+            "approved": true
+          },
+          {
+            "user": {
+              "email": "bo@example.com"
+            },
+            "approved": false
+          }
+        ]
+      },
+      "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\"\n]"
+    },
+    {
+      "input": {
+        "pr": 13,
+        "reviewers": []
+      },
+      "expected": "[]"
+    },
+    {
+      "input": {
+        "pr": 14,
+        "reviewers": [
+          {
+            "user": {
+              "email": "cy@example.com"
+            },
+            "approved": true
+          }
+        ]
+      },
+      "expected": "[\n  \"cy@example.com\"\n]"
+    }
+  ]
+}

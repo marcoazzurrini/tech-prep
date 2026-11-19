@@ -1,0 +1,89 @@
+[
+  {
+    "title": "Dependency list",
+    "statement": "Turn the dependencies into a list.\n\nThe input is an object. Each key is a package name and each value is its version. Give an array with one object for each package, with `name` and `version`, in the order of the input. Use `to_entries`, then `map`.",
+    "reference": "to_entries | map({name: .key, version: .value})",
+    "tests": [
+      {
+        "input": {
+          "express": "4.19.2",
+          "lodash": "4.17.21",
+          "zod": "3.23.8"
+        },
+        "expected": "[\n  {\n    \"name\": \"express\",\n    \"version\": \"4.19.2\"\n  },\n  {\n    \"name\": \"lodash\",\n    \"version\": \"4.17.21\"\n  },\n  {\n    \"name\": \"zod\",\n    \"version\": \"3.23.8\"\n  }\n]"
+      },
+      {
+        "input": {},
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "react": "18.3.1"
+        },
+        "expected": "[\n  {\n    \"name\": \"react\",\n    \"version\": \"18.3.1\"\n  }\n]"
+      }
+    ]
+  },
+  {
+    "title": "Drop empty settings",
+    "statement": "Remove the settings that have no value.\n\nThe input is an object. Some values are `null`. Give the same object without those keys. Use `with_entries` with a `select` inside.",
+    "reference": "with_entries(select(.value != null))",
+    "tests": [
+      {
+        "input": {
+          "editor": "vim",
+          "pager": null,
+          "shell": "zsh",
+          "theme": null
+        },
+        "expected": "{\n  \"editor\": \"vim\",\n  \"shell\": \"zsh\"\n}"
+      },
+      {
+        "input": {
+          "proxy": null
+        },
+        "expected": "{}"
+      },
+      {
+        "input": {
+          "lang": "en",
+          "tz": "UTC"
+        },
+        "expected": "{\n  \"lang\": \"en\",\n  \"tz\": \"UTC\"\n}"
+      }
+    ]
+  },
+  {
+    "title": "Email by username",
+    "statement": "Build a lookup from username to email.\n\nThe input is an array of users. Each has a `username` and an `email`. Give one object: each key is a username and its value is the email of that user. Make `{key, value}` pairs with `map`, then use `from_entries`.",
+    "reference": "map({key: .username, value: .email}) | from_entries",
+    "tests": [
+      {
+        "input": [
+          {
+            "username": "ada",
+            "email": "ada@example.com"
+          },
+          {
+            "username": "bo",
+            "email": "bo.lin@example.com"
+          }
+        ],
+        "expected": "{\n  \"ada\": \"ada@example.com\",\n  \"bo\": \"bo.lin@example.com\"\n}"
+      },
+      {
+        "input": [],
+        "expected": "{}"
+      },
+      {
+        "input": [
+          {
+            "username": "cy",
+            "email": "cy@example.com"
+          }
+        ],
+        "expected": "{\n  \"cy\": \"cy@example.com\"\n}"
+      }
+    ]
+  }
+]

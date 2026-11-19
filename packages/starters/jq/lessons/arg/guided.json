@@ -1,0 +1,120 @@
+[
+  {
+    "title": "Users with a role",
+    "statement": "Give the name of every user who has the role `admin`.\n\nDo not write `admin` in the filter. Pass it with `--arg role admin` and compare with `$role`. Print each name as its own output, as JSON with quotes.",
+    "mode": "command",
+    "stub": "'.'",
+    "reference": "--arg role admin '.[] | select(.role == $role) | .name'",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "Ada",
+            "role": "admin"
+          },
+          {
+            "name": "Bo",
+            "role": "guest"
+          },
+          {
+            "name": "Cy",
+            "role": "admin"
+          }
+        ],
+        "expected": "\"Ada\"\n\"Cy\""
+      },
+      {
+        "input": [
+          {
+            "name": "Dee",
+            "role": "guest"
+          }
+        ],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "name": "Eli",
+            "role": "editor"
+          },
+          {
+            "name": "Fay",
+            "role": "admin"
+          }
+        ],
+        "expected": "\"Fay\""
+      }
+    ]
+  },
+  {
+    "title": "Products under a price",
+    "statement": "Give the name of every product that costs 20 or less.\n\nThe limit is a number, so pass it with `--argjson max 20` and compare `.price` with `$max`. Print each name as its own output, as JSON with quotes.",
+    "mode": "command",
+    "stub": "'.'",
+    "reference": "--argjson max 20 '.[] | select(.price <= $max) | .name'",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "mug",
+            "price": 12
+          },
+          {
+            "name": "lamp",
+            "price": 35
+          },
+          {
+            "name": "pen",
+            "price": 20
+          }
+        ],
+        "expected": "\"mug\"\n\"pen\""
+      },
+      {
+        "input": [
+          {
+            "name": "desk",
+            "price": 180
+          }
+        ],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "name": "cap",
+            "price": 9
+          },
+          {
+            "name": "bag",
+            "price": 21
+          }
+        ],
+        "expected": "\"cap\""
+      }
+    ]
+  },
+  {
+    "title": "Server settings",
+    "statement": "Build the object `{\"name\": \"api\", \"port\": 8080}` from arguments only.\n\nThis task has no input, so use `-n`. Pass `api` with `--arg name` and `8080` with `--argjson port`. Then build the object from `$name` and `$port`, with the keys in that order. The port must be a number.",
+    "mode": "command",
+    "stub": "'.'",
+    "constant": true,
+    "reference": "-n --arg name api --argjson port 8080 '{name: $name, port: $port}'",
+    "tests": [
+      {
+        "input": null,
+        "expected": "{\n  \"name\": \"api\",\n  \"port\": 8080\n}"
+      },
+      {
+        "input": null,
+        "expected": "{\n  \"name\": \"api\",\n  \"port\": 8080\n}"
+      },
+      {
+        "input": null,
+        "expected": "{\n  \"name\": \"api\",\n  \"port\": 8080\n}"
+      }
+    ]
+  }
+]

@@ -1,0 +1,66 @@
+{
+  "title": "Most played first",
+  "statement": "Order the tracks of the playlist by plays, with the most played track first.\n\nThe input is one playlist. Its tracks are in the `tracks` array, and each track has a `plays` number. No two tracks have the same `plays`. Give the whole playlist back, with the other fields as they are.",
+  "reference": ".tracks |= (sort_by(.plays) | reverse)",
+  "tests": [
+    {
+      "input": {
+        "name": "Focus",
+        "owner": "ada",
+        "tracks": [
+          {
+            "title": "Rain",
+            "plays": 12
+          },
+          {
+            "title": "Dawn",
+            "plays": 40
+          },
+          {
+            "title": "Loop",
+            "plays": 7
+          }
+        ]
+      },
+      "expected": "{\n  \"name\": \"Focus\",\n  \"owner\": \"ada\",\n  \"tracks\": [\n    {\n      \"title\": \"Dawn\",\n      \"plays\": 40\n    },\n    {\n      \"title\": \"Rain\",\n      \"plays\": 12\n    },\n    {\n      \"title\": \"Loop\",\n      \"plays\": 7\n    }\n  ]\n}"
+    },
+    {
+      "input": {
+        "name": "Empty",
+        "owner": "bo",
+        "tracks": []
+      },
+      "expected": "{\n  \"name\": \"Empty\",\n  \"owner\": \"bo\",\n  \"tracks\": []\n}"
+    },
+    {
+      "input": {
+        "name": "Run",
+        "owner": "cy",
+        "tracks": [
+          {
+            "title": "Go",
+            "plays": 3
+          },
+          {
+            "title": "Fast",
+            "plays": 9
+          }
+        ]
+      },
+      "expected": "{\n  \"name\": \"Run\",\n  \"owner\": \"cy\",\n  \"tracks\": [\n    {\n      \"title\": \"Fast\",\n      \"plays\": 9\n    },\n    {\n      \"title\": \"Go\",\n      \"plays\": 3\n    }\n  ]\n}"
+    },
+    {
+      "input": {
+        "name": "One",
+        "owner": "dee",
+        "tracks": [
+          {
+            "title": "Solo",
+            "plays": 1
+          }
+        ]
+      },
+      "expected": "{\n  \"name\": \"One\",\n  \"owner\": \"dee\",\n  \"tracks\": [\n    {\n      \"title\": \"Solo\",\n      \"plays\": 1\n    }\n  ]\n}"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "title": "Comment authors",
+  "statement": "Give the author of every comment, as one array.\n\nThe input is an array of comments. The author's name is in `user.name`. Some comments were posted without an account: their `user` is `null`. For those, give `\"anonymous\"`. Keep the order.",
+  "reference": "map(.user.name // \"anonymous\")",
+  "tests": [
+    {
+      "input": [
+        {
+          "id": 1,
+          "text": "Nice post",
+          "user": {
+            "name": "Ada"
+          }
+        },
+        {
+          "id": 2,
+          "text": "Thanks",
+          "user": null
+        },
+        {
+          "id": 3,
+          "text": "+1",
+          "user": {
+            "name": "Bo"
+          }
+        }
+      ],
+      "expected": "[\n  \"Ada\",\n  \"anonymous\",\n  \"Bo\"\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "id": 4,
+          "text": "First",
+          "user": null
+        }
+      ],
+      "expected": "[\n  \"anonymous\"\n]"
+    },
+    {
+      "input": [
+        {
+          "id": 5,
+          "text": "Agreed",
+          "user": {
+            "name": "Cy"
+          }
+        }
+      ],
+      "expected": "[\n  \"Cy\"\n]"
+    }
+  ]
+}

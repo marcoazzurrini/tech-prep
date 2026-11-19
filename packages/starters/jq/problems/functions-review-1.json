@@ -1,0 +1,48 @@
+{
+  "title": "Scores in range",
+  "statement": "Bring every score into the range from 0 to 100.\n\nThe input has an `overall` score and a `parts` array of scores. Bonus points and penalties can push a score out of range. A score under 0 becomes 0. A score over 100 becomes 100. Every other score stays as it is. Give an object of the same shape: `overall` as a number and `parts` as an array in the same order.",
+  "reference": "def clamp: if . < 0 then 0 elif . > 100 then 100 else . end;\n{overall: (.overall | clamp), parts: (.parts | map(clamp))}",
+  "tests": [
+    {
+      "input": {
+        "overall": 104,
+        "parts": [
+          98,
+          -3,
+          110,
+          50
+        ]
+      },
+      "expected": "{\n  \"overall\": 100,\n  \"parts\": [\n    98,\n    0,\n    100,\n    50\n  ]\n}"
+    },
+    {
+      "input": {
+        "overall": 72,
+        "parts": [
+          70,
+          74
+        ]
+      },
+      "expected": "{\n  \"overall\": 72,\n  \"parts\": [\n    70,\n    74\n  ]\n}"
+    },
+    {
+      "input": {
+        "overall": -8,
+        "parts": []
+      },
+      "expected": "{\n  \"overall\": 0,\n  \"parts\": []\n}"
+    },
+    {
+      "input": {
+        "overall": 100,
+        "parts": [
+          0,
+          100,
+          101,
+          -1
+        ]
+      },
+      "expected": "{\n  \"overall\": 100,\n  \"parts\": [\n    0,\n    100,\n    100,\n    0\n  ]\n}"
+    }
+  ]
+}

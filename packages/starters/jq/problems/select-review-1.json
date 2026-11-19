@@ -1,0 +1,46 @@
+{
+  "title": "Large files",
+  "statement": "Give the path of every file that is larger than 1000 bytes.\n\nThe input is an array of files with a `path` and a `size`. Print each path as its own output.",
+  "reference": ".[] | select(.size > 1000) | .path",
+  "tests": [
+    {
+      "input": [
+        {
+          "path": "a.log",
+          "size": 4200
+        },
+        {
+          "path": "b.txt",
+          "size": 12
+        },
+        {
+          "path": "c.bin",
+          "size": 1001
+        }
+      ],
+      "expected": "\"a.log\"\n\"c.bin\""
+    },
+    {
+      "input": [
+        {
+          "path": "d.md",
+          "size": 1000
+        }
+      ],
+      "expected": ""
+    },
+    {
+      "input": [
+        {
+          "path": "e.zip",
+          "size": 90000
+        },
+        {
+          "path": "f.iso",
+          "size": 5000
+        }
+      ],
+      "expected": "\"e.zip\"\n\"f.iso\""
+    }
+  ]
+}

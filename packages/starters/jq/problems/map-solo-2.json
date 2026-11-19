@@ -1,0 +1,39 @@
+{
+  "title": "Slim repo list",
+  "statement": "Give a smaller object for every repository, as one array.\n\nThe input is an array of repositories from an API. Each new object has two keys: `name`, with the value of `full_name`, and `stars`, with the value of `stargazers_count`. Keep the order.",
+  "reference": "map({name: .full_name, stars: .stargazers_count})",
+  "tests": [
+    {
+      "input": [
+        {
+          "id": 11,
+          "full_name": "ada/parser",
+          "stargazers_count": 240,
+          "fork": false
+        },
+        {
+          "id": 12,
+          "full_name": "bo/dotfiles",
+          "stargazers_count": 3,
+          "fork": true
+        }
+      ],
+      "expected": "[\n  {\n    \"name\": \"ada/parser\",\n    \"stars\": 240\n  },\n  {\n    \"name\": \"bo/dotfiles\",\n    \"stars\": 3\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "id": 30,
+          "full_name": "cy/notes",
+          "stargazers_count": 0,
+          "fork": false
+        }
+      ],
+      "expected": "[\n  {\n    \"name\": \"cy/notes\",\n    \"stars\": 0\n  }\n]"
+    }
+  ]
+}

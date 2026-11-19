@@ -1,0 +1,31 @@
+{
+  "title": "Email not verified",
+  "statement": "Say if the email of the account is not verified.\n\nThe account has a `verified` field that is `true` or `false`. Give the opposite value: `true` when the email is not verified. The function `not` turns `true` into `false` and `false` into `true`.",
+  "reference": ".verified | not",
+  "tests": [
+    {
+      "input": {
+        "user": "jo",
+        "email": "jo@example.com",
+        "verified": false
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "user": "kim",
+        "email": "kim@example.com",
+        "verified": true
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "user": "lee",
+        "email": "lee@example.com",
+        "verified": false
+      },
+      "expected": "true"
+    }
+  ]
+}

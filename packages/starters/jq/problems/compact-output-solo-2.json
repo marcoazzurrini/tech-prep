@@ -1,0 +1,52 @@
+{
+  "title": "Product ids",
+  "statement": "Give one array with the `id` of every product.\n\nThe input is an array of products. Print the array of ids as one line of JSON, with no spaces. For example `[4,8]`.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-c 'map(.id)'",
+  "tests": [
+    {
+      "input": [
+        {
+          "id": 4,
+          "name": "lamp"
+        },
+        {
+          "id": 8,
+          "name": "desk"
+        },
+        {
+          "id": 15,
+          "name": "chair"
+        }
+      ],
+      "expected": "[4,8,15]"
+    },
+    {
+      "input": [
+        {
+          "id": 16,
+          "name": "shelf"
+        }
+      ],
+      "expected": "[16]"
+    },
+    {
+      "input": [
+        {
+          "id": 23,
+          "name": "rug"
+        },
+        {
+          "id": 42,
+          "name": "sofa"
+        }
+      ],
+      "expected": "[23,42]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    }
+  ]
+}

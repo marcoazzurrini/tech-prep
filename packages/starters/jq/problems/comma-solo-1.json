@@ -1,0 +1,29 @@
+{
+  "title": "First and last line",
+  "statement": "Give the first line of the log, then the last line.\n\nThe input is an array of strings. Print two outputs. When the log has only one line, print that line twice.",
+  "reference": ".[0], .[-1]",
+  "tests": [
+    {
+      "input": [
+        "server started",
+        "user logged in",
+        "cache cleared",
+        "server stopped"
+      ],
+      "expected": "\"server started\"\n\"server stopped\""
+    },
+    {
+      "input": [
+        "only line"
+      ],
+      "expected": "\"only line\"\n\"only line\""
+    },
+    {
+      "input": [
+        "open",
+        "close"
+      ],
+      "expected": "\"open\"\n\"close\""
+    }
+  ]
+}

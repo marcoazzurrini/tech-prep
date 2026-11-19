@@ -1,0 +1,46 @@
+{
+  "title": "Names to show",
+  "statement": "Give the name to show for every user.\n\nThe input is an array of users. Each user has a `name` and a `nickname`, and both are strings. Show the `nickname`, unless it is the empty string `\"\"`: then show the `name`. Print each result as its own output.",
+  "reference": ".[] | if .nickname == \"\" then .name else .nickname end",
+  "tests": [
+    {
+      "input": [
+        {
+          "name": "Ada Lin",
+          "nickname": "ada"
+        },
+        {
+          "name": "Bo Reed",
+          "nickname": ""
+        },
+        {
+          "name": "Cy Vale",
+          "nickname": "cyv"
+        }
+      ],
+      "expected": "\"ada\"\n\"Bo Reed\"\n\"cyv\""
+    },
+    {
+      "input": [
+        {
+          "name": "Dee Moss",
+          "nickname": ""
+        }
+      ],
+      "expected": "\"Dee Moss\""
+    },
+    {
+      "input": [
+        {
+          "name": "Eli Park",
+          "nickname": "eli"
+        }
+      ],
+      "expected": "\"eli\""
+    },
+    {
+      "input": [],
+      "expected": ""
+    }
+  ]
+}

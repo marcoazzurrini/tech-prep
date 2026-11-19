@@ -1,0 +1,59 @@
+{
+  "title": "Team members",
+  "statement": "Print the name of every member of every team.\n\nThe input is an array of teams. Each team has a `members` array of strings. Print plain text: one member per line, with no quotes. Keep the order of the input.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-r '.[] | .members[]'",
+  "tests": [
+    {
+      "input": [
+        {
+          "team": "core",
+          "members": [
+            "Ada",
+            "Bo"
+          ]
+        },
+        {
+          "team": "docs",
+          "members": [
+            "Cy"
+          ]
+        }
+      ],
+      "expected": "Ada\nBo\nCy"
+    },
+    {
+      "input": [
+        {
+          "team": "ops",
+          "members": []
+        },
+        {
+          "team": "data",
+          "members": [
+            "Dee",
+            "Eli",
+            "Fay"
+          ]
+        }
+      ],
+      "expected": "Dee\nEli\nFay"
+    },
+    {
+      "input": [
+        {
+          "team": "web",
+          "members": [
+            "Gus"
+          ]
+        }
+      ],
+      "expected": "Gus"
+    },
+    {
+      "input": [],
+      "expected": ""
+    }
+  ]
+}

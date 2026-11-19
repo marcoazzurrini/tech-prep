@@ -1,0 +1,28 @@
+{
+  "title": "Words in a message",
+  "statement": "Give the number of words in the commit message.\n\nThe message is in `message`. Words are separated by one space. Give one number.",
+  "reference": ".message | split(\" \") | length",
+  "tests": [
+    {
+      "input": {
+        "sha": "a1f",
+        "message": "fix login redirect bug"
+      },
+      "expected": "4"
+    },
+    {
+      "input": {
+        "sha": "b2c",
+        "message": "release"
+      },
+      "expected": "1"
+    },
+    {
+      "input": {
+        "sha": "c3d",
+        "message": "add dark mode"
+      },
+      "expected": "3"
+    }
+  ]
+}

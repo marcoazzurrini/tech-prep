@@ -1,0 +1,50 @@
+{
+  "title": "Kind of the payload",
+  "statement": "Say what kind of value `data` holds.\n\nThe input is an API reply. Give the kind as one of these strings: `\"array\"`, `\"object\"`, `\"string\"`, `\"number\"`, `\"boolean\"` or `\"null\"`. When `data` is missing, the answer is `\"null\"`.",
+  "reference": ".data | type",
+  "tests": [
+    {
+      "input": {
+        "ok": true,
+        "data": [
+          {
+            "id": 1
+          },
+          {
+            "id": 2
+          }
+        ]
+      },
+      "expected": "\"array\""
+    },
+    {
+      "input": {
+        "ok": true,
+        "data": {
+          "id": 1
+        }
+      },
+      "expected": "\"object\""
+    },
+    {
+      "input": {
+        "ok": false
+      },
+      "expected": "\"null\""
+    },
+    {
+      "input": {
+        "ok": true,
+        "data": "queued"
+      },
+      "expected": "\"string\""
+    },
+    {
+      "input": {
+        "ok": true,
+        "data": 0
+      },
+      "expected": "\"number\""
+    }
+  ]
+}

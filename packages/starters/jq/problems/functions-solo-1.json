@@ -1,0 +1,39 @@
+{
+  "title": "Major versions",
+  "statement": "Compare the major number of the installed version with that of the latest version.\n\nThe input has `current` and `latest`, both text like `\"1.4.2\"`. The major number is the part before the first dot, as a number. Give an object with three keys. `current` is the major number of the installed version. `latest` is the major number of the latest version. `update` is `true` when the latest major number is larger, and `false` when it is not.",
+  "reference": "def major: split(\".\") | .[0] | tonumber;\n{current: (.current | major), latest: (.latest | major), update: ((.latest | major) > (.current | major))}",
+  "tests": [
+    {
+      "input": {
+        "package": "left-pad",
+        "current": "1.4.2",
+        "latest": "2.0.1"
+      },
+      "expected": "{\n  \"current\": 1,\n  \"latest\": 2,\n  \"update\": true\n}"
+    },
+    {
+      "input": {
+        "package": "tiny-log",
+        "current": "3.1.0",
+        "latest": "3.9.9"
+      },
+      "expected": "{\n  \"current\": 3,\n  \"latest\": 3,\n  \"update\": false\n}"
+    },
+    {
+      "input": {
+        "package": "fastq",
+        "current": "9.3.1",
+        "latest": "10.0.0"
+      },
+      "expected": "{\n  \"current\": 9,\n  \"latest\": 10,\n  \"update\": true\n}"
+    },
+    {
+      "input": {
+        "package": "old-lib",
+        "current": "0.8.0",
+        "latest": "0.8.0"
+      },
+      "expected": "{\n  \"current\": 0,\n  \"latest\": 0,\n  \"update\": false\n}"
+    }
+  ]
+}

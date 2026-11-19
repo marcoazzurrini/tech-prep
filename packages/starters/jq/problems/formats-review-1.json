@@ -1,0 +1,51 @@
+{
+  "title": "Stock table",
+  "statement": "Print each row of the table as one line, with a tab between the values.\n\nThe input is an array of rows. Each row is an array of values. This task runs jq with `-r`. The values of a row have one tab character between them and no quotes.",
+  "reference": ".[] | @tsv",
+  "flags": [
+    "-r"
+  ],
+  "tests": [
+    {
+      "input": [
+        [
+          "name",
+          "qty"
+        ],
+        [
+          "pen",
+          3
+        ],
+        [
+          "ink",
+          12
+        ]
+      ],
+      "expected": "name\tqty\npen\t3\nink\t12"
+    },
+    {
+      "input": [
+        [
+          "name",
+          "qty"
+        ]
+      ],
+      "expected": "name\tqty"
+    },
+    {
+      "input": [
+        [
+          "city",
+          "temp",
+          "rain"
+        ],
+        [
+          "Oslo",
+          -2,
+          true
+        ]
+      ],
+      "expected": "city\ttemp\train\nOslo\t-2\ttrue"
+    }
+  ]
+}

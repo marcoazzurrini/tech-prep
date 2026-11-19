@@ -1,0 +1,37 @@
+{
+  "title": "Last two commits",
+  "statement": "Give the last two commit messages.\n\nThe input is an array of commit messages, oldest first. Give an array with the last two, in the same order. When there are fewer than two messages, give all of them.",
+  "reference": ".[-2:]",
+  "tests": [
+    {
+      "input": [
+        "Add login",
+        "Fix typo",
+        "Add tests",
+        "Bump version"
+      ],
+      "expected": "[\n  \"Add tests\",\n  \"Bump version\"\n]"
+    },
+    {
+      "input": [
+        "First commit"
+      ],
+      "expected": "[\n  \"First commit\"\n]"
+    },
+    {
+      "input": [
+        "Add tests",
+        "Fix tests"
+      ],
+      "expected": "[\n  \"Add tests\",\n  \"Fix tests\"\n]"
+    },
+    {
+      "input": [
+        "Fix typo",
+        "Add login",
+        "Fix login"
+      ],
+      "expected": "[\n  \"Add login\",\n  \"Fix login\"\n]"
+    }
+  ]
+}

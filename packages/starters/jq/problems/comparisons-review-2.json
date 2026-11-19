@@ -1,0 +1,86 @@
+{
+  "title": "Rooms to offer",
+  "statement": "Give the `id` of every room that fits the guest.\n\nThe rooms are in the `rooms` array. A room fits when it is not booked, has 2 beds or more, and its `price` is 120 or less. `booked` is `true` or `false`. Give one array of ids, in the same order.",
+  "reference": ".rooms | map(select((.booked | not) and .beds >= 2 and .price <= 120) | .id)",
+  "tests": [
+    {
+      "input": {
+        "hotel": "Mare",
+        "rooms": [
+          {
+            "id": 101,
+            "beds": 2,
+            "price": 95,
+            "booked": false
+          },
+          {
+            "id": 102,
+            "beds": 1,
+            "price": 60,
+            "booked": false
+          },
+          {
+            "id": 103,
+            "beds": 3,
+            "price": 120,
+            "booked": false
+          },
+          {
+            "id": 104,
+            "beds": 2,
+            "price": 90,
+            "booked": true
+          },
+          {
+            "id": 105,
+            "beds": 2,
+            "price": 130,
+            "booked": false
+          }
+        ]
+      },
+      "expected": "[\n  101,\n  103\n]"
+    },
+    {
+      "input": {
+        "hotel": "Lago",
+        "rooms": [
+          {
+            "id": 7,
+            "beds": 1,
+            "price": 40,
+            "booked": false
+          }
+        ]
+      },
+      "expected": "[]"
+    },
+    {
+      "input": {
+        "hotel": "Monte",
+        "rooms": [
+          {
+            "id": 21,
+            "beds": 2,
+            "price": 121,
+            "booked": false
+          },
+          {
+            "id": 22,
+            "beds": 4,
+            "price": 110,
+            "booked": false
+          }
+        ]
+      },
+      "expected": "[\n  22\n]"
+    },
+    {
+      "input": {
+        "hotel": "Sole",
+        "rooms": []
+      },
+      "expected": "[]"
+    }
+  ]
+}

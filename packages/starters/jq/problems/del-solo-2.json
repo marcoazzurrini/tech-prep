@@ -1,0 +1,43 @@
+{
+  "title": "Order for printing",
+  "statement": "Give the order without the customer's card and email.\n\nThe input is one order. `card` and `email` are inside `customer`. Give the whole order back, with every other field as it is.",
+  "reference": "del(.customer.card, .customer.email)",
+  "tests": [
+    {
+      "input": {
+        "id": 88,
+        "customer": {
+          "name": "Ada",
+          "email": "ada@example.com",
+          "card": "4111"
+        },
+        "total": 59
+      },
+      "expected": "{\n  \"id\": 88,\n  \"customer\": {\n    \"name\": \"Ada\"\n  },\n  \"total\": 59\n}"
+    },
+    {
+      "input": {
+        "id": 89,
+        "customer": {
+          "name": "Bo",
+          "email": "bo@example.com",
+          "card": "5500",
+          "city": "Oslo"
+        },
+        "total": 12
+      },
+      "expected": "{\n  \"id\": 89,\n  \"customer\": {\n    \"name\": \"Bo\",\n    \"city\": \"Oslo\"\n  },\n  \"total\": 12\n}"
+    },
+    {
+      "input": {
+        "id": 90,
+        "customer": {
+          "email": "cy@example.com",
+          "card": "3400"
+        },
+        "total": 0
+      },
+      "expected": "{\n  \"id\": 90,\n  \"customer\": {},\n  \"total\": 0\n}"
+    }
+  ]
+}

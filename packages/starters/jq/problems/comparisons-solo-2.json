@@ -1,0 +1,61 @@
+{
+  "title": "Extra pay shifts",
+  "statement": "Keep the shifts that get extra pay.\n\nThe input is an array of shifts. A shift gets extra pay when its `day` is `\"sat\"`, when its `day` is `\"sun\"`, or when `holiday` is `true`. Give an array of whole shifts back, in the same order.",
+  "reference": "map(select(.day == \"sat\" or .day == \"sun\" or .holiday))",
+  "tests": [
+    {
+      "input": [
+        {
+          "who": "Ada",
+          "day": "mon",
+          "holiday": false
+        },
+        {
+          "who": "Bo",
+          "day": "sat",
+          "holiday": false
+        },
+        {
+          "who": "Cy",
+          "day": "wed",
+          "holiday": true
+        },
+        {
+          "who": "Dee",
+          "day": "sun",
+          "holiday": false
+        }
+      ],
+      "expected": "[\n  {\n    \"who\": \"Bo\",\n    \"day\": \"sat\",\n    \"holiday\": false\n  },\n  {\n    \"who\": \"Cy\",\n    \"day\": \"wed\",\n    \"holiday\": true\n  },\n  {\n    \"who\": \"Dee\",\n    \"day\": \"sun\",\n    \"holiday\": false\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "who": "Eli",
+          "day": "fri",
+          "holiday": false
+        }
+      ],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "who": "Fay",
+          "day": "sun",
+          "holiday": true
+        },
+        {
+          "who": "Gus",
+          "day": "tue",
+          "holiday": false
+        }
+      ],
+      "expected": "[\n  {\n    \"who\": \"Fay\",\n    \"day\": \"sun\",\n    \"holiday\": true\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    }
+  ]
+}

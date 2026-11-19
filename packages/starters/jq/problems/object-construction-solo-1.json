@@ -1,0 +1,43 @@
+{
+  "title": "Flat weather",
+  "statement": "Build a flat object with the keys `city`, `temp` and `wind`.\n\nThe input is a weather reply. `city` is at the top level. `temp` and `wind` are inside the `now` object. Leave every other field out.",
+  "reference": "{city, temp: .now.temp, wind: .now.wind}",
+  "tests": [
+    {
+      "input": {
+        "city": "Oslo",
+        "now": {
+          "temp": 4,
+          "wind": 12,
+          "humidity": 80
+        },
+        "source": "station-3"
+      },
+      "expected": "{\n  \"city\": \"Oslo\",\n  \"temp\": 4,\n  \"wind\": 12\n}"
+    },
+    {
+      "input": {
+        "city": "Cairo",
+        "now": {
+          "temp": 31,
+          "wind": 5,
+          "humidity": 20
+        },
+        "source": "station-9"
+      },
+      "expected": "{\n  \"city\": \"Cairo\",\n  \"temp\": 31,\n  \"wind\": 5\n}"
+    },
+    {
+      "input": {
+        "city": "Lima",
+        "now": {
+          "temp": 19,
+          "wind": 0,
+          "humidity": 77
+        },
+        "source": "station-1"
+      },
+      "expected": "{\n  \"city\": \"Lima\",\n  \"temp\": 19,\n  \"wind\": 0\n}"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "title": "Ticket fares",
+  "statement": "Give the fare of every passenger.\n\nThe input is an array of passengers with a `name` and an `age`. The fare is `\"free\"` when the age is under 5. It is `\"reduced\"` when the age is from 5 to 17, or 65 and over. It is `\"full\"` for everyone else. Give an array of objects with `name` and `fare`, in the same order.",
+  "reference": "map({name, fare: (if .age < 5 then \"free\" elif .age < 18 or .age >= 65 then \"reduced\" else \"full\" end)})",
+  "tests": [
+    {
+      "input": [
+        {
+          "name": "Ada",
+          "age": 3
+        },
+        {
+          "name": "Bo",
+          "age": 12
+        },
+        {
+          "name": "Cy",
+          "age": 40
+        },
+        {
+          "name": "Dee",
+          "age": 70
+        }
+      ],
+      "expected": "[\n  {\n    \"name\": \"Ada\",\n    \"fare\": \"free\"\n  },\n  {\n    \"name\": \"Bo\",\n    \"fare\": \"reduced\"\n  },\n  {\n    \"name\": \"Cy\",\n    \"fare\": \"full\"\n  },\n  {\n    \"name\": \"Dee\",\n    \"fare\": \"reduced\"\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "name": "Eli",
+          "age": 5
+        },
+        {
+          "name": "Fay",
+          "age": 17
+        },
+        {
+          "name": "Gus",
+          "age": 18
+        }
+      ],
+      "expected": "[\n  {\n    \"name\": \"Eli\",\n    \"fare\": \"reduced\"\n  },\n  {\n    \"name\": \"Fay\",\n    \"fare\": \"reduced\"\n  },\n  {\n    \"name\": \"Gus\",\n    \"fare\": \"full\"\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "name": "Hal",
+          "age": 64
+        },
+        {
+          "name": "Ivy",
+          "age": 65
+        },
+        {
+          "name": "Jo",
+          "age": 4
+        }
+      ],
+      "expected": "[\n  {\n    \"name\": \"Hal\",\n    \"fare\": \"full\"\n  },\n  {\n    \"name\": \"Ivy\",\n    \"fare\": \"reduced\"\n  },\n  {\n    \"name\": \"Jo\",\n    \"fare\": \"free\"\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    }
+  ]
+}

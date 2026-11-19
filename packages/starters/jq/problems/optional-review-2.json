@@ -1,0 +1,52 @@
+{
+  "title": "Ids in batches",
+  "statement": "Give every id of every good batch.\n\nThe input is an array of batches. A good batch is an array of ids. A failed batch is `null` or a string. Skip the failed batches. Print each id as its own output, in the same order.",
+  "reference": ".[] | .[]?",
+  "tests": [
+    {
+      "input": [
+        [
+          101,
+          102
+        ],
+        null,
+        "failed",
+        [
+          103
+        ]
+      ],
+      "expected": "101\n102\n103"
+    },
+    {
+      "input": [
+        null,
+        "failed"
+      ],
+      "expected": ""
+    },
+    {
+      "input": [
+        [
+          7
+        ]
+      ],
+      "expected": "7"
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3
+        ],
+        [],
+        "failed",
+        [
+          4,
+          5
+        ]
+      ],
+      "expected": "1\n2\n3\n4\n5"
+    }
+  ]
+}

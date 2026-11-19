@@ -1,0 +1,89 @@
+[
+  {
+    "title": "Space left",
+    "statement": "Give how much of the limit is left.\n\n`used` and `limit` are numbers stored as strings. Give `limit` minus `used` as one number. Use `tonumber` on both.",
+    "reference": "(.limit | tonumber) - (.used | tonumber)",
+    "tests": [
+      {
+        "input": {
+          "used": "350",
+          "limit": "500"
+        },
+        "expected": "150"
+      },
+      {
+        "input": {
+          "used": "0",
+          "limit": "100"
+        },
+        "expected": "100"
+      },
+      {
+        "input": {
+          "used": "99",
+          "limit": "99"
+        },
+        "expected": "0"
+      }
+    ]
+  },
+  {
+    "title": "User label",
+    "statement": "Build a label for the user.\n\n`id` is a number. Give the string `user-` followed by the id, for example `user-42`. Join the two with `+`. Use `tostring` on the id first.",
+    "reference": "\"user-\" + (.id | tostring)",
+    "tests": [
+      {
+        "input": {
+          "id": 42
+        },
+        "expected": "\"user-42\""
+      },
+      {
+        "input": {
+          "id": 7
+        },
+        "expected": "\"user-7\""
+      },
+      {
+        "input": {
+          "id": 1005
+        },
+        "expected": "\"user-1005\""
+      }
+    ]
+  },
+  {
+    "title": "Version string",
+    "statement": "Build the version string from its numbers.\n\nThe numbers are in the `parts` array. Turn every number into a string. Then glue them with a `.` between them, for example `1.4.2`. Use `map(tostring)`, then `join`.",
+    "reference": ".parts | map(tostring) | join(\".\")",
+    "tests": [
+      {
+        "input": {
+          "parts": [
+            1,
+            4,
+            2
+          ]
+        },
+        "expected": "\"1.4.2\""
+      },
+      {
+        "input": {
+          "parts": [
+            2,
+            0
+          ]
+        },
+        "expected": "\"2.0\""
+      },
+      {
+        "input": {
+          "parts": [
+            10
+          ]
+        },
+        "expected": "\"10\""
+      }
+    ]
+  }
+]

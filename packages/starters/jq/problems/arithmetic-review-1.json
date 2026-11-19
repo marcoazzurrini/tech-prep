@@ -1,0 +1,56 @@
+{
+  "title": "Time of each request",
+  "statement": "Give the time that every request took, in milliseconds.\n\nThe input is an array of requests. Each request has a `start` and an `end`, both in milliseconds. Print each time as its own output, in the same order.",
+  "reference": ".[] | .end - .start",
+  "tests": [
+    {
+      "input": [
+        {
+          "path": "/login",
+          "start": 1000,
+          "end": 1120
+        },
+        {
+          "path": "/cart",
+          "start": 1500,
+          "end": 1535
+        },
+        {
+          "path": "/health",
+          "start": 2000,
+          "end": 2000
+        }
+      ],
+      "expected": "120\n35\n0"
+    },
+    {
+      "input": [],
+      "expected": ""
+    },
+    {
+      "input": [
+        {
+          "path": "/search",
+          "start": 40,
+          "end": 900
+        }
+      ],
+      "expected": "860"
+    },
+    {
+      "input": [
+        {
+          "path": "/a",
+          "start": 10,
+          "end": 15
+        },
+        {
+          "path": "/b",
+          "start": 10,
+          "end": 15
+        }
+      ],
+      "expected": "5\n5"
+    }
+  ]
+}

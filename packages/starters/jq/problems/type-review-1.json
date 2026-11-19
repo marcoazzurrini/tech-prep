@@ -1,0 +1,52 @@
+{
+  "title": "Error messages",
+  "statement": "Give the message of every log entry.\n\nThe input is an array of log entries. `error` is sometimes a string: then it is the message. Sometimes `error` is an object: then the message is its `message` field. Print each message as its own output.",
+  "reference": ".[] | .error | if type == \"object\" then .message else . end",
+  "tests": [
+    {
+      "input": [
+        {
+          "at": "10:01",
+          "error": "disk full"
+        },
+        {
+          "at": "10:04",
+          "error": {
+            "code": 502,
+            "message": "bad gateway"
+          }
+        },
+        {
+          "at": "10:09",
+          "error": "timeout"
+        }
+      ],
+      "expected": "\"disk full\"\n\"bad gateway\"\n\"timeout\""
+    },
+    {
+      "input": [
+        {
+          "at": "11:30",
+          "error": {
+            "code": 401,
+            "message": "no token"
+          }
+        }
+      ],
+      "expected": "\"no token\""
+    },
+    {
+      "input": [
+        {
+          "at": "12:00",
+          "error": "out of memory"
+        }
+      ],
+      "expected": "\"out of memory\""
+    },
+    {
+      "input": [],
+      "expected": ""
+    }
+  ]
+}

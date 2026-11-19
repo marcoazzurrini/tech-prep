@@ -1,0 +1,32 @@
+{
+  "title": "Settings from lines",
+  "statement": "Turn each settings line into an object.\n\nThe input is an array of lines such as `PORT=8080`. Each line has exactly one `=`. The text before it is the name. The text after it is the value. Give an array of objects with the keys `name` and `value`, in the same order. Both are strings.",
+  "reference": "map(split(\"=\") | {name: .[0], value: .[1]})",
+  "tests": [
+    {
+      "input": [
+        "PORT=8080",
+        "HOST=localhost"
+      ],
+      "expected": "[\n  {\n    \"name\": \"PORT\",\n    \"value\": \"8080\"\n  },\n  {\n    \"name\": \"HOST\",\n    \"value\": \"localhost\"\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        "DEBUG=true"
+      ],
+      "expected": "[\n  {\n    \"name\": \"DEBUG\",\n    \"value\": \"true\"\n  }\n]"
+    },
+    {
+      "input": [
+        "USER=ada",
+        "SHELL=zsh",
+        "LANG=en"
+      ],
+      "expected": "[\n  {\n    \"name\": \"USER\",\n    \"value\": \"ada\"\n  },\n  {\n    \"name\": \"SHELL\",\n    \"value\": \"zsh\"\n  },\n  {\n    \"name\": \"LANG\",\n    \"value\": \"en\"\n  }\n]"
+    }
+  ]
+}

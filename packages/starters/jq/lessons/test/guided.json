@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Version tags",
+    "statement": "Keep the tags that are version tags.\n\nThe input is an array of strings. A version tag is the letter `v`, then one or more digits, and nothing else. Give an array back, in the same order. Use `test` with a regex.",
+    "reference": "map(select(test(\"^v[0-9]+$\")))",
+    "tests": [
+      {
+        "input": [
+          "v1",
+          "latest",
+          "v22",
+          "dev"
+        ],
+        "expected": "[\n  \"v1\",\n  \"v22\"\n]"
+      },
+      {
+        "input": [
+          "v",
+          "v3x",
+          "xv3",
+          "v07"
+        ],
+        "expected": "[\n  \"v07\"\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          "v100"
+        ],
+        "expected": "[\n  \"v100\"\n]"
+      }
+    ]
+  },
+  {
+    "title": "JSON files",
+    "statement": "Give every file name that ends with `.json`.\n\nThe input is an array of file names. Print each name as its own output. Use `endswith`.",
+    "reference": ".[] | select(endswith(\".json\"))",
+    "tests": [
+      {
+        "input": [
+          "data.json",
+          "notes.txt",
+          "config.json",
+          "json.md"
+        ],
+        "expected": "\"data.json\"\n\"config.json\""
+      },
+      {
+        "input": [
+          "a.jsonl",
+          "b.json"
+        ],
+        "expected": "\"b.json\""
+      },
+      {
+        "input": [
+          "x.txt"
+        ],
+        "expected": ""
+      }
+    ]
+  },
+  {
+    "title": "API requests",
+    "statement": "Give the `id` of every request to the API.\n\nThe input is an array of requests. A request goes to the API when its `path` starts with `/api/`. Print each `id` as its own output. Run `startswith` on the path: `.path | startswith(...)`.",
+    "reference": ".[] | select(.path | startswith(\"/api/\")) | .id",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 1,
+            "path": "/api/users"
+          },
+          {
+            "id": 2,
+            "path": "/home"
+          },
+          {
+            "id": 3,
+            "path": "/api/orders"
+          }
+        ],
+        "expected": "1\n3"
+      },
+      {
+        "input": [
+          {
+            "id": 4,
+            "path": "/v2/api/items"
+          },
+          {
+            "id": 5,
+            "path": "/api/"
+          }
+        ],
+        "expected": "5"
+      },
+      {
+        "input": [
+          {
+            "id": 6,
+            "path": "/apiary"
+          }
+        ],
+        "expected": ""
+      }
+    ]
+  }
+]

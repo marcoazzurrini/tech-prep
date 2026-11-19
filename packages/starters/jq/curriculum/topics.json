@@ -1,0 +1,47 @@
+[
+  {
+    "id": "paths",
+    "name": "Paths",
+    "prereqs": []
+  },
+  {
+    "id": "building",
+    "name": "Building Values",
+    "prereqs": []
+  },
+  {
+    "id": "streams",
+    "name": "Streams and Arrays",
+    "prereqs": []
+  },
+  {
+    "id": "cli",
+    "name": "The Command Line",
+    "prereqs": []
+  },
+  {
+    "id": "values",
+    "name": "Values and Types",
+    "prereqs": []
+  },
+  {
+    "id": "strings",
+    "name": "Strings",
+    "prereqs": []
+  },
+  {
+    "id": "aggregation",
+    "name": "Sorting and Grouping",
+    "prereqs": []
+  },
+  {
+    "id": "updating",
+    "name": "Changing Data",
+    "prereqs": []
+  },
+  {
+    "id": "control",
+    "name": "Variables and Reduce",
+    "prereqs": []
+  }
+]

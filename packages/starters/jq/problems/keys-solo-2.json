@@ -1,0 +1,34 @@
+{
+  "title": "Ready to publish",
+  "statement": "Say whether the package file is ready to publish.\n\nIt is ready when it has both a `name` field and a `version` field. Only the keys count: a key with the value `null` still counts as there. Give `true` or `false`.",
+  "reference": "has(\"name\") and has(\"version\")",
+  "tests": [
+    {
+      "input": {
+        "name": "shop-api",
+        "version": "1.4.0",
+        "private": false
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "name": "draft"
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "name": "tool",
+        "version": null
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "private": true
+      },
+      "expected": "false"
+    }
+  ]
+}

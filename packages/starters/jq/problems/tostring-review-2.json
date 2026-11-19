@@ -1,0 +1,31 @@
+{
+  "title": "Order line",
+  "statement": "Write one line of text for the order.\n\n`qty` and `unit_price` are numbers stored as strings. The line is the quantity, then ` x `, then the item, then ` = `, then the total. The total is `qty` times `unit_price`. For example: `3 x mug = 12`. Give one string.",
+  "reference": "\"\\(.qty) x \\(.item) = \\((.qty | tonumber) * (.unit_price | tonumber))\"",
+  "tests": [
+    {
+      "input": {
+        "item": "mug",
+        "qty": "3",
+        "unit_price": "4"
+      },
+      "expected": "\"3 x mug = 12\""
+    },
+    {
+      "input": {
+        "item": "pen",
+        "qty": "10",
+        "unit_price": "1.5"
+      },
+      "expected": "\"10 x pen = 15\""
+    },
+    {
+      "input": {
+        "item": "desk",
+        "qty": "1",
+        "unit_price": "120"
+      },
+      "expected": "\"1 x desk = 120\""
+    }
+  ]
+}

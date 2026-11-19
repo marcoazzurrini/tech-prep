@@ -1,0 +1,39 @@
+{
+  "title": "Top three scores",
+  "statement": "Give the three highest scores, highest first.\n\nThe input is an array of numbers. Give one array back. When there are fewer than three scores, give them all, highest first.",
+  "reference": "sort | reverse | .[0:3]",
+  "tests": [
+    {
+      "input": [
+        55,
+        91,
+        78,
+        60,
+        84
+      ],
+      "expected": "[\n  91,\n  84,\n  78\n]"
+    },
+    {
+      "input": [
+        12,
+        40
+      ],
+      "expected": "[\n  40,\n  12\n]"
+    },
+    {
+      "input": [
+        7
+      ],
+      "expected": "[\n  7\n]"
+    },
+    {
+      "input": [
+        3,
+        9,
+        1,
+        5
+      ],
+      "expected": "[\n  9,\n  5,\n  3\n]"
+    }
+  ]
+}

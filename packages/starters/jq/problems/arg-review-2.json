@@ -1,0 +1,60 @@
+{
+  "title": "Hosts of one environment",
+  "statement": "Print the address of every server in the `prod` environment.\n\nThe servers are in the `servers` array. Each has an `env`, a `host` and a `port`. Pass the string `prod` to jq as the variable `$env`, and keep the servers whose `env` equals it. Print each as `host:port`, as plain text: one per line, with no quotes. For example `web-1:443`.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-r --arg env prod '.servers[] | select(.env == $env) | \"\\(.host):\\(.port)\"'",
+  "tests": [
+    {
+      "input": {
+        "servers": [
+          {
+            "env": "prod",
+            "host": "web-1",
+            "port": 443
+          },
+          {
+            "env": "test",
+            "host": "web-9",
+            "port": 8443
+          },
+          {
+            "env": "prod",
+            "host": "db-1",
+            "port": 5432
+          }
+        ]
+      },
+      "expected": "web-1:443\ndb-1:5432"
+    },
+    {
+      "input": {
+        "servers": [
+          {
+            "env": "test",
+            "host": "db-9",
+            "port": 5433
+          }
+        ]
+      },
+      "expected": ""
+    },
+    {
+      "input": {
+        "servers": [
+          {
+            "env": "dev",
+            "host": "box-3",
+            "port": 3000
+          },
+          {
+            "env": "prod",
+            "host": "cache-1",
+            "port": 6379
+          }
+        ]
+      },
+      "expected": "cache-1:6379"
+    }
+  ]
+}
