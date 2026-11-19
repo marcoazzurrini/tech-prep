@@ -24,9 +24,10 @@ import {
   lineNumbers,
 } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
-import { getCM, vim } from "@replit/codemirror-vim";
+import { Vim, getCM, vim } from "@replit/codemirror-vim";
 import { useEffect, useRef, useState } from "react";
 
+import { cx } from "../lib/cx";
 import { EditorStatus } from "./code-block";
 
 import "./code-editor.css";
@@ -111,10 +112,13 @@ const MODES = new Map([
 interface CodeEditorProps {
   /** The text the editor opens with. Change `key` to load other text. */
   initialValue: string;
-  language: "typescript" | "python";
+  /** A jq filter gets no syntax colours: it is a line or two. */
+  language: "typescript" | "python" | "jq";
   /** Shown in the status strip, such as "two-sum.ts". */
   file: string;
   readOnly?: boolean;
+  /** A few lines tall, for a short answer such as a jq filter. It opens ready to type. */
+  compact?: boolean;
   onChange?: (value: string) => void;
 }
 
@@ -124,6 +128,7 @@ export const CodeEditor = ({
   language,
   file,
   readOnly = false,
+  compact = false,
   onChange,
 }: CodeEditorProps) => {
   const host = useRef<HTMLDivElement>(null);
@@ -165,7 +170,13 @@ export const CodeEditor = ({
             ...historyKeymap,
             indentWithTab,
           ]),
-          language === "python" ? python() : javascript({ typescript: true }),
+          ...(language === "jq"
+            ? []
+            : [
+                language === "python"
+                  ? python()
+                  : javascript({ typescript: true }),
+              ]),
           syntaxHighlighting(syntax),
           theme,
           EditorView.updateListener.of((update) => {
@@ -183,15 +194,23 @@ export const CodeEditor = ({
       }),
     });
 
-    getCM(view)?.on("vim-mode-change", (event: { mode: string }) => {
+    const cm = getCM(view);
+
+    cm?.on("vim-mode-change", (event: { mode: string }) => {
       setMode(MODES.get(event.mode) ?? event.mode.toUpperCase());
     });
 
+    // A short answer is typed at once, so the editor takes the cursor, at the end, in insert mode.
+    if (compact && !readOnly && cm) {
+      view.focus();
+      Vim.handleKey(cm, "A", "mapping");
+    }
+
     return () => view.destroy();
-  }, [language, readOnly]);
+  }, [language, readOnly, compact]);
 
   return (
-    <div className="tp-editor">
+    <div className={cx("tp-editor", compact && "tp-editor--compact")}>
       <div className="tp-editor__view" ref={host} />
       <EditorStatus cursor={cursor} file={file} mode={mode} />
     </div>

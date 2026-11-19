@@ -16,7 +16,7 @@ One person: the owner, a TypeScript developer who studies in focused sessions at
 
 ## Product Purpose
 
-A study app for deliberate practice, "a gym for coding" now that AI writes most code. Each subject is a course with chapters and lessons, laid out like a programming course. A lesson teaches one concept: a short written lesson with a worked example, a small problem solved with the lesson beside it, then a problem solved alone. Spaced reviews bring each concept back as a full problem that does not say what it tests. Each subject has its own permanent tutor agent, which sits in a pane beside the work and helps when asked. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
+A study app for deliberate practice, "a gym for coding" now that AI writes most code. Each subject is a course with chapters and lessons, laid out like a programming course. A lesson teaches one concept: a short written lesson with a worked example, a small problem solved with the lesson beside it, then a problem solved alone. Where tasks are short, as in the jq course, each step has a few tasks, and the app shows the output as the learner types. Spaced reviews bring each concept back as a full problem that does not say what it tests. Each subject has its own permanent tutor agent, which sits in a pane beside the work and helps when asked. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
 
 ## Positioning
 

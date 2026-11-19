@@ -7,14 +7,14 @@
 // learner's code, and hands problems in for grading. The tutor helps beside it, through MCP.
 
 import {
-  DEFAULT_LANGUAGE,
   concept,
   concepts,
   course as openCourse,
   courseErrors,
+  courseLanguage,
   courses,
   guidedConcept,
-  guidedSlug,
+  guidedSlugs,
   hasLesson,
   inCourse,
   isAuthored,
@@ -23,6 +23,8 @@ import {
   problemIndex,
   problemInfo,
   selectCourse,
+  soloConcept,
+  soloSlugs,
   topics,
 } from "./content.ts";
 import type { Difficulty, Language } from "./content.ts";
@@ -35,6 +37,7 @@ import {
 } from "./db.ts";
 import type { AttemptRow, Confidence } from "./db.ts";
 import { exerciseView, submitExercise } from "./exercises.ts";
+import { previewJq, showJson } from "./jq.ts";
 import { cardOf } from "./memory.ts";
 import {
   currentAttempt,
@@ -65,13 +68,36 @@ import {
 
 /** The open course as the app names it. */
 const subject = () => {
-  const { id, initials, name } = openCourse();
+  const { id, initials, kind, name } = openCourse();
 
-  return { id, initials, name };
+  return { id, initials, kind, name };
 };
 
-/** A rough time to solve a problem, for the review estimate. */
+/** A rough time to solve a problem, for the review estimate. A jq task is much shorter. */
 const MINUTES: Record<Difficulty, number> = { easy: 8, hard: 25, medium: 15 };
+const JQ_MINUTES: Record<Difficulty, number> = { easy: 2, hard: 6, medium: 4 };
+
+const minutes = (difficulty: Difficulty): number =>
+  (openCourse().kind === "jq" ? JQ_MINUTES : MINUTES)[difficulty];
+
+/** What a jq task shows beside its statement: the input, the wanted output and how to answer. */
+const jqView = (slug: string) => {
+  const spec = isAuthored(slug) ? problem(slug).jq : undefined;
+  const [shown] = spec?.tests ?? [];
+
+  if (!spec || !shown) {
+    return null;
+  }
+
+  return {
+    flags: spec.flags,
+    /** How many inputs Submit checks beyond the one shown. */
+    hidden: spec.tests.length - 1,
+    input: shown.input_text?.trimEnd() ?? showJson(shown.input),
+    mode: spec.mode,
+    wanted: shown.expected ?? "",
+  };
+};
 
 /** One problem as the app shows it. It carries no topic, so a review does not give its pattern away. */
 const problemView = (slug: string) => {
@@ -79,6 +105,7 @@ const problemView = (slug: string) => {
 
   return {
     difficulty: info.difficulty,
+    jq: jqView(slug),
     slug,
     statement: isAuthored(slug) ? problem(slug).statement : null,
     status: problemStatus(slug),
@@ -92,11 +119,7 @@ const lessonOf = (attempt: AttemptRow): string | null => {
     return null;
   }
 
-  return (
-    guidedConcept(attempt.slug) ??
-    concepts().find((c) => c.solo === attempt.slug)?.id ??
-    null
-  );
+  return guidedConcept(attempt.slug) ?? soloConcept(attempt.slug);
 };
 
 const attemptView = (attempt: AttemptRow) => ({
@@ -171,20 +194,52 @@ const conceptOf = (params: Params): string => {
   return params.concept;
 };
 
-/** One lesson: its text, its two problems, and where the learner stands in it. */
+/** A step's tasks: the one to do now, and how far the learner is. */
+const tasks = (slugs: string[], done: (slug: string) => boolean) => {
+  const at = slugs.findIndex((s) => !done(s));
+  const current = slugs.at(at) ?? slugs[0];
+
+  if (!current) {
+    throw new Error("A lesson step has no task.");
+  }
+
+  return {
+    current,
+    progress: { done: at === -1 ? slugs.length : at, total: slugs.length },
+  };
+};
+
+/** A lesson's guided tasks: one counts as done once it is solved, with or without help. */
+const guidedTasks = (id: string) =>
+  tasks(guidedSlugs(id), (s) =>
+    ["solved", "solved_with_help"].includes(problemStatus(s))
+  );
+
+/** A lesson's solo tasks: one counts as done only when it is solved alone. */
+const soloTasks = (id: string) =>
+  tasks(soloSlugs(id), (s) => problemStatus(s) === "solved");
+
+/**
+ * One lesson: its text, the guided task and the solo task to do now, and where the learner
+ * stands in it. Most lessons have one task per step; a jq lesson has a few short ones.
+ */
 const lesson = (params: Params) => {
   const id = conceptOf(params);
   const c = concept(id);
   const open = currentAttempt();
   const mine = open && lessonOf(open) === id ? open : null;
+  const guided = guidedTasks(id);
+  const solo = soloTasks(id);
 
   return {
     attempt: mine && attemptView(mine),
-    guided: problemView(guidedSlug(id)),
+    guided: problemView(guided.current),
+    guided_tasks: guided.progress,
     id,
     key_idea: c.key_idea,
     name: c.name,
-    solo: problemView(c.solo),
+    solo: problemView(solo.current),
+    solo_tasks: solo.progress,
     status: lessonStatus(id),
     step: lessonStep(id),
     text: lessonText(id),
@@ -205,9 +260,9 @@ const openLesson = (params: Params) => {
   }
 
   if (lessonStep(id) === 1) {
-    startProblem(guidedSlug(id), DEFAULT_LANGUAGE, "guided");
+    startProblem(guidedTasks(id).current, courseLanguage(), "guided");
   } else if (soloWait(id) === null) {
-    startProblem(concept(id).solo, DEFAULT_LANGUAGE, "solo");
+    startProblem(soloTasks(id).current, courseLanguage(), "solo");
   }
 
   return lesson(params);
@@ -223,7 +278,7 @@ const peekLesson = (params: Params) => {
 
   if (
     open?.mode === "solo" &&
-    open.slug === concept(id).solo &&
+    soloSlugs(id).includes(open.slug) &&
     !isPassed(id)
   ) {
     addHint(open.id, id, 2);
@@ -241,7 +296,7 @@ const track = () => {
   return {
     ...subject(),
     due: dueCount(),
-    minutes: plan.reduce((sum, r) => sum + MINUTES[r.problem.difficulty], 0),
+    minutes: plan.reduce((sum, r) => sum + minutes(r.problem.difficulty), 0),
     next_due: nextDue(),
     problems: plan.length,
   };
@@ -273,7 +328,7 @@ const reviewHere = () => {
     return null;
   }
 
-  startProblem(next.problem.slug, DEFAULT_LANGUAGE, "review");
+  startProblem(next.problem.slug, courseLanguage(), "review");
 
   return problemView(next.problem.slug);
 };
@@ -351,7 +406,7 @@ const languageOf = (slug: string): Language => {
   const open = currentAttempt();
 
   // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
-  return open?.slug === slug ? (open.language as Language) : DEFAULT_LANGUAGE;
+  return open?.slug === slug ? (open.language as Language) : courseLanguage();
 };
 
 /** The learner's code for a problem. It can be edited only while the tutor has the problem open. */
@@ -365,6 +420,10 @@ const readCode = (params: Params) => {
     text: readSolution(slug, language),
   };
 };
+
+/** What the learner's filter prints on the shown input, as they type. Nothing is recorded. */
+const preview = (params: Params) =>
+  previewJq(problem(slugOf(params)), params?.text ?? "");
 
 const saveCode = (params: Params) => {
   const slug = slugOf(params);
@@ -474,6 +533,7 @@ const methods = new Map<string, (params: Params) => object>([
   ["course.select", select],
   ["exercise.close", closeExercise],
   ["exercise.submit", submit],
+  ["jq.preview", preview],
   ["lesson", lesson],
   ["lesson.open", openLesson],
   ["lesson.peek", peekLesson],

@@ -7,7 +7,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { DEFAULT_LANGUAGE, EXTENSIONS, concept } from "./content.ts";
+import { DEFAULT_LANGUAGE, EXTENSIONS, concept, course } from "./content.ts";
 import type { Language } from "./content.ts";
 import { closeExercises, exerciseRow, open, openExercise } from "./db.ts";
 import type { Confidence, ExerciseKind, ExerciseRow, Result } from "./db.ts";
@@ -223,6 +223,13 @@ export const showExercise = (input: ExerciseInput) => {
 
   for (const id of input.conceptIds) {
     concept(id);
+  }
+
+  // The engine checks an exercise by running its code, and it runs TypeScript and Python only.
+  if (course().kind === "jq" && input.kind !== "answer") {
+    throw new Error(
+      "In the jq course only an 'answer' exercise can be shown. Explain with short jq examples in chat."
+    );
   }
 
   const language = input.language ?? DEFAULT_LANGUAGE;

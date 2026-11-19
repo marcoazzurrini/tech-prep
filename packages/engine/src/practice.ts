@@ -1,10 +1,13 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import {
-  DEFAULT_LANGUAGE,
+  courseLanguage,
   guidedConcept,
+  guidedSlugs,
   problem as getProblem,
   referenceSolution,
+  soloConcept,
+  soloSlugs,
   solutionPath,
   solutionsDir,
 } from "./content.ts";
@@ -18,11 +21,11 @@ import {
   openAttempt,
   openExercise,
 } from "./db.ts";
-import type { Mode, Outcome, Phase, Recognition } from "./db.ts";
+import type { AttemptRow, Mode, Outcome, Phase, Recognition } from "./db.ts";
 import { INDEPENDENT_HINT_LEVEL, grade } from "./grading.ts";
 import { applyResults } from "./outcomes.ts";
 import { ensureDataStructures, runTests } from "./runner.ts";
-import { completeLesson, isPassed } from "./scheduler.ts";
+import { completeLesson, isPassed, problemStatus } from "./scheduler.ts";
 
 /**
  * Solution files once began with the problem statement as a comment banner. The app shows
@@ -43,23 +46,47 @@ const pauseOthers = (slug: string): void => {
     .run(new Date().toISOString(), slug);
 };
 
+/** True when a guided task was solved, with or without help. */
+const isSolved = (slug: string): boolean =>
+  ["solved", "solved_with_help"].includes(problemStatus(slug));
+
+/** True when the lesson this solo task belongs to has other solo tasks not yet solved alone. */
+const soloTasksLeft = (slug: string): boolean => {
+  const lesson = soloConcept(slug);
+
+  return Boolean(
+    lesson &&
+    soloSlugs(lesson).some((s) => s !== slug && problemStatus(s) !== "solved")
+  );
+};
+
 /**
  * Create the solution file if needed and open (or resume) an attempt. A review starts from
  * the empty stub, even on a problem solved before: recalling the approach is the review.
  */
 export const startProblem = (
   slug: string,
-  language: Language = DEFAULT_LANGUAGE,
+  language: Language = courseLanguage(),
   mode: Mode | null = null
 ) => {
   const p = getProblem(slug);
   mkdirSync(solutionsDir(), { recursive: true });
-  ensureDataStructures(solutionsDir(), language);
+
+  if (language !== "jq") {
+    ensureDataStructures(solutionsDir(), language);
+  }
+
   const file = solutionPath(slug, language);
   let current = openAttempt(slug, language);
   const resumed = Boolean(current);
   const stub = `${p.stubs[language].trimEnd()}\n`;
-  const created = !existsSync(file) || (mode === "review" && !resumed);
+
+  // A review starts from the stub. So does a task that is taken again after it was solved:
+  // with short tasks, the old answer would give the new attempt away.
+  const fresh =
+    !resumed && (mode === "review" || (language === "jq" && mode !== null));
+
+  const created = !existsSync(file) || fresh;
 
   if (created) {
     writeFileSync(file, stub);
@@ -116,7 +143,7 @@ export const startProblem = (
 /** Run the tests and, when an attempt is open, record the result on it. */
 export const testSolution = (
   slug: string,
-  language: Language = DEFAULT_LANGUAGE,
+  language: Language = courseLanguage(),
   file = solutionPath(slug, language)
 ) => {
   const run = runTests(getProblem(slug), language, file);
@@ -192,6 +219,79 @@ export const logHint = (level: number) => {
   };
 };
 
+/** Close an attempt with an outcome and no verdict on any concept. */
+const closeUngraded = (
+  id: number,
+  outcome: Outcome,
+  notes: string | null,
+  now: Date
+): void => {
+  open()
+    .query(
+      "UPDATE attempts SET finished_at = ?, outcome = ?, gave_up = ?, rating = ?, notes = ? WHERE id = ?"
+    )
+    .run(
+      now.toISOString(),
+      outcome,
+      outcome === "gave_up" ? 1 : 0,
+      outcome === "solved" ? 3 : null,
+      notes,
+      id
+    );
+};
+
+/**
+ * Close an attempt that teaches but is not evidence yet, and return its outcome. Null when
+ * the attempt is evidence and must be graded.
+ *
+ * A guided problem is solved with the lesson beside it: solving it marks the concept as
+ * taught once every guided task of the lesson is solved. In a lesson with several solo
+ * tasks, an unaided solve before the last one is recorded with no verdict: the lesson is
+ * learned when all of them are solved alone.
+ */
+const finishTeaching = (
+  current: AttemptRow,
+  solved: boolean,
+  notes: string | null,
+  now: Date
+): Outcome | null => {
+  const helped = current.max_hint_level > INDEPENDENT_HINT_LEVEL;
+  const guided = guidedConcept(current.slug);
+
+  if (guided) {
+    let outcome: Outcome = "gave_up";
+
+    if (solved) {
+      outcome = helped ? "solved_with_help" : "solved";
+
+      const othersDone = guidedSlugs(guided).every(
+        (s) => s === current.slug || isSolved(s)
+      );
+
+      if (othersDone) {
+        completeLesson(guided, now);
+      }
+    }
+
+    closeUngraded(current.id, outcome, notes, now);
+
+    return outcome;
+  }
+
+  if (
+    solved &&
+    !helped &&
+    current.mode === "solo" &&
+    soloTasksLeft(current.slug)
+  ) {
+    closeUngraded(current.id, "solved", notes, now);
+
+    return "solved";
+  }
+
+  return null;
+};
+
 export interface FinishInput {
   attemptId: number;
   /** Set when the tests do not pass: the learner gave up, or stopped for outside reasons (no grade). */
@@ -240,38 +340,16 @@ export const finishAttempt = (input: FinishInput) => {
     );
   }
 
-  const guided = guidedConcept(current.slug);
+  const early = finishTeaching(current, solved, input.notes ?? null, now);
 
-  // A guided problem is solved with the lesson beside it, so it is teaching, not evidence.
-  // Solving it marks the concept as taught; its solo problem decides the rest.
-  if (guided) {
-    const helped = current.max_hint_level > INDEPENDENT_HINT_LEVEL;
-    let guidedOutcome: Outcome = "gave_up";
-
-    if (solved) {
-      completeLesson(guided, now);
-      guidedOutcome = helped ? "solved_with_help" : "solved";
-    }
-
-    open()
-      .query(
-        "UPDATE attempts SET finished_at = ?, outcome = ?, gave_up = ?, notes = ? WHERE id = ?"
-      )
-      .run(
-        now.toISOString(),
-        guidedOutcome,
-        solved ? 0 : 1,
-        input.notes ?? null,
-        current.id
-      );
-
+  if (early) {
     return {
       concepts: [],
       implicit_credit: [],
       minutes: Math.round(
         (now.getTime() - new Date(current.started_at).getTime()) / 60_000
       ),
-      outcome: guidedOutcome,
+      outcome: early,
       pulled_forward: [],
       tests: `${run.passed}/${run.total}`,
     };

@@ -27,6 +27,7 @@ const api = {
       | "course.select"
       | "exercise.close"
       | "exercise.submit"
+      | "jq.preview"
       | "lesson"
       | "lesson.open"
       | "lesson.peek"

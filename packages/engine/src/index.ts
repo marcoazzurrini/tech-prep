@@ -11,15 +11,17 @@ import { z } from "zod";
 import {
   DEFAULT_LANGUAGE,
   concept,
-  concepts,
   course,
+  courseLanguage,
   courseErrors,
   followSavedCourse,
   guidedConcept,
   isAuthored,
+  problem as getProblem,
   problemInfo,
   problemsUsing,
   referenceSolution,
+  soloConcept,
   solutionPath,
   solutionsDir,
   topics,
@@ -30,6 +32,7 @@ import type { Language } from "./content.ts";
 import { addNote, attemptsFor, notesFor, orphans } from "./db.ts";
 import type { ExerciseKind, Result } from "./db.ts";
 import { currentExercise, gradeAnswer, showExercise } from "./exercises.ts";
+import { inputText } from "./jq.ts";
 import {
   currentAttempt,
   logHint,
@@ -88,6 +91,26 @@ const conceptView = (id: string) => {
   };
 };
 
+/** A jq task as the learner sees it: the input, the output to produce, and how they answer. */
+const jqTaskView = (slug: string) => {
+  const spec = getProblem(slug).jq;
+  const [shown] = spec?.tests ?? [];
+
+  if (!spec || !shown) {
+    return null;
+  }
+
+  return {
+    answer_is:
+      spec.mode === "command"
+        ? "everything after `jq`: the flags and the quoted filter"
+        : "a jq filter",
+    flags_set_by_the_task: spec.flags,
+    input: inputText(shown),
+    wanted_output: shown.expected,
+  };
+};
+
 /** How the tutor may help, by the reason the problem is open. */
 const MODE_RULES = {
   guided:
@@ -127,9 +150,7 @@ server.registerTool(
     const lessonId =
       open.mode === "review"
         ? null
-        : (guidedConcept(open.slug) ??
-          concepts().find((c) => c.solo === open.slug)?.id ??
-          null);
+        : (guidedConcept(open.slug) ?? soloConcept(open.slug));
 
     // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
     const language = open.language as Language;
@@ -140,6 +161,7 @@ server.registerTool(
       exercise_on_screen: Boolean(currentExercise()),
       file: solutionPath(open.slug, language),
       hints_so_far: open.max_hint_level,
+      jq_task: jqTaskView(open.slug),
       language,
       lesson: lessonId && conceptView(lessonId),
       mode: open.mode,
@@ -231,7 +253,7 @@ server.registerTool(
       })),
       authored: isAuthored(slug),
       concepts: info.concepts.map(conceptView),
-      reference_solution: referenceSolution(slug, language ?? DEFAULT_LANGUAGE),
+      reference_solution: referenceSolution(slug, language ?? courseLanguage()),
       status: problemStatus(slug),
     };
   })
@@ -276,7 +298,7 @@ server.registerTool(
       "kind 'predict': the learner reads `code` and types what it prints. The engine runs the code to get the answer, so the code must print exactly what you ask for, and little of it.",
       "kind 'arrange': the learner puts `lines` in order and sets `distractors` aside. Pass `lines` in the right order; the app shuffles them. The program must print something. One statement per line, indented as it should be.",
       "kind 'answer': an open question answered in the learner's own words. Pass `rubric` (key points per concept) and `model_answer`. You grade it with grade_answer once the app says it was submitted.",
-      "The learner answers once: the first answer is the evidence. The app tells you the result. Never use a Blind 75 problem.",
+      "The learner answers once: the first answer is the evidence. The app tells you the result. Never use a curriculum problem.",
     ].join(" "),
     inputSchema: {
       code: z.string().optional().describe("example, predict: the code."),

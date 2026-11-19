@@ -28,6 +28,27 @@ export interface Problem {
   difficulty: Difficulty;
   statement: string | null;
   status: ProblemStatus;
+  /** Set for a jq task: what it shows beside the statement. */
+  jq: JqTask | null;
+}
+
+/** A jq task: its input, the output to produce, and how the learner answers. */
+export interface JqTask {
+  /** "filter": the learner writes the filter. "command": everything after `jq`. */
+  mode: "filter" | "command";
+  /** Flags the task itself passes to jq. */
+  flags: string[];
+  input: string;
+  wanted: string;
+  /** How many inputs Submit checks beyond the one shown. */
+  hidden: number;
+}
+
+/** From the bridge's `jq.preview` method: what the learner's text prints on the shown input. */
+export interface JqPreview {
+  output: string;
+  error: string | null;
+  matches: boolean;
 }
 
 export interface Attempt {
@@ -78,7 +99,7 @@ export interface Submission {
 /** From the bridge's `code.read` method. */
 export interface Code {
   text: string;
-  language: "typescript" | "python";
+  language: "typescript" | "python" | "jq";
   editable: boolean;
 }
 
@@ -132,7 +153,13 @@ export interface Session {
 /** From the bridge's `course` method. */
 export interface Course {
   /** The course that is open. */
-  subject: { id: string; name: string; initials: string };
+  subject: {
+    id: string;
+    name: string;
+    initials: string;
+    /** What a task is: code checked by tests, or a jq filter checked by its output. */
+    kind: "code" | "jq";
+  };
   /** Every course the app found, with its concepts due for review. */
   courses: { id: string; name: string; initials: string; due: number }[];
   /** Why a course folder could not be used, one line each. */
@@ -168,8 +195,12 @@ export interface Lesson {
   status: LessonStatus;
   /** 1: the guided problem, beside the lesson. 2: the solo problem, alone. */
   step: 1 | 2;
+  /** The guided task to do now, and how many of the step's tasks are done. */
   guided: Problem;
+  guided_tasks: { done: number; total: number };
+  /** The solo task to do now, and how many of the step's tasks are solved alone. */
   solo: Problem;
+  solo_tasks: { done: number; total: number };
   attempt: Attempt | null;
   /** When the solo problem opens again after a struggle. */
   wait_until: string | null;

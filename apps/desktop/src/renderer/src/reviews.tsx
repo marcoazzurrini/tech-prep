@@ -21,6 +21,7 @@ import { ArrowRight, BookOpen, CircleCheck, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
+import { JqInput, JqWorkbench } from "./jq-workbench";
 import type { Lesson, Problem, Result, Reviews } from "./types";
 import { Workbench } from "./workbench";
 import type { Finished } from "./workbench";
@@ -423,38 +424,69 @@ export const ReviewSession = ({
             title={problem.title}
           >
             <ProblemStatement text={problem.statement ?? ""} />
+            {problem.jq && <JqInput jq={problem.jq} />}
             {finished && (
               <Verdict finished={finished} onOpenLesson={onOpenLesson} />
             )}
           </TaskText>
         </SplitSide>
         <SplitSide stack>
-          <Workbench
-            done={
-              finished
-                ? {
-                    actions: (
-                      <>
-                        <Button onClick={onOpenTutor}>Ask the tutor</Button>
-                        <Button
-                          variant="primary"
-                          onClick={() => {
-                            void advance();
-                          }}
-                        >
-                          Next review
-                        </Button>
-                      </>
-                    ),
-                    note: "",
-                  }
-                : undefined
-            }
-            key={problem.slug}
-            problem={problem}
-            onAskTutor={onOpenTutor}
-            onFinished={finish}
-          />
+          {problem.jq ? (
+            <JqWorkbench
+              jq={problem.jq}
+              done={
+                finished
+                  ? {
+                      actions: (
+                        <>
+                          <Button onClick={onOpenTutor}>Ask the tutor</Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              void advance();
+                            }}
+                          >
+                            Next review
+                          </Button>
+                        </>
+                      ),
+                      note: "",
+                    }
+                  : undefined
+              }
+              key={problem.slug}
+              problem={problem}
+              onAskTutor={onOpenTutor}
+              onFinished={finish}
+            />
+          ) : (
+            <Workbench
+              done={
+                finished
+                  ? {
+                      actions: (
+                        <>
+                          <Button onClick={onOpenTutor}>Ask the tutor</Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              void advance();
+                            }}
+                          >
+                            Next review
+                          </Button>
+                        </>
+                      ),
+                      note: "",
+                    }
+                  : undefined
+              }
+              key={problem.slug}
+              problem={problem}
+              onAskTutor={onOpenTutor}
+              onFinished={finish}
+            />
+          )}
         </SplitSide>
       </Split>
     </LessonPane>

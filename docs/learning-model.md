@@ -27,12 +27,13 @@ Rule of thumb: facts and arithmetic live in code; judgement lives in the agent. 
 
 ## Data model
 
-### Curriculum (JSON in `packages/starters/interview/curriculum/`, versioned in git)
+### Curriculum (JSON in each course folder under `packages/starters/`, versioned in git)
 
 - **Topics**: roadmap nodes with topic prerequisites. They order the path and group progress for display. They are not scheduled.
 - **Concepts**: small skills. Each has prerequisite concepts (a DAG) and a list of **encompassings**: `{ id, w }` edges meaning "practising this concept also practises `w` of that one". Encompassings are set by hand, only on direct prerequisite edges, and default to 0. Prerequisites alone are not used for credit, because they give a lot of incorrect credit (Skycak).
 - **Problems**: the NeetCode 150, each with one topic and one to three target concepts, plus a few extras for concepts the list has no fitting problem for.
 - **Lessons**: one per concept. A lesson has a written text with a worked example, a small **guided problem**, and a **solo problem**: one problem from the list that needs only this concept and concepts taught before it. No two lessons share a solo problem. The problems that no lesson ends on are kept for reviews.
+- **Lessons with several tasks**: a course whose tasks are short, such as jq, gives each step a few tasks in place of one. The rules below then read "every guided task" and "every solo task".
 
 A curriculum is built once per subject, from a good source when one exists. It is not made up as the learner goes.
 
@@ -81,8 +82,8 @@ Each concept gets pass or fail. There are no middle grades.
 
 A lesson has two steps, with support that fades from one to the next.
 
-- **Step 1, with the lesson.** The learner reads the lesson and solves its guided problem with the lesson beside it. A worked example first, then a problem with support, is the order that works for new material. Solving the guided problem moves the concept to `learning`. It never touches FSRS.
-- **Step 2, alone.** The lesson closes and the learner solves the concept's solo problem. Recalling the idea without the text is what makes it last, and it shows honestly whether the lesson worked.
+- **Step 1, with the lesson.** The learner reads the lesson and solves its guided problem with the lesson beside it. A worked example first, then a problem with support, is the order that works for new material. Solving the guided problem moves the concept to `learning`. It never touches FSRS. With several guided tasks, the concept moves when all of them are solved.
+- **Step 2, alone.** The lesson closes and the learner solves the concept's solo problem. Recalling the idea without the text is what makes it last, and it shows honestly whether the lesson worked. With several solo tasks, the concept is learned when every one is solved alone; an unaided solve before the last one is recorded with no verdict.
 - **Solved without help**: the concept becomes `passed`, its FSRS card is created and given a first Good review, and its dependents may unlock.
 - **Solved with help** or **gave up**: the concept stays `learning`, `fail_count` goes up, and the solo problem waits a day. The lesson stays readable meanwhile.
 - **Never stuck**: while a solo problem waits, the course moves on to the next open lesson (ALEKS-style switching to another frontier concept).
