@@ -18,12 +18,20 @@ import {
 import type { TrailItem } from "@tech-prep/ui";
 import { BookOpen, User } from "lucide-react";
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
+import {
+  currentPart,
+  reduce,
+  reopensLesson,
+  shown,
+  start,
+  trail,
+} from "./lesson-flow";
+import type { Finished, FlowEvent } from "./lesson-flow";
 import { TaskAside, TaskWorkbench, isCompact } from "./task-kinds";
 import type { Lesson, LessonPart, Problem } from "./types";
-import type { Finished } from "./workbench";
 
 /** " · Task 2 of 3" for a step with several tasks, else nothing. */
 const taskOf = ({ done, total }: { done: number; total: number }): string =>
@@ -308,32 +316,6 @@ const SoloStatement = ({
   );
 };
 
-/**
- * A task that is right opens the next one by itself: the engine says so with the result.
- * This is what the footer of the next task says about it. Null for a task that stays on
- * screen: a solution to read, a task that needed help, or the last task with its verdict.
- */
-const movedOn = (
-  lesson: Lesson,
-  step: 1 | 2,
-  { result }: Finished
-): string | null => {
-  if (!result.moves_on) {
-    return null;
-  }
-
-  if (step === 2) {
-    return `Task ${lesson.solo_tasks.done + 1} was right.`;
-  }
-
-  // A lesson with one guided task has nothing to number.
-  if (lesson.guided_tasks.total === 1) {
-    return "That was right.";
-  }
-
-  return `${lesson.parts.length > 1 ? "Part" : "Task"} ${lesson.guided_tasks.done + 1} was right.`;
-};
-
 /** A compact solo task to read beside its editor: its statement and what its kind shows. */
 const SoloTaskText = ({ lesson, task }: { lesson: Lesson; task: string }) => (
   <TaskText
@@ -381,53 +363,6 @@ const LessonBody = ({
     )}
   </LessonText>
 );
-
-interface TrailOf {
-  lesson: Lesson;
-  parts: LessonPart[];
-  step: 1 | 2;
-  /** The part whose guided task is the one to do. */
-  at: number;
-  /** The part the learner went back to, if any. */
-  view: number | null;
-  onOpen: (part: number) => void;
-  /** Close the lesson and go back to the solo task. */
-  onSolo: () => void;
-}
-
-/** The top bar's trail: every part of the lesson, then the step on your own. */
-const trailOf = ({
-  lesson,
-  parts,
-  step,
-  at,
-  view,
-  onOpen,
-  onSolo,
-}: TrailOf): TrailItem[] => {
-  const solo = step === 2;
-  const shown = view ?? (solo ? null : at);
-  const helps = solo && lesson.status !== "done";
-
-  return [
-    ...parts.map((part, i): TrailItem => {
-      const reached = solo || i <= at;
-      const state = solo || i < at ? "done" : "todo";
-
-      return {
-        hint: helps ? "Opening the lesson counts as help." : undefined,
-        label: part.name,
-        onSelect: reached ? () => onOpen(i) : undefined,
-        state: i === shown ? "current" : state,
-      };
-    }),
-    {
-      label: "On your own",
-      onSelect: solo ? onSolo : undefined,
-      state: solo && view === null ? "current" : "todo",
-    },
-  ];
-};
 
 interface StepsBarProps {
   lesson: Lesson;
@@ -494,36 +429,20 @@ export const LessonScreen = ({
   onChanged,
   onSelect,
 }: LessonScreenProps) => {
-  const [lesson, setLesson] = useState<Lesson | null>(null);
-  /** The step on screen. It stays on step 1 after the guided problem is solved, until Continue. */
-  const [step, setStep] = useState<1 | 2>(1);
-  const [finished, setFinished] = useState<Finished | null>(null);
-  const [peeking, setPeeking] = useState(false);
-  /** The part of the lesson the learner went back to. Null: the task they are on. */
-  const [view, setView] = useState<number | null>(null);
-  /** What the footer says after a right answer moved on, and the lesson it belongs to. */
-  const [passed, setPassed] = useState({ id: "", text: "" });
+  const [flow, send] = useReducer(reduce, start);
+  const { finished, lesson, note, peeking, request } = flow;
 
-  /**
-   * What to load: `start` also opens the lesson's current step even when the lesson is
-   * already learned. Changing it loads the lesson again.
-   */
-  const [request, setRequest] = useState({ start: false });
-
+  // The engine starts the lesson's next task when there is one to start. A finished lesson
+  // is only shown, unless the learner asks to practise it again.
   useEffect(() => {
     const load = async () => {
-      // The engine starts the lesson's next task when there is one to start. A finished
-      // lesson is only shown, unless the learner asks to practise it again.
-      const loaded = await engine("lesson.open", {
-        concept: id,
-        practise: request.start,
+      send({
+        lesson: await engine("lesson.open", {
+          concept: id,
+          practise: request.practise,
+        }),
+        type: "loaded",
       });
-
-      setLesson(loaded);
-      setStep(loaded.step);
-      setFinished(null);
-      setPeeking(false);
-      setView(null);
       onChanged();
     };
 
@@ -534,61 +453,30 @@ export const LessonScreen = ({
     return <LessonPane>{null}</LessonPane>;
   }
 
-  const { parts } = lesson;
-  /** A lesson in several parts shows one at a time, with a trail to move between them. */
-  const paged = parts.length > 1;
-  /** The part whose guided task is the one to do. */
-  const at = Math.min(lesson.guided_tasks.done, parts.length - 1);
-  /** With the lesson reopened in step 2, it sits beside the solo task. That counts as help. */
-  const reading = paged ? view !== null : peeking;
+  /** Apply what the learner did. Reopening the lesson in the solo step is told to the engine. */
+  const act = (event: FlowEvent) => {
+    if (reopensLesson(flow, event)) {
+      void engine("lesson.peek", { concept: id });
+    }
 
-  /** Open the lesson's next task, or the same one again. */
-  const restart = (note = "") => {
-    setPassed({ id, text: note });
-    setRequest({ start: true });
+    send(event);
   };
 
   const finish = (result: Finished) => {
-    const moved = movedOn(lesson, step, result);
-
-    if (moved) {
-      restart(moved);
-    } else {
-      setFinished(result);
-      onChanged();
-    }
+    send({ finished: result, type: "finished" });
+    onChanged();
   };
 
-  const note = passed.id === id ? passed.text : "";
-
-  const togglePeek = () => {
-    if (!peeking) {
-      void engine("lesson.peek", { concept: id });
-    }
-
-    setPeeking((p) => !p);
-  };
-
-  /** Open a part of the lesson. In step 2 that reopens the lesson, which counts as help. */
-  const openPart = (i: number) => {
-    if (step === 2 && view === null) {
-      void engine("lesson.peek", { concept: id });
-    }
-
-    setView(step === 1 && i === at ? null : i);
-  };
+  const again = () => send({ type: "again" });
+  const { parts, step } = lesson;
+  const { paged, part, past, reading } = shown(flow, lesson);
 
   const bar = paged ? (
     <TopBar
-      trail={trailOf({
-        at,
-        lesson,
-        onOpen: openPart,
-        onSolo: () => setView(null),
-        parts,
-        step,
-        view,
-      })}
+      trail={trail(flow, lesson).map(({ event, ...stop }): TrailItem => ({
+        ...stop,
+        onSelect: event ? () => act(event) : undefined,
+      }))}
       tutorOpen={tutorOpen}
       onToggleTutor={onToggleTutor}
     />
@@ -598,7 +486,7 @@ export const LessonScreen = ({
       peeking={peeking}
       step={step}
       tutorOpen={tutorOpen}
-      onPeek={togglePeek}
+      onPeek={() => act({ type: "toggle_peek" })}
       onToggleTutor={onToggleTutor}
     />
   );
@@ -620,25 +508,23 @@ export const LessonScreen = ({
   const text = (
     <LessonBody
       lesson={lesson}
-      part={parts[view ?? at]}
+      part={parts[part]}
       task={step === 1 && !isCompact(lesson.guided)}
     />
   );
 
-  const pastSlug = view === null ? undefined : parts[view]?.task;
-
   // An earlier part: its text, and its task with the answer the learner gave.
-  if (step === 1 && pastSlug) {
+  if (past) {
     return (
       <LessonPane>
         {bar}
         <Split>
-          <SplitSide key={pastSlug}>{text}</SplitSide>
+          <SplitSide key={past}>{text}</SplitSide>
           <SplitSide stack>
             <PastTask
-              back={`Back to part ${at + 1}`}
-              slug={pastSlug}
-              onBack={() => setView(null)}
+              back={`Back to part ${currentPart(lesson) + 1}`}
+              slug={past}
+              onBack={() => act({ type: "back_to_task" })}
               onOpenTutor={onOpenTutor}
             />
           </SplitSide>
@@ -656,7 +542,7 @@ export const LessonScreen = ({
           lesson={lesson}
           note={note}
           text={text}
-          onContinue={() => restart()}
+          onContinue={again}
           onFinished={finish}
           onOpenTutor={onOpenTutor}
         />
@@ -673,7 +559,7 @@ export const LessonScreen = ({
       <LessonPane>
         {bar}
         <Split>
-          <SplitSide key={view ?? "task"}>
+          <SplitSide key={reading ? part : "task"}>
             {reading ? text : <SoloTaskText lesson={lesson} task={soloTask} />}
           </SplitSide>
           <SplitSide stack>
@@ -687,7 +573,7 @@ export const LessonScreen = ({
               }
               onFinished={finish}
               onOpenTutor={onOpenTutor}
-              onPractise={() => restart()}
+              onPractise={again}
               onSelect={onSelect}
             />
           </SplitSide>
@@ -706,7 +592,7 @@ export const LessonScreen = ({
         note={note}
         onFinished={finish}
         onOpenTutor={onOpenTutor}
-        onPractise={() => restart()}
+        onPractise={again}
         onSelect={onSelect}
       />
     </>

@@ -10,7 +10,8 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { engine } from "./course";
-import type { Code, Problem, Result, Run } from "./types";
+import type { Finished } from "./lesson-flow";
+import type { Code, Problem, Run } from "./types";
 
 /** Wait this long after the last keystroke before saving. */
 const SAVE_DELAY_MS = 400;
@@ -57,11 +58,7 @@ const Tests = ({ run }: { run: Run | null }) => {
   );
 };
 
-/** How a problem ended: its grade, and a worked solution when the learner gave up. */
-export interface Finished {
-  result: Result;
-  solution: string | null;
-}
+export type { Finished } from "./lesson-flow";
 
 interface WorkbenchProps {
   problem: Problem;
