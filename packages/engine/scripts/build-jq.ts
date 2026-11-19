@@ -15,6 +15,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import {
+  TASK_MARKER,
   concept,
   concepts,
   course,
@@ -65,13 +66,18 @@ const check = (task: JqTask): string[] => {
     return [...errors, "`reference` is missing"];
   }
 
-  if (!Array.isArray(task.tests) || task.tests.length < MIN_TESTS) {
-    return [...errors, `needs at least ${MIN_TESTS} tests`];
+  const predict = task.mode === "predict";
+  const needed = predict ? 1 : MIN_TESTS;
+
+  if (!Array.isArray(task.tests) || task.tests.length < needed) {
+    return [...errors, `needs at least ${needed} tests`];
   }
 
+  // A predict task's reference is a plain filter: it makes the output the learner must type.
   const spec = {
+    filter: null,
     flags: task.flags ?? [],
-    mode: task.mode ?? "filter",
+    mode: predict ? ("filter" as const) : (task.mode ?? "filter"),
     tests: task.tests,
   };
 
@@ -102,7 +108,7 @@ const check = (task: JqTask): string[] => {
     return { ...test, expected: ran.output };
   });
 
-  if (errors.length) {
+  if (errors.length || predict) {
     return errors;
   }
 
@@ -131,7 +137,19 @@ const build = (id: string): string[] => {
 
   concept(id);
 
-  if (!existsSync(path.join(dir, "lesson.md"))) {
+  const lessonFile = path.join(dir, "lesson.md");
+
+  if (existsSync(lessonFile)) {
+    const parts =
+      readFileSync(lessonFile, "utf-8").split(TASK_MARKER).length - 1;
+
+    // A lesson with one guided task needs no marker.
+    if (parts !== wanted && !(wanted === 1 && parts === 0)) {
+      errors.push(
+        `lesson.md has ${parts} "${TASK_MARKER}" lines and the lesson has ${wanted} guided tasks`
+      );
+    }
+  } else {
     errors.push("lesson.md is missing");
   }
 
@@ -166,7 +184,13 @@ const build = (id: string): string[] => {
   return errors;
 };
 
-const ids = args[0] === "--all" ? concepts().map((c) => c.id) : args;
+// `--all` builds the lessons that exist. A course may list concepts whose lesson is not written yet.
+const ids =
+  args[0] === "--all"
+    ? concepts()
+        .map((c) => c.id)
+        .filter((id) => existsSync(path.join(course().dir, "lessons", id)))
+    : args;
 
 if (!ids.length) {
   console.log(

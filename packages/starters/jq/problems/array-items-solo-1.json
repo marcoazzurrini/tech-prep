@@ -1,0 +1,55 @@
+{
+  "title": "State of the last job",
+  "statement": "Print the state of the last job in the queue.\n\nThe queue can hold any number of jobs.",
+  "reference": ".jobs[-1].state",
+  "tests": [
+    {
+      "input": {
+        "queue": "emails",
+        "jobs": [
+          {
+            "id": 1,
+            "state": "done"
+          },
+          {
+            "id": 2,
+            "state": "failed"
+          },
+          {
+            "id": 3,
+            "state": "waiting"
+          }
+        ]
+      },
+      "expected": "\"waiting\""
+    },
+    {
+      "input": {
+        "queue": "images",
+        "jobs": [
+          {
+            "id": 8,
+            "state": "running"
+          }
+        ]
+      },
+      "expected": "\"running\""
+    },
+    {
+      "input": {
+        "queue": "reports",
+        "jobs": [
+          {
+            "id": 4,
+            "state": "done"
+          },
+          {
+            "id": 5,
+            "state": "done"
+          }
+        ]
+      },
+      "expected": "\"done\""
+    }
+  ]
+}

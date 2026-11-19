@@ -172,3 +172,22 @@
   color: var(--color-dim);
   font: 400 14px/24px var(--font-sans);
 }
+
+/* Panels one above the other, each as tall as its text: what a predict task shows. */
+.tp-output-stack {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  border-top: 1px solid var(--color-border);
+}
+
+.tp-output-stack > .tp-output {
+  flex: none;
+  overflow: visible;
+}
+
+.tp-output-stack > .tp-output + .tp-output {
+  border-top: 1px solid var(--color-border);
+}

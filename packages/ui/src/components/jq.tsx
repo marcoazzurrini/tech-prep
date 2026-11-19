@@ -105,6 +105,11 @@ export const OutputPanel = ({
   );
 };
 
+/** Panels one above the other, for a task with no output to compare. */
+export const OutputStack = ({ children }: { children: ReactNode }) => (
+  <div className="tp-output-stack">{children}</div>
+);
+
 interface OutputPanelsProps {
   /** The input, when it is not shown beside the statement. */
   input?: ReactNode;

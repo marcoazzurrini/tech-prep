@@ -7,6 +7,7 @@
 // learner's code, and hands problems in for grading. The tutor helps beside it, through MCP.
 
 import {
+  TASK_MARKER,
   concept,
   concepts,
   course as openCourse,
@@ -89,13 +90,18 @@ const jqView = (slug: string) => {
     return null;
   }
 
+  const predict = spec.mode === "predict";
+
   return {
+    /** The filter a predict task asks about, when it shows one. */
+    filter: spec.filter,
     flags: spec.flags,
     /** How many inputs Submit checks beyond the one shown. */
-    hidden: spec.tests.length - 1,
+    hidden: predict ? 0 : spec.tests.length - 1,
     input: shown.input_text?.trimEnd() ?? showJson(shown.input),
     mode: spec.mode,
-    wanted: shown.expected ?? "",
+    // A predict task asks for the output, so it is not sent.
+    wanted: predict ? "" : (shown.expected ?? ""),
   };
 };
 
@@ -238,6 +244,10 @@ const lesson = (params: Params) => {
     id,
     key_idea: c.key_idea,
     name: c.name,
+    // A lesson written in parts: one per guided task, then its summary.
+    parts: lessonText(id)
+      ?.split(TASK_MARKER)
+      .map((part) => part.trim()),
     solo: problemView(solo.current),
     solo_tasks: solo.progress,
     status: lessonStatus(id),

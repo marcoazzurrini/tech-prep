@@ -1,0 +1,17 @@
+{
+  "title": "What comes out?",
+  "statement": "Type what jq prints for this input and this filter.",
+  "mode": "predict",
+  "show_filter": true,
+  "reference": ".license",
+  "tests": [
+    {
+      "input": {
+        "name": "my-app",
+        "version": "0.1.0",
+        "private": true
+      },
+      "expected": "null"
+    }
+  ]
+}

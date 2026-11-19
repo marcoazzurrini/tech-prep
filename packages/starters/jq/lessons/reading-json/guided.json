@@ -1,0 +1,77 @@
+[
+  {
+    "title": "A number",
+    "statement": "What is stored under `temp`?\n\nType the value, exactly as JSON writes it.",
+    "mode": "predict",
+    "reference": ".temp",
+    "tests": [
+      {
+        "input": {
+          "city": "Oslo",
+          "temp": 4,
+          "rain": true,
+          "note": null
+        },
+        "expected": "4"
+      }
+    ]
+  },
+  {
+    "title": "A string",
+    "statement": "What is stored under `host`?\n\nType the value, exactly as JSON writes it. Remember the quotes.",
+    "mode": "predict",
+    "reference": ".host",
+    "tests": [
+      {
+        "input": {
+          "host": "web-1",
+          "port": 443,
+          "secure": true,
+          "owner": null
+        },
+        "expected": "\"web-1\""
+      }
+    ]
+  },
+  {
+    "title": "An array",
+    "statement": "What is stored under `tags`?\n\nType the whole value. You may type it on one line.",
+    "mode": "predict",
+    "reference": ".tags",
+    "tests": [
+      {
+        "input": {
+          "name": "Ada",
+          "tags": [
+            "admin",
+            "dev",
+            "oncall"
+          ]
+        },
+        "expected": "[\n  \"admin\",\n  \"dev\",\n  \"oncall\"\n]"
+      }
+    ]
+  },
+  {
+    "title": "A value inside",
+    "statement": "What is stored under `branch`, inside `repo`?\n\nType the value, exactly as JSON writes it.",
+    "mode": "predict",
+    "reference": ".repo.branch",
+    "tests": [
+      {
+        "input": {
+          "build": 77,
+          "repo": {
+            "name": "api",
+            "branch": "main"
+          },
+          "steps": [
+            "lint",
+            "test"
+          ]
+        },
+        "expected": "\"main\""
+      }
+    ]
+  }
+]

@@ -101,10 +101,12 @@ const jqTaskView = (slug: string) => {
   }
 
   return {
-    answer_is:
-      spec.mode === "command"
-        ? "everything after `jq`: the flags and the quoted filter"
-        : "a jq filter",
+    answer_is: {
+      command: "everything after `jq`: the flags and the quoted filter",
+      filter: "a jq filter",
+      predict:
+        "the value that comes out, typed as JSON. They cannot see the wanted output, so never state it.",
+    }[spec.mode],
     flags_set_by_the_task: spec.flags,
     input: inputText(shown),
     wanted_output: shown.expected,

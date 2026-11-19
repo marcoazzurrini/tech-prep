@@ -1,0 +1,42 @@
+{
+  "title": "Results on the page",
+  "statement": "Print how many results the page has.",
+  "reference": ".results | length",
+  "tests": [
+    {
+      "input": {
+        "page": 2,
+        "results": [
+          {
+            "id": 1
+          },
+          {
+            "id": 2
+          },
+          {
+            "id": 3
+          }
+        ]
+      },
+      "expected": "3"
+    },
+    {
+      "input": {
+        "page": 3,
+        "results": [
+          {
+            "id": 4
+          }
+        ]
+      },
+      "expected": "1"
+    },
+    {
+      "input": {
+        "page": 4,
+        "results": []
+      },
+      "expected": "0"
+    }
+  ]
+}

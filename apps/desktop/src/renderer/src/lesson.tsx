@@ -25,6 +25,29 @@ import type { Code, Lesson } from "./types";
 import { Workbench } from "./workbench";
 import type { Finished } from "./workbench";
 
+/**
+ * The lesson text to show. A lesson written in parts grows with the guided tasks: the part
+ * of the task on screen is the last one shown. Its summary appears once the last guided task
+ * is solved. Outside step 1 the whole lesson is shown.
+ */
+const shownParts = (
+  lesson: Lesson,
+  step: 1 | 2,
+  finished: Finished | null
+): string | string[] => {
+  const parts = lesson.parts ?? [];
+
+  if (parts.length < 2 || step === 2) {
+    return lesson.text ?? "";
+  }
+
+  const { done, total } = lesson.guided_tasks;
+  const solved = finished && finished.result.outcome !== "gave_up";
+  const summary = solved && done + 1 >= total ? 1 : 0;
+
+  return parts.slice(0, Math.min(done, total - 1) + 1 + summary);
+};
+
 /** " · Task 2 of 3" for a step with several tasks, else nothing. */
 const taskOf = ({ done, total }: { done: number; total: number }): string =>
   total > 1 ? ` · Task ${Math.min(done + 1, total)} of ${total}` : "";
@@ -454,7 +477,7 @@ export const LessonScreen = ({
   const text = (
     <LessonText
       label={<Chip icon={BookOpen}>Lesson</Chip>}
-      text={lesson.text}
+      text={shownParts(lesson, step, finished)}
       title={lesson.name}
     >
       {step === 1 && !lesson.guided.jq && (

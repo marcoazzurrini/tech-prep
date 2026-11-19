@@ -1,0 +1,31 @@
+{
+  "title": "Status of an order",
+  "statement": "Print the status of the order.",
+  "reference": ".status",
+  "tests": [
+    {
+      "input": {
+        "id": 801,
+        "status": "shipped",
+        "items": 3
+      },
+      "expected": "\"shipped\""
+    },
+    {
+      "input": {
+        "id": 802,
+        "status": "packed",
+        "items": 1
+      },
+      "expected": "\"packed\""
+    },
+    {
+      "input": {
+        "id": 803,
+        "status": "cancelled",
+        "items": 2
+      },
+      "expected": "\"cancelled\""
+    }
+  ]
+}

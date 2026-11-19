@@ -1,0 +1,18 @@
+{
+  "title": "Nothing here",
+  "statement": "What is stored under `error`?\n\nType the value, exactly as JSON writes it.",
+  "mode": "predict",
+  "reference": ".error",
+  "tests": [
+    {
+      "input": {
+        "ok": true,
+        "error": null,
+        "data": {
+          "id": 9
+        }
+      },
+      "expected": "null"
+    }
+  ]
+}

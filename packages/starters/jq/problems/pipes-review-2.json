@@ -1,0 +1,62 @@
+{
+  "title": "Steps of the last run",
+  "statement": "Print how many steps the last run has.\n\nThere can be any number of runs.",
+  "reference": ".runs[-1].steps | length",
+  "tests": [
+    {
+      "input": {
+        "runs": [
+          {
+            "id": 1,
+            "steps": [
+              "lint",
+              "test"
+            ]
+          },
+          {
+            "id": 2,
+            "steps": [
+              "lint",
+              "test",
+              "build",
+              "deploy"
+            ]
+          }
+        ]
+      },
+      "expected": "4"
+    },
+    {
+      "input": {
+        "runs": [
+          {
+            "id": 7,
+            "steps": [
+              "lint"
+            ]
+          }
+        ]
+      },
+      "expected": "1"
+    },
+    {
+      "input": {
+        "runs": [
+          {
+            "id": 3,
+            "steps": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          {
+            "id": 4,
+            "steps": []
+          }
+        ]
+      },
+      "expected": "0"
+    }
+  ]
+}

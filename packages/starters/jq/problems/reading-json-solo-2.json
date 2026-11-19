@@ -1,0 +1,19 @@
+{
+  "title": "The whole list",
+  "statement": "What is stored under `ports`?\n\nType the whole value. You may type it on one line.",
+  "mode": "predict",
+  "reference": ".ports",
+  "tests": [
+    {
+      "input": {
+        "host": "db-1",
+        "ports": [
+          5432,
+          6432
+        ],
+        "primary": true
+      },
+      "expected": "[\n  5432,\n  6432\n]"
+    }
+  ]
+}

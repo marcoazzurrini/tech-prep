@@ -4,6 +4,7 @@ import {
   CodeEditor,
   OutputPanel,
   OutputPanels,
+  OutputStack,
   PaneFooter,
   PaneSection,
   ProblemStatement,
@@ -41,6 +42,14 @@ const stateOf = (preview: JqPreview): OutputState => {
 const shownOutput = (preview: JqPreview): string =>
   [preview.output, preview.error].filter(Boolean).join("\n");
 
+/** What the status strip under the editor says the learner is writing. */
+const fileLabel = (mode: JqTask["mode"]): string =>
+  ({
+    command: "what comes after jq",
+    filter: "filter.jq",
+    predict: "the value that comes out",
+  })[mode];
+
 /** A jq task's input, for the column that holds its statement. */
 export const JqInput = ({ jq }: { jq: JqTask }) => (
   <>
@@ -48,12 +57,32 @@ export const JqInput = ({ jq }: { jq: JqTask }) => (
       {jq.mode === "command" ? "Input · on standard input" : "Input"}
     </p>
     <CodeBlock code={jq.input} />
+    {jq.filter && (
+      <>
+        <p className="tp-task-text__label">Filter</p>
+        <CodeBlock code={jq.filter} />
+      </>
+    )}
   </>
 );
 
 /** The first hidden input the answer got wrong, so the learner sees why Submit said no. */
-const Failed = ({ run }: { run: Run }) => {
+const Failed = ({ run, predict }: { run: Run; predict: boolean }) => {
   const failed = run.cases.find((c) => !c.ok);
+
+  // A predict task must not show the wanted value: finding it is the task.
+  if (predict && failed) {
+    return (
+      <TestRow
+        detail={
+          failed.error ??
+          "Read the input and the filter again, one step at a time."
+        }
+        name="That is not what comes out"
+        status="fail"
+      />
+    );
+  }
 
   if (run.fatal || !failed) {
     return run.fatal ? (
@@ -89,6 +118,21 @@ const Printed = ({
     state={preview && !fromSolution ? stateOf(preview) : undefined}
     text={preview ? shownOutput(preview) : ""}
   />
+);
+
+/** What a "what comes out?" task asks about: the input, and the filter when it shows one. */
+const Asked = ({
+  jq,
+  shown,
+}: {
+  jq: JqTask;
+  /** False when the input and the filter are shown beside the statement. */
+  shown: boolean;
+}) => (
+  <OutputStack>
+    {shown && <OutputPanel label="Input" text={jq.input} />}
+    {shown && jq.filter && <OutputPanel label="Filter" text={jq.filter} />}
+  </OutputStack>
 );
 
 interface FooterProps {
@@ -173,6 +217,7 @@ export const JqWorkbench = ({
   const text = useRef("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { slug } = problem;
+  const predict = jq.mode === "predict";
 
   /** Run the text on the shown input and save it. */
   const refresh = useCallback(async () => {
@@ -182,13 +227,18 @@ export const JqWorkbench = ({
 
     const { current } = text;
     await engine("code.save", { slug, text: current });
+
+    if (predict) {
+      return;
+    }
+
     const seen = await engine<JqPreview>("jq.preview", { slug, text: current });
 
     // A slow run must not overwrite the output of what was typed after it.
     if (text.current === current) {
       setPreview(seen);
     }
-  }, [slug]);
+  }, [slug, predict]);
 
   useEffect(() => {
     let current = true;
@@ -205,7 +255,7 @@ export const JqWorkbench = ({
 
       if (loaded.editable) {
         await refresh();
-      } else {
+      } else if (!predict) {
         setPreview(
           await engine<JqPreview>("jq.preview", { slug, text: loaded.text })
         );
@@ -217,7 +267,7 @@ export const JqWorkbench = ({
     return () => {
       current = false;
     };
-  }, [slug, refresh]);
+  }, [slug, refresh, predict]);
 
   const edit = useCallback(
     (value: string) => {
@@ -269,12 +319,16 @@ export const JqWorkbench = ({
     act(async () => {
       const gave = await engine<GaveUp>("attempt.give_up", { slug });
       setSolution(gave.solution);
-      setPreview(
-        await engine<JqPreview>("jq.preview", {
-          slug,
-          text: gave.solution ?? "",
-        })
-      );
+
+      if (!predict) {
+        setPreview(
+          await engine<JqPreview>("jq.preview", {
+            slug,
+            text: gave.solution ?? "",
+          })
+        );
+      }
+
       onFinished(gave);
     });
 
@@ -290,6 +344,21 @@ export const JqWorkbench = ({
   const command = jq.mode === "command";
   const failed = run && (run.fatal || run.passed !== run.total);
 
+  const editor =
+    (solution ?? answer) ? (
+      <CodeBlock code={(solution ?? answer ?? "").trimEnd()} lineNumbers />
+    ) : (
+      <CodeEditor
+        compact
+        file={fileLabel(jq.mode)}
+        initialValue={code.text.trimEnd()}
+        key={slug}
+        language="jq"
+        readOnly={!code.editable}
+        onChange={edit}
+      />
+    );
+
   return (
     <>
       {strip && (
@@ -301,34 +370,29 @@ export const JqWorkbench = ({
           <ProblemStatement text={problem.statement ?? ""} />
         </TaskStrip>
       )}
-      {(solution ?? answer) ? (
-        <CodeBlock code={(solution ?? answer ?? "").trimEnd()} lineNumbers />
+      {!predict && editor}
+      {predict ? (
+        <>
+          <Asked jq={jq} shown={Boolean(strip)} />
+          {editor}
+        </>
       ) : (
-        <CodeEditor
-          compact
-          file={command ? "what comes after jq" : "filter.jq"}
-          initialValue={code.text.trimEnd()}
-          key={slug}
-          language="jq"
-          readOnly={!code.editable}
-          onChange={edit}
+        <OutputPanels
+          input={
+            strip && (
+              <OutputPanel
+                label={command ? "Input · on standard input" : "Input"}
+                text={jq.input}
+              />
+            )
+          }
+          wanted={<OutputPanel label="Wanted output" text={jq.wanted} />}
+          yours={<Printed fromSolution={Boolean(solution)} preview={preview} />}
         />
       )}
-      <OutputPanels
-        input={
-          strip && (
-            <OutputPanel
-              label={command ? "Input · on standard input" : "Input"}
-              text={jq.input}
-            />
-          )
-        }
-        wanted={<OutputPanel label="Wanted output" text={jq.wanted} />}
-        yours={<Printed fromSolution={Boolean(solution)} preview={preview} />}
-      />
       {failed && !done && (
         <PaneSection dock>
-          <Failed run={run} />
+          <Failed predict={predict} run={run} />
         </PaneSection>
       )}
       <Footer
