@@ -1,6 +1,6 @@
 # Starters
 
-The courses that ship with the app. `interview/` is the NeetCode 150, taught concept by concept. `jq/` teaches the jq command-line tool.
+The courses that ship with the app. `dsa/` teaches data structures and algorithms concept by concept, with the NeetCode 150 problems as exercises. `jq/` teaches the jq command-line tool.
 
 ## Courses
 
@@ -8,15 +8,15 @@ A course is a folder with a `course.json` manifest, a `curriculum/` folder, and 
 
 ```json
 {
-  "id": "interview",
-  "name": "NeetCode 150",
-  "initials": "150",
+  "id": "dsa",
+  "name": "DSA",
+  "initials": "DSA",
   "version": 1,
   "format": 1
 }
 ```
 
-- `id` never changes. Progress is stored under it.
+- `id` never changes. Progress is stored under it. If it must change, add the old id to `RENAMED_COURSES` in the engine, so progress moves to the new id.
 - `version` goes up with every content change.
 - `kind` says what a task is: `"code"` (the default) is code checked by tests, and `"jq"` is a jq filter checked by its output.
 - `format` is the course format the content is written for. The app skips a course that needs a newer format than it reads.
@@ -27,19 +27,19 @@ The app looks for courses in two places when it starts: the ones it ships with, 
 
 The scripts below work on the open course. Pass `--course <id>` first to work on another one.
 
-Each concept in `interview/curriculum/concepts.json` has a lesson in `interview/lessons/<concept id>/` and a `solo` problem, the one its lesson ends on. Problems that no lesson ends on are used for reviews. A problem with `"source": "extra"` is not on the NeetCode list; it fills a concept the list has no fitting problem for.
+Each concept in `dsa/curriculum/concepts.json` has a lesson in `dsa/lessons/<concept id>/` and a `solo` problem, the one its lesson ends on. Problems that no lesson ends on are used for reviews. A problem with `"source": "extra"` is not on the NeetCode list; it fills a concept the list has no fitting problem for.
 
 The sections "Adding or changing a problem" and "Adding or changing a lesson" describe a code course. "A jq course" describes the other kind.
 
 ## Adding or changing a problem
 
-1. Add the problem to `interview/curriculum/problems.json` with its topic and concepts.
-2. Create `interview/problems/<slug>/` with `problem.md` (in your own words), `spec.json`, `reference.py` and `reference.ts`. Copy the shape of a similar problem.
+1. Add the problem to `dsa/curriculum/problems.json` with its topic and concepts.
+2. Create `dsa/problems/<slug>/` with `problem.md` (in your own words), `spec.json`, `reference.py` and `reference.ts`. Copy the shape of a similar problem.
 3. Leave `expected` out of new tests. Then run `bun scripts/build-problem.ts <slug>` in `packages/engine`. It fills `expected` from `reference.py` and checks that both references pass.
 
 ## Adding or changing a lesson
 
-A lesson folder holds `lesson.md` and a guided problem: `problem.md`, `spec.json` (with a `title`), `reference.py` and `reference.ts`. Copy the shape of `interview/lessons/canonical-key/`.
+A lesson folder holds `lesson.md` and a guided problem: `problem.md`, `spec.json` (with a `title`), `reference.py` and `reference.ts`. Copy the shape of `dsa/lessons/canonical-key/`.
 
 - `lesson.md` has the concept's name as its title, the idea in a few sentences, then three sections: "Worked example" with one TypeScript block, "Why it works" and "When to use it".
 - The guided problem is small and needs exactly this concept. It is solved with the lesson beside it, so the worked example must not solve it line by line. Neither may solve the concept's solo problem.

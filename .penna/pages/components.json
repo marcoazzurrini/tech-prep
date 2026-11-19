@@ -863,14 +863,14 @@
                 {
                  "id": "EKR6B",
                  "type": "text",
-                 "text": "150",
+                 "text": "DSA",
                  "style": {
                   "color": "var(--color-on-light)",
                   "fontSize": 8,
                   "fontWeight": 700,
                   "whiteSpace": "pre"
                  },
-                 "name": "75"
+                 "name": "Initials"
                 }
                ]
               }
@@ -1638,13 +1638,13 @@
             {
              "id": "CsjBQ",
              "type": "text",
-             "text": "NeetCode 150",
+             "text": "DSA",
              "style": {
               "color": "var(--color-ink)",
               "fontSize": 20,
               "fontWeight": 600
              },
-             "name": "Blind 75"
+             "name": "Course name"
             },
             {
              "id": "dawHN",

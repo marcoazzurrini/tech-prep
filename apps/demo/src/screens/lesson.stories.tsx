@@ -125,7 +125,7 @@ const Nav = () => (
       <CourseHeader
         meta="4 of 89 concepts · 3 of 150 problems"
         progress={4 / 89}
-        title="NeetCode 150"
+        title="DSA"
       />
     }
   >
@@ -153,8 +153,8 @@ const SampleRail = ({ reviews = false }: { reviews?: boolean }) => (
       <CalendarCheck size={16} />
     </RailItem>
     <RailDivider />
-    <RailItem active={!reviews} label="NeetCode 150">
-      <Badge active={!reviews} initials="150" />
+    <RailItem active={!reviews} label="DSA">
+      <Badge active={!reviews} initials="DSA" />
     </RailItem>
     <RailItem label="TypeScript">
       <Badge initials="TS" />
@@ -329,8 +329,8 @@ const Reviews = () => (
               <Button iconEnd={ArrowRight}>Start</Button>
             </>
           }
-          start={<Badge active initials="150" />}
-          title="NeetCode 150"
+          start={<Badge active initials="DSA" />}
+          title="DSA"
         />
         <ListRow
           detail="1 problem · about 10 min"
@@ -363,7 +363,7 @@ const Review = ({ verdict = false }: { verdict?: boolean }) => (
   <Frame focus>
     <TopBar
       actions={<Button variant="ghost">End reviews</Button>}
-      lesson="NeetCode 150 · Review"
+      lesson="DSA · Review"
       position="1 of 2"
       steps={{ at: 0, count: 2 }}
       tutorOpen={false}

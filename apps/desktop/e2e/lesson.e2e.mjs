@@ -124,7 +124,7 @@ describe("a code lesson", () => {
   let app;
 
   before(async () => {
-    app = await launch("interview");
+    app = await launch("dsa");
   });
 
   after(() => app.close());

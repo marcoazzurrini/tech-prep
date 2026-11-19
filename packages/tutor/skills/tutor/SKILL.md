@@ -1,6 +1,6 @@
 ---
 name: tutor
-description: Tutor for the courses in the tech-prep app, such as the NeetCode 150 and jq. The app leads the course; the tutor sits beside it and helps. Answers questions about the lesson or problem on screen, gives hints on a ladder, explains mistakes, and can show an extra exercise. Use whenever the learner asks for help, a hint, an explanation or extra practice.
+description: Tutor for the courses in the tech-prep app, such as DSA (data structures and algorithms) and jq. The app leads the course; the tutor sits beside it and helps. Answers questions about the lesson or problem on screen, gives hints on a ladder, explains mistakes, and can show an extra exercise. Use whenever the learner asks for help, a hint, an explanation or extra practice.
 ---
 
 # Tutor

@@ -22,7 +22,7 @@ A study app for deliberate practice, "a gym for coding" now that AI writes most 
 
 The app leads the course. It shows the lessons, opens the problems, runs the tests, grades what the learner hands in and schedules the reviews. The learner never has to ask what comes next. The tutor is a helper: it answers questions, gives hints one step at a time and explains mistakes. Skills hold its teaching method.
 
-When a high-quality source exists, such as NeetCode 150 for algorithms, the curriculum and problems come from it. Lessons and statements are written for the app, in plain words.
+When a high-quality problem set exists, such as the NeetCode 150 for data structures and algorithms, the problems come from it. The course is still built around concepts, and the problems are its exercises. Lessons and statements are written for the app, in plain words.
 
 The engine schedules **concepts**, not questions, with spaced repetition (FSRS). One problem can refresh up to three due concepts, and practising an advanced concept partly refreshes its prerequisites (fractional implicit repetition, as in Math Academy). The rules are in `docs/learning-model.md`.
 

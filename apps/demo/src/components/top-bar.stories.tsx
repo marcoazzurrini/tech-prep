@@ -62,7 +62,7 @@ export const WithTrail: Story = {
 export const Review: Story = {
   args: {
     chapter: undefined,
-    lesson: "NeetCode 150 · Review",
+    lesson: "DSA · Review",
     onNext: undefined,
     onPrevious: undefined,
     position: "1 of 3",
