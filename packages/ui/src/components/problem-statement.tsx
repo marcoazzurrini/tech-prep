@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import "./problem-statement.css";
 
-/** `code` and **bold**, the only inline marks problem statements use. */
-const inline = (text: string): ReactNode[] =>
+/** `code` and **bold**, the only inline marks problem statements and lessons use. */
+export const inline = (text: string): ReactNode[] =>
   text.split(/(?<mark>`[^`]+`|\*\*[^*]+\*\*)/gu).map((part, i) => {
     if (part.startsWith("`") && part.endsWith("`")) {
       return <code key={i}>{part.slice(1, -1)}</code>;

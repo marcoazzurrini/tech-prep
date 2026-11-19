@@ -25,13 +25,12 @@ export {
   AnswerInput,
   AnswerText,
   Arranger,
-  Confidence,
   LineSlot,
   ResultCard,
   TestRow,
 } from "./components/exercise";
 
-export type { ConfidenceLevel, TestStatus } from "./components/exercise";
+export type { TestStatus } from "./components/exercise";
 
 export {
   EmptyState,
@@ -39,8 +38,22 @@ export {
   PaneBody,
   PaneFooter,
   PaneSection,
+  Split,
+  SplitSide,
   TaskHeader,
 } from "./components/lesson-pane";
+
+export { LessonText, TaskText, YourTurn } from "./components/lesson-text";
+
+export {
+  Count,
+  List,
+  ListRow,
+  Page,
+  PageActions,
+  PageLabel,
+  PageNote,
+} from "./components/page";
 
 export { ProblemStatement } from "./components/problem-statement";
 
@@ -48,6 +61,6 @@ export { Progress } from "./components/progress";
 
 export { Rail, RailDivider, RailItem, RailSpacer } from "./components/rail";
 
-export { TopBar } from "./components/top-bar";
+export { Steps, TopBar } from "./components/top-bar";
 
 export { Activity, Composer, Message, TutorPane } from "./components/tutor";

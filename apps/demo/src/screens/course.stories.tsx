@@ -8,7 +8,6 @@ import {
   CodeBlock,
   CodeEditor,
   Composer,
-  Confidence,
   LessonPane,
   Message,
   PaneBody,
@@ -19,7 +18,6 @@ import {
   TopBar,
   TutorPane,
 } from "@tech-prep/ui";
-import type { ConfidenceLevel } from "@tech-prep/ui";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { fn } from "storybook/test";
@@ -49,38 +47,29 @@ const UNIQUE_BY = `export function uniqueBy<T, K>(
 const learning = <Chip tone="amber">Uniqueness rule · Learning</Chip>;
 const insertion = <Chip muted>Insertion order</Chip>;
 
-const Predict = () => {
-  const [sure, setSure] = useState<ConfidenceLevel | null>(null);
-
-  return (
-    <>
-      <PaneBody>
-        <TaskHeader
-          chips={learning}
-          description="A Set keeps each value once. What does this print?"
-          title="Predict the output"
-        />
-        <CodeBlock
-          code={
-            'const s = new Set([1, "1", NaN, NaN, {}, {}]);\nconsole.log(s.size);'
-          }
-        />
-        <PaneSection label="Your answer">
-          <AnswerInput aria-label="Your answer" defaultValue="4" />
-        </PaneSection>
-        <PaneSection label="How sure are you?">
-          <Confidence value={sure} onChange={setSure} />
-        </PaneSection>
-      </PaneBody>
-      <PaneFooter>
-        <Button>Show hint</Button>
-        <Button disabled={!sure} variant="primary">
-          Submit
-        </Button>
-      </PaneFooter>
-    </>
-  );
-};
+const Predict = () => (
+  <>
+    <PaneBody>
+      <TaskHeader
+        chips={learning}
+        description="A Set keeps each value once. What does this print?"
+        title="Predict the output"
+      />
+      <CodeBlock
+        code={
+          'const s = new Set([1, "1", NaN, NaN, {}, {}]);\nconsole.log(s.size);'
+        }
+      />
+      <PaneSection label="Your answer">
+        <AnswerInput aria-label="Your answer" defaultValue="4" />
+      </PaneSection>
+    </PaneBody>
+    <PaneFooter>
+      <Button>Show hint</Button>
+      <Button variant="primary">Submit</Button>
+    </PaneFooter>
+  </>
+);
 
 const Arrange = () => {
   const [lines, setLines] = useState([
@@ -90,7 +79,6 @@ const Arrange = () => {
   ]);
 
   const [spare, setSpare] = useState(["seen.sort();"]);
-  const [sure, setSure] = useState<ConfidenceLevel | null>(null);
 
   return (
     <>
@@ -113,15 +101,10 @@ const Arrange = () => {
             setSpare(nextSpare);
           }}
         />
-        <PaneSection label="How sure are you?">
-          <Confidence value={sure} onChange={setSure} />
-        </PaneSection>
       </PaneBody>
       <PaneFooter>
         <Button>Show hint</Button>
-        <Button disabled={!sure} variant="primary">
-          Submit
-        </Button>
+        <Button variant="primary">Submit</Button>
       </PaneFooter>
     </>
   );

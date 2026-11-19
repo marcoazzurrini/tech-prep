@@ -1,221 +1,414 @@
 import {
+  Button,
   Chip,
+  CodeBlock,
   EmptyState,
   LessonPane,
+  LessonText,
   PaneBody,
+  PaneFooter,
   ProblemStatement,
+  Split,
+  SplitSide,
   TaskHeader,
   TopBar,
+  YourTurn,
 } from "@tech-prep/ui";
-import { Lock } from "lucide-react";
+import { BookOpen } from "lucide-react";
+import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
-import { DIFFICULTY, isOpen } from "./course";
-import { ExercisePane } from "./exercise";
-import type { Exercise, Problem, Roadmap, Session } from "./types";
+import { DIFFICULTY, engine, formatDay, inDays } from "./course";
+import type { Code, Lesson } from "./types";
 import { Workbench } from "./workbench";
+import type { Finished } from "./workbench";
 
-const formatDate = (iso: string): string =>
-  new Date(iso).toLocaleDateString(undefined, {
-    day: "numeric",
-    month: "long",
-    weekday: "long",
-  });
+/** What the footer says once the solo problem is finished. */
+const soloNote = (lesson: Lesson, { result }: Finished): string => {
+  const mine = result.concepts.find((c) => c.id === lesson.id);
 
-/** Learn, Review or Practise, for the problem the tutor is on. */
-const phaseOf = (session: Session, problem: Problem) => {
-  const review = session.attempt
-    ? session.attempt.phase === "review"
-    : session.next.action === "review";
-
-  if (review) {
-    return "Review";
+  if (result.outcome === "solved") {
+    return mine?.next_review
+      ? `Solved without help. ${lesson.name} is learned. Its first review is ${inDays(mine.next_review)}.`
+      : `Solved without help. ${lesson.name} is learned.`;
   }
 
-  return problem.new_concepts.length > 0 ? "Learn" : "Practise";
+  return result.outcome === "solved_with_help"
+    ? "Solved with help. This problem comes back tomorrow, so you can solve it alone."
+    : "A solution is shown. This problem comes back tomorrow.";
 };
 
-interface ChipsProps {
-  problem: Problem;
-  phase: string | null;
-}
+/** The learner's saved code for a problem, read-only. */
+const SavedCode = ({ slug }: { slug: string }) => {
+  const [text, setText] = useState<string | null>(null);
 
-/** Difficulty, the phase when the tutor is on this problem, and what it teaches. */
-const LessonChips = ({ problem, phase }: ChipsProps) => {
-  const concepts = `${problem.concept_count} concept${problem.concept_count === 1 ? "" : "s"}`;
+  useEffect(() => {
+    let current = true;
 
-  return (
-    <>
-      <Chip muted>{DIFFICULTY[problem.difficulty]}</Chip>
-      {phase ? (
-        <Chip>{phase}</Chip>
-      ) : (
-        <Chip muted>Preview · the tutor is on another problem</Chip>
-      )}
-      {phase === "Learn" && <Chip>New: {problem.new_concepts.join(", ")}</Chip>}
-      {phase === "Review" && (
-        <Chip icon={Lock} muted>
-          {concepts} · revealed when you finish
-        </Chip>
-      )}
-    </>
+    const load = async () => {
+      const code = await engine<Code>("code.read", { slug });
+
+      if (current) {
+        setText(code.text);
+      }
+    };
+
+    void load();
+
+    return () => {
+      current = false;
+    };
+  }, [slug]);
+
+  return text === null ? null : (
+    <CodeBlock code={text.trimEnd()} grow lineNumbers />
   );
 };
 
-interface LessonViewProps {
-  session: Session;
-  roadmap: Roadmap;
-  /** The problem to show; null when there is nothing to do. */
-  problem: Problem | null;
-  tutorOpen: boolean;
-  onToggleTutor: () => void;
+interface StepProps {
+  lesson: Lesson;
+  /** How the step's problem ended, once it has. */
+  finished: Finished | null;
+  onFinished: (finished: Finished) => void;
   onOpenTutor: () => void;
-  onSelect: (slug: string) => void;
 }
 
-interface ExerciseLessonProps {
-  exercise: Exercise;
-  /** The chapter the exercise belongs to, if it is part of a lesson. */
-  chapter?: string;
-  tutorOpen: boolean;
-  onToggleTutor: () => void;
-  onOpenTutor: () => void;
-  /** Called after the learner hands in, so the app reloads its state. */
-  onChanged: () => void;
+interface GuidedProps extends StepProps {
+  /** The lesson text, with the task under it. */
+  text: ReactNode;
+  /** Move on to the solo problem. */
+  onContinue: () => void;
 }
 
-/** The main pane while the tutor's exercise is on screen. */
-export const ExerciseLesson = ({
-  exercise,
-  chapter,
-  tutorOpen,
-  onToggleTutor,
+/** Step 1: the lesson on the left, its small guided problem on the right. */
+const GuidedStep = ({
+  lesson,
+  text,
+  finished,
+  onFinished,
   onOpenTutor,
-  onChanged,
-}: ExerciseLessonProps) => (
-  <LessonPane>
-    <TopBar
-      chapter={chapter ?? "Review"}
-      lesson={exercise.title}
-      tutorOpen={tutorOpen}
-      onToggleTutor={onToggleTutor}
-    />
-    <ExercisePane
-      exercise={exercise}
-      key={exercise.id}
-      onAskTutor={onOpenTutor}
-      onChanged={onChanged}
-    />
-  </LessonPane>
-);
+  onContinue,
+}: GuidedProps) => {
+  const working = lesson.attempt?.slug === lesson.guided.slug;
 
-/** What to say when there is no problem to show. */
-const idleText = (next: Session["next"]): string => {
-  if (next.action === "review_exercise") {
-    return "The tutor is writing your next exercise.";
-  }
+  const lead =
+    finished?.result.outcome === "gave_up" ? "A solution is shown" : "Solved";
 
-  return next.action === "done_for_now" && next.next_due
-    ? `Your next review is on ${formatDate(next.next_due)}.`
-    : next.why;
+  return (
+    <Split>
+      <SplitSide>{text}</SplitSide>
+      <SplitSide stack>
+        {working || finished ? (
+          <Workbench
+            done={
+              finished
+                ? {
+                    actions: (
+                      <Button variant="primary" onClick={onContinue}>
+                        Continue to the problem
+                      </Button>
+                    ),
+                    note: `${lead}. Next: ${lesson.solo.title}, without the lesson beside you.`,
+                  }
+                : undefined
+            }
+            key={lesson.guided.slug}
+            problem={lesson.guided}
+            onAskTutor={onOpenTutor}
+            onFinished={onFinished}
+          />
+        ) : (
+          <EmptyState title="This lesson is locked">
+            Finish the lessons before it first.
+          </EmptyState>
+        )}
+      </SplitSide>
+    </Split>
+  );
 };
 
-interface IdleLessonProps {
-  next: Session["next"];
-  tutorOpen: boolean;
-  onToggleTutor: () => void;
+interface SoloProps extends StepProps {
+  /** The lesson after this one, for the "Next lesson" button. */
+  next: string | null;
+  onSelect: (lesson: string) => void;
+  /** Start the solo problem again on a lesson that is already learned. */
+  onPractise: () => void;
 }
 
-/** The main pane when there is no problem to show. */
-const IdleLesson = ({ next, tutorOpen, onToggleTutor }: IdleLessonProps) => (
-  <LessonPane>
-    <TopBar
-      chapter="Today"
-      lesson={next.action === "review_exercise" ? "Review" : "All done"}
-      tutorOpen={tutorOpen}
-      onToggleTutor={onToggleTutor}
-    />
-    <PaneBody>
-      <EmptyState
-        title={
-          next.action === "review_exercise"
-            ? "One moment"
-            : "Nothing to do right now"
-        }
-      >
-        {idleText(next)}
-      </EmptyState>
-    </PaneBody>
-  </LessonPane>
-);
-
-export const LessonView = ({
-  session,
-  roadmap,
-  problem,
-  tutorOpen,
-  onToggleTutor,
+/** What sits under the statement in step 2: the editor, the saved code, or a note to come back. */
+const SoloWork = ({
+  lesson,
+  finished,
+  onFinished,
   onOpenTutor,
+  next,
   onSelect,
-}: LessonViewProps) => {
-  if (!problem) {
+  onPractise,
+}: SoloProps) => {
+  const learned = lesson.status === "done";
+
+  const nextButton = next && (
+    <Button variant="primary" onClick={() => onSelect(next)}>
+      Next lesson
+    </Button>
+  );
+
+  if (lesson.attempt?.slug === lesson.solo.slug || finished) {
     return (
-      <IdleLesson
-        next={session.next}
-        tutorOpen={tutorOpen}
-        onToggleTutor={onToggleTutor}
+      <Workbench
+        done={
+          finished
+            ? { actions: nextButton, note: soloNote(lesson, finished) }
+            : undefined
+        }
+        key={lesson.solo.slug}
+        note={
+          learned
+            ? undefined
+            : "The lesson is closed. Opening it counts as help."
+        }
+        problem={lesson.solo}
+        onAskTutor={onOpenTutor}
+        onFinished={onFinished}
       />
     );
   }
 
-  const topic = roadmap.topics.find((t) => t.id === problem.topic);
+  if (learned) {
+    return (
+      <>
+        <SavedCode slug={lesson.solo.slug} />
+        <PaneFooter
+          start={
+            <span className="tp-pane-footer__note">
+              You learned this lesson. Reviews keep it fresh.
+            </span>
+          }
+        >
+          <Button onClick={onPractise}>Practise again</Button>
+          {nextButton}
+        </PaneFooter>
+      </>
+    );
+  }
 
-  const open = (topic?.problems ?? []).filter(isOpen);
+  if (lesson.wait_until) {
+    return (
+      <PaneFooter
+        start={
+          <span className="tp-pane-footer__note">
+            You needed help last time. This problem opens again on{" "}
+            {formatDay(lesson.wait_until)}. You can read the lesson meanwhile.
+          </span>
+        }
+      >
+        {nextButton}
+      </PaneFooter>
+    );
+  }
 
-  const at = open.findIndex((p) => p.slug === problem.slug);
-  const previous = at > 0 ? open[at - 1] : undefined;
-  const next = at === -1 ? undefined : open[at + 1];
-  const index = topic?.problems.findIndex((p) => p.slug === problem.slug) ?? -1;
+  return null;
+};
 
-  const phase =
-    problem.slug === session.problem?.slug ? phaseOf(session, problem) : null;
+/** The solo problem's title, chips and statement. */
+const SoloStatement = ({
+  lesson,
+  finished,
+}: Pick<StepProps, "lesson" | "finished">) => {
+  const learned =
+    lesson.status === "done" || finished?.result.outcome === "solved";
 
-  // The editor opens once the tutor has opened this problem.
-  const working = session.attempt?.slug === problem.slug;
+  return (
+    <PaneBody share>
+      <TaskHeader
+        chips={
+          <>
+            <Chip muted>{DIFFICULTY[lesson.solo.difficulty]}</Chip>
+            {learned && <Chip>Solved</Chip>}
+            {learned && <Chip tone="green">{lesson.name} · Learned</Chip>}
+          </>
+        }
+        title={lesson.solo.title}
+      />
+      <ProblemStatement text={lesson.solo.statement ?? ""} />
+    </PaneBody>
+  );
+};
+
+interface LessonScreenProps {
+  /** The concept whose lesson to show. */
+  id: string;
+  /** The lesson after this one in the course, if any. */
+  next: string | null;
+  tutorOpen: boolean;
+  onToggleTutor: () => void;
+  onOpenTutor: () => void;
+  /** Called when the learner's progress changed, so the lessons column reloads. */
+  onChanged: () => void;
+  onSelect: (lesson: string) => void;
+}
+
+/**
+ * One lesson. Step 1 shows the lesson text beside a small guided problem. Step 2 closes the
+ * lesson and shows the solo problem alone; the learner can reopen the lesson, which counts
+ * as help.
+ */
+export const LessonScreen = ({
+  id,
+  next,
+  tutorOpen,
+  onToggleTutor,
+  onOpenTutor,
+  onChanged,
+  onSelect,
+}: LessonScreenProps) => {
+  const [lesson, setLesson] = useState<Lesson | null>(null);
+  /** The step on screen. It stays on step 1 after the guided problem is solved, until Continue. */
+  const [step, setStep] = useState<1 | 2>(1);
+  const [finished, setFinished] = useState<Finished | null>(null);
+  const [peeking, setPeeking] = useState(false);
+
+  /**
+   * What to load: `start` also opens the lesson's current step even when the lesson is
+   * already learned. Changing it loads the lesson again.
+   */
+  const [request, setRequest] = useState({ start: false });
+
+  useEffect(() => {
+    const load = async () => {
+      const seen = await engine<Lesson>("lesson", { concept: id });
+
+      // A finished lesson is only shown, unless the learner asks to practise it again.
+      const work =
+        seen.text !== null &&
+        seen.status !== "locked" &&
+        (request.start || seen.status !== "done");
+
+      const loaded = work
+        ? await engine<Lesson>("lesson.open", { concept: id })
+        : seen;
+
+      setLesson(loaded);
+      setStep(loaded.step);
+      setFinished(null);
+      setPeeking(false);
+      onChanged();
+    };
+
+    void load();
+  }, [id, request, onChanged]);
+
+  if (!lesson) {
+    return <LessonPane>{null}</LessonPane>;
+  }
+
+  const finish = (result: Finished) => {
+    setFinished(result);
+    onChanged();
+  };
+
+  const togglePeek = () => {
+    if (!peeking) {
+      void engine("lesson.peek", { concept: id });
+    }
+
+    setPeeking((p) => !p);
+  };
+
+  const bar = (
+    <TopBar
+      actions={
+        step === 2 &&
+        lesson.text && (
+          <Button aria-pressed={peeking} icon={BookOpen} onClick={togglePeek}>
+            Lesson
+          </Button>
+        )
+      }
+      chapter={lesson.topic}
+      lesson={lesson.name}
+      position={
+        step === 1
+          ? "Step 1 of 2 · With the lesson"
+          : "Step 2 of 2 · On your own"
+      }
+      steps={{ at: step - 1, count: 2 }}
+      tutorOpen={tutorOpen}
+      onToggleTutor={onToggleTutor}
+    />
+  );
+
+  if (!lesson.text) {
+    return (
+      <LessonPane>
+        {bar}
+        <PaneBody>
+          <EmptyState title="This lesson is not written yet">
+            Pick another lesson from the list.
+          </EmptyState>
+        </PaneBody>
+      </LessonPane>
+    );
+  }
+
+  const text = (
+    <LessonText
+      label={<Chip icon={BookOpen}>Lesson</Chip>}
+      text={lesson.text}
+      title={lesson.name}
+    >
+      {step === 1 && (
+        <YourTurn
+          label="Your turn · with the lesson"
+          title={lesson.guided.title}
+        >
+          <ProblemStatement text={lesson.guided.statement ?? ""} />
+        </YourTurn>
+      )}
+    </LessonText>
+  );
+
+  if (step === 1) {
+    return (
+      <LessonPane>
+        {bar}
+        <GuidedStep
+          finished={finished}
+          lesson={lesson}
+          text={text}
+          onContinue={() => setRequest({ start: true })}
+          onFinished={finish}
+          onOpenTutor={onOpenTutor}
+        />
+      </LessonPane>
+    );
+  }
+
+  const solo = (
+    <>
+      <SoloStatement finished={finished} lesson={lesson} />
+      <SoloWork
+        finished={finished}
+        lesson={lesson}
+        next={next}
+        onFinished={finish}
+        onOpenTutor={onOpenTutor}
+        onPractise={() => setRequest({ start: true })}
+        onSelect={onSelect}
+      />
+    </>
+  );
 
   return (
     <LessonPane>
-      <TopBar
-        chapter={topic?.name ?? problem.topic}
-        lesson={problem.title}
-        position={
-          topic && index >= 0
-            ? `Problem ${index + 1} of ${topic.problems.length}`
-            : undefined
-        }
-        tutorOpen={tutorOpen}
-        onNext={next && (() => onSelect(next.slug))}
-        onPrevious={previous && (() => onSelect(previous.slug))}
-        onToggleTutor={onToggleTutor}
-      />
-      <PaneBody share={working}>
-        <TaskHeader
-          chips={<LessonChips phase={phase} problem={problem} />}
-          title={problem.title}
-        />
-        {problem.statement ? (
-          <ProblemStatement text={problem.statement} />
-        ) : (
-          <EmptyState title="No statement yet">
-            This problem has no statement yet.
-          </EmptyState>
-        )}
-      </PaneBody>
-      {working && (
-        <Workbench
-          key={session.attempt?.id}
-          problem={problem}
-          onAskTutor={onOpenTutor}
-        />
+      {bar}
+      {peeking ? (
+        <Split>
+          <SplitSide>{text}</SplitSide>
+          <SplitSide stack>{solo}</SplitSide>
+        </Split>
+      ) : (
+        solo
       )}
     </LessonPane>
   );

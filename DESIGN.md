@@ -1,6 +1,6 @@
 ---
 name: tech-prep
-description: A study app where each subject has a tutor that talks and opens exercise panels beside the conversation.
+description: A study app where each subject is a course of lessons and reviews, with a tutor in a pane beside the work.
 colors:
   canvas: "#08090A"
   sidebar: "#121314"
@@ -95,7 +95,11 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 ## Rules
 
-**Course layout.** An icon rail on the left opens Today and switches subjects. The lessons column lists chapters and lessons, in the same text size as the lesson, so it is as easy to read. The lesson fills the main pane. The tutor pane sits on the right, and the learner can close it. In the desktop window, a title strip across the rail and the lessons column holds the window buttons, so nothing sits behind them.
+**Course layout.** An icon rail on the left opens the reviews and switches subjects. The lessons column lists chapters and lessons, in the same text size as the lesson, so it is as easy to read. The lesson fills the main pane. The tutor pane sits on the right; it is closed until the learner opens it. In the desktop window, a title strip across the rail and the lessons column holds the window buttons, so nothing sits behind them.
+
+**Lesson layout.** A lesson's first step splits the main pane in two: the lesson text on the left, the work on the right. The text ends in a "Your turn" box on `accent-bg`, which holds the task. Its second step shows the problem alone. The top bar shows the two steps as dots.
+
+**Focused screens.** Reviews have no lessons column, no chapter name and no lesson, so nothing on screen names the approach. A review puts the problem on the left and the editor on the right. Screens that are read, not worked in, such as the list of reviews, use one centred column.
 
 **Large displays.** The UI keeps its size on every display: nothing scales up. A wider window gives the extra room to the lesson. On windows 2200px wide or more, the tutor pane also widens, from 380px to 576px, for longer chat lines. Lesson content stays aligned to the left edge of the pane, as on smaller screens.
 

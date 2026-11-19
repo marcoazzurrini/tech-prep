@@ -14,21 +14,33 @@ const on = <T>(
 };
 
 const api = {
+  /** Call the engine bridge. The methods and their replies are listed in the renderer's types. */
   engine: (
     method:
-      | "session"
-      | "roadmap"
-      | "problem"
+      | "attempt.give_up"
+      | "attempt.pause"
       | "code.read"
-      | "code.save"
       | "code.run"
-      | "exercise.submit",
+      | "code.save"
+      | "code.submit"
+      | "course"
+      | "exercise.close"
+      | "exercise.submit"
+      | "lesson"
+      | "lesson.open"
+      | "lesson.peek"
+      | "problem"
+      | "review.next"
+      | "reviews"
+      | "session",
     params?: {
       slug?: string;
       text?: string;
+      /** An exercise id. */
       id?: number;
+      /** A concept id, for the lesson methods. */
+      concept?: string;
       response?: string | string[];
-      confidence?: "low" | "medium" | "high" | null;
     }
   ) => ipcRenderer.invoke("engine", method, params),
   onEngineChanged: (handler: () => void) => on("engine:changed", handler),

@@ -1,64 +1,47 @@
 import { Chapter, CourseHeader, CourseNav, Lesson } from "@tech-prep/ui";
-import type { LessonStatus } from "@tech-prep/ui";
 
-import { DIFFICULTY, dueCount, isOpen } from "./course";
-import type { ProblemStatus, Roadmap } from "./types";
+import type { Course } from "./types";
 
-type Topic = Roadmap["topics"][number];
-
-const STATUS: Record<ProblemStatus, LessonStatus> = {
-  attempted: "started",
-  in_progress: "started",
-  solved: "done",
-  solved_with_help: "partial",
-  unattempted: "todo",
-};
+type Topic = Course["topics"][number];
 
 interface LessonsProps {
-  subject: string;
-  roadmap: Roadmap;
-  /** The problem the tutor is on. */
-  current: string | null;
-  /** The problem in the main pane. */
+  course: Course;
+  /** The lesson in the main pane. */
   selected: string | null;
   open: Set<string>;
   onToggle: (topic: string) => void;
-  onSelect: (slug: string) => void;
+  onSelect: (lesson: string) => void;
 }
 
-/** The subject's topics as chapters and its problems as lessons. */
+/** The course's topics as chapters and its concepts as lessons. */
 export const Lessons = ({
-  subject,
-  roadmap,
-  current,
+  course,
   selected,
   open,
   onToggle,
   onSelect,
 }: LessonsProps) => {
-  const solved = roadmap.topics.reduce((sum, t) => sum + t.solved, 0);
-  const total = roadmap.topics.reduce((sum, t) => sum + t.total, 0);
-  const due = dueCount(roadmap);
+  const { concepts, problems } = course;
 
   const chapter = (t: Topic, i: number) => (
     <Chapter
-      current={t.id === roadmap.current}
-      done={t.total > 0 && t.solved === t.total}
+      current={t.lessons.some((l) => l.id === course.next_lesson)}
+      done={t.total > 0 && t.learned === t.total}
       key={t.id}
       label={`${i + 1}  ${t.name}`}
-      meta={`${t.solved} / ${t.total}`}
+      meta={`${t.learned} / ${t.total}`}
       open={open.has(t.id)}
       onToggle={() => onToggle(t.id)}
     >
-      {t.problems.map((p) => (
+      {t.lessons.map((l) => (
         <Lesson
-          current={p.slug === current}
-          key={p.slug}
-          label={p.title}
-          meta={DIFFICULTY[p.difficulty]}
-          selected={p.slug === selected}
-          status={isOpen(p) ? STATUS[p.status] : "locked"}
-          onSelect={() => onSelect(p.slug)}
+          current={l.id === course.next_lesson}
+          key={l.id}
+          label={l.name}
+          selected={l.id === selected}
+          // A lesson that is not written yet cannot be opened.
+          status={l.written ? l.status : "locked"}
+          onSelect={() => onSelect(l.id)}
         />
       ))}
     </Chapter>
@@ -68,13 +51,13 @@ export const Lessons = ({
     <CourseNav
       header={
         <CourseHeader
-          meta={`${solved} of ${total} problems solved${due ? ` · ${due} due today` : ""}`}
-          progress={total ? solved / total : 0}
-          title={subject}
+          meta={`${concepts.learned} of ${concepts.total} concepts · ${problems.solved} of ${problems.total} problems`}
+          progress={concepts.total ? concepts.learned / concepts.total : 0}
+          title={course.subject.name}
         />
       }
     >
-      {roadmap.topics.map(chapter)}
+      {course.topics.map(chapter)}
     </CourseNav>
   );
 };

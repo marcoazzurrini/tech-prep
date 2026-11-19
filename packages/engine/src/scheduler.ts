@@ -1,4 +1,4 @@
-// Concept stages, unlocking, and choosing the next task.
+// Concept stages, lessons, and choosing the next lesson and the next review.
 // See docs/learning-model.md, "Phases" and "Choosing the next task".
 
 import { createEmptyCard, Rating } from "ts-fsrs";
@@ -6,12 +6,10 @@ import { createEmptyCard, Rating } from "ts-fsrs";
 import {
   concept,
   concepts,
+  hasLesson,
   isAuthored,
   problemIndex,
-  problemInfo,
-  problemsUsing,
   topics,
-  withPrereqs,
 } from "./content.ts";
 import type { ProblemInfo } from "./content.ts";
 import { attemptsFor, conceptRow, saveConceptRow } from "./db.ts";
@@ -21,12 +19,6 @@ import { cardOf, explicitReview, isDue, retrievability } from "./memory.ts";
 import type { Source } from "./memory.ts";
 
 const DAY_MS = 86_400_000;
-
-/** After this many reviews in a row, new material is served even if reviews are still due. */
-const REVIEWS_BEFORE_NEW = 3;
-
-/** Learning-phase struggles before the concept is re-taught. */
-const RETEACH_AFTER = 2;
 
 /** Unseen problems are preferred for reviews, so the learner recalls the concept, not one answer. */
 const UNSEEN_BONUS = 1.25;
@@ -58,9 +50,6 @@ export const displayStage = (id: string): DisplayStage => {
   return concept(id).prereqs.every(isPassed) ? "available" : "locked";
 };
 
-/** Concepts that no problem practises directly are passed by their lesson alone. */
-export const hasOwnProblems = (id: string) => problemsUsing(id).length > 0;
-
 /** First independent success: the concept starts its FSRS schedule and its dependents may unlock. */
 export const pass = (
   conceptId: string,
@@ -77,7 +66,7 @@ export const pass = (
   explicitReview(conceptId, source, Rating.Good, now);
 };
 
-/** Mark concepts as taught. Re-teaching resets the struggle count. */
+/** Mark a concept as taught: its lesson's first step is done, and its solo problem comes next. */
 export const completeLesson = (
   conceptId: string,
   now = new Date()
@@ -91,15 +80,6 @@ export const completeLesson = (
       introduced_at: now.toISOString(),
       stage: "learning",
     });
-  } else if (row.stage === "learning") {
-    saveConceptRow({ ...row, fail_count: 0 });
-  }
-
-  if (
-    !hasOwnProblems(conceptId) &&
-    conceptRow(conceptId).stage === "learning"
-  ) {
-    pass(conceptId, {}, now);
   }
 
   return displayStage(conceptId);
@@ -190,41 +170,58 @@ const attemptedRecently = (slug: string, now: Date): boolean => {
   );
 };
 
-/** Concepts (with prerequisites) the learner has not been taught yet, prerequisites first. */
-export const newConceptsFor = (slug: string): string[] =>
-  withPrereqs(problemInfo(slug).concepts).filter(
-    (id) => conceptRow(id).stage === "unseen"
-  );
+// ── Lessons ──────────────────────────────────────────────────────────────
 
-/**
- * A problem is open when every prerequisite of its concepts is passed, or is an untaught
- * concept with no problems of its own (its lesson passes it). A prerequisite that is still
- * being learned blocks the problem until the learner passes it on its own problems.
- */
-export const isUnlocked = (p: ProblemInfo): boolean =>
-  withPrereqs(p.concepts)
-    .filter((id) => !p.concepts.includes(id))
-    .every(
-      (id) =>
-        isPassed(id) ||
-        (conceptRow(id).stage === "unseen" && !hasOwnProblems(id))
-    );
+/** Where a lesson stands, for the lessons column. */
+export type LessonStatus = "locked" | "todo" | "started" | "partial" | "done";
 
-// ── Choosing the next task ───────────────────────────────────────────────
+/** A lesson opens when every prerequisite of its concept is passed. */
+export const isOpen = (id: string): boolean =>
+  conceptRow(id).stage !== "unseen" || concept(id).prereqs.every(isPassed);
 
-export type NextAction =
-  | { action: "resume"; problem: string; attempt_id: number; why: string }
-  | {
-      action: "reteach";
-      concept: string;
-      prerequisites: { id: string; stage: DisplayStage }[];
-      why: string;
-    }
-  | { action: "review"; problem: string; covers: string[]; why: string }
-  | { action: "review_exercise"; concepts: string[]; why: string }
-  | { action: "learn"; problem: string; new_concepts: string[]; why: string }
-  | { action: "practice"; problem: string; why: string }
-  | { action: "done_for_now"; next_due: string | null; why: string };
+export const lessonStatus = (id: string): LessonStatus => {
+  const { stage } = conceptRow(id);
+
+  if (isPassedStage(stage)) {
+    return "done";
+  }
+
+  if (stage === "learning") {
+    return problemStatus(concept(id).solo) === "solved_with_help"
+      ? "partial"
+      : "started";
+  }
+
+  return isOpen(id) ? "todo" : "locked";
+};
+
+/** Step 1 is the guided problem beside the lesson. Step 2 is the solo problem, alone. */
+export const lessonStep = (id: string): 1 | 2 =>
+  conceptRow(id).stage === "unseen" ? 1 : 2;
+
+/** When the solo problem may be tried again after a struggle, or null when it is free now. */
+export const soloWait = (id: string, now = new Date()): string | null => {
+  const { solo } = concept(id);
+  const last = attemptsFor({ slug: solo }).at(-1);
+
+  if (isPassed(id) || !last?.finished_at || !waitingForRetry(solo, now)) {
+    return null;
+  }
+
+  return new Date(new Date(last.finished_at).getTime() + DAY_MS).toISOString();
+};
+
+/** The next lesson: the first concept, in course order, that is open, written and not waiting. */
+export const nextLesson = (now = new Date()): string | null =>
+  concepts().find(
+    (c) =>
+      !isPassed(c.id) &&
+      isOpen(c.id) &&
+      hasLesson(c.id) &&
+      soloWait(c.id, now) === null
+  )?.id ?? null;
+
+// ── Reviews ──────────────────────────────────────────────────────────────
 
 interface DueConcept {
   id: string;
@@ -249,6 +246,9 @@ const dueConcepts = (now: Date): DueConcept[] =>
       };
     });
 
+/** How many passed concepts are due for review. */
+export const dueCount = (now = new Date()): number => dueConcepts(now).length;
+
 /** Repetition compression: how much of the due set one problem would knock out. */
 const coverage = (p: ProblemInfo, due: DueConcept[]) => {
   let score = 0;
@@ -266,47 +266,27 @@ const coverage = (p: ProblemInfo, due: DueConcept[]) => {
   return { covers, score };
 };
 
-const nextNewProblem = (now: Date): ProblemInfo | null =>
-  problemIndex().find(
-    (p) =>
-      isAuthored(p.slug) &&
-      problemStatus(p.slug) !== "solved" &&
-      !waitingForRetry(p.slug, now) &&
-      isUnlocked(p)
-  ) ?? null;
+export interface Review {
+  problem: ProblemInfo;
+  /** The due concepts this problem reviews. */
+  covers: string[];
+}
 
-const newAction = (p: ProblemInfo, why: string): NextAction => {
-  const fresh = newConceptsFor(p.slug);
-
-  return fresh.length
-    ? { action: "learn", new_concepts: fresh, problem: p.slug, why }
-    : { action: "practice", problem: p.slug, why };
-};
-
-const reviewsInARow = (): number => {
-  let n = 0;
-
-  for (const a of attemptsFor({}).toReversed()) {
-    if (!a.finished_at || a.outcome === "paused") {
-      continue;
-    }
-
-    if (a.phase !== "review") {
-      break;
-    }
-
-    n += 1;
-  }
-
-  return n;
-};
-
-/** The already-practised problem that knocks out the most of the due set, if any. */
-const bestReview = (due: DueConcept[], now: Date) => {
-  let best: { p: ProblemInfo; score: number; covers: string[] } | null = null;
+/**
+ * The problem that knocks out the most of the due set. Every concept of the problem must be
+ * passed, so nothing in it is new. Problems the learner has not tried are preferred: a new
+ * problem makes them recall the concept, not one answer.
+ */
+const bestReview = (
+  due: DueConcept[],
+  now: Date,
+  skip: Set<string>
+): Review | null => {
+  let best: (Review & { score: number }) | null = null;
 
   for (const p of problemIndex()) {
     if (
+      skip.has(p.slug) ||
       !isAuthored(p.slug) ||
       !p.concepts.every(isPassed) ||
       attemptedRecently(p.slug, now)
@@ -318,105 +298,46 @@ const bestReview = (due: DueConcept[], now: Date) => {
     const bonus = problemStatus(p.slug) === "unattempted" ? UNSEEN_BONUS : 1;
 
     if (score > 0 && (!best || score * bonus > best.score)) {
-      best = { covers, p, score: score * bonus };
+      best = { covers, problem: p, score: score * bonus };
     }
   }
 
-  return best;
+  return best && { covers: best.covers, problem: best.problem };
 };
 
-export const nextUp = (now = new Date()): NextAction => {
-  const open = attemptsFor({}).findLast((a) => !a.finished_at);
+/** The review to do now, or null when nothing due can be reviewed. */
+export const nextReview = (now = new Date()): Review | null =>
+  bestReview(dueConcepts(now), now, new Set());
 
-  if (open) {
-    // oxlint-disable-next-line sort-keys -- shown to the model as-is; keep the action first and the problem before its attempt id
-    return {
-      action: "resume",
-      problem: open.slug,
-      attempt_id: open.id,
-      why: "An attempt is still open.",
-    };
-  }
+/** The reviews that would clear what is due today, best first. */
+export const reviewPlan = (now = new Date()): Review[] => {
+  let due = dueConcepts(now);
+  const plan: Review[] = [];
+  const used = new Set<string>();
 
-  const struggling = concepts().find((c) => {
-    const row = conceptRow(c.id);
+  while (due.length) {
+    const next = bestReview(due, now, used);
 
-    return row.stage === "learning" && row.fail_count >= RETEACH_AFTER;
-  });
-
-  if (struggling) {
-    return {
-      action: "reteach",
-      concept: struggling.id,
-      prerequisites: struggling.prereqs.map((id) => ({
-        id,
-        stage: displayStage(id),
-      })),
-      why: `'${struggling.name}' needed help ${conceptRow(struggling.id).fail_count} times; teach it again from a different angle.`,
-    };
-  }
-
-  const fresh = nextNewProblem(now);
-  const due = dueConcepts(now);
-
-  if (due.length && !(fresh && reviewsInARow() >= REVIEWS_BEFORE_NEW)) {
-    const best = bestReview(due, now);
-
-    // New material that knocks out the same reviews is better than a pure review.
-    if (fresh) {
-      const { score, covers } = coverage(fresh, due);
-
-      if (score > 0 && (!best || score >= best.score)) {
-        return newAction(
-          fresh,
-          `Next on the roadmap, and it also reviews ${covers.length} due concept(s).`
-        );
-      }
+    if (!next) {
+      break;
     }
 
-    if (best) {
-      return {
-        action: "review",
-        covers: best.covers,
-        problem: best.p.slug,
-        why: `${due.length} concept(s) due; this problem reviews ${best.covers.length} of them.`,
-      };
-    }
-
-    // No problem covers what is due, so the tutor writes an exercise for the most overdue.
-    return {
-      action: "review_exercise",
-      concepts: due
-        .toSorted((a, b) => b.weight - a.weight)
-        .slice(0, MAX_TARGETS)
-        .map((d) => d.id),
-      why: `${due.length} concept(s) due and no problem reviews them; write one new exercise that needs these.`,
-    };
+    plan.push(next);
+    used.add(next.problem.slug);
+    due = due.filter((d) => !next.covers.includes(d.id));
   }
 
-  if (fresh) {
-    const paced = due.length && reviewsInARow() >= REVIEWS_BEFORE_NEW;
+  return plan;
+};
 
-    return newAction(
-      fresh,
-      paced
-        ? "New material after several reviews in a row."
-        : `Next on the roadmap: '${fresh.title}'.`
-    );
-  }
-
-  const [nextDue] = concepts()
-    .filter((c) => isPassed(c.id))
+/** When the next review falls due, among the concepts not due yet. */
+export const nextDue = (now = new Date()): string | null =>
+  concepts()
+    .filter((c) => isPassed(c.id) && !isDue(c.id, now))
     .map((c) => cardOf(c.id)?.due.toISOString())
     .filter((d): d is string => Boolean(d))
-    .toSorted();
-
-  return {
-    action: "done_for_now",
-    next_due: nextDue ?? null,
-    why: "Nothing is due and nothing new is open right now.",
-  };
-};
+    .toSorted()
+    .at(0) ?? null;
 
 // ── Reporting ────────────────────────────────────────────────────────────
 

@@ -3,7 +3,7 @@
 
 import { validateCurriculum } from "./content.ts";
 import { orphans } from "./db.ts";
-import { nextUp, topicProgress } from "./scheduler.ts";
+import { nextLesson, nextReview, topicProgress } from "./scheduler.ts";
 
 const [command] = process.argv.slice(2);
 
@@ -20,7 +20,13 @@ switch (command) {
   }
 
   case "next": {
-    console.log(JSON.stringify(nextUp(), null, 2));
+    console.log(
+      JSON.stringify(
+        { lesson: nextLesson(), review: nextReview()?.problem.slug ?? null },
+        null,
+        2
+      )
+    );
     break;
   }
 

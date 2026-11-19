@@ -15,12 +15,13 @@ Everything below serves those two goals with as little wasted practice as possib
 
 | Code (the engine) | Agent (the tutor) |
 | --- | --- |
-| Curriculum, prerequisite and encompassing graphs | Teaching: explanations, examples, exercises |
-| Learner state, FSRS cards, event log | Grading open answers, per concept, against a rubric |
-| Pass or fail from objective signals | Scoring recognition (did they name the approach?) |
-| Checking that an exercise runs and finding its answer | Deciding whether a stop was "gave up" or "paused" |
-| Credit flow (FIRe), penalties, unlocking | Corrective re-teaching after a struggle |
-| Choosing the next task (repetition compression) | Noting the wrong idea behind a miss |
+| Curriculum, prerequisite and encompassing graphs | Answering questions about a lesson or a problem |
+| Learner state, FSRS cards, event log | Hints, one step at a time |
+| Pass or fail from objective signals | Explaining the wrong idea behind a miss |
+| Choosing the next lesson and the next review | Extra exercises when the learner asks for practice |
+| Credit flow (FIRe), penalties, unlocking | Grading open answers, per concept, against a rubric |
+
+The app leads the course through the engine: it opens lessons and reviews and grades what the learner hands in. The tutor helps beside it and never chooses what comes next.
 
 Rule of thumb: facts and arithmetic live in code; judgement lives in the agent. The agent's judgements enter the engine through tool parameters.
 
@@ -30,7 +31,8 @@ Rule of thumb: facts and arithmetic live in code; judgement lives in the agent. 
 
 - **Topics**: roadmap nodes with topic prerequisites. They order the path and group progress for display. They are not scheduled.
 - **Concepts**: small skills. Each has prerequisite concepts (a DAG) and a list of **encompassings**: `{ id, w }` edges meaning "practising this concept also practises `w` of that one". Encompassings are set by hand, only on direct prerequisite edges, and default to 0. Prerequisites alone are not used for credit, because they give a lot of incorrect credit (Skycak).
-- **Problems**: the Blind 75, each with one topic and one to three target concepts.
+- **Problems**: the NeetCode 150, each with one topic and one to three target concepts, plus a few extras for concepts the list has no fitting problem for.
+- **Lessons**: one per concept. A lesson has a written text with a worked example, a small **guided problem**, and a **solo problem**: one problem from the list that needs only this concept and concepts taught before it. No two lessons share a solo problem. The problems that no lesson ends on are kept for reviews.
 
 A curriculum is built once per subject, from a good source when one exists. It is not made up as the learner goes.
 
@@ -50,20 +52,17 @@ Per concept:
 
 Plus `fail_count` (learning-phase struggles since the last lesson) and the FSRS card.
 
-Per problem attempt: phase (learning or review), outcome, hint events (level 1-4), recognition score, tests passed.
+Per problem attempt: why it was opened (a lesson's guided problem, its solo problem, or a review), phase (learning or review), outcome, hint events (level 1-4), tests passed.
 
-Per exercise: its kind, target concepts, the hidden answer, the learner's answer and confidence, and the result per concept.
+Per exercise: its kind, target concepts, the hidden answer, the learner's answer, and the result per concept.
 
-## Exercises
+## Problems and exercises
 
-An exercise targets one to three concepts: the ones it cannot be done without. There are two sources:
+A problem or exercise targets one to three concepts: the ones it cannot be done without.
 
-- **Curriculum problems**, with tests. Solving one from a blank file is the strongest evidence, so only this passes a concept that has problems.
-- **Exercises the tutor writes** for teaching, probing and reviews: a worked example to read, predict the output, arrange the lines, and an open answer in the learner's own words.
-
-The engine runs the code of a predict or arrange exercise before the learner sees it. The answer is whatever the code prints, so the key cannot be wrong. For an open answer the tutor commits a rubric and a model answer before the learner writes.
-
-The learner answers a predict, arrange or open exercise once. The first answer is the evidence.
+- **Curriculum problems**, with tests. Solving one from an empty file, without help, is the strongest evidence, so only this passes a concept.
+- **Guided problems**, one per lesson, also with tests. They are solved with the lesson beside them, so they are teaching, not evidence. Solving one marks the concept as taught.
+- **Exercises the tutor writes** when the learner asks for more practice: a worked example to read, predict the output, arrange the lines, and an open answer in the learner's own words. The engine runs the code of a predict or arrange exercise before the learner sees it, so the key cannot be wrong. The learner answers once.
 
 ## Grading
 
@@ -72,30 +71,30 @@ Each concept gets pass or fail. There are no middle grades.
 - **A pass** needs a right answer with no hint beyond a guiding question (level 1). A stronger hint names the concept or the approach, which is the thing being tested.
 - **All targets share the result.** Passing tests or a matched output cannot say which concept broke. So a failed exercise fails every target. This is why an exercise has at most three targets: with more, one weak concept would keep failing concepts the learner knows.
 - **An open answer is the exception.** The tutor reads it and gives each concept its own pass or fail.
-- **Confidence** is recorded with each answer. It does not change the grade. A wrong answer given with high confidence tells the tutor the learner holds a wrong idea, which needs teaching, not just another try.
+- **Opening the lesson** while solving its solo problem counts as a hint that names the concept, because the lesson shows the approach.
+- The learner is not asked how sure they are. Confidence never changed a grade or a review date, and the extra step cost more than the signal was worth.
 - A session that stopped for outside reasons is recorded as `paused`: no grade, and the attempt can be resumed or discarded.
 
 ## Phases
 
 ### Learning phase (concept is not passed yet)
 
-Practice in this phase is instruction, not assessment. It never touches FSRS.
+A lesson has two steps, with support that fades from one to the next.
 
-- **Probe first.** Before teaching a concept the learner may already know, the tutor asks one exercise on it. A right answer marks the concept, and its untaught prerequisites, as taught: knowing a concept implies knowing what it is built on. A wrong answer is where teaching starts.
-- **Teach on failure.** A short explanation and one worked example built around the exact mistake, then a retry with a new exercise.
-- **Solved a problem without help**: the concept becomes `passed`, its FSRS card is created and given a first Good review, and its dependents may unlock.
-- **Solved with help** or **gave up**: the concept stays `learning`, `fail_count` goes up, and the problem cannot be served again for at least one day. The next item for this concept is a sibling problem when one exists (Bloom's parallel assessment); otherwise the same problem returns after the delay.
-- **Remediation**: when `fail_count` reaches 2, the next action for that concept is `reteach`. The agent re-teaches from a different angle (a different worked example aimed at the diagnosed misconception, never "louder and slower") and checks the prerequisites. Re-teaching resets `fail_count`.
-- **Never stuck**: while a problem waits for its retry delay, the planner serves other available work (ALEKS-style switching to another frontier concept).
+- **Step 1, with the lesson.** The learner reads the lesson and solves its guided problem with the lesson beside it. A worked example first, then a problem with support, is the order that works for new material. Solving the guided problem moves the concept to `learning`. It never touches FSRS.
+- **Step 2, alone.** The lesson closes and the learner solves the concept's solo problem. Recalling the idea without the text is what makes it last, and it shows honestly whether the lesson worked.
+- **Solved without help**: the concept becomes `passed`, its FSRS card is created and given a first Good review, and its dependents may unlock.
+- **Solved with help** or **gave up**: the concept stays `learning`, `fail_count` goes up, and the solo problem waits a day. The lesson stays readable meanwhile.
+- **Never stuck**: while a solo problem waits, the course moves on to the next open lesson (ALEKS-style switching to another frontier concept).
 
-Concepts that no problem uses directly (for example `dynamic-arrays`, `recursion`) become `passed` when they are taught or probed.
+A lesson opens when every prerequisite of its concept is passed.
 
 ### Review phase (concept is `passed` or `mastered`)
 
 Here a struggle is evidence of forgetting, so it is recorded. A pass is an FSRS Good review and a fail is Again.
 
 - A concept is reviewed at most once a day. After a failed review the tutor teaches and retries with a new exercise, but that retry is practice only. Repeating an item on the same day adds little to long-term memory.
-- A concept becomes `mastered` on a later pass where the learner also named the right approach first. A fail drops it back to `passed`.
+- A concept becomes `mastered` on a later unaided pass in a review. A review names nothing, so solving it without a hint means the learner chose the approach. A fail drops it back to `passed`.
 
 ## Fractional implicit repetition
 
@@ -114,30 +113,28 @@ Every review is logged with `implicit_credit` (null for explicit reviews) and th
 
 ## Choosing the next task
 
-The planner runs in order:
+Lessons and reviews are chosen apart. The learner picks which to do; the app shows how many reviews are due.
 
-1. **Resume** an open attempt.
-2. **Reteach** a concept whose `fail_count` reached 2.
-3. **Repetition compression.** If any passed concept is due, score every candidate problem (authored, all concepts at least `learning`, not attempted in the last day): `score = Σ over due concepts d of min(1, credit(problem → d)) · (1 + overdue_days / interval_days)`. A problem's credit to `d` is 1 if it is tagged with `d`, otherwise the best implicit credit from its tags. Unseen problems get a bonus; the next roadmap problem is also a candidate, so new material that covers due reviews is preferred. The best-scoring problem is served as a review. If no problem covers what is due, the tutor writes one new exercise for the most overdue concepts, three at most.
-4. **Pacing.** After three reviews in a row, new material is served if any is available, even with reviews still due.
-5. **New material.** The first problem on the roadmap that is not solved independently, whose retry delay has passed, and whose concepts are all at least `available`. If it needs untaught concepts, the action is `learn` with those concepts, prerequisites first.
-6. **Done for now.**
+**The next lesson** is the first concept, in course order, that is not passed, whose prerequisites are all passed, and whose solo problem is not waiting after a struggle.
+
+**The next review** uses repetition compression. Score every candidate problem (all its concepts passed, not attempted in the last day): `score = Σ over due concepts d of min(1, credit(problem → d)) · (1 + overdue_days / interval_days)`. A problem's credit to `d` is 1 if it is tagged with `d`, otherwise the best implicit credit from its tags. Problems the learner has not tried get a bonus, so a review is usually a new problem: the learner must recall the concept, not one answer. The best-scoring problem is served. A review always starts from the empty stub.
 
 FSRS runs with `enable_short_term: false`, so no concept is scheduled again on the same day. Repeating an item several times in one day adds little to long-term memory.
 
 ## Interleaving and recognition
 
-- **Learning phase:** blocked practice with labels. Lessons and the first problems for a concept are explicitly about that concept.
-- **Review phase:** unlabelled. The tutor never says which topic or concept a review is from. Repetition compression already mixes topics.
-- **Recognition step:** before coding a review, the learner names the approach. The tutor scores it (correct, partial, wrong) and passes it to `finish_attempt`. Mastery needs a correct one, so recognition is tracked apart from execution.
-- Learners tend to feel interleaved practice is less productive than blocked practice, even when it works better (Kornell & Bjork 2008). Self-reported confidence does not reduce interleaving.
+- **Learning phase:** blocked practice with labels. A lesson and its two problems are explicitly about one concept.
+- **Review phase:** unlabelled. The review screen shows no lesson, no chapter and no lessons column, and the tutor never says which concept a review is from. Repetition compression already mixes topics.
+- **Recognition** is trained by the reviews themselves: the learner sees a problem with nothing that names its pattern and must choose the approach. A hint that names it turns the review into a fail.
+- Learners tend to feel interleaved practice is less productive than blocked practice, even when it works better (Kornell & Bjork 2008).
 
 ## Out of scope for now
 
 - Mixing confusable concepts on purpose (for example sliding window versus two pointers).
-- Problem variants to fight memorisation of the 75 problems.
+- Problem variants to fight memorisation of the problems.
+- A short review that asks only for the approach, with no code.
 - Learned models (BKT, PFA) once there is enough data.
-- A placement test across the whole curriculum. For now the tutor probes each concept before teaching it.
+- A placement test across the whole curriculum.
 
 ## Sources
 

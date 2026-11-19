@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
-// MCP server: the harness the tutor works through.
-// It owns the curriculum (roadmap, concepts, Blind 75 problems), the learner's state,
-// test runs, grading and FSRS scheduling. The tutor (Claude) owns the teaching:
-// it writes explanations and exercises on the spot, and the engine verifies them.
+// MCP server: what the tutor sees and can do.
+// The app leads the course: it opens lessons and reviews and grades what the learner hands
+// in. The tutor (Claude) helps beside it: it reads what is on screen, answers questions,
+// gives hints, and can show an extra exercise, which the engine verifies.
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -12,39 +12,29 @@ import {
   DEFAULT_LANGUAGE,
   WORKSPACE_DIR,
   concept,
+  concepts,
+  guidedConcept,
   isAuthored,
   problemInfo,
   problemsUsing,
   referenceSolution,
+  solutionPath,
   topics,
   validateCurriculum,
   withPrereqs,
 } from "./content.ts";
 import type { Language } from "./content.ts";
-import {
-  addNote,
-  attemptsFor,
-  closeExercises,
-  notesFor,
-  orphans,
-} from "./db.ts";
+import { addNote, attemptsFor, notesFor, orphans } from "./db.ts";
 import type { ExerciseKind, Result } from "./db.ts";
 import { currentExercise, gradeAnswer, showExercise } from "./exercises.ts";
 import {
-  finishAttempt,
+  currentAttempt,
   logHint,
-  startProblem,
+  readSolution,
   testSolution,
 } from "./practice.ts";
 import { formatRun } from "./runner.ts";
-import {
-  completeLesson,
-  conceptStatus,
-  newConceptsFor,
-  nextUp,
-  problemStatus,
-  topicProgress,
-} from "./scheduler.ts";
+import { conceptStatus, problemStatus, topicProgress } from "./scheduler.ts";
 
 const server = new McpServer({ name: "tech-prep", version: "0.2.0" });
 
@@ -92,30 +82,63 @@ const conceptView = (id: string) => {
   };
 };
 
-// ── Planning ────────────────────────────────────────────────────────────
+/** How the tutor may help, by the reason the problem is open. */
+const MODE_RULES = {
+  guided:
+    "A lesson's guided problem. The lesson is beside it, so explain freely and point at the lesson's worked example. Do not write the solution.",
+  review:
+    "A review. The learner must choose the approach alone. Never name the concept, the lesson or the pattern unless they ask for a hint, and log the hint first.",
+  solo: "A lesson's solo problem, with the lesson closed. It decides whether the concept is learned. Hints above level 1 make it count as solved with help, so log every hint first.",
+};
+
+// ── What is on screen ───────────────────────────────────────────────────
 
 server.registerTool(
-  "next_up",
+  "get_session",
   {
     description:
-      "What to do now, in order: resume an open attempt; reteach a concept the learner struggled with twice; review (the problem that covers the most due concepts, or, when no problem covers them, an exercise you write); learn the new concepts of the next unlocked roadmap problem, or practise it; or nothing for now. Call at the start of every session and after each finished attempt or review exercise. It clears the exercise on screen. Never tell the learner which concept a review is about.",
+      "What the learner has on screen right now: the problem they are solving, why it is open (a lesson's guided problem, a lesson's solo problem, or a review), the lesson it belongs to, their code, and your exercise if one is showing. Call it first, every time the learner writes to you, because the app moves on without you. In a review, never say which concept or lesson the problem is about.",
     inputSchema: {},
   },
   safely(() => {
-    closeExercises();
-    const problems = [...validateCurriculum(), ...orphans()];
+    const open = currentAttempt();
+    // Empty unless the curriculum or the progress data is inconsistent.
+    const extra = { data_warnings: [...validateCurriculum(), ...orphans()] };
 
-    const next = {
-      ...nextUp(),
-      language: DEFAULT_LANGUAGE,
-      workspace: WORKSPACE_DIR,
-    };
-
-    if (problems.length) {
-      return { ...next, data_warnings: problems };
+    if (!open) {
+      return {
+        on_screen:
+          "No problem is open. The learner is between lessons or reviews.",
+        workspace: WORKSPACE_DIR,
+        ...extra,
+      };
     }
 
-    return next;
+    const lessonId =
+      open.mode === "review"
+        ? null
+        : (guidedConcept(open.slug) ??
+          concepts().find((c) => c.solo === open.slug)?.id ??
+          null);
+
+    // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
+    const language = open.language as Language;
+
+    return {
+      attempt_id: open.id,
+      code: readSolution(open.slug, language),
+      exercise_on_screen: Boolean(currentExercise()),
+      file: solutionPath(open.slug, language),
+      hints_so_far: open.max_hint_level,
+      language,
+      lesson: lessonId && conceptView(lessonId),
+      mode: open.mode,
+      problem: open.slug,
+      rules: MODE_RULES[open.mode ?? "review"],
+      title: problemInfo(open.slug).title,
+      workspace: WORKSPACE_DIR,
+      ...extra,
+    };
   })
 );
 
@@ -180,7 +203,7 @@ server.registerTool(
       language: languageInput,
       slug: z
         .string()
-        .describe("The problem slug, e.g. next_up's `problem` field."),
+        .describe("The problem slug, e.g. get_session's `problem` field."),
     },
   },
   safely(({ slug, language }: { slug: string; language?: Language }) => {
@@ -198,7 +221,6 @@ server.registerTool(
       })),
       authored: isAuthored(slug),
       concepts: info.concepts.map(conceptView),
-      not_yet_taught: newConceptsFor(slug),
       reference_solution: referenceSolution(slug, language ?? DEFAULT_LANGUAGE),
       status: problemStatus(slug),
     };
@@ -209,7 +231,7 @@ server.registerTool(
   "get_concept",
   {
     description:
-      "A concept's key idea, its prerequisites (with the learner's stage for each), the learner's notes, and every Blind 75 problem that uses it, with status. Use it to plan a lesson or an exercise and to avoid problems the learner will practise.",
+      "A concept's key idea, its prerequisites (with the learner's stage for each), the learner's notes, and every curriculum problem that uses it, with status. Use it to plan a lesson or an exercise and to avoid problems the learner will practise.",
     inputSchema: { concept_id: z.string() },
   },
   safely(({ concept_id }: { concept_id: string }) => ({
@@ -356,40 +378,7 @@ server.registerTool(
   )
 );
 
-server.registerTool(
-  "complete_lesson",
-  {
-    description:
-      "Mark concepts as taught after you taught them (or when the learner skips the lesson, or after re-teaching). Concepts move to 'learning' and pass on the learner's first solve without help; concepts that no problem practises directly pass right away. Re-teaching resets the struggle count. A right answer on an exercise does this by itself.",
-    inputSchema: { concept_ids: z.array(z.string()).min(1) },
-  },
-  safely(({ concept_ids }: { concept_ids: string[] }) => {
-    for (const id of concept_ids) {
-      concept(id);
-    }
-
-    return concept_ids.map((id) => ({ id, stage: completeLesson(id) }));
-  })
-);
-
 // ── Practice ────────────────────────────────────────────────────────────
-
-server.registerTool(
-  "start_problem",
-  {
-    description:
-      "Open a problem in the app's editor and open an attempt (or resume the open one). The app shows the statement, the editor, Run and Submit. The returned file is the learner's code: read it before you comment on it.",
-    inputSchema: {
-      language: languageInput,
-      slug: z
-        .string()
-        .describe("The problem slug, e.g. next_up's `problem` field."),
-    },
-  },
-  safely(({ slug, language }: { slug: string; language?: Language }) =>
-    startProblem(slug, language)
-  )
-);
 
 server.registerTool(
   "run_tests",
@@ -400,7 +389,7 @@ server.registerTool(
       language: languageInput,
       slug: z
         .string()
-        .describe("The problem slug, e.g. next_up's `problem` field."),
+        .describe("The problem slug, e.g. get_session's `problem` field."),
     },
   },
   safelyText(({ slug, language }: { slug: string; language?: Language }) => {
@@ -418,46 +407,6 @@ server.registerTool(
     inputSchema: { level: z.number().int().min(1).max(4) },
   },
   safely(({ level }: { level: number }) => logHint(level))
-);
-
-server.registerTool(
-  "finish_attempt",
-  {
-    description: [
-      "Close a problem attempt after the learner submitted and explained the solution. The engine re-runs the tests.",
-      "Every concept of the problem gets the same result: a pass needs passing tests and no hint above level 1.",
-      "A concept being learned passes on a pass; otherwise its struggle count goes up and the problem waits a day. A concept under review is rescheduled, and credit flows to the concepts it encompasses.",
-      "If the tests do not pass, set stopped: 'gave_up' (the learner gave up) or 'paused' (stopped for outside reasons: nothing is graded).",
-    ].join(" "),
-    inputSchema: {
-      attempt_id: z.number().int(),
-      notes: z
-        .string()
-        .optional()
-        .describe("Short note on what went well or wrong in this attempt."),
-      recognition: z
-        .enum(["correct", "partial", "wrong", "skipped"])
-        .optional()
-        .describe(
-          "Reviews: did the learner name the right approach before coding? 'skipped' if not asked."
-        ),
-      stopped: z.enum(["gave_up", "paused"]).optional(),
-    },
-  },
-  safely(
-    (args: {
-      attempt_id: number;
-      stopped?: "gave_up" | "paused";
-      recognition?: "correct" | "partial" | "wrong" | "skipped";
-      notes?: string;
-    }) =>
-      finishAttempt({
-        attemptId: args.attempt_id,
-        notes: args.notes,
-        recognition: args.recognition,
-        stopped: args.stopped,
-      })
-  )
 );
 
 server.registerTool(

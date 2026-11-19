@@ -8,12 +8,8 @@ declare global {
 
 export type Difficulty = "easy" | "medium" | "hard";
 
-export type ConceptStage =
-  | "locked"
-  | "available"
-  | "learning"
-  | "passed"
-  | "mastered";
+/** Where a lesson stands, from the engine. */
+export type LessonStatus = "locked" | "todo" | "started" | "partial" | "done";
 
 export type ProblemStatus =
   | "unattempted"
@@ -22,29 +18,28 @@ export type ProblemStatus =
   | "solved_with_help"
   | "solved";
 
-export type NextAction =
-  | { action: "resume"; problem: string; why: string }
-  | { action: "reteach"; concept: string; why: string }
-  | { action: "review"; problem: string; covers: string[]; why: string }
-  | { action: "review_exercise"; concepts: string[]; why: string }
-  | { action: "learn"; problem: string; new_concepts: string[]; why: string }
-  | { action: "practice"; problem: string; why: string }
-  | { action: "done_for_now"; next_due: string | null; why: string };
+/** Why a problem is open: a lesson's guided problem, its solo problem, or a review. */
+export type Mode = "guided" | "solo" | "review";
 
-/** From the engine bridge's `problem` method, and the `problem` field of a session. */
+/** One problem as the app shows it. It carries no topic, so a review does not give its pattern away. */
 export interface Problem {
   slug: string;
   title: string;
-  topic: string;
   difficulty: Difficulty;
   statement: string | null;
-  concept_count: number;
-  new_concepts: string[];
+  status: ProblemStatus;
+}
+
+export interface Attempt {
+  id: number;
+  slug: string;
+  mode: Mode | null;
+  language: string;
+  /** The concept whose lesson this attempt belongs to; null for a review. */
+  lesson: string | null;
 }
 
 export type ExerciseKind = "example" | "predict" | "arrange" | "answer";
-
-export type Confidence = "low" | "medium" | "high";
 
 /** A tutor-made exercise, from the engine bridge. The answer appears once it is graded. */
 export interface Exercise {
@@ -66,7 +61,6 @@ export interface Exercise {
   }[];
   status: "open" | "submitted" | "graded";
   response: string | null;
-  confidence: Confidence | null;
   correct: boolean | null;
   correct_answer: string | string[] | null;
 }
@@ -102,42 +96,92 @@ export interface Run {
   }[];
 }
 
-/** From the engine bridge's `session` method. */
-export interface Session {
-  next: NextAction;
-  exercise: Exercise | null;
-  attempt: {
-    id: number;
-    slug: string;
-    phase: "learning" | "review" | null;
-    language: string;
-  } | null;
-  problem: Problem | null;
+/** What grading a problem did. */
+export interface Result {
+  outcome: "solved" | "solved_with_help" | "gave_up" | "paused";
+  mode: Mode | null;
+  concepts: {
+    id: string;
+    name: string;
+    result: "pass" | "fail";
+    effect: string;
+    next_review: string | null;
+  }[];
 }
 
-/** From the engine bridge's `roadmap` method. */
-export interface Roadmap {
-  current: string | null;
+/** From the bridge's `code.submit` method. */
+export interface Handed {
+  /** False when the tests do not pass yet. */
+  finished: boolean;
+  run: Run;
+  result: Result | null;
+}
+
+/** From the bridge's `attempt.give_up` method. */
+export interface GaveUp {
+  result: Result;
+  solution: string | null;
+}
+
+/** From the bridge's `session` method. */
+export interface Session {
+  attempt: Attempt | null;
+  exercise: Exercise | null;
+}
+
+/** From the bridge's `course` method. */
+export interface Course {
+  subject: { id: string; name: string; initials: string };
+  concepts: { learned: number; total: number };
+  problems: { solved: number; total: number };
+  /** Concepts due for review. */
+  due: number;
+  next_lesson: string | null;
   topics: {
     id: string;
     name: string;
-    prereqs: string[];
-    solved: number;
+    learned: number;
     total: number;
-    concepts: {
+    lessons: {
       id: string;
       name: string;
-      key_idea: string;
-      stage: ConceptStage;
-      due: string | null;
-      recall: number | null;
+      status: LessonStatus;
+      /** False while the lesson text or its problems are missing. */
+      written: boolean;
     }[];
-    problems: {
-      slug: string;
-      title: string;
-      difficulty: Difficulty;
-      status: ProblemStatus;
-      unlocked: boolean;
-    }[];
+  }[];
+}
+
+/** From the bridge's `lesson` and `lesson.open` methods. */
+export interface Lesson {
+  id: string;
+  name: string;
+  /** The chapter's name. */
+  topic: string;
+  key_idea: string;
+  text: string | null;
+  status: LessonStatus;
+  /** 1: the guided problem, beside the lesson. 2: the solo problem, alone. */
+  step: 1 | 2;
+  guided: Problem;
+  solo: Problem;
+  attempt: Attempt | null;
+  /** When the solo problem opens again after a struggle. */
+  wait_until: string | null;
+}
+
+/** From the bridge's `reviews` method. */
+export interface Reviews {
+  due: number;
+  problems: number;
+  minutes: number;
+  tracks: {
+    id: string;
+    name: string;
+    initials: string;
+    due: number;
+    problems: number;
+    minutes: number;
+    next_due: string | null;
   }[];
 }

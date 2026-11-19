@@ -1,0 +1,117 @@
+.tp-lesson-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 760px;
+  padding: 40px 48px 48px;
+  color: var(--color-body);
+  text-wrap: pretty;
+}
+
+.tp-lesson-text__label {
+  display: flex;
+}
+
+.tp-lesson-text h1 {
+  margin: 0;
+  color: var(--color-ink);
+  font: 600 28px/36px var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.tp-lesson-text h2 {
+  margin: 12px 0 0;
+  color: var(--color-ink);
+  font: 600 16px/24px var(--font-sans);
+}
+
+.tp-lesson-text p,
+.tp-lesson-text ul {
+  margin: 0;
+}
+
+.tp-lesson-text ul {
+  padding-left: 20px;
+}
+
+.tp-lesson-text li + li {
+  margin-top: 8px;
+}
+
+.tp-lesson-text b {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.tp-lesson-text :not(pre) > code {
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  background: var(--color-raised);
+  color: var(--color-ink);
+  font: 400 14px/22px var(--font-mono);
+}
+
+/* A worked example is a card inside the text column, not a full-width band. */
+.tp-lesson-text .tp-code {
+  padding: 16px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.tp-your-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 20px 24px;
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-accent-bg);
+}
+
+.tp-your-turn__label {
+  margin: 0;
+  color: var(--color-accent);
+  font: 600 12px/16px var(--font-sans);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tp-your-turn h2 {
+  margin: 0;
+  color: var(--color-ink);
+  font: 600 18px/26px var(--font-sans);
+}
+
+/* The statement inside the box needs no padding of its own. */
+.tp-your-turn .tp-statement {
+  max-width: none;
+  padding: 0;
+}
+
+.tp-task-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 760px;
+  padding: 40px 48px 48px;
+}
+
+.tp-task-text__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tp-task-text h1 {
+  margin: 0;
+  color: var(--color-ink);
+  font: 600 28px/36px var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+/* The statement sits in the column, so it needs no padding of its own. */
+.tp-task-text .tp-statement {
+  max-width: none;
+  padding: 0;
+}

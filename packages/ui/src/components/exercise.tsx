@@ -174,43 +174,6 @@ export const Arranger = ({
   );
 };
 
-export type ConfidenceLevel = "low" | "medium" | "high";
-
-const CONFIDENCE: [ConfidenceLevel, string][] = [
-  ["low", "Guessing"],
-  ["medium", "Fairly sure"],
-  ["high", "Certain"],
-];
-
-interface ConfidenceProps {
-  value: ConfidenceLevel | null;
-  onChange: (value: ConfidenceLevel) => void;
-  disabled?: boolean;
-}
-
-/** How sure the learner is, picked before they hand in an answer. */
-export const Confidence = ({
-  value,
-  onChange,
-  disabled = false,
-}: ConfidenceProps) => (
-  <fieldset className="tp-confidence" disabled={disabled}>
-    <legend>How sure are you?</legend>
-    {CONFIDENCE.map(([level, label]) => (
-      <label key={level}>
-        <input
-          checked={value === level}
-          name="confidence"
-          type="radio"
-          value={level}
-          onChange={() => onChange(level)}
-        />
-        {label}
-      </label>
-    ))}
-  </fieldset>
-);
-
 interface ResultCardProps {
   tone: Tone;
   /** The verdict in a few words, such as "It prints 5". */
