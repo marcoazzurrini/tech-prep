@@ -1,7 +1,7 @@
 [
   {
     "title": "Number and title",
-    "statement": "Print the issue's number, and then its title, as two outputs.\n\nThe filter below prints only the number. Add a comma and a second filter.",
+    "statement": "Print the issue's number, and then its title, as two outputs.\n\nThe command below prints only the number. Add a comma and a second filter.",
     "stub": ".number",
     "reference": ".number, .title",
     "tests": [
@@ -36,7 +36,7 @@
   },
   {
     "title": "Fix the filter",
-    "statement": "Print the login of the repo's owner, and then the repo's number of stars, as two outputs.\n\nThe filter below should do that, but it prints `null` in place of the stars. Look at where `stars` is in the input, and fix the filter.",
+    "statement": "Print the login of the repo's owner, and then the repo's number of stars, as two outputs.\n\nThe command below should do that, but it prints `null` in place of the stars. Look at where `stars` is in the input, and fix the filter.",
     "stub": ".owner | .login, .stars",
     "reference": ".owner.login, .stars",
     "tests": [

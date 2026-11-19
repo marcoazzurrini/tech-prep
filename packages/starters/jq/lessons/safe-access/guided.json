@@ -1,7 +1,7 @@
 [
   {
     "title": "Hosts in the inventory",
-    "statement": "Print the host of every server, each as its own output.\n\nThe filter below stops with an error, because one entry is a string and not an object. Fix the filter so that jq skips that entry.",
+    "statement": "Print the host of every server, each as its own output.\n\nThe command below stops with an error, because one entry is a string and not an object. Fix the filter so that jq skips that entry.",
     "stub": ".[] | .host",
     "reference": ".[] | .host?",
     "tests": [
@@ -50,7 +50,7 @@
   },
   {
     "title": "What comes out?",
-    "statement": "Type what jq prints for this input and this filter.\n\nThere is more than one output. Type each output on its own line.",
+    "statement": "Type what jq prints for this input and this command.\n\nThere is more than one output. Type each output on its own line.",
     "mode": "predict",
     "show_filter": true,
     "reference": ".[] | .id?",

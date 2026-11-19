@@ -28,7 +28,7 @@ Then hand the array to `@csv`:
 
 `@csv` turns an array into one string: the values, joined by commas. A string gets double quotes and a number does not. That is the way CSV is written. CSV stands for "comma-separated values".
 
-The tasks of this lesson run jq with the `-r` flag, so you type only the filter. Without `-r`, jq would print the row as a JSON string, which no spreadsheet can read:
+Use the `-r` flag in every task of this lesson: `jq -r '[.name, .age] | @csv' data.json`. Without `-r`, jq would print the row as a JSON string, which no spreadsheet can read:
 
 ```text
 "\"Ada\",36"

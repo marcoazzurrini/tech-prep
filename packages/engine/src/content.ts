@@ -350,11 +350,13 @@ export interface JqTest {
 }
 
 /**
- * How a jq task is answered.
- * - filter: the learner writes the filter. The task sets the flags.
- * - command: the learner writes everything after `jq`, flags included.
- * - predict: the learner reads the input, and the filter when it is shown, and types the
- *   value that comes out. Nothing runs while they type.
+ * How a jq task is written. The learner always types the whole command, as in a terminal:
+ * `jq 'filter' data.json`. The mode says what the task's `reference` and `stub` hold.
+ * - filter: the filter alone. The engine adds `jq`, the quotes and the file name.
+ * - command: everything after `jq` except the file name, flags included. The output text
+ *   must then match exactly, because the flags are the point.
+ * - predict: a filter. The learner reads the input, and the command when it is shown, and
+ *   types the value that comes out. Nothing runs while they type.
  */
 export type JqMode = "filter" | "command" | "predict";
 
@@ -364,13 +366,18 @@ export interface JqTask {
   /** The task, in the statement subset of Markdown. */
   statement: string;
   mode?: JqMode;
-  /** Flags the task sets in filter mode, such as `["-r"]` or `["--arg", "name", "Ada"]`. */
+  /** Flags a filter task's command needs, such as `["-r"]`. The learner types them. */
   flags?: string[];
-  /** What the editor starts with. */
+  /** The file the input is in. `data.json` when left out. */
+  file?: string;
+  /**
+   * What the editor starts with, in the same form as `reference`. Left out, the editor
+   * starts empty and the learner types the whole command.
+   */
   stub?: string;
   /** The answer key: a filter, or the text after `jq` in command mode. */
   reference: string;
-  /** In a predict task: show the reference filter, so the learner works out what it prints. */
+  /** In a predict task: show the command, so the learner works out what it prints. */
   show_filter?: boolean;
   /** The first test is the one shown to the learner. The others are hidden. */
   tests: JqTest[];
@@ -380,12 +387,58 @@ export interface JqTask {
 
 /** The jq part of a problem. */
 export interface JqSpec {
-  mode: JqMode;
-  flags: string[];
+  /** True when the learner types the output and not a command. */
+  predict: boolean;
+  /** True when the output text must match exactly. Otherwise outputs are compared as values. */
+  exact: boolean;
+  /** The name of the file the input is in. The learner's command reads it. */
+  file: string;
   tests: JqTest[];
-  /** The filter a predict task shows, when it shows one. */
-  filter: string | null;
+  /** The command a predict task shows, when it shows one. */
+  shown: string | null;
 }
+
+const NO_INPUT = /(?:^|\s)(?:-n|--null-input)(?:\s|$)/u;
+
+/** The file a jq task's input is in. */
+const jqFile = (task: JqTask): string =>
+  task.file ??
+  (task.tests[0]?.input_text === undefined ? "data.json" : "data.jsonl");
+
+/**
+ * The whole command for a task's filter, or for its text after `jq`: what a learner would
+ * type in a terminal. A command that reads no input gets no file name.
+ */
+export const jqCommand = (task: JqTask, text: string): string => {
+  const head =
+    task.mode === "command"
+      ? text
+      : [...(task.flags ?? []), `'${text}'`].join(" ");
+
+  return `jq ${head}${NO_INPUT.test(head) ? "" : ` ${jqFile(task)}`}`;
+};
+
+/** What the editor starts with: empty, or a whole command to change. */
+export const jqProblemStub = (task: JqTask): string => {
+  const stub = task.stub?.trim() ?? "";
+
+  // `.` and `'.'` are the "nothing yet" filters: the learner then starts from an empty line.
+  return !stub || stub === "." || stub === "'.'" || task.mode === "predict"
+    ? ""
+    : jqCommand(task, stub);
+};
+
+/** How a jq task is run and checked. */
+export const jqSpec = (task: JqTask): JqSpec => ({
+  exact: task.mode === "command" || Boolean(task.flags?.length),
+  file: jqFile(task),
+  predict: task.mode === "predict",
+  shown:
+    task.mode === "predict" && task.show_filter
+      ? jqCommand(task, task.reference)
+      : null,
+  tests: task.tests,
+});
 
 export interface Problem extends ProblemInfo, CallSpec {
   compare: CompareMode;
@@ -606,20 +659,12 @@ const jqProblem = (slug: string, info: ProblemInfo): Problem => {
     throw new Error(`Task '${slug}' is not written yet.`);
   }
 
-  const mode = task.mode ?? "filter";
-  const stub = task.stub ?? (mode === "filter" ? "." : "");
-
   return {
     ...info,
     compare: "exact",
-    jq: {
-      filter: mode === "predict" && task.show_filter ? task.reference : null,
-      flags: task.flags ?? [],
-      mode,
-      tests: task.tests,
-    },
+    jq: jqSpec(task),
     statement: task.statement,
-    stubs: { jq: stub, python: "", typescript: "" },
+    stubs: { jq: jqProblemStub(task), python: "", typescript: "" },
     tests: [],
   };
 };
@@ -667,11 +712,14 @@ export const referenceSolution = (
   if (course().kind === "jq") {
     const task = jqTask(slug);
 
-    // The answer to a predict task is the output, not the filter that made it.
-    return (
-      (task?.mode === "predict" ? task.tests[0]?.expected : task?.reference) ??
-      null
-    );
+    if (!task) {
+      return null;
+    }
+
+    // The answer to a predict task is the output, not the command that made it.
+    return task.mode === "predict"
+      ? (task.tests[0]?.expected ?? null)
+      : jqCommand(task, task.reference);
   }
 
   const file = path.join(problemDir(slug), `reference.${EXTENSIONS[language]}`);

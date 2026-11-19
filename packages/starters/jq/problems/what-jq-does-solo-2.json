@@ -1,6 +1,6 @@
 {
   "title": "What comes out?",
-  "statement": "Type what jq prints for this input and this filter.\n\nYou may type it on one line. Spaces and line breaks do not matter.",
+  "statement": "Type what jq prints for this input and this command.\n\nYou may type it on one line. Spaces and line breaks do not matter.",
   "mode": "predict",
   "show_filter": true,
   "reference": ".",

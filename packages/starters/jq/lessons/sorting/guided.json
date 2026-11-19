@@ -41,7 +41,7 @@
   },
   {
     "title": "Packages by size",
-    "statement": "Print the packages ordered by size, the smallest first.\n\nThe filter below should do that, but jq stops with an error. Read the error, then fix the filter.",
+    "statement": "Print the packages ordered by size, the smallest first.\n\nThe command below should do that, but jq stops with an error. Read the error, then fix the filter.",
     "stub": "sort_by(size)",
     "reference": "sort_by(.size)",
     "tests": [

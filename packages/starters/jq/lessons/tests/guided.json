@@ -1,7 +1,7 @@
 [
   {
     "title": "Is it merged?",
-    "statement": "Print `true` when the pull request is merged, and `false` when it is not.\n\nA merged pull request has the `state` `\"merged\"`. The filter below should do the job, but it prints the whole pull request. Find the mistake and fix it.",
+    "statement": "Print `true` when the pull request is merged, and `false` when it is not.\n\nA merged pull request has the `state` `\"merged\"`. The command below should do the job, but it prints the whole pull request. Find the mistake and fix it.",
     "stub": ".state = \"merged\"",
     "reference": ".state == \"merged\"",
     "tests": [

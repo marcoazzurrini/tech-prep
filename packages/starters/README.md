@@ -69,10 +69,12 @@ A task:
 ```
 
 - The first test is the one the learner sees. The others are hidden and checked on Submit. Use `input_text` in place of `input` for raw text, such as one JSON value per line.
-- `flags` are flags the task itself passes to jq, such as `["-r"]`.
-- `"mode": "command"` makes the learner write everything after `jq`, flags included. The output text must then match exactly. Otherwise outputs are compared as JSON values.
+- The learner always types the whole command, as in a terminal: `jq 'filter' data.json`. The task file holds only the filter; the engine adds `jq`, the quotes and the file name to make the answer key and the starting text.
+- `file` names the file the input is in. It is `data.json` when left out.
+- `flags` are flags the command needs, such as `["-r"]`. The learner types them, and the output text must then match exactly.
+- `"mode": "command"` is for tasks about flags: `reference` and `stub` then hold everything between `jq` and the file name, such as `-r '.[] | .name'`. The output text must match exactly. Otherwise outputs are compared as JSON values.
 - `"mode": "predict"` makes the learner type the value that comes out, with nothing running while they type. The reference filter makes the answer from the first test's input. `"show_filter": true` shows that filter; leave it out to ask a question about the input alone.
-- `stub` is what the editor starts with. It must not solve the task.
+- `stub` is a filter to change or fix; the editor then starts with the whole command around it. Left out, the editor starts empty. It must not solve the task.
 - A solo or review statement says what to produce, never which filter to use.
 
 Run `bun scripts/build-jq.ts <concept id>` in `packages/engine`, or `--all`. It runs each reference on each input and writes `expected`.

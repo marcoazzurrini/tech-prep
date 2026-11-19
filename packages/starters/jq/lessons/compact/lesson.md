@@ -41,7 +41,7 @@ The same value takes one line. jq also leaves out every space it does not need.
 
 The `c` stands for **compact**, which means "packed small". The flag does not change the value. It changes only how jq prints it.
 
-Like `-r`, the flag goes between `jq` and the filter. In these tasks you type the flag, then the filter in single quotes.
+Like `-r`, the flag goes between `jq` and the filter.
 
 <!-- task -->
 

@@ -1,7 +1,7 @@
 [
   {
     "title": "What comes out?",
-    "statement": "Type what jq prints for this input and this filter.",
+    "statement": "Type what jq prints for this input and this command.",
     "mode": "predict",
     "show_filter": true,
     "reference": ".hours | add",
@@ -21,7 +21,7 @@
   },
   {
     "title": "Items in the order",
-    "statement": "Print how many items the order has in total. That is the sum of every `qty`.\n\nThe filter below should do that, but it prints an object, not a number. Fix it.",
+    "statement": "Print how many items the order has in total. That is the sum of every `qty`.\n\nThe command below should do that, but it prints an object, not a number. Fix it.",
     "stub": ".items | add",
     "reference": ".items | map(.qty) | add",
     "tests": [

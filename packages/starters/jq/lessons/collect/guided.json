@@ -1,7 +1,7 @@
 [
   {
     "title": "Emails in one array",
-    "statement": "Print the emails of all the users as one array.\n\nThe filter below prints each email as its own output. Change it so that it prints one array of emails.",
+    "statement": "Print the emails of all the users as one array.\n\nThe command below prints each email as its own output. Change it so that it prints one array of emails.",
     "stub": ".[] | .email",
     "reference": "[.[] | .email]",
     "tests": [
@@ -48,7 +48,7 @@
   },
   {
     "title": "Authors of the commits",
-    "statement": "Print the authors of all the commits as one array.\n\nThe filter below should do that, but it prints one small array for each commit. Fix it so that it prints one array with every author.",
+    "statement": "Print the authors of all the commits as one array.\n\nThe command below should do that, but it prints one small array for each commit. Fix it so that it prints one array with every author.",
     "stub": ".commits[] | [.author]",
     "reference": "[.commits[] | .author]",
     "tests": [

@@ -1,7 +1,7 @@
 [
   {
     "title": "Hide the API key",
-    "statement": "Print the whole service, without its `api_key`.\n\nThe filter below removes `region`. Change it so that it removes `api_key`, and `region` stays.",
+    "statement": "Print the whole service, without its `api_key`.\n\nThe command below removes `region`. Change it so that it removes `api_key`, and `region` stays.",
     "stub": "del(.region)",
     "reference": "del(.api_key)",
     "tests": [
@@ -32,7 +32,7 @@
   },
   {
     "title": "What comes out?",
-    "statement": "Type what jq prints for this input and this filter.\n\nYou may type it on one line. Spaces and line breaks do not matter.",
+    "statement": "Type what jq prints for this input and this command.\n\nYou may type it on one line. Spaces and line breaks do not matter.",
     "mode": "predict",
     "show_filter": true,
     "reference": "del(.queue[0])",

@@ -42,25 +42,15 @@ const stateOf = (preview: JqPreview): OutputState => {
 const shownOutput = (preview: JqPreview): string =>
   [preview.output, preview.error].filter(Boolean).join("\n");
 
-/** What the status strip under the editor says the learner is writing. */
-const fileLabel = (mode: JqTask["mode"]): string =>
-  ({
-    command: "what comes after jq",
-    filter: "filter.jq",
-    predict: "the value that comes out",
-  })[mode];
-
 /** A jq task's input, for the column that holds its statement. */
 export const JqInput = ({ jq }: { jq: JqTask }) => (
   <>
-    <p className="tp-task-text__label">
-      {jq.mode === "command" ? "Input · on standard input" : "Input"}
-    </p>
+    <p className="tp-task-text__label">Input · {jq.file}</p>
     <CodeBlock code={jq.input} />
-    {jq.filter && (
+    {jq.command && (
       <>
-        <p className="tp-task-text__label">Filter</p>
-        <CodeBlock code={jq.filter} />
+        <p className="tp-task-text__label">Command</p>
+        <CodeBlock code={jq.command} />
       </>
     )}
   </>
@@ -130,8 +120,8 @@ const Asked = ({
   shown: boolean;
 }) => (
   <OutputStack>
-    {shown && <OutputPanel label="Input" text={jq.input} />}
-    {shown && jq.filter && <OutputPanel label="Filter" text={jq.filter} />}
+    {shown && <OutputPanel label={`Input · ${jq.file}`} text={jq.input} />}
+    {shown && jq.command && <OutputPanel label="Command" text={jq.command} />}
   </OutputStack>
 );
 
@@ -217,7 +207,7 @@ export const JqWorkbench = ({
   const text = useRef("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { slug } = problem;
-  const predict = jq.mode === "predict";
+  const { predict } = jq;
 
   /** Run the text on the shown input and save it. */
   const refresh = useCallback(async () => {
@@ -341,7 +331,6 @@ export const JqWorkbench = ({
     return null;
   }
 
-  const command = jq.mode === "command";
   const failed = run && (run.fatal || run.passed !== run.total);
 
   const editor =
@@ -350,7 +339,7 @@ export const JqWorkbench = ({
     ) : (
       <CodeEditor
         compact
-        file={fileLabel(jq.mode)}
+        file={predict ? "the value that comes out" : "terminal"}
         initialValue={code.text.trimEnd()}
         key={slug}
         language="jq"
@@ -380,10 +369,7 @@ export const JqWorkbench = ({
         <OutputPanels
           input={
             strip && (
-              <OutputPanel
-                label={command ? "Input · on standard input" : "Input"}
-                text={jq.input}
-              />
+              <OutputPanel label={`Input · ${jq.file}`} text={jq.input} />
             )
           }
           wanted={
@@ -404,11 +390,7 @@ export const JqWorkbench = ({
       <Footer
         busy={busy}
         done={done}
-        note={
-          jq.flags.length > 0
-            ? `Runs as jq ${jq.flags.join(" ")}. ${note ?? ""}`
-            : note
-        }
+        note={note}
         onGiveUp={() => {
           void giveUp();
         }}

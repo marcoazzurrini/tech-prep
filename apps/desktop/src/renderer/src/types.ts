@@ -35,14 +35,14 @@ export interface Problem {
 /** A jq task: its input, the output to produce, and how the learner answers. */
 export interface JqTask {
   /**
-   * "filter": the learner writes the filter. "command": everything after `jq`. "predict":
-   * the learner types the value that comes out, and sees no output while typing.
+   * False: the learner types the whole jq command, as in a terminal. True: they type the
+   * value that comes out, and see no output while typing.
    */
-  mode: "filter" | "command" | "predict";
-  /** The filter a predict task asks about, when it shows one. */
-  filter: string | null;
-  /** Flags the task itself passes to jq. */
-  flags: string[];
+  predict: boolean;
+  /** The command a predict task asks about, when it shows one. */
+  command: string | null;
+  /** The file the input is in. The learner's command names it. */
+  file: string;
   input: string;
   wanted: string;
   /** How many inputs Submit checks beyond the one shown. */

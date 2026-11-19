@@ -1,7 +1,7 @@
 [
   {
     "title": "Result of the build",
-    "statement": "Print `\"passed\"` when the build has 0 failed tests, and `\"failed\"` when it has more.\n\nThe filter below prints `\"passed\"` for a build with 0 failed tests. For every other build it prints the whole input. Change it so that it prints `\"failed\"` for those.",
+    "statement": "Print `\"passed\"` when the build has 0 failed tests, and `\"failed\"` when it has more.\n\nThe command below prints `\"passed\"` for a build with 0 failed tests. For every other build it prints the whole input. Change it so that it prints `\"failed\"` for those.",
     "stub": "if .failed == 0 then \"passed\" else . end",
     "reference": "if .failed == 0 then \"passed\" else \"failed\" end",
     "tests": [

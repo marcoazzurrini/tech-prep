@@ -1,6 +1,6 @@
 {
   "title": "Rows of a report",
-  "statement": "Print each row of the report as one line, with a tab between its values.\n\nThis task runs jq with `-r`. The rows are in `rows`. Each row is already an array. Strings have no quotes.",
+  "statement": "Print each row of the report as one line, with a tab between its values.\n\nUse the `-r` flag, so that jq prints plain text. The rows are in `rows`. Each row is already an array. Strings have no quotes.",
   "flags": [
     "-r"
   ],

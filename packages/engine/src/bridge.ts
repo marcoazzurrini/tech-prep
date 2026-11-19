@@ -91,16 +91,17 @@ const jqView = (slug: string) => {
     return null;
   }
 
-  const predict = spec.mode === "predict";
+  const { predict } = spec;
 
   return {
-    /** The filter a predict task asks about, when it shows one. */
-    filter: spec.filter,
-    flags: spec.flags,
+    /** The command a predict task asks about, when it shows one. */
+    command: spec.shown,
+    /** The file the input is in. The learner's command names it. */
+    file: spec.file,
     /** How many inputs Submit checks beyond the one shown. */
     hidden: predict ? 0 : spec.tests.length - 1,
     input: shown.input_text?.trimEnd() ?? showJson(shown.input),
-    mode: spec.mode,
+    predict,
     // A predict task asks for the output, so it is not sent.
     wanted: predict ? "" : (shown.expected ?? ""),
   };

@@ -1,7 +1,7 @@
 [
   {
     "title": "What comes out?",
-    "statement": "Type what jq prints for this input and this filter.\n\nLook at the start first. Then go through the items one at a time, and work out the result after each one.",
+    "statement": "Type what jq prints for this input and this command.\n\nLook at the start first. Then go through the items one at a time, and work out the result after each one.",
     "mode": "predict",
     "show_filter": true,
     "reference": "reduce .[] as $n (100; . + $n)",
@@ -18,7 +18,7 @@
   },
   {
     "title": "Total of the orders",
-    "statement": "Print the sum of the `total` of all orders, as one number.\n\nThe filter below should do that, but jq stops with an error. Read the error. Then fix the update, so that it takes `total` from the order.",
+    "statement": "Print the sum of the `total` of all orders, as one number.\n\nThe command below should do that, but jq stops with an error. Read the error. Then fix the update, so that it takes `total` from the order.",
     "stub": "reduce .orders[] as $o (0; . + .total)",
     "reference": "reduce .orders[] as $o (0; . + $o.total)",
     "tests": [

@@ -1,7 +1,7 @@
 [
   {
     "title": "Short form of an issue",
-    "statement": "Print the issue with only its `id` and `title`.\n\nThe filter below defines `brief`, which gives that short form. But the last step is `.`, which changes nothing. Replace the last step with `brief`.",
+    "statement": "Print the issue with only its `id` and `title`.\n\nThe command below defines `brief`, which gives that short form. But the last step is `.`, which changes nothing. Replace the last step with `brief`.",
     "stub": "def brief: {id, title}; .issue | .",
     "reference": "def brief: {id, title}; .issue | brief",
     "tests": [
@@ -45,7 +45,7 @@
   },
   {
     "title": "Author and reviewer",
-    "statement": "Print an object with the keys `author` and `reviewer`. Each one holds only the `login` and `id` of that person.\n\nThe filter below defines `who` and uses it for the author. So it prints only the author. Add the reviewer in the same way.",
+    "statement": "Print an object with the keys `author` and `reviewer`. Each one holds only the `login` and `id` of that person.\n\nThe command below defines `who` and uses it for the author. So it prints only the author. Add the reviewer in the same way.",
     "stub": "def who: {login, id}; {author: .author | who}",
     "reference": "def who: {login, id}; {author: .author | who, reviewer: .reviewer | who}",
     "tests": [

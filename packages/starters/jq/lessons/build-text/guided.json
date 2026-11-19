@@ -1,7 +1,7 @@
 [
   {
     "title": "Fix the filter",
-    "statement": "Print the package's name, then `@`, then its version, as one string. For the first input that is `\"left-trim@2.0.1\"`.\n\nThe filter below should do that, but it prints the filter text itself. Find what is missing and fix it.",
+    "statement": "Print the package's name, then `@`, then its version, as one string. For the first input that is `\"left-trim@2.0.1\"`.\n\nThe command below should do that, but it prints the filter text itself. Find what is missing and fix it.",
     "stub": "\"(.name)@(.version)\"",
     "reference": "\"\\(.name)@\\(.version)\"",
     "tests": [
@@ -33,7 +33,7 @@
   },
   {
     "title": "Open issues of a repo",
-    "statement": "Print a sentence that says how many open issues the repo has. For the first input that is `\"atlas has 3 open issues\"`.\n\nThe filter below puts the whole list of issues into the text. Change the second gap so that it holds the number of issues.",
+    "statement": "Print a sentence that says how many open issues the repo has. For the first input that is `\"atlas has 3 open issues\"`.\n\nThe command below puts the whole list of issues into the text. Change the second gap so that it holds the number of issues.",
     "stub": "\"\\(.repo) has \\(.issues) open issues\"",
     "reference": "\"\\(.repo) has \\(.issues | length) open issues\"",
     "tests": [

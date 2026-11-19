@@ -1,7 +1,7 @@
 [
   {
     "title": "The whole input",
-    "statement": "Print the whole input, unchanged.\n\nType only the filter that means \"the whole input\". It is one character. Do not type `jq`, quotes or a file name. Watch **Your output** change as you type.",
+    "statement": "Print the whole input, unchanged.\n\nType the whole command: `jq`, then the filter that means \"the whole input\" in single quotes, then the file name `data.json`. Watch **Your output** change as you type.",
     "stub": "",
     "reference": ".",
     "tests": [
@@ -31,7 +31,7 @@
   },
   {
     "title": "City of the user",
-    "statement": "Print the user's city.\n\nThe filter below prints the user's name. Change it so that it prints the city.",
+    "statement": "Print the user's city.\n\nThe command below prints the user's name. Change it so that it prints the city.",
     "stub": ".name",
     "reference": ".city",
     "tests": [
@@ -60,7 +60,7 @@
   },
   {
     "title": "What comes out?",
-    "statement": "Type what jq prints for this input and this filter.\n\nType it exactly as jq would print it.",
+    "statement": "Type what jq prints for this input and this command.\n\nType it exactly as jq would print it.",
     "mode": "predict",
     "show_filter": true,
     "reference": ".pages",

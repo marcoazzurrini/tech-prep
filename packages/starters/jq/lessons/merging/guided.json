@@ -1,7 +1,7 @@
 [
   {
     "title": "Total of the invoice",
-    "statement": "Print the total of the invoice: the subtotal plus the shipping.\n\nThe filter below prints only the subtotal. Change it so that it adds `shipping` to it. The output is one number.",
+    "statement": "Print the total of the invoice: the subtotal plus the shipping.\n\nThe command below prints only the subtotal. Change it so that it adds `shipping` to it. The output is one number.",
     "stub": ".subtotal",
     "reference": ".subtotal + .shipping",
     "tests": [
@@ -33,7 +33,7 @@
   },
   {
     "title": "One more label",
-    "statement": "Print the labels of the ticket, with `\"urgent\"` added at the end.\n\nThe filter below should do that, but jq stops with an error. Read the error, then fix the filter. The output is one array.",
+    "statement": "Print the labels of the ticket, with `\"urgent\"` added at the end.\n\nThe command below should do that, but jq stops with an error. Read the error, then fix the filter. The output is one array.",
     "stub": ".labels + \"urgent\"",
     "reference": ".labels + [\"urgent\"]",
     "tests": [

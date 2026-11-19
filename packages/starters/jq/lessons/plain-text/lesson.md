@@ -4,7 +4,7 @@ jq prints a string with double quotes, because its output is JSON. Often you wan
 
 ## A flag changes how jq works
 
-Until now the app ran a command like this for you, and you typed only the filter:
+Until now your commands had three parts: `jq`, the filter and the file.
 
 ```sh
 jq '.name' user.json
@@ -26,7 +26,9 @@ jq -r '.name' user.json
 Ada
 ```
 
-The tasks of this lesson are different from the ones before. You type all that comes after `jq`: first the flag, then the filter in single quotes. For the example above you would type `-r '.name'`. The input arrives by itself, so you type no file name.
+In the tasks of this lesson you add the flag yourself. Type it after `jq` and before the filter.
+
+One more thing is different. In these tasks the output must match exactly as text, quotes included. So a missing `-r` makes the task fail.
 
 <!-- task -->
 
@@ -98,4 +100,4 @@ Bo
 - `-r` prints a string output as plain text, without quotes.
 - Numbers look the same. Arrays and objects are still printed as JSON.
 - Make each string its own output, with `.[]`, to get one plain line for each.
-- In a command task you type the flag and then the filter in single quotes.
+- The order is: `jq`, the flags, the filter in single quotes, the file.
