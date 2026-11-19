@@ -31,6 +31,7 @@ interface AnyNode {
   left?: AnyNode | null;
   right?: AnyNode | null;
   neighbors?: AnyNode[];
+  random?: AnyNode | null;
 }
 
 interface CaseOutcome {
@@ -217,6 +218,55 @@ const findInTree = (root: AnyNode | null, val: number): AnyNode => {
 class Converter {
   inputGraphNodes = new Set<AnyNode>();
 
+  inputRandomNodes = new Set<AnyNode>();
+
+  /** `[[value, index of the random target or null], ...]` as a list of RandomNode. */
+  randomListIn(pairs: [number, number | null][]): AnyNode | null {
+    const nodes: AnyNode[] = pairs.map(([val]) => new ds.RandomNode(val));
+
+    for (const [i, [, target]] of pairs.entries()) {
+      const node = nodes[i];
+
+      if (node) {
+        node.next = nodes[i + 1] ?? null;
+        node.random = target === null ? null : (nodes[target] ?? null);
+        this.inputRandomNodes.add(node);
+      }
+    }
+
+    return nodes[0] ?? null;
+  }
+
+  randomListOut(head: AnyNode | null): [number, number | null][] {
+    const nodes: AnyNode[] = [];
+
+    for (let node = head; node; node = node.next ?? null) {
+      if (this.inputRandomNodes.has(node)) {
+        throw new Error("returned an original node, not a copy");
+      }
+
+      nodes.push(node);
+
+      if (nodes.length > 100_000) {
+        throw new Error("the returned list never ends (does it have a cycle?)");
+      }
+    }
+
+    return nodes.map((node) => {
+      if (!node.random) {
+        return [node.val, null];
+      }
+
+      const at = nodes.indexOf(node.random);
+
+      if (at === -1) {
+        throw new Error("a random pointer leaves the copied list");
+      }
+
+      return [node.val, at];
+    });
+  }
+
   graphIn(adjacency: number[][]): AnyNode | null {
     if (!adjacency.length) {
       return null;
@@ -311,6 +361,10 @@ class Converter {
         return this.graphIn(value);
       }
 
+      case "RandomList": {
+        return this.randomListIn(value);
+      }
+
       default: {
         return structuredClone(value);
       }
@@ -334,6 +388,10 @@ class Converter {
 
       case "GraphNode": {
         return this.graphOut(value);
+      }
+
+      case "RandomList": {
+        return this.randomListOut(value);
       }
 
       case "void": {

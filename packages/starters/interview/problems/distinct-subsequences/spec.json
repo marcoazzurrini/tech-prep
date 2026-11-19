@@ -1,0 +1,22 @@
+{
+  "function": {
+    "python": "num_distinct",
+    "typescript": "numDistinct"
+  },
+  "stubs": {
+    "python": "def num_distinct(s: str, t: str) -> int:\n    pass\n",
+    "typescript": "export function numDistinct(s: string, t: string): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["rabbbit","rabbit"],"expected":3},
+    {"args":["babgbag","bag"],"expected":5},
+    {"args":["a","b"],"expected":0},
+    {"args":["a","a"],"expected":1},
+    {"args":["b","ab"],"expected":0},
+    {"args":["xyz","xyz"],"expected":1},
+    {"args":["aaaaa","aa"],"expected":10},
+    {"args":["abcabc","abc"],"expected":4},
+    {"args":["aabbcc","abc"],"expected":8},
+    {"args":["aaaaaaaaaaaaaaaaaaaa","aaaaaaaaaa"],"expected":184756}
+  ]
+}

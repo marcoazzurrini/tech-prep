@@ -1,0 +1,28 @@
+{
+  "title": "Floor in a BST",
+  "function": {
+    "python": "bst_floor",
+    "typescript": "bstFloor"
+  },
+  "params": [
+    "TreeNode",
+    "json"
+  ],
+  "compare": "exact",
+  "stubs": {
+    "python": "from ds import TreeNode\n\n\ndef bst_floor(root: TreeNode | None, target: int) -> int | None:\n    pass\n",
+    "typescript": "import { TreeNode } from \"./ds.ts\";\n\nexport function bstFloor(root: TreeNode | null, target: number): number | null {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[5,3,8],4],"expected":3},
+    {"args":[[5,3,8],5],"expected":5},
+    {"args":[[5,3,8],2],"expected":null},
+    {"args":[[5,3,8],100],"expected":8},
+    {"args":[[],1],"expected":null},
+    {"args":[[10,5,15,2,7,12,20],11],"expected":10},
+    {"args":[[10,5,15,2,7,12,20],13],"expected":12},
+    {"args":[[10,5,15,2,7,12,20],6],"expected":5},
+    {"args":[[10,5,15,2,7,12,20],1],"expected":null},
+    {"args":[[1,null,2,null,3],3],"expected":3}
+  ]
+}

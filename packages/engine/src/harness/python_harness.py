@@ -8,6 +8,7 @@ The request carries the problem's call shape:
 The learner's own print() output is captured per case.
 """
 
+import __future__
 import contextlib
 import copy
 import importlib.util
@@ -32,6 +33,35 @@ class Converter:
     def __init__(self, ds):
         self.ds = ds
         self.input_graph_nodes = set()
+        self.input_random_nodes = set()
+
+    def random_list_in(self, pairs):
+        nodes = [self.ds.RandomNode(val) for val, _ in pairs]
+        for i, (_, target) in enumerate(pairs):
+            nodes[i].next = nodes[i + 1] if i + 1 < len(nodes) else None
+            nodes[i].random = None if target is None else nodes[target]
+        self.input_random_nodes |= {id(n) for n in nodes}
+        return nodes[0] if nodes else None
+
+    def random_list_out(self, head):
+        nodes = []
+        while head is not None:
+            if id(head) in self.input_random_nodes:
+                raise ValueError("returned an original node, not a copy")
+            nodes.append(head)
+            head = head.next
+            if len(nodes) > 100_000:
+                raise ValueError("the returned list never ends (does it have a cycle?)")
+        index = {id(n): i for i, n in enumerate(nodes)}
+        out = []
+        for node in nodes:
+            if node.random is None:
+                out.append([node.val, None])
+            elif id(node.random) not in index:
+                raise ValueError("a random pointer leaves the copied list")
+            else:
+                out.append([node.val, index[id(node.random)]])
+        return out
 
     def list_in(self, values):
         dummy = self.ds.ListNode()
@@ -143,6 +173,8 @@ class Converter:
             return self.find_in_tree(converted[0], value)
         if kind == "GraphNode":
             return self.graph_in(value)
+        if kind == "RandomList":
+            return self.random_list_in(value)
         return copy.deepcopy(value)
 
     def value_out(self, kind, value):
@@ -154,6 +186,8 @@ class Converter:
             return None if value is None else value.val
         if kind == "GraphNode":
             return self.graph_out(value)
+        if kind == "RandomList":
+            return self.random_list_out(value)
         if kind == "void":
             return None
         return value
@@ -165,8 +199,12 @@ def load(request):
 
     spec = importlib.util.spec_from_file_location("solution", request["file"])
     module = importlib.util.module_from_spec(spec)
+    # Compile with postponed annotations, so `int | None` in a signature also loads on an
+    # older Python that cannot evaluate it.
+    with open(request["file"], encoding="utf-8") as f:
+        code = compile(f.read(), request["file"], "exec", flags=__future__.annotations.compiler_flag, dont_inherit=True)
     with contextlib.redirect_stdout(io.StringIO()):
-        spec.loader.exec_module(module)
+        exec(code, module.__dict__)
     return ds, module
 
 

@@ -1,0 +1,23 @@
+{
+  "function": {
+    "python": "multiply",
+    "typescript": "multiply"
+  },
+  "stubs": {
+    "python": "def multiply(num1: str, num2: str) -> str:\n    pass\n",
+    "typescript": "export function multiply(num1: string, num2: string): string {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["2","3"],"expected":"6"},
+    {"args":["123","456"],"expected":"56088"},
+    {"args":["0","52"],"expected":"0"},
+    {"args":["0","0"],"expected":"0"},
+    {"args":["9","9"],"expected":"81"},
+    {"args":["99","99"],"expected":"9801"},
+    {"args":["100","100"],"expected":"10000"},
+    {"args":["1","987654321"],"expected":"987654321"},
+    {"args":["123456789","987654321"],"expected":"121932631112635269"},
+    {"args":["999999999999","999999999999"],"expected":"999999999998000000000001"},
+    {"args":["31415926535897932384626433","27182818284590452353602874"],"expected":"853973422267356706546355041900841480479296125168442"}
+  ]
+}

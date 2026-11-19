@@ -1,0 +1,22 @@
+{
+  "title": "Tasks You Can Finish",
+  "function": {
+    "python": "count_doable_tasks",
+    "typescript": "countDoableTasks"
+  },
+  "stubs": {
+    "python": "def count_doable_tasks(n: int, deps: list[list[int]]) -> int:\n    pass\n",
+    "typescript": "export function countDoableTasks(n: number, deps: number[][]): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[3,[[0,1],[1,2]]],"expected":3},
+    {"args":[3,[[0,1],[1,0]]],"expected":1},
+    {"args":[4,[[0,1],[1,2],[2,1],[2,3]]],"expected":1},
+    {"args":[1,[]],"expected":1},
+    {"args":[4,[]],"expected":4},
+    {"args":[3,[[0,1],[1,2],[2,0]]],"expected":0},
+    {"args":[5,[[0,2],[1,2],[2,3],[2,4]]],"expected":5},
+    {"args":[6,[[0,1],[1,2],[3,4],[4,3],[4,5]]],"expected":3},
+    {"args":[5,[[0,1],[0,2],[1,3],[2,3],[3,4]]],"expected":5}
+  ]
+}

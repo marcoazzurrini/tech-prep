@@ -5,7 +5,7 @@
   },
   "stubs": {
     "python": "def min_meeting_rooms(intervals: list[list[int]]) -> int:\n    pass\n",
-    "typescript": "export function minMeetingRooms(intervals: number[][]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    "typescript": "import { Heap } from \"./ds.ts\";\n\nexport function minMeetingRooms(intervals: number[][]): number {\n  throw new Error(\"not implemented\");\n}\n"
   },
   "tests": [
     {"args":[[[0,30],[5,10],[15,20]]],"expected":2},

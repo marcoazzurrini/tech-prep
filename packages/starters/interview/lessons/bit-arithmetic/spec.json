@@ -1,0 +1,23 @@
+{
+  "title": "Subtract without Minus",
+  "function": {
+    "python": "subtract_without_minus",
+    "typescript": "subtractWithoutMinus"
+  },
+  "stubs": {
+    "python": "def subtract_without_minus(a: int, b: int) -> int:\n    pass\n",
+    "typescript": "export function subtractWithoutMinus(a: number, b: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[5,3],"expected":2},
+    {"args":[8,1],"expected":7},
+    {"args":[6,0],"expected":6},
+    {"args":[0,0],"expected":0},
+    {"args":[7,7],"expected":0},
+    {"args":[16,15],"expected":1},
+    {"args":[1000,1],"expected":999},
+    {"args":[1000000000,999999999],"expected":1},
+    {"args":[1000000000,1],"expected":999999999},
+    {"args":[123456,6543],"expected":116913}
+  ]
+}

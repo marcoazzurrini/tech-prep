@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { copyFileSync, existsSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { EXTENSIONS, functionName } from "./content.ts";
@@ -43,9 +43,12 @@ const command = (language: Language): [string, string[]] => {
 /** Solutions import ListNode/TreeNode/GraphNode from a `ds` module next to them. */
 export const ensureDataStructures = (dir: string, language: Language): void => {
   const name = `ds.${EXTENSIONS[language]}`;
+  const source = readFileSync(path.join(HARNESS_DIR, name), "utf-8");
+  const target = path.join(dir, name);
 
-  if (!existsSync(path.join(dir, name))) {
-    copyFileSync(path.join(HARNESS_DIR, name), path.join(dir, name));
+  // Rewrite an older copy, so a workspace made before a structure was added still gets it.
+  if (!existsSync(target) || readFileSync(target, "utf-8") !== source) {
+    writeFileSync(target, source);
   }
 };
 
