@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
 
 import { CodeBlock } from "./code-block";
 import { inline } from "./problem-statement";
@@ -85,37 +84,11 @@ const Blocks = ({ text }: { text: string }) => (
   </>
 );
 
-/** One part of a lesson. The part the learner has just reached scrolls into view. */
-const Part = ({
-  current,
-  children,
-}: {
-  current: boolean;
-  children: ReactNode;
-}) => {
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (current) {
-      ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [current]);
-
-  return (
-    <section className="tp-lesson-text__part" ref={ref}>
-      {children}
-    </section>
-  );
-};
-
 interface LessonTextProps {
   /** The lesson's name, shown as the heading. */
   title: string;
-  /**
-   * The lesson.md body. A list shows a lesson in parts: the last one is the part the learner
-   * is on, and the page scrolls to it when it appears.
-   */
-  text: string | string[];
+  /** The lesson.md body, or one part of it. */
+  text: string;
   /** A chip above the title, such as "Lesson". */
   label?: ReactNode;
   /** What follows the lesson in the same column, such as the task to do. */
@@ -132,11 +105,7 @@ export const LessonText = ({
   <article className="tp-lesson-text">
     {label && <div className="tp-lesson-text__label">{label}</div>}
     <h1>{title}</h1>
-    {[text].flat().map((part, i, all) => (
-      <Part current={all.length > 1 && i === all.length - 1} key={i}>
-        <Blocks text={part} />
-      </Part>
-    ))}
+    <Blocks text={text} />
     {children}
   </article>
 );

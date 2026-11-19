@@ -70,6 +70,8 @@ export { Progress } from "./components/progress";
 
 export { Rail, RailDivider, RailItem, RailSpacer } from "./components/rail";
 
-export { Steps, TopBar } from "./components/top-bar";
+export { Steps, TopBar, Trail } from "./components/top-bar";
+
+export type { TrailItem } from "./components/top-bar";
 
 export { Activity, Composer, Message, TutorPane } from "./components/tutor";

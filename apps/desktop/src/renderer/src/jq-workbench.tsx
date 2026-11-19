@@ -176,7 +176,7 @@ interface JqWorkbenchProps {
    * The task above the filter, with the input beside the outputs. Left out when the
    * statement and the input are shown elsewhere on the screen.
    */
-  strip?: { label: string; tasks?: { done: number; total: number } };
+  strip?: { label: string };
   /** Shown on the left of the footer while the learner works. */
   note?: string;
   onAskTutor: () => void;
@@ -353,11 +353,7 @@ export const JqWorkbench = ({
   return (
     <>
       {strip && (
-        <TaskStrip
-          label={strip.label}
-          tasks={strip.tasks}
-          title={problem.title}
-        >
+        <TaskStrip label={strip.label} title={problem.title}>
           <ProblemStatement text={problem.statement ?? ""} />
         </TaskStrip>
       )}

@@ -242,6 +242,8 @@ const lesson = (params: Params) => {
   return {
     attempt: mine && attemptView(mine),
     guided: problemView(guided.current),
+    // Every guided task in order, so the app can show one the learner already solved.
+    guided_slugs: guidedSlugs(id),
     guided_tasks: guided.progress,
     id,
     key_idea: c.key_idea,

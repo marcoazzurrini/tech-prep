@@ -7,42 +7,17 @@ import { highlight } from "../lib/highlight";
 import "./jq.css";
 
 interface TaskStripProps {
-  /** Such as "Task 1 of 3 · with the lesson". */
+  /** Such as "Try it". */
   label: string;
   title: string;
-  /** How many of the step's tasks are done, and how many there are. */
-  tasks?: { done: number; total: number };
   /** The statement. */
   children?: ReactNode;
 }
 
-/** The task above a jq filter: which task it is, how many are left, and what to do. */
-export const TaskStrip = ({
-  label,
-  title,
-  tasks,
-  children,
-}: TaskStripProps) => (
+/** The task above a jq command: what to do. The top bar says which part of the lesson it is. */
+export const TaskStrip = ({ label, title, children }: TaskStripProps) => (
   <section className="tp-task-strip">
-    <div className="tp-task-strip__head">
-      <p className="tp-task-strip__label">{label}</p>
-      {tasks && tasks.total > 1 && (
-        <span
-          className="tp-task-strip__dots"
-          aria-label={`${tasks.done} of ${tasks.total} done`}
-        >
-          {Array.from({ length: tasks.total }, (_, i) => (
-            <i
-              className={cx(
-                i < tasks.done && "tp-task-strip__dot--done",
-                i === tasks.done && "tp-task-strip__dot--now"
-              )}
-              key={i}
-            />
-          ))}
-        </span>
-      )}
-    </div>
+    <p className="tp-task-strip__label">{label}</p>
     <h2>{title}</h2>
     {children}
   </section>
