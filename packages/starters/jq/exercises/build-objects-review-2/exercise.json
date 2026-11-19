@@ -1,0 +1,65 @@
+{
+  "title": "Pods and their phase",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.items | .[] | {name: .metadata.name, phase: .status.phase}]' data.json",
+    "tests": [
+      {
+        "input": {
+          "kind": "PodList",
+          "items": [
+            {
+              "metadata": {
+                "name": "api-7f9c",
+                "namespace": "prod"
+              },
+              "status": {
+                "phase": "Running",
+                "restarts": 0
+              }
+            },
+            {
+              "metadata": {
+                "name": "worker-2b1d",
+                "namespace": "prod"
+              },
+              "status": {
+                "phase": "Pending",
+                "restarts": 3
+              }
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"api-7f9c\",\n    \"phase\": \"Running\"\n  },\n  {\n    \"name\": \"worker-2b1d\",\n    \"phase\": \"Pending\"\n  }\n]"
+      },
+      {
+        "input": {
+          "kind": "PodList",
+          "items": [
+            {
+              "metadata": {
+                "name": "cron-55aa",
+                "namespace": "jobs"
+              },
+              "status": {
+                "phase": "Succeeded",
+                "restarts": 0
+              }
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"cron-55aa\",\n    \"phase\": \"Succeeded\"\n  }\n]"
+      },
+      {
+        "input": {
+          "kind": "PodList",
+          "items": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

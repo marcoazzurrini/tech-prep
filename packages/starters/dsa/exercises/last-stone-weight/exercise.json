@@ -1,0 +1,26 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "last_stone_weight",
+      "typescript": "lastStoneWeight"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "import heapq\n\n\ndef last_stone_weight(stones: list[int]) -> int:\n    pass\n",
+      "typescript": "import { Heap } from \"./ds.ts\";\n\nexport function lastStoneWeight(stones: number[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[2,7,4,1,8,1]],"expected":1},
+      {"args":[[1]],"expected":1},
+      {"args":[[2,2]],"expected":0},
+      {"args":[[3,7,2]],"expected":2},
+      {"args":[[10,4,2,10]],"expected":2},
+      {"args":[[1,1,1]],"expected":1},
+      {"args":[[9,3,2,10]],"expected":0},
+      {"args":[[1000,1]],"expected":999},
+      {"args":[[31,26,33,21,40]],"expected":9},
+      {"args":[[5,5,5,5,6,6,3,9,1,12]],"expected":1}
+    ]
+  }
+}

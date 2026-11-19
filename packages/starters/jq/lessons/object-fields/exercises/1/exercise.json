@@ -1,0 +1,36 @@
+{
+  "title": "Port of a server",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.port' data.json",
+    "tests": [
+      {
+        "input": {
+          "host": "web-1",
+          "port": 443,
+          "secure": true
+        },
+        "expected": "443"
+      },
+      {
+        "input": {
+          "host": "db-1",
+          "port": 5432,
+          "secure": false
+        },
+        "expected": "5432"
+      },
+      {
+        "input": {
+          "host": "cache-1",
+          "port": 6379,
+          "secure": false
+        },
+        "expected": "6379"
+      }
+    ]
+  }
+}

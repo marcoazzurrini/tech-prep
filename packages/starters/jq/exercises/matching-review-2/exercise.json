@@ -1,0 +1,57 @@
+{
+  "title": "Internal servers",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.servers | map(select(.host | endswith(\".internal\")) | .name)' data.json",
+    "tests": [
+      {
+        "input": {
+          "servers": [
+            {
+              "name": "db-1",
+              "host": "db-1.corp.internal"
+            },
+            {
+              "name": "web-1",
+              "host": "web-1.example.com"
+            },
+            {
+              "name": "cache-1",
+              "host": "cache-1.corp.internal"
+            }
+          ]
+        },
+        "expected": "[\n  \"db-1\",\n  \"cache-1\"\n]"
+      },
+      {
+        "input": {
+          "servers": [
+            {
+              "name": "gateway",
+              "host": "internal.example.com"
+            },
+            {
+              "name": "queue-2",
+              "host": "queue-2.corp.internal"
+            }
+          ]
+        },
+        "expected": "[\n  \"queue-2\"\n]"
+      },
+      {
+        "input": {
+          "servers": [
+            {
+              "name": "cdn",
+              "host": "cdn.example.com"
+            }
+          ]
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

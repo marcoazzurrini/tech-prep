@@ -1,0 +1,57 @@
+{
+  "title": "Host and port",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[] | .host, .port' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "host": "web-1",
+            "port": 443,
+            "region": "eu"
+          },
+          {
+            "host": "db-1",
+            "port": 5432,
+            "region": "eu"
+          }
+        ],
+        "expected": "\"web-1\"\n443\n\"db-1\"\n5432"
+      },
+      {
+        "input": [
+          {
+            "host": "cache-1",
+            "port": 6379,
+            "region": "us"
+          }
+        ],
+        "expected": "\"cache-1\"\n6379"
+      },
+      {
+        "input": [
+          {
+            "host": "mq-1",
+            "port": 5672,
+            "region": "ap"
+          },
+          {
+            "host": "web-2",
+            "port": 8443,
+            "region": "us"
+          },
+          {
+            "host": "web-3",
+            "port": 8443,
+            "region": "us"
+          }
+        ],
+        "expected": "\"mq-1\"\n5672\n\"web-2\"\n8443\n\"web-3\"\n8443"
+      }
+    ]
+  }
+}

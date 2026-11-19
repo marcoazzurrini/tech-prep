@@ -1,0 +1,43 @@
+{
+  "title": "Kind of the price",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.price | .' data.json",
+    "reference": "jq '.price | type' data.json",
+    "tests": [
+      {
+        "input": {
+          "sku": "A-1",
+          "price": "12.50"
+        },
+        "expected": "\"string\""
+      },
+      {
+        "input": {
+          "sku": "B-2",
+          "price": 12.5
+        },
+        "expected": "\"number\""
+      },
+      {
+        "input": {
+          "sku": "C-3"
+        },
+        "expected": "\"null\""
+      },
+      {
+        "input": {
+          "sku": "D-4",
+          "price": {
+            "amount": 12.5,
+            "currency": "EUR"
+          }
+        },
+        "expected": "\"object\""
+      }
+    ]
+  }
+}

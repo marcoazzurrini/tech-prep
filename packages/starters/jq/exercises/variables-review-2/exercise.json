@@ -1,0 +1,79 @@
+{
+  "title": "Lessons by course",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map(.course as $course | .lessons | map({course: $course, title}))' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "course": "jq",
+            "lessons": [
+              {
+                "title": "Pipes",
+                "minutes": 8
+              },
+              {
+                "title": "Paths",
+                "minutes": 6
+              }
+            ]
+          },
+          {
+            "course": "git",
+            "lessons": [
+              {
+                "title": "Commits",
+                "minutes": 10
+              }
+            ]
+          }
+        ],
+        "expected": "[\n  [\n    {\n      \"course\": \"jq\",\n      \"title\": \"Pipes\"\n    },\n    {\n      \"course\": \"jq\",\n      \"title\": \"Paths\"\n    }\n  ],\n  [\n    {\n      \"course\": \"git\",\n      \"title\": \"Commits\"\n    }\n  ]\n]"
+      },
+      {
+        "input": [
+          {
+            "course": "sql",
+            "lessons": [
+              {
+                "title": "Select",
+                "minutes": 12
+              }
+            ]
+          },
+          {
+            "course": "regex",
+            "lessons": []
+          }
+        ],
+        "expected": "[\n  [\n    {\n      \"course\": \"sql\",\n      \"title\": \"Select\"\n    }\n  ],\n  []\n]"
+      },
+      {
+        "input": [
+          {
+            "course": "bash",
+            "lessons": [
+              {
+                "title": "Loops",
+                "minutes": 9
+              },
+              {
+                "title": "Tests",
+                "minutes": 7
+              },
+              {
+                "title": "Traps",
+                "minutes": 5
+              }
+            ]
+          }
+        ],
+        "expected": "[\n  [\n    {\n      \"course\": \"bash\",\n      \"title\": \"Loops\"\n    },\n    {\n      \"course\": \"bash\",\n      \"title\": \"Tests\"\n    },\n    {\n      \"course\": \"bash\",\n      \"title\": \"Traps\"\n    }\n  ]\n]"
+      }
+    ]
+  }
+}

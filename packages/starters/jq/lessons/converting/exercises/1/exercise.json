@@ -1,0 +1,34 @@
+{
+  "title": "Port as a number",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.port | .' data.json",
+    "reference": "jq '.port | tonumber' data.json",
+    "tests": [
+      {
+        "input": {
+          "host": "db-1",
+          "port": "5432"
+        },
+        "expected": "5432"
+      },
+      {
+        "input": {
+          "host": "cache-1",
+          "port": "6379"
+        },
+        "expected": "6379"
+      },
+      {
+        "input": {
+          "host": "web-1",
+          "port": "443"
+        },
+        "expected": "443"
+      }
+    ]
+  }
+}

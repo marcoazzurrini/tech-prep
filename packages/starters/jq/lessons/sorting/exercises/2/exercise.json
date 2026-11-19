@@ -1,0 +1,64 @@
+{
+  "title": "Packages by size",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'sort_by(size)' data.json",
+    "reference": "jq 'sort_by(.size)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "lodash",
+            "size": 71
+          },
+          {
+            "name": "left-pad",
+            "size": 4
+          },
+          {
+            "name": "react",
+            "size": 32
+          }
+        ],
+        "expected": "[\n  {\n    \"name\": \"left-pad\",\n    \"size\": 4\n  },\n  {\n    \"name\": \"react\",\n    \"size\": 32\n  },\n  {\n    \"name\": \"lodash\",\n    \"size\": 71\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "zod",
+            "size": 57
+          },
+          {
+            "name": "ms",
+            "size": 3
+          }
+        ],
+        "expected": "[\n  {\n    \"name\": \"ms\",\n    \"size\": 3\n  },\n  {\n    \"name\": \"zod\",\n    \"size\": 57\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "chalk",
+            "size": 12
+          },
+          {
+            "name": "debug",
+            "size": 14
+          },
+          {
+            "name": "uuid",
+            "size": 9
+          },
+          {
+            "name": "yargs",
+            "size": 28
+          }
+        ],
+        "expected": "[\n  {\n    \"name\": \"uuid\",\n    \"size\": 9\n  },\n  {\n    \"name\": \"chalk\",\n    \"size\": 12\n  },\n  {\n    \"name\": \"debug\",\n    \"size\": 14\n  },\n  {\n    \"name\": \"yargs\",\n    \"size\": 28\n  }\n]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "A string",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.host' data.json",
+      "file": "data.json",
+      "input": {
+        "host": "web-1",
+        "port": 443,
+        "secure": true,
+        "owner": null
+      }
+    },
+    "expected": "\"web-1\""
+  }
+}

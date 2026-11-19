@@ -1,0 +1,33 @@
+{
+  "title": "Length of a name",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.name | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "Ada Lovelace",
+          "id": 1
+        },
+        "expected": "12"
+      },
+      {
+        "input": {
+          "name": "Bo",
+          "id": 2
+        },
+        "expected": "2"
+      },
+      {
+        "input": {
+          "name": "Cy Young",
+          "id": 3
+        },
+        "expected": "8"
+      }
+    ]
+  }
+}

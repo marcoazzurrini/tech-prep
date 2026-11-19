@@ -1,0 +1,96 @@
+{
+  "title": "Output of the last run",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -c -r '.runs[-1].steps[] | .output' data.json",
+    "tests": [
+      {
+        "input": {
+          "runs": [
+            {
+              "id": 1,
+              "steps": [
+                {
+                  "name": "lint",
+                  "output": "failed"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "steps": [
+                {
+                  "name": "lint",
+                  "output": "clean"
+                },
+                {
+                  "name": "test",
+                  "output": {
+                    "passed": 40,
+                    "failed": 2
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "expected": "clean\n{\"passed\":40,\"failed\":2}"
+      },
+      {
+        "input": {
+          "runs": [
+            {
+              "id": 9,
+              "steps": [
+                {
+                  "name": "build",
+                  "output": {
+                    "files": 12,
+                    "bytes": 48200
+                  }
+                },
+                {
+                  "name": "deploy",
+                  "output": "skipped"
+                }
+              ]
+            }
+          ]
+        },
+        "expected": "{\"files\":12,\"bytes\":48200}\nskipped"
+      },
+      {
+        "input": {
+          "runs": [
+            {
+              "id": 3,
+              "steps": [
+                {
+                  "name": "lint",
+                  "output": "clean"
+                }
+              ]
+            },
+            {
+              "id": 4,
+              "steps": [
+                {
+                  "name": "test",
+                  "output": "timeout"
+                }
+              ]
+            },
+            {
+              "id": 5,
+              "steps": []
+            }
+          ]
+        },
+        "expected": ""
+      }
+    ]
+  }
+}

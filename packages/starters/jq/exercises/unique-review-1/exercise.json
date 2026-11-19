@@ -1,0 +1,75 @@
+{
+  "title": "Clean the member list",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'unique_by(.email)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "email": "kim@example.com",
+            "name": "Kim"
+          },
+          {
+            "email": "ana@example.com",
+            "name": "Ana"
+          },
+          {
+            "email": "kim@example.com",
+            "name": "Kim"
+          },
+          {
+            "email": "lee@example.com",
+            "name": "Lee"
+          }
+        ],
+        "expected": "[\n  {\n    \"email\": \"ana@example.com\",\n    \"name\": \"Ana\"\n  },\n  {\n    \"email\": \"kim@example.com\",\n    \"name\": \"Kim\"\n  },\n  {\n    \"email\": \"lee@example.com\",\n    \"name\": \"Lee\"\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "email": "sam@example.com",
+            "name": "Sam"
+          },
+          {
+            "email": "sam@example.com",
+            "name": "Sam"
+          },
+          {
+            "email": "sam@example.com",
+            "name": "Sam"
+          }
+        ],
+        "expected": "[\n  {\n    \"email\": \"sam@example.com\",\n    \"name\": \"Sam\"\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "email": "uma@example.com",
+            "name": "Uma"
+          },
+          {
+            "email": "pat@example.com",
+            "name": "Pat"
+          },
+          {
+            "email": "joy@example.com",
+            "name": "Joy"
+          },
+          {
+            "email": "pat@example.com",
+            "name": "Pat"
+          },
+          {
+            "email": "joy@example.com",
+            "name": "Joy"
+          }
+        ],
+        "expected": "[\n  {\n    \"email\": \"joy@example.com\",\n    \"name\": \"Joy\"\n  },\n  {\n    \"email\": \"pat@example.com\",\n    \"name\": \"Pat\"\n  },\n  {\n    \"email\": \"uma@example.com\",\n    \"name\": \"Uma\"\n  }\n]"
+      }
+    ]
+  }
+}

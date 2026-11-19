@@ -1,0 +1,26 @@
+{
+  "title": "Bracket Pairs",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "bracket_pairs",
+      "typescript": "bracketPairs"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def bracket_pairs(s: str) -> list[list[int]]:\n    pass\n",
+      "typescript": "export function bracketPairs(s: string): number[][] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":["(a)(b)"],"expected":[[0,2],[3,5]]},
+      {"args":["((a))"],"expected":[[1,3],[0,4]]},
+      {"args":["abc"],"expected":[]},
+      {"args":[""],"expected":[]},
+      {"args":["()"],"expected":[[0,1]]},
+      {"args":["(()())"],"expected":[[1,2],[3,4],[0,5]]},
+      {"args":["a(b(c)d)e"],"expected":[[3,5],[1,7]]},
+      {"args":["()()()"],"expected":[[0,1],[2,3],[4,5]]},
+      {"args":["(((())))"],"expected":[[3,4],[2,5],[1,6],[0,7]]}
+    ]
+  }
+}

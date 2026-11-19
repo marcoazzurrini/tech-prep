@@ -1,0 +1,63 @@
+{
+  "title": "Servers with tabs",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r '.[] | [.host, .port, .region] | @tsv' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "host": "web-1",
+            "port": 443,
+            "region": "eu",
+            "up": true
+          },
+          {
+            "host": "db-1",
+            "port": 5432,
+            "region": "eu",
+            "up": false
+          }
+        ],
+        "expected": "web-1\t443\teu\ndb-1\t5432\teu"
+      },
+      {
+        "input": [
+          {
+            "host": "cache-1",
+            "port": 6379,
+            "region": "us",
+            "up": true
+          }
+        ],
+        "expected": "cache-1\t6379\tus"
+      },
+      {
+        "input": [
+          {
+            "host": "mq-1",
+            "port": 5672,
+            "region": "ap",
+            "up": true
+          },
+          {
+            "host": "web-2",
+            "port": 8443,
+            "region": "us",
+            "up": true
+          },
+          {
+            "host": "web-3",
+            "port": 8443,
+            "region": "us",
+            "up": false
+          }
+        ],
+        "expected": "mq-1\t5672\tap\nweb-2\t8443\tus\nweb-3\t8443\tus"
+      }
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "title": "Largest order",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'max_by(.total)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 301,
+            "customer": "ada",
+            "total": 45
+          },
+          {
+            "id": 302,
+            "customer": "bo",
+            "total": 210
+          },
+          {
+            "id": 303,
+            "customer": "cy",
+            "total": 99
+          }
+        ],
+        "expected": "{\n  \"id\": 302,\n  \"customer\": \"bo\",\n  \"total\": 210\n}"
+      },
+      {
+        "input": [
+          {
+            "id": 410,
+            "customer": "dee",
+            "total": 12
+          },
+          {
+            "id": 411,
+            "customer": "eli",
+            "total": 8
+          }
+        ],
+        "expected": "{\n  \"id\": 410,\n  \"customer\": \"dee\",\n  \"total\": 12\n}"
+      },
+      {
+        "input": [
+          {
+            "id": 520,
+            "customer": "fay",
+            "total": 300
+          },
+          {
+            "id": 521,
+            "customer": "gus",
+            "total": 150
+          },
+          {
+            "id": 522,
+            "customer": "hal",
+            "total": 75
+          },
+          {
+            "id": 523,
+            "customer": "ivy",
+            "total": 320
+          }
+        ],
+        "expected": "{\n  \"id\": 523,\n  \"customer\": \"ivy\",\n  \"total\": 320\n}"
+      }
+    ]
+  }
+}

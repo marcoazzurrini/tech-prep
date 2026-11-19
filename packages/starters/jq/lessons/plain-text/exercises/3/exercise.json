@@ -1,0 +1,51 @@
+{
+  "title": "Links to the repos",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r '.[] | .url' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "atlas",
+            "url": "https://example.com/mira/atlas"
+          },
+          {
+            "name": "notes",
+            "url": "https://example.com/tomas/notes"
+          }
+        ],
+        "expected": "https://example.com/mira/atlas\nhttps://example.com/tomas/notes"
+      },
+      {
+        "input": [
+          {
+            "name": "router",
+            "url": "https://example.com/core/router"
+          }
+        ],
+        "expected": "https://example.com/core/router"
+      },
+      {
+        "input": [
+          {
+            "name": "docs",
+            "url": "https://example.com/core/docs"
+          },
+          {
+            "name": "cli",
+            "url": "https://example.com/core/cli"
+          },
+          {
+            "name": "site",
+            "url": "https://example.com/core/site"
+          }
+        ],
+        "expected": "https://example.com/core/docs\nhttps://example.com/core/cli\nhttps://example.com/core/site"
+      }
+    ]
+  }
+}

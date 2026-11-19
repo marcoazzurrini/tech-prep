@@ -1,0 +1,57 @@
+{
+  "title": "Objects in the document",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.. | select(type == \"object\")] | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "team": "core",
+          "lead": {
+            "name": "Ada"
+          },
+          "members": [
+            {
+              "name": "Bo"
+            },
+            {
+              "name": "Cy"
+            }
+          ]
+        },
+        "expected": "4"
+      },
+      {
+        "input": {
+          "team": "solo"
+        },
+        "expected": "1"
+      },
+      {
+        "input": [
+          {
+            "a": {
+              "b": {
+                "c": {}
+              }
+            }
+          },
+          5,
+          "x"
+        ],
+        "expected": "4"
+      },
+      {
+        "input": [
+          1,
+          2,
+          3
+        ],
+        "expected": "0"
+      }
+    ]
+  }
+}

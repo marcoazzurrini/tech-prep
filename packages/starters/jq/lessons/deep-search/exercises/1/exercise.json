@@ -1,0 +1,41 @@
+{
+  "title": "Count every value",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '[.] | length' data.json",
+    "reference": "jq '[..] | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "host": "web-1",
+          "ports": [
+            80,
+            443
+          ]
+        },
+        "expected": "5"
+      },
+      {
+        "input": {
+          "host": "db-1"
+        },
+        "expected": "2"
+      },
+      {
+        "input": {
+          "host": "cache-1",
+          "ports": [
+            6379
+          ],
+          "owner": {
+            "team": "infra"
+          }
+        },
+        "expected": "6"
+      }
+    ]
+  }
+}

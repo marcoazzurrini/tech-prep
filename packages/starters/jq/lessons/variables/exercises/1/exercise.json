@@ -1,0 +1,61 @@
+{
+  "title": "Region of each server",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.region as $region | .servers[] | {host, region: .region}' data.json",
+    "reference": "jq '.region as $region | .servers[] | {host, region: $region}' data.json",
+    "tests": [
+      {
+        "input": {
+          "region": "eu-west",
+          "servers": [
+            {
+              "host": "web-1",
+              "cpu": 4
+            },
+            {
+              "host": "web-2",
+              "cpu": 8
+            }
+          ]
+        },
+        "expected": "{\n  \"host\": \"web-1\",\n  \"region\": \"eu-west\"\n}\n{\n  \"host\": \"web-2\",\n  \"region\": \"eu-west\"\n}"
+      },
+      {
+        "input": {
+          "region": "us-east",
+          "servers": [
+            {
+              "host": "db-1",
+              "cpu": 16
+            }
+          ]
+        },
+        "expected": "{\n  \"host\": \"db-1\",\n  \"region\": \"us-east\"\n}"
+      },
+      {
+        "input": {
+          "region": "ap-south",
+          "servers": [
+            {
+              "host": "cache-1",
+              "cpu": 2
+            },
+            {
+              "host": "cache-2",
+              "cpu": 2
+            },
+            {
+              "host": "cache-3",
+              "cpu": 2
+            }
+          ]
+        },
+        "expected": "{\n  \"host\": \"cache-1\",\n  \"region\": \"ap-south\"\n}\n{\n  \"host\": \"cache-2\",\n  \"region\": \"ap-south\"\n}\n{\n  \"host\": \"cache-3\",\n  \"region\": \"ap-south\"\n}"
+      }
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "title": "Languages of each team",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map([.repos[] | .langs[]])' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "team": "core",
+            "repos": [
+              {
+                "name": "api",
+                "langs": [
+                  "go",
+                  "sql"
+                ]
+              },
+              {
+                "name": "cli",
+                "langs": [
+                  "go"
+                ]
+              }
+            ]
+          },
+          {
+            "team": "web",
+            "repos": [
+              {
+                "name": "site",
+                "langs": [
+                  "ts",
+                  "css"
+                ]
+              }
+            ]
+          }
+        ],
+        "expected": "[\n  [\n    \"go\",\n    \"sql\",\n    \"go\"\n  ],\n  [\n    \"ts\",\n    \"css\"\n  ]\n]"
+      },
+      {
+        "input": [
+          {
+            "team": "data",
+            "repos": [
+              {
+                "name": "etl",
+                "langs": [
+                  "python"
+                ]
+              },
+              {
+                "name": "dash",
+                "langs": [
+                  "ts",
+                  "sql"
+                ]
+              }
+            ]
+          }
+        ],
+        "expected": "[\n  [\n    \"python\",\n    \"ts\",\n    \"sql\"\n  ]\n]"
+      },
+      {
+        "input": [
+          {
+            "team": "new",
+            "repos": []
+          },
+          {
+            "team": "ops",
+            "repos": [
+              {
+                "name": "infra",
+                "langs": [
+                  "hcl",
+                  "bash"
+                ]
+              },
+              {
+                "name": "docs",
+                "langs": []
+              }
+            ]
+          }
+        ],
+        "expected": "[\n  [],\n  [\n    \"hcl\",\n    \"bash\"\n  ]\n]"
+      }
+    ]
+  }
+}

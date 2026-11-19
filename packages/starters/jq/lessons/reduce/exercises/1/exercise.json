@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq 'reduce .[] as $n (100; . + $n)' data.json",
+      "file": "data.json",
+      "input": [
+        5,
+        20,
+        1
+      ],
+      "show_command": true
+    },
+    "expected": "126"
+  }
+}

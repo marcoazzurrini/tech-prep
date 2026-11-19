@@ -1,0 +1,36 @@
+{
+  "title": "Two newest versions",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[-2:]' data.json",
+    "tests": [
+      {
+        "input": [
+          "v1.0",
+          "v1.1",
+          "v1.2",
+          "v2.0"
+        ],
+        "expected": "[\n  \"v1.2\",\n  \"v2.0\"\n]"
+      },
+      {
+        "input": [
+          "v0.9",
+          "v1.0"
+        ],
+        "expected": "[\n  \"v0.9\",\n  \"v1.0\"\n]"
+      },
+      {
+        "input": [
+          "v3.0",
+          "v3.1",
+          "v3.2"
+        ],
+        "expected": "[\n  \"v3.1\",\n  \"v3.2\"\n]"
+      }
+    ]
+  }
+}

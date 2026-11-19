@@ -1,0 +1,40 @@
+{
+  "title": "Tickets in the sprint",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.tickets | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "sprint": 14,
+          "tickets": [
+            "T-1",
+            "T-2",
+            "T-3",
+            "T-4"
+          ]
+        },
+        "expected": "4"
+      },
+      {
+        "input": {
+          "sprint": 15,
+          "tickets": [
+            "T-5"
+          ]
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "sprint": 16,
+          "tickets": []
+        },
+        "expected": "0"
+      }
+    ]
+  }
+}

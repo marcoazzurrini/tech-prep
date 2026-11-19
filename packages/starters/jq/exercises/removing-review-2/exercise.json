@@ -1,0 +1,38 @@
+{
+  "title": "Publish the article",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'del(.draft_notes) | .version |= . + 1' data.json",
+    "tests": [
+      {
+        "input": {
+          "title": "Why we moved to jq",
+          "author": "ada",
+          "version": 3,
+          "draft_notes": "check the intro"
+        },
+        "expected": "{\n  \"title\": \"Why we moved to jq\",\n  \"author\": \"ada\",\n  \"version\": 4\n}"
+      },
+      {
+        "input": {
+          "title": "Release 2.0",
+          "author": "bo",
+          "version": 1,
+          "draft_notes": ""
+        },
+        "expected": "{\n  \"title\": \"Release 2.0\",\n  \"author\": \"bo\",\n  \"version\": 2\n}"
+      },
+      {
+        "input": {
+          "title": "Team update",
+          "author": "cy",
+          "version": 12
+        },
+        "expected": "{\n  \"title\": \"Team update\",\n  \"author\": \"cy\",\n  \"version\": 13\n}"
+      }
+    ]
+  }
+}

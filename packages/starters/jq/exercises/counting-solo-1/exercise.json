@@ -1,0 +1,64 @@
+{
+  "title": "Open tickets",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.tickets | map(select(.open)) | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "project": "api",
+          "tickets": [
+            {
+              "id": 1,
+              "open": true
+            },
+            {
+              "id": 2,
+              "open": false
+            },
+            {
+              "id": 3,
+              "open": true
+            },
+            {
+              "id": 4,
+              "open": true
+            }
+          ]
+        },
+        "expected": "3"
+      },
+      {
+        "input": {
+          "project": "web",
+          "tickets": [
+            {
+              "id": 9,
+              "open": false
+            }
+          ]
+        },
+        "expected": "0"
+      },
+      {
+        "input": {
+          "project": "docs",
+          "tickets": [
+            {
+              "id": 20,
+              "open": true
+            },
+            {
+              "id": 21,
+              "open": false
+            }
+          ]
+        },
+        "expected": "1"
+      }
+    ]
+  }
+}

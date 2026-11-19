@@ -1,0 +1,57 @@
+{
+  "title": "Tomorrow's temperature",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.weather.tomorrow.temp' data.json",
+    "tests": [
+      {
+        "input": {
+          "weather": {
+            "now": {
+              "temp": 4,
+              "wind": 12
+            },
+            "tomorrow": {
+              "temp": 6,
+              "wind": 9
+            }
+          }
+        },
+        "expected": "6"
+      },
+      {
+        "input": {
+          "weather": {
+            "now": {
+              "temp": 11,
+              "wind": 3
+            },
+            "tomorrow": {
+              "temp": 9,
+              "wind": 20
+            }
+          }
+        },
+        "expected": "9"
+      },
+      {
+        "input": {
+          "weather": {
+            "now": {
+              "temp": -2,
+              "wind": 7
+            },
+            "tomorrow": {
+              "temp": -5,
+              "wind": 7
+            }
+          }
+        },
+        "expected": "-5"
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Name for a file",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.doc | sub(\" \"; \"_\")' data.json",
+    "reference": "jq '.doc | gsub(\" \"; \"_\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "doc": "Q3 sales report",
+          "pages": 12
+        },
+        "expected": "\"Q3_sales_report\""
+      },
+      {
+        "input": {
+          "doc": "team offsite plan v2",
+          "pages": 4
+        },
+        "expected": "\"team_offsite_plan_v2\""
+      },
+      {
+        "input": {
+          "doc": "notes from Monday",
+          "pages": 1
+        },
+        "expected": "\"notes_from_Monday\""
+      }
+    ]
+  }
+}

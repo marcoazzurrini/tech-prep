@@ -1,0 +1,72 @@
+{
+  "title": "Discount on the first line",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.lines[0].discount // 0' data.json",
+    "tests": [
+      {
+        "input": {
+          "order": 311,
+          "lines": [
+            {
+              "sku": "A-1",
+              "price": 40
+            },
+            {
+              "sku": "B-2",
+              "price": 15,
+              "discount": 5
+            }
+          ]
+        },
+        "expected": "0"
+      },
+      {
+        "input": {
+          "order": 312,
+          "lines": [
+            {
+              "sku": "C-3",
+              "price": 90,
+              "discount": 10
+            }
+          ]
+        },
+        "expected": "10"
+      },
+      {
+        "input": {
+          "order": 313,
+          "lines": [
+            {
+              "sku": "D-4",
+              "price": 12,
+              "discount": null
+            }
+          ]
+        },
+        "expected": "0"
+      },
+      {
+        "input": {
+          "order": 314,
+          "lines": [
+            {
+              "sku": "E-5",
+              "price": 60,
+              "discount": 25
+            },
+            {
+              "sku": "F-6",
+              "price": 8
+            }
+          ]
+        },
+        "expected": "25"
+      }
+    ]
+  }
+}

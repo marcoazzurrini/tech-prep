@@ -1,0 +1,45 @@
+{
+  "title": "One more download",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.stats.downloads |= . + 1' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "left-trim",
+          "version": "2.1.0",
+          "stats": {
+            "downloads": 4120,
+            "stars": 87
+          }
+        },
+        "expected": "{\n  \"name\": \"left-trim\",\n  \"version\": \"2.1.0\",\n  \"stats\": {\n    \"downloads\": 4121,\n    \"stars\": 87\n  }\n}"
+      },
+      {
+        "input": {
+          "name": "tiny-log",
+          "version": "0.3.2",
+          "stats": {
+            "downloads": 0,
+            "stars": 2
+          }
+        },
+        "expected": "{\n  \"name\": \"tiny-log\",\n  \"version\": \"0.3.2\",\n  \"stats\": {\n    \"downloads\": 1,\n    \"stars\": 2\n  }\n}"
+      },
+      {
+        "input": {
+          "name": "fastcsv",
+          "version": "1.0.0",
+          "stats": {
+            "downloads": 99,
+            "stars": 10
+          }
+        },
+        "expected": "{\n  \"name\": \"fastcsv\",\n  \"version\": \"1.0.0\",\n  \"stats\": {\n    \"downloads\": 100,\n    \"stars\": 10\n  }\n}"
+      }
+    ]
+  }
+}

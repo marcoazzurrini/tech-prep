@@ -1,0 +1,25 @@
+{
+  "title": "Nearest Taller on the Left",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "nearest_taller_on_left",
+      "typescript": "nearestTallerOnLeft"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def nearest_taller_on_left(heights: list[int]) -> list[int]:\n    pass\n",
+      "typescript": "export function nearestTallerOnLeft(heights: number[]): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[5,3,4,6]],"expected":[-1,0,0,-1]},
+      {"args":[[3,2,1]],"expected":[-1,0,1]},
+      {"args":[[4,4,4]],"expected":[-1,-1,-1]},
+      {"args":[[]],"expected":[]},
+      {"args":[[7]],"expected":[-1]},
+      {"args":[[1,2,3]],"expected":[-1,-1,-1]},
+      {"args":[[9,2,5,2,5,7]],"expected":[-1,0,0,2,0,0]},
+      {"args":[[6,1,8,3,3,5,2,9,4]],"expected":[-1,0,-1,2,2,2,5,-1,7]}
+    ]
+  }
+}

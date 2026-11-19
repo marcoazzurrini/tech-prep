@@ -1,0 +1,85 @@
+{
+  "title": "Steps in the pipeline",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.jobs | map(.steps | length) | add' data.json",
+    "tests": [
+      {
+        "input": {
+          "pipeline": "release",
+          "jobs": [
+            {
+              "name": "lint",
+              "steps": [
+                "install",
+                "eslint"
+              ]
+            },
+            {
+              "name": "test",
+              "steps": [
+                "install",
+                "build",
+                "unit"
+              ]
+            },
+            {
+              "name": "ship",
+              "steps": [
+                "publish"
+              ]
+            }
+          ]
+        },
+        "expected": "6"
+      },
+      {
+        "input": {
+          "pipeline": "docs",
+          "jobs": [
+            {
+              "name": "build",
+              "steps": [
+                "install",
+                "render"
+              ]
+            }
+          ]
+        },
+        "expected": "2"
+      },
+      {
+        "input": {
+          "pipeline": "nightly",
+          "jobs": [
+            {
+              "name": "scan",
+              "steps": [
+                "pull",
+                "audit",
+                "report",
+                "notify"
+              ]
+            },
+            {
+              "name": "clean",
+              "steps": []
+            },
+            {
+              "name": "backup",
+              "steps": [
+                "dump",
+                "upload",
+                "verify"
+              ]
+            }
+          ]
+        },
+        "expected": "7"
+      }
+    ]
+  }
+}

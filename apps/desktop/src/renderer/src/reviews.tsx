@@ -20,10 +20,10 @@ import {
 import { ArrowRight, BookOpen, CircleCheck, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { ExerciseAside, ExerciseWorkbench } from "./checks";
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
-import { TaskAside, TaskWorkbench } from "./task-kinds";
+import type { Finished } from "./lesson-flow";
 import type { Problem, Result, Reviews } from "./types";
-import type { Finished } from "./workbench";
 
 const plural = (n: number, word: string): string =>
   `${n} ${word}${n === 1 ? "" : "s"}`;
@@ -409,14 +409,14 @@ export const ReviewSession = ({
             title={problem.title}
           >
             <ProblemStatement text={problem.statement ?? ""} />
-            <TaskAside problem={problem} />
+            <ExerciseAside problem={problem} />
             {finished && (
               <Verdict finished={finished} onOpenLesson={onOpenLesson} />
             )}
           </TaskText>
         </SplitSide>
         <SplitSide stack>
-          <TaskWorkbench
+          <ExerciseWorkbench
             done={
               finished
                 ? {

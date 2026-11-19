@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '[.[] | tostring]' data.json",
+      "file": "data.json",
+      "input": [
+        7,
+        "7",
+        true
+      ],
+      "show_command": true
+    },
+    "expected": "[\n  \"7\",\n  \"7\",\n  \"true\"\n]"
+  }
+}

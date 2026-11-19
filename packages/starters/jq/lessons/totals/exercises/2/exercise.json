@@ -1,0 +1,61 @@
+{
+  "title": "Items in the order",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.items | add' data.json",
+    "reference": "jq '.items | map(.qty) | add' data.json",
+    "tests": [
+      {
+        "input": {
+          "order": "A-17",
+          "items": [
+            {
+              "sku": "cup",
+              "qty": 2
+            },
+            {
+              "sku": "plate",
+              "qty": 6
+            },
+            {
+              "sku": "fork",
+              "qty": 4
+            }
+          ]
+        },
+        "expected": "12"
+      },
+      {
+        "input": {
+          "order": "A-18",
+          "items": [
+            {
+              "sku": "lamp",
+              "qty": 1
+            }
+          ]
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "order": "A-19",
+          "items": [
+            {
+              "sku": "pen",
+              "qty": 10
+            },
+            {
+              "sku": "ink",
+              "qty": 3
+            }
+          ]
+        },
+        "expected": "13"
+      }
+    ]
+  }
+}

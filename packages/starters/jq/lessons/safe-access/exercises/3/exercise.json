@@ -1,0 +1,65 @@
+{
+  "title": "Tags of all articles",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[] | .tags[]?' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "title": "Intro",
+            "tags": [
+              "jq",
+              "json"
+            ]
+          },
+          {
+            "title": "Draft",
+            "tags": null
+          },
+          {
+            "title": "Tips",
+            "tags": [
+              "cli"
+            ]
+          }
+        ],
+        "expected": "\"jq\"\n\"json\"\n\"cli\""
+      },
+      {
+        "input": [
+          {
+            "title": "News",
+            "tags": [
+              "release"
+            ]
+          },
+          {
+            "title": "Notes"
+          }
+        ],
+        "expected": "\"release\""
+      },
+      {
+        "input": [
+          {
+            "title": "Old",
+            "tags": "none"
+          },
+          {
+            "title": "Guide",
+            "tags": [
+              "howto",
+              "shell",
+              "pipes"
+            ]
+          }
+        ],
+        "expected": "\"howto\"\n\"shell\"\n\"pipes\""
+      }
+    ]
+  }
+}

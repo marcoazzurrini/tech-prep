@@ -15,26 +15,27 @@ import {
   attempt,
   attemptsFor,
   closeAttempt,
-  closeExercises,
+  closeExtras,
   insertAttempt,
   openAttempt,
-  openExercise,
+  openExtra,
   pauseOtherAttempts,
-  raiseExerciseHint,
+  raiseExtraHint,
   recordTestRun,
 } from "./db.ts";
 import type { AttemptRow, Mode, Outcome, Phase, Recognition } from "./db.ts";
+import {
+  checkingOf,
+  problem as getProblem,
+  problemInfo,
+  problemLanguage,
+  referenceSolution,
+  runTests,
+} from "./exercises.ts";
+import { takesHint } from "./extras.ts";
 import { INDEPENDENT_HINT_LEVEL, grade } from "./grading.ts";
 import { applyResults } from "./outcomes.ts";
 import { completeLesson, isPassed, problemStatus } from "./scheduler.ts";
-import {
-  courseLanguage,
-  problem as getProblem,
-  problemInfo,
-  referenceSolution,
-  runTests,
-  taskType,
-} from "./tasks.ts";
 
 /**
  * Solution files once began with the problem statement as a comment banner. The app shows
@@ -66,24 +67,25 @@ const soloTasksLeft = (course: Course, slug: string): boolean => {
 const begin = (
   course: Course,
   slug: string,
-  language: Language = courseLanguage(course),
-  mode: Mode | null = null
+  mode: Mode | null,
+  language: Language
 ) => {
   const p = getProblem(course, slug);
+  const checking = checkingOf(course, slug);
   mkdirSync(solutionsDir(course), { recursive: true });
 
-  taskType(course).prepare?.(solutionsDir(course), language);
+  checking.prepare(solutionsDir(course), language);
 
   const file = solutionPath(course, slug, language);
   let current = openAttempt(course, slug, language);
   const resumed = Boolean(current);
-  const stub = `${(p.stubs[language] ?? "").trimEnd()}\n`;
+  const stub = `${checking.start(language).trimEnd()}\n`;
 
-  // A review starts from the stub. So does a task that is taken again after it was solved:
-  // with short tasks, the old answer would give the new attempt away.
+  // A review starts from the stub. So does an exercise with a short answer that is taken
+  // again after it was solved: the old answer would give the new attempt away.
   const fresh =
     !resumed &&
-    (mode === "review" || (taskType(course).retakeFromStub && mode !== null));
+    (mode === "review" || (checking.retakeFromStart && mode !== null));
 
   const created = !existsSync(file) || fresh;
 
@@ -112,7 +114,7 @@ const begin = (
       ? "review"
       : "learning";
 
-    closeExercises(course);
+    closeExtras(course);
 
     current = insertAttempt(
       course,
@@ -141,17 +143,17 @@ const begin = (
 export const startProblem = (
   course: Course,
   slug: string,
-  language: Language = courseLanguage(course),
-  mode: Mode | null = null
+  mode: Mode | null = null,
+  language: Language = problemLanguage(course, slug)
 ): ReturnType<typeof begin> =>
   // Setting the other attempts aside and opening this one are saved together.
-  atomically(course, () => begin(course, slug, language, mode));
+  atomically(course, () => begin(course, slug, mode, language));
 
 /** Run the tests and, when an attempt is open, record the result on it. */
 export const testSolution = (
   course: Course,
   slug: string,
-  language: Language = courseLanguage(course),
+  language: Language = problemLanguage(course, slug),
   file = solutionPath(course, slug, language)
 ) => {
   const run = runTests(course, slug, language, file);
@@ -217,10 +219,10 @@ export const saveSolution = (
  * exercise, else the open problem attempt.
  */
 export const logHint = (course: Course, level: number) => {
-  const exercise = openExercise(course);
+  const exercise = openExtra(course);
 
-  if (exercise && !exercise.graded_at && exercise.kind !== "example") {
-    raiseExerciseHint(course, exercise.id, level);
+  if (exercise && takesHint(exercise)) {
+    raiseExtraHint(course, exercise.id, level);
 
     return {
       on: `exercise ${exercise.id}`,

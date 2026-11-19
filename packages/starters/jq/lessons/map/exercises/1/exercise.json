@@ -1,0 +1,52 @@
+{
+  "title": "Versions of the releases",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'map(.)' data.json",
+    "reference": "jq 'map(.version)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "version": "1.4.0",
+            "date": "2025-01-10"
+          },
+          {
+            "version": "1.4.1",
+            "date": "2025-02-02"
+          },
+          {
+            "version": "2.0.0",
+            "date": "2025-03-18"
+          }
+        ],
+        "expected": "[\n  \"1.4.0\",\n  \"1.4.1\",\n  \"2.0.0\"\n]"
+      },
+      {
+        "input": [
+          {
+            "version": "0.1.0",
+            "date": "2024-11-05"
+          }
+        ],
+        "expected": "[\n  \"0.1.0\"\n]"
+      },
+      {
+        "input": [
+          {
+            "version": "3.2.0",
+            "date": "2025-04-01"
+          },
+          {
+            "version": "3.2.1",
+            "date": "2025-04-09"
+          }
+        ],
+        "expected": "[\n  \"3.2.0\",\n  \"3.2.1\"\n]"
+      }
+    ]
+  }
+}

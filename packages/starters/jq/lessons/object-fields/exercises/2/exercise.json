@@ -1,0 +1,34 @@
+{
+  "title": "Fix the filter",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.Email' data.json",
+    "reference": "jq '.email' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "Bo",
+          "email": "bo@example.com"
+        },
+        "expected": "\"bo@example.com\""
+      },
+      {
+        "input": {
+          "name": "Cy",
+          "email": "cy@example.com"
+        },
+        "expected": "\"cy@example.com\""
+      },
+      {
+        "input": {
+          "name": "Dee",
+          "email": "dee@example.com"
+        },
+        "expected": "\"dee@example.com\""
+      }
+    ]
+  }
+}

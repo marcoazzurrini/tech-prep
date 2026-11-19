@@ -1,0 +1,33 @@
+{
+  "title": "A key with a dash",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[\"user-id\"]' data.json",
+    "tests": [
+      {
+        "input": {
+          "user-id": 42,
+          "plan": "pro"
+        },
+        "expected": "42"
+      },
+      {
+        "input": {
+          "user-id": 7,
+          "plan": "free"
+        },
+        "expected": "7"
+      },
+      {
+        "input": {
+          "user-id": 1203,
+          "plan": "team"
+        },
+        "expected": "1203"
+      }
+    ]
+  }
+}

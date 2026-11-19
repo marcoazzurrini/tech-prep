@@ -1,0 +1,40 @@
+{
+  "title": "One product row",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "start": "jq -r '[.sku] | @csv' data.json",
+    "reference": "jq -r '[.sku, .name, .price] | @csv' data.json",
+    "tests": [
+      {
+        "input": {
+          "sku": "MUG-01",
+          "name": "Blue mug",
+          "price": 12.5,
+          "stock": 40
+        },
+        "expected": "\"MUG-01\",\"Blue mug\",12.5"
+      },
+      {
+        "input": {
+          "sku": "PEN-07",
+          "name": "Gel pen, black",
+          "price": 2,
+          "stock": 310
+        },
+        "expected": "\"PEN-07\",\"Gel pen, black\",2"
+      },
+      {
+        "input": {
+          "sku": "BAG-22",
+          "name": "Tote bag",
+          "price": 18.9,
+          "stock": 0
+        },
+        "expected": "\"BAG-22\",\"Tote bag\",18.9"
+      }
+    ]
+  }
+}

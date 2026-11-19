@@ -1,0 +1,67 @@
+{
+  "title": "Names on the shelf",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.items | map(if .qty == 0 then \"sold out\" else .name end)' data.json",
+    "tests": [
+      {
+        "input": {
+          "shop": "north",
+          "items": [
+            {
+              "name": "lamp",
+              "qty": 3
+            },
+            {
+              "name": "desk",
+              "qty": 0
+            },
+            {
+              "name": "rug",
+              "qty": 12
+            }
+          ]
+        },
+        "expected": "[\n  \"lamp\",\n  \"sold out\",\n  \"rug\"\n]"
+      },
+      {
+        "input": {
+          "shop": "south",
+          "items": [
+            {
+              "name": "sofa",
+              "qty": 0
+            }
+          ]
+        },
+        "expected": "[\n  \"sold out\"\n]"
+      },
+      {
+        "input": {
+          "shop": "east",
+          "items": [
+            {
+              "name": "vase",
+              "qty": 1
+            },
+            {
+              "name": "clock",
+              "qty": 7
+            }
+          ]
+        },
+        "expected": "[\n  \"vase\",\n  \"clock\"\n]"
+      },
+      {
+        "input": {
+          "shop": "west",
+          "items": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

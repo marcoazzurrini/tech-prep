@@ -1,0 +1,48 @@
+{
+  "title": "Runner's system",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.job.runner.os' data.json",
+    "tests": [
+      {
+        "input": {
+          "job": {
+            "id": 31,
+            "runner": {
+              "os": "linux",
+              "arch": "arm64"
+            }
+          }
+        },
+        "expected": "\"linux\""
+      },
+      {
+        "input": {
+          "job": {
+            "id": 32,
+            "runner": {
+              "os": "macos",
+              "arch": "arm64"
+            }
+          }
+        },
+        "expected": "\"macos\""
+      },
+      {
+        "input": {
+          "job": {
+            "id": 33,
+            "runner": {
+              "os": "windows",
+              "arch": "x64"
+            }
+          }
+        },
+        "expected": "\"windows\""
+      }
+    ]
+  }
+}

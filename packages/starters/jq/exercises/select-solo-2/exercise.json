@@ -1,0 +1,51 @@
+{
+  "title": "Popular repos",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[] | select(.stars >= 100) | .name' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "fastjson",
+            "stars": 2400
+          },
+          {
+            "name": "notes",
+            "stars": 12
+          },
+          {
+            "name": "tinyq",
+            "stars": 100
+          }
+        ],
+        "expected": "\"fastjson\"\n\"tinyq\""
+      },
+      {
+        "input": [
+          {
+            "name": "draft",
+            "stars": 0
+          },
+          {
+            "name": "old-site",
+            "stars": 99
+          }
+        ],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "name": "reqs",
+            "stars": 870
+          }
+        ],
+        "expected": "\"reqs\""
+      }
+    ]
+  }
+}

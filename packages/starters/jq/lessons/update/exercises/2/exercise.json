@@ -1,0 +1,41 @@
+{
+  "title": "The order is shipped",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.status = \"shipped\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "order": 5001,
+          "status": "paid",
+          "items": [
+            "mug",
+            "pen"
+          ]
+        },
+        "expected": "{\n  \"order\": 5001,\n  \"status\": \"shipped\",\n  \"items\": [\n    \"mug\",\n    \"pen\"\n  ]\n}"
+      },
+      {
+        "input": {
+          "order": 5002,
+          "status": "packed",
+          "items": [
+            "desk"
+          ]
+        },
+        "expected": "{\n  \"order\": 5002,\n  \"status\": \"shipped\",\n  \"items\": [\n    \"desk\"\n  ]\n}"
+      },
+      {
+        "input": {
+          "order": 5003,
+          "status": "paid",
+          "items": []
+        },
+        "expected": "{\n  \"order\": 5003,\n  \"status\": \"shipped\",\n  \"items\": []\n}"
+      }
+    ]
+  }
+}

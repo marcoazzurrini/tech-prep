@@ -1,0 +1,37 @@
+{
+  "title": "Total of the invoice",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.subtotal' data.json",
+    "reference": "jq '.subtotal + .shipping' data.json",
+    "tests": [
+      {
+        "input": {
+          "invoice": "INV-104",
+          "subtotal": 80,
+          "shipping": 5
+        },
+        "expected": "85"
+      },
+      {
+        "input": {
+          "invoice": "INV-105",
+          "subtotal": 240,
+          "shipping": 0
+        },
+        "expected": "240"
+      },
+      {
+        "input": {
+          "invoice": "INV-106",
+          "subtotal": 19,
+          "shipping": 12
+        },
+        "expected": "31"
+      }
+    ]
+  }
+}

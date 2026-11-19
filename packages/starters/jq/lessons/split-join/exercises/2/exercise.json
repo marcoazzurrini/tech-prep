@@ -1,0 +1,42 @@
+{
+  "title": "Reviewers in one line",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.reviewers | join(\", \")' data.json",
+    "tests": [
+      {
+        "input": {
+          "pr": 57,
+          "reviewers": [
+            "ada",
+            "bo",
+            "cy"
+          ]
+        },
+        "expected": "\"ada, bo, cy\""
+      },
+      {
+        "input": {
+          "pr": 58,
+          "reviewers": [
+            "dee"
+          ]
+        },
+        "expected": "\"dee\""
+      },
+      {
+        "input": {
+          "pr": 61,
+          "reviewers": [
+            "bo",
+            "eli"
+          ]
+        },
+        "expected": "\"bo, eli\""
+      }
+    ]
+  }
+}

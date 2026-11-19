@@ -1,0 +1,66 @@
+{
+  "title": "Deploys in short",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'def short: {sha, author}; {latest: .deploys[-1] | short, history: .deploys | map(short)}' data.json",
+    "tests": [
+      {
+        "input": {
+          "app": "api",
+          "deploys": [
+            {
+              "sha": "9f2c1a",
+              "author": "cy",
+              "seconds": 84
+            },
+            {
+              "sha": "77b0de",
+              "author": "ada",
+              "seconds": 91
+            }
+          ]
+        },
+        "expected": "{\n  \"latest\": {\n    \"sha\": \"77b0de\",\n    \"author\": \"ada\"\n  },\n  \"history\": [\n    {\n      \"sha\": \"9f2c1a\",\n      \"author\": \"cy\"\n    },\n    {\n      \"sha\": \"77b0de\",\n      \"author\": \"ada\"\n    }\n  ]\n}"
+      },
+      {
+        "input": {
+          "app": "web",
+          "deploys": [
+            {
+              "sha": "c41e09",
+              "author": "bo",
+              "seconds": 60
+            }
+          ]
+        },
+        "expected": "{\n  \"latest\": {\n    \"sha\": \"c41e09\",\n    \"author\": \"bo\"\n  },\n  \"history\": [\n    {\n      \"sha\": \"c41e09\",\n      \"author\": \"bo\"\n    }\n  ]\n}"
+      },
+      {
+        "input": {
+          "app": "jobs",
+          "deploys": [
+            {
+              "sha": "a1",
+              "author": "ada",
+              "seconds": 30
+            },
+            {
+              "sha": "b2",
+              "author": "ada",
+              "seconds": 31
+            },
+            {
+              "sha": "c3",
+              "author": "dee",
+              "seconds": 29
+            }
+          ]
+        },
+        "expected": "{\n  \"latest\": {\n    \"sha\": \"c3\",\n    \"author\": \"dee\"\n  },\n  \"history\": [\n    {\n      \"sha\": \"a1\",\n      \"author\": \"ada\"\n    },\n    {\n      \"sha\": \"b2\",\n      \"author\": \"ada\"\n    },\n    {\n      \"sha\": \"c3\",\n      \"author\": \"dee\"\n    }\n  ]\n}"
+      }
+    ]
+  }
+}

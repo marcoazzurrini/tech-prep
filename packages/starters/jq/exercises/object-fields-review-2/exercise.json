@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.license' data.json",
+      "file": "data.json",
+      "input": {
+        "name": "my-app",
+        "version": "0.1.0",
+        "private": true
+      },
+      "show_command": true
+    },
+    "expected": "null"
+  }
+}

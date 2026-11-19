@@ -1,0 +1,33 @@
+{
+  "title": "Setting as a flag",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.key | ascii_downcase | gsub(\"_\"; \"-\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "key": "DATABASE_URL",
+          "value": "postgres://db-1/app"
+        },
+        "expected": "\"database-url\""
+      },
+      {
+        "input": {
+          "key": "MAX_RETRY_COUNT",
+          "value": "5"
+        },
+        "expected": "\"max-retry-count\""
+      },
+      {
+        "input": {
+          "key": "DEBUG",
+          "value": "false"
+        },
+        "expected": "\"debug\""
+      }
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "title": "Emails of the sign-ups",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.results[] | .user.email' data.json",
+    "tests": [
+      {
+        "input": {
+          "page": 1,
+          "results": [
+            {
+              "plan": "pro",
+              "user": {
+                "name": "Ada",
+                "email": "ada@example.com"
+              }
+            },
+            {
+              "plan": "free",
+              "user": {
+                "name": "Bo",
+                "email": "bo@example.com"
+              }
+            }
+          ]
+        },
+        "expected": "\"ada@example.com\"\n\"bo@example.com\""
+      },
+      {
+        "input": {
+          "page": 2,
+          "results": [
+            {
+              "plan": "team",
+              "user": {
+                "name": "Cy",
+                "email": "cy@example.com"
+              }
+            }
+          ]
+        },
+        "expected": "\"cy@example.com\""
+      },
+      {
+        "input": {
+          "page": 3,
+          "results": [
+            {
+              "plan": "free",
+              "user": {
+                "name": "Dee",
+                "email": "dee@example.com"
+              }
+            },
+            {
+              "plan": "free",
+              "user": {
+                "name": "Eli",
+                "email": "eli@example.com"
+              }
+            },
+            {
+              "plan": "pro",
+              "user": {
+                "name": "Fay",
+                "email": "fay@example.com"
+              }
+            }
+          ]
+        },
+        "expected": "\"dee@example.com\"\n\"eli@example.com\"\n\"fay@example.com\""
+      }
+    ]
+  }
+}

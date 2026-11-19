@@ -1,0 +1,47 @@
+{
+  "title": "Everyone with access",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.admins + .members' data.json",
+    "tests": [
+      {
+        "input": {
+          "project": "billing",
+          "admins": [
+            "ada"
+          ],
+          "members": [
+            "bo",
+            "cy",
+            "dee"
+          ]
+        },
+        "expected": "[\n  \"ada\",\n  \"bo\",\n  \"cy\",\n  \"dee\"\n]"
+      },
+      {
+        "input": {
+          "project": "docs",
+          "admins": [
+            "eli",
+            "fay"
+          ],
+          "members": []
+        },
+        "expected": "[\n  \"eli\",\n  \"fay\"\n]"
+      },
+      {
+        "input": {
+          "project": "infra",
+          "admins": [],
+          "members": [
+            "gus"
+          ]
+        },
+        "expected": "[\n  \"gus\"\n]"
+      }
+    ]
+  }
+}

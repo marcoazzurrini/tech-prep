@@ -1,0 +1,51 @@
+{
+  "title": "Values of the records",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map(.value)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "type": "A",
+            "value": "203.0.113.5"
+          },
+          {
+            "type": "MX",
+            "value": "mail.example.com"
+          },
+          {
+            "type": "TXT",
+            "value": "v=spf1 -all"
+          }
+        ],
+        "expected": "[\n  \"203.0.113.5\",\n  \"mail.example.com\",\n  \"v=spf1 -all\"\n]"
+      },
+      {
+        "input": [
+          {
+            "type": "A",
+            "value": "198.51.100.7"
+          }
+        ],
+        "expected": "[\n  \"198.51.100.7\"\n]"
+      },
+      {
+        "input": [
+          {
+            "type": "CNAME",
+            "value": "www.example.com"
+          },
+          {
+            "type": "A",
+            "value": "192.0.2.44"
+          }
+        ],
+        "expected": "[\n  \"www.example.com\",\n  \"192.0.2.44\"\n]"
+      }
+    ]
+  }
+}

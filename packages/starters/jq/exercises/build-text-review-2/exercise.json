@@ -1,0 +1,39 @@
+{
+  "title": "Staff badge",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '{id, name: \"\\(.first_name) \\(.last_name)\"}' data.json",
+    "tests": [
+      {
+        "input": {
+          "id": 301,
+          "first_name": "Lena",
+          "last_name": "Brandt",
+          "team": "web"
+        },
+        "expected": "{\n  \"id\": 301,\n  \"name\": \"Lena Brandt\"\n}"
+      },
+      {
+        "input": {
+          "id": 302,
+          "first_name": "Omar",
+          "last_name": "Haddad",
+          "team": "data"
+        },
+        "expected": "{\n  \"id\": 302,\n  \"name\": \"Omar Haddad\"\n}"
+      },
+      {
+        "input": {
+          "id": 417,
+          "first_name": "Yuki",
+          "last_name": "Mori",
+          "team": "ops"
+        },
+        "expected": "{\n  \"id\": 417,\n  \"name\": \"Yuki Mori\"\n}"
+      }
+    ]
+  }
+}

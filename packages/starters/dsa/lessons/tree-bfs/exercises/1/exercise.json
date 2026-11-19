@@ -1,0 +1,28 @@
+{
+  "title": "Widest Level",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "widest_level",
+      "typescript": "widestLevel"
+    },
+    "params": [
+      "TreeNode"
+    ],
+    "compare": "exact",
+    "stubs": {
+      "python": "from ds import TreeNode\n\n\ndef widest_level(root: TreeNode | None) -> int:\n    pass\n",
+      "typescript": "import { TreeNode } from \"./ds.ts\";\n\nexport function widestLevel(root: TreeNode | null): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[1,2,3]],"expected":2},
+      {"args":[[1,2,3,4,null,null,5]],"expected":2},
+      {"args":[[1]],"expected":1},
+      {"args":[[]],"expected":0},
+      {"args":[[1,2,3,4,5,6,7]],"expected":4},
+      {"args":[[1,2,null,3,null,4]],"expected":1},
+      {"args":[[1,2,3,4,5,6,null,7]],"expected":3},
+      {"args":[[1,2,3,null,4,5,6,7,8,9]],"expected":3}
+    ]
+  }
+}

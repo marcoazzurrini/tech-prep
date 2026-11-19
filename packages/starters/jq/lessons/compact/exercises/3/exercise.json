@@ -1,0 +1,58 @@
+{
+  "title": "Values of the settings",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -c -r '.[] | .value' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "key": "region",
+            "value": "eu-west"
+          },
+          {
+            "key": "zones",
+            "value": [
+              "a",
+              "b"
+            ]
+          },
+          {
+            "key": "tier",
+            "value": "small"
+          }
+        ],
+        "expected": "eu-west\n[\"a\",\"b\"]\nsmall"
+      },
+      {
+        "input": [
+          {
+            "key": "ports",
+            "value": [
+              80,
+              443,
+              8080
+            ]
+          },
+          {
+            "key": "mode",
+            "value": "fast"
+          }
+        ],
+        "expected": "[80,443,8080]\nfast"
+      },
+      {
+        "input": [
+          {
+            "key": "owners",
+            "value": []
+          }
+        ],
+        "expected": "[]"
+      }
+    ]
+  }
+}

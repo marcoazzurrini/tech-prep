@@ -1,0 +1,42 @@
+{
+  "title": "Prices in cents",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.prices |= map(. * 100)' data.json",
+    "tests": [
+      {
+        "input": {
+          "customer": "bo@example.com",
+          "coupon": "SPRING",
+          "prices": [
+            4,
+            15,
+            2
+          ]
+        },
+        "expected": "{\n  \"customer\": \"bo@example.com\",\n  \"coupon\": \"SPRING\",\n  \"prices\": [\n    400,\n    1500,\n    200\n  ]\n}"
+      },
+      {
+        "input": {
+          "customer": "cy@example.com",
+          "coupon": null,
+          "prices": [
+            30
+          ]
+        },
+        "expected": "{\n  \"customer\": \"cy@example.com\",\n  \"coupon\": null,\n  \"prices\": [\n    3000\n  ]\n}"
+      },
+      {
+        "input": {
+          "customer": "dee@example.com",
+          "coupon": "VIP",
+          "prices": []
+        },
+        "expected": "{\n  \"customer\": \"dee@example.com\",\n  \"coupon\": \"VIP\",\n  \"prices\": []\n}"
+      }
+    ]
+  }
+}

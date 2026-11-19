@@ -1,0 +1,34 @@
+{
+  "title": "Read the reply",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.' data.json",
+    "tests": [
+      {
+        "input": {
+          "service": "mail",
+          "healthy": true,
+          "queue": 4
+        },
+        "expected": "{\n  \"service\": \"mail\",\n  \"healthy\": true,\n  \"queue\": 4\n}"
+      },
+      {
+        "input": {
+          "service": "auth",
+          "healthy": false,
+          "queue": 0
+        },
+        "expected": "{\n  \"service\": \"auth\",\n  \"healthy\": false,\n  \"queue\": 0\n}"
+      },
+      {
+        "input": {
+          "service": "cdn"
+        },
+        "expected": "{\n  \"service\": \"cdn\"\n}"
+      }
+    ]
+  }
+}

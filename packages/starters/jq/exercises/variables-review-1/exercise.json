@@ -1,0 +1,67 @@
+{
+  "title": "Tickets of a project",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.project as $project | .sprints[] | .number as $number | .tickets[] | {project: $project, sprint: $number, ticket: .}' data.json",
+    "tests": [
+      {
+        "input": {
+          "project": "atlas",
+          "sprints": [
+            {
+              "number": 4,
+              "tickets": [
+                "T-31",
+                "T-32"
+              ]
+            },
+            {
+              "number": 5,
+              "tickets": [
+                "T-40"
+              ]
+            }
+          ]
+        },
+        "expected": "{\n  \"project\": \"atlas\",\n  \"sprint\": 4,\n  \"ticket\": \"T-31\"\n}\n{\n  \"project\": \"atlas\",\n  \"sprint\": 4,\n  \"ticket\": \"T-32\"\n}\n{\n  \"project\": \"atlas\",\n  \"sprint\": 5,\n  \"ticket\": \"T-40\"\n}"
+      },
+      {
+        "input": {
+          "project": "comet",
+          "sprints": [
+            {
+              "number": 1,
+              "tickets": [
+                "C-1"
+              ]
+            }
+          ]
+        },
+        "expected": "{\n  \"project\": \"comet\",\n  \"sprint\": 1,\n  \"ticket\": \"C-1\"\n}"
+      },
+      {
+        "input": {
+          "project": "delta",
+          "sprints": [
+            {
+              "number": 9,
+              "tickets": []
+            },
+            {
+              "number": 10,
+              "tickets": [
+                "D-77",
+                "D-78",
+                "D-80"
+              ]
+            }
+          ]
+        },
+        "expected": "{\n  \"project\": \"delta\",\n  \"sprint\": 10,\n  \"ticket\": \"D-77\"\n}\n{\n  \"project\": \"delta\",\n  \"sprint\": 10,\n  \"ticket\": \"D-78\"\n}\n{\n  \"project\": \"delta\",\n  \"sprint\": 10,\n  \"ticket\": \"D-80\"\n}"
+      }
+    ]
+  }
+}

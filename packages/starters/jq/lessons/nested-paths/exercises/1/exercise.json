@@ -1,0 +1,51 @@
+{
+  "title": "Name of the repo",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.repo.name' data.json",
+    "tests": [
+      {
+        "input": {
+          "repo": {
+            "name": "api",
+            "owner": {
+              "login": "ada",
+              "id": 7
+            }
+          },
+          "stars": 12
+        },
+        "expected": "\"api\""
+      },
+      {
+        "input": {
+          "repo": {
+            "name": "web",
+            "owner": {
+              "login": "bo",
+              "id": 9
+            }
+          },
+          "stars": 3
+        },
+        "expected": "\"web\""
+      },
+      {
+        "input": {
+          "repo": {
+            "name": "docs",
+            "owner": {
+              "login": "cy",
+              "id": 2
+            }
+          },
+          "stars": 40
+        },
+        "expected": "\"docs\""
+      }
+    ]
+  }
+}

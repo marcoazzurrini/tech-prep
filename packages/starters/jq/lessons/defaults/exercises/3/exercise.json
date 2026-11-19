@@ -1,0 +1,44 @@
+{
+  "title": "Variables of a job",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.env // {} | keys' data.json",
+    "tests": [
+      {
+        "input": {
+          "job": "deploy",
+          "env": null
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "job": "build",
+          "env": {
+            "NODE_ENV": "production",
+            "CI": "true"
+          }
+        },
+        "expected": "[\n  \"CI\",\n  \"NODE_ENV\"\n]"
+      },
+      {
+        "input": {
+          "job": "lint"
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "job": "test",
+          "env": {
+            "DB_URL": "postgres://localhost/test"
+          }
+        },
+        "expected": "[\n  \"DB_URL\"\n]"
+      }
+    ]
+  }
+}

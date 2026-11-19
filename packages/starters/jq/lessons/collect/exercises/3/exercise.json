@@ -1,0 +1,65 @@
+{
+  "title": "Every reviewer",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.[] | .reviewers[]]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "pr": 41,
+            "reviewers": [
+              "ada",
+              "bo"
+            ]
+          },
+          {
+            "pr": 42,
+            "reviewers": [
+              "cy"
+            ]
+          },
+          {
+            "pr": 43,
+            "reviewers": [
+              "bo",
+              "dee"
+            ]
+          }
+        ],
+        "expected": "[\n  \"ada\",\n  \"bo\",\n  \"cy\",\n  \"bo\",\n  \"dee\"\n]"
+      },
+      {
+        "input": [
+          {
+            "pr": 7,
+            "reviewers": []
+          },
+          {
+            "pr": 8,
+            "reviewers": [
+              "eli"
+            ]
+          }
+        ],
+        "expected": "[\n  \"eli\"\n]"
+      },
+      {
+        "input": [
+          {
+            "pr": 90,
+            "reviewers": [
+              "fay",
+              "ada",
+              "cy"
+            ]
+          }
+        ],
+        "expected": "[\n  \"fay\",\n  \"ada\",\n  \"cy\"\n]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Fix the filter",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '\"(.name)@(.version)\"' data.json",
+    "reference": "jq '\"\\(.name)@\\(.version)\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "left-trim",
+          "version": "2.0.1",
+          "license": "MIT"
+        },
+        "expected": "\"left-trim@2.0.1\""
+      },
+      {
+        "input": {
+          "name": "tiny-log",
+          "version": "0.4.0",
+          "license": "ISC"
+        },
+        "expected": "\"tiny-log@0.4.0\""
+      },
+      {
+        "input": {
+          "name": "dates",
+          "version": "11.2.3",
+          "license": "MIT"
+        },
+        "expected": "\"dates@11.2.3\""
+      }
+    ]
+  }
+}

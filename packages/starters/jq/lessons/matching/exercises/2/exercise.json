@@ -1,0 +1,61 @@
+{
+  "title": "Entries about a timeout",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.entries | map(select(.msg | contains(\"timeout\")))' data.json",
+    "tests": [
+      {
+        "input": {
+          "entries": [
+            {
+              "level": "error",
+              "msg": "db timeout after 30s"
+            },
+            {
+              "level": "info",
+              "msg": "user login"
+            },
+            {
+              "level": "warn",
+              "msg": "upstream timeout"
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"level\": \"error\",\n    \"msg\": \"db timeout after 30s\"\n  },\n  {\n    \"level\": \"warn\",\n    \"msg\": \"upstream timeout\"\n  }\n]"
+      },
+      {
+        "input": {
+          "entries": [
+            {
+              "level": "info",
+              "msg": "cache warmed"
+            },
+            {
+              "level": "info",
+              "msg": "job done"
+            }
+          ]
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "entries": [
+            {
+              "level": "warn",
+              "msg": "timeout while reading file"
+            },
+            {
+              "level": "error",
+              "msg": "out of memory"
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"level\": \"warn\",\n    \"msg\": \"timeout while reading file\"\n  }\n]"
+      }
+    ]
+  }
+}

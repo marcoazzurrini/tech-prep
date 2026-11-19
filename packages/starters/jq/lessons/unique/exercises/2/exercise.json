@@ -1,0 +1,69 @@
+{
+  "title": "Status codes seen",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.requests | map(.status) | unique' data.json",
+    "tests": [
+      {
+        "input": {
+          "requests": [
+            {
+              "path": "/",
+              "status": 200
+            },
+            {
+              "path": "/old",
+              "status": 404
+            },
+            {
+              "path": "/about",
+              "status": 200
+            },
+            {
+              "path": "/api",
+              "status": 500
+            }
+          ]
+        },
+        "expected": "[\n  200,\n  404,\n  500\n]"
+      },
+      {
+        "input": {
+          "requests": [
+            {
+              "path": "/",
+              "status": 200
+            },
+            {
+              "path": "/a",
+              "status": 200
+            }
+          ]
+        },
+        "expected": "[\n  200\n]"
+      },
+      {
+        "input": {
+          "requests": [
+            {
+              "path": "/x",
+              "status": 301
+            },
+            {
+              "path": "/y",
+              "status": 404
+            },
+            {
+              "path": "/z",
+              "status": 301
+            }
+          ]
+        },
+        "expected": "[\n  301,\n  404\n]"
+      }
+    ]
+  }
+}

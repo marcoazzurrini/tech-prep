@@ -1,0 +1,42 @@
+{
+  "title": "Top three scores",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[:3]' data.json",
+    "tests": [
+      {
+        "input": [
+          98,
+          91,
+          87,
+          70,
+          64
+        ],
+        "expected": "[\n  98,\n  91,\n  87\n]"
+      },
+      {
+        "input": [
+          55,
+          40,
+          39,
+          12
+        ],
+        "expected": "[\n  55,\n  40,\n  39\n]"
+      },
+      {
+        "input": [
+          100,
+          99,
+          98,
+          97,
+          96,
+          95
+        ],
+        "expected": "[\n  100,\n  99,\n  98\n]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "title": "A profile to share",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'del(.password, .reset_token)' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "Ada",
+          "city": "Oslo",
+          "password": "h$2a",
+          "reset_token": "r-501"
+        },
+        "expected": "{\n  \"name\": \"Ada\",\n  \"city\": \"Oslo\"\n}"
+      },
+      {
+        "input": {
+          "name": "Bo",
+          "city": "Bergen",
+          "password": "p!88"
+        },
+        "expected": "{\n  \"name\": \"Bo\",\n  \"city\": \"Bergen\"\n}"
+      },
+      {
+        "input": {
+          "name": "Cy",
+          "city": "Tromsø",
+          "reset_token": "r-930",
+          "password": "zz1Q"
+        },
+        "expected": "{\n  \"name\": \"Cy\",\n  \"city\": \"Tromsø\"\n}"
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "title": "Version tags",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.tags | map(select(test(\"^v\")))' data.json",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "tags": [
+            "v1.0",
+            "nightly",
+            "dev-v2",
+            "v1.1"
+          ]
+        },
+        "expected": "[\n  \"v1.0\",\n  \"v1.1\"\n]"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "tags": [
+            "preview",
+            "dev-v9"
+          ]
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "tags": [
+            "v3.2",
+            "vnext",
+            "canary"
+          ]
+        },
+        "expected": "[\n  \"v3.2\",\n  \"vnext\"\n]"
+      }
+    ]
+  }
+}

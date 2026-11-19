@@ -1,0 +1,40 @@
+{
+  "title": "Too many attempts",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.attempts >= 3' data.json",
+    "tests": [
+      {
+        "input": {
+          "user": "bo",
+          "attempts": 4
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "user": "ada",
+          "attempts": 2
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "user": "cy",
+          "attempts": 3
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "user": "dee",
+          "attempts": 0
+        },
+        "expected": "false"
+      }
+    ]
+  }
+}

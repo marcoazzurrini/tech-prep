@@ -1,0 +1,25 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "find_itinerary",
+      "typescript": "findItinerary"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def find_itinerary(tickets: list[list[str]]) -> list[str]:\n    pass\n",
+      "typescript": "export function findItinerary(tickets: string[][]): string[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]],"expected":["JFK","MUC","LHR","SFO","SJC"]},
+      {"args":[[["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]],"expected":["JFK","ATL","JFK","SFO","ATL","SFO"]},
+      {"args":[[["JFK","KUL"],["JFK","NRT"],["NRT","JFK"]]],"expected":["JFK","NRT","JFK","KUL"]},
+      {"args":[[["JFK","AAA"]]],"expected":["JFK","AAA"]},
+      {"args":[[["JFK","JFK"]]],"expected":["JFK","JFK"]},
+      {"args":[[["JFK","ATL"],["ATL","JFK"],["JFK","ATL"],["ATL","JFK"]]],"expected":["JFK","ATL","JFK","ATL","JFK"]},
+      {"args":[[["JFK","BBB"],["BBB","JFK"],["JFK","AAA"],["AAA","JFK"]]],"expected":["JFK","AAA","JFK","BBB","JFK"]},
+      {"args":[[["JFK","AAA"],["AAA","BBB"],["BBB","AAA"],["AAA","CCC"],["CCC","AAA"]]],"expected":["JFK","AAA","BBB","AAA","CCC","AAA"]},
+      {"args":[[["EZE","AXA"],["TIA","ANU"],["ANU","JFK"],["JFK","ANU"],["ANU","EZE"],["TIA","ANU"],["AXA","TIA"],["TIA","JFK"],["ANU","TIA"],["JFK","TIA"]]],"expected":["JFK","ANU","EZE","AXA","TIA","ANU","JFK","TIA","ANU","TIA","JFK"]}
+    ]
+  }
+}

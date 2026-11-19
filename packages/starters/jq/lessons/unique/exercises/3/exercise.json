@@ -1,0 +1,71 @@
+{
+  "title": "First event per user",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'unique_by(.user)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "user": "kim",
+            "action": "login"
+          },
+          {
+            "user": "lee",
+            "action": "login"
+          },
+          {
+            "user": "kim",
+            "action": "upload"
+          },
+          {
+            "user": "lee",
+            "action": "logout"
+          }
+        ],
+        "expected": "[\n  {\n    \"user\": \"kim\",\n    \"action\": \"login\"\n  },\n  {\n    \"user\": \"lee\",\n    \"action\": \"login\"\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "user": "sam",
+            "action": "signup"
+          },
+          {
+            "user": "sam",
+            "action": "login"
+          },
+          {
+            "user": "sam",
+            "action": "delete"
+          }
+        ],
+        "expected": "[\n  {\n    \"user\": \"sam\",\n    \"action\": \"signup\"\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "user": "uma",
+            "action": "login"
+          },
+          {
+            "user": "pat",
+            "action": "search"
+          },
+          {
+            "user": "ana",
+            "action": "login"
+          },
+          {
+            "user": "pat",
+            "action": "logout"
+          }
+        ],
+        "expected": "[\n  {\n    \"user\": \"ana\",\n    \"action\": \"login\"\n  },\n  {\n    \"user\": \"pat\",\n    \"action\": \"search\"\n  },\n  {\n    \"user\": \"uma\",\n    \"action\": \"login\"\n  }\n]"
+      }
+    ]
+  }
+}

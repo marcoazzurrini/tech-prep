@@ -1,0 +1,37 @@
+{
+  "title": "Host without quotes",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "start": "jq '.host' data.json",
+    "reference": "jq -r '.host' data.json",
+    "tests": [
+      {
+        "input": {
+          "host": "web-1.internal",
+          "port": 443,
+          "region": "eu"
+        },
+        "expected": "web-1.internal"
+      },
+      {
+        "input": {
+          "host": "db-1.internal",
+          "port": 5432,
+          "region": "eu"
+        },
+        "expected": "db-1.internal"
+      },
+      {
+        "input": {
+          "host": "cache-1.internal",
+          "port": 6379,
+          "region": "us"
+        },
+        "expected": "cache-1.internal"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Number and title",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.number' data.json",
+    "reference": "jq '.number, .title' data.json",
+    "tests": [
+      {
+        "input": {
+          "number": 212,
+          "title": "Login page is blank",
+          "state": "open",
+          "comments": 4
+        },
+        "expected": "212\n\"Login page is blank\""
+      },
+      {
+        "input": {
+          "number": 7,
+          "title": "Add dark mode",
+          "state": "closed",
+          "comments": 19
+        },
+        "expected": "7\n\"Add dark mode\""
+      },
+      {
+        "input": {
+          "number": 1530,
+          "title": "Typo in the docs",
+          "state": "open",
+          "comments": 0
+        },
+        "expected": "1530\n\"Typo in the docs\""
+      }
+    ]
+  }
+}

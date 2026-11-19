@@ -1,0 +1,65 @@
+{
+  "title": "Authors of the commits",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.commits[] | [.author]' data.json",
+    "reference": "jq '[.commits[] | .author]' data.json",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "commits": [
+            {
+              "sha": "9f2c1a",
+              "author": "cy"
+            },
+            {
+              "sha": "77b0de",
+              "author": "ada"
+            },
+            {
+              "sha": "c41e09",
+              "author": "cy"
+            }
+          ]
+        },
+        "expected": "[\n  \"cy\",\n  \"ada\",\n  \"cy\"\n]"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "commits": [
+            {
+              "sha": "0aa1f3",
+              "author": "bo"
+            },
+            {
+              "sha": "5be2c7",
+              "author": "dee"
+            }
+          ]
+        },
+        "expected": "[\n  \"bo\",\n  \"dee\"\n]"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "commits": [
+            {
+              "sha": "e09d41",
+              "author": "ada"
+            },
+            {
+              "sha": "b7730c",
+              "author": "ada"
+            }
+          ]
+        },
+        "expected": "[\n  \"ada\",\n  \"ada\"\n]"
+      }
+    ]
+  }
+}

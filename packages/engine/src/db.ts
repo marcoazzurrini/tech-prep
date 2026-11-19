@@ -2,13 +2,7 @@ import { Database } from "bun:sqlite";
 import { copyFileSync, existsSync, mkdirSync, renameSync } from "node:fs";
 import path from "node:path";
 
-import {
-  HOME_DIR,
-  RENAMED_COURSES,
-  aliases,
-  concepts,
-  problemIndex,
-} from "./content.ts";
+import { HOME_DIR, aliases, concepts, problemIndex } from "./content.ts";
 import type { Course, Language } from "./content.ts";
 
 /** Stored stages. "locked" and "available" are derived from prerequisites, never stored. */
@@ -22,9 +16,6 @@ export type Mode = "guided" | "solo" | "review";
 export type Outcome = "solved" | "solved_with_help" | "gave_up" | "paused";
 
 export type Recognition = "correct" | "partial" | "wrong" | "skipped";
-
-/** What a tutor-made exercise asks the learner to do. An example is only read. */
-export type ExerciseKind = "example" | "predict" | "arrange" | "answer";
 
 export type Confidence = "low" | "medium" | "high";
 
@@ -79,19 +70,15 @@ export interface NoteRow {
   created_at: string;
 }
 
-/** A tutor-made exercise. JSON columns hold text; `exercises.ts` parses them. */
-export interface ExerciseRow {
+/** An extra exercise, written by the tutor. JSON columns hold text; `extras.ts` parses them. */
+export interface ExtraRow {
   id: number;
-  kind: ExerciseKind;
   /** JSON list of target concept ids. */
   concepts: string;
-  language: Language;
   title: string;
   prompt: string;
-  /** What the learner sees: the code to read, or a JSON list of shuffled lines. */
-  body: string;
-  /** The hidden answer key, as JSON. */
-  answer: string;
+  /** How the answer is checked, answer key included, as JSON. */
+  definition: string;
   created_at: string;
   response: string | null;
   confidence: Confidence | null;
@@ -106,9 +93,9 @@ export interface ExerciseRow {
 export interface ReviewRow {
   id: number;
   concept_id: string;
-  /** 0 when the review came from an exercise. */
+  /** 0 when the review came from an extra exercise. */
   attempt_id: number;
-  exercise_id: number | null;
+  extra_id: number | null;
   rating: number;
   reviewed_at: string;
   due: string;
@@ -238,6 +225,22 @@ const MIGRATIONS: ((database: Database) => void)[] = [
       "UPDATE concept_state SET stage = 'passed' WHERE stage = 'practicing'"
     );
   },
+  // 2: the tutor's exercises are checked the way a course's are, so a row holds one
+  // definition where it held a kind, a body and an answer. The table is named for what its
+  // rows are: extra exercises. Rows from before keep their old answer in `definition`; they
+  // are closed here, so nothing reads it again.
+  (database) => {
+    database.exec(`
+      UPDATE exercises SET closed_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+        WHERE closed_at IS NULL;
+      ALTER TABLE exercises RENAME TO extras;
+      ALTER TABLE extras RENAME COLUMN answer TO definition;
+      ALTER TABLE extras DROP COLUMN kind;
+      ALTER TABLE extras DROP COLUMN body;
+      ALTER TABLE extras DROP COLUMN language;
+      ALTER TABLE reviews RENAME COLUMN exercise_id TO extra_id;
+    `);
+  },
 ];
 
 const schemaVersion = (database: Database): number =>
@@ -306,9 +309,6 @@ const migrate = (course: Course, database: Database, file: string): void => {
 
 const PROGRESS_DIR = path.join(HOME_DIR, "progress");
 
-/** The course whose progress lived in `progress.db` before each course had its own file. */
-const FIRST_COURSE = "dsa";
-
 /** Move a database file, with its WAL files, unless the target already exists. */
 const moveDatabase = (from: string, to: string): void => {
   if (existsSync(to) || !existsSync(from)) {
@@ -322,16 +322,10 @@ const moveDatabase = (from: string, to: string): void => {
   }
 };
 
-/** Bring a course's progress from where earlier versions kept it to its file. */
-const adoptOldDatabases = (id: string, file: string): void => {
-  for (const [from, to] of RENAMED_COURSES) {
-    if (to === id) {
-      moveDatabase(path.join(PROGRESS_DIR, `${from}.db`), file);
-    }
-  }
-
-  if (id === FIRST_COURSE) {
-    moveDatabase(path.join(HOME_DIR, "progress.db"), file);
+/** Bring a course's progress from the file it had under an earlier id. */
+const adoptOldDatabases = (course: Course, file: string): void => {
+  for (const earlier of course.formerly) {
+    moveDatabase(path.join(PROGRESS_DIR, `${earlier}.db`), file);
   }
 };
 
@@ -347,7 +341,7 @@ export const open = (course: Course): Database => {
   mkdirSync(PROGRESS_DIR, { recursive: true });
   const file = path.join(PROGRESS_DIR, `${id}.db`);
 
-  adoptOldDatabases(id, file);
+  adoptOldDatabases(course, file);
 
   const db = new Database(file, { create: true, strict: true });
   db.exec("PRAGMA journal_mode = WAL;");
@@ -527,9 +521,9 @@ export const addNote = (
     .run(conceptId, slug, text, new Date().toISOString());
 };
 
-export const exerciseRow = (course: Course, id: number): ExerciseRow => {
+export const extraRow = (course: Course, id: number): ExtraRow => {
   const row = open(course)
-    .query<ExerciseRow, [number]>("SELECT * FROM exercises WHERE id = ?")
+    .query<ExtraRow, [number]>("SELECT * FROM extras WHERE id = ?")
     .get(id);
 
   if (!row) {
@@ -540,28 +534,28 @@ export const exerciseRow = (course: Course, id: number): ExerciseRow => {
 };
 
 /** The exercise on screen: the newest one the tutor has not moved on from. */
-export const openExercise = (course: Course): ExerciseRow | null =>
+export const openExtra = (course: Course): ExtraRow | null =>
   open(course)
-    .query<ExerciseRow, []>(
-      "SELECT * FROM exercises WHERE closed_at IS NULL ORDER BY id DESC LIMIT 1"
+    .query<ExtraRow, []>(
+      "SELECT * FROM extras WHERE closed_at IS NULL ORDER BY id DESC LIMIT 1"
     )
     .get();
 
 /** The tutor moved on: nothing stays on screen from earlier exercises. */
-export const closeExercises = (course: Course, now = new Date()): void => {
+export const closeExtras = (course: Course, now = new Date()): void => {
   open(course)
-    .query("UPDATE exercises SET closed_at = ? WHERE closed_at IS NULL")
+    .query("UPDATE extras SET closed_at = ? WHERE closed_at IS NULL")
     .run(now.toISOString());
 };
 
-export const exercisesFor = (
+export const extrasFor = (
   course: Course,
   conceptId: string,
   limit = 5
-): ExerciseRow[] =>
+): ExtraRow[] =>
   open(course)
-    .query<ExerciseRow, [string, number]>(
-      `SELECT * FROM exercises WHERE EXISTS (SELECT 1 FROM json_each(exercises.concepts) WHERE value = ?)
+    .query<ExtraRow, [string, number]>(
+      `SELECT * FROM extras WHERE EXISTS (SELECT 1 FROM json_each(extras.concepts) WHERE value = ?)
        ORDER BY id DESC LIMIT ?`
     )
     .all(conceptId, limit);
@@ -662,13 +656,13 @@ export const insertReview = (
 ): void => {
   open(course)
     .query(
-      `INSERT INTO reviews (concept_id, attempt_id, exercise_id, rating, reviewed_at, due, stability, difficulty, implicit_credit, source_concept)
+      `INSERT INTO reviews (concept_id, attempt_id, extra_id, rating, reviewed_at, due, stability, difficulty, implicit_credit, source_concept)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       row.concept_id,
       row.attempt_id,
-      row.exercise_id,
+      row.extra_id,
       row.rating,
       now.toISOString(),
       row.due,
@@ -679,46 +673,40 @@ export const insertReview = (
     );
 };
 
-export const insertExercise = (
+export const insertExtra = (
   course: Course,
-  row: Pick<
-    ExerciseRow,
-    "kind" | "concepts" | "language" | "title" | "prompt" | "body" | "answer"
-  >,
+  row: Pick<ExtraRow, "concepts" | "title" | "prompt" | "definition">,
   now: Date
 ): number =>
   Number(
     open(course)
       .query(
-        `INSERT INTO exercises (kind, concepts, language, title, prompt, body, answer, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+        `INSERT INTO extras (concepts, title, prompt, definition, created_at)
+         VALUES (?, ?, ?, ?, ?)`
       )
       .run(
-        row.kind,
         row.concepts,
-        row.language,
         row.title,
         row.prompt,
-        row.body,
-        row.answer,
+        row.definition,
         now.toISOString()
       ).lastInsertRowid
   );
 
 /** Keep the strongest hint given on an exercise. */
-export const raiseExerciseHint = (
+export const raiseExtraHint = (
   course: Course,
   id: number,
   level: number
 ): void => {
   open(course)
     .query(
-      "UPDATE exercises SET max_hint_level = MAX(max_hint_level, ?) WHERE id = ?"
+      "UPDATE extras SET max_hint_level = MAX(max_hint_level, ?) WHERE id = ?"
     )
     .run(level, id);
 };
 
-export const saveExerciseResponse = (
+export const saveExtraResponse = (
   course: Course,
   id: number,
   response: string,
@@ -727,19 +715,19 @@ export const saveExerciseResponse = (
 ): void => {
   open(course)
     .query(
-      "UPDATE exercises SET response = ?, confidence = ?, submitted_at = ? WHERE id = ?"
+      "UPDATE extras SET response = ?, confidence = ?, submitted_at = ? WHERE id = ?"
     )
     .run(response, confidence, now.toISOString(), id);
 };
 
 /** Store an exercise's graded results, as JSON. */
-export const saveExerciseResults = (
+export const saveExtraResults = (
   course: Course,
   id: number,
   results: string,
   now: Date
 ): void => {
   open(course)
-    .query("UPDATE exercises SET results = ?, graded_at = ? WHERE id = ?")
+    .query("UPDATE extras SET results = ?, graded_at = ? WHERE id = ?")
     .run(results, now.toISOString(), id);
 };

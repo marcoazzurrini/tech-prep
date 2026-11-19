@@ -1,0 +1,25 @@
+{
+  "title": "Power with Remainder",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "power_mod",
+      "typescript": "powerMod"
+    },
+    "stubs": {
+      "python": "def power_mod(base: int, exponent: int, mod: int) -> int:\n    pass\n",
+      "typescript": "export function powerMod(base: number, exponent: number, mod: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[2,10,1000],"expected":24},
+      {"args":[3,0,7],"expected":1},
+      {"args":[7,222,10],"expected":9},
+      {"args":[5,3,13],"expected":8},
+      {"args":[10,5,1],"expected":0},
+      {"args":[1,1000000000,97],"expected":1},
+      {"args":[2,1000000000,999983],"expected":187762},
+      {"args":[999999,999999999,1000000],"expected":999999},
+      {"args":[1000000,3,999983],"expected":4913}
+    ]
+  }
+}

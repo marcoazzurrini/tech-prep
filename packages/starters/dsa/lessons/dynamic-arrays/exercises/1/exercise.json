@@ -1,0 +1,25 @@
+{
+  "title": "First and Last Letters",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "first_and_last_letters",
+      "typescript": "firstAndLastLetters"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def first_and_last_letters(words: list[str]) -> list[str]:\n    pass\n",
+      "typescript": "export function firstAndLastLetters(words: string[]): string[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[["apple","kiwi"]],"expected":["ae","ki"]},
+      {"args":[["a"]],"expected":["aa"]},
+      {"args":[[]],"expected":[]},
+      {"args":[["go","to"]],"expected":["go","to"]},
+      {"args":[["level","x","banana"]],"expected":["ll","xx","ba"]},
+      {"args":[["abc","abc","abc"]],"expected":["ac","ac","ac"]},
+      {"args":[["zebra"]],"expected":["za"]},
+      {"args":[["i","am","here","today","friend"]],"expected":["ii","am","he","ty","fd"]}
+    ]
+  }
+}

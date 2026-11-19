@@ -1,0 +1,39 @@
+{
+  "title": "Settings of a service",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.env | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "service": "mail",
+          "env": {
+            "HOST": "smtp-1",
+            "PORT": "25",
+            "TLS": "on"
+          }
+        },
+        "expected": "3"
+      },
+      {
+        "input": {
+          "service": "auth",
+          "env": {
+            "SECRET_FILE": "/run/secret"
+          }
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "service": "cdn",
+          "env": {}
+        },
+        "expected": "0"
+      }
+    ]
+  }
+}

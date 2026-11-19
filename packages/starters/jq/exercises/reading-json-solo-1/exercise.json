@@ -1,0 +1,25 @@
+{
+  "title": "Inside the quota",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.quota.limit' data.json",
+      "file": "data.json",
+      "input": {
+        "user": "cy",
+        "roles": [
+          "dev",
+          "ops"
+        ],
+        "quota": {
+          "used": 12,
+          "limit": 50
+        }
+      }
+    },
+    "expected": "50"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "title": "Slow requests",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map(select(.ms > 500)) | length' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "path": "/",
+            "ms": 120
+          },
+          {
+            "path": "/search",
+            "ms": 910
+          },
+          {
+            "path": "/cart",
+            "ms": 500
+          },
+          {
+            "path": "/pay",
+            "ms": 1340
+          }
+        ],
+        "expected": "2"
+      },
+      {
+        "input": [
+          {
+            "path": "/health",
+            "ms": 4
+          },
+          {
+            "path": "/login",
+            "ms": 230
+          }
+        ],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "path": "/export",
+            "ms": 7200
+          }
+        ],
+        "expected": "1"
+      }
+    ]
+  }
+}

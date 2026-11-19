@@ -1,0 +1,67 @@
+{
+  "title": "Cost of the parcels",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.handling as $fee | reduce .parcels[] as $p (0; . + $p.postage + $fee)' data.json",
+    "tests": [
+      {
+        "input": {
+          "handling": 3,
+          "parcels": [
+            {
+              "to": "Oslo",
+              "postage": 12
+            },
+            {
+              "to": "Bergen",
+              "postage": 9
+            }
+          ]
+        },
+        "expected": "27"
+      },
+      {
+        "input": {
+          "handling": 5,
+          "parcels": []
+        },
+        "expected": "0"
+      },
+      {
+        "input": {
+          "handling": 2,
+          "parcels": [
+            {
+              "to": "Tromsø",
+              "postage": 30
+            }
+          ]
+        },
+        "expected": "32"
+      },
+      {
+        "input": {
+          "handling": 0,
+          "parcels": [
+            {
+              "to": "Oslo",
+              "postage": 4
+            },
+            {
+              "to": "Oslo",
+              "postage": 4
+            },
+            {
+              "to": "Bodø",
+              "postage": 11
+            }
+          ]
+        },
+        "expected": "19"
+      }
+    ]
+  }
+}

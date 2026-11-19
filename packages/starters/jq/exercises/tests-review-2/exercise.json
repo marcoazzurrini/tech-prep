@@ -1,0 +1,53 @@
+{
+  "title": "Enough approvals",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.approvals | length >= 2' data.json",
+    "tests": [
+      {
+        "input": {
+          "number": 52,
+          "title": "Add search",
+          "approvals": [
+            "ada",
+            "bo"
+          ]
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "number": 53,
+          "title": "Fix typo",
+          "approvals": [
+            "cy"
+          ]
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "number": 54,
+          "title": "New API",
+          "approvals": []
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "number": 55,
+          "title": "Upgrade deps",
+          "approvals": [
+            "dee",
+            "eli",
+            "fay"
+          ]
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

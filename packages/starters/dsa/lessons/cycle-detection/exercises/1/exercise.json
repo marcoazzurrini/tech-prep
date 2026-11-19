@@ -1,0 +1,25 @@
+{
+  "title": "Jump Forever",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "can_jump_forever",
+      "typescript": "canJumpForever"
+    },
+    "stubs": {
+      "python": "def can_jump_forever(n: int, jumps: list[list[int]], start: int) -> bool:\n    pass\n",
+      "typescript": "export function canJumpForever(n: number, jumps: number[][], start: number): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[3,[[0,1],[1,2],[2,0]],0],"expected":true},
+      {"args":[3,[[0,1],[1,2]],0],"expected":false},
+      {"args":[4,[[1,2],[2,1],[0,3]],0],"expected":false},
+      {"args":[1,[],0],"expected":false},
+      {"args":[4,[[0,1],[1,2],[2,1]],0],"expected":true},
+      {"args":[4,[[0,1],[0,2],[1,3],[2,3]],0],"expected":false},
+      {"args":[5,[[0,1],[1,2],[2,3],[3,1],[0,4]],4],"expected":false},
+      {"args":[5,[[0,1],[1,2],[2,3],[3,1],[0,4]],0],"expected":true},
+      {"args":[5,[[0,1],[0,2],[1,3],[2,3],[3,4],[4,2]],0],"expected":true}
+    ]
+  }
+}

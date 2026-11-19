@@ -1,0 +1,60 @@
+{
+  "title": "Hosts of the servers",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.servers[] | .host' data.json",
+    "tests": [
+      {
+        "input": {
+          "env": "prod",
+          "servers": [
+            {
+              "host": "web-1",
+              "port": 443
+            },
+            {
+              "host": "db-1",
+              "port": 5432
+            }
+          ]
+        },
+        "expected": "\"web-1\"\n\"db-1\""
+      },
+      {
+        "input": {
+          "env": "dev",
+          "servers": [
+            {
+              "host": "local-1",
+              "port": 8080
+            }
+          ]
+        },
+        "expected": "\"local-1\""
+      },
+      {
+        "input": {
+          "env": "staging",
+          "servers": [
+            {
+              "host": "web-9",
+              "port": 443
+            },
+            {
+              "host": "cache-2",
+              "port": 6379
+            },
+            {
+              "host": "db-4",
+              "port": 5432
+            }
+          ]
+        },
+        "expected": "\"web-9\"\n\"cache-2\"\n\"db-4\""
+      }
+    ]
+  }
+}

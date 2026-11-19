@@ -1,0 +1,48 @@
+{
+  "title": "Who placed the order",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '{id, total, email: .customer.email}' data.json",
+    "tests": [
+      {
+        "input": {
+          "id": "ord-1041",
+          "total": 59.9,
+          "paid": true,
+          "customer": {
+            "name": "Lena",
+            "email": "lena@example.com"
+          }
+        },
+        "expected": "{\n  \"id\": \"ord-1041\",\n  \"total\": 59.9,\n  \"email\": \"lena@example.com\"\n}"
+      },
+      {
+        "input": {
+          "id": "ord-1042",
+          "total": 12,
+          "paid": false,
+          "customer": {
+            "name": "Omar",
+            "email": "omar@example.com"
+          }
+        },
+        "expected": "{\n  \"id\": \"ord-1042\",\n  \"total\": 12,\n  \"email\": \"omar@example.com\"\n}"
+      },
+      {
+        "input": {
+          "id": "ord-1050",
+          "total": 240.5,
+          "paid": true,
+          "customer": {
+            "name": "Ines",
+            "email": "ines@example.com"
+          }
+        },
+        "expected": "{\n  \"id\": \"ord-1050\",\n  \"total\": 240.5,\n  \"email\": \"ines@example.com\"\n}"
+      }
+    ]
+  }
+}

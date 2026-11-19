@@ -1,0 +1,39 @@
+{
+  "title": "Name and version",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.name, .version' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "left-trim",
+          "version": "2.0.1",
+          "license": "MIT",
+          "private": false
+        },
+        "expected": "\"left-trim\"\n\"2.0.1\""
+      },
+      {
+        "input": {
+          "name": "tiny-log",
+          "version": "0.4.0",
+          "license": "ISC",
+          "private": false
+        },
+        "expected": "\"tiny-log\"\n\"0.4.0\""
+      },
+      {
+        "input": {
+          "name": "shop-web",
+          "version": "11.2.3",
+          "license": "UNLICENSED",
+          "private": true
+        },
+        "expected": "\"shop-web\"\n\"11.2.3\""
+      }
+    ]
+  }
+}

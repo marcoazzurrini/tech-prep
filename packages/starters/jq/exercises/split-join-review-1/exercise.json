@@ -1,0 +1,33 @@
+{
+  "title": "Depth of a path",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.path | split(\"/\") | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "path": "src/app/routes/index.ts",
+          "lines": 84
+        },
+        "expected": "4"
+      },
+      {
+        "input": {
+          "path": "README.md",
+          "lines": 30
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "path": "packages/ui/button.tsx",
+          "lines": 51
+        },
+        "expected": "3"
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Content type",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.response.headers[\"content-type\"]' data.json",
+    "tests": [
+      {
+        "input": {
+          "response": {
+            "headers": {
+              "content-type": "application/json",
+              "server": "nginx"
+            },
+            "status": 200
+          }
+        },
+        "expected": "\"application/json\""
+      },
+      {
+        "input": {
+          "response": {
+            "headers": {
+              "content-type": "text/html",
+              "server": "nginx"
+            },
+            "status": 404
+          }
+        },
+        "expected": "\"text/html\""
+      },
+      {
+        "input": {
+          "response": {
+            "headers": {
+              "content-type": "image/png",
+              "server": "cdn"
+            },
+            "status": 200
+          }
+        },
+        "expected": "\"image/png\""
+      }
+    ]
+  }
+}

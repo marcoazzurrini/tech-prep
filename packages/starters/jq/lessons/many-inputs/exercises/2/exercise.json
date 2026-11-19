@@ -1,0 +1,24 @@
+{
+  "title": "A smaller request log",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.jsonl",
+    "reference": "jq -c '.request' data.jsonl",
+    "tests": [
+      {
+        "input_text": "{\"time\": \"10:01\", \"request\": {\"method\": \"GET\", \"path\": \"/\"}}\n{\"time\": \"10:02\", \"request\": {\"method\": \"POST\", \"path\": \"/login\"}}\n{\"time\": \"10:05\", \"request\": {\"method\": \"GET\", \"path\": \"/cart\"}}\n",
+        "expected": "{\"method\":\"GET\",\"path\":\"/\"}\n{\"method\":\"POST\",\"path\":\"/login\"}\n{\"method\":\"GET\",\"path\":\"/cart\"}"
+      },
+      {
+        "input_text": "{\"time\": \"23:59\", \"request\": {\"method\": \"DELETE\", \"path\": \"/session\"}}\n",
+        "expected": "{\"method\":\"DELETE\",\"path\":\"/session\"}"
+      },
+      {
+        "input_text": "{\"time\": \"07:30\", \"request\": {\"method\": \"PUT\", \"path\": \"/profile\"}}\n{\"time\": \"07:31\", \"request\": {\"method\": \"GET\", \"path\": \"/profile\"}}\n",
+        "expected": "{\"method\":\"PUT\",\"path\":\"/profile\"}\n{\"method\":\"GET\",\"path\":\"/profile\"}"
+      }
+    ]
+  }
+}

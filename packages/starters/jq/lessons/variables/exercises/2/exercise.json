@@ -1,0 +1,47 @@
+{
+  "title": "Tracks with their owner",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.owner as $owner | .tracks | map({title, owner: $owner})' data.json",
+    "tests": [
+      {
+        "input": {
+          "owner": "ada",
+          "tracks": [
+            {
+              "title": "Blue Hour",
+              "seconds": 201
+            },
+            {
+              "title": "Slow Train",
+              "seconds": 185
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"title\": \"Blue Hour\",\n    \"owner\": \"ada\"\n  },\n  {\n    \"title\": \"Slow Train\",\n    \"owner\": \"ada\"\n  }\n]"
+      },
+      {
+        "input": {
+          "owner": "bo",
+          "tracks": [
+            {
+              "title": "Night Bus",
+              "seconds": 240
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"title\": \"Night Bus\",\n    \"owner\": \"bo\"\n  }\n]"
+      },
+      {
+        "input": {
+          "owner": "cy",
+          "tracks": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

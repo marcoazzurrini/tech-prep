@@ -1,0 +1,26 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "min_cost_connect_points",
+      "typescript": "minCostConnectPoints"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def min_cost_connect_points(points: list[list[int]]) -> int:\n    pass\n",
+      "typescript": "import { Heap } from \"./ds.ts\";\n\nexport function minCostConnectPoints(points: number[][]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[[0,0],[2,2],[3,10],[5,2],[7,0]]],"expected":20},
+      {"args":[[[3,12],[-2,5],[-4,1]]],"expected":18},
+      {"args":[[[0,0]]],"expected":0},
+      {"args":[[[0,0],[1,1]]],"expected":2},
+      {"args":[[[0,0],[1,1],[1,0],[-1,1]]],"expected":4},
+      {"args":[[[-1000000,-1000000],[1000000,1000000]]],"expected":4000000},
+      {"args":[[[2,-3],[-17,-8],[13,8],[-17,-15]]],"expected":53},
+      {"args":[[[0,0],[0,1],[0,2],[0,3],[0,4]]],"expected":4},
+      {"args":[[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]],"expected":8},
+      {"args":[[[5,5],[-5,5],[-5,-5],[5,-5],[0,0],[9,9],[-9,-8]]],"expected":55}
+    ]
+  }
+}

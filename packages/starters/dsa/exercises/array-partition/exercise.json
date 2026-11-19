@@ -1,0 +1,26 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "array_pair_sum",
+      "typescript": "arrayPairSum"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def array_pair_sum(nums: list[int]) -> int:\n    pass\n",
+      "typescript": "export function arrayPairSum(nums: number[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[1,4,3,2]],"expected":4},
+      {"args":[[6,2,6,5,1,2]],"expected":9},
+      {"args":[[1,2]],"expected":1},
+      {"args":[[-1,-2]],"expected":-2},
+      {"args":[[5,5,5,5]],"expected":10},
+      {"args":[[-3,0,3,7]],"expected":0},
+      {"args":[[1,1000,2,999]],"expected":1000},
+      {"args":[[0,0]],"expected":0},
+      {"args":[[-10000,10000]],"expected":-10000},
+      {"args":[[9,8,7,6,5,4,3,2,1,0]],"expected":20}
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "title": "Status of each build",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.[] | .result.status]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 301,
+            "result": {
+              "status": "passed",
+              "seconds": 41
+            }
+          },
+          {
+            "id": 302,
+            "result": {
+              "status": "failed",
+              "seconds": 12
+            }
+          },
+          {
+            "id": 303,
+            "result": {
+              "status": "passed",
+              "seconds": 38
+            }
+          }
+        ],
+        "expected": "[\n  \"passed\",\n  \"failed\",\n  \"passed\"\n]"
+      },
+      {
+        "input": [
+          {
+            "id": 9,
+            "result": {
+              "status": "failed",
+              "seconds": 3
+            }
+          }
+        ],
+        "expected": "[\n  \"failed\"\n]"
+      },
+      {
+        "input": [
+          {
+            "id": 50,
+            "result": {
+              "status": "running",
+              "seconds": 7
+            }
+          },
+          {
+            "id": 51,
+            "result": {
+              "status": "passed",
+              "seconds": 64
+            }
+          }
+        ],
+        "expected": "[\n  \"running\",\n  \"passed\"\n]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "title": "Last number",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[-1]' data.json",
+    "tests": [
+      {
+        "input": [
+          3,
+          8,
+          5,
+          13
+        ],
+        "expected": "13"
+      },
+      {
+        "input": [
+          21,
+          34
+        ],
+        "expected": "34"
+      },
+      {
+        "input": [
+          1,
+          1,
+          2,
+          3,
+          5,
+          8
+        ],
+        "expected": "8"
+      }
+    ]
+  }
+}

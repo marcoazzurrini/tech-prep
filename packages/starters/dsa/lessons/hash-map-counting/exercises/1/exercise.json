@@ -1,0 +1,26 @@
+{
+  "title": "Values Seen Exactly Twice",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "count_exactly_twice",
+      "typescript": "countExactlyTwice"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def count_exactly_twice(nums: list[int]) -> int:\n    pass\n",
+      "typescript": "export function countExactlyTwice(nums: number[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[1,2,2,3,3,3]],"expected":1},
+      {"args":[[4,4,5,5]],"expected":2},
+      {"args":[[]],"expected":0},
+      {"args":[[7]],"expected":0},
+      {"args":[[1,1,1,1]],"expected":0},
+      {"args":[[-1,-1,0,0,0,2]],"expected":1},
+      {"args":[[5,3,5,3,9,9,9,8]],"expected":2},
+      {"args":[[1,2,3,1,2,3]],"expected":3},
+      {"args":[[1000000000,-1000000000,1000000000]],"expected":1}
+    ]
+  }
+}

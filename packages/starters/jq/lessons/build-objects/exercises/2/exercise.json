@@ -1,0 +1,49 @@
+{
+  "title": "Short package summary",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '{name}' data.json",
+    "reference": "jq '{name, version, repo: .repository.url}' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "left-trim",
+          "version": "2.0.1",
+          "license": "MIT",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/left-trim.git"
+          }
+        },
+        "expected": "{\n  \"name\": \"left-trim\",\n  \"version\": \"2.0.1\",\n  \"repo\": \"https://example.com/left-trim.git\"\n}"
+      },
+      {
+        "input": {
+          "name": "tiny-log",
+          "version": "0.4.0",
+          "license": "ISC",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/tiny-log.git"
+          }
+        },
+        "expected": "{\n  \"name\": \"tiny-log\",\n  \"version\": \"0.4.0\",\n  \"repo\": \"https://example.com/tiny-log.git\"\n}"
+      },
+      {
+        "input": {
+          "name": "dates",
+          "version": "11.2.3",
+          "private": true,
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/dates.git"
+          }
+        },
+        "expected": "{\n  \"name\": \"dates\",\n  \"version\": \"11.2.3\",\n  \"repo\": \"https://example.com/dates.git\"\n}"
+      }
+    ]
+  }
+}

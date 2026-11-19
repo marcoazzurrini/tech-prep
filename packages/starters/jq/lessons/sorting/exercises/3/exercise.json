@@ -1,0 +1,63 @@
+{
+  "title": "Best players first",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'sort_by(.score) | reverse | map(.name)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "kim",
+            "score": 310
+          },
+          {
+            "name": "lee",
+            "score": 480
+          },
+          {
+            "name": "sam",
+            "score": 150
+          }
+        ],
+        "expected": "[\n  \"lee\",\n  \"kim\",\n  \"sam\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "ana",
+            "score": 20
+          },
+          {
+            "name": "ben",
+            "score": 10
+          }
+        ],
+        "expected": "[\n  \"ana\",\n  \"ben\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "joy",
+            "score": 7
+          },
+          {
+            "name": "max",
+            "score": 99
+          },
+          {
+            "name": "pat",
+            "score": 54
+          },
+          {
+            "name": "uma",
+            "score": 61
+          }
+        ],
+        "expected": "[\n  \"max\",\n  \"uma\",\n  \"pat\",\n  \"joy\"\n]"
+      }
+    ]
+  }
+}

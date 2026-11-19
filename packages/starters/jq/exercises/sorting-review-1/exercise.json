@@ -1,0 +1,80 @@
+{
+  "title": "Cheapest plan",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.plans | sort_by(.price) | .[0].name' data.json",
+    "tests": [
+      {
+        "input": {
+          "currency": "EUR",
+          "plans": [
+            {
+              "name": "team",
+              "price": 29
+            },
+            {
+              "name": "solo",
+              "price": 9
+            },
+            {
+              "name": "company",
+              "price": 99
+            }
+          ]
+        },
+        "expected": "\"solo\""
+      },
+      {
+        "input": {
+          "currency": "USD",
+          "plans": [
+            {
+              "name": "basic",
+              "price": 5
+            },
+            {
+              "name": "plus",
+              "price": 12
+            }
+          ]
+        },
+        "expected": "\"basic\""
+      },
+      {
+        "input": {
+          "currency": "EUR",
+          "plans": [
+            {
+              "name": "gold",
+              "price": 40
+            },
+            {
+              "name": "silver",
+              "price": 25
+            },
+            {
+              "name": "bronze",
+              "price": 15
+            }
+          ]
+        },
+        "expected": "\"bronze\""
+      },
+      {
+        "input": {
+          "currency": "GBP",
+          "plans": [
+            {
+              "name": "only",
+              "price": 7
+            }
+          ]
+        },
+        "expected": "\"only\""
+      }
+    ]
+  }
+}

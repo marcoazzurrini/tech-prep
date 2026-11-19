@@ -1,0 +1,54 @@
+{
+  "title": "Hosts in the inventory",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.[] | .host' data.json",
+    "reference": "jq '.[] | .host?' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "host": "web-1",
+            "port": 443
+          },
+          "decommissioned",
+          {
+            "host": "db-1",
+            "port": 5432
+          }
+        ],
+        "expected": "\"web-1\"\n\"db-1\""
+      },
+      {
+        "input": [
+          {
+            "host": "cache-1",
+            "port": 6379
+          },
+          {
+            "host": "cache-2",
+            "port": 6379
+          }
+        ],
+        "expected": "\"cache-1\"\n\"cache-2\""
+      },
+      {
+        "input": [
+          404,
+          {
+            "host": "mail-1",
+            "port": 25
+          },
+          [
+            "old-1",
+            "old-2"
+          ]
+        ],
+        "expected": "\"mail-1\""
+      }
+    ]
+  }
+}

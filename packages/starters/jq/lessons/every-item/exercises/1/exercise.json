@@ -1,0 +1,36 @@
+{
+  "title": "Every region",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.[0]' data.json",
+    "reference": "jq '.[]' data.json",
+    "tests": [
+      {
+        "input": [
+          "eu-west",
+          "us-east",
+          "ap-south"
+        ],
+        "expected": "\"eu-west\"\n\"us-east\"\n\"ap-south\""
+      },
+      {
+        "input": [
+          "eu-north"
+        ],
+        "expected": "\"eu-north\""
+      },
+      {
+        "input": [
+          "us-west",
+          "us-east",
+          "sa-east",
+          "eu-west"
+        ],
+        "expected": "\"us-west\"\n\"us-east\"\n\"sa-east\"\n\"eu-west\""
+      }
+    ]
+  }
+}

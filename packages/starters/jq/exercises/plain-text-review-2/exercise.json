@@ -1,0 +1,78 @@
+{
+  "title": "Names of the pods",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r '.items | .[] | .metadata.name' data.json",
+    "tests": [
+      {
+        "input": {
+          "kind": "PodList",
+          "items": [
+            {
+              "metadata": {
+                "name": "api-7f9c",
+                "namespace": "prod"
+              },
+              "ready": true
+            },
+            {
+              "metadata": {
+                "name": "worker-2b1d",
+                "namespace": "prod"
+              },
+              "ready": false
+            }
+          ]
+        },
+        "expected": "api-7f9c\nworker-2b1d"
+      },
+      {
+        "input": {
+          "kind": "PodList",
+          "items": [
+            {
+              "metadata": {
+                "name": "cron-55aa",
+                "namespace": "jobs"
+              },
+              "ready": true
+            }
+          ]
+        },
+        "expected": "cron-55aa"
+      },
+      {
+        "input": {
+          "kind": "PodList",
+          "items": [
+            {
+              "metadata": {
+                "name": "web-1a2b",
+                "namespace": "prod"
+              },
+              "ready": true
+            },
+            {
+              "metadata": {
+                "name": "web-3c4d",
+                "namespace": "prod"
+              },
+              "ready": true
+            },
+            {
+              "metadata": {
+                "name": "db-0",
+                "namespace": "data"
+              },
+              "ready": true
+            }
+          ]
+        },
+        "expected": "web-1a2b\nweb-3c4d\ndb-0"
+      }
+    ]
+  }
+}

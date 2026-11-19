@@ -1,0 +1,56 @@
+{
+  "title": "Servers of one env",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "start": "jq --arg env prod '.[] | select(.env == \"dev\")' data.json",
+    "reference": "jq --arg env prod '.[] | select(.env == $env)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "host": "web-1",
+            "env": "prod"
+          },
+          {
+            "host": "web-2",
+            "env": "dev"
+          },
+          {
+            "host": "db-1",
+            "env": "prod"
+          }
+        ],
+        "expected": "{\n  \"host\": \"web-1\",\n  \"env\": \"prod\"\n}\n{\n  \"host\": \"db-1\",\n  \"env\": \"prod\"\n}"
+      },
+      {
+        "input": [
+          {
+            "host": "cache-1",
+            "env": "dev"
+          },
+          {
+            "host": "mq-1",
+            "env": "prod"
+          }
+        ],
+        "expected": "{\n  \"host\": \"mq-1\",\n  \"env\": \"prod\"\n}"
+      },
+      {
+        "input": [
+          {
+            "host": "test-1",
+            "env": "dev"
+          },
+          {
+            "host": "test-2",
+            "env": "staging"
+          }
+        ],
+        "expected": ""
+      }
+    ]
+  }
+}

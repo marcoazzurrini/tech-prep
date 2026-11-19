@@ -20,6 +20,7 @@ import { BookOpen, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useReducer, useState } from "react";
 
+import { ExerciseAside, ExerciseWorkbench, isCompact } from "./checks";
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
 import {
   currentPart,
@@ -30,7 +31,6 @@ import {
   trail,
 } from "./lesson-flow";
 import type { Finished, FlowEvent } from "./lesson-flow";
-import { TaskAside, TaskWorkbench, isCompact } from "./task-kinds";
 import type { Lesson, LessonPart, Problem } from "./types";
 
 /** " · Task 2 of 3" for a step with several tasks, else nothing. */
@@ -123,9 +123,10 @@ const GuidedStep = ({
       <SplitSide key={lesson.guided.slug}>{text}</SplitSide>
       <SplitSide stack>
         {working || finished ? (
-          <TaskWorkbench
+          <ExerciseWorkbench
             done={again ?? undefined}
-            key={lesson.guided.slug}
+            // A new attempt on the same exercise starts with a new answer area.
+            key={`${lesson.guided.slug}:${lesson.attempt?.id ?? ""}`}
             note={note}
             problem={lesson.guided}
             strip={isCompact(lesson.guided) ? { label: "Try it" } : undefined}
@@ -178,7 +179,7 @@ const PastTask = ({ slug, back, onBack, onOpenTutor }: PastTaskProps) => {
   }
 
   return (
-    <TaskWorkbench
+    <ExerciseWorkbench
       done={{
         actions: (
           <Button variant="primary" onClick={onBack}>
@@ -243,9 +244,9 @@ const SoloWork = ({
         : "The lesson is closed. Opening it counts as help.";
 
     return (
-      <TaskWorkbench
+      <ExerciseWorkbench
         done={footer ?? undefined}
-        key={lesson.solo.slug}
+        key={`${lesson.solo.slug}:${lesson.attempt?.id ?? ""}`}
         note={[note, closed].filter(Boolean).join(" ") || undefined}
         problem={lesson.solo}
         strip={strip}
@@ -331,7 +332,7 @@ const SoloTaskText = ({ lesson, task }: { lesson: Lesson; task: string }) => (
     title={lesson.solo.title}
   >
     <ProblemStatement text={lesson.solo.statement ?? ""} />
-    <TaskAside problem={lesson.solo} />
+    <ExerciseAside problem={lesson.solo} />
     {lesson.status !== "done" && (
       <p className="tp-task-text__note">
         The lesson is closed. Opening it counts as help.

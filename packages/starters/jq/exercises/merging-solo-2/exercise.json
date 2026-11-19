@@ -1,0 +1,36 @@
+{
+  "title": "Email of the employee",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.login + \"@\" + .domain' data.json",
+    "tests": [
+      {
+        "input": {
+          "login": "ada",
+          "domain": "example.com",
+          "team": "core"
+        },
+        "expected": "\"ada@example.com\""
+      },
+      {
+        "input": {
+          "login": "bo.lind",
+          "domain": "example.com",
+          "team": "sales"
+        },
+        "expected": "\"bo.lind@example.com\""
+      },
+      {
+        "input": {
+          "login": "cy",
+          "domain": "mail.example.com",
+          "team": "infra"
+        },
+        "expected": "\"cy@mail.example.com\""
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "title": "A bare version",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.version | sub(\"v\"; \"\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "package": "left-pad",
+          "version": "v1.4.2"
+        },
+        "expected": "\"1.4.2\""
+      },
+      {
+        "input": {
+          "package": "vite-kit",
+          "version": "v3.1.0-preview"
+        },
+        "expected": "\"3.1.0-preview\""
+      },
+      {
+        "input": {
+          "package": "dev-tools",
+          "version": "v10.12.0"
+        },
+        "expected": "\"10.12.0\""
+      }
+    ]
+  }
+}

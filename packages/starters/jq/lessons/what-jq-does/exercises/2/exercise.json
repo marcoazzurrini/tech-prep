@@ -1,0 +1,34 @@
+{
+  "title": "City of the user",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.name' data.json",
+    "reference": "jq '.city' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "Ada",
+          "city": "Oslo"
+        },
+        "expected": "\"Oslo\""
+      },
+      {
+        "input": {
+          "name": "Bo",
+          "city": "Bergen"
+        },
+        "expected": "\"Bergen\""
+      },
+      {
+        "input": {
+          "name": "Cy",
+          "city": "Tromsø"
+        },
+        "expected": "\"Tromsø\""
+      }
+    ]
+  }
+}

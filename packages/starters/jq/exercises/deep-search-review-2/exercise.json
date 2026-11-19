@@ -1,0 +1,55 @@
+{
+  "title": "Slow timings",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.. | select(type == \"number\") | select(. > 500)]' data.json",
+    "tests": [
+      {
+        "input": {
+          "service": "api",
+          "total": 812,
+          "steps": {
+            "auth": 40,
+            "db": [
+              520,
+              95
+            ],
+            "render": 501
+          }
+        },
+        "expected": "[\n  812,\n  520,\n  501\n]"
+      },
+      {
+        "input": {
+          "service": "web",
+          "total": 120,
+          "steps": {
+            "auth": 30,
+            "render": 90
+          }
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "service": "jobs",
+          "total": 500,
+          "steps": {
+            "queue": {
+              "wait": 2300,
+              "note": "slow"
+            },
+            "run": [
+              10,
+              700
+            ]
+          }
+        },
+        "expected": "[\n  2300,\n  700\n]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Longest Letter Chain",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "longest_letter_chain",
+      "typescript": "longestLetterChain"
+    },
+    "stubs": {
+      "python": "def longest_letter_chain(words: list[str]) -> int:\n    pass\n",
+      "typescript": "export function longestLetterChain(words: string[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[["apple","egg","tiger","goat","rat"]],"expected":3},
+      {"args":[["cat","dog"]],"expected":1},
+      {"args":[[]],"expected":0},
+      {"args":[["a"]],"expected":1},
+      {"args":[["aa","aa","aa"]],"expected":3},
+      {"args":[["tap","pat"]],"expected":2},
+      {"args":[["pat","tap","pit","top"]],"expected":4},
+      {"args":[["ab","cd","bc","da","de"]],"expected":2},
+      {"args":[["sun","moon","nest","tree","ear","red","dot"]],"expected":6}
+    ]
+  }
+}

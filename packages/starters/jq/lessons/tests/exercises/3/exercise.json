@@ -1,0 +1,44 @@
+{
+  "title": "Urgent tickets",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.status == \"open\" and .priority >= 3' data.json",
+    "tests": [
+      {
+        "input": {
+          "id": 311,
+          "status": "open",
+          "priority": 4
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "id": 312,
+          "status": "open",
+          "priority": 1
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "id": 313,
+          "status": "closed",
+          "priority": 5
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "id": 314,
+          "status": "open",
+          "priority": 3
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

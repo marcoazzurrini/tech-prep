@@ -1,0 +1,33 @@
+{
+  "title": "The next attempt",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.attempt | tonumber | . + 1' data.json",
+    "tests": [
+      {
+        "input": {
+          "job": "deploy",
+          "attempt": "2"
+        },
+        "expected": "3"
+      },
+      {
+        "input": {
+          "job": "backup",
+          "attempt": "0"
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "job": "import",
+          "attempt": "19"
+        },
+        "expected": "20"
+      }
+    ]
+  }
+}

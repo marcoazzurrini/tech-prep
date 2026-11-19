@@ -1,0 +1,43 @@
+{
+  "title": "Width of the badge",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.badge_name // .full_name | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "full_name": "Margarethe Olsen",
+          "badge_name": null,
+          "table": 4
+        },
+        "expected": "16"
+      },
+      {
+        "input": {
+          "full_name": "Jonathan Reyes",
+          "badge_name": "Jon",
+          "table": 2
+        },
+        "expected": "3"
+      },
+      {
+        "input": {
+          "full_name": "Li Wei",
+          "table": 7
+        },
+        "expected": "6"
+      },
+      {
+        "input": {
+          "full_name": "Bartholomew Finch",
+          "badge_name": "Barty",
+          "table": 1
+        },
+        "expected": "5"
+      }
+    ]
+  }
+}

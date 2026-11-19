@@ -1,0 +1,63 @@
+{
+  "title": "Codes of the failures",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[] | .error.code?' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "job": "build",
+            "error": {
+              "code": "E42",
+              "text": "out of memory"
+            }
+          },
+          {
+            "job": "test",
+            "error": "timeout"
+          },
+          {
+            "job": "deploy",
+            "error": {
+              "code": "E7",
+              "text": "no access"
+            }
+          }
+        ],
+        "expected": "\"E42\"\n\"E7\""
+      },
+      {
+        "input": [
+          {
+            "job": "lint",
+            "error": {
+              "code": "E13",
+              "text": "bad config"
+            }
+          }
+        ],
+        "expected": "\"E13\""
+      },
+      {
+        "input": [
+          {
+            "job": "docs",
+            "error": "cancelled"
+          },
+          {
+            "job": "e2e",
+            "error": {
+              "code": "E99",
+              "text": "browser crashed"
+            }
+          }
+        ],
+        "expected": "\"E99\""
+      }
+    ]
+  }
+}

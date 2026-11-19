@@ -1,0 +1,36 @@
+{
+  "title": "Next invoice label",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '\"\\(.prefix)-\\(.last | tonumber | . + 1)\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "prefix": "INV",
+          "last": "41",
+          "customer": "Ada"
+        },
+        "expected": "\"INV-42\""
+      },
+      {
+        "input": {
+          "prefix": "ORD",
+          "last": "9",
+          "customer": "Bo"
+        },
+        "expected": "\"ORD-10\""
+      },
+      {
+        "input": {
+          "prefix": "INV",
+          "last": "1299",
+          "customer": "Cy"
+        },
+        "expected": "\"INV-1300\""
+      }
+    ]
+  }
+}

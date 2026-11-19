@@ -1,0 +1,24 @@
+{
+  "title": "The last deploy",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.jsonl",
+    "reference": "jq -s '.[-1].version' data.jsonl",
+    "tests": [
+      {
+        "input_text": "{\"version\": \"1.4.0\", \"by\": \"ada\"}\n{\"version\": \"1.4.1\", \"by\": \"bo\"}\n{\"version\": \"1.5.0\", \"by\": \"ada\"}\n",
+        "expected": "\"1.5.0\""
+      },
+      {
+        "input_text": "{\"version\": \"0.9.2\", \"by\": \"cy\"}\n",
+        "expected": "\"0.9.2\""
+      },
+      {
+        "input_text": "{\"version\": \"3.0.0\", \"by\": \"bo\"}\n{\"version\": \"3.0.1\", \"by\": \"bo\"}\n",
+        "expected": "\"3.0.1\""
+      }
+    ]
+  }
+}

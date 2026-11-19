@@ -1,0 +1,41 @@
+{
+  "title": "A log file?",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.file | .' data.json",
+    "reference": "jq '.file | endswith(\".log\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "file": "server.log",
+          "bytes": 5120
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "file": "server.log.gz",
+          "bytes": 812
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "file": "login.txt",
+          "bytes": 64
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "file": "access.log",
+          "bytes": 20480
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

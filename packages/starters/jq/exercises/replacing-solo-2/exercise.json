@@ -1,0 +1,33 @@
+{
+  "title": "Digits of a phone",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.phone | gsub(\"-\"; \"\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "Ada",
+          "phone": "555-010-2233"
+        },
+        "expected": "\"5550102233\""
+      },
+      {
+        "input": {
+          "name": "Bo",
+          "phone": "555-0147"
+        },
+        "expected": "\"5550147\""
+      },
+      {
+        "input": {
+          "name": "Cy",
+          "phone": "1-555-010-9981"
+        },
+        "expected": "\"15550109981\""
+      }
+    ]
+  }
+}

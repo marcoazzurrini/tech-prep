@@ -2,8 +2,8 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-import type { CodeProblem, CompareMode } from "./code.ts";
-import { EXTENSIONS } from "./content.ts";
+import type { CompareMode, FunctionCheck } from "./checks/function.ts";
+import { extension } from "./content.ts";
 import type { Language } from "./content.ts";
 
 const TIMEOUT_MS = 10_000;
@@ -43,7 +43,7 @@ const command = (language: Language): [string, string[]] => {
 
 /** Solutions import ListNode/TreeNode/GraphNode from a `ds` module next to them. */
 export const ensureDataStructures = (dir: string, language: Language): void => {
-  const name = `ds.${EXTENSIONS[language]}`;
+  const name = `ds.${extension(language)}`;
   const source = readFileSync(path.join(HARNESS_DIR, name), "utf-8");
   const target = path.join(dir, name);
 
@@ -94,13 +94,13 @@ export const equal = (
   );
 };
 
-/** Run a code problem's test cases on the solution in `file`. */
+/** Call the solution in `file` on every test of a function check. */
 export const runCode = (
-  problem: CodeProblem,
+  check: FunctionCheck,
   language: Language,
   file: string
 ): RunResult => {
-  const total = problem.tests.length;
+  const total = check.tests.length;
 
   if (!existsSync(file)) {
     return {
@@ -113,18 +113,19 @@ export const runCode = (
 
   ensureDataStructures(path.dirname(file), language);
 
+  // The harness names what is called `kind`, and the roundtrip value's type `type`.
   const request = {
-    cases: problem.tests,
-    class: problem.class,
-    decode: problem.decode,
-    encode: problem.encode,
+    cases: check.tests,
+    class: check.class,
+    decode: check.decode,
+    encode: check.encode,
     file,
-    function: problem.function?.[language],
-    kind: problem.kind ?? "function",
-    output: problem.output,
-    params: problem.params,
-    returns: problem.returns,
-    type: problem.type,
+    function: check.function?.[language],
+    kind: check.calls ?? "function",
+    output: check.output,
+    params: check.params,
+    returns: check.returns,
+    type: check.value_type,
   };
 
   const [cmd, args] = command(language);
@@ -166,7 +167,7 @@ export const runCode = (
   }
 
   const cases = output.results.map((r, index): CaseResult => {
-    const test = problem.tests[index];
+    const test = check.tests[index];
 
     if (!test) {
       throw new Error(
@@ -175,7 +176,7 @@ export const runCode = (
     }
 
     const actual = "actual" in r ? r.actual : null;
-    const ok = !r.error && equal(actual, test.expected, problem.compare);
+    const ok = !r.error && equal(actual, test.expected, check.compare);
 
     return {
       args: test.args,

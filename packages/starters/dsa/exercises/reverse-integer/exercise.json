@@ -1,0 +1,28 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "reverse",
+      "typescript": "reverse"
+    },
+    "stubs": {
+      "python": "def reverse(x: int) -> int:\n    pass\n",
+      "typescript": "export function reverse(x: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[123],"expected":321},
+      {"args":[-123],"expected":-321},
+      {"args":[120],"expected":21},
+      {"args":[0],"expected":0},
+      {"args":[7],"expected":7},
+      {"args":[-10],"expected":-1},
+      {"args":[1534236469],"expected":0},
+      {"args":[2147483647],"expected":0},
+      {"args":[-2147483648],"expected":0},
+      {"args":[1463847412],"expected":2147483641},
+      {"args":[-2147483412],"expected":-2143847412},
+      {"args":[1000000003],"expected":0},
+      {"args":[900000],"expected":9}
+    ]
+  }
+}

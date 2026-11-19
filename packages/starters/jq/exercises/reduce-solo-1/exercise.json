@@ -1,0 +1,51 @@
+{
+  "title": "Size of a folder",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'reduce .files[] as $f (0; . + $f.size)' data.json",
+    "tests": [
+      {
+        "input": {
+          "dir": "logs",
+          "files": [
+            {
+              "name": "app.log",
+              "size": 1200
+            },
+            {
+              "name": "db.log",
+              "size": 300
+            },
+            {
+              "name": "old.log",
+              "size": 45
+            }
+          ]
+        },
+        "expected": "1545"
+      },
+      {
+        "input": {
+          "dir": "tmp",
+          "files": []
+        },
+        "expected": "0"
+      },
+      {
+        "input": {
+          "dir": "img",
+          "files": [
+            {
+              "name": "logo.png",
+              "size": 8100
+            }
+          ]
+        },
+        "expected": "8100"
+      }
+    ]
+  }
+}

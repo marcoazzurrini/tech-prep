@@ -1,0 +1,23 @@
+{
+  "check": {
+    "type": "function",
+    "calls": "design",
+    "class": "MinStack",
+    "compare": "exact",
+    "stubs": {
+      "python": "class MinStack:\n    def __init__(self):\n        pass\n\n    def push(self, val: int) -> None:\n        pass\n\n    def pop(self) -> None:\n        pass\n\n    def top(self) -> int:\n        pass\n\n    def getMin(self) -> int:\n        pass\n",
+      "typescript": "export class MinStack {\n  constructor() {}\n\n  push(val: number): void {\n    throw new Error(\"not implemented\");\n  }\n\n  pop(): void {\n    throw new Error(\"not implemented\");\n  }\n\n  top(): number {\n    throw new Error(\"not implemented\");\n  }\n\n  getMin(): number {\n    throw new Error(\"not implemented\");\n  }\n}\n"
+    },
+    "tests": [
+      {"ops":["MinStack","push","push","push","getMin","pop","top","getMin"],"args":[[],[-2],[0],[-3],[],[],[],[]],"expected":[null,null,null,null,-3,null,0,-2]},
+      {"ops":["MinStack","push","top","getMin"],"args":[[],[5],[],[]],"expected":[null,null,5,5]},
+      {"ops":["MinStack","push","push","getMin","pop","getMin","top"],"args":[[],[1],[1],[],[],[],[]],"expected":[null,null,null,1,null,1,1]},
+      {"ops":["MinStack","push","push","push","getMin","pop","getMin","top"],"args":[[],[1],[2],[3],[],[],[],[]],"expected":[null,null,null,null,1,null,1,2]},
+      {"ops":["MinStack","push","push","push","getMin","pop","getMin","pop","getMin"],"args":[[],[3],[2],[1],[],[],[],[],[]],"expected":[null,null,null,null,1,null,2,null,3]},
+      {"ops":["MinStack","push","push","getMin","top","pop","getMin","top"],"args":[[],[2147483647],[-2147483648],[],[],[],[],[]],"expected":[null,null,null,-2147483648,-2147483648,null,2147483647,2147483647]},
+      {"ops":["MinStack","push","pop","push","getMin","top"],"args":[[],[4],[],[7],[],[]],"expected":[null,null,null,null,7,7]},
+      {"ops":["MinStack","push","push","push","pop","getMin","pop","getMin"],"args":[[],[0],[0],[-1],[],[],[],[]],"expected":[null,null,null,null,null,0,null,0]},
+      {"ops":["MinStack","push","push","push","getMin","push","push","getMin","pop","pop","getMin","top","pop","getMin","pop","getMin","top"],"args":[[],[6],[4],[9],[],[2],[8],[],[],[],[],[],[],[],[],[],[]],"expected":[null,null,null,null,4,null,null,2,null,null,4,9,null,4,null,6,6]}
+    ]
+  }
+}

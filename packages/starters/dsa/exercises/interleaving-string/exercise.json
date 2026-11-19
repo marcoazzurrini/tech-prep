@@ -1,0 +1,27 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "is_interleave",
+      "typescript": "isInterleave"
+    },
+    "stubs": {
+      "python": "def is_interleave(s1: str, s2: str, s3: str) -> bool:\n    pass\n",
+      "typescript": "export function isInterleave(s1: string, s2: string, s3: string): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":["aabcc","dbbca","aadbbcbcac"],"expected":true},
+      {"args":["aabcc","dbbca","aadbbbaccc"],"expected":false},
+      {"args":["","",""],"expected":true},
+      {"args":["","abc","abc"],"expected":true},
+      {"args":["a","","b"],"expected":false},
+      {"args":["a","b","ab"],"expected":true},
+      {"args":["a","b","ba"],"expected":true},
+      {"args":["abc","de","abcd"],"expected":false},
+      {"args":["ab","cd","acbd"],"expected":true},
+      {"args":["ab","ab","abba"],"expected":false},
+      {"args":["aa","ab","abaa"],"expected":true},
+      {"args":["abc","abc","aabbcc"],"expected":true}
+    ]
+  }
+}

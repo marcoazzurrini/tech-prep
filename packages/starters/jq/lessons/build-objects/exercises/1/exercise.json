@@ -1,0 +1,40 @@
+{
+  "title": "A smaller account",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '{id: .id}' data.json",
+    "reference": "jq '{id: .id, name: .login}' data.json",
+    "tests": [
+      {
+        "input": {
+          "id": 4821,
+          "login": "mira",
+          "type": "User",
+          "site_admin": false
+        },
+        "expected": "{\n  \"id\": 4821,\n  \"name\": \"mira\"\n}"
+      },
+      {
+        "input": {
+          "id": 17,
+          "login": "tomas",
+          "type": "User",
+          "site_admin": true
+        },
+        "expected": "{\n  \"id\": 17,\n  \"name\": \"tomas\"\n}"
+      },
+      {
+        "input": {
+          "id": 903,
+          "login": "build-bot",
+          "type": "Bot",
+          "site_admin": false
+        },
+        "expected": "{\n  \"id\": 903,\n  \"name\": \"build-bot\"\n}"
+      }
+    ]
+  }
+}

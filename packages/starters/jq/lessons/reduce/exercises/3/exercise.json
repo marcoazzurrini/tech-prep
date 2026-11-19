@@ -1,0 +1,54 @@
+{
+  "title": "Balance of an account",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'reduce .changes[] as $c (.balance; . + $c)' data.json",
+    "tests": [
+      {
+        "input": {
+          "account": "savings",
+          "balance": 100,
+          "changes": [
+            20,
+            -5,
+            -40
+          ]
+        },
+        "expected": "75"
+      },
+      {
+        "input": {
+          "account": "daily",
+          "balance": 12,
+          "changes": [
+            300
+          ]
+        },
+        "expected": "312"
+      },
+      {
+        "input": {
+          "account": "travel",
+          "balance": 250,
+          "changes": []
+        },
+        "expected": "250"
+      },
+      {
+        "input": {
+          "account": "shared",
+          "balance": 0,
+          "changes": [
+            -15,
+            60,
+            -15
+          ]
+        },
+        "expected": "30"
+      }
+    ]
+  }
+}

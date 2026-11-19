@@ -1,0 +1,25 @@
+{
+  "title": "Sum of Digits",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "digit_sum",
+      "typescript": "digitSum"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def digit_sum(n: int) -> int:\n    pass\n",
+      "typescript": "export function digitSum(n: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[123],"expected":6},
+      {"args":[7],"expected":7},
+      {"args":[0],"expected":0},
+      {"args":[10],"expected":1},
+      {"args":[999],"expected":27},
+      {"args":[4096],"expected":19},
+      {"args":[1000000],"expected":1},
+      {"args":[987654321],"expected":45}
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Longest Even Path",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "longest_even_path",
+      "typescript": "longestEvenPath"
+    },
+    "params": [
+      "TreeNode"
+    ],
+    "compare": "exact",
+    "stubs": {
+      "python": "from ds import TreeNode\n\n\ndef longest_even_path(root: TreeNode | None) -> int:\n    pass\n",
+      "typescript": "import { TreeNode } from \"./ds.ts\";\n\nexport function longestEvenPath(root: TreeNode | null): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[2,4,6]],"expected":3},
+      {"args":[[1,2,4]],"expected":1},
+      {"args":[[1,2,null,4,6]],"expected":3},
+      {"args":[[]],"expected":0},
+      {"args":[[2]],"expected":1},
+      {"args":[[1]],"expected":0},
+      {"args":[[2,4,6,8,3,null,10]],"expected":5},
+      {"args":[[2,3,4,null,null,6,8]],"expected":3},
+      {"args":[[4,2,null,6,null,8]],"expected":4},
+      {"args":[[1,2,null,4,6,8,null,null,10]],"expected":5}
+    ]
+  }
+}

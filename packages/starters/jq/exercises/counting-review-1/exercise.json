@@ -1,0 +1,75 @@
+{
+  "title": "Seats to book",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.[] | .attendees[]] | length' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "room": "A",
+            "attendees": [
+              "ada",
+              "bo",
+              "cy"
+            ]
+          },
+          {
+            "room": "B",
+            "attendees": [
+              "ada",
+              "dee"
+            ]
+          }
+        ],
+        "expected": "5"
+      },
+      {
+        "input": [
+          {
+            "room": "C",
+            "attendees": []
+          },
+          {
+            "room": "D",
+            "attendees": [
+              "eli"
+            ]
+          }
+        ],
+        "expected": "1"
+      },
+      {
+        "input": [
+          {
+            "room": "E",
+            "attendees": [
+              "fay",
+              "gus"
+            ]
+          },
+          {
+            "room": "F",
+            "attendees": [
+              "hal",
+              "fay"
+            ]
+          },
+          {
+            "room": "G",
+            "attendees": [
+              "ada",
+              "bo",
+              "cy",
+              "dee"
+            ]
+          }
+        ],
+        "expected": "8"
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "title": "An array",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.tags' data.json",
+      "file": "data.json",
+      "input": {
+        "name": "Ada",
+        "tags": [
+          "admin",
+          "dev",
+          "oncall"
+        ]
+      }
+    },
+    "expected": "[\n  \"admin\",\n  \"dev\",\n  \"oncall\"\n]"
+  }
+}

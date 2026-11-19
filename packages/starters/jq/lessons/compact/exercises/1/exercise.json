@@ -1,0 +1,51 @@
+{
+  "title": "Build on one line",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "start": "jq '.build' data.json",
+    "reference": "jq -c '.build' data.json",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "build": {
+            "id": 212,
+            "ok": true,
+            "steps": [
+              "lint",
+              "test"
+            ]
+          }
+        },
+        "expected": "{\"id\":212,\"ok\":true,\"steps\":[\"lint\",\"test\"]}"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "build": {
+            "id": 87,
+            "ok": false,
+            "steps": [
+              "lint"
+            ]
+          }
+        },
+        "expected": "{\"id\":87,\"ok\":false,\"steps\":[\"lint\"]}"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "build": {
+            "id": 5,
+            "ok": true,
+            "steps": []
+          }
+        },
+        "expected": "{\"id\":5,\"ok\":true,\"steps\":[]}"
+      }
+    ]
+  }
+}

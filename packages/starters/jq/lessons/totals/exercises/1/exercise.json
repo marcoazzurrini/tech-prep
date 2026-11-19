@@ -1,0 +1,23 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.hours | add' data.json",
+      "file": "data.json",
+      "input": {
+        "week": 12,
+        "hours": [
+          8,
+          6,
+          7
+        ]
+      },
+      "show_command": true
+    },
+    "expected": "21"
+  }
+}

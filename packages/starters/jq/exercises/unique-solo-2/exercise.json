@@ -1,0 +1,25 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.ports | unique' data.json",
+      "file": "data.json",
+      "input": {
+        "host": "web-1",
+        "ports": [
+          443,
+          80,
+          443,
+          22,
+          80
+        ]
+      },
+      "show_command": true
+    },
+    "expected": "[\n  22,\n  80,\n  443\n]"
+  }
+}

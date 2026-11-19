@@ -1,0 +1,48 @@
+{
+  "title": "A usable id",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.id | type == \"string\" or type == \"number\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "id": "u-17",
+          "name": "Ada"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "id": null,
+          "name": "Bo"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "id": 17,
+          "name": "Cy"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "id": [
+            "u-17"
+          ],
+          "name": "Dee"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "name": "Eli"
+        },
+        "expected": "false"
+      }
+    ]
+  }
+}

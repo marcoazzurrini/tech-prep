@@ -1,0 +1,33 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq 'group_by(.plan) | map(length)' data.json",
+      "file": "data.json",
+      "input": [
+        {
+          "id": 1,
+          "plan": "pro"
+        },
+        {
+          "id": 2,
+          "plan": "free"
+        },
+        {
+          "id": 3,
+          "plan": "pro"
+        },
+        {
+          "id": 4,
+          "plan": "pro"
+        }
+      ],
+      "show_command": true
+    },
+    "expected": "[\n  1,\n  3\n]"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "title": "Hide the API key",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'del(.region)' data.json",
+    "reference": "jq 'del(.api_key)' data.json",
+    "tests": [
+      {
+        "input": {
+          "service": "mailer",
+          "region": "eu-north",
+          "api_key": "k-55f0"
+        },
+        "expected": "{\n  \"service\": \"mailer\",\n  \"region\": \"eu-north\"\n}"
+      },
+      {
+        "input": {
+          "service": "search",
+          "region": "us-east",
+          "api_key": "k-a91c"
+        },
+        "expected": "{\n  \"service\": \"search\",\n  \"region\": \"us-east\"\n}"
+      },
+      {
+        "input": {
+          "service": "cache",
+          "region": "eu-west"
+        },
+        "expected": "{\n  \"service\": \"cache\",\n  \"region\": \"eu-west\"\n}"
+      }
+    ]
+  }
+}
