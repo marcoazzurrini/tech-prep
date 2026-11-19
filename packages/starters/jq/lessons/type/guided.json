@@ -1,0 +1,147 @@
+[
+  {
+    "title": "Only the text tags",
+    "statement": "Keep the tags that are strings.\n\nThe input is an array of tags. Some are not strings by mistake. Give an array of the strings only, in the same order.",
+    "reference": "map(select(type == \"string\"))",
+    "tests": [
+      {
+        "input": [
+          "urgent",
+          3,
+          "billing",
+          null,
+          true,
+          "eu"
+        ],
+        "expected": "[\n  \"urgent\",\n  \"billing\",\n  \"eu\"\n]"
+      },
+      {
+        "input": [
+          1,
+          2
+        ],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          "draft"
+        ],
+        "expected": "[\n  \"draft\"\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  },
+  {
+    "title": "Kind of each setting",
+    "statement": "Give the type of the value of every setting.\n\nThe input is an array of settings with a `key` and a `value`. Print the type of each `value` as its own output, for example `\"number\"`. Pipe the field into `type`: `.value | type`.",
+    "reference": ".[] | .value | type",
+    "tests": [
+      {
+        "input": [
+          {
+            "key": "port",
+            "value": 8080
+          },
+          {
+            "key": "host",
+            "value": "localhost"
+          },
+          {
+            "key": "debug",
+            "value": false
+          },
+          {
+            "key": "proxy",
+            "value": null
+          }
+        ],
+        "expected": "\"number\"\n\"string\"\n\"boolean\"\n\"null\""
+      },
+      {
+        "input": [
+          {
+            "key": "hosts",
+            "value": [
+              "a",
+              "b"
+            ]
+          },
+          {
+            "key": "tls",
+            "value": {
+              "on": true
+            }
+          }
+        ],
+        "expected": "\"array\"\n\"object\""
+      },
+      {
+        "input": [
+          {
+            "key": "name",
+            "value": "api"
+          }
+        ],
+        "expected": "\"string\""
+      },
+      {
+        "input": [],
+        "expected": ""
+      }
+    ]
+  },
+  {
+    "title": "Tags as a list",
+    "statement": "Give the tags of every post as an array.\n\nThe input is an array of posts. `tags` is sometimes one string and sometimes an array of strings. Turn a single string into an array with that one string. Leave an array as it is. Give one array with the tags of each post, in the same order. Use `if` with a `type` test.",
+    "reference": "map(.tags | if type == \"string\" then [.] else . end)",
+    "tests": [
+      {
+        "input": [
+          {
+            "title": "Intro",
+            "tags": "news"
+          },
+          {
+            "title": "Setup",
+            "tags": [
+              "guide",
+              "cli"
+            ]
+          },
+          {
+            "title": "FAQ",
+            "tags": []
+          }
+        ],
+        "expected": "[\n  [\n    \"news\"\n  ],\n  [\n    \"guide\",\n    \"cli\"\n  ],\n  []\n]"
+      },
+      {
+        "input": [
+          {
+            "title": "Notes",
+            "tags": "misc"
+          }
+        ],
+        "expected": "[\n  [\n    \"misc\"\n  ]\n]"
+      },
+      {
+        "input": [
+          {
+            "title": "Plan",
+            "tags": [
+              "q1"
+            ]
+          }
+        ],
+        "expected": "[\n  [\n    \"q1\"\n  ]\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  }
+]

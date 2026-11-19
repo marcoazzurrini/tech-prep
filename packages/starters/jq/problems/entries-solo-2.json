@@ -1,0 +1,25 @@
+{
+  "title": "Upper case keys",
+  "statement": "Make every key of the object upper case.\n\nThe input is an object of settings with lower case keys. Give the same object with the same values, but with each key in upper case. For example, `port` becomes `PORT`.",
+  "reference": "with_entries({key: (.key | ascii_upcase), value})",
+  "tests": [
+    {
+      "input": {
+        "debug": true,
+        "host": "localhost",
+        "port": 8080
+      },
+      "expected": "{\n  \"DEBUG\": true,\n  \"HOST\": \"localhost\",\n  \"PORT\": 8080\n}"
+    },
+    {
+      "input": {},
+      "expected": "{}"
+    },
+    {
+      "input": {
+        "path": "/usr/bin"
+      },
+      "expected": "{\n  \"PATH\": \"/usr/bin\"\n}"
+    }
+  ]
+}

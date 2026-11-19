@@ -1,0 +1,31 @@
+{
+  "title": "Column keys",
+  "statement": "Turn the header line of a table into an array of keys.\n\nThe line is in `header`. The column names are separated by `, ` (a comma and a space). Write each name in lower case. Inside a name, replace every space and every `-` with `_`. Give an array of strings, in the same order.",
+  "reference": ".header | ascii_downcase | split(\", \") | map(gsub(\"[ -]\"; \"_\"))",
+  "tests": [
+    {
+      "input": {
+        "header": "Name, Email Address, Sign-Up Date"
+      },
+      "expected": "[\n  \"name\",\n  \"email_address\",\n  \"sign_up_date\"\n]"
+    },
+    {
+      "input": {
+        "header": "ID"
+      },
+      "expected": "[\n  \"id\"\n]"
+    },
+    {
+      "input": {
+        "header": "First Name, Last Name"
+      },
+      "expected": "[\n  \"first_name\",\n  \"last_name\"\n]"
+    },
+    {
+      "input": {
+        "header": "Zip-Code, Home Phone Number"
+      },
+      "expected": "[\n  \"zip_code\",\n  \"home_phone_number\"\n]"
+    }
+  ]
+}

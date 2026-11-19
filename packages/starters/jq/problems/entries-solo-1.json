@@ -1,0 +1,36 @@
+{
+  "title": "Features turned on",
+  "statement": "Give the names of the features that are turned on.\n\nThe input is an object. Each key is a feature name and each value is `true` or `false`. Give an array of the names whose value is `true`, in the order of the input.",
+  "reference": "to_entries | map(select(.value) | .key)",
+  "tests": [
+    {
+      "input": {
+        "beta_ui": true,
+        "dark_mode": false,
+        "exports": true,
+        "sso": false
+      },
+      "expected": "[\n  \"beta_ui\",\n  \"exports\"\n]"
+    },
+    {
+      "input": {
+        "audit": false
+      },
+      "expected": "[]"
+    },
+    {
+      "input": {
+        "chat": true
+      },
+      "expected": "[\n  \"chat\"\n]"
+    },
+    {
+      "input": {
+        "a": true,
+        "b": true,
+        "c": false
+      },
+      "expected": "[\n  \"a\",\n  \"b\"\n]"
+    }
+  ]
+}

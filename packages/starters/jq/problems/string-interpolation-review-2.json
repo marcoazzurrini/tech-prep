@@ -1,0 +1,34 @@
+{
+  "title": "Contact card",
+  "statement": "Build an object with the keys `id` and `label`.\n\nThe input is a user with `id`, `first`, `last` and `email`. `id` stays as it is. `label` is one string in the form `FIRST LAST <EMAIL>`, for example `\"Ada Lovelace <ada@example.com>\"`.",
+  "reference": "{id, label: \"\\(.first) \\(.last) <\\(.email)>\"}",
+  "tests": [
+    {
+      "input": {
+        "id": 7,
+        "first": "Ada",
+        "last": "Lovelace",
+        "email": "ada@example.com"
+      },
+      "expected": "{\n  \"id\": 7,\n  \"label\": \"Ada Lovelace <ada@example.com>\"\n}"
+    },
+    {
+      "input": {
+        "id": 8,
+        "first": "Bo",
+        "last": "Berg",
+        "email": "bo@example.com"
+      },
+      "expected": "{\n  \"id\": 8,\n  \"label\": \"Bo Berg <bo@example.com>\"\n}"
+    },
+    {
+      "input": {
+        "id": 9,
+        "first": "Cy",
+        "last": "Stone",
+        "email": "cy@example.com"
+      },
+      "expected": "{\n  \"id\": 9,\n  \"label\": \"Cy Stone <cy@example.com>\"\n}"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "title": "Class averages",
+  "statement": "Give the average score of each class.\n\nEach student has a `name`, a `class` and a `score`. Give one object for each class with three keys: the `class`, the number of `students` in it, and the `average`. The average is the total of the scores divided by the number of students. Order by `class`, from a to z.",
+  "reference": "group_by(.class) | map({class: .[0].class, students: length, average: (map(.score) | add / length)})",
+  "tests": [
+    {
+      "input": [
+        {
+          "name": "Ava",
+          "class": "7B",
+          "score": 80
+        },
+        {
+          "name": "Ben",
+          "class": "7A",
+          "score": 65
+        },
+        {
+          "name": "Cal",
+          "class": "7B",
+          "score": 90
+        },
+        {
+          "name": "Dee",
+          "class": "7A",
+          "score": 75
+        },
+        {
+          "name": "Eve",
+          "class": "7B",
+          "score": 70
+        }
+      ],
+      "expected": "[\n  {\n    \"class\": \"7A\",\n    \"students\": 2,\n    \"average\": 70\n  },\n  {\n    \"class\": \"7B\",\n    \"students\": 3,\n    \"average\": 80\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "name": "Fay",
+          "class": "9C",
+          "score": 55
+        }
+      ],
+      "expected": "[\n  {\n    \"class\": \"9C\",\n    \"students\": 1,\n    \"average\": 55\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "name": "Gus",
+          "class": "8A",
+          "score": 10
+        },
+        {
+          "name": "Hal",
+          "class": "8A",
+          "score": 15
+        }
+      ],
+      "expected": "[\n  {\n    \"class\": \"8A\",\n    \"students\": 2,\n    \"average\": 12.5\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    }
+  ]
+}

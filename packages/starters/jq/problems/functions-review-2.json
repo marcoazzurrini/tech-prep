@@ -1,0 +1,67 @@
+{
+  "title": "Readings in range",
+  "statement": "Keep the temperature readings that are inside the allowed range.\n\nThe input has the numbers `low` and `high`, and two arrays of readings, `morning` and `evening`. A reading is inside the range when it is at least `low` and at most `high`. Give an object with `morning` and `evening`. Each one is an array of its readings that are inside the range, in the same order.",
+  "reference": ".low as $lo | .high as $hi | def in_range: map(select(. >= $lo and . <= $hi));\n{morning: (.morning | in_range), evening: (.evening | in_range)}",
+  "tests": [
+    {
+      "input": {
+        "low": 18,
+        "high": 24,
+        "morning": [
+          17,
+          20,
+          25
+        ],
+        "evening": [
+          19,
+          24,
+          30
+        ]
+      },
+      "expected": "{\n  \"morning\": [\n    20\n  ],\n  \"evening\": [\n    19,\n    24\n  ]\n}"
+    },
+    {
+      "input": {
+        "low": 0,
+        "high": 5,
+        "morning": [
+          6,
+          7
+        ],
+        "evening": [
+          5
+        ]
+      },
+      "expected": "{\n  \"morning\": [],\n  \"evening\": [\n    5\n  ]\n}"
+    },
+    {
+      "input": {
+        "low": 10,
+        "high": 10,
+        "morning": [
+          10,
+          11
+        ],
+        "evening": []
+      },
+      "expected": "{\n  \"morning\": [\n    10\n  ],\n  \"evening\": []\n}"
+    },
+    {
+      "input": {
+        "low": 2,
+        "high": 8,
+        "morning": [
+          2,
+          3,
+          9
+        ],
+        "evening": [
+          1,
+          8,
+          8
+        ]
+      },
+      "expected": "{\n  \"morning\": [\n    2,\n    3\n  ],\n  \"evening\": [\n    8,\n    8\n  ]\n}"
+    }
+  ]
+}

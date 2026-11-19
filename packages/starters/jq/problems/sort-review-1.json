@@ -1,0 +1,50 @@
+{
+  "title": "Latest release",
+  "statement": "Give the version of the release with the latest date.\n\nThe input is an array of releases. Each has a `version` and a `date` written as `YYYY-MM-DD`. Dates in this form compare correctly as strings. No two releases have the same date. Print the version as one string.",
+  "reference": "sort_by(.date) | .[-1].version",
+  "tests": [
+    {
+      "input": [
+        {
+          "version": "2.1.0",
+          "date": "2024-03-18"
+        },
+        {
+          "version": "2.0.0",
+          "date": "2023-11-02"
+        },
+        {
+          "version": "2.2.0",
+          "date": "2024-09-30"
+        },
+        {
+          "version": "1.9.4",
+          "date": "2024-10-12"
+        }
+      ],
+      "expected": "\"1.9.4\""
+    },
+    {
+      "input": [
+        {
+          "version": "0.1.0",
+          "date": "2022-01-05"
+        }
+      ],
+      "expected": "\"0.1.0\""
+    },
+    {
+      "input": [
+        {
+          "version": "3.0.0",
+          "date": "2025-02-01"
+        },
+        {
+          "version": "3.0.1",
+          "date": "2025-01-20"
+        }
+      ],
+      "expected": "\"3.0.0\""
+    }
+  ]
+}

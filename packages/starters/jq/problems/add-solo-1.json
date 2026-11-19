@@ -1,0 +1,55 @@
+{
+  "title": "Lines changed",
+  "statement": "Give the total number of changed lines in the pull request.\n\nThe changed files are in the `files` array. Each has a `path` and a number of `changes`. Print one number.",
+  "reference": ".files | map(.changes) | add",
+  "tests": [
+    {
+      "input": {
+        "number": 42,
+        "files": [
+          {
+            "path": "src/app.ts",
+            "changes": 30
+          },
+          {
+            "path": "README.md",
+            "changes": 4
+          },
+          {
+            "path": "src/db.ts",
+            "changes": 118
+          }
+        ]
+      },
+      "expected": "152"
+    },
+    {
+      "input": {
+        "number": 7,
+        "files": [
+          {
+            "path": "go.mod",
+            "changes": 9
+          }
+        ]
+      },
+      "expected": "9"
+    },
+    {
+      "input": {
+        "number": 8,
+        "files": [
+          {
+            "path": "a.css",
+            "changes": 0
+          },
+          {
+            "path": "b.css",
+            "changes": 61
+          }
+        ]
+      },
+      "expected": "61"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "title": "Thread authors",
+  "statement": "Give the authors of a comment thread: every name once, in alphabetical order.\n\nThe input is one comment. Every comment has an `author` and a `replies` array of more comments. Replies can have replies, to any depth. Give one array of names.",
+  "reference": "[.. | .author? | select(. != null)] | unique",
+  "tests": [
+    {
+      "input": {
+        "author": "bo",
+        "text": "Ship it?",
+        "replies": [
+          {
+            "author": "ada",
+            "text": "Yes",
+            "replies": [
+              {
+                "author": "bo",
+                "text": "Ok",
+                "replies": []
+              }
+            ]
+          },
+          {
+            "author": "cy",
+            "text": "Wait",
+            "replies": []
+          }
+        ]
+      },
+      "expected": "[\n  \"ada\",\n  \"bo\",\n  \"cy\"\n]"
+    },
+    {
+      "input": {
+        "author": "dee",
+        "text": "First",
+        "replies": []
+      },
+      "expected": "[\n  \"dee\"\n]"
+    },
+    {
+      "input": {
+        "author": "eli",
+        "text": "Bug?",
+        "replies": [
+          {
+            "author": "eli",
+            "text": "Fixed",
+            "replies": [
+              {
+                "author": "ada",
+                "text": "Thanks",
+                "replies": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "[\n  \"ada\",\n  \"eli\"\n]"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+[
+  {
+    "title": "User email",
+    "statement": "Give the email of the user.\n\nThe input is one user object. Read its `email` field.",
+    "reference": ".email",
+    "tests": [
+      {
+        "input": {
+          "id": 12,
+          "name": "Ada",
+          "email": "ada@example.com"
+        },
+        "expected": "\"ada@example.com\""
+      },
+      {
+        "input": {
+          "id": 13,
+          "name": "Bo",
+          "email": "bo@example.com"
+        },
+        "expected": "\"bo@example.com\""
+      },
+      {
+        "input": {
+          "id": 14,
+          "name": "Cy",
+          "email": "cy@example.com"
+        },
+        "expected": "\"cy@example.com\""
+      }
+    ]
+  },
+  {
+    "title": "Repository link",
+    "statement": "Give the link to the repository of the package.\n\nThe link is the `url` field. It sits inside the `repository` object. Go one level deeper with a second `.field`.",
+    "reference": ".repository.url",
+    "tests": [
+      {
+        "input": {
+          "name": "left-trim",
+          "version": "1.2.0",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/left-trim.git"
+          }
+        },
+        "expected": "\"https://example.com/left-trim.git\""
+      },
+      {
+        "input": {
+          "name": "tiny-log",
+          "version": "0.4.1",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/tiny-log.git"
+          }
+        },
+        "expected": "\"https://example.com/tiny-log.git\""
+      },
+      {
+        "input": {
+          "name": "date-kit",
+          "version": "3.0.0",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/date-kit.git"
+          }
+        },
+        "expected": "\"https://example.com/date-kit.git\""
+      }
+    ]
+  },
+  {
+    "title": "Customer phone",
+    "statement": "Give the phone number of the customer.\n\nThe number is the `phone` field inside `contact`. Some customers have no `phone`. A field that is missing gives `null`, so the output is then `null`. This customer has no phone.",
+    "reference": ".contact.phone",
+    "tests": [
+      {
+        "input": {
+          "name": "Dee",
+          "contact": {
+            "email": "dee@example.com"
+          }
+        },
+        "expected": "null"
+      },
+      {
+        "input": {
+          "name": "Eli",
+          "contact": {
+            "email": "eli@example.com",
+            "phone": "555-0101"
+          }
+        },
+        "expected": "\"555-0101\""
+      },
+      {
+        "input": {
+          "name": "Fay",
+          "contact": {
+            "email": "fay@example.com",
+            "phone": "555-0188"
+          }
+        },
+        "expected": "\"555-0188\""
+      }
+    ]
+  }
+]

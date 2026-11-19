@@ -1,0 +1,119 @@
+[
+  {
+    "title": "Email in a reply",
+    "statement": "Give the email of the user in the reply.\n\nThe input is an API reply. Go in three steps, with a `|` between them: first `.data`, then `.user`, then `.email`.",
+    "reference": ".data | .user | .email",
+    "tests": [
+      {
+        "input": {
+          "ok": true,
+          "data": {
+            "user": {
+              "id": 3,
+              "email": "gus@example.com"
+            }
+          }
+        },
+        "expected": "\"gus@example.com\""
+      },
+      {
+        "input": {
+          "ok": true,
+          "data": {
+            "user": {
+              "id": 4,
+              "email": "hana@example.com"
+            }
+          }
+        },
+        "expected": "\"hana@example.com\""
+      },
+      {
+        "input": {
+          "ok": true,
+          "data": {
+            "user": {
+              "id": 5,
+              "email": "ivo@example.com"
+            }
+          }
+        },
+        "expected": "\"ivo@example.com\""
+      }
+    ]
+  },
+  {
+    "title": "Newest release",
+    "statement": "Give the version of the newest release.\n\nThe input is an array of releases, oldest first. First take the last item. Then, after a `|`, read its `version`.",
+    "reference": ".[-1] | .version",
+    "tests": [
+      {
+        "input": [
+          {
+            "version": "1.0.0",
+            "date": "2024-01-10"
+          },
+          {
+            "version": "1.1.0",
+            "date": "2024-03-02"
+          },
+          {
+            "version": "2.0.0",
+            "date": "2024-06-21"
+          }
+        ],
+        "expected": "\"2.0.0\""
+      },
+      {
+        "input": [
+          {
+            "version": "0.1.0",
+            "date": "2023-11-05"
+          }
+        ],
+        "expected": "\"0.1.0\""
+      },
+      {
+        "input": [
+          {
+            "version": "3.2.0",
+            "date": "2024-02-01"
+          },
+          {
+            "version": "3.2.1",
+            "date": "2024-02-03"
+          }
+        ],
+        "expected": "\"3.2.1\""
+      }
+    ]
+  },
+  {
+    "title": "Coupon in capitals",
+    "statement": "Give the coupon code in capital letters.\n\nThe code is the `code` field. `ascii_upcase` is a function that turns text into capital letters. Read the field first, then pipe it into `ascii_upcase`.",
+    "reference": ".code | ascii_upcase",
+    "tests": [
+      {
+        "input": {
+          "code": "spring10",
+          "percent": 10
+        },
+        "expected": "\"SPRING10\""
+      },
+      {
+        "input": {
+          "code": "Welcome",
+          "percent": 15
+        },
+        "expected": "\"WELCOME\""
+      },
+      {
+        "input": {
+          "code": "vip-25",
+          "percent": 25
+        },
+        "expected": "\"VIP-25\""
+      }
+    ]
+  }
+]

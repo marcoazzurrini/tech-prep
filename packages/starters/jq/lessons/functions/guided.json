@@ -1,0 +1,161 @@
+[
+  {
+    "title": "Low and high in Celsius",
+    "statement": "Turn the low and the high temperature from Fahrenheit into Celsius.\n\nThe input has `low_f` and `high_f`. Give an object with `low` and `high` in Celsius. To convert, take 32 away, then times 5, then divide by 9. Write the conversion once as `def to_c: ...;` and use `to_c` for both fields.",
+    "reference": "def to_c: (. - 32) * 5 / 9;\n{low: (.low_f | to_c), high: (.high_f | to_c)}",
+    "tests": [
+      {
+        "input": {
+          "city": "Porto",
+          "low_f": 50,
+          "high_f": 86
+        },
+        "expected": "{\n  \"low\": 10,\n  \"high\": 30\n}"
+      },
+      {
+        "input": {
+          "city": "Oslo",
+          "low_f": 32,
+          "high_f": 41
+        },
+        "expected": "{\n  \"low\": 0,\n  \"high\": 5\n}"
+      },
+      {
+        "input": {
+          "city": "Cairo",
+          "low_f": 77,
+          "high_f": 104
+        },
+        "expected": "{\n  \"low\": 25,\n  \"high\": 40\n}"
+      },
+      {
+        "input": {
+          "city": "Lima",
+          "low_f": 59,
+          "high_f": 68
+        },
+        "expected": "{\n  \"low\": 15,\n  \"high\": 20\n}"
+      }
+    ]
+  },
+  {
+    "title": "Test run summary",
+    "statement": "Count the tests that passed, the tests that failed and the tests that were slow.\n\nThe input is an array of tests. Each test has a `status` and a time `ms`. A slow test has `ms` over 1000. Give an object with the counts `passed`, `failed` and `slow`. Start with `def count(f): map(select(f)) | length;`. Then call it three times, for example `count(.status == \"passed\")`.",
+    "reference": "def count(f): map(select(f)) | length;\n{passed: count(.status == \"passed\"), failed: count(.status == \"failed\"), slow: count(.ms > 1000)}",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "login",
+            "status": "passed",
+            "ms": 120
+          },
+          {
+            "name": "upload",
+            "status": "failed",
+            "ms": 2400
+          },
+          {
+            "name": "search",
+            "status": "passed",
+            "ms": 1500
+          }
+        ],
+        "expected": "{\n  \"passed\": 2,\n  \"failed\": 1,\n  \"slow\": 2\n}"
+      },
+      {
+        "input": [
+          {
+            "name": "ping",
+            "status": "passed",
+            "ms": 1000
+          }
+        ],
+        "expected": "{\n  \"passed\": 1,\n  \"failed\": 0,\n  \"slow\": 0\n}"
+      },
+      {
+        "input": [],
+        "expected": "{\n  \"passed\": 0,\n  \"failed\": 0,\n  \"slow\": 0\n}"
+      },
+      {
+        "input": [
+          {
+            "name": "a",
+            "status": "failed",
+            "ms": 10
+          },
+          {
+            "name": "b",
+            "status": "failed",
+            "ms": 20
+          },
+          {
+            "name": "c",
+            "status": "skipped",
+            "ms": 3000
+          }
+        ],
+        "expected": "{\n  \"passed\": 0,\n  \"failed\": 2,\n  \"slow\": 1\n}"
+      }
+    ]
+  },
+  {
+    "title": "Song lengths",
+    "statement": "Give the length of the longest song and the length of the whole album, in seconds.\n\nThe input is an array of songs. Each song has a `length` as text like `\"3:05\"`: minutes, a colon, then seconds. Give an object with `longest` and `total`, both as numbers of seconds. Write a filter `def secs: ...;` that turns one length text into seconds. Use `split(\":\")` and `tonumber` in it. Then use `secs` for both fields.",
+    "reference": "def secs: split(\":\") | (.[0] | tonumber) * 60 + (.[1] | tonumber);\n{longest: (map(.length | secs) | max), total: (map(.length | secs) | add)}",
+    "tests": [
+      {
+        "input": [
+          {
+            "title": "Dawn",
+            "length": "3:05"
+          },
+          {
+            "title": "Noon",
+            "length": "4:10"
+          },
+          {
+            "title": "Dusk",
+            "length": "0:45"
+          }
+        ],
+        "expected": "{\n  \"longest\": 250,\n  \"total\": 480\n}"
+      },
+      {
+        "input": [
+          {
+            "title": "Solo",
+            "length": "2:00"
+          }
+        ],
+        "expected": "{\n  \"longest\": 120,\n  \"total\": 120\n}"
+      },
+      {
+        "input": [
+          {
+            "title": "One",
+            "length": "1:01"
+          },
+          {
+            "title": "Two",
+            "length": "1:01"
+          }
+        ],
+        "expected": "{\n  \"longest\": 61,\n  \"total\": 122\n}"
+      },
+      {
+        "input": [
+          {
+            "title": "Long",
+            "length": "10:30"
+          },
+          {
+            "title": "Short",
+            "length": "0:09"
+          }
+        ],
+        "expected": "{\n  \"longest\": 630,\n  \"total\": 639\n}"
+      }
+    ]
+  }
+]

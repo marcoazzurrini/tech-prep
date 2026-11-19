@@ -1,0 +1,49 @@
+{
+  "title": "Temperature now",
+  "statement": "Give the temperature right now.\n\nThe input is a weather reply. The temperature right now is `temp`, inside `current`.",
+  "reference": ".current.temp",
+  "tests": [
+    {
+      "input": {
+        "city": "Oslo",
+        "current": {
+          "temp": 4,
+          "wind": 12
+        },
+        "tomorrow": {
+          "temp": 6,
+          "wind": 9
+        }
+      },
+      "expected": "4"
+    },
+    {
+      "input": {
+        "city": "Rome",
+        "current": {
+          "temp": 18,
+          "wind": 5
+        },
+        "tomorrow": {
+          "temp": 21,
+          "wind": 7
+        }
+      },
+      "expected": "18"
+    },
+    {
+      "input": {
+        "city": "Cairo",
+        "current": {
+          "temp": 31,
+          "wind": 8
+        },
+        "tomorrow": {
+          "temp": 31,
+          "wind": 3
+        }
+      },
+      "expected": "31"
+    }
+  ]
+}

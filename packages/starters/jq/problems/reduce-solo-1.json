@@ -1,0 +1,54 @@
+{
+  "title": "Total per customer",
+  "statement": "Give the total amount that each customer has ordered.\n\nThe input is an array of orders. Each order has a `customer` and an `amount`. A customer can have several orders. Give one object: each key is a customer and its value is the sum of the amounts of that customer.",
+  "reference": "reduce .[] as $o ({}; .[$o.customer] += $o.amount)",
+  "tests": [
+    {
+      "input": [
+        {
+          "customer": "ada",
+          "amount": 20
+        },
+        {
+          "customer": "bo",
+          "amount": 5
+        },
+        {
+          "customer": "ada",
+          "amount": 12
+        }
+      ],
+      "expected": "{\n  \"ada\": 32,\n  \"bo\": 5\n}"
+    },
+    {
+      "input": [
+        {
+          "customer": "cy",
+          "amount": 7
+        }
+      ],
+      "expected": "{\n  \"cy\": 7\n}"
+    },
+    {
+      "input": [],
+      "expected": "{}"
+    },
+    {
+      "input": [
+        {
+          "customer": "dee",
+          "amount": 1
+        },
+        {
+          "customer": "dee",
+          "amount": 2
+        },
+        {
+          "customer": "dee",
+          "amount": 3
+        }
+      ],
+      "expected": "{\n  \"dee\": 6\n}"
+    }
+  ]
+}

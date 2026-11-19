@@ -1,0 +1,52 @@
+{
+  "title": "Final settings",
+  "statement": "Build the final settings of an app, as one object.\n\nThe input has two objects: `defaults` and `overrides`. The result has every key of both. When a key is in both, the value from `overrides` wins.",
+  "reference": ".defaults + .overrides",
+  "tests": [
+    {
+      "input": {
+        "defaults": {
+          "theme": "light",
+          "font_size": 14,
+          "wrap": true
+        },
+        "overrides": {
+          "theme": "dark",
+          "tabs": 2
+        }
+      },
+      "expected": "{\n  \"theme\": \"dark\",\n  \"font_size\": 14,\n  \"wrap\": true,\n  \"tabs\": 2\n}"
+    },
+    {
+      "input": {
+        "defaults": {
+          "theme": "light"
+        },
+        "overrides": {}
+      },
+      "expected": "{\n  \"theme\": \"light\"\n}"
+    },
+    {
+      "input": {
+        "defaults": {},
+        "overrides": {
+          "font_size": 18
+        }
+      },
+      "expected": "{\n  \"font_size\": 18\n}"
+    },
+    {
+      "input": {
+        "defaults": {
+          "wrap": true,
+          "tabs": 4
+        },
+        "overrides": {
+          "wrap": false,
+          "tabs": 8
+        }
+      },
+      "expected": "{\n  \"wrap\": false,\n  \"tabs\": 8\n}"
+    }
+  ]
+}

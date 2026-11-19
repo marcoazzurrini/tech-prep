@@ -1,0 +1,66 @@
+{
+  "title": "Services and tags",
+  "statement": "Print two lines for every service: its name, then its tags.\n\nThe input is an array of services with a `name` and a `tags` array. The first line is the name as plain text, with no quotes. The second line is the `tags` array as one line of JSON, with no spaces. For example `api` and then `[\"go\",\"http\"]`.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-r -c '.[] | .name, .tags'",
+  "tests": [
+    {
+      "input": [
+        {
+          "name": "api",
+          "tags": [
+            "go",
+            "http"
+          ]
+        },
+        {
+          "name": "queue",
+          "tags": [
+            "redis"
+          ]
+        }
+      ],
+      "expected": "api\n[\"go\",\"http\"]\nqueue\n[\"redis\"]"
+    },
+    {
+      "input": [
+        {
+          "name": "cron",
+          "tags": []
+        }
+      ],
+      "expected": "cron\n[]"
+    },
+    {
+      "input": [
+        {
+          "name": "web",
+          "tags": [
+            "node",
+            "ssr",
+            "public"
+          ]
+        },
+        {
+          "name": "auth",
+          "tags": [
+            "go"
+          ]
+        },
+        {
+          "name": "mail",
+          "tags": [
+            "smtp",
+            "worker"
+          ]
+        }
+      ],
+      "expected": "web\n[\"node\",\"ssr\",\"public\"]\nauth\n[\"go\"]\nmail\n[\"smtp\",\"worker\"]"
+    },
+    {
+      "input": [],
+      "expected": ""
+    }
+  ]
+}

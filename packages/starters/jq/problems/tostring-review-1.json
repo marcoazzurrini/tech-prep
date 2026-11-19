@@ -1,0 +1,50 @@
+{
+  "title": "Costly items",
+  "statement": "Keep the items that cost more than 10.\n\nThe input is an array of items. Each `price` is a number stored as a string. Compare it as a number. Give an array of whole items back, in the same order. Do not change the items.",
+  "reference": "map(select((.price | tonumber) > 10))",
+  "tests": [
+    {
+      "input": [
+        {
+          "name": "pen",
+          "price": "2.50"
+        },
+        {
+          "name": "lamp",
+          "price": "19.00"
+        },
+        {
+          "name": "desk",
+          "price": "120"
+        }
+      ],
+      "expected": "[\n  {\n    \"name\": \"lamp\",\n    \"price\": \"19.00\"\n  },\n  {\n    \"name\": \"desk\",\n    \"price\": \"120\"\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "name": "cup",
+          "price": "9"
+        },
+        {
+          "name": "bag",
+          "price": "10"
+        },
+        {
+          "name": "hat",
+          "price": "10.5"
+        }
+      ],
+      "expected": "[\n  {\n    \"name\": \"hat\",\n    \"price\": \"10.5\"\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "name": "pin",
+          "price": "1"
+        }
+      ],
+      "expected": "[]"
+    }
+  ]
+}

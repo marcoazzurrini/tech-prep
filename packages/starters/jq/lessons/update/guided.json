@@ -1,0 +1,104 @@
+[
+  {
+    "title": "Half price",
+    "statement": "Cut the price of the product in half.\n\nThe input is one product. Divide `price` by 2 with `|=`. Give the whole product back, with the other fields as they are.",
+    "reference": ".price |= . / 2",
+    "tests": [
+      {
+        "input": {
+          "name": "desk lamp",
+          "price": 40,
+          "stock": 12
+        },
+        "expected": "{\n  \"name\": \"desk lamp\",\n  \"price\": 20,\n  \"stock\": 12\n}"
+      },
+      {
+        "input": {
+          "name": "mug",
+          "price": 9,
+          "stock": 0
+        },
+        "expected": "{\n  \"name\": \"mug\",\n  \"price\": 4.5,\n  \"stock\": 0\n}"
+      },
+      {
+        "input": {
+          "name": "rug",
+          "price": 120,
+          "stock": 3
+        },
+        "expected": "{\n  \"name\": \"rug\",\n  \"price\": 60,\n  \"stock\": 3\n}"
+      }
+    ]
+  },
+  {
+    "title": "Server settings",
+    "statement": "Set the port to 8080 and add 1 to `retries`.\n\nThe port is at `server.port`. Use `=` for the port and `+=` for `retries`. Join the two steps with `|`. Give the whole object back.",
+    "reference": ".server.port = 8080 | .retries += 1",
+    "tests": [
+      {
+        "input": {
+          "server": {
+            "host": "api.example.com",
+            "port": 80
+          },
+          "retries": 2
+        },
+        "expected": "{\n  \"server\": {\n    \"host\": \"api.example.com\",\n    \"port\": 8080\n  },\n  \"retries\": 3\n}"
+      },
+      {
+        "input": {
+          "server": {
+            "host": "localhost",
+            "port": 8080
+          },
+          "retries": 0
+        },
+        "expected": "{\n  \"server\": {\n    \"host\": \"localhost\",\n    \"port\": 8080\n  },\n  \"retries\": 1\n}"
+      },
+      {
+        "input": {
+          "server": {
+            "host": "db.example.com",
+            "port": 5432
+          },
+          "retries": 5,
+          "debug": true
+        },
+        "expected": "{\n  \"server\": {\n    \"host\": \"db.example.com\",\n    \"port\": 8080\n  },\n  \"retries\": 6,\n  \"debug\": true\n}"
+      }
+    ]
+  },
+  {
+    "title": "Lower-case emails",
+    "statement": "Make the email of every user lower case.\n\nThe input is an array of users. Change each `email` with `ascii_downcase`. Give an array of whole users back. You can use `map` with `|=` inside it, or the path `.[].email`.",
+    "reference": "map(.email |= ascii_downcase)",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "Ada",
+            "email": "Ada@Example.com"
+          },
+          {
+            "name": "Bo",
+            "email": "bo@example.com"
+          }
+        ],
+        "expected": "[\n  {\n    \"name\": \"Ada\",\n    \"email\": \"ada@example.com\"\n  },\n  {\n    \"name\": \"Bo\",\n    \"email\": \"bo@example.com\"\n  }\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "name": "Cy",
+            "email": "CY@EXAMPLE.COM"
+          }
+        ],
+        "expected": "[\n  {\n    \"name\": \"Cy\",\n    \"email\": \"cy@example.com\"\n  }\n]"
+      }
+    ]
+  }
+]

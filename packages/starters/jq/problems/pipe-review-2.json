@@ -1,0 +1,48 @@
+{
+  "title": "Newest deploys first",
+  "statement": "Give the three newest deploys, newest first.\n\nThe deploys are in the `deploys` array, oldest first. Give an array of three ids: the newest, then the one before it, then the one before that. When there are fewer than three deploys, give all of them, newest first. The function `reverse` turns an array around.",
+  "reference": ".deploys | reverse | .[:3]",
+  "tests": [
+    {
+      "input": {
+        "app": "shop",
+        "deploys": [
+          "d1",
+          "d2",
+          "d3",
+          "d4",
+          "d5"
+        ]
+      },
+      "expected": "[\n  \"d5\",\n  \"d4\",\n  \"d3\"\n]"
+    },
+    {
+      "input": {
+        "app": "blog",
+        "deploys": [
+          "d7",
+          "d8"
+        ]
+      },
+      "expected": "[\n  \"d8\",\n  \"d7\"\n]"
+    },
+    {
+      "input": {
+        "app": "docs",
+        "deploys": []
+      },
+      "expected": "[]"
+    },
+    {
+      "input": {
+        "app": "api",
+        "deploys": [
+          "d20",
+          "d21",
+          "d22"
+        ]
+      },
+      "expected": "[\n  \"d22\",\n  \"d21\",\n  \"d20\"\n]"
+    }
+  ]
+}

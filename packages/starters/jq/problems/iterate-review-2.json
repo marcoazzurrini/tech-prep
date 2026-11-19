@@ -1,0 +1,74 @@
+{
+  "title": "Team member emails",
+  "statement": "Give the email of every member of every team.\n\nThe teams are in the `teams` array. Each team has a `members` array. Each member has an `email`. Print each email as its own output: all members of the first team first, then the next team.",
+  "reference": ".teams[] | .members[] | .email",
+  "tests": [
+    {
+      "input": {
+        "teams": [
+          {
+            "name": "web",
+            "members": [
+              {
+                "email": "wim@example.com"
+              },
+              {
+                "email": "xia@example.com"
+              }
+            ]
+          },
+          {
+            "name": "ops",
+            "members": [
+              {
+                "email": "yan@example.com"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "\"wim@example.com\"\n\"xia@example.com\"\n\"yan@example.com\""
+    },
+    {
+      "input": {
+        "teams": [
+          {
+            "name": "data",
+            "members": []
+          }
+        ]
+      },
+      "expected": ""
+    },
+    {
+      "input": {
+        "teams": [
+          {
+            "name": "qa",
+            "members": [
+              {
+                "email": "zoe@example.com"
+              }
+            ]
+          },
+          {
+            "name": "ios",
+            "members": []
+          },
+          {
+            "name": "web",
+            "members": [
+              {
+                "email": "abe@example.com"
+              },
+              {
+                "email": "zoe@example.com"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "\"zoe@example.com\"\n\"abe@example.com\"\n\"zoe@example.com\""
+    }
+  ]
+}

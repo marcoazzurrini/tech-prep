@@ -1,0 +1,54 @@
+{
+  "title": "Queued jobs",
+  "statement": "Print every job that is still queued, one job per line.\n\nThe jobs are in the `jobs` array. A job is queued when its `status` is `\"queued\"`. Print each whole job as one line of JSON, with no spaces.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-c '.jobs[] | select(.status == \"queued\")'",
+  "tests": [
+    {
+      "input": {
+        "jobs": [
+          {
+            "id": 1,
+            "status": "done"
+          },
+          {
+            "id": 2,
+            "status": "queued"
+          },
+          {
+            "id": 3,
+            "status": "queued"
+          }
+        ]
+      },
+      "expected": "{\"id\":2,\"status\":\"queued\"}\n{\"id\":3,\"status\":\"queued\"}"
+    },
+    {
+      "input": {
+        "jobs": [
+          {
+            "id": 4,
+            "status": "running"
+          }
+        ]
+      },
+      "expected": ""
+    },
+    {
+      "input": {
+        "jobs": [
+          {
+            "id": 5,
+            "status": "queued"
+          },
+          {
+            "id": 6,
+            "status": "done"
+          }
+        ]
+      },
+      "expected": "{\"id\":5,\"status\":\"queued\"}"
+    }
+  ]
+}

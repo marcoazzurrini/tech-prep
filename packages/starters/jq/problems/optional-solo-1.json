@@ -1,0 +1,55 @@
+{
+  "title": "First cells, good rows",
+  "statement": "Give the first cell of every good row.\n\nThe input is an array of rows. A good row is an array of cells. A broken row is a string. Skip the broken rows. Print the first cell of each good row as its own output.",
+  "reference": ".[] | .[0]?",
+  "tests": [
+    {
+      "input": [
+        [
+          "Ada",
+          36
+        ],
+        "parse error",
+        [
+          "Bo",
+          41
+        ]
+      ],
+      "expected": "\"Ada\"\n\"Bo\""
+    },
+    {
+      "input": [
+        "parse error",
+        "empty line"
+      ],
+      "expected": ""
+    },
+    {
+      "input": [
+        [
+          "pen",
+          2
+        ]
+      ],
+      "expected": "\"pen\""
+    },
+    {
+      "input": [
+        [
+          "x",
+          1
+        ],
+        [
+          "y",
+          2
+        ],
+        "bad row",
+        [
+          "z",
+          3
+        ]
+      ],
+      "expected": "\"x\"\n\"y\"\n\"z\""
+    }
+  ]
+}

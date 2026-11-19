@@ -1,0 +1,40 @@
+{
+  "title": "Map position",
+  "statement": "Give one array with the latitude, then the longitude.\n\nThe input is a place. The two numbers are `lat` and `lon`, inside the `geo` object.",
+  "reference": "[.geo.lat, .geo.lon]",
+  "tests": [
+    {
+      "input": {
+        "place": "Oslo",
+        "geo": {
+          "lat": 59.9,
+          "lon": 10.7,
+          "alt": 23
+        }
+      },
+      "expected": "[\n  59.9,\n  10.7\n]"
+    },
+    {
+      "input": {
+        "place": "Quito",
+        "geo": {
+          "lat": -0.2,
+          "lon": -78.5,
+          "alt": 2850
+        }
+      },
+      "expected": "[\n  -0.2,\n  -78.5\n]"
+    },
+    {
+      "input": {
+        "place": "Null Island",
+        "geo": {
+          "lat": 0,
+          "lon": 0,
+          "alt": 0
+        }
+      },
+      "expected": "[\n  0,\n  0\n]"
+    }
+  ]
+}

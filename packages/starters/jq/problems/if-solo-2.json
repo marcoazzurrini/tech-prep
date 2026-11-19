@@ -1,0 +1,50 @@
+{
+  "title": "Limit the retries",
+  "statement": "Give the number of retries of every job, but never more than 5.\n\nThe input is an array of jobs with a `retries` number. A number above 5 becomes 5. Every other number stays as it is. Give one array of numbers, in the same order.",
+  "reference": "map(if .retries > 5 then 5 else .retries end)",
+  "tests": [
+    {
+      "input": [
+        {
+          "job": "sync",
+          "retries": 2
+        },
+        {
+          "job": "mail",
+          "retries": 9
+        },
+        {
+          "job": "backup",
+          "retries": 5
+        }
+      ],
+      "expected": "[\n  2,\n  5,\n  5\n]"
+    },
+    {
+      "input": [
+        {
+          "job": "index",
+          "retries": 0
+        }
+      ],
+      "expected": "[\n  0\n]"
+    },
+    {
+      "input": [
+        {
+          "job": "push",
+          "retries": 6
+        },
+        {
+          "job": "pull",
+          "retries": 40
+        }
+      ],
+      "expected": "[\n  5,\n  5\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    }
+  ]
+}

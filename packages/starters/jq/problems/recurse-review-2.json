@@ -1,0 +1,46 @@
+{
+  "title": "Emails anywhere",
+  "statement": "Give an array of every email address in the data.\n\nAn email address is any string that has `@` in it. It can be under any key, inside any array, at any depth. The data also holds numbers, `null` and other strings: leave those out. Give one array, in the order of the input.",
+  "reference": "[.. | select(type == \"string\") | select(contains(\"@\"))]",
+  "tests": [
+    {
+      "input": {
+        "owner": "ada@example.com",
+        "repo": "tools",
+        "reviewers": [
+          "bo@example.com",
+          {
+            "name": "Cy",
+            "contact": "cy@example.com"
+          }
+        ],
+        "stars": 12
+      },
+      "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\",\n  \"cy@example.com\"\n]"
+    },
+    {
+      "input": {
+        "name": "lib",
+        "stars": 3,
+        "tags": [
+          "cli",
+          "json"
+        ]
+      },
+      "expected": "[]"
+    },
+    {
+      "input": [
+        "dee@example.com",
+        [
+          [
+            "eli@example.com"
+          ]
+        ],
+        7,
+        null
+      ],
+      "expected": "[\n  \"dee@example.com\",\n  \"eli@example.com\"\n]"
+    }
+  ]
+}

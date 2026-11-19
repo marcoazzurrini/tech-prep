@@ -1,0 +1,25 @@
+{
+  "title": "First and last time",
+  "statement": "Give the time of the first event and the time of the last event.\n\nThe input holds many events, one JSON object per line. Each has a `time`. Print two outputs, as JSON with quotes: the `time` of the first line, then the `time` of the last line. When there is only one line, print its time twice.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-s '.[0].time, .[-1].time'",
+  "tests": [
+    {
+      "input_text": "{\"time\":\"09:00\",\"event\":\"open\"}\n{\"time\":\"09:20\",\"event\":\"edit\"}\n{\"time\":\"09:45\",\"event\":\"close\"}\n",
+      "expected": "\"09:00\"\n\"09:45\""
+    },
+    {
+      "input_text": "{\"time\":\"17:30\",\"event\":\"ping\"}\n",
+      "expected": "\"17:30\"\n\"17:30\""
+    },
+    {
+      "input_text": "{\"time\":\"06:10\",\"event\":\"boot\"}\n{\"time\":\"06:11\",\"event\":\"ready\"}\n",
+      "expected": "\"06:10\"\n\"06:11\""
+    },
+    {
+      "input_text": "{\"time\":\"22:00\",\"event\":\"login\"}\n{\"time\":\"22:05\",\"event\":\"view\"}\n{\"time\":\"22:07\",\"event\":\"view\"}\n{\"time\":\"23:59\",\"event\":\"logout\"}\n",
+      "expected": "\"22:00\"\n\"23:59\""
+    }
+  ]
+}

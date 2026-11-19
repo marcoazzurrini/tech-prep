@@ -1,0 +1,123 @@
+[
+  {
+    "title": "Price list",
+    "statement": "Print one CSV line for each product.\n\nThe input is an array of products. Each line has the `sku`, then the `price`. This task runs jq with `-r`. Build an array for each product, then use `@csv`.",
+    "reference": ".[] | [.sku, .price] | @csv",
+    "flags": [
+      "-r"
+    ],
+    "tests": [
+      {
+        "input": [
+          {
+            "sku": "PEN-1",
+            "price": 2.5
+          },
+          {
+            "sku": "MUG-7",
+            "price": 8
+          }
+        ],
+        "expected": "\"PEN-1\",2.5\n\"MUG-7\",8"
+      },
+      {
+        "input": [
+          {
+            "sku": "CAP-3",
+            "price": 12
+          }
+        ],
+        "expected": "\"CAP-3\",12"
+      },
+      {
+        "input": [
+          {
+            "sku": "INK-2",
+            "price": 4
+          },
+          {
+            "sku": "PAD-9",
+            "price": 3.25
+          },
+          {
+            "sku": "BAG-4",
+            "price": 30
+          }
+        ],
+        "expected": "\"INK-2\",4\n\"PAD-9\",3.25\n\"BAG-4\",30"
+      }
+    ]
+  },
+  {
+    "title": "Log table",
+    "statement": "Print one line for each log entry, with a tab between the values.\n\nThe input is an array of log entries. Each line has the `level`, then the `msg`. This task runs jq with `-r`. Use `@tsv`.",
+    "reference": ".[] | [.level, .msg] | @tsv",
+    "flags": [
+      "-r"
+    ],
+    "tests": [
+      {
+        "input": [
+          {
+            "level": "error",
+            "msg": "disk full"
+          },
+          {
+            "level": "info",
+            "msg": "job done"
+          }
+        ],
+        "expected": "error\tdisk full\ninfo\tjob done"
+      },
+      {
+        "input": [
+          {
+            "level": "warn",
+            "msg": "slow query"
+          }
+        ],
+        "expected": "warn\tslow query"
+      },
+      {
+        "input": [],
+        "expected": ""
+      }
+    ]
+  },
+  {
+    "title": "Tickets with a header",
+    "statement": "Print the tickets as CSV, with a header line first.\n\nThe first line is the header: the strings `id` and `title`. Then comes one line for each ticket, with its `id` and its `title`. This task runs jq with `-r`. Use `,` to give the header array first and the ticket arrays after it. Then pipe all of them to `@csv`.",
+    "reference": "([\"id\", \"title\"], (.[] | [.id, .title])) | @csv",
+    "flags": [
+      "-r"
+    ],
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 1,
+            "title": "Fix login"
+          },
+          {
+            "id": 2,
+            "title": "Add search"
+          }
+        ],
+        "expected": "\"id\",\"title\"\n1,\"Fix login\"\n2,\"Add search\""
+      },
+      {
+        "input": [],
+        "expected": "\"id\",\"title\""
+      },
+      {
+        "input": [
+          {
+            "id": 7,
+            "title": "Rename \"old\" tab"
+          }
+        ],
+        "expected": "\"id\",\"title\"\n7,\"Rename \"\"old\"\" tab\""
+      }
+    ]
+  }
+]

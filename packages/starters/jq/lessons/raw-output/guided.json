@@ -1,0 +1,139 @@
+[
+  {
+    "title": "User emails",
+    "statement": "Print the email of every user as plain text.\n\nThe input is an array of users. Print one email per line, with no quotes. Use the `-r` flag.",
+    "mode": "command",
+    "stub": "'.'",
+    "reference": "-r '.[] | .email'",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "Ada",
+            "email": "ada@example.com"
+          },
+          {
+            "name": "Bo",
+            "email": "bo@example.com"
+          }
+        ],
+        "expected": "ada@example.com\nbo@example.com"
+      },
+      {
+        "input": [
+          {
+            "name": "Cy",
+            "email": "cy@example.com"
+          }
+        ],
+        "expected": "cy@example.com"
+      },
+      {
+        "input": [],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "name": "Dee",
+            "email": "dee@example.com"
+          },
+          {
+            "name": "Eli",
+            "email": "eli@example.com"
+          },
+          {
+            "name": "Fay",
+            "email": "fay@example.com"
+          }
+        ],
+        "expected": "dee@example.com\neli@example.com\nfay@example.com"
+      }
+    ]
+  },
+  {
+    "title": "Package version",
+    "statement": "Print the version of the package as plain text.\n\nThe input is one object, not an array. Print the `version` field on one line, with no quotes. Use `-r`.",
+    "mode": "command",
+    "stub": "'.'",
+    "reference": "-r '.version'",
+    "tests": [
+      {
+        "input": {
+          "name": "left-trim",
+          "version": "2.4.1",
+          "license": "MIT"
+        },
+        "expected": "2.4.1"
+      },
+      {
+        "input": {
+          "name": "tiny-log",
+          "version": "0.9.0",
+          "license": "ISC"
+        },
+        "expected": "0.9.0"
+      },
+      {
+        "input": {
+          "name": "date-kit",
+          "version": "11.0.3",
+          "license": "MIT"
+        },
+        "expected": "11.0.3"
+      }
+    ]
+  },
+  {
+    "title": "Settings as lines",
+    "statement": "Print every setting as a line of the form `KEY=value`.\n\nThe input is an array of settings with a `key` and a `value`. Build each line with `\\( )` inside a string. Print the lines as plain text, with no quotes. Use `-r`.",
+    "mode": "command",
+    "stub": "'.'",
+    "reference": "-r '.[] | \"\\(.key)=\\(.value)\"'",
+    "tests": [
+      {
+        "input": [
+          {
+            "key": "PORT",
+            "value": "8080"
+          },
+          {
+            "key": "MODE",
+            "value": "debug"
+          }
+        ],
+        "expected": "PORT=8080\nMODE=debug"
+      },
+      {
+        "input": [
+          {
+            "key": "HOME",
+            "value": "/srv/app"
+          }
+        ],
+        "expected": "HOME=/srv/app"
+      },
+      {
+        "input": [],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "key": "LANG",
+            "value": "en"
+          },
+          {
+            "key": "TZ",
+            "value": "UTC"
+          },
+          {
+            "key": "COLOR",
+            "value": "off"
+          }
+        ],
+        "expected": "LANG=en\nTZ=UTC\nCOLOR=off"
+      }
+    ]
+  }
+]

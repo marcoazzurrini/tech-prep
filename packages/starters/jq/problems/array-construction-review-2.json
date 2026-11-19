@@ -1,0 +1,73 @@
+{
+  "title": "Step durations",
+  "statement": "For each job, give an array with the seconds of its steps.\n\nThe input is an array of jobs. Each job has a `steps` array, and each step has `seconds`. Print one array for each job as its own output. A job with no steps gives an empty array.",
+  "reference": ".[] | [.steps[] | .seconds]",
+  "tests": [
+    {
+      "input": [
+        {
+          "job": "build",
+          "steps": [
+            {
+              "name": "install",
+              "seconds": 40
+            },
+            {
+              "name": "compile",
+              "seconds": 95
+            }
+          ]
+        },
+        {
+          "job": "lint",
+          "steps": [
+            {
+              "name": "check",
+              "seconds": 12
+            }
+          ]
+        }
+      ],
+      "expected": "[\n  40,\n  95\n]\n[\n  12\n]"
+    },
+    {
+      "input": [
+        {
+          "job": "deploy",
+          "steps": []
+        }
+      ],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "job": "test",
+          "steps": [
+            {
+              "name": "unit",
+              "seconds": 30
+            },
+            {
+              "name": "e2e",
+              "seconds": 210
+            },
+            {
+              "name": "report",
+              "seconds": 5
+            }
+          ]
+        },
+        {
+          "job": "docs",
+          "steps": []
+        }
+      ],
+      "expected": "[\n  30,\n  210,\n  5\n]\n[]"
+    },
+    {
+      "input": [],
+      "expected": ""
+    }
+  ]
+}

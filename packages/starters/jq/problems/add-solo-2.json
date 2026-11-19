@@ -1,0 +1,46 @@
+{
+  "title": "Fastest runner",
+  "statement": "Give the runner with the lowest time.\n\nEach runner has a `name` and a time in `seconds`. Give the whole object of the fastest runner. No two runners have the same time.",
+  "reference": "min_by(.seconds)",
+  "tests": [
+    {
+      "input": [
+        {
+          "name": "Uma",
+          "seconds": 312
+        },
+        {
+          "name": "Vic",
+          "seconds": 287
+        },
+        {
+          "name": "Wes",
+          "seconds": 301
+        }
+      ],
+      "expected": "{\n  \"name\": \"Vic\",\n  \"seconds\": 287\n}"
+    },
+    {
+      "input": [
+        {
+          "name": "Xia",
+          "seconds": 400
+        }
+      ],
+      "expected": "{\n  \"name\": \"Xia\",\n  \"seconds\": 400\n}"
+    },
+    {
+      "input": [
+        {
+          "name": "Yan",
+          "seconds": 250
+        },
+        {
+          "name": "Zed",
+          "seconds": 266
+        }
+      ],
+      "expected": "{\n  \"name\": \"Yan\",\n  \"seconds\": 250\n}"
+    }
+  ]
+}

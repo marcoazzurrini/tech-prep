@@ -1,0 +1,38 @@
+{
+  "title": "Last job done",
+  "statement": "Give the queue without its last job.\n\nThe input is one queue. Its jobs are in the `jobs` array. There is always at least one job. Give the whole queue back, with the other fields as they are.",
+  "reference": "del(.jobs[-1])",
+  "tests": [
+    {
+      "input": {
+        "queue": "emails",
+        "jobs": [
+          "send-41",
+          "send-42",
+          "send-43"
+        ]
+      },
+      "expected": "{\n  \"queue\": \"emails\",\n  \"jobs\": [\n    \"send-41\",\n    \"send-42\"\n  ]\n}"
+    },
+    {
+      "input": {
+        "queue": "reports",
+        "jobs": [
+          "build-7"
+        ]
+      },
+      "expected": "{\n  \"queue\": \"reports\",\n  \"jobs\": []\n}"
+    },
+    {
+      "input": {
+        "queue": "images",
+        "paused": true,
+        "jobs": [
+          "resize-1",
+          "resize-2"
+        ]
+      },
+      "expected": "{\n  \"queue\": \"images\",\n  \"paused\": true,\n  \"jobs\": [\n    \"resize-1\"\n  ]\n}"
+    }
+  ]
+}

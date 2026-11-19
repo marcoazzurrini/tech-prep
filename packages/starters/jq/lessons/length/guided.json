@@ -1,0 +1,143 @@
+[
+  {
+    "title": "Paid orders",
+    "statement": "Count the orders that are paid.\n\nThe input is an array of orders. An order is paid when `paid` is `true`. Give one number. Keep the paid orders with `map(select(...))`, then use `length`.",
+    "reference": "map(select(.paid)) | length",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 501,
+            "paid": true
+          },
+          {
+            "id": 502,
+            "paid": false
+          },
+          {
+            "id": 503,
+            "paid": true
+          },
+          {
+            "id": 504,
+            "paid": true
+          }
+        ],
+        "expected": "3"
+      },
+      {
+        "input": [],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "id": 601,
+            "paid": false
+          },
+          {
+            "id": 602,
+            "paid": true
+          }
+        ],
+        "expected": "1"
+      },
+      {
+        "input": [
+          {
+            "id": 701,
+            "paid": true
+          },
+          {
+            "id": 702,
+            "paid": true
+          }
+        ],
+        "expected": "2"
+      }
+    ]
+  },
+  {
+    "title": "Count the dependencies",
+    "statement": "Count the dependencies of a package.\n\nThe input is a package file. `dependencies` is an object with one key for each dependency. Give one number. On an object, `length` counts the keys.",
+    "reference": ".dependencies | length",
+    "tests": [
+      {
+        "input": {
+          "name": "shop-web",
+          "version": "1.4.0",
+          "dependencies": {
+            "react": "^18.2.0",
+            "zod": "^3.22.4",
+            "clsx": "^2.0.0"
+          }
+        },
+        "expected": "3"
+      },
+      {
+        "input": {
+          "name": "tiny",
+          "version": "0.1.0",
+          "dependencies": {}
+        },
+        "expected": "0"
+      },
+      {
+        "input": {
+          "name": "cli",
+          "version": "2.0.0",
+          "dependencies": {
+            "chalk": "^5.3.0"
+          }
+        },
+        "expected": "1"
+      }
+    ]
+  },
+  {
+    "title": "Team sizes",
+    "statement": "Give the size of every team, as one array of objects.\n\nThe input is an array of teams. Each team has a `name` and a `members` array. Each new object has two keys: `name`, and `size` with the number of members. Inside `{ }`, put the pipe in round brackets: `(.members | length)`.",
+    "reference": "map({name, size: (.members | length)})",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "core",
+            "members": [
+              "ada",
+              "bo",
+              "cy"
+            ]
+          },
+          {
+            "name": "docs",
+            "members": [
+              "dee"
+            ]
+          },
+          {
+            "name": "infra",
+            "members": []
+          }
+        ],
+        "expected": "[\n  {\n    \"name\": \"core\",\n    \"size\": 3\n  },\n  {\n    \"name\": \"docs\",\n    \"size\": 1\n  },\n  {\n    \"name\": \"infra\",\n    \"size\": 0\n  }\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "name": "design",
+            "members": [
+              "eli",
+              "fay"
+            ]
+          }
+        ],
+        "expected": "[\n  {\n    \"name\": \"design\",\n    \"size\": 2\n  }\n]"
+      }
+    ]
+  }
+]

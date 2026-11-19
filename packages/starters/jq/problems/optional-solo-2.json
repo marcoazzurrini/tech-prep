@@ -1,0 +1,40 @@
+{
+  "title": "Search results",
+  "statement": "Give every search result as its own output.\n\nThe results are in the `results` field. It is an array when the search worked. When the search failed, it is `null` or a string. Print nothing then, and give no error.",
+  "reference": ".results[]?",
+  "tests": [
+    {
+      "input": {
+        "query": "jq",
+        "results": [
+          "jq manual",
+          "jq play"
+        ]
+      },
+      "expected": "\"jq manual\"\n\"jq play\""
+    },
+    {
+      "input": {
+        "query": "",
+        "results": null
+      },
+      "expected": ""
+    },
+    {
+      "input": {
+        "query": "zzz",
+        "results": "timeout"
+      },
+      "expected": ""
+    },
+    {
+      "input": {
+        "query": "json",
+        "results": [
+          "json.org"
+        ]
+      },
+      "expected": "\"json.org\""
+    }
+  ]
+}

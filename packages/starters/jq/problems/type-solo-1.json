@@ -1,0 +1,50 @@
+{
+  "title": "Records with text ids",
+  "statement": "Keep the records whose `id` is a string.\n\nThe input is an array of records. Old records have a number as `id`, and new records have a string. Give an array of whole records back, in the same order.",
+  "reference": "map(select(.id | type == \"string\"))",
+  "tests": [
+    {
+      "input": [
+        {
+          "id": 17,
+          "name": "Ada"
+        },
+        {
+          "id": "u_18",
+          "name": "Bo"
+        },
+        {
+          "id": "19",
+          "name": "Cy"
+        },
+        {
+          "id": 20,
+          "name": "Dee"
+        }
+      ],
+      "expected": "[\n  {\n    \"id\": \"u_18\",\n    \"name\": \"Bo\"\n  },\n  {\n    \"id\": \"19\",\n    \"name\": \"Cy\"\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "id": 1,
+          "name": "Eli"
+        }
+      ],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "id": "u_2",
+          "name": "Fay"
+        }
+      ],
+      "expected": "[\n  {\n    \"id\": \"u_2\",\n    \"name\": \"Fay\"\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    }
+  ]
+}

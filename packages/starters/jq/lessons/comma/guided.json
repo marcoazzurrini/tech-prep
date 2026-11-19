@@ -1,0 +1,103 @@
+[
+  {
+    "title": "Name and email",
+    "statement": "Give the user's name, then the user's email.\n\nThe input is one user. Print two outputs: first `name`, then `email`. Put `,` between the two filters.",
+    "reference": ".name, .email",
+    "tests": [
+      {
+        "input": {
+          "id": 7,
+          "name": "Ada",
+          "email": "ada@example.com"
+        },
+        "expected": "\"Ada\"\n\"ada@example.com\""
+      },
+      {
+        "input": {
+          "id": 8,
+          "name": "Bo",
+          "email": "bo@example.com"
+        },
+        "expected": "\"Bo\"\n\"bo@example.com\""
+      },
+      {
+        "input": {
+          "id": 9,
+          "name": "Cy",
+          "email": null
+        },
+        "expected": "\"Cy\"\nnull"
+      }
+    ]
+  },
+  {
+    "title": "Box size",
+    "statement": "Give one array with the width, the height and the depth of the box.\n\nThe input is one parcel. The fields are `width`, `height` and `depth`. Keep this order. Leave `unit` out. Put the commas inside `[ ]`.",
+    "reference": "[.width, .height, .depth]",
+    "tests": [
+      {
+        "input": {
+          "width": 30,
+          "height": 20,
+          "depth": 15,
+          "unit": "cm"
+        },
+        "expected": "[\n  30,\n  20,\n  15\n]"
+      },
+      {
+        "input": {
+          "width": 5,
+          "height": 5,
+          "depth": 5,
+          "unit": "cm"
+        },
+        "expected": "[\n  5,\n  5,\n  5\n]"
+      },
+      {
+        "input": {
+          "width": 12,
+          "height": 40,
+          "depth": 8,
+          "unit": "in"
+        },
+        "expected": "[\n  12,\n  40,\n  8\n]"
+      }
+    ]
+  },
+  {
+    "title": "Tasks and owners",
+    "statement": "For every task, give its title, then its owner.\n\nThe input is an array of tasks with a `title` and an `owner`. Print each value as its own output: the first title, the first owner, the second title, and so on. In `.[] | .a, .b`, both `.a` and `.b` run for each item.",
+    "reference": ".[] | .title, .owner",
+    "tests": [
+      {
+        "input": [
+          {
+            "title": "Write docs",
+            "owner": "Ada",
+            "done": false
+          },
+          {
+            "title": "Fix build",
+            "owner": "Bo",
+            "done": true
+          }
+        ],
+        "expected": "\"Write docs\"\n\"Ada\"\n\"Fix build\"\n\"Bo\""
+      },
+      {
+        "input": [],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "title": "Ship release",
+            "owner": "Cy",
+            "done": false
+          }
+        ],
+        "expected": "\"Ship release\"\n\"Cy\""
+      }
+    ]
+  }
+]

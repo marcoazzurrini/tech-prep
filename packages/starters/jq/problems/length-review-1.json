@@ -1,0 +1,45 @@
+{
+  "title": "Search page summary",
+  "statement": "Give a short summary of one page of search results.\n\nThe input has a `page` number and a `hits` array. Give one object with two keys: `page`, and `count` with the number of hits on the page.",
+  "reference": "{page, count: (.hits | length)}",
+  "tests": [
+    {
+      "input": {
+        "query": "jq",
+        "page": 1,
+        "hits": [
+          {
+            "url": "https://example.com/a"
+          },
+          {
+            "url": "https://example.com/b"
+          },
+          {
+            "url": "https://example.com/c"
+          }
+        ]
+      },
+      "expected": "{\n  \"page\": 1,\n  \"count\": 3\n}"
+    },
+    {
+      "input": {
+        "query": "zsh",
+        "page": 4,
+        "hits": []
+      },
+      "expected": "{\n  \"page\": 4,\n  \"count\": 0\n}"
+    },
+    {
+      "input": {
+        "query": "awk",
+        "page": 2,
+        "hits": [
+          {
+            "url": "https://example.com/d"
+          }
+        ]
+      },
+      "expected": "{\n  \"page\": 2,\n  \"count\": 1\n}"
+    }
+  ]
+}

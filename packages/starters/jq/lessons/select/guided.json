@@ -1,0 +1,149 @@
+[
+  {
+    "title": "Active users",
+    "statement": "Give the name of every user who is active.\n\nA user is active when `active` is `true`. Print each name as its own output.",
+    "reference": ".[] | select(.active) | .name",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "Ada",
+            "active": true
+          },
+          {
+            "name": "Bo",
+            "active": false
+          },
+          {
+            "name": "Cy",
+            "active": true
+          }
+        ],
+        "expected": "\"Ada\"\n\"Cy\""
+      },
+      {
+        "input": [
+          {
+            "name": "Dee",
+            "active": false
+          },
+          {
+            "name": "Eli",
+            "active": true
+          }
+        ],
+        "expected": "\"Eli\""
+      },
+      {
+        "input": [
+          {
+            "name": "Fay",
+            "active": true
+          }
+        ],
+        "expected": "\"Fay\""
+      },
+      {
+        "input": [
+          {
+            "name": "Gus",
+            "active": false
+          }
+        ],
+        "expected": ""
+      }
+    ]
+  },
+  {
+    "title": "Long words",
+    "statement": "Keep the words that have more than 4 letters.\n\nThe input is an array of strings. Give an array back, in the same order.",
+    "reference": "map(select(length > 4))",
+    "tests": [
+      {
+        "input": [
+          "pear",
+          "banana",
+          "fig",
+          "cherry"
+        ],
+        "expected": "[\n  \"banana\",\n  \"cherry\"\n]"
+      },
+      {
+        "input": [
+          "kiwi",
+          "lime"
+        ],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          "apple",
+          "melon",
+          "plum"
+        ],
+        "expected": "[\n  \"apple\",\n  \"melon\"\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  },
+  {
+    "title": "Open tickets",
+    "statement": "Give the tickets that are open and have priority 1.\n\nEach ticket has a `status` and a `priority`. Give an array of whole tickets back. You can use `select` twice, or join two tests with `and`.",
+    "reference": "map(select(.status == \"open\" and .priority == 1))",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 1,
+            "status": "open",
+            "priority": 1
+          },
+          {
+            "id": 2,
+            "status": "closed",
+            "priority": 1
+          },
+          {
+            "id": 3,
+            "status": "open",
+            "priority": 2
+          },
+          {
+            "id": 4,
+            "status": "open",
+            "priority": 1
+          }
+        ],
+        "expected": "[\n  {\n    \"id\": 1,\n    \"status\": \"open\",\n    \"priority\": 1\n  },\n  {\n    \"id\": 4,\n    \"status\": \"open\",\n    \"priority\": 1\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "id": 7,
+            "status": "closed",
+            "priority": 3
+          }
+        ],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "id": 8,
+            "status": "open",
+            "priority": 1
+          },
+          {
+            "id": 9,
+            "status": "open",
+            "priority": 3
+          }
+        ],
+        "expected": "[\n  {\n    \"id\": 8,\n    \"status\": \"open\",\n    \"priority\": 1\n  }\n]"
+      }
+    ]
+  }
+]

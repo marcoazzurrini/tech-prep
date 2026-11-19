@@ -1,0 +1,169 @@
+[
+  {
+    "title": "Free shipping",
+    "statement": "Say whether the order gets free shipping.\n\nShipping is free when `total` is 50 or more and `country` is `\"IT\"`. Give `true` or `false`.",
+    "reference": ".total >= 50 and .country == \"IT\"",
+    "tests": [
+      {
+        "input": {
+          "id": 811,
+          "total": 64,
+          "country": "IT"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "id": 812,
+          "total": 49,
+          "country": "IT"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "id": 813,
+          "total": 50,
+          "country": "IT"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "id": 814,
+          "total": 90,
+          "country": "FR"
+        },
+        "expected": "false"
+      }
+    ]
+  },
+  {
+    "title": "Requests to retry",
+    "statement": "Keep the requests that must be sent again.\n\nA request must be sent again when its `status` is 429, or when its `status` is 500 or more. Give an array of whole requests back. Join the two tests with `or`.",
+    "reference": "map(select(.status == 429 or .status >= 500))",
+    "tests": [
+      {
+        "input": [
+          {
+            "url": "/cart",
+            "status": 200
+          },
+          {
+            "url": "/pay",
+            "status": 503
+          },
+          {
+            "url": "/login",
+            "status": 429
+          },
+          {
+            "url": "/me",
+            "status": 404
+          }
+        ],
+        "expected": "[\n  {\n    \"url\": \"/pay\",\n    \"status\": 503\n  },\n  {\n    \"url\": \"/login\",\n    \"status\": 429\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "url": "/a",
+            "status": 500
+          },
+          {
+            "url": "/b",
+            "status": 499
+          }
+        ],
+        "expected": "[\n  {\n    \"url\": \"/a\",\n    \"status\": 500\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "url": "/c",
+            "status": 301
+          }
+        ],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "url": "/d",
+            "status": 429
+          },
+          {
+            "url": "/e",
+            "status": 428
+          },
+          {
+            "url": "/f",
+            "status": 502
+          }
+        ],
+        "expected": "[\n  {\n    \"url\": \"/d\",\n    \"status\": 429\n  },\n  {\n    \"url\": \"/f\",\n    \"status\": 502\n  }\n]"
+      }
+    ]
+  },
+  {
+    "title": "Jobs left for people",
+    "statement": "Give the `id` of every job that is not done and does not belong to the bot.\n\nEach job has `done`, which is `true` or `false`, and an `owner`. The bot is the owner `\"bot\"`. Print each `id` as its own output. Use `not` after a pipe: `.done | not`. Put it in brackets when you join it with another test.",
+    "reference": ".[] | select((.done | not) and .owner != \"bot\") | .id",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 1,
+            "done": false,
+            "owner": "ada"
+          },
+          {
+            "id": 2,
+            "done": true,
+            "owner": "bo"
+          },
+          {
+            "id": 3,
+            "done": false,
+            "owner": "bot"
+          },
+          {
+            "id": 4,
+            "done": false,
+            "owner": "cy"
+          }
+        ],
+        "expected": "1\n4"
+      },
+      {
+        "input": [
+          {
+            "id": 7,
+            "done": true,
+            "owner": "bot"
+          }
+        ],
+        "expected": ""
+      },
+      {
+        "input": [
+          {
+            "id": 8,
+            "done": false,
+            "owner": "dee"
+          },
+          {
+            "id": 9,
+            "done": true,
+            "owner": "dee"
+          }
+        ],
+        "expected": "8"
+      },
+      {
+        "input": [],
+        "expected": ""
+      }
+    ]
+  }
+]

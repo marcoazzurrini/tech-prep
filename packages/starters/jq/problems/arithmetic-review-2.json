@@ -1,0 +1,39 @@
+{
+  "title": "Free space on disks",
+  "statement": "Give a short report for every disk, as one array of objects.\n\nThe input is an array of disks. Each report has two keys. `label` is the `host`, then `:`, then the `mount`, for example `\"db1:/data\"`. `free` is `total` minus `used`. Keep the order.",
+  "reference": "map({label: (.host + \":\" + .mount), free: (.total - .used)})",
+  "tests": [
+    {
+      "input": [
+        {
+          "host": "db1",
+          "mount": "/data",
+          "total": 500,
+          "used": 320
+        },
+        {
+          "host": "web2",
+          "mount": "/",
+          "total": 80,
+          "used": 80
+        }
+      ],
+      "expected": "[\n  {\n    \"label\": \"db1:/data\",\n    \"free\": 180\n  },\n  {\n    \"label\": \"web2:/\",\n    \"free\": 0\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    },
+    {
+      "input": [
+        {
+          "host": "ci",
+          "mount": "/var",
+          "total": 200,
+          "used": 15
+        }
+      ],
+      "expected": "[\n  {\n    \"label\": \"ci:/var\",\n    \"free\": 185\n  }\n]"
+    }
+  ]
+}

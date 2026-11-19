@@ -1,0 +1,160 @@
+[
+  {
+    "title": "Log lines per level",
+    "statement": "Count how many log entries there are for each level.\n\nThe input is an array of log entries. Each entry has a `level`. Give one object: each key is a level and its value is the number of entries with that level. Use `reduce .[] as $e ({}; ...)`. In the update, add 1 to the key `.[$e.level]`.",
+    "reference": "reduce .[] as $e ({}; .[$e.level] += 1)",
+    "tests": [
+      {
+        "input": [
+          {
+            "level": "info",
+            "msg": "started"
+          },
+          {
+            "level": "error",
+            "msg": "timeout"
+          },
+          {
+            "level": "info",
+            "msg": "retry"
+          },
+          {
+            "level": "info",
+            "msg": "done"
+          }
+        ],
+        "expected": "{\n  \"info\": 3,\n  \"error\": 1\n}"
+      },
+      {
+        "input": [
+          {
+            "level": "warn",
+            "msg": "slow"
+          }
+        ],
+        "expected": "{\n  \"warn\": 1\n}"
+      },
+      {
+        "input": [],
+        "expected": "{}"
+      },
+      {
+        "input": [
+          {
+            "level": "error",
+            "msg": "a"
+          },
+          {
+            "level": "error",
+            "msg": "b"
+          },
+          {
+            "level": "debug",
+            "msg": "c"
+          }
+        ],
+        "expected": "{\n  \"error\": 2,\n  \"debug\": 1\n}"
+      }
+    ]
+  },
+  {
+    "title": "Account balance",
+    "statement": "Work out the balance of an account from its transactions.\n\nThe input is an array of transactions. Each one has a `type` and an `amount`. Start at 0. A `\"deposit\"` adds its amount. A `\"withdrawal\"` takes its amount away. Give the final balance as one number. Use `reduce` with 0 as the start, and an `if` in the update.",
+    "reference": "reduce .[] as $t (0; if $t.type == \"deposit\" then . + $t.amount else . - $t.amount end)",
+    "tests": [
+      {
+        "input": [
+          {
+            "type": "deposit",
+            "amount": 100
+          },
+          {
+            "type": "withdrawal",
+            "amount": 30
+          },
+          {
+            "type": "deposit",
+            "amount": 5
+          }
+        ],
+        "expected": "75"
+      },
+      {
+        "input": [],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "type": "withdrawal",
+            "amount": 20
+          }
+        ],
+        "expected": "-20"
+      },
+      {
+        "input": [
+          {
+            "type": "deposit",
+            "amount": 40
+          },
+          {
+            "type": "deposit",
+            "amount": 60
+          }
+        ],
+        "expected": "100"
+      }
+    ]
+  },
+  {
+    "title": "Users by id",
+    "statement": "Build a lookup object that gives the name of a user for an id.\n\nThe input is an array of users. Each user has an `id` and a `name`. Give one object: each key is an id and its value is the name of that user. Use `reduce` with `{}` as the start. In the update, set a key with `=`, like `.[$u.id] = $u.name`.",
+    "reference": "reduce .[] as $u ({}; .[$u.id] = $u.name)",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": "u1",
+            "name": "Ada"
+          },
+          {
+            "id": "u2",
+            "name": "Bo"
+          },
+          {
+            "id": "u3",
+            "name": "Cy"
+          }
+        ],
+        "expected": "{\n  \"u1\": \"Ada\",\n  \"u2\": \"Bo\",\n  \"u3\": \"Cy\"\n}"
+      },
+      {
+        "input": [
+          {
+            "id": "u9",
+            "name": "Dee"
+          }
+        ],
+        "expected": "{\n  \"u9\": \"Dee\"\n}"
+      },
+      {
+        "input": [],
+        "expected": "{}"
+      },
+      {
+        "input": [
+          {
+            "id": "a",
+            "name": "Eli"
+          },
+          {
+            "id": "b",
+            "name": "Fay"
+          }
+        ],
+        "expected": "{\n  \"a\": \"Eli\",\n  \"b\": \"Fay\"\n}"
+      }
+    ]
+  }
+]

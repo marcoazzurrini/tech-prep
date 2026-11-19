@@ -1,0 +1,58 @@
+{
+  "title": "Same translations",
+  "statement": "Say whether the two languages hold the same set of texts.\n\n`en` and `fr` are objects. Each key is the id of a text. Give `true` when both objects have exactly the same keys, and `false` otherwise. The values do not matter, and the order of the keys does not matter.",
+  "reference": "(.en | keys) == (.fr | keys)",
+  "tests": [
+    {
+      "input": {
+        "en": {
+          "title": "Home",
+          "save": "Save",
+          "back": "Back"
+        },
+        "fr": {
+          "save": "Enregistrer",
+          "back": "Retour",
+          "title": "Accueil"
+        }
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "en": {
+          "hello": "Hello",
+          "bye": "Bye"
+        },
+        "fr": {
+          "hello": "Bonjour"
+        }
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "en": {
+          "yes": "Yes",
+          "no": "No"
+        },
+        "fr": {
+          "yes": "Oui",
+          "maybe": "Peut-être"
+        }
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "en": {
+          "ok": "OK"
+        },
+        "fr": {
+          "ok": "OK"
+        }
+      },
+      "expected": "true"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Extra spaces",
+  "statement": "Tidy the spaces in the text.\n\nThe text is in `text`. Wherever there are two or more spaces in a row, leave one space. Change nothing else. Give one string.",
+  "reference": ".text | gsub(\" +\"; \" \")",
+  "tests": [
+    {
+      "input": {
+        "text": "build   passed  in 3s"
+      },
+      "expected": "\"build passed in 3s\""
+    },
+    {
+      "input": {
+        "text": "no extra spaces"
+      },
+      "expected": "\"no extra spaces\""
+    },
+    {
+      "input": {
+        "text": "  two at the start"
+      },
+      "expected": "\" two at the start\""
+    },
+    {
+      "input": {
+        "text": "a    b  c d"
+      },
+      "expected": "\"a b c d\""
+    }
+  ]
+}

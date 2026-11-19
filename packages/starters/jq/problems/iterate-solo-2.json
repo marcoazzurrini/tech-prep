@@ -1,0 +1,68 @@
+{
+  "title": "Commit authors",
+  "statement": "Give the name of the author of every commit.\n\nThe input is an array of commits. Each commit has an `author` object with a `name`. Print each name as its own output, in the same order.",
+  "reference": ".[] | .author.name",
+  "tests": [
+    {
+      "input": [
+        {
+          "sha": "a1f",
+          "author": {
+            "name": "Tess",
+            "email": "tess@example.com"
+          }
+        },
+        {
+          "sha": "b2e",
+          "author": {
+            "name": "Uri",
+            "email": "uri@example.com"
+          }
+        }
+      ],
+      "expected": "\"Tess\"\n\"Uri\""
+    },
+    {
+      "input": [
+        {
+          "sha": "c3d",
+          "author": {
+            "name": "Vera",
+            "email": "vera@example.com"
+          }
+        }
+      ],
+      "expected": "\"Vera\""
+    },
+    {
+      "input": [],
+      "expected": ""
+    },
+    {
+      "input": [
+        {
+          "sha": "d4c",
+          "author": {
+            "name": "Uri",
+            "email": "uri@example.com"
+          }
+        },
+        {
+          "sha": "e5b",
+          "author": {
+            "name": "Uri",
+            "email": "uri@example.com"
+          }
+        },
+        {
+          "sha": "f6a",
+          "author": {
+            "name": "Tess",
+            "email": "tess@example.com"
+          }
+        }
+      ],
+      "expected": "\"Uri\"\n\"Uri\"\n\"Tess\""
+    }
+  ]
+}

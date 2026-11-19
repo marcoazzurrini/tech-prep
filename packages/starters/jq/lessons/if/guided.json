@@ -1,0 +1,111 @@
+[
+  {
+    "title": "Stock label",
+    "statement": "Give a label that says whether the product can be bought.\n\nGive `\"in stock\"` when `stock` is more than 0. Give `\"sold out\"` otherwise.",
+    "reference": "if .stock > 0 then \"in stock\" else \"sold out\" end",
+    "tests": [
+      {
+        "input": {
+          "name": "pen",
+          "stock": 12
+        },
+        "expected": "\"in stock\""
+      },
+      {
+        "input": {
+          "name": "ink",
+          "stock": 0
+        },
+        "expected": "\"sold out\""
+      },
+      {
+        "input": {
+          "name": "pad",
+          "stock": 1
+        },
+        "expected": "\"in stock\""
+      }
+    ]
+  },
+  {
+    "title": "Kinds of reply",
+    "statement": "Turn every status code into a word.\n\nThe input is an array of numbers. A code under 400 becomes `\"ok\"`. A code from 400 to 499 becomes `\"client error\"`. A code of 500 or more becomes `\"server error\"`. Give one array of strings, in the same order. Use `elif` for the middle case.",
+    "reference": "map(if . < 400 then \"ok\" elif . < 500 then \"client error\" else \"server error\" end)",
+    "tests": [
+      {
+        "input": [
+          200,
+          404,
+          503,
+          301
+        ],
+        "expected": "[\n  \"ok\",\n  \"client error\",\n  \"server error\",\n  \"ok\"\n]"
+      },
+      {
+        "input": [
+          399,
+          400,
+          499,
+          500
+        ],
+        "expected": "[\n  \"ok\",\n  \"client error\",\n  \"client error\",\n  \"server error\"\n]"
+      },
+      {
+        "input": [
+          204
+        ],
+        "expected": "[\n  \"ok\"\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  },
+  {
+    "title": "Delivery cost",
+    "statement": "Give the delivery cost of every order.\n\nThe input is an array of orders with an `id` and a `total`. Delivery costs 0 when `total` is 50 or more, and 5 otherwise. Give an array of objects with `id` and `delivery`. Put the `if` in brackets inside the object: `{id, delivery: (if ... end)}`.",
+    "reference": "map({id, delivery: (if .total >= 50 then 0 else 5 end)})",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 31,
+            "total": 72
+          },
+          {
+            "id": 32,
+            "total": 18
+          },
+          {
+            "id": 33,
+            "total": 50
+          }
+        ],
+        "expected": "[\n  {\n    \"id\": 31,\n    \"delivery\": 0\n  },\n  {\n    \"id\": 32,\n    \"delivery\": 5\n  },\n  {\n    \"id\": 33,\n    \"delivery\": 0\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "id": 40,
+            "total": 49
+          }
+        ],
+        "expected": "[\n  {\n    \"id\": 40,\n    \"delivery\": 5\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "id": 41,
+            "total": 500
+          }
+        ],
+        "expected": "[\n  {\n    \"id\": 41,\n    \"delivery\": 0\n  }\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  }
+]

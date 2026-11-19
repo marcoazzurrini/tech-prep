@@ -1,0 +1,178 @@
+[
+  {
+    "title": "Full repo names",
+    "statement": "Give the full name of every repo, as text like `acme/api`.\n\nThe input has an `owner` and a `repos` array of names. Save the owner with `.owner as $owner` first. Then go through `.repos[]` and build the text: the owner, a `/`, then the repo name. Print each text as its own output.",
+    "reference": ".owner as $owner | .repos[] | \"\\($owner)/\\(.)\"",
+    "tests": [
+      {
+        "input": {
+          "owner": "acme",
+          "repos": [
+            "api",
+            "web",
+            "docs"
+          ]
+        },
+        "expected": "\"acme/api\"\n\"acme/web\"\n\"acme/docs\""
+      },
+      {
+        "input": {
+          "owner": "lab",
+          "repos": [
+            "tools"
+          ]
+        },
+        "expected": "\"lab/tools\""
+      },
+      {
+        "input": {
+          "owner": "solo",
+          "repos": []
+        },
+        "expected": ""
+      },
+      {
+        "input": {
+          "owner": "north",
+          "repos": [
+            "cli",
+            "sdk"
+          ]
+        },
+        "expected": "\"north/cli\"\n\"north/sdk\""
+      }
+    ]
+  },
+  {
+    "title": "Prices after discount",
+    "statement": "Take the discount off the price of every item.\n\nThe input has a `discount` and an `items` array. Each item has a `name` and a `price`. Give an array of objects with `name` and `price`, where the new price is the old price minus the discount. Name the discount with `as $d` before you go into `.items`.",
+    "reference": ".discount as $d | .items | map({name, price: (.price - $d)})",
+    "tests": [
+      {
+        "input": {
+          "discount": 5,
+          "items": [
+            {
+              "name": "lamp",
+              "price": 30
+            },
+            {
+              "name": "desk",
+              "price": 120
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"lamp\",\n    \"price\": 25\n  },\n  {\n    \"name\": \"desk\",\n    \"price\": 115\n  }\n]"
+      },
+      {
+        "input": {
+          "discount": 0,
+          "items": [
+            {
+              "name": "chair",
+              "price": 45
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"chair\",\n    \"price\": 45\n  }\n]"
+      },
+      {
+        "input": {
+          "discount": 10,
+          "items": []
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "discount": 2,
+          "items": [
+            {
+              "name": "mug",
+              "price": 8
+            },
+            {
+              "name": "cup",
+              "price": 2
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"mug\",\n    \"price\": 6\n  },\n  {\n    \"name\": \"cup\",\n    \"price\": 0\n  }\n]"
+      }
+    ]
+  },
+  {
+    "title": "Names for logins",
+    "statement": "Give the name of the user and the day for every login.\n\nThe `names` object maps a user id to a name. Each item of `logins` has a `user` id and a `day`. Give an array of objects with `name` and `day`. Save the names with `.names as $names`. Then `$names[.user]` reads the name for the id in `.user`.",
+    "reference": ".names as $names | .logins | map({name: $names[.user], day})",
+    "tests": [
+      {
+        "input": {
+          "names": {
+            "u1": "Ada",
+            "u2": "Bo"
+          },
+          "logins": [
+            {
+              "user": "u2",
+              "day": "Mon"
+            },
+            {
+              "user": "u1",
+              "day": "Tue"
+            },
+            {
+              "user": "u2",
+              "day": "Wed"
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"Bo\",\n    \"day\": \"Mon\"\n  },\n  {\n    \"name\": \"Ada\",\n    \"day\": \"Tue\"\n  },\n  {\n    \"name\": \"Bo\",\n    \"day\": \"Wed\"\n  }\n]"
+      },
+      {
+        "input": {
+          "names": {
+            "u7": "Cy"
+          },
+          "logins": [
+            {
+              "user": "u7",
+              "day": "Fri"
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"Cy\",\n    \"day\": \"Fri\"\n  }\n]"
+      },
+      {
+        "input": {
+          "names": {
+            "u3": "Dee",
+            "u4": "Eli"
+          },
+          "logins": []
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "names": {
+            "a": "Fay",
+            "b": "Gus",
+            "c": "Hal"
+          },
+          "logins": [
+            {
+              "user": "c",
+              "day": "Sat"
+            },
+            {
+              "user": "a",
+              "day": "Sun"
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"Hal\",\n    \"day\": \"Sat\"\n  },\n  {\n    \"name\": \"Fay\",\n    \"day\": \"Sun\"\n  }\n]"
+      }
+    ]
+  }
+]

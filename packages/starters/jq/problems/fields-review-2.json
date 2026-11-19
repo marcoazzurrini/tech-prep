@@ -1,0 +1,72 @@
+{
+  "title": "Deploy stage status",
+  "statement": "Give the status of the deploy stage.\n\nThe input is a pipeline run. Its `pipeline` object has a `stages` object with one entry for each stage. Give the `status` of the `deploy` stage. When the run has no deploy stage, the output is `null`.",
+  "reference": ".pipeline.stages.deploy.status",
+  "tests": [
+    {
+      "input": {
+        "pipeline": {
+          "id": 77,
+          "status": "done",
+          "stages": {
+            "build": {
+              "status": "passed"
+            },
+            "deploy": {
+              "status": "failed"
+            }
+          }
+        }
+      },
+      "expected": "\"failed\""
+    },
+    {
+      "input": {
+        "pipeline": {
+          "id": 78,
+          "status": "done",
+          "stages": {
+            "build": {
+              "status": "failed"
+            }
+          }
+        }
+      },
+      "expected": "null"
+    },
+    {
+      "input": {
+        "pipeline": {
+          "id": 79,
+          "status": "running",
+          "stages": {
+            "build": {
+              "status": "passed"
+            },
+            "deploy": {
+              "status": "running"
+            }
+          }
+        }
+      },
+      "expected": "\"running\""
+    },
+    {
+      "input": {
+        "pipeline": {
+          "id": 80,
+          "status": "done",
+          "stages": {
+            "build": {
+              "status": "passed"
+            },
+            "deploy": {
+              "status": "passed"
+            }
+          }
+        }
+      },
+      "expected": "\"passed\""
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Email in lower case",
+  "statement": "Give the email of the person who signed up, in lower case.\n\nThe email is the `email` field inside `signup`. The function `ascii_downcase` turns text into lower case.",
+  "reference": ".signup.email | ascii_downcase",
+  "tests": [
+    {
+      "input": {
+        "signup": {
+          "email": "Mona@Example.com",
+          "plan": "free"
+        }
+      },
+      "expected": "\"mona@example.com\""
+    },
+    {
+      "input": {
+        "signup": {
+          "email": "NED@EXAMPLE.COM",
+          "plan": "pro"
+        }
+      },
+      "expected": "\"ned@example.com\""
+    },
+    {
+      "input": {
+        "signup": {
+          "email": "oli@example.com",
+          "plan": "free"
+        }
+      },
+      "expected": "\"oli@example.com\""
+    }
+  ]
+}

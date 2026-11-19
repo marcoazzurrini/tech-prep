@@ -1,0 +1,382 @@
+[
+  {
+    "id": "fields",
+    "name": "Fields with .name",
+    "topic": "paths",
+    "prereqs": [],
+    "encompasses": [],
+    "key_idea": "`.` is the whole input. `.name` reads one field of an object, and `.a.b` goes one level deeper. A field that is missing gives `null`.",
+    "guided": 3,
+    "solo": ["fields-solo-1", "fields-solo-2"]
+  },
+  {
+    "id": "array-index",
+    "name": "Array Items by Index",
+    "topic": "paths",
+    "prereqs": ["fields"],
+    "encompasses": [],
+    "key_idea": "`.[0]` is the first item of an array and `.[-1]` is the last. `.[1:3]` is a slice: a shorter array.",
+    "guided": 3,
+    "solo": ["array-index-solo-1", "array-index-solo-2"]
+  },
+  {
+    "id": "pipe",
+    "name": "Chain Filters with |",
+    "topic": "paths",
+    "prereqs": ["array-index"],
+    "encompasses": [],
+    "key_idea": "`a | b` runs `a`, then runs `b` on what `a` gave. Build a long filter from small steps.",
+    "guided": 3,
+    "solo": ["pipe-solo-1", "pipe-solo-2"]
+  },
+  {
+    "id": "iterate",
+    "name": "Every Item with .[]",
+    "topic": "paths",
+    "prereqs": ["pipe"],
+    "encompasses": [],
+    "key_idea": "`.[]` gives every item of an array as its own output. What follows the pipe then runs once for each item.",
+    "guided": 3,
+    "solo": ["iterate-solo-1", "iterate-solo-2"]
+  },
+  {
+    "id": "optional",
+    "name": "Missing Data with ?",
+    "topic": "paths",
+    "prereqs": ["iterate"],
+    "encompasses": [],
+    "key_idea": "`?` after a step hides its error: `.a?` gives nothing when the input is not an object. Without `?`, jq stops with an error.",
+    "guided": 3,
+    "solo": ["optional-solo-1", "optional-solo-2"]
+  },
+  {
+    "id": "array-construction",
+    "name": "Collect into an Array with [ ]",
+    "topic": "building",
+    "prereqs": ["iterate"],
+    "encompasses": [],
+    "key_idea": "`[ ... ]` collects every output of the filter inside it into one array. `[.[] | .name]` turns many outputs back into one value.",
+    "guided": 3,
+    "solo": ["array-construction-solo-1", "array-construction-solo-2"]
+  },
+  {
+    "id": "object-construction",
+    "name": "Build Objects with { }",
+    "topic": "building",
+    "prereqs": ["array-construction"],
+    "encompasses": [],
+    "key_idea": "`{name: .user, id: .id}` builds a new object. `{id}` is short for `{id: .id}`.",
+    "guided": 3,
+    "solo": ["object-construction-solo-1", "object-construction-solo-2"]
+  },
+  {
+    "id": "comma",
+    "name": "Several Outputs with ,",
+    "topic": "building",
+    "prereqs": ["iterate"],
+    "encompasses": [],
+    "key_idea": "`a, b` gives the outputs of `a`, then the outputs of `b`. Use it to read several things from one input.",
+    "guided": 3,
+    "solo": ["comma-solo-1", "comma-solo-2"]
+  },
+  {
+    "id": "string-interpolation",
+    "name": "Text with \\( )",
+    "topic": "building",
+    "prereqs": ["object-construction"],
+    "encompasses": [],
+    "key_idea": "Inside a string, `\\(filter)` is replaced by the filter's output. `\"\\(.name) is \\(.age)\"` builds text from fields.",
+    "guided": 3,
+    "solo": ["string-interpolation-solo-1", "string-interpolation-solo-2"]
+  },
+  {
+    "id": "map",
+    "name": "Change Every Item with map",
+    "topic": "streams",
+    "prereqs": ["array-construction"],
+    "encompasses": [],
+    "key_idea": "`map(f)` runs `f` on every item of an array and gives a new array. It is short for `[.[] | f]`.",
+    "guided": 3,
+    "solo": ["map-solo-1", "map-solo-2"]
+  },
+  {
+    "id": "select",
+    "name": "Keep Items with select",
+    "topic": "streams",
+    "prereqs": ["map"],
+    "encompasses": [],
+    "key_idea": "`select(test)` passes a value on when the test is true and drops it when the test is false. Use it on a stream of items, after `.[]` or inside `map`.",
+    "guided": 3,
+    "solo": ["select-solo-1", "select-solo-2"]
+  },
+  {
+    "id": "length",
+    "name": "Count with length",
+    "topic": "streams",
+    "prereqs": ["select"],
+    "encompasses": [],
+    "key_idea": "`length` is the number of items in an array, of keys in an object, or of characters in a string. To count matches, keep them first, then take the length.",
+    "guided": 3,
+    "solo": ["length-solo-1", "length-solo-2"]
+  },
+  {
+    "id": "raw-output",
+    "name": "Plain Text with -r",
+    "topic": "cli",
+    "prereqs": ["iterate"],
+    "encompasses": [],
+    "key_idea": "jq prints strings as JSON, with quotes. The `-r` flag prints them as plain text, ready for the shell.",
+    "guided": 3,
+    "solo": ["raw-output-solo-1", "raw-output-solo-2"]
+  },
+  {
+    "id": "compact-output",
+    "name": "One Line per Value with -c",
+    "topic": "cli",
+    "prereqs": ["raw-output"],
+    "encompasses": [],
+    "key_idea": "jq pretty-prints by default. The `-c` flag prints each output value on one line, which is what line-based tools need.",
+    "guided": 3,
+    "solo": ["compact-output-solo-1", "compact-output-solo-2"]
+  },
+  {
+    "id": "arg",
+    "name": "Pass Values with --arg",
+    "topic": "cli",
+    "prereqs": ["select", "raw-output"],
+    "encompasses": [],
+    "key_idea": "`--arg name value` gives the filter a string variable `$name`. `--argjson` passes a JSON value. With `-n`, jq runs with no input.",
+    "guided": 3,
+    "solo": ["arg-solo-1", "arg-solo-2"]
+  },
+  {
+    "id": "slurp",
+    "name": "Many Inputs with -s",
+    "topic": "cli",
+    "prereqs": ["map", "compact-output"],
+    "encompasses": [],
+    "key_idea": "A file may hold many JSON values, one per line. jq runs the filter once per value. The `-s` flag reads them all into one array first.",
+    "guided": 3,
+    "solo": ["slurp-solo-1", "slurp-solo-2"]
+  },
+  {
+    "id": "alternative",
+    "name": "Defaults with //",
+    "topic": "values",
+    "prereqs": ["optional"],
+    "encompasses": [],
+    "key_idea": "`a // b` gives `a`, unless `a` is `null` or `false`; then it gives `b`. Use it for a default value.",
+    "guided": 3,
+    "solo": ["alternative-solo-1", "alternative-solo-2"]
+  },
+  {
+    "id": "arithmetic",
+    "name": "Maths and + on Each Type",
+    "topic": "values",
+    "prereqs": ["object-construction"],
+    "encompasses": [],
+    "key_idea": "`+` adds numbers, joins strings, joins arrays and merges objects. `-`, `*`, `/` and `%` work on numbers.",
+    "guided": 3,
+    "solo": ["arithmetic-solo-1", "arithmetic-solo-2"]
+  },
+  {
+    "id": "comparisons",
+    "name": "Tests with ==, < and and",
+    "topic": "values",
+    "prereqs": ["select"],
+    "encompasses": [],
+    "key_idea": "`==`, `!=`, `<`, `>=` compare two values and give `true` or `false`. `and`, `or` and `not` combine tests.",
+    "guided": 3,
+    "solo": ["comparisons-solo-1", "comparisons-solo-2"]
+  },
+  {
+    "id": "if",
+    "name": "Choose with if",
+    "topic": "values",
+    "prereqs": ["comparisons"],
+    "encompasses": [],
+    "key_idea": "`if test then a else b end` gives `a` when the test is true and `b` otherwise. `elif` adds more cases.",
+    "guided": 3,
+    "solo": ["if-solo-1", "if-solo-2"]
+  },
+  {
+    "id": "keys",
+    "name": "Object Keys with keys and has",
+    "topic": "values",
+    "prereqs": ["select"],
+    "encompasses": [],
+    "key_idea": "`keys` gives the keys of an object as a sorted array. `has(\"k\")` tests whether a key exists, even when its value is `null`.",
+    "guided": 3,
+    "solo": ["keys-solo-1", "keys-solo-2"]
+  },
+  {
+    "id": "type",
+    "name": "Check Types with type",
+    "topic": "values",
+    "prereqs": ["comparisons"],
+    "encompasses": [],
+    "key_idea": "`type` gives the kind of a value as a string: `\"number\"`, `\"string\"`, `\"array\"`, `\"object\"`, `\"boolean\"` or `\"null\"`.",
+    "guided": 3,
+    "solo": ["type-solo-1", "type-solo-2"]
+  },
+  {
+    "id": "split-join",
+    "name": "Split and Join Strings",
+    "topic": "strings",
+    "prereqs": ["map"],
+    "encompasses": [],
+    "key_idea": "`split(\",\")` cuts a string into an array of parts. `join(\",\")` glues an array of strings into one string.",
+    "guided": 3,
+    "solo": ["split-join-solo-1", "split-join-solo-2"]
+  },
+  {
+    "id": "test",
+    "name": "Match Text with test",
+    "topic": "strings",
+    "prereqs": ["select"],
+    "encompasses": [],
+    "key_idea": "`test(\"regex\")` is true when the string matches. `startswith`, `endswith` and `contains` cover the simple cases.",
+    "guided": 3,
+    "solo": ["test-solo-1", "test-solo-2"]
+  },
+  {
+    "id": "sub",
+    "name": "Replace Text with sub and gsub",
+    "topic": "strings",
+    "prereqs": ["split-join"],
+    "encompasses": [],
+    "key_idea": "`sub(\"a\"; \"b\")` replaces the first match and `gsub` replaces every match. `ascii_downcase` and `ascii_upcase` change the case.",
+    "guided": 3,
+    "solo": ["sub-solo-1", "sub-solo-2"]
+  },
+  {
+    "id": "tostring",
+    "name": "Convert with tostring and tonumber",
+    "topic": "strings",
+    "prereqs": ["string-interpolation"],
+    "encompasses": [],
+    "key_idea": "`tostring` turns any value into a string and `tonumber` turns a numeric string into a number. jq never converts by itself.",
+    "guided": 3,
+    "solo": ["tostring-solo-1", "tostring-solo-2"]
+  },
+  {
+    "id": "formats",
+    "name": "Rows with @csv and @tsv",
+    "topic": "strings",
+    "prereqs": ["array-construction", "raw-output"],
+    "encompasses": [],
+    "key_idea": "`@csv` and `@tsv` turn an array into one line of a table. Use them with `-r`, so the line is printed as plain text.",
+    "guided": 3,
+    "solo": ["formats-solo-1", "formats-solo-2"]
+  },
+  {
+    "id": "sort",
+    "name": "Sort with sort and sort_by",
+    "topic": "aggregation",
+    "prereqs": ["map"],
+    "encompasses": [],
+    "key_idea": "`sort` orders an array. `sort_by(.field)` orders objects by a field. `reverse` turns the order around.",
+    "guided": 3,
+    "solo": ["sort-solo-1", "sort-solo-2"]
+  },
+  {
+    "id": "add",
+    "name": "Totals with add, min and max",
+    "topic": "aggregation",
+    "prereqs": ["map"],
+    "encompasses": [],
+    "key_idea": "`add` adds up every item of an array. `min` and `max` give the smallest and largest; `min_by(.f)` and `max_by(.f)` compare by a field.",
+    "guided": 3,
+    "solo": ["add-solo-1", "add-solo-2"]
+  },
+  {
+    "id": "unique",
+    "name": "Unique Values with unique",
+    "topic": "aggregation",
+    "prereqs": ["sort"],
+    "encompasses": [],
+    "key_idea": "`unique` sorts an array and removes repeats. `unique_by(.field)` keeps one object for each value of the field.",
+    "guided": 3,
+    "solo": ["unique-solo-1", "unique-solo-2"]
+  },
+  {
+    "id": "group-by",
+    "name": "Group with group_by",
+    "topic": "aggregation",
+    "prereqs": ["sort", "object-construction"],
+    "encompasses": [],
+    "key_idea": "`group_by(.field)` splits an array into an array of groups: one array for each value of the field. Then `map` each group to a summary.",
+    "guided": 3,
+    "solo": ["group-by-solo-1", "group-by-solo-2"]
+  },
+  {
+    "id": "entries",
+    "name": "Objects as Lists with to_entries",
+    "topic": "aggregation",
+    "prereqs": ["object-construction", "map"],
+    "encompasses": [],
+    "key_idea": "`to_entries` turns an object into an array of `{key, value}` pairs, and `from_entries` turns it back. `with_entries(f)` does both around `f`.",
+    "guided": 3,
+    "solo": ["entries-solo-1", "entries-solo-2"]
+  },
+  {
+    "id": "update",
+    "name": "Change in Place with |=",
+    "topic": "updating",
+    "prereqs": ["map"],
+    "encompasses": [],
+    "key_idea": "`path |= f` replaces the value at the path with `f` of the old value and keeps everything else. `=` sets a fixed value and `+=` adds to it.",
+    "guided": 3,
+    "solo": ["update-solo-1", "update-solo-2"]
+  },
+  {
+    "id": "del",
+    "name": "Remove with del",
+    "topic": "updating",
+    "prereqs": ["update"],
+    "encompasses": [],
+    "key_idea": "`del(path)` gives the input without the value at that path. It removes keys from objects and items from arrays.",
+    "guided": 3,
+    "solo": ["del-solo-1", "del-solo-2"]
+  },
+  {
+    "id": "recurse",
+    "name": "Find Anything with ..",
+    "topic": "updating",
+    "prereqs": ["select", "optional", "type"],
+    "encompasses": [],
+    "key_idea": "`..` gives the input and every value inside it, at any depth. Follow it with `select` or `.key?` to find values wherever they are.",
+    "guided": 3,
+    "solo": ["recurse-solo-1", "recurse-solo-2"]
+  },
+  {
+    "id": "variables",
+    "name": "Name a Value with as $x",
+    "topic": "control",
+    "prereqs": ["object-construction", "map"],
+    "encompasses": [],
+    "key_idea": "`value as $x | ...` gives a value a name. Use it to keep something from the outer input while you work on an inner part.",
+    "guided": 3,
+    "solo": ["variables-solo-1", "variables-solo-2"]
+  },
+  {
+    "id": "reduce",
+    "name": "Fold with reduce",
+    "topic": "control",
+    "prereqs": ["variables"],
+    "encompasses": [],
+    "key_idea": "`reduce .[] as $x (start; update)` walks the items and carries one result along. Each step sets the result to `update`, where `.` is the result so far.",
+    "guided": 3,
+    "solo": ["reduce-solo-1", "reduce-solo-2"]
+  },
+  {
+    "id": "functions",
+    "name": "Your Own Filters with def",
+    "topic": "control",
+    "prereqs": ["variables"],
+    "encompasses": [],
+    "key_idea": "`def name: body;` gives a filter a name, so a long program reads in small steps. `def name(f): ...;` takes a filter as an argument.",
+    "guided": 3,
+    "solo": ["functions-solo-1", "functions-solo-2"]
+  }
+]

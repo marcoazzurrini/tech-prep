@@ -1,0 +1,184 @@
+[
+  {
+    "title": "Tickets per status",
+    "statement": "Count the tickets in each status.\n\nEach ticket has an `id` and a `status`. Use `group_by`, then `map` each group to an object with the `status` and a `count`. The result is ordered by `status`, from a to z.",
+    "reference": "group_by(.status) | map({status: .[0].status, count: length})",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 1,
+            "status": "open"
+          },
+          {
+            "id": 2,
+            "status": "closed"
+          },
+          {
+            "id": 3,
+            "status": "open"
+          },
+          {
+            "id": 4,
+            "status": "open"
+          },
+          {
+            "id": 5,
+            "status": "review"
+          }
+        ],
+        "expected": "[\n  {\n    \"status\": \"closed\",\n    \"count\": 1\n  },\n  {\n    \"status\": \"open\",\n    \"count\": 3\n  },\n  {\n    \"status\": \"review\",\n    \"count\": 1\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "id": 6,
+            "status": "closed"
+          }
+        ],
+        "expected": "[\n  {\n    \"status\": \"closed\",\n    \"count\": 1\n  }\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "id": 7,
+            "status": "open"
+          },
+          {
+            "id": 8,
+            "status": "done"
+          },
+          {
+            "id": 9,
+            "status": "done"
+          }
+        ],
+        "expected": "[\n  {\n    \"status\": \"done\",\n    \"count\": 2\n  },\n  {\n    \"status\": \"open\",\n    \"count\": 1\n  }\n]"
+      }
+    ]
+  },
+  {
+    "title": "Repos by language",
+    "statement": "Group the names of the repos by language.\n\nEach repo has a `name` and a `lang`. Give an array of arrays: one array of names for each language. The groups are ordered by `lang`, from a to z. Inside a group, the names keep their input order. Use `map` inside `map`.",
+    "reference": "group_by(.lang) | map(map(.name))",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "api",
+            "lang": "go"
+          },
+          {
+            "name": "site",
+            "lang": "js"
+          },
+          {
+            "name": "cli",
+            "lang": "go"
+          },
+          {
+            "name": "docs",
+            "lang": "js"
+          },
+          {
+            "name": "model",
+            "lang": "python"
+          }
+        ],
+        "expected": "[\n  [\n    \"api\",\n    \"cli\"\n  ],\n  [\n    \"site\",\n    \"docs\"\n  ],\n  [\n    \"model\"\n  ]\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "kernel",
+            "lang": "rust"
+          }
+        ],
+        "expected": "[\n  [\n    \"kernel\"\n  ]\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "x",
+            "lang": "c"
+          },
+          {
+            "name": "y",
+            "lang": "c"
+          },
+          {
+            "name": "z",
+            "lang": "ada"
+          }
+        ],
+        "expected": "[\n  [\n    \"z\"\n  ],\n  [\n    \"x\",\n    \"y\"\n  ]\n]"
+      }
+    ]
+  },
+  {
+    "title": "Spend per customer",
+    "statement": "Give the total spend of each customer.\n\nEach payment has a `customer` and an `amount`. Give one object for each customer, with the `customer` and a `total`: the sum of the amounts. Order by `customer`, from a to z. Group first, then use `add` inside `map`.",
+    "reference": "group_by(.customer) | map({customer: .[0].customer, total: (map(.amount) | add)})",
+    "tests": [
+      {
+        "input": [
+          {
+            "customer": "nora",
+            "amount": 20
+          },
+          {
+            "customer": "omar",
+            "amount": 5
+          },
+          {
+            "customer": "nora",
+            "amount": 35
+          },
+          {
+            "customer": "omar",
+            "amount": 10
+          },
+          {
+            "customer": "pia",
+            "amount": 8
+          }
+        ],
+        "expected": "[\n  {\n    \"customer\": \"nora\",\n    \"total\": 55\n  },\n  {\n    \"customer\": \"omar\",\n    \"total\": 15\n  },\n  {\n    \"customer\": \"pia\",\n    \"total\": 8\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "customer": "quin",
+            "amount": 100
+          }
+        ],
+        "expected": "[\n  {\n    \"customer\": \"quin\",\n    \"total\": 100\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "customer": "rui",
+            "amount": 1
+          },
+          {
+            "customer": "rui",
+            "amount": 2
+          },
+          {
+            "customer": "rui",
+            "amount": 3
+          }
+        ],
+        "expected": "[\n  {\n    \"customer\": \"rui\",\n    \"total\": 6\n  }\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  }
+]

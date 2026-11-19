@@ -1,0 +1,28 @@
+{
+  "title": "Branch names",
+  "statement": "Shorten each git ref to its branch name.\n\nThe input is an array of refs. When a ref starts with `refs/heads/`, remove that text from the start. Change nothing else: a ref that starts with other text stays as it is. Give an array of strings, in the same order.",
+  "reference": "map(sub(\"^refs/heads/\"; \"\"))",
+  "tests": [
+    {
+      "input": [
+        "refs/heads/main",
+        "refs/tags/v1.0",
+        "refs/heads/fix/login"
+      ],
+      "expected": "[\n  \"main\",\n  \"refs/tags/v1.0\",\n  \"fix/login\"\n]"
+    },
+    {
+      "input": [
+        "refs/heads/docs/refs/heads/old"
+      ],
+      "expected": "[\n  \"docs/refs/heads/old\"\n]"
+    },
+    {
+      "input": [
+        "backup/refs/heads/dev",
+        "refs/heads/dev"
+      ],
+      "expected": "[\n  \"backup/refs/heads/dev\",\n  \"dev\"\n]"
+    }
+  ]
+}
