@@ -1,0 +1,124 @@
+[
+  {
+    "title": "What comes out?",
+    "statement": "Type what jq prints for this input and this filter.\n\nLook at the start first. Then go through the items one at a time, and work out the result after each one.",
+    "mode": "predict",
+    "show_filter": true,
+    "reference": "reduce .[] as $n (100; . + $n)",
+    "tests": [
+      {
+        "input": [
+          5,
+          20,
+          1
+        ],
+        "expected": "126"
+      }
+    ]
+  },
+  {
+    "title": "Total of the orders",
+    "statement": "Print the sum of the `total` of all orders, as one number.\n\nThe filter below should do that, but jq stops with an error. Read the error. Then fix the update, so that it takes `total` from the order.",
+    "stub": "reduce .orders[] as $o (0; . + .total)",
+    "reference": "reduce .orders[] as $o (0; . + $o.total)",
+    "tests": [
+      {
+        "input": {
+          "customer": "ada@example.com",
+          "orders": [
+            {
+              "id": 1,
+              "total": 40
+            },
+            {
+              "id": 2,
+              "total": 15
+            },
+            {
+              "id": 3,
+              "total": 7
+            }
+          ]
+        },
+        "expected": "62"
+      },
+      {
+        "input": {
+          "customer": "bo@example.com",
+          "orders": [
+            {
+              "id": 9,
+              "total": 120
+            }
+          ]
+        },
+        "expected": "120"
+      },
+      {
+        "input": {
+          "customer": "cy@example.com",
+          "orders": [
+            {
+              "id": 4,
+              "total": 5
+            },
+            {
+              "id": 5,
+              "total": 5
+            }
+          ]
+        },
+        "expected": "10"
+      }
+    ]
+  },
+  {
+    "title": "Balance of an account",
+    "statement": "Print the balance of the account after all the changes, as one number.\n\nThe account starts with the amount in `balance`. Each number in `changes` is added to it, one after the other. A negative number takes money away. Use `reduce`, with `.balance` as the start.",
+    "reference": "reduce .changes[] as $c (.balance; . + $c)",
+    "tests": [
+      {
+        "input": {
+          "account": "savings",
+          "balance": 100,
+          "changes": [
+            20,
+            -5,
+            -40
+          ]
+        },
+        "expected": "75"
+      },
+      {
+        "input": {
+          "account": "daily",
+          "balance": 12,
+          "changes": [
+            300
+          ]
+        },
+        "expected": "312"
+      },
+      {
+        "input": {
+          "account": "travel",
+          "balance": 250,
+          "changes": []
+        },
+        "expected": "250"
+      },
+      {
+        "input": {
+          "account": "shared",
+          "balance": 0,
+          "changes": [
+            -15,
+            60,
+            -15
+          ]
+        },
+        "expected": "30"
+      }
+    ]
+  }
+]

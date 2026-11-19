@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "statement": "Type what jq prints for this input and this filter.",
+  "mode": "predict",
+  "show_filter": true,
+  "reference": ".replicas | type",
+  "tests": [
+    {
+      "input": {
+        "service": "api",
+        "replicas": "3",
+        "ports": [
+          80,
+          443
+        ]
+      },
+      "expected": "\"string\""
+    }
+  ]
+}

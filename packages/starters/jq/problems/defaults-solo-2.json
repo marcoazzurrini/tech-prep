@@ -1,0 +1,30 @@
+{
+  "title": "Name to show",
+  "statement": "Print the name to show for the account.\n\nUse `display_name`. When the account has no `display_name`, use `username`. Print one string.",
+  "reference": ".display_name // .username",
+  "tests": [
+    {
+      "input": {
+        "username": "mlind",
+        "display_name": null,
+        "plan": "free"
+      },
+      "expected": "\"mlind\""
+    },
+    {
+      "input": {
+        "username": "ok42",
+        "display_name": "Olga K.",
+        "plan": "pro"
+      },
+      "expected": "\"Olga K.\""
+    },
+    {
+      "input": {
+        "username": "rsato",
+        "plan": "team"
+      },
+      "expected": "\"rsato\""
+    }
+  ]
+}

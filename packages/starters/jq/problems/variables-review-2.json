@@ -1,0 +1,74 @@
+{
+  "title": "Lessons by course",
+  "statement": "Print one array that holds one inner array for each course. An inner array holds one object for each lesson of that course.\n\nEach object has two keys: `course` is the name of the course, and `title` is the title of the lesson. A course with no lessons gives an empty inner array.",
+  "reference": "map(.course as $course | .lessons | map({course: $course, title}))",
+  "tests": [
+    {
+      "input": [
+        {
+          "course": "jq",
+          "lessons": [
+            {
+              "title": "Pipes",
+              "minutes": 8
+            },
+            {
+              "title": "Paths",
+              "minutes": 6
+            }
+          ]
+        },
+        {
+          "course": "git",
+          "lessons": [
+            {
+              "title": "Commits",
+              "minutes": 10
+            }
+          ]
+        }
+      ],
+      "expected": "[\n  [\n    {\n      \"course\": \"jq\",\n      \"title\": \"Pipes\"\n    },\n    {\n      \"course\": \"jq\",\n      \"title\": \"Paths\"\n    }\n  ],\n  [\n    {\n      \"course\": \"git\",\n      \"title\": \"Commits\"\n    }\n  ]\n]"
+    },
+    {
+      "input": [
+        {
+          "course": "sql",
+          "lessons": [
+            {
+              "title": "Select",
+              "minutes": 12
+            }
+          ]
+        },
+        {
+          "course": "regex",
+          "lessons": []
+        }
+      ],
+      "expected": "[\n  [\n    {\n      \"course\": \"sql\",\n      \"title\": \"Select\"\n    }\n  ],\n  []\n]"
+    },
+    {
+      "input": [
+        {
+          "course": "bash",
+          "lessons": [
+            {
+              "title": "Loops",
+              "minutes": 9
+            },
+            {
+              "title": "Tests",
+              "minutes": 7
+            },
+            {
+              "title": "Traps",
+              "minutes": 5
+            }
+          ]
+        }
+      ],
+      "expected": "[\n  [\n    {\n      \"course\": \"bash\",\n      \"title\": \"Loops\"\n    },\n    {\n      \"course\": \"bash\",\n      \"title\": \"Tests\"\n    },\n    {\n      \"course\": \"bash\",\n      \"title\": \"Traps\"\n    }\n  ]\n]"
+    }
+  ]
+}

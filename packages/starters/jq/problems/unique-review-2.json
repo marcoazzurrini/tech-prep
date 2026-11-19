@@ -1,0 +1,62 @@
+{
+  "title": "Node versions in use",
+  "statement": "Print the different Node versions the servers run, the highest version first.\n\nThe input is an array of servers. Each has a `node` version, a number. Print one array of numbers, with each version once.",
+  "reference": "map(.node) | unique | reverse",
+  "tests": [
+    {
+      "input": [
+        {
+          "host": "web-1",
+          "node": 20
+        },
+        {
+          "host": "web-2",
+          "node": 22
+        },
+        {
+          "host": "api-1",
+          "node": 18
+        },
+        {
+          "host": "api-2",
+          "node": 22
+        },
+        {
+          "host": "job-1",
+          "node": 20
+        }
+      ],
+      "expected": "[\n  22,\n  20,\n  18\n]"
+    },
+    {
+      "input": [
+        {
+          "host": "a",
+          "node": 24
+        },
+        {
+          "host": "b",
+          "node": 24
+        }
+      ],
+      "expected": "[\n  24\n]"
+    },
+    {
+      "input": [
+        {
+          "host": "x",
+          "node": 16
+        },
+        {
+          "host": "y",
+          "node": 22
+        },
+        {
+          "host": "z",
+          "node": 16
+        }
+      ],
+      "expected": "[\n  22,\n  16\n]"
+    }
+  ]
+}

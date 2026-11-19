@@ -1,0 +1,46 @@
+{
+  "title": "Load of each host",
+  "statement": "Print the CPU load of each host as a list.\n\nThe input is an object. Each key is a host name. Its value holds the numbers of that host. Print one array with one object for each host, in the order of the input. Each object has `host`, the host name, and `cpu`, the host's `cpu` number.",
+  "reference": "to_entries | map({host: .key, cpu: .value.cpu})",
+  "tests": [
+    {
+      "input": {
+        "web-1": {
+          "cpu": 40,
+          "mem": 61
+        },
+        "db-1": {
+          "cpu": 85,
+          "mem": 72
+        }
+      },
+      "expected": "[\n  {\n    \"host\": \"web-1\",\n    \"cpu\": 40\n  },\n  {\n    \"host\": \"db-1\",\n    \"cpu\": 85\n  }\n]"
+    },
+    {
+      "input": {
+        "cache-1": {
+          "cpu": 12,
+          "mem": 30
+        }
+      },
+      "expected": "[\n  {\n    \"host\": \"cache-1\",\n    \"cpu\": 12\n  }\n]"
+    },
+    {
+      "input": {
+        "job-1": {
+          "cpu": 97,
+          "mem": 55
+        },
+        "job-2": {
+          "cpu": 3,
+          "mem": 20
+        },
+        "api-1": {
+          "cpu": 51,
+          "mem": 48
+        }
+      },
+      "expected": "[\n  {\n    \"host\": \"job-1\",\n    \"cpu\": 97\n  },\n  {\n    \"host\": \"job-2\",\n    \"cpu\": 3\n  },\n  {\n    \"host\": \"api-1\",\n    \"cpu\": 51\n  }\n]"
+    }
+  ]
+}

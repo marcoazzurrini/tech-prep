@@ -1,0 +1,37 @@
+{
+  "title": "A delivery arrived",
+  "statement": "A delivery brought 10 more units of every product. Print the list of products, with every `stock` 10 higher.\n\nThe output is one array with the whole products. Only `stock` changes.",
+  "reference": "map(.stock |= . + 10)",
+  "tests": [
+    {
+      "input": [
+        {
+          "sku": "PEN-1",
+          "stock": 4
+        },
+        {
+          "sku": "MUG-7",
+          "stock": 0
+        },
+        {
+          "sku": "BAG-2",
+          "stock": 31
+        }
+      ],
+      "expected": "[\n  {\n    \"sku\": \"PEN-1\",\n    \"stock\": 14\n  },\n  {\n    \"sku\": \"MUG-7\",\n    \"stock\": 10\n  },\n  {\n    \"sku\": \"BAG-2\",\n    \"stock\": 41\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "sku": "CAP-3",
+          "stock": 90
+        }
+      ],
+      "expected": "[\n  {\n    \"sku\": \"CAP-3\",\n    \"stock\": 100\n  }\n]"
+    },
+    {
+      "input": [],
+      "expected": "[]"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "title": "Region of a server",
+    "statement": "Print the region of the server. When the server has no region, print `\"unknown\"`.\n\nThe filter below prints `null` for this server, because the key `region` is missing. Add a default to it.",
+    "stub": ".region",
+    "reference": ".region // \"unknown\"",
+    "tests": [
+      {
+        "input": {
+          "host": "web-3",
+          "port": 443
+        },
+        "expected": "\"unknown\""
+      },
+      {
+        "input": {
+          "host": "db-1",
+          "region": "eu-west",
+          "port": 5432
+        },
+        "expected": "\"eu-west\""
+      },
+      {
+        "input": {
+          "host": "cache-2",
+          "region": null,
+          "port": 6379
+        },
+        "expected": "\"unknown\""
+      },
+      {
+        "input": {
+          "host": "web-9",
+          "region": "us-east",
+          "port": 443
+        },
+        "expected": "\"us-east\""
+      }
+    ]
+  },
+  {
+    "title": "What comes out?",
+    "statement": "Type what jq prints for this input and this filter.\n\njq goes from left to right. It gives the first value that is not `null` or `false`.",
+    "mode": "predict",
+    "show_filter": true,
+    "reference": ".mobile // .landline // \"no phone\"",
+    "tests": [
+      {
+        "input": {
+          "name": "Dee Park",
+          "mobile": null,
+          "landline": "555-0142"
+        },
+        "expected": "\"555-0142\""
+      }
+    ]
+  },
+  {
+    "title": "Variables of a job",
+    "statement": "Print the names of the job's variables, as an array.\n\nThe variables are the keys of `env`. In some jobs `env` is `null` or missing. For those, print an empty array. Fill the gap with `{}` before you hand the value to `keys`.",
+    "reference": ".env // {} | keys",
+    "tests": [
+      {
+        "input": {
+          "job": "deploy",
+          "env": null
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "job": "build",
+          "env": {
+            "NODE_ENV": "production",
+            "CI": "true"
+          }
+        },
+        "expected": "[\n  \"CI\",\n  \"NODE_ENV\"\n]"
+      },
+      {
+        "input": {
+          "job": "lint"
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "job": "test",
+          "env": {
+            "DB_URL": "postgres://localhost/test"
+          }
+        },
+        "expected": "[\n  \"DB_URL\"\n]"
+      }
+    ]
+  }
+]

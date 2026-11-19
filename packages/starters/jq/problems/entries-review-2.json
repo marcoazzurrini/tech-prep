@@ -1,0 +1,30 @@
+{
+  "title": "Aliases the other way",
+  "statement": "Print the aliases the other way round: from the long command to its short name.\n\nThe input is an object. Each key is a short name, and its value is the long command. Print one object where each long command is a key and its short name is the value.",
+  "reference": "to_entries | map({key: .value, value: .key}) | from_entries",
+  "tests": [
+    {
+      "input": {
+        "co": "checkout",
+        "st": "status",
+        "br": "branch"
+      },
+      "expected": "{\n  \"checkout\": \"co\",\n  \"status\": \"st\",\n  \"branch\": \"br\"\n}"
+    },
+    {
+      "input": {
+        "ll": "list"
+      },
+      "expected": "{\n  \"list\": \"ll\"\n}"
+    },
+    {
+      "input": {
+        "i": "install",
+        "rm": "remove",
+        "up": "update",
+        "ls": "list"
+      },
+      "expected": "{\n  \"install\": \"i\",\n  \"remove\": \"rm\",\n  \"update\": \"up\",\n  \"list\": \"ls\"\n}"
+    }
+  ]
+}

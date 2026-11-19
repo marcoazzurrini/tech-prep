@@ -1,0 +1,39 @@
+{
+  "title": "Over the quota",
+  "statement": "Print `true` when the account uses more disk space than its quota allows, and `false` when it does not.\n\nThe space in use is under `used_gb`. The quota is under `quota_gb`. Using exactly the quota is still fine.",
+  "reference": ".used_gb > .quota_gb",
+  "tests": [
+    {
+      "input": {
+        "account": "acme",
+        "used_gb": 120,
+        "quota_gb": 100
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "account": "labs",
+        "used_gb": 12,
+        "quota_gb": 50
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "account": "solo",
+        "used_gb": 10,
+        "quota_gb": 10
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "account": "north",
+        "used_gb": 501,
+        "quota_gb": 500
+      },
+      "expected": "true"
+    }
+  ]
+}

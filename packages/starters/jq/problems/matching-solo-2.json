@@ -1,0 +1,35 @@
+{
+  "title": "Release candidate or not",
+  "statement": "Print `true` when the version is a release candidate, and `false` when it is not.\n\nA release candidate has the text `-rc` somewhere in its `version`, as in `1.0.0-rc2`.",
+  "reference": ".version | contains(\"-rc\")",
+  "tests": [
+    {
+      "input": {
+        "name": "api",
+        "version": "2.4.0-rc1"
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "name": "api",
+        "version": "2.4.0"
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "name": "arc-tools",
+        "version": "0.9.1"
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "name": "web",
+        "version": "3.0.0-rc2+build5"
+      },
+      "expected": "true"
+    }
+  ]
+}

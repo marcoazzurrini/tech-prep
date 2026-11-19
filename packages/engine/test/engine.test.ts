@@ -82,6 +82,7 @@ const scheduler = await import("../src/scheduler.ts");
 const runner = await import("../src/runner.ts");
 const exercises = await import("../src/exercises.ts");
 const jq = await import("../src/jq.ts");
+const database = await import("../src/db.ts");
 
 afterAll(() => rmSync(home, { force: true, recursive: true }));
 
@@ -723,7 +724,7 @@ describe("jq course", () => {
         .concepts()
         .filter((c) => content.lessonText(c.id) !== null);
 
-      // The first chapter is written. Later lessons are listed, and written over time.
+      expect(written).toHaveLength(content.concepts().length);
       expect(written.map((c) => c.id).slice(0, 6)).toEqual([
         "what-jq-does",
         "reading-json",
@@ -889,6 +890,17 @@ describe("jq course", () => {
       expect(scheduler.isPassed("reading-json")).toBe(false);
       expect(scheduler.lessonStatus("reading-json")).toBe("partial");
       expect(scheduler.soloWait("reading-json")).not.toBeNull();
+
+      // An attempt left open on a task the course no longer has is set aside.
+      database
+        .open()
+        .query(
+          "INSERT INTO attempts (slug, concept_id, language, started_at) VALUES ('guided-gone', 'gone', 'jq', ?)"
+        )
+        .run(new Date().toISOString());
+      expect(practice.currentAttempt()?.slug).toBe("guided-gone");
+      practice.pauseUnknownAttempts();
+      expect(practice.currentAttempt()).toBeNull();
     } finally {
       content.setCourse("interview");
     }

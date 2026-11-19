@@ -386,7 +386,13 @@ export const JqWorkbench = ({
               />
             )
           }
-          wanted={<OutputPanel label="Wanted output" text={jq.wanted} />}
+          wanted={
+            <OutputPanel
+              empty="Nothing is printed."
+              label="Wanted output"
+              text={jq.wanted}
+            />
+          }
           yours={<Printed fromSolution={Boolean(solution)} preview={preview} />}
         />
       )}

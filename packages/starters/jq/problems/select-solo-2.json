@@ -1,0 +1,46 @@
+{
+  "title": "Popular repos",
+  "statement": "Print the names of the repos that have 100 stars or more.\n\nThe input is an array of repos. Print each name as its own output, in the order of the input. Print only the name, not the whole repo.",
+  "reference": ".[] | select(.stars >= 100) | .name",
+  "tests": [
+    {
+      "input": [
+        {
+          "name": "fastjson",
+          "stars": 2400
+        },
+        {
+          "name": "notes",
+          "stars": 12
+        },
+        {
+          "name": "tinyq",
+          "stars": 100
+        }
+      ],
+      "expected": "\"fastjson\"\n\"tinyq\""
+    },
+    {
+      "input": [
+        {
+          "name": "draft",
+          "stars": 0
+        },
+        {
+          "name": "old-site",
+          "stars": 99
+        }
+      ],
+      "expected": ""
+    },
+    {
+      "input": [
+        {
+          "name": "reqs",
+          "stars": 870
+        }
+      ],
+      "expected": "\"reqs\""
+    }
+  ]
+}

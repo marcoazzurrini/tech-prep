@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Count every value",
+    "statement": "Print how many values the document holds: the document itself and every value inside it, at any depth.\n\nThe filter below puts only the whole input in an array, so it prints `1`. Change `.` into the filter that gives every value.",
+    "stub": "[.] | length",
+    "reference": "[..] | length",
+    "tests": [
+      {
+        "input": {
+          "host": "web-1",
+          "ports": [
+            80,
+            443
+          ]
+        },
+        "expected": "5"
+      },
+      {
+        "input": {
+          "host": "db-1"
+        },
+        "expected": "2"
+      },
+      {
+        "input": {
+          "host": "cache-1",
+          "ports": [
+            6379
+          ],
+          "owner": {
+            "team": "infra"
+          }
+        },
+        "expected": "6"
+      }
+    ]
+  },
+  {
+    "title": "All the text",
+    "statement": "Print every string in the page, wherever it is.\n\nUse `..` to get every value, then `select` with `type` to keep the strings. Print each string as its own output.",
+    "reference": ".. | select(type == \"string\")",
+    "tests": [
+      {
+        "input": {
+          "title": "Welcome",
+          "views": 310,
+          "body": {
+            "intro": "Hello there",
+            "links": [
+              "Docs",
+              "Blog"
+            ]
+          }
+        },
+        "expected": "\"Welcome\"\n\"Hello there\"\n\"Docs\"\n\"Blog\""
+      },
+      {
+        "input": {
+          "title": "Empty page",
+          "views": 0,
+          "body": {}
+        },
+        "expected": "\"Empty page\""
+      },
+      {
+        "input": {
+          "views": 12,
+          "body": {
+            "links": [
+              "Help"
+            ]
+          }
+        },
+        "expected": "\"Help\""
+      }
+    ]
+  },
+  {
+    "title": "All the commits",
+    "statement": "Print every `sha` in the document, in one array.\n\nA `sha` can be at any depth. Some objects have no `sha`: leave those out, so that the array holds no `null`.",
+    "reference": "[.. | .sha? | select(. != null)]",
+    "tests": [
+      {
+        "input": {
+          "sha": "9f2c1a",
+          "parent": {
+            "sha": "77b0de",
+            "author": "ada"
+          },
+          "tags": [
+            {
+              "name": "v2",
+              "sha": "c41e09"
+            },
+            {
+              "name": "draft"
+            }
+          ]
+        },
+        "expected": "[\n  \"9f2c1a\",\n  \"77b0de\",\n  \"c41e09\"\n]"
+      },
+      {
+        "input": {
+          "sha": "0a0a0a",
+          "tags": []
+        },
+        "expected": "[\n  \"0a0a0a\"\n]"
+      },
+      {
+        "input": {
+          "branch": "main",
+          "head": {
+            "commit": {
+              "sha": "e5d4c3"
+            }
+          }
+        },
+        "expected": "[\n  \"e5d4c3\"\n]"
+      }
+    ]
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "title": "Address of a server",
+  "statement": "Print the server's address as one string: the host, a colon, and the port.\n\nFor the first input that is `\"db-1.internal:5432\"`.",
+  "reference": "\"\\(.host):\\(.port)\"",
+  "tests": [
+    {
+      "input": {
+        "host": "db-1.internal",
+        "port": 5432,
+        "tls": true
+      },
+      "expected": "\"db-1.internal:5432\""
+    },
+    {
+      "input": {
+        "host": "localhost",
+        "port": 3000,
+        "tls": false
+      },
+      "expected": "\"localhost:3000\""
+    },
+    {
+      "input": {
+        "host": "cache.example.com",
+        "port": 6379,
+        "tls": true
+      },
+      "expected": "\"cache.example.com:6379\""
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "title": "Files and their sizes",
+  "statement": "Print one line for each file: its `path` and then its `bytes`, with a tab between the two values.\n\nThis task runs jq with `-r`. The path has no quotes around it.",
+  "flags": [
+    "-r"
+  ],
+  "reference": ".[] | [.path, .bytes] | @tsv",
+  "tests": [
+    {
+      "input": [
+        {
+          "path": "src/app.js",
+          "bytes": 4820,
+          "mode": "644"
+        },
+        {
+          "path": "src/util.js",
+          "bytes": 912,
+          "mode": "644"
+        },
+        {
+          "path": "README.md",
+          "bytes": 2048,
+          "mode": "644"
+        }
+      ],
+      "expected": "src/app.js\t4820\nsrc/util.js\t912\nREADME.md\t2048"
+    },
+    {
+      "input": [
+        {
+          "path": "bin/run",
+          "bytes": 120,
+          "mode": "755"
+        }
+      ],
+      "expected": "bin/run\t120"
+    },
+    {
+      "input": [
+        {
+          "path": "dist/bundle.js",
+          "bytes": 384112,
+          "mode": "644"
+        },
+        {
+          "path": "dist/bundle.css",
+          "bytes": 0,
+          "mode": "644"
+        }
+      ],
+      "expected": "dist/bundle.js\t384112\ndist/bundle.css\t0"
+    }
+  ]
+}

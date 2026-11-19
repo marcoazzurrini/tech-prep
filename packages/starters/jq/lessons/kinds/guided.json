@@ -1,0 +1,118 @@
+[
+  {
+    "title": "Kind of the price",
+    "statement": "Print the kind of value stored under `price`, as a string.\n\nThe first step takes the price. The second step is `.`, which changes nothing. Replace the second step with `type`.",
+    "stub": ".price | .",
+    "reference": ".price | type",
+    "tests": [
+      {
+        "input": {
+          "sku": "A-1",
+          "price": "12.50"
+        },
+        "expected": "\"string\""
+      },
+      {
+        "input": {
+          "sku": "B-2",
+          "price": 12.5
+        },
+        "expected": "\"number\""
+      },
+      {
+        "input": {
+          "sku": "C-3"
+        },
+        "expected": "\"null\""
+      },
+      {
+        "input": {
+          "sku": "D-4",
+          "price": {
+            "amount": 12.5,
+            "currency": "EUR"
+          }
+        },
+        "expected": "\"object\""
+      }
+    ]
+  },
+  {
+    "title": "Is the port a number?",
+    "statement": "Print `true` when the port is a number, and `false` when it is not.\n\nThe filter below should do that, but it stops with an error. Find the mistake and fix it.",
+    "stub": ".port | type == number",
+    "reference": ".port | type == \"number\"",
+    "tests": [
+      {
+        "input": {
+          "host": "web-1",
+          "port": 8080
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "host": "db-1",
+          "port": "5432"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "host": "cache-1"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "host": "mail-1",
+          "port": 25
+        },
+        "expected": "true"
+      }
+    ]
+  },
+  {
+    "title": "A usable id",
+    "statement": "Print `true` when the id of the record is a string or a number. Print `false` for any other kind.\n\nTake `id`, then join two kind tests with `or`.",
+    "reference": ".id | type == \"string\" or type == \"number\"",
+    "tests": [
+      {
+        "input": {
+          "id": "u-17",
+          "name": "Ada"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "id": null,
+          "name": "Bo"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "id": 17,
+          "name": "Cy"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "id": [
+            "u-17"
+          ],
+          "name": "Dee"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "name": "Eli"
+        },
+        "expected": "false"
+      }
+    ]
+  }
+]

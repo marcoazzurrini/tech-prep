@@ -1,0 +1,80 @@
+{
+  "title": "Steps in the pipeline",
+  "statement": "Print how many steps the pipeline has in all its jobs together.\n\nThe jobs are in `jobs`. Each job has an array of `steps`. Print one number.",
+  "reference": ".jobs | map(.steps | length) | add",
+  "tests": [
+    {
+      "input": {
+        "pipeline": "release",
+        "jobs": [
+          {
+            "name": "lint",
+            "steps": [
+              "install",
+              "eslint"
+            ]
+          },
+          {
+            "name": "test",
+            "steps": [
+              "install",
+              "build",
+              "unit"
+            ]
+          },
+          {
+            "name": "ship",
+            "steps": [
+              "publish"
+            ]
+          }
+        ]
+      },
+      "expected": "6"
+    },
+    {
+      "input": {
+        "pipeline": "docs",
+        "jobs": [
+          {
+            "name": "build",
+            "steps": [
+              "install",
+              "render"
+            ]
+          }
+        ]
+      },
+      "expected": "2"
+    },
+    {
+      "input": {
+        "pipeline": "nightly",
+        "jobs": [
+          {
+            "name": "scan",
+            "steps": [
+              "pull",
+              "audit",
+              "report",
+              "notify"
+            ]
+          },
+          {
+            "name": "clean",
+            "steps": []
+          },
+          {
+            "name": "backup",
+            "steps": [
+              "dump",
+              "upload",
+              "verify"
+            ]
+          }
+        ]
+      },
+      "expected": "7"
+    }
+  ]
+}

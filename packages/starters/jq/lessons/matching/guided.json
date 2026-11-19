@@ -1,0 +1,134 @@
+[
+  {
+    "title": "A log file?",
+    "statement": "Print `true` when the name of the file ends with `.log`, and `false` when it does not.\n\nThe first step takes `file`. The second step is `.`, which changes nothing. Replace the second step with `endswith`.",
+    "stub": ".file | .",
+    "reference": ".file | endswith(\".log\")",
+    "tests": [
+      {
+        "input": {
+          "file": "server.log",
+          "bytes": 5120
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "file": "server.log.gz",
+          "bytes": 812
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "file": "login.txt",
+          "bytes": 64
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "file": "access.log",
+          "bytes": 20480
+        },
+        "expected": "true"
+      }
+    ]
+  },
+  {
+    "title": "Entries about a timeout",
+    "statement": "Print the log entries that talk about a timeout, as one array of whole entries.\n\nThe entries are in `entries`. An entry talks about a timeout when its `msg` has the text `timeout` somewhere in it. Use `select` with `contains`.",
+    "reference": ".entries | map(select(.msg | contains(\"timeout\")))",
+    "tests": [
+      {
+        "input": {
+          "entries": [
+            {
+              "level": "error",
+              "msg": "db timeout after 30s"
+            },
+            {
+              "level": "info",
+              "msg": "user login"
+            },
+            {
+              "level": "warn",
+              "msg": "upstream timeout"
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"level\": \"error\",\n    \"msg\": \"db timeout after 30s\"\n  },\n  {\n    \"level\": \"warn\",\n    \"msg\": \"upstream timeout\"\n  }\n]"
+      },
+      {
+        "input": {
+          "entries": [
+            {
+              "level": "info",
+              "msg": "cache warmed"
+            },
+            {
+              "level": "info",
+              "msg": "job done"
+            }
+          ]
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "entries": [
+            {
+              "level": "warn",
+              "msg": "timeout while reading file"
+            },
+            {
+              "level": "error",
+              "msg": "out of memory"
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"level\": \"warn\",\n    \"msg\": \"timeout while reading file\"\n  }\n]"
+      }
+    ]
+  },
+  {
+    "title": "Version tags",
+    "statement": "Print the tags that start with `v`, as one array.\n\nThe tags are in `tags`. Use `select` with `test` and a pattern. The tag `dev-v2` has a `v` in it, but not at the start. It must not be printed.",
+    "reference": ".tags | map(select(test(\"^v\")))",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "tags": [
+            "v1.0",
+            "nightly",
+            "dev-v2",
+            "v1.1"
+          ]
+        },
+        "expected": "[\n  \"v1.0\",\n  \"v1.1\"\n]"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "tags": [
+            "preview",
+            "dev-v9"
+          ]
+        },
+        "expected": "[]"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "tags": [
+            "v3.2",
+            "vnext",
+            "canary"
+          ]
+        },
+        "expected": "[\n  \"v3.2\",\n  \"vnext\"\n]"
+      }
+    ]
+  }
+]

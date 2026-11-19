@@ -1,0 +1,28 @@
+{
+  "title": "A bare version",
+  "statement": "Print the version of the package without the `v` at the start.\n\nThe version is in `version`. For `v1.4.2`, print `1.4.2`.",
+  "reference": ".version | sub(\"v\"; \"\")",
+  "tests": [
+    {
+      "input": {
+        "package": "left-pad",
+        "version": "v1.4.2"
+      },
+      "expected": "\"1.4.2\""
+    },
+    {
+      "input": {
+        "package": "vite-kit",
+        "version": "v3.1.0-preview"
+      },
+      "expected": "\"3.1.0-preview\""
+    },
+    {
+      "input": {
+        "package": "dev-tools",
+        "version": "v10.12.0"
+      },
+      "expected": "\"10.12.0\""
+    }
+  ]
+}

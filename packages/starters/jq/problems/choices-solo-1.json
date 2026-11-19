@@ -1,0 +1,35 @@
+{
+  "title": "Size of an upload",
+  "statement": "Print `\"large\"` when the file has more than 1000000 bytes. Print `\"small\"` for every other file.\n\nThe size is in `bytes`. A file of exactly 1000000 bytes is small.",
+  "reference": "if .bytes > 1000000 then \"large\" else \"small\" end",
+  "tests": [
+    {
+      "input": {
+        "file": "video.mp4",
+        "bytes": 48200000
+      },
+      "expected": "\"large\""
+    },
+    {
+      "input": {
+        "file": "notes.txt",
+        "bytes": 2048
+      },
+      "expected": "\"small\""
+    },
+    {
+      "input": {
+        "file": "dump.sql",
+        "bytes": 1000000
+      },
+      "expected": "\"small\""
+    },
+    {
+      "input": {
+        "file": "photo.raw",
+        "bytes": 1000001
+      },
+      "expected": "\"large\""
+    }
+  ]
+}

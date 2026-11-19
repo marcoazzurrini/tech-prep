@@ -1,0 +1,32 @@
+{
+  "title": "Archive the repo",
+  "statement": "The repo is no longer used. Print the whole repo, with the key `archived` set to `true`.\n\nThe output is one object. If the repo has no `archived` key yet, it gets one. All the other keys stay as they are.",
+  "reference": ". + {archived: true}",
+  "tests": [
+    {
+      "input": {
+        "name": "old-api",
+        "owner": "ada",
+        "stars": 14
+      },
+      "expected": "{\n  \"name\": \"old-api\",\n  \"owner\": \"ada\",\n  \"stars\": 14,\n  \"archived\": true\n}"
+    },
+    {
+      "input": {
+        "name": "legacy-web",
+        "owner": "bo",
+        "stars": 0
+      },
+      "expected": "{\n  \"name\": \"legacy-web\",\n  \"owner\": \"bo\",\n  \"stars\": 0,\n  \"archived\": true\n}"
+    },
+    {
+      "input": {
+        "name": "tools",
+        "owner": "cy",
+        "stars": 3,
+        "archived": false
+      },
+      "expected": "{\n  \"name\": \"tools\",\n  \"owner\": \"cy\",\n  \"stars\": 3,\n  \"archived\": true\n}"
+    }
+  ]
+}

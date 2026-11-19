@@ -1,0 +1,72 @@
+{
+  "title": "Ports of each server",
+  "statement": "Print the open ports of each server.\n\nThe servers are under `servers`. For each server, print its `ports` array. Each array is its own output on one line, with no spaces.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "-c '.servers[] | .ports'",
+  "tests": [
+    {
+      "input": {
+        "region": "eu",
+        "servers": [
+          {
+            "host": "web-1",
+            "ports": [
+              80,
+              443
+            ]
+          },
+          {
+            "host": "db-1",
+            "ports": [
+              5432
+            ]
+          },
+          {
+            "host": "cache-1",
+            "ports": []
+          }
+        ]
+      },
+      "expected": "[80,443]\n[5432]\n[]"
+    },
+    {
+      "input": {
+        "region": "us",
+        "servers": [
+          {
+            "host": "web-9",
+            "ports": [
+              22,
+              80,
+              443,
+              8080
+            ]
+          }
+        ]
+      },
+      "expected": "[22,80,443,8080]"
+    },
+    {
+      "input": {
+        "region": "ap",
+        "servers": [
+          {
+            "host": "mq-1",
+            "ports": [
+              5672,
+              15672
+            ]
+          },
+          {
+            "host": "mq-2",
+            "ports": [
+              5672
+            ]
+          }
+        ]
+      },
+      "expected": "[5672,15672]\n[5672]"
+    }
+  ]
+}

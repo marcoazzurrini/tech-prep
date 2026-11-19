@@ -1,0 +1,63 @@
+{
+  "title": "Every link in the menu",
+  "statement": "Print every `url` in the menu, wherever it is.\n\nMenu entries can sit inside other entries, at any depth. Some entries have no `url`: print nothing for those. Print each `url` as its own output.",
+  "reference": ".. | .url? | select(. != null)",
+  "tests": [
+    {
+      "input": {
+        "label": "Home",
+        "url": "/",
+        "children": [
+          {
+            "label": "Shop",
+            "url": "/shop"
+          },
+          {
+            "label": "More",
+            "children": [
+              {
+                "label": "About",
+                "url": "/about"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "\"/\"\n\"/shop\"\n\"/about\""
+    },
+    {
+      "input": {
+        "label": "Legal",
+        "children": [
+          {
+            "label": "Terms",
+            "url": "/terms"
+          },
+          {
+            "label": "Soon"
+          }
+        ]
+      },
+      "expected": "\"/terms\""
+    },
+    {
+      "input": {
+        "label": "Docs",
+        "url": "/docs",
+        "children": [
+          {
+            "label": "API",
+            "url": "/docs/api",
+            "children": [
+              {
+                "label": "Auth",
+                "url": "/docs/api/auth"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "\"/docs\"\n\"/docs/api\"\n\"/docs/api/auth\""
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "title": "Clean the member list",
+  "statement": "Some members were added to the list twice. Print the list with each member once.\n\nThe input is an array of members. Two entries for the same member have the same `email`. Print one array of whole member objects, ordered by email.",
+  "reference": "unique_by(.email)",
+  "tests": [
+    {
+      "input": [
+        {
+          "email": "kim@example.com",
+          "name": "Kim"
+        },
+        {
+          "email": "ana@example.com",
+          "name": "Ana"
+        },
+        {
+          "email": "kim@example.com",
+          "name": "Kim"
+        },
+        {
+          "email": "lee@example.com",
+          "name": "Lee"
+        }
+      ],
+      "expected": "[\n  {\n    \"email\": \"ana@example.com\",\n    \"name\": \"Ana\"\n  },\n  {\n    \"email\": \"kim@example.com\",\n    \"name\": \"Kim\"\n  },\n  {\n    \"email\": \"lee@example.com\",\n    \"name\": \"Lee\"\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "email": "sam@example.com",
+          "name": "Sam"
+        },
+        {
+          "email": "sam@example.com",
+          "name": "Sam"
+        },
+        {
+          "email": "sam@example.com",
+          "name": "Sam"
+        }
+      ],
+      "expected": "[\n  {\n    \"email\": \"sam@example.com\",\n    \"name\": \"Sam\"\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "email": "uma@example.com",
+          "name": "Uma"
+        },
+        {
+          "email": "pat@example.com",
+          "name": "Pat"
+        },
+        {
+          "email": "joy@example.com",
+          "name": "Joy"
+        },
+        {
+          "email": "pat@example.com",
+          "name": "Pat"
+        },
+        {
+          "email": "joy@example.com",
+          "name": "Joy"
+        }
+      ],
+      "expected": "[\n  {\n    \"email\": \"joy@example.com\",\n    \"name\": \"Joy\"\n  },\n  {\n    \"email\": \"pat@example.com\",\n    \"name\": \"Pat\"\n  },\n  {\n    \"email\": \"uma@example.com\",\n    \"name\": \"Uma\"\n  }\n]"
+    }
+  ]
+}

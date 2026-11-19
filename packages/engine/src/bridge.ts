@@ -44,6 +44,7 @@ import {
   currentAttempt,
   giveUp,
   pauseAttempt,
+  pauseUnknownAttempts,
   readSolution,
   saveSolution,
   startProblem,
@@ -557,6 +558,7 @@ const methods = new Map<string, (params: Params) => object>([
 // lesson, so the app starts with none on screen.
 for (const c of courses()) {
   inCourse(c.id, closeExercises);
+  inCourse(c.id, pauseUnknownAttempts);
 }
 
 for await (const line of console) {

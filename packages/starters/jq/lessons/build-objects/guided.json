@@ -1,0 +1,139 @@
+[
+  {
+    "title": "A smaller account",
+    "statement": "Print an object with two keys: `id` and `name`. The `name` is the account's `login`.\n\nThe filter below builds an object with only the `id`. Add the second pair.",
+    "stub": "{id: .id}",
+    "reference": "{id: .id, name: .login}",
+    "tests": [
+      {
+        "input": {
+          "id": 4821,
+          "login": "mira",
+          "type": "User",
+          "site_admin": false
+        },
+        "expected": "{\n  \"id\": 4821,\n  \"name\": \"mira\"\n}"
+      },
+      {
+        "input": {
+          "id": 17,
+          "login": "tomas",
+          "type": "User",
+          "site_admin": true
+        },
+        "expected": "{\n  \"id\": 17,\n  \"name\": \"tomas\"\n}"
+      },
+      {
+        "input": {
+          "id": 903,
+          "login": "build-bot",
+          "type": "Bot",
+          "site_admin": false
+        },
+        "expected": "{\n  \"id\": 903,\n  \"name\": \"build-bot\"\n}"
+      }
+    ]
+  },
+  {
+    "title": "Short package summary",
+    "statement": "Print an object with three keys: `name`, `version` and `repo`. The `repo` is the `url` inside `repository`.\n\nThe filter below builds an object with only the `name`. Add the other two pairs. Use the short form where you can.",
+    "stub": "{name}",
+    "reference": "{name, version, repo: .repository.url}",
+    "tests": [
+      {
+        "input": {
+          "name": "left-trim",
+          "version": "2.0.1",
+          "license": "MIT",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/left-trim.git"
+          }
+        },
+        "expected": "{\n  \"name\": \"left-trim\",\n  \"version\": \"2.0.1\",\n  \"repo\": \"https://example.com/left-trim.git\"\n}"
+      },
+      {
+        "input": {
+          "name": "tiny-log",
+          "version": "0.4.0",
+          "license": "ISC",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/tiny-log.git"
+          }
+        },
+        "expected": "{\n  \"name\": \"tiny-log\",\n  \"version\": \"0.4.0\",\n  \"repo\": \"https://example.com/tiny-log.git\"\n}"
+      },
+      {
+        "input": {
+          "name": "dates",
+          "version": "11.2.3",
+          "private": true,
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/dates.git"
+          }
+        },
+        "expected": "{\n  \"name\": \"dates\",\n  \"version\": \"11.2.3\",\n  \"repo\": \"https://example.com/dates.git\"\n}"
+      }
+    ]
+  },
+  {
+    "title": "Servers in short",
+    "statement": "Print one array with a small object for each server.\n\nEach small object has two keys: `host`, which is the server's `name`, and `port`. Keep the servers in the same order.",
+    "reference": "[.[] | {host: .name, port}]",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "web-1",
+            "port": 443,
+            "region": "eu",
+            "up": true
+          },
+          {
+            "name": "db-1",
+            "port": 5432,
+            "region": "eu",
+            "up": false
+          }
+        ],
+        "expected": "[\n  {\n    \"host\": \"web-1\",\n    \"port\": 443\n  },\n  {\n    \"host\": \"db-1\",\n    \"port\": 5432\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "cache-1",
+            "port": 6379,
+            "region": "us",
+            "up": true
+          }
+        ],
+        "expected": "[\n  {\n    \"host\": \"cache-1\",\n    \"port\": 6379\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "web-2",
+            "port": 8443,
+            "region": "us",
+            "up": true
+          },
+          {
+            "name": "web-3",
+            "port": 8443,
+            "region": "ap",
+            "up": true
+          },
+          {
+            "name": "mq-1",
+            "port": 5672,
+            "region": "eu",
+            "up": true
+          }
+        ],
+        "expected": "[\n  {\n    \"host\": \"web-2\",\n    \"port\": 8443\n  },\n  {\n    \"host\": \"web-3\",\n    \"port\": 8443\n  },\n  {\n    \"host\": \"mq-1\",\n    \"port\": 5672\n  }\n]"
+      }
+    ]
+  }
+]

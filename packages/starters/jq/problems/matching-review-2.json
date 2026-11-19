@@ -1,0 +1,52 @@
+{
+  "title": "Internal servers",
+  "statement": "Print the names of the internal servers, as one array.\n\nThe servers are in `servers`. A server is internal when its `host` ends with `.internal`. Print only the `name` of each one, in the order of the input.",
+  "reference": ".servers | map(select(.host | endswith(\".internal\")) | .name)",
+  "tests": [
+    {
+      "input": {
+        "servers": [
+          {
+            "name": "db-1",
+            "host": "db-1.corp.internal"
+          },
+          {
+            "name": "web-1",
+            "host": "web-1.example.com"
+          },
+          {
+            "name": "cache-1",
+            "host": "cache-1.corp.internal"
+          }
+        ]
+      },
+      "expected": "[\n  \"db-1\",\n  \"cache-1\"\n]"
+    },
+    {
+      "input": {
+        "servers": [
+          {
+            "name": "gateway",
+            "host": "internal.example.com"
+          },
+          {
+            "name": "queue-2",
+            "host": "queue-2.corp.internal"
+          }
+        ]
+      },
+      "expected": "[\n  \"queue-2\"\n]"
+    },
+    {
+      "input": {
+        "servers": [
+          {
+            "name": "cdn",
+            "host": "cdn.example.com"
+          }
+        ]
+      },
+      "expected": "[]"
+    }
+  ]
+}

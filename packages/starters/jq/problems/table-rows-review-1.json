@@ -1,0 +1,77 @@
+{
+  "title": "Rows of a report",
+  "statement": "Print each row of the report as one line, with a tab between its values.\n\nThis task runs jq with `-r`. The rows are in `rows`. Each row is already an array. Strings have no quotes.",
+  "flags": [
+    "-r"
+  ],
+  "reference": ".rows | .[] | @tsv",
+  "tests": [
+    {
+      "input": {
+        "report": "signups",
+        "rows": [
+          [
+            "week",
+            "signups",
+            "paid"
+          ],
+          [
+            "2024-W09",
+            310,
+            42
+          ],
+          [
+            "2024-W10",
+            355,
+            51
+          ]
+        ]
+      },
+      "expected": "week\tsignups\tpaid\n2024-W09\t310\t42\n2024-W10\t355\t51"
+    },
+    {
+      "input": {
+        "report": "errors",
+        "rows": [
+          [
+            "service",
+            "count"
+          ],
+          [
+            "api",
+            17
+          ]
+        ]
+      },
+      "expected": "service\tcount\napi\t17"
+    },
+    {
+      "input": {
+        "report": "latency",
+        "rows": [
+          [
+            "route",
+            "p50",
+            "p99"
+          ],
+          [
+            "/users",
+            31,
+            240
+          ],
+          [
+            "/orders",
+            58,
+            910
+          ],
+          [
+            "/health",
+            2,
+            9
+          ]
+        ]
+      },
+      "expected": "route\tp50\tp99\n/users\t31\t240\n/orders\t58\t910\n/health\t2\t9"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "title": "Lines of an order",
+  "statement": "Print every item of the order as its own output, and say on each one which order it belongs to.\n\nEach output is an object with three keys: `order` holds the `id` of the order, and `sku` and `qty` come from the item.",
+  "reference": ".id as $id | .items[] | {order: $id, sku, qty}",
+  "tests": [
+    {
+      "input": {
+        "id": "A-17",
+        "customer": "ada@example.com",
+        "items": [
+          {
+            "sku": "pen",
+            "qty": 2,
+            "price": 3
+          },
+          {
+            "sku": "ink",
+            "qty": 1,
+            "price": 9
+          }
+        ]
+      },
+      "expected": "{\n  \"order\": \"A-17\",\n  \"sku\": \"pen\",\n  \"qty\": 2\n}\n{\n  \"order\": \"A-17\",\n  \"sku\": \"ink\",\n  \"qty\": 1\n}"
+    },
+    {
+      "input": {
+        "id": "A-18",
+        "customer": "bo@example.com",
+        "items": [
+          {
+            "sku": "desk",
+            "qty": 1,
+            "price": 240
+          }
+        ]
+      },
+      "expected": "{\n  \"order\": \"A-18\",\n  \"sku\": \"desk\",\n  \"qty\": 1\n}"
+    },
+    {
+      "input": {
+        "id": "B-02",
+        "customer": "cy@example.com",
+        "items": [
+          {
+            "sku": "lamp",
+            "qty": 4,
+            "price": 25
+          },
+          {
+            "sku": "bulb",
+            "qty": 8,
+            "price": 2
+          },
+          {
+            "sku": "cable",
+            "qty": 4,
+            "price": 6
+          }
+        ]
+      },
+      "expected": "{\n  \"order\": \"B-02\",\n  \"sku\": \"lamp\",\n  \"qty\": 4\n}\n{\n  \"order\": \"B-02\",\n  \"sku\": \"bulb\",\n  \"qty\": 8\n}\n{\n  \"order\": \"B-02\",\n  \"sku\": \"cable\",\n  \"qty\": 4\n}"
+    }
+  ]
+}

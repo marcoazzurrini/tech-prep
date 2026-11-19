@@ -1,0 +1,126 @@
+[
+  {
+    "title": "Result of the build",
+    "statement": "Print `\"passed\"` when the build has 0 failed tests, and `\"failed\"` when it has more.\n\nThe filter below prints `\"passed\"` for a build with 0 failed tests. For every other build it prints the whole input. Change it so that it prints `\"failed\"` for those.",
+    "stub": "if .failed == 0 then \"passed\" else . end",
+    "reference": "if .failed == 0 then \"passed\" else \"failed\" end",
+    "tests": [
+      {
+        "input": {
+          "build": 118,
+          "tests": 240,
+          "failed": 2
+        },
+        "expected": "\"failed\""
+      },
+      {
+        "input": {
+          "build": 119,
+          "tests": 240,
+          "failed": 0
+        },
+        "expected": "\"passed\""
+      },
+      {
+        "input": {
+          "build": 120,
+          "tests": 241,
+          "failed": 17
+        },
+        "expected": "\"failed\""
+      }
+    ]
+  },
+  {
+    "title": "Class of a reply",
+    "statement": "Print the class of the reply as a string.\n\nLook at `status`. For 500 or more, print `\"server error\"`. For 400 up to 499, print `\"client error\"`. For anything lower, print `\"ok\"`. Use `if`, `elif` and `else`.",
+    "reference": "if .status >= 500 then \"server error\" elif .status >= 400 then \"client error\" else \"ok\" end",
+    "tests": [
+      {
+        "input": {
+          "path": "/cart",
+          "status": 404
+        },
+        "expected": "\"client error\""
+      },
+      {
+        "input": {
+          "path": "/pay",
+          "status": 503
+        },
+        "expected": "\"server error\""
+      },
+      {
+        "input": {
+          "path": "/",
+          "status": 200
+        },
+        "expected": "\"ok\""
+      },
+      {
+        "input": {
+          "path": "/login",
+          "status": 400
+        },
+        "expected": "\"client error\""
+      },
+      {
+        "input": {
+          "path": "/export",
+          "status": 500
+        },
+        "expected": "\"server error\""
+      }
+    ]
+  },
+  {
+    "title": "Paid or due",
+    "statement": "Print one array with a label for every invoice, in the same order.\n\nThe label is `\"due\"` when the invoice's `due` amount is above 0. Otherwise it is `\"paid\"`. Put an `if` inside `map`.",
+    "reference": "map(if .due > 0 then \"due\" else \"paid\" end)",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": "INV-1",
+            "due": 0
+          },
+          {
+            "id": "INV-2",
+            "due": 120
+          },
+          {
+            "id": "INV-3",
+            "due": 0
+          }
+        ],
+        "expected": "[\n  \"paid\",\n  \"due\",\n  \"paid\"\n]"
+      },
+      {
+        "input": [
+          {
+            "id": "INV-7",
+            "due": 45.5
+          }
+        ],
+        "expected": "[\n  \"due\"\n]"
+      },
+      {
+        "input": [
+          {
+            "id": "INV-8",
+            "due": 10
+          },
+          {
+            "id": "INV-9",
+            "due": 300
+          }
+        ],
+        "expected": "[\n  \"due\",\n  \"due\"\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  }
+]

@@ -1,0 +1,73 @@
+{
+  "title": "Image tags of the pod",
+  "statement": "Print the image tag of every container in the pod, as one array.\n\nThe containers are under `containers`. The tag of a container is inside its `image`. Keep the order of the input.",
+  "reference": ".containers | map(.image.tag)",
+  "tests": [
+    {
+      "input": {
+        "pod": "shop",
+        "containers": [
+          {
+            "name": "app",
+            "image": {
+              "repo": "shop/web",
+              "tag": "1.4.2"
+            }
+          },
+          {
+            "name": "proxy",
+            "image": {
+              "repo": "edge/proxy",
+              "tag": "0.9.0"
+            }
+          }
+        ]
+      },
+      "expected": "[\n  \"1.4.2\",\n  \"0.9.0\"\n]"
+    },
+    {
+      "input": {
+        "pod": "jobs",
+        "containers": [
+          {
+            "name": "worker",
+            "image": {
+              "repo": "shop/worker",
+              "tag": "2.1.0"
+            }
+          }
+        ]
+      },
+      "expected": "[\n  \"2.1.0\"\n]"
+    },
+    {
+      "input": {
+        "pod": "db",
+        "containers": [
+          {
+            "name": "pg",
+            "image": {
+              "repo": "db/pg",
+              "tag": "16.2"
+            }
+          },
+          {
+            "name": "backup",
+            "image": {
+              "repo": "db/backup",
+              "tag": "3.0.1"
+            }
+          },
+          {
+            "name": "metrics",
+            "image": {
+              "repo": "obs/agent",
+              "tag": "7.5"
+            }
+          }
+        ]
+      },
+      "expected": "[\n  \"16.2\",\n  \"3.0.1\",\n  \"7.5\"\n]"
+    }
+  ]
+}
