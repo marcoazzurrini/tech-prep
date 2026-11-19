@@ -2,7 +2,13 @@ import { Database } from "bun:sqlite";
 import { copyFileSync, existsSync, mkdirSync, renameSync } from "node:fs";
 import path from "node:path";
 
-import { HOME_DIR, aliases, concepts, problemIndex } from "./content.ts";
+import {
+  HOME_DIR,
+  RENAMED_COURSES,
+  aliases,
+  concepts,
+  problemIndex,
+} from "./content.ts";
 import type { Course, Language } from "./content.ts";
 
 /** Stored stages. "locked" and "available" are derived from prerequisites, never stored. */
@@ -301,20 +307,31 @@ const migrate = (course: Course, database: Database, file: string): void => {
 const PROGRESS_DIR = path.join(HOME_DIR, "progress");
 
 /** The course whose progress lived in `progress.db` before each course had its own file. */
-const FIRST_COURSE = "interview";
+const FIRST_COURSE = "dsa";
 
-/** Move the single database of earlier versions to its course's file. */
-const adoptOldDatabase = (file: string): void => {
-  const old = path.join(HOME_DIR, "progress.db");
-
-  if (existsSync(file) || !existsSync(old)) {
+/** Move a database file, with its WAL files, unless the target already exists. */
+const moveDatabase = (from: string, to: string): void => {
+  if (existsSync(to) || !existsSync(from)) {
     return;
   }
 
   for (const suffix of ["", "-wal", "-shm"]) {
-    if (existsSync(old + suffix)) {
-      renameSync(old + suffix, file + suffix);
+    if (existsSync(from + suffix)) {
+      renameSync(from + suffix, to + suffix);
     }
+  }
+};
+
+/** Bring a course's progress from where earlier versions kept it to its file. */
+const adoptOldDatabases = (id: string, file: string): void => {
+  for (const [from, to] of RENAMED_COURSES) {
+    if (to === id) {
+      moveDatabase(path.join(PROGRESS_DIR, `${from}.db`), file);
+    }
+  }
+
+  if (id === FIRST_COURSE) {
+    moveDatabase(path.join(HOME_DIR, "progress.db"), file);
   }
 };
 
@@ -330,9 +347,7 @@ export const open = (course: Course): Database => {
   mkdirSync(PROGRESS_DIR, { recursive: true });
   const file = path.join(PROGRESS_DIR, `${id}.db`);
 
-  if (id === FIRST_COURSE) {
-    adoptOldDatabase(file);
-  }
+  adoptOldDatabases(id, file);
 
   const db = new Database(file, { create: true, strict: true });
   db.exec("PRAGMA journal_mode = WAL;");

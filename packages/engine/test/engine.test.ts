@@ -91,22 +91,49 @@ const database = await import("../src/db.ts");
 
 type Course = ReturnType<typeof content.courseById>;
 
-/** Most tests practise in the interview course. */
-const interview = content.courseById("interview");
+/** Most tests practise in the DSA course. */
+const dsa = content.courseById("dsa");
+
+/** Where a course keeps its progress. */
+const progressFile = (id: string) => path.join(home, "progress", `${id}.db`);
 
 afterAll(() => rmSync(home, { force: true, recursive: true }));
 
 describe("courses", () => {
-  const course = interview;
+  const course = dsa;
 
   test("the app's own courses come first, then the ones beside it", () => {
-    expect(content.courses().map((c) => c.id)).toEqual([
-      "interview",
-      "jq",
-      "mini",
-    ]);
+    expect(content.courses().map((c) => c.id)).toEqual(["dsa", "jq", "mini"]);
     // With no choice saved yet, the first course is the open one.
-    expect(content.savedCourse().id).toBe("interview");
+    expect(content.savedCourse().id).toBe("dsa");
+  });
+
+  test("a renamed course keeps the saved choice and the progress of its old id", () => {
+    mkdirSync(path.join(home, "progress"), { recursive: true });
+
+    // An empty database, marked so the test can tell it is the same file.
+    const old = new Database(progressFile("interview"), { create: true });
+    old.exec("PRAGMA application_id = 42");
+    old.close();
+    writeFileSync(
+      path.join(home, "state.json"),
+      JSON.stringify({ course: "interview" })
+    );
+
+    expect(content.savedCourse().id).toBe("dsa");
+    expect(database.open(dsa).query("PRAGMA application_id").get()).toEqual({
+      application_id: 42,
+    });
+    expect(existsSync(progressFile("interview"))).toBe(false);
+
+    const drafts = path.join(home, "workspace", "interview");
+    mkdirSync(drafts, { recursive: true });
+    writeFileSync(path.join(drafts, "two-sum.py"), "# draft");
+
+    expect(
+      readFileSync(path.join(content.solutionsDir(dsa), "two-sum.py"), "utf-8")
+    ).toBe("# draft");
+    expect(existsSync(drafts)).toBe(false);
   });
 
   test("the higher version of a course id is the one used", () => {
@@ -142,8 +169,8 @@ describe("courses", () => {
   test("the chosen course is remembered for the app and the tutor", () => {
     expect(content.selectCourse("mini").id).toBe("mini");
     expect(content.savedCourse().id).toBe("mini");
-    content.selectCourse("interview");
-    expect(content.savedCourse().id).toBe("interview");
+    content.selectCourse("dsa");
+    expect(content.savedCourse().id).toBe("dsa");
     expect(() => content.selectCourse("nope")).toThrow("Unknown course");
   });
 });
@@ -166,9 +193,6 @@ describe("architecture", () => {
     expect(leaks).toEqual([]);
   });
 });
-
-/** Where a course keeps its progress. */
-const progressFile = (id: string) => path.join(home, "progress", `${id}.db`);
 
 describe("progress store", () => {
   test("writes made together are saved together or not at all", () => {
@@ -198,7 +222,7 @@ describe("progress store", () => {
     );
     old.close();
 
-    const course = { ...interview, id: "old-one" };
+    const course = { ...dsa, id: "old-one" };
 
     expect(database.conceptRow(course, "dynamic-arrays")).toMatchObject({
       fail_count: 0,
@@ -209,9 +233,7 @@ describe("progress store", () => {
     });
     expect(existsSync(`${progressFile("old-one")}.before-v1.bak`)).toBe(true);
     // A new database has nothing to keep, so it gets no copy.
-    expect(existsSync(`${progressFile("interview")}.before-v1.bak`)).toBe(
-      false
-    );
+    expect(existsSync(`${progressFile("dsa")}.before-v1.bak`)).toBe(false);
   });
 
   test("a database from a newer app is refused, not changed", () => {
@@ -221,7 +243,7 @@ describe("progress store", () => {
     newer.exec("PRAGMA user_version = 99");
     newer.close();
 
-    expect(() => database.open({ ...interview, id: "newer-one" })).toThrow(
+    expect(() => database.open({ ...dsa, id: "newer-one" })).toThrow(
       "newer version of the app"
     );
   });
@@ -242,7 +264,7 @@ describe("progress store", () => {
 });
 
 describe("curriculum", () => {
-  const course = interview;
+  const course = dsa;
 
   test("the index holds the NeetCode 150 with known topics and concepts", () => {
     const topicIds = new Set(content.topics(course).map((t) => t.id));
@@ -292,7 +314,7 @@ describe("curriculum", () => {
 });
 
 describe("runner", () => {
-  const course = interview;
+  const course = dsa;
 
   test("compare modes", () => {
     expect(runner.equal([1, 0], [0, 1], "unordered")).toBe(true);
@@ -416,7 +438,7 @@ describe("grading", () => {
 });
 
 describe("fractional implicit repetition", () => {
-  const course = interview;
+  const course = dsa;
 
   test("each course has its own encompassings", () => {
     // Read one course's edges first: the other course must not get them.
@@ -488,7 +510,7 @@ const learn = (course: Course, conceptId: string) => {
 };
 
 describe("lessons", () => {
-  const course = interview;
+  const course = dsa;
 
   const DAY = 86_400_000;
 
@@ -599,7 +621,7 @@ describe("lessons", () => {
 });
 
 describe("reviews", () => {
-  const course = interview;
+  const course = dsa;
 
   const DAY = 86_400_000;
 
@@ -687,7 +709,7 @@ describe("solution files", () => {
 });
 
 describe("exercises", () => {
-  const course = interview;
+  const course = dsa;
 
   test("predict: the engine runs the code to find the answer and hides it until graded", async () => {
     const shown = exercises.showExercise(course, {
@@ -962,18 +984,16 @@ describe("jq course", () => {
   });
 
   test("a code lesson can have several guided problems, each in its own folder", () => {
-    const lesson = path.join(interview.dir, "lessons", "dynamic-arrays");
+    const lesson = path.join(dsa.dir, "lessons", "dynamic-arrays");
 
-    expect(codeTasks.problemDir(interview, "guided-dynamic-arrays")).toBe(
-      lesson
-    );
-    expect(codeTasks.problemDir(interview, "guided-dynamic-arrays.2")).toBe(
+    expect(codeTasks.problemDir(dsa, "guided-dynamic-arrays")).toBe(lesson);
+    expect(codeTasks.problemDir(dsa, "guided-dynamic-arrays.2")).toBe(
       path.join(lesson, "task-2")
     );
   });
 
   test("a lesson that is not split has one part, whatever the course", () => {
-    const [part, ...rest] = lessons.lessonParts(interview, "dynamic-arrays");
+    const [part, ...rest] = lessons.lessonParts(dsa, "dynamic-arrays");
 
     expect(rest).toEqual([]);
     expect(part).toMatchObject({

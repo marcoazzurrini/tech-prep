@@ -349,14 +349,14 @@
                     {
                      "id": "qmFga",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -558,7 +558,7 @@
                    "id": "5AgjK",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -3136,14 +3136,14 @@
                     {
                      "id": "5QDYz",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -3345,7 +3345,7 @@
                    "id": "CG6b5",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -5941,14 +5941,14 @@
                     {
                      "id": "5gdKE",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -6150,7 +6150,7 @@
                    "id": "dM9B5",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -8901,14 +8901,14 @@
                     {
                      "id": "wAAyC",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -9110,7 +9110,7 @@
                    "id": "46Z6W",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -11803,14 +11803,14 @@
                     {
                      "id": "DZ4Vz",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -12012,7 +12012,7 @@
                    "id": "hgJq3",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -14886,14 +14886,14 @@
                     {
                      "id": "wmMx9",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -15095,7 +15095,7 @@
                    "id": "9rS3H",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -17503,14 +17503,14 @@
                     {
                      "id": "XdsD5",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -17712,7 +17712,7 @@
                    "id": "sFyjG",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -20020,7 +20020,7 @@
       {
        "id": "jMipY",
        "type": "text",
-       "text": "Step 1: the lesson beside a small guided problem. Step 2: the NeetCode 150 problem with the lesson closed. Only step 2 decides if the concept is learned.",
+       "text": "Step 1: the lesson beside a small guided problem. Step 2: a full problem with the lesson closed. Only step 2 decides if the concept is learned.",
        "style": {
         "color": "var(--color-mute)",
         "fontSize": 32,
@@ -20303,14 +20303,14 @@
                     {
                      "id": "49grR",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -20512,7 +20512,7 @@
                    "id": "Xfpnf",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -23899,14 +23899,14 @@
                     {
                      "id": "Bvxgg",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -24108,7 +24108,7 @@
                    "id": "Jm9D2",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -28108,14 +28108,14 @@
                     {
                      "id": "jGxPQ",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -28317,7 +28317,7 @@
                    "id": "ZtrWU",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -31833,14 +31833,14 @@
                     {
                      "id": "itMcx",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -32042,7 +32042,7 @@
                    "id": "J977M",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -34772,14 +34772,14 @@
                     {
                      "id": "LHNfa",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -34981,7 +34981,7 @@
                    "id": "EjbKV",
                    "type": "text",
                    "name": "Title",
-                   "text": "NeetCode 150",
+                   "text": "DSA",
                    "style": {
                     "color": "var(--color-ink)",
                     "fontSize": 20,
@@ -38534,14 +38534,14 @@
                     {
                      "id": "pEkyS",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -38963,13 +38963,13 @@
                     {
                      "id": "XRZDX",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ],
                    "name": "Frame"
@@ -38988,13 +38988,13 @@
                     {
                      "id": "UEWix",
                      "type": "text",
-                     "text": "NeetCode 150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-ink)",
                       "fontSize": 17,
                       "fontWeight": 600
                      },
-                     "name": "Blind 75"
+                     "name": "Course name"
                     },
                     {
                      "id": "JfCMY",
@@ -39656,14 +39656,14 @@
                     {
                      "id": "3FA7Q",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -39869,7 +39869,7 @@
                "id": "fmu2D",
                "type": "text",
                "name": "Lesson",
-               "text": "NeetCode 150 · Review",
+               "text": "DSA · Review",
                "style": {
                 "color": "var(--color-ink)",
                 "fontSize": 14,
@@ -41313,14 +41313,14 @@
                     {
                      "id": "rfHyy",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -41526,7 +41526,7 @@
                "id": "FPzmG",
                "type": "text",
                "name": "Lesson",
-               "text": "NeetCode 150 · Review",
+               "text": "DSA · Review",
                "style": {
                 "color": "var(--color-ink)",
                 "fontSize": 14,
@@ -43320,14 +43320,14 @@
                     {
                      "id": "tfTEB",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -43533,7 +43533,7 @@
                "id": "TLy6r",
                "type": "text",
                "name": "Lesson",
-               "text": "NeetCode 150 · Review",
+               "text": "DSA · Review",
                "style": {
                 "color": "var(--color-ink)",
                 "fontSize": 14,
@@ -45413,14 +45413,14 @@
                     {
                      "id": "QzzD2",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-on-light)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -45717,7 +45717,7 @@
               {
                "id": "iKbHf",
                "type": "text",
-               "text": "NeetCode 150: 2 problems solved, 1 with a hint. The next review is due tomorrow.",
+               "text": "DSA: 2 problems solved, 1 with a hint. The next review is due tomorrow.",
                "style": {
                 "color": "var(--color-body)",
                 "fontSize": 16,
@@ -46379,14 +46379,14 @@
                     {
                      "id": "t4BSW",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-body)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -49359,14 +49359,14 @@
                     {
                      "id": "AvLnh",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-body)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }
@@ -52431,14 +52431,14 @@
                     {
                      "id": "tn5Eu",
                      "type": "text",
-                     "text": "150",
+                     "text": "DSA",
                      "style": {
                       "color": "var(--color-body)",
                       "fontSize": 8,
                       "fontWeight": 700,
                       "whiteSpace": "pre"
                      },
-                     "name": "75"
+                     "name": "Initials"
                     }
                    ]
                   }

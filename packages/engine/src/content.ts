@@ -3,6 +3,7 @@ import {
   mkdirSync,
   readdirSync,
   readFileSync,
+  renameSync,
   writeFileSync,
 } from "node:fs";
 import { homedir } from "node:os";
@@ -165,9 +166,18 @@ const STATE_FILE = path.join(HOME_DIR, "state.json");
 
 const State = z.object({ course: z.string() });
 
+/** Course ids that changed, old to new. Progress and the saved choice follow the new id. */
+export const RENAMED_COURSES: ReadonlyMap<string, string> = new Map([
+  ["interview", "dsa"],
+]);
+
 const savedCourseId = (): string | null => {
   try {
-    return State.parse(JSON.parse(readFileSync(STATE_FILE, "utf-8"))).course;
+    const { course } = State.parse(
+      JSON.parse(readFileSync(STATE_FILE, "utf-8"))
+    );
+
+    return RENAMED_COURSES.get(course) ?? course;
   } catch {
     return null;
   }
@@ -220,9 +230,20 @@ export const problemsDir = (course: Course): string =>
 export const lessonsDir = (course: Course): string =>
   path.join(course.dir, "lessons");
 
-/** Where the learner's solution files for a course live. */
-export const solutionsDir = (course: Course): string =>
-  path.join(WORKSPACE_DIR, course.id);
+/** Where the learner's code for a course is saved. A renamed course's folder moves with it. */
+export const solutionsDir = (course: Course): string => {
+  const dir = path.join(WORKSPACE_DIR, course.id);
+
+  for (const [from, to] of RENAMED_COURSES) {
+    const old = path.join(WORKSPACE_DIR, from);
+
+    if (to === course.id && !existsSync(dir) && existsSync(old)) {
+      renameSync(old, dir);
+    }
+  }
+
+  return dir;
+};
 
 export type Language = "python" | "typescript" | "jq";
 
