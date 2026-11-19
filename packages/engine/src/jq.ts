@@ -85,6 +85,19 @@ const argsFor = (spec: JqSpec, text: string): string[] => {
       throw new Error("The filter is empty.");
     }
 
+    // A beginner often types the whole command, as the lesson shows it for a terminal.
+    if (/^\s*jq\s/u.test(text)) {
+      throw new Error(
+        "Type only the filter. Leave out `jq`, the quotes and the file name: the app adds those for you."
+      );
+    }
+
+    if (/^\s*'/u.test(text)) {
+      throw new Error(
+        "Leave out the single quotes. Type only what goes between them: the app adds the quotes for you."
+      );
+    }
+
     return [...spec.flags, text];
   }
 

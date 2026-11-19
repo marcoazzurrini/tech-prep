@@ -1,7 +1,7 @@
 [
   {
     "title": "The whole input",
-    "statement": "Print the whole input, unchanged.\n\nType the filter that means \"the whole input\". Watch **Your output** change as you type.",
+    "statement": "Print the whole input, unchanged.\n\nType only the filter that means \"the whole input\". It is one character. Do not type `jq`, quotes or a file name. Watch **Your output** change as you type.",
     "stub": "",
     "reference": ".",
     "tests": [
