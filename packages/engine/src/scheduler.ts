@@ -12,7 +12,7 @@ import {
   soloSlugs,
   topics,
 } from "./content.ts";
-import type { ProblemInfo } from "./content.ts";
+import type { Course, ProblemInfo } from "./content.ts";
 import { attemptsFor, conceptRow, saveConceptRow } from "./db.ts";
 import type { AttemptRow, Stage } from "./db.ts";
 import { problemCredit } from "./fire.ts";
@@ -38,44 +38,50 @@ export type DisplayStage =
   | "mastered";
 
 const isPassedStage = (s: Stage) => s === "passed" || s === "mastered";
-export const isPassed = (id: string) => isPassedStage(conceptRow(id).stage);
+
+export const isPassed = (course: Course, id: string) =>
+  isPassedStage(conceptRow(course, id).stage);
 
 /** Locked and available are derived: a concept unlocks when all its prerequisites are passed. */
-export const displayStage = (id: string): DisplayStage => {
-  const { stage } = conceptRow(id);
+export const displayStage = (course: Course, id: string): DisplayStage => {
+  const { stage } = conceptRow(course, id);
 
   if (stage !== "unseen") {
     return stage;
   }
 
-  return concept(id).prereqs.every(isPassed) ? "available" : "locked";
+  return concept(course, id).prereqs.every((p) => isPassed(course, p))
+    ? "available"
+    : "locked";
 };
 
 /** First independent success: the concept starts its FSRS schedule and its dependents may unlock. */
 export const pass = (
+  course: Course,
   conceptId: string,
   source: Source,
   now = new Date()
 ): void => {
-  saveConceptRow({
-    ...conceptRow(conceptId),
+  saveConceptRow(course, {
+    ...conceptRow(course, conceptId),
     card: JSON.stringify(createEmptyCard(now)),
     fail_count: 0,
     passed_at: now.toISOString(),
     stage: "passed",
   });
-  explicitReview(conceptId, source, Rating.Good, now);
+  explicitReview(course, conceptId, source, Rating.Good, now);
 };
 
 /** Mark a concept as taught: its lesson's first step is done, and its solo problem comes next. */
 export const completeLesson = (
+  course: Course,
   conceptId: string,
   now = new Date()
 ): DisplayStage => {
-  const row = conceptRow(conceptId);
+  const row = conceptRow(course, conceptId);
 
   if (row.stage === "unseen") {
-    saveConceptRow({
+    saveConceptRow(course, {
       ...row,
       fail_count: 0,
       introduced_at: now.toISOString(),
@@ -83,38 +89,39 @@ export const completeLesson = (
     });
   }
 
-  return displayStage(conceptId);
+  return displayStage(course, conceptId);
 };
 
-export const recordStruggle = (conceptId: string): number => {
-  const row = conceptRow(conceptId);
-  saveConceptRow({ ...row, fail_count: row.fail_count + 1 });
+export const recordStruggle = (course: Course, conceptId: string): number => {
+  const row = conceptRow(course, conceptId);
+  saveConceptRow(course, { ...row, fail_count: row.fail_count + 1 });
 
   return row.fail_count + 1;
 };
 
 /** Mastered after a later, unaided success on an unlabelled review; a lapse drops it back to passed. */
 export const updateMastery = (
+  course: Course,
   conceptId: string,
   passed: boolean,
   recognitionOk: boolean,
   now = new Date()
 ): void => {
-  const row = conceptRow(conceptId);
+  const row = conceptRow(course, conceptId);
 
   if (row.stage === "passed" && passed && recognitionOk && row.passed_at) {
     if (
       now.getTime() - new Date(row.passed_at).getTime() >=
       MASTERY_GAP_DAYS * DAY_MS
     ) {
-      saveConceptRow({
+      saveConceptRow(course, {
         ...row,
         mastered_at: now.toISOString(),
         stage: "mastered",
       });
     }
   } else if (row.stage === "mastered" && !passed) {
-    saveConceptRow({ ...row, mastered_at: null, stage: "passed" });
+    saveConceptRow(course, { ...row, mastered_at: null, stage: "passed" });
   }
 };
 
@@ -132,8 +139,8 @@ const solvedAlone = (a: AttemptRow) =>
   a.outcome === "solved" ||
   (a.outcome === null && (a.rating ?? 0) >= Rating.Hard);
 
-export const problemStatus = (slug: string): ProblemStatus => {
-  const attempts = attemptsFor({ slug });
+export const problemStatus = (course: Course, slug: string): ProblemStatus => {
+  const attempts = attemptsFor(course, { slug });
 
   if (attempts.some(solvedAlone)) {
     return "solved";
@@ -153,8 +160,8 @@ export const problemStatus = (slug: string): ProblemStatus => {
 };
 
 /** After a struggle, a problem waits at least a day before it is served again. */
-const waitingForRetry = (slug: string, now: Date): boolean => {
-  const last = attemptsFor({ slug }).at(-1);
+const waitingForRetry = (course: Course, slug: string, now: Date): boolean => {
+  const last = attemptsFor(course, { slug }).at(-1);
 
   if (!last?.finished_at || last.outcome === "paused" || solvedAlone(last)) {
     return false;
@@ -163,8 +170,12 @@ const waitingForRetry = (slug: string, now: Date): boolean => {
   return now.getTime() - new Date(last.finished_at).getTime() < DAY_MS;
 };
 
-const attemptedRecently = (slug: string, now: Date): boolean => {
-  const last = attemptsFor({ slug }).at(-1);
+const attemptedRecently = (
+  course: Course,
+  slug: string,
+  now: Date
+): boolean => {
+  const last = attemptsFor(course, { slug }).at(-1);
 
   return Boolean(
     last && now.getTime() - new Date(last.started_at).getTime() < DAY_MS
@@ -177,40 +188,47 @@ const attemptedRecently = (slug: string, now: Date): boolean => {
 export type LessonStatus = "locked" | "todo" | "started" | "partial" | "done";
 
 /** A lesson opens when every prerequisite of its concept is passed. */
-export const isOpen = (id: string): boolean =>
-  conceptRow(id).stage !== "unseen" || concept(id).prereqs.every(isPassed);
+export const isOpen = (course: Course, id: string): boolean =>
+  conceptRow(course, id).stage !== "unseen" ||
+  concept(course, id).prereqs.every((p) => isPassed(course, p));
 
-export const lessonStatus = (id: string): LessonStatus => {
-  const { stage } = conceptRow(id);
+export const lessonStatus = (course: Course, id: string): LessonStatus => {
+  const { stage } = conceptRow(course, id);
 
   if (isPassedStage(stage)) {
     return "done";
   }
 
   if (stage === "learning") {
-    return soloSlugs(id).some((s) => problemStatus(s) === "solved_with_help")
+    return soloSlugs(course, id).some(
+      (s) => problemStatus(course, s) === "solved_with_help"
+    )
       ? "partial"
       : "started";
   }
 
-  return isOpen(id) ? "todo" : "locked";
+  return isOpen(course, id) ? "todo" : "locked";
 };
 
 /** Step 1 is the guided problem beside the lesson. Step 2 is the solo problem, alone. */
-export const lessonStep = (id: string): 1 | 2 =>
-  conceptRow(id).stage === "unseen" ? 1 : 2;
+export const lessonStep = (course: Course, id: string): 1 | 2 =>
+  conceptRow(course, id).stage === "unseen" ? 1 : 2;
 
 /** When the solo problem may be tried again after a struggle, or null when it is free now. */
-export const soloWait = (id: string, now = new Date()): string | null => {
-  if (isPassed(id)) {
+export const soloWait = (
+  course: Course,
+  id: string,
+  now = new Date()
+): string | null => {
+  if (isPassed(course, id)) {
     return null;
   }
 
   // Any solo task of the lesson that waits holds the lesson back.
-  const waits = soloSlugs(id).flatMap((solo) => {
-    const last = attemptsFor({ slug: solo }).at(-1);
+  const waits = soloSlugs(course, id).flatMap((solo) => {
+    const last = attemptsFor(course, { slug: solo }).at(-1);
 
-    return last?.finished_at && waitingForRetry(solo, now)
+    return last?.finished_at && waitingForRetry(course, solo, now)
       ? [new Date(last.finished_at).getTime() + DAY_MS]
       : [];
   });
@@ -219,13 +237,13 @@ export const soloWait = (id: string, now = new Date()): string | null => {
 };
 
 /** The next lesson: the first concept, in course order, that is open, written and not waiting. */
-export const nextLesson = (now = new Date()): string | null =>
-  concepts().find(
+export const nextLesson = (course: Course, now = new Date()): string | null =>
+  concepts(course).find(
     (c) =>
-      !isPassed(c.id) &&
-      isOpen(c.id) &&
-      hasLesson(c.id) &&
-      soloWait(c.id, now) === null
+      !isPassed(course, c.id) &&
+      isOpen(course, c.id) &&
+      hasLesson(course, c.id) &&
+      soloWait(course, c.id, now) === null
   )?.id ?? null;
 
 // ── Reviews ──────────────────────────────────────────────────────────────
@@ -235,11 +253,11 @@ interface DueConcept {
   weight: number;
 }
 
-const dueConcepts = (now: Date): DueConcept[] =>
-  concepts()
-    .filter((c) => isPassed(c.id) && isDue(c.id, now))
+const dueConcepts = (course: Course, now: Date): DueConcept[] =>
+  concepts(course)
+    .filter((c) => isPassed(course, c.id) && isDue(course, c.id, now))
     .map((c) => {
-      const card = cardOf(c.id);
+      const card = cardOf(course, c.id);
 
       if (!card) {
         throw new Error(`Concept '${c.id}' is due but has no card.`);
@@ -254,15 +272,16 @@ const dueConcepts = (now: Date): DueConcept[] =>
     });
 
 /** How many passed concepts are due for review. */
-export const dueCount = (now = new Date()): number => dueConcepts(now).length;
+export const dueCount = (course: Course, now = new Date()): number =>
+  dueConcepts(course, now).length;
 
 /** Repetition compression: how much of the due set one problem would knock out. */
-const coverage = (p: ProblemInfo, due: DueConcept[]) => {
+const coverage = (course: Course, p: ProblemInfo, due: DueConcept[]) => {
   let score = 0;
   const covers: string[] = [];
 
   for (const d of due) {
-    const credit = Math.min(1, problemCredit(p.concepts, d.id));
+    const credit = Math.min(1, problemCredit(course, p.concepts, d.id));
 
     if (credit > 0) {
       score += credit * d.weight;
@@ -285,24 +304,27 @@ export interface Review {
  * problem makes them recall the concept, not one answer.
  */
 const bestReview = (
+  course: Course,
   due: DueConcept[],
   now: Date,
   skip: Set<string>
 ): Review | null => {
   let best: (Review & { score: number }) | null = null;
 
-  for (const p of problemIndex()) {
+  for (const p of problemIndex(course)) {
     if (
       skip.has(p.slug) ||
-      !isAuthored(p.slug) ||
-      !p.concepts.every(isPassed) ||
-      attemptedRecently(p.slug, now)
+      !isAuthored(course, p.slug) ||
+      !p.concepts.every((id) => isPassed(course, id)) ||
+      attemptedRecently(course, p.slug, now)
     ) {
       continue;
     }
 
-    const { score, covers } = coverage(p, due);
-    const bonus = problemStatus(p.slug) === "unattempted" ? UNSEEN_BONUS : 1;
+    const { score, covers } = coverage(course, p, due);
+
+    const bonus =
+      problemStatus(course, p.slug) === "unattempted" ? UNSEEN_BONUS : 1;
 
     if (score > 0 && (!best || score * bonus > best.score)) {
       best = { covers, problem: p, score: score * bonus };
@@ -313,17 +335,17 @@ const bestReview = (
 };
 
 /** The review to do now, or null when nothing due can be reviewed. */
-export const nextReview = (now = new Date()): Review | null =>
-  bestReview(dueConcepts(now), now, new Set());
+export const nextReview = (course: Course, now = new Date()): Review | null =>
+  bestReview(course, dueConcepts(course, now), now, new Set());
 
 /** The reviews that would clear what is due today, best first. */
-export const reviewPlan = (now = new Date()): Review[] => {
-  let due = dueConcepts(now);
+export const reviewPlan = (course: Course, now = new Date()): Review[] => {
+  let due = dueConcepts(course, now);
   const plan: Review[] = [];
   const used = new Set<string>();
 
   while (due.length) {
-    const next = bestReview(due, now, used);
+    const next = bestReview(course, due, now, used);
 
     if (!next) {
       break;
@@ -338,10 +360,10 @@ export const reviewPlan = (now = new Date()): Review[] => {
 };
 
 /** When the next review falls due, among the concepts not due yet. */
-export const nextDue = (now = new Date()): string | null =>
-  concepts()
-    .filter((c) => isPassed(c.id) && !isDue(c.id, now))
-    .map((c) => cardOf(c.id)?.due.toISOString())
+export const nextDue = (course: Course, now = new Date()): string | null =>
+  concepts(course)
+    .filter((c) => isPassed(course, c.id) && !isDue(course, c.id, now))
+    .map((c) => cardOf(course, c.id)?.due.toISOString())
     .filter((d): d is string => Boolean(d))
     .toSorted()
     .at(0) ?? null;
@@ -362,10 +384,14 @@ export interface ConceptStatus {
 
 const round = (n: number): number => Math.round(n * 100) / 100;
 
-export const conceptStatus = (id: string, now = new Date()): ConceptStatus => {
-  const c = concept(id);
-  const card = cardOf(id);
-  const scheduled = isPassed(id) && card;
+export const conceptStatus = (
+  course: Course,
+  id: string,
+  now = new Date()
+): ConceptStatus => {
+  const c = concept(course, id);
+  const card = cardOf(course, id);
+  const scheduled = isPassed(course, id) && card;
 
   return {
     due: scheduled ? card.due.toISOString() : null,
@@ -375,20 +401,23 @@ export const conceptStatus = (id: string, now = new Date()): ConceptStatus => {
     reps: card?.reps ?? 0,
     retrievability: scheduled ? round(retrievability(card, now)) : null,
     stability_days: scheduled ? round(card.stability) : null,
-    stage: displayStage(id),
+    stage: displayStage(course, id),
     topic: c.topic,
   };
 };
 
-export const conceptStatuses = (now = new Date()): ConceptStatus[] =>
-  concepts().map((c) => conceptStatus(c.id, now));
+export const conceptStatuses = (
+  course: Course,
+  now = new Date()
+): ConceptStatus[] =>
+  concepts(course).map((c) => conceptStatus(course, c.id, now));
 
 /** Roadmap progress: per topic, solved problems and concept stages. */
-export const topicProgress = () => {
-  const statuses = conceptStatuses();
+export const topicProgress = (course: Course) => {
+  const statuses = conceptStatuses(course);
 
-  return topics().map((t) => {
-    const ps = problemIndex().filter((p) => p.topic === t.id);
+  return topics(course).map((t) => {
+    const ps = problemIndex(course).filter((p) => p.topic === t.id);
 
     return {
       concepts: statuses
@@ -403,7 +432,8 @@ export const topicProgress = () => {
       id: t.id,
       name: t.name,
       prereqs: t.prereqs,
-      solved: ps.filter((p) => problemStatus(p.slug) === "solved").length,
+      solved: ps.filter((p) => problemStatus(course, p.slug) === "solved")
+        .length,
       total: ps.length,
     };
   });

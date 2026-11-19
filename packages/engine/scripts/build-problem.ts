@@ -30,9 +30,11 @@ import {
   problemDir,
   problemIndex,
   problemInfo,
-  setCourse,
+  courseById,
+  savedCourse,
 } from "../src/content.ts";
 import type {
+  Course,
   Language,
   Problem,
   ProblemInfo,
@@ -43,19 +45,23 @@ import { formatRun, runTests } from "../src/runner.ts";
 /** spec.json as authored: any field may be missing until `checkSpec` passes. */
 type Spec = Partial<Omit<Problem, keyof ProblemInfo | "statement">>;
 
-const load = (slug: string) => {
+const load = (course: Course, slug: string) => {
   // SAFETY: every field of `Spec` is optional; `checkSpec` validates the ones the build relies on.
   const spec = JSON.parse(
-    readFileSync(path.join(problemDir(slug), "spec.json"), "utf-8")
+    readFileSync(path.join(problemDir(course, slug), "spec.json"), "utf-8")
   ) as Spec;
 
   const statement = readFileSync(
-    path.join(problemDir(slug), "problem.md"),
+    path.join(problemDir(course, slug), "problem.md"),
     "utf-8"
   );
 
   // SAFETY: the problem only runs after `checkSpec` has accepted its spec.
-  const problem = { ...spec, ...problemInfo(slug), statement } as Problem;
+  const problem = {
+    ...spec,
+    ...problemInfo(course, slug),
+    statement,
+  } as Problem;
 
   return { problem, spec };
 };
@@ -112,6 +118,7 @@ const checkSpec = (spec: Spec, tests: TestCase[]): string[] => {
 
 /** Step 1: fill missing expected values from the Python reference and rewrite spec.json. */
 const fillExpected = (
+  course: Course,
   slug: string,
   spec: Spec,
   tests: TestCase[],
@@ -127,7 +134,7 @@ const fillExpected = (
   }
 
   const reference = readFileSync(
-    path.join(problemDir(slug), "reference.py"),
+    path.join(problemDir(course, slug), "reference.py"),
     "utf-8"
   );
 
@@ -158,7 +165,7 @@ const fillExpected = (
 
   if (!errors.length) {
     writeFileSync(
-      path.join(problemDir(slug), "spec.json"),
+      path.join(problemDir(course, slug), "spec.json"),
       formatSpec(spec, tests)
     );
   }
@@ -166,7 +173,7 @@ const fillExpected = (
   return errors;
 };
 
-const build = (slug: string): string[] => {
+const build = (course: Course, slug: string): string[] => {
   const errors: string[] = [];
   const dir = mkdtempSync(path.join(tmpdir(), "tp-build-"));
 
@@ -177,7 +184,7 @@ const build = (slug: string): string[] => {
       "reference.py",
       "reference.ts",
     ]) {
-      if (!existsSync(path.join(problemDir(slug), name))) {
+      if (!existsSync(path.join(problemDir(course, slug), name))) {
         errors.push(`missing ${name}`);
       }
     }
@@ -186,7 +193,7 @@ const build = (slug: string): string[] => {
       return errors;
     }
 
-    const { spec, problem } = load(slug);
+    const { spec, problem } = load(course, slug);
     // A spec whose tests are not a list fails the "at least 3 tests" check.
     const tests = Array.isArray(spec.tests) ? spec.tests : [];
     const specErrors = checkSpec(spec, tests);
@@ -196,18 +203,21 @@ const build = (slug: string): string[] => {
     }
 
     // 1. Fill missing expected values from the Python reference.
-    const fillErrors = fillExpected(slug, spec, tests, problem, dir);
+    const fillErrors = fillExpected(course, slug, spec, tests, problem, dir);
 
     if (fillErrors.length) {
       return fillErrors;
     }
 
     // 2. Both references must pass everything.
-    const { problem: built } = load(slug);
+    const { problem: built } = load(course, slug);
 
     for (const language of LANGUAGES) {
       const source = readFileSync(
-        path.join(problemDir(slug), `reference.${EXTENSIONS[language]}`),
+        path.join(
+          problemDir(course, slug),
+          `reference.${EXTENSIONS[language]}`
+        ),
         "utf-8"
       );
 
@@ -236,17 +246,19 @@ const build = (slug: string): string[] => {
 const args = process.argv.slice(2);
 
 // `--course <id>` builds another course's problems. The default is the course that is open.
+const target =
+  args[0] === "--course" ? courseById(args[1] ?? "") : savedCourse();
+
 if (args[0] === "--course") {
-  setCourse(args[1] ?? "");
   args.splice(0, 2);
 }
 
 const slugs =
   args[0] === "--all"
     ? [
-        ...problemIndex().map((p) => p.slug),
-        ...concepts().map((c) => guidedSlug(c.id)),
-      ].filter(isAuthored)
+        ...problemIndex(target).map((p) => p.slug),
+        ...concepts(target).map((c) => guidedSlug(c.id)),
+      ].filter((slug) => isAuthored(target, slug))
     : args;
 
 if (!slugs.length) {
@@ -259,7 +271,7 @@ if (!slugs.length) {
 let failed = 0;
 
 for (const slug of slugs) {
-  const errors = build(slug);
+  const errors = build(target, slug);
 
   if (errors.length) {
     failed += 1;

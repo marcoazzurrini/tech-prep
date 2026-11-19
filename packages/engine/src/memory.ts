@@ -10,6 +10,7 @@ import {
 } from "ts-fsrs";
 import type { Card, Grade } from "ts-fsrs";
 
+import type { Course } from "./content.ts";
 import { conceptRow, open, saveConceptRow } from "./db.ts";
 
 // No same-day relearning steps: repeating an item within a day adds little to long-term memory.
@@ -33,8 +34,8 @@ export const parseCard = (json: string): Card => {
   };
 };
 
-export const cardOf = (conceptId: string): Card | null => {
-  const row = conceptRow(conceptId);
+export const cardOf = (course: Course, conceptId: string): Card | null => {
+  const row = conceptRow(course, conceptId);
 
   return row.card ? parseCard(row.card) : null;
 };
@@ -54,6 +55,7 @@ export interface Source {
 }
 
 const log = (
+  course: Course,
   conceptId: string,
   source: Source,
   rating: number,
@@ -62,7 +64,7 @@ const log = (
   credit: number | null,
   sourceConcept: string | null
 ) => {
-  open()
+  open(course)
     .query(
       `INSERT INTO reviews (concept_id, attempt_id, exercise_id, rating, reviewed_at, due, stability, difficulty, implicit_credit, source_concept)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
@@ -81,21 +83,25 @@ const log = (
     );
 };
 
-const save = (conceptId: string, card: Card): void => {
-  saveConceptRow({ ...conceptRow(conceptId), card: JSON.stringify(card) });
+const save = (course: Course, conceptId: string, card: Card): void => {
+  saveConceptRow(course, {
+    ...conceptRow(course, conceptId),
+    card: JSON.stringify(card),
+  });
 };
 
 /** A full review of a concept with an FSRS grade. Creates the card if needed. */
 export const explicitReview = (
+  course: Course,
   conceptId: string,
   source: Source,
   rating: Grade,
   now = new Date()
 ): Card => {
-  const card: Card = cardOf(conceptId) ?? createEmptyCard<Card>(now);
+  const card: Card = cardOf(course, conceptId) ?? createEmptyCard<Card>(now);
   const next = scheduler.next(card, now, rating).card;
-  save(conceptId, next);
-  log(conceptId, source, rating, next, now, null, null);
+  save(course, conceptId, next);
+  log(course, conceptId, source, rating, next, now, null, null);
 
   return next;
 };
@@ -106,13 +112,14 @@ export const explicitReview = (
  * FSRS gives smaller gains while recall is still high, so early credit is discounted.
  */
 export const implicitReview = (
+  course: Course,
   conceptId: string,
   source: Source,
   credit: number,
   sourceConcept: string,
   now = new Date()
 ): Card | null => {
-  const card = cardOf(conceptId);
+  const card = cardOf(course, conceptId);
 
   if (!card || card.state === State.New) {
     return null;
@@ -137,19 +144,20 @@ export const implicitReview = (
     };
   }
 
-  save(conceptId, next);
-  log(conceptId, source, Rating.Good, next, now, credit, sourceConcept);
+  save(course, conceptId, next);
+  log(course, conceptId, source, Rating.Good, next, now, credit, sourceConcept);
 
   return next;
 };
 
 /** A failure below pulls this concept's review forward by a fraction `weight`; stability is unchanged. */
 export const pullForward = (
+  course: Course,
   conceptId: string,
   weight: number,
   now = new Date()
 ): Card | null => {
-  const card = cardOf(conceptId);
+  const card = cardOf(course, conceptId);
 
   if (!card || card.due.getTime() <= now.getTime()) {
     return null;
@@ -160,13 +168,17 @@ export const pullForward = (
   );
 
   const next = { ...card, due };
-  save(conceptId, next);
+  save(course, conceptId, next);
 
   return next;
 };
 
-export const isDue = (conceptId: string, now = new Date()): boolean => {
-  const card = cardOf(conceptId);
+export const isDue = (
+  course: Course,
+  conceptId: string,
+  now = new Date()
+): boolean => {
+  const card = cardOf(course, conceptId);
 
   return Boolean(
     card && card.state !== State.New && card.due.getTime() <= now.getTime()

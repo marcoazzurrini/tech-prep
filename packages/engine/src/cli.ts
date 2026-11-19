@@ -1,15 +1,22 @@
 #!/usr/bin/env bun
 // Small CLI for checking the engine from a shell, e.g. `bun src/cli.ts check`.
 
-import { courseErrors, setCourse, validateCurriculum } from "./content.ts";
+import {
+  courseById,
+  courseErrors,
+  savedCourse,
+  validateCurriculum,
+} from "./content.ts";
 import { orphans } from "./db.ts";
 import { nextLesson, nextReview, topicProgress } from "./scheduler.ts";
 
 const args = process.argv.slice(2);
 
 // `--course <id>` reads another course. The default is the course that is open.
+const course =
+  args[0] === "--course" ? courseById(args[1] ?? "") : savedCourse();
+
 if (args[0] === "--course") {
-  setCourse(args[1] ?? "");
   args.splice(0, 2);
 }
 
@@ -17,7 +24,12 @@ const [command] = args;
 
 switch (command) {
   case "check": {
-    const problems = [...courseErrors(), ...validateCurriculum(), ...orphans()];
+    const problems = [
+      ...courseErrors(),
+      ...validateCurriculum(course),
+      ...orphans(course),
+    ];
+
     console.log(
       problems.length
         ? problems.map((p) => `✗ ${p}`).join("\n")
@@ -30,7 +42,10 @@ switch (command) {
   case "next": {
     console.log(
       JSON.stringify(
-        { lesson: nextLesson(), review: nextReview()?.problem.slug ?? null },
+        {
+          lesson: nextLesson(course),
+          review: nextReview(course)?.problem.slug ?? null,
+        },
         null,
         2
       )
@@ -39,7 +54,7 @@ switch (command) {
   }
 
   case "progress": {
-    for (const t of topicProgress()) {
+    for (const t of topicProgress(course)) {
       const taught = t.concepts.filter(
         (c) => c.stage !== "locked" && c.stage !== "available"
       ).length;

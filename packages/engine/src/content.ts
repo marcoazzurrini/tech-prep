@@ -173,40 +173,37 @@ const savedCourseId = (): string | null => {
   }
 };
 
-let active: Course | undefined;
+/** The course with this id. Throws when no course has it. */
+export const courseById = (id: string): Course => {
+  const found = courses().find((c) => c.id === id);
 
-const findCourse = (id: string | null): Course | undefined =>
-  courses().find((c) => c.id === id);
+  if (!found) {
+    throw new Error(`Unknown course '${id}'.`);
+  }
 
-/** The course every other function reads from: the one the learner has open. */
-export const course = (): Course => {
-  active ??= findCourse(savedCourseId()) ?? courses()[0];
+  return found;
+};
 
-  if (!active) {
+/**
+ * The course the learner has open: the one that was chosen last, else the first one. The app
+ * and the tutor are separate processes, and each asks this to stay on the same course.
+ */
+export const savedCourse = (): Course => {
+  const saved = savedCourseId();
+  const found = courses().find((c) => c.id === saved) ?? courses()[0];
+
+  if (!found) {
     throw new Error(
       `No course was found. ${courseErrors().join(" ")}`.trimEnd()
     );
   }
 
-  return active;
-};
-
-/** Read from another course from now on. Nothing is saved. */
-export const setCourse = (id: string): Course => {
-  const next = findCourse(id);
-
-  if (!next) {
-    throw new Error(`Unknown course '${id}'.`);
-  }
-
-  active = next;
-
-  return next;
+  return found;
 };
 
 /** Open a course and remember the choice, so the app and the tutor both start on it. */
 export const selectCourse = (id: string): Course => {
-  const next = setCourse(id);
+  const next = courseById(id);
 
   mkdirSync(HOME_DIR, { recursive: true });
   writeFileSync(STATE_FILE, `${JSON.stringify({ course: id }, null, 2)}\n`);
@@ -214,34 +211,17 @@ export const selectCourse = (id: string): Course => {
   return next;
 };
 
-/** Follow the course the app has open. The tutor calls this before it answers. */
-export const followSavedCourse = (): void => {
-  const saved = findCourse(savedCourseId());
+const curriculumDir = (course: Course): string =>
+  path.join(course.dir, "curriculum");
 
-  if (saved) {
-    active = saved;
-  }
-};
+const problemsDir = (course: Course): string =>
+  path.join(course.dir, "problems");
 
-/** Run `fn` against another course, then return to the open one. */
-export const inCourse = <T>(id: string, fn: () => T): T => {
-  const before = course();
+const lessonsDir = (course: Course): string => path.join(course.dir, "lessons");
 
-  setCourse(id);
-
-  try {
-    return fn();
-  } finally {
-    active = before;
-  }
-};
-
-const curriculumDir = (): string => path.join(course().dir, "curriculum");
-const problemsDir = (): string => path.join(course().dir, "problems");
-const lessonsDir = (): string => path.join(course().dir, "lessons");
-
-/** Where the learner's solution files for the open course live. */
-export const solutionsDir = (): string => path.join(WORKSPACE_DIR, course().id);
+/** Where the learner's solution files for a course live. */
+export const solutionsDir = (course: Course): string =>
+  path.join(WORKSPACE_DIR, course.id);
 
 export type Language = "python" | "typescript" | "jq";
 
@@ -258,9 +238,9 @@ export const EXTENSIONS: Record<Language, string> = {
 export const DEFAULT_LANGUAGE: Language =
   process.env.TECHPREP_LANG === "python" ? "python" : "typescript";
 
-/** The language the open course's tasks are written in. */
-export const courseLanguage = (): Language =>
-  course().kind === "jq" ? "jq" : DEFAULT_LANGUAGE;
+/** The language a course's tasks are written in. */
+export const courseLanguage = (course: Course): Language =>
+  course.kind === "jq" ? "jq" : DEFAULT_LANGUAGE;
 
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -460,8 +440,8 @@ interface Cache {
 
 const caches = new Map<string, Cache>();
 
-const cache = (): Cache => {
-  const { id } = course();
+const cache = (course: Course): Cache => {
+  const { id } = course;
   let current = caches.get(id);
 
   if (!current) {
@@ -473,24 +453,26 @@ const cache = (): Cache => {
 };
 
 /** Topics in roadmap order. */
-export const topics = (): Topic[] => {
-  const c = cache();
-  c.topics ??= readJson<Topic[]>(path.join(curriculumDir(), "topics.json"));
+export const topics = (course: Course): Topic[] => {
+  const c = cache(course);
+  c.topics ??= readJson<Topic[]>(
+    path.join(curriculumDir(course), "topics.json")
+  );
 
   return c.topics;
 };
 
-export const concepts = (): Concept[] => {
-  const c = cache();
+export const concepts = (course: Course): Concept[] => {
+  const c = cache(course);
   c.concepts ??= readJson<Concept[]>(
-    path.join(curriculumDir(), "concepts.json")
+    path.join(curriculumDir(course), "concepts.json")
   );
 
   return c.concepts;
 };
 
-export const concept = (id: string): Concept => {
-  const found = concepts().find((c) => c.id === id);
+export const concept = (course: Course, id: string): Concept => {
+  const found = concepts(course).find((c) => c.id === id);
 
   if (!found) {
     throw new Error(`Unknown concept '${id}'.`);
@@ -500,10 +482,10 @@ export const concept = (id: string): Concept => {
 };
 
 /** All problems in curriculum order (topic order, then the order within each topic). */
-export const problemIndex = (): ProblemInfo[] => {
-  const c = cache();
+export const problemIndex = (course: Course): ProblemInfo[] => {
+  const c = cache(course);
   c.index ??= readJson<ProblemInfo[]>(
-    path.join(curriculumDir(), "problems.json")
+    path.join(curriculumDir(course), "problems.json")
   );
 
   return c.index;
@@ -532,64 +514,64 @@ const guidedNumber = (slug: string): number =>
   Number(GUIDED_NUMBER.exec(slug)?.groups?.n ?? 1);
 
 /** A lesson's guided tasks, in order. */
-export const guidedSlugs = (conceptId: string): string[] =>
-  Array.from({ length: concept(conceptId).guided ?? 1 }, (_, i) =>
+export const guidedSlugs = (course: Course, conceptId: string): string[] =>
+  Array.from({ length: concept(course, conceptId).guided ?? 1 }, (_, i) =>
     guidedSlug(conceptId, i + 1)
   );
 
 /** The problems a lesson ends on, in order. */
-export const soloSlugs = (conceptId: string): string[] =>
-  [concept(conceptId).solo].flat();
+export const soloSlugs = (course: Course, conceptId: string): string[] =>
+  [concept(course, conceptId).solo].flat();
 
 /** The concept whose lesson ends on this problem, if any. */
-export const soloConcept = (slug: string): string | null =>
-  concepts().find((c) => [c.solo].flat().includes(slug))?.id ?? null;
+export const soloConcept = (course: Course, slug: string): string | null =>
+  concepts(course).find((c) => [c.solo].flat().includes(slug))?.id ?? null;
 
 /** A jq task's file content, or null when it is not written. */
-const jqTask = (slug: string): JqTask | null => {
+const jqTask = (course: Course, slug: string): JqTask | null => {
   const conceptId = guidedConcept(slug);
 
   if (conceptId) {
-    const file = path.join(lessonsDir(), conceptId, "guided.json");
+    const file = path.join(lessonsDir(course), conceptId, "guided.json");
 
     return existsSync(file)
       ? (readJson<JqTask[]>(file)[guidedNumber(slug) - 1] ?? null)
       : null;
   }
 
-  const file = path.join(problemsDir(), `${slug}.json`);
+  const file = path.join(problemsDir(course), `${slug}.json`);
 
   return existsSync(file) ? readJson<JqTask>(file) : null;
 };
 
 /** The folder holding a problem's statement, spec and reference solutions. */
-export const problemDir = (slug: string): string => {
+export const problemDir = (course: Course, slug: string): string => {
   const conceptId = guidedConcept(slug);
 
   return conceptId
-    ? path.join(lessonsDir(), conceptId)
-    : path.join(problemsDir(), slug);
+    ? path.join(lessonsDir(course), conceptId)
+    : path.join(problemsDir(course), slug);
 };
 
-export const problemInfo = (slug: string): ProblemInfo => {
+export const problemInfo = (course: Course, slug: string): ProblemInfo => {
   const conceptId = guidedConcept(slug);
 
-  if (conceptId && course().kind === "jq") {
-    const c = concept(conceptId);
+  if (conceptId && course.kind === "jq") {
+    const c = concept(course, conceptId);
 
     return {
       concepts: [conceptId],
       difficulty: "easy",
       slug,
       source: "guided",
-      title: jqTask(slug)?.title ?? c.name,
+      title: jqTask(course, slug)?.title ?? c.name,
       topic: c.topic,
     };
   }
 
   if (conceptId) {
-    const c = concept(conceptId);
-    const spec = path.join(lessonsDir(), conceptId, "spec.json");
+    const c = concept(course, conceptId);
+    const spec = path.join(lessonsDir(course), conceptId, "spec.json");
 
     return {
       concepts: [conceptId],
@@ -603,22 +585,22 @@ export const problemInfo = (slug: string): ProblemInfo => {
     };
   }
 
-  const found = problemIndex().find((p) => p.slug === slug);
+  const found = problemIndex(course).find((p) => p.slug === slug);
 
   if (!found) {
     throw new Error(`Unknown problem '${slug}'.`);
   }
 
   // A jq task carries its own title, so the index need not repeat it.
-  return course().kind === "jq"
-    ? { ...found, title: jqTask(slug)?.title ?? found.title ?? slug }
+  return course.kind === "jq"
+    ? { ...found, title: jqTask(course, slug)?.title ?? found.title ?? slug }
     : found;
 };
 
 /** True when the problem has a statement and tests, so it can be practised. */
-export const isAuthored = (slug: string): boolean => {
-  if (course().kind === "jq") {
-    const task = jqTask(slug);
+export const isAuthored = (course: Course, slug: string): boolean => {
+  if (course.kind === "jq") {
+    const task = jqTask(course, slug);
 
     return Boolean(
       task?.tests.length && task.tests.every((t) => t.expected !== undefined)
@@ -626,8 +608,8 @@ export const isAuthored = (slug: string): boolean => {
   }
 
   return (
-    existsSync(path.join(problemDir(slug), "spec.json")) &&
-    existsSync(path.join(problemDir(slug), "problem.md"))
+    existsSync(path.join(problemDir(course, slug), "spec.json")) &&
+    existsSync(path.join(problemDir(course, slug), "problem.md"))
   );
 };
 
@@ -639,21 +621,28 @@ export const isAuthored = (slug: string): boolean => {
 export const TASK_MARKER = "<!-- task -->";
 
 /** The lesson text for a concept, or null when it is not written yet. */
-export const lessonText = (conceptId: string): string | null => {
-  const file = path.join(lessonsDir(), conceptId, "lesson.md");
+export const lessonText = (
+  course: Course,
+  conceptId: string
+): string | null => {
+  const file = path.join(lessonsDir(course), conceptId, "lesson.md");
 
   return existsSync(file) ? readFileSync(file, "utf-8") : null;
 };
 
 /** True when a concept has its lesson text, its guided problem and its solo problem. */
-export const hasLesson = (conceptId: string): boolean =>
-  lessonText(conceptId) !== null &&
-  guidedSlugs(conceptId).every(isAuthored) &&
-  soloSlugs(conceptId).every(isAuthored);
+export const hasLesson = (course: Course, conceptId: string): boolean =>
+  lessonText(course, conceptId) !== null &&
+  guidedSlugs(course, conceptId).every((s) => isAuthored(course, s)) &&
+  soloSlugs(course, conceptId).every((s) => isAuthored(course, s));
 
 /** A jq task as a problem: the filter is its only "language", and its tests are jq runs. */
-const jqProblem = (slug: string, info: ProblemInfo): Problem => {
-  const task = jqTask(slug);
+const jqProblem = (
+  course: Course,
+  slug: string,
+  info: ProblemInfo
+): Problem => {
+  const task = jqTask(course, slug);
 
   if (!task) {
     throw new Error(`Task '${slug}' is not written yet.`);
@@ -669,48 +658,49 @@ const jqProblem = (slug: string, info: ProblemInfo): Problem => {
   };
 };
 
-export const problem = (slug: string): Problem => {
-  const cached = cache().problems.get(slug);
+export const problem = (course: Course, slug: string): Problem => {
+  const cached = cache(course).problems.get(slug);
 
   if (cached) {
     return cached;
   }
 
-  const info = problemInfo(slug);
+  const info = problemInfo(course, slug);
 
-  if (!isAuthored(slug)) {
+  if (!isAuthored(course, slug)) {
     throw new Error(`Problem '${slug}' has no tests yet.`);
   }
 
-  if (course().kind === "jq") {
-    const task = jqProblem(slug, info);
-    cache().problems.set(slug, task);
+  if (course.kind === "jq") {
+    const task = jqProblem(course, slug, info);
+    cache(course).problems.set(slug, task);
 
     return task;
   }
 
   const spec = readJson<Omit<Problem, keyof ProblemInfo | "statement">>(
-    path.join(problemDir(slug), "spec.json")
+    path.join(problemDir(course, slug), "spec.json")
   );
 
   const statement = readFileSync(
-    path.join(problemDir(slug), "problem.md"),
+    path.join(problemDir(course, slug), "problem.md"),
     "utf-8"
   );
 
   const full: Problem = { ...spec, ...info, statement };
-  cache().problems.set(slug, full);
+  cache(course).problems.set(slug, full);
 
   return full;
 };
 
 /** The tutor's answer key for a problem, if one exists. */
 export const referenceSolution = (
+  course: Course,
   slug: string,
   language: Language
 ): string | null => {
-  if (course().kind === "jq") {
-    const task = jqTask(slug);
+  if (course.kind === "jq") {
+    const task = jqTask(course, slug);
 
     if (!task) {
       return null;
@@ -722,13 +712,19 @@ export const referenceSolution = (
       : jqCommand(task, task.reference);
   }
 
-  const file = path.join(problemDir(slug), `reference.${EXTENSIONS[language]}`);
+  const file = path.join(
+    problemDir(course, slug),
+    `reference.${EXTENSIONS[language]}`
+  );
 
   return existsSync(file) ? readFileSync(file, "utf-8") : null;
 };
 
-export const problemsUsing = (conceptId: string): ProblemInfo[] =>
-  problemIndex().filter((p) => p.concepts.includes(conceptId));
+export const problemsUsing = (
+  course: Course,
+  conceptId: string
+): ProblemInfo[] =>
+  problemIndex(course).filter((p) => p.concepts.includes(conceptId));
 
 export interface Aliases {
   concepts: Record<string, string>;
@@ -736,8 +732,8 @@ export interface Aliases {
 }
 
 /** Old id -> new id, so learner progress follows a rename. */
-export const aliases = (): Aliases => {
-  const file = path.join(curriculumDir(), "aliases.json");
+export const aliases = (course: Course): Aliases => {
+  const file = path.join(curriculumDir(course), "aliases.json");
 
   if (!existsSync(file)) {
     return { concepts: {}, problems: {} };
@@ -749,7 +745,7 @@ export const aliases = (): Aliases => {
 };
 
 /** A concept plus all of its prerequisites, prerequisites first. */
-export const withPrereqs = (conceptIds: string[]): string[] => {
+export const withPrereqs = (course: Course, conceptIds: string[]): string[] => {
   const ordered: string[] = [];
 
   const visit = (id: string) => {
@@ -757,7 +753,7 @@ export const withPrereqs = (conceptIds: string[]): string[] => {
       return;
     }
 
-    for (const p of concept(id).prereqs) {
+    for (const p of concept(course, id).prereqs) {
       visit(p);
     }
 
@@ -772,15 +768,17 @@ export const withPrereqs = (conceptIds: string[]): string[] => {
 };
 
 /** Every lesson ends on its own problems, and they need nothing taught later. */
-const soloErrors = (conceptIds: Set<string>): string[] => {
+const soloErrors = (course: Course, conceptIds: Set<string>): string[] => {
   const errors: string[] = [];
   const solos = new Set<string>();
 
-  for (const c of concepts()) {
-    const known = new Set(conceptIds.has(c.id) ? withPrereqs([c.id]) : []);
+  for (const c of concepts(course)) {
+    const known = new Set(
+      conceptIds.has(c.id) ? withPrereqs(course, [c.id]) : []
+    );
 
     for (const slug of [c.solo].flat()) {
-      const solo = problemIndex().find((p) => p.slug === slug);
+      const solo = problemIndex(course).find((p) => p.slug === slug);
 
       if (!solo) {
         errors.push(`concept ${c.id}: unknown solo problem ${slug}`);
@@ -811,13 +809,13 @@ const soloErrors = (conceptIds: Set<string>): string[] => {
 };
 
 /** Structural problems in the curriculum files. An empty list means the curriculum is sound. */
-export const validateCurriculum = (): string[] => {
+export const validateCurriculum = (course: Course): string[] => {
   const errors: string[] = [];
-  const topicIds = new Set(topics().map((t) => t.id));
-  const conceptIds = new Set(concepts().map((c) => c.id));
+  const topicIds = new Set(topics(course).map((t) => t.id));
+  const conceptIds = new Set(concepts(course).map((c) => c.id));
   const seen = new Set<string>();
 
-  for (const t of topics()) {
+  for (const t of topics(course)) {
     for (const p of t.prereqs) {
       if (!topicIds.has(p)) {
         errors.push(`topic ${t.id}: unknown prerequisite ${p}`);
@@ -825,7 +823,7 @@ export const validateCurriculum = (): string[] => {
     }
   }
 
-  for (const c of concepts()) {
+  for (const c of concepts(course)) {
     if (seen.has(c.id)) {
       errors.push(`concept ${c.id}: duplicate id`);
     }
@@ -873,20 +871,20 @@ export const validateCurriculum = (): string[] => {
 
     state.set(id, "visiting");
 
-    for (const p of concept(id).prereqs) {
+    for (const p of concept(course, id).prereqs) {
       visit(p, [...trail, id]);
     }
 
     state.set(id, "done");
   };
 
-  for (const c of concepts()) {
+  for (const c of concepts(course)) {
     visit(c.id, []);
   }
 
   const slugs = new Set<string>();
 
-  for (const p of problemIndex()) {
+  for (const p of problemIndex(course)) {
     if (slugs.has(p.slug)) {
       errors.push(`problem ${p.slug}: duplicate slug`);
     }
@@ -904,7 +902,7 @@ export const validateCurriculum = (): string[] => {
     }
   }
 
-  return [...errors, ...soloErrors(conceptIds)];
+  return [...errors, ...soloErrors(course, conceptIds)];
 };
 
 /** The name the harness calls, for function problems. */
@@ -927,15 +925,18 @@ const GENERIC_NAMES = new Set([
  * Practice-problem function names a lesson must not define, so generated lessons never
  * solve a practice problem. One-word names (search, merge, rob, ...) are too common to block.
  */
-export const reservedNames = (language: Language): Set<string> => {
+export const reservedNames = (
+  course: Course,
+  language: Language
+): Set<string> => {
   const names = new Set<string>();
 
-  for (const info of problemIndex()) {
-    if (!isAuthored(info.slug)) {
+  for (const info of problemIndex(course)) {
+    if (!isAuthored(course, info.slug)) {
       continue;
     }
 
-    const name = problem(info.slug).function?.[language];
+    const name = problem(course, info.slug).function?.[language];
 
     if (name && /[A-Z_]/u.test(name) && !GENERIC_NAMES.has(name)) {
       names.add(name);
@@ -945,8 +946,11 @@ export const reservedNames = (language: Language): Set<string> => {
   return names;
 };
 
-export const solutionPath = (slug: string, language: Language): string =>
-  path.join(solutionsDir(), `${slug}.${EXTENSIONS[language]}`);
+export const solutionPath = (
+  course: Course,
+  slug: string,
+  language: Language
+): string => path.join(solutionsDir(course), `${slug}.${EXTENSIONS[language]}`);
 
 /** Word-wrap one line of prose for comment headers in solution and lesson files. */
 export const wrap = (line: string, width: number): string[] => {

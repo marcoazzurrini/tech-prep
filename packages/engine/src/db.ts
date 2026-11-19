@@ -2,13 +2,8 @@ import { Database } from "bun:sqlite";
 import { existsSync, mkdirSync, renameSync } from "node:fs";
 import path from "node:path";
 
-import {
-  HOME_DIR,
-  aliases,
-  concepts,
-  course,
-  problemIndex,
-} from "./content.ts";
+import { HOME_DIR, aliases, concepts, problemIndex } from "./content.ts";
+import type { Course } from "./content.ts";
 
 /** Stored stages. "locked" and "available" are derived from prerequisites, never stored. */
 export type Stage = "unseen" | "learning" | "passed" | "mastered";
@@ -136,7 +131,7 @@ const addColumn = (
 };
 
 /** Create tables, add columns introduced after the first version, and apply id renames. */
-const migrate = (database: Database): void => {
+const migrate = (course: Course, database: Database): void => {
   database.exec(`
     CREATE TABLE IF NOT EXISTS concept_state (
       concept_id    TEXT PRIMARY KEY,
@@ -231,7 +226,7 @@ const migrate = (database: Database): void => {
     "UPDATE concept_state SET stage = 'passed' WHERE stage = 'practicing'"
   );
 
-  const renames = aliases();
+  const renames = aliases(course);
 
   for (const [from, to] of Object.entries(renames.concepts)) {
     for (const table of [
@@ -276,9 +271,9 @@ const adoptOldDatabase = (file: string): void => {
   }
 };
 
-/** The progress database of the open course. */
-export const open = (): Database => {
-  const { id } = course();
+/** A course's progress database, opened on first use. */
+export const open = (course: Course): Database => {
+  const { id } = course;
   const current = dbs.get(id);
 
   if (current) {
@@ -294,19 +289,19 @@ export const open = (): Database => {
 
   const db = new Database(file, { create: true, strict: true });
   db.exec("PRAGMA journal_mode = WAL;");
-  migrate(db);
+  migrate(course, db);
   dbs.set(id, db);
 
   return db;
 };
 
 /** Learner state that points at ids missing from the curriculum (e.g. after a rename without an alias). */
-export const orphans = (): string[] => {
-  const conceptIds = new Set(concepts().map((c) => c.id));
-  const slugs = new Set(problemIndex().map((p) => p.slug));
+export const orphans = (course: Course): string[] => {
+  const conceptIds = new Set(concepts(course).map((c) => c.id));
+  const slugs = new Set(problemIndex(course).map((p) => p.slug));
   const found: string[] = [];
 
-  for (const { concept_id } of open()
+  for (const { concept_id } of open(course)
     .query<{ concept_id: string }, []>(
       "SELECT DISTINCT concept_id FROM concept_state"
     )
@@ -316,7 +311,7 @@ export const orphans = (): string[] => {
     }
   }
 
-  for (const { slug } of open()
+  for (const { slug } of open(course)
     .query<{ slug: string }, []>("SELECT DISTINCT slug FROM attempts")
     .all()) {
     if (!slugs.has(slug)) {
@@ -327,8 +322,8 @@ export const orphans = (): string[] => {
   return found;
 };
 
-export const conceptRow = (conceptId: string): ConceptRow => {
-  const row = open()
+export const conceptRow = (course: Course, conceptId: string): ConceptRow => {
+  const row = open(course)
     .query<ConceptRow, [string]>(
       "SELECT * FROM concept_state WHERE concept_id = ?"
     )
@@ -347,8 +342,8 @@ export const conceptRow = (conceptId: string): ConceptRow => {
   );
 };
 
-export const saveConceptRow = (row: ConceptRow): void => {
-  open()
+export const saveConceptRow = (course: Course, row: ConceptRow): void => {
+  open(course)
     .query(
       `INSERT INTO concept_state (concept_id, stage, card, introduced_at, passed_at, mastered_at, fail_count)
        VALUES ($concept_id, $stage, $card, $introduced_at, $passed_at, $mastered_at, $fail_count)
@@ -358,8 +353,8 @@ export const saveConceptRow = (row: ConceptRow): void => {
     .run({ ...row });
 };
 
-export const attempt = (id: number): AttemptRow => {
-  const row = open()
+export const attempt = (course: Course, id: number): AttemptRow => {
+  const row = open(course)
     .query<AttemptRow, [number]>("SELECT * FROM attempts WHERE id = ?")
     .get(id);
 
@@ -371,21 +366,25 @@ export const attempt = (id: number): AttemptRow => {
 };
 
 export const openAttempt = (
+  course: Course,
   slug: string,
   language: string
 ): AttemptRow | null =>
-  open()
+  open(course)
     .query<AttemptRow, [string, string]>(
       "SELECT * FROM attempts WHERE slug = ? AND language = ? AND finished_at IS NULL ORDER BY id DESC LIMIT 1"
     )
     .get(slug, language);
 
-export const attemptsFor = (where: {
-  slug?: string;
-  conceptId?: string;
-}): AttemptRow[] => {
+export const attemptsFor = (
+  course: Course,
+  where: {
+    slug?: string;
+    conceptId?: string;
+  }
+): AttemptRow[] => {
   if (where.slug) {
-    return open()
+    return open(course)
       .query<AttemptRow, [string]>(
         "SELECT * FROM attempts WHERE slug = ? ORDER BY id"
       )
@@ -393,70 +392,79 @@ export const attemptsFor = (where: {
   }
 
   if (where.conceptId) {
-    return open()
+    return open(course)
       .query<AttemptRow, [string]>(
         "SELECT * FROM attempts WHERE concept_id = ? ORDER BY id"
       )
       .all(where.conceptId);
   }
 
-  return open()
+  return open(course)
     .query<AttemptRow, []>("SELECT * FROM attempts ORDER BY id")
     .all();
 };
 
 export const addHint = (
+  course: Course,
   attemptId: number,
   conceptId: string | null,
   level: number
 ): void => {
-  open()
+  open(course)
     .query(
       "INSERT INTO hints (attempt_id, concept_id, level, created_at) VALUES (?, ?, ?, ?)"
     )
     .run(attemptId, conceptId, level, new Date().toISOString());
-  open()
+  open(course)
     .query(
       "UPDATE attempts SET hints_used = hints_used + 1, max_hint_level = MAX(max_hint_level, ?) WHERE id = ?"
     )
     .run(level, attemptId);
 };
 
-export const lastExplicitReview = (conceptId: string): ReviewRow | null =>
-  open()
+export const lastExplicitReview = (
+  course: Course,
+  conceptId: string
+): ReviewRow | null =>
+  open(course)
     .query<ReviewRow, [string]>(
       "SELECT * FROM reviews WHERE concept_id = ? AND implicit_credit IS NULL ORDER BY id DESC LIMIT 1"
     )
     .get(conceptId);
 
-export const notesFor = (conceptId?: string, limit = 20): NoteRow[] => {
+export const notesFor = (
+  course: Course,
+  conceptId?: string,
+  limit = 20
+): NoteRow[] => {
   if (conceptId) {
-    return open()
+    return open(course)
       .query<NoteRow, [string, number]>(
         "SELECT * FROM notes WHERE concept_id = ? ORDER BY id DESC LIMIT ?"
       )
       .all(conceptId, limit);
   }
 
-  return open()
+  return open(course)
     .query<NoteRow, [number]>("SELECT * FROM notes ORDER BY id DESC LIMIT ?")
     .all(limit);
 };
 
 export const addNote = (
+  course: Course,
   conceptId: string,
   text: string,
   slug: string | null
 ): void => {
-  open()
+  open(course)
     .query(
       "INSERT INTO notes (concept_id, slug, text, created_at) VALUES (?, ?, ?, ?)"
     )
     .run(conceptId, slug, text, new Date().toISOString());
 };
 
-export const exerciseRow = (id: number): ExerciseRow => {
-  const row = open()
+export const exerciseRow = (course: Course, id: number): ExerciseRow => {
+  const row = open(course)
     .query<ExerciseRow, [number]>("SELECT * FROM exercises WHERE id = ?")
     .get(id);
 
@@ -468,22 +476,26 @@ export const exerciseRow = (id: number): ExerciseRow => {
 };
 
 /** The exercise on screen: the newest one the tutor has not moved on from. */
-export const openExercise = (): ExerciseRow | null =>
-  open()
+export const openExercise = (course: Course): ExerciseRow | null =>
+  open(course)
     .query<ExerciseRow, []>(
       "SELECT * FROM exercises WHERE closed_at IS NULL ORDER BY id DESC LIMIT 1"
     )
     .get();
 
 /** The tutor moved on: nothing stays on screen from earlier exercises. */
-export const closeExercises = (now = new Date()): void => {
-  open()
+export const closeExercises = (course: Course, now = new Date()): void => {
+  open(course)
     .query("UPDATE exercises SET closed_at = ? WHERE closed_at IS NULL")
     .run(now.toISOString());
 };
 
-export const exercisesFor = (conceptId: string, limit = 5): ExerciseRow[] =>
-  open()
+export const exercisesFor = (
+  course: Course,
+  conceptId: string,
+  limit = 5
+): ExerciseRow[] =>
+  open(course)
     .query<ExerciseRow, [string, number]>(
       `SELECT * FROM exercises WHERE EXISTS (SELECT 1 FROM json_each(exercises.concepts) WHERE value = ?)
        ORDER BY id DESC LIMIT ?`

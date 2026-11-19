@@ -84,16 +84,24 @@ const exercises = await import("../src/exercises.ts");
 const jq = await import("../src/jq.ts");
 const database = await import("../src/db.ts");
 
+type Course = ReturnType<typeof content.courseById>;
+
+/** Most tests practise in the interview course. */
+const interview = content.courseById("interview");
+
 afterAll(() => rmSync(home, { force: true, recursive: true }));
 
 describe("courses", () => {
+  const course = interview;
+
   test("the app's own courses come first, then the ones beside it", () => {
     expect(content.courses().map((c) => c.id)).toEqual([
       "interview",
       "jq",
       "mini",
     ]);
-    expect(content.course().id).toBe("interview");
+    // With no choice saved yet, the first course is the open one.
+    expect(content.savedCourse().id).toBe("interview");
   });
 
   test("the higher version of a course id is the one used", () => {
@@ -110,43 +118,43 @@ describe("courses", () => {
   });
 
   test("each course has its own curriculum and its own progress", () => {
-    const practised = content.inCourse("mini", () => {
-      expect(content.validateCurriculum()).toEqual([]);
-      scheduler.completeLesson("first-idea");
+    const small = content.courseById("mini");
 
-      return {
-        names: content.concepts().map((c) => c.name),
-        status: scheduler.conceptStatus("first-idea").stage,
-      };
-    });
+    expect(content.validateCurriculum(small)).toEqual([]);
+    scheduler.completeLesson(small, "first-idea");
 
-    expect(practised.names).toEqual(["First Idea in mini-new"]);
-    expect(practised.status).not.toBe("available");
-    expect(content.course().id).toBe("interview");
-    expect(content.concepts().length).toBeGreaterThan(1);
-    expect(() => content.concept("first-idea")).toThrow();
+    expect(content.concepts(small).map((c) => c.name)).toEqual([
+      "First Idea in mini-new",
+    ]);
+    expect(scheduler.conceptStatus(small, "first-idea").stage).not.toBe(
+      "available"
+    );
+    expect(content.concepts(course).length).toBeGreaterThan(1);
+    expect(() => content.concept(course, "first-idea")).toThrow();
     expect(existsSync(path.join(home, "progress", "mini.db"))).toBe(true);
   });
 
   test("the chosen course is remembered for the app and the tutor", () => {
-    content.selectCourse("mini");
-    expect(content.course().id).toBe("mini");
-    content.setCourse("interview");
-    content.followSavedCourse();
-    expect(content.course().id).toBe("mini");
+    expect(content.selectCourse("mini").id).toBe("mini");
+    expect(content.savedCourse().id).toBe("mini");
     content.selectCourse("interview");
+    expect(content.savedCourse().id).toBe("interview");
     expect(() => content.selectCourse("nope")).toThrow("Unknown course");
   });
 });
 
 describe("curriculum", () => {
-  test("the index holds the NeetCode 150 with known topics and concepts", () => {
-    const topicIds = new Set(content.topics().map((t) => t.id));
-    const conceptIds = new Set(content.concepts().map((c) => c.id));
-    expect(content.problemIndex().filter((p) => !p.source)).toHaveLength(150);
-    expect(content.validateCurriculum()).toEqual([]);
+  const course = interview;
 
-    for (const p of content.problemIndex()) {
+  test("the index holds the NeetCode 150 with known topics and concepts", () => {
+    const topicIds = new Set(content.topics(course).map((t) => t.id));
+    const conceptIds = new Set(content.concepts(course).map((c) => c.id));
+    expect(content.problemIndex(course).filter((p) => !p.source)).toHaveLength(
+      150
+    );
+    expect(content.validateCurriculum(course)).toEqual([]);
+
+    for (const p of content.problemIndex(course)) {
       expect(topicIds.has(p.topic)).toBe(true);
 
       for (const c of p.concepts) {
@@ -157,8 +165,8 @@ describe("curriculum", () => {
 
   test("every concept has a written lesson, a guided problem and a solo problem", () => {
     const missing = content
-      .concepts()
-      .filter((c) => !content.hasLesson(c.id))
+      .concepts(course)
+      .filter((c) => !content.hasLesson(course, c.id))
       .map((c) => c.id);
 
     expect(missing).toEqual([]);
@@ -166,16 +174,18 @@ describe("curriculum", () => {
 
   test("a guided problem belongs to its lesson and is not a curriculum problem", () => {
     const slug = content.guidedSlug("canonical-key");
-    expect(content.problemInfo(slug)).toMatchObject({
+    expect(content.problemInfo(course, slug)).toMatchObject({
       concepts: ["canonical-key"],
       source: "guided",
       title: "Group Words by Length",
     });
-    expect(content.problemIndex().some((p) => p.slug === slug)).toBe(false);
+    expect(content.problemIndex(course).some((p) => p.slug === slug)).toBe(
+      false
+    );
   });
 
   test("concept prerequisites resolve, prerequisites first", () => {
-    const order = content.withPrereqs(["window-counts"]);
+    const order = content.withPrereqs(course, ["window-counts"]);
     expect(order.at(-1)).toBe("window-counts");
     expect(order.indexOf("hash-set")).toBeLessThan(
       order.indexOf("variable-window")
@@ -184,6 +194,8 @@ describe("curriculum", () => {
 });
 
 describe("runner", () => {
+  const course = interview;
+
   test("compare modes", () => {
     expect(runner.equal([1, 0], [0, 1], "unordered")).toBe(true);
     expect(runner.equal([1, 0], [0, 1], "exact")).toBe(false);
@@ -204,7 +216,7 @@ describe("runner", () => {
   };
 
   test("python: passing, failing, crashing and syntax errors", () => {
-    const twoSum = content.problem("two-sum");
+    const twoSum = content.problem(course, "two-sum");
 
     const good = write(
       "good.py",
@@ -240,7 +252,7 @@ describe("runner", () => {
   });
 
   test("typescript: linked lists, design classes and wrong answers", () => {
-    const reverse = content.problem("reverse-linked-list");
+    const reverse = content.problem(course, "reverse-linked-list");
 
     const good = write(
       "rev.ts",
@@ -260,7 +272,7 @@ describe("runner", () => {
       runner.runTests(reverse, "typescript", identity).passed
     ).toBeLessThan(reverse.tests.length);
 
-    const trie = content.problem("implement-trie-prefix-tree");
+    const trie = content.problem(course, "implement-trie-prefix-tree");
 
     const naive = write(
       "trie.ts",
@@ -306,21 +318,36 @@ describe("grading", () => {
 });
 
 describe("fractional implicit repetition", () => {
+  const course = interview;
+
+  test("each course has its own encompassings", () => {
+    // Read one course's edges first: the other course must not get them.
+    expect(fire.creditBelow(course, "window-counts").size).toBeGreaterThan(0);
+
+    const jqCourse = content.courseById("jq");
+    expect(
+      fire.creditBelow(jqCourse, "object-fields").get("reading-json")
+    ).toBeCloseTo(0.3);
+    expect(fire.creditBelow(jqCourse, "window-counts").size).toBe(0);
+  });
+
   test("credit flows down encompassings as path products, penalties up", () => {
-    const below = fire.creditBelow("window-counts");
+    const below = fire.creditBelow(course, "window-counts");
     expect(below.get("variable-window")).toBe(1);
     expect(below.get("hash-map-counting")).toBeCloseTo(0.7);
     expect(below.get("hash-set")).toBeCloseTo(0.5);
-    expect(fire.encompassedBy("hash-set").get("variable-window")).toBeCloseTo(
-      0.5
-    );
-    expect(fire.problemCredit(["window-counts"], "variable-window")).toBe(1);
+    expect(
+      fire.encompassedBy(course, "hash-set").get("variable-window")
+    ).toBeCloseTo(0.5);
+    expect(
+      fire.problemCredit(course, ["window-counts"], "variable-window")
+    ).toBe(1);
   });
 });
 
 /** The problem a code lesson ends on. */
-const soloOf = (conceptId: string): string => {
-  const [solo] = content.soloSlugs(conceptId);
+const soloOf = (course: Course, conceptId: string): string => {
+  const [solo] = content.soloSlugs(course, conceptId);
 
   if (!solo) {
     throw new Error(`'${conceptId}' has no solo problem.`);
@@ -330,9 +357,13 @@ const soloOf = (conceptId: string): string => {
 };
 
 /** Open a problem and write its reference solution as the learner's code. */
-const solve = (slug: string, mode: "guided" | "solo" | "review") => {
-  const started = practice.startProblem(slug, "python", mode);
-  const reference = content.referenceSolution(slug, "python");
+const solve = (
+  course: Course,
+  slug: string,
+  mode: "guided" | "solo" | "review"
+) => {
+  const started = practice.startProblem(course, slug, "python", mode);
+  const reference = content.referenceSolution(course, slug, "python");
 
   if (!reference) {
     throw new Error(`'${slug}' has no Python reference.`);
@@ -344,140 +375,146 @@ const solve = (slug: string, mode: "guided" | "solo" | "review") => {
 };
 
 /** Do both steps of a lesson without help. */
-const learn = (conceptId: string) => {
-  solve(content.guidedSlug(conceptId), "guided");
-  practice.submitProblem(content.guidedSlug(conceptId), "python");
-  solve(soloOf(conceptId), "solo");
+const learn = (course: Course, conceptId: string) => {
+  solve(course, content.guidedSlug(conceptId), "guided");
+  practice.submitProblem(course, content.guidedSlug(conceptId), "python");
+  solve(course, soloOf(course, conceptId), "solo");
 
-  return practice.submitProblem(soloOf(conceptId), "python");
+  return practice.submitProblem(course, soloOf(course, conceptId), "python");
 };
 
 describe("lessons", () => {
+  const course = interview;
+
   const DAY = 86_400_000;
 
   test("the course starts with the first concept, and later ones are locked", () => {
-    expect(scheduler.nextLesson()).toBe("dynamic-arrays");
-    expect(scheduler.lessonStatus("dynamic-arrays")).toBe("todo");
-    expect(scheduler.lessonStatus("hash-set")).toBe("locked");
-    expect(scheduler.lessonStep("dynamic-arrays")).toBe(1);
+    expect(scheduler.nextLesson(course)).toBe("dynamic-arrays");
+    expect(scheduler.lessonStatus(course, "dynamic-arrays")).toBe("todo");
+    expect(scheduler.lessonStatus(course, "hash-set")).toBe("locked");
+    expect(scheduler.lessonStep(course, "dynamic-arrays")).toBe(1);
   });
 
   test("solving the guided problem teaches the concept without passing it", () => {
     const guided = content.guidedSlug("dynamic-arrays");
-    solve(guided, "guided");
-    const handed = practice.submitProblem(guided, "python");
+    solve(course, guided, "guided");
+    const handed = practice.submitProblem(course, guided, "python");
 
     expect(handed.finished).toBe(true);
     expect(handed.result?.outcome).toBe("solved");
-    expect(scheduler.lessonStep("dynamic-arrays")).toBe(2);
-    expect(scheduler.displayStage("dynamic-arrays")).toBe("learning");
-    expect(memory.cardOf("dynamic-arrays")).toBeNull();
+    expect(scheduler.lessonStep(course, "dynamic-arrays")).toBe(2);
+    expect(scheduler.displayStage(course, "dynamic-arrays")).toBe("learning");
+    expect(memory.cardOf(course, "dynamic-arrays")).toBeNull();
   });
 
   test("a submit with failing tests keeps the attempt open", () => {
-    const solo = soloOf("dynamic-arrays");
-    const started = practice.startProblem(solo, "python", "solo");
-    const handed = practice.submitProblem(solo, "python");
+    const solo = soloOf(course, "dynamic-arrays");
+    const started = practice.startProblem(course, solo, "python", "solo");
+    const handed = practice.submitProblem(course, solo, "python");
 
     expect(handed.finished).toBe(false);
-    expect(practice.currentAttempt()?.id).toBe(started.attempt_id);
-    expect(scheduler.displayStage("dynamic-arrays")).toBe("learning");
+    expect(practice.currentAttempt(course)?.id).toBe(started.attempt_id);
+    expect(scheduler.displayStage(course, "dynamic-arrays")).toBe("learning");
   });
 
   test("an unaided solo solve passes the concept, starts its reviews and opens the next lesson", () => {
-    const solo = soloOf("dynamic-arrays");
-    solve(solo, "solo");
-    const handed = practice.submitProblem(solo, "python");
+    const solo = soloOf(course, "dynamic-arrays");
+    solve(course, solo, "solo");
+    const handed = practice.submitProblem(course, solo, "python");
 
     expect(handed.result?.outcome).toBe("solved");
-    expect(scheduler.lessonStatus("dynamic-arrays")).toBe("done");
-    expect(memory.cardOf("dynamic-arrays")).not.toBeNull();
-    expect(scheduler.problemStatus(solo)).toBe("solved");
-    expect(scheduler.lessonStatus("hash-set")).toBe("todo");
-    expect(scheduler.nextLesson()).toBe("hash-set");
+    expect(scheduler.lessonStatus(course, "dynamic-arrays")).toBe("done");
+    expect(memory.cardOf(course, "dynamic-arrays")).not.toBeNull();
+    expect(scheduler.problemStatus(course, solo)).toBe("solved");
+    expect(scheduler.lessonStatus(course, "hash-set")).toBe("todo");
+    expect(scheduler.nextLesson(course)).toBe("hash-set");
   });
 
   test("help on the solo problem keeps the concept in learning, and the problem waits a day", () => {
-    expect(learn("hash-set").result?.outcome).toBe("solved");
+    expect(learn(course, "hash-set").result?.outcome).toBe("solved");
 
     const guided = content.guidedSlug("hash-map-counting");
-    solve(guided, "guided");
-    practice.submitProblem(guided, "python");
-    solve("valid-anagram", "solo");
-    practice.logHint(2);
-    const handed = practice.submitProblem("valid-anagram", "python");
+    solve(course, guided, "guided");
+    practice.submitProblem(course, guided, "python");
+    solve(course, "valid-anagram", "solo");
+    practice.logHint(course, 2);
+    const handed = practice.submitProblem(course, "valid-anagram", "python");
 
     expect(handed.result?.outcome).toBe("solved_with_help");
-    expect(scheduler.lessonStatus("hash-map-counting")).toBe("partial");
-    expect(memory.cardOf("hash-map-counting")).toBeNull();
-    expect(scheduler.soloWait("hash-map-counting")).not.toBeNull();
+    expect(scheduler.lessonStatus(course, "hash-map-counting")).toBe("partial");
+    expect(memory.cardOf(course, "hash-map-counting")).toBeNull();
+    expect(scheduler.soloWait(course, "hash-map-counting")).not.toBeNull();
     // The course moves on to the next open lesson while this one waits.
-    expect(scheduler.nextLesson()).toBe("hash-map-index");
-    expect(scheduler.nextLesson(new Date(Date.now() + 1.1 * DAY))).toBe(
+    expect(scheduler.nextLesson(course)).toBe("hash-map-index");
+    expect(scheduler.nextLesson(course, new Date(Date.now() + 1.1 * DAY))).toBe(
       "hash-map-counting"
     );
   });
 
   test("giving up closes the attempt and returns a solution", () => {
     const guided = content.guidedSlug("hash-map-index");
-    practice.startProblem(guided, "python", "guided");
-    const { result, solution } = practice.giveUp(guided, "python");
+    practice.startProblem(course, guided, "python", "guided");
+    const { result, solution } = practice.giveUp(course, guided, "python");
 
     expect(result.outcome).toBe("gave_up");
-    expect(solution).toBe(content.referenceSolution(guided, "python"));
-    expect(scheduler.lessonStep("hash-map-index")).toBe(1);
-    expect(practice.currentAttempt()).toBeNull();
+    expect(solution).toBe(content.referenceSolution(course, guided, "python"));
+    expect(scheduler.lessonStep(course, "hash-map-index")).toBe(1);
+    expect(practice.currentAttempt(course)).toBeNull();
   });
 
   test("opening another problem sets the open one aside with no grade", () => {
     const guided = content.guidedSlug("hash-map-index");
-    practice.startProblem(guided, "python", "guided");
-    practice.startProblem("two-sum", "python", "solo");
+    practice.startProblem(course, guided, "python", "guided");
+    practice.startProblem(course, "two-sum", "python", "solo");
 
-    expect(practice.currentAttempt()?.slug).toBe("two-sum");
-    practice.pauseAttempt("two-sum", "python");
-    expect(practice.currentAttempt()).toBeNull();
-    expect(scheduler.problemStatus("two-sum")).toBe("unattempted");
+    expect(practice.currentAttempt(course)?.slug).toBe("two-sum");
+    practice.pauseAttempt(course, "two-sum", "python");
+    expect(practice.currentAttempt(course)).toBeNull();
+    expect(scheduler.problemStatus(course, "two-sum")).toBe("unattempted");
   });
 });
 
 describe("reviews", () => {
+  const course = interview;
+
   const DAY = 86_400_000;
 
   test("nothing is due straight after learning", () => {
-    expect(scheduler.dueCount()).toBe(0);
-    expect(scheduler.nextReview()).toBeNull();
-    expect(scheduler.nextDue()).not.toBeNull();
+    expect(scheduler.dueCount(course)).toBe(0);
+    expect(scheduler.nextReview(course)).toBeNull();
+    expect(scheduler.nextDue(course)).not.toBeNull();
   });
 
   test("due concepts are reviewed with a problem whose concepts are all passed", () => {
     const later = new Date(Date.now() + 60 * DAY);
-    const plan = scheduler.reviewPlan(later);
+    const plan = scheduler.reviewPlan(course, later);
 
-    expect(scheduler.dueCount(later)).toBe(2);
+    expect(scheduler.dueCount(course, later)).toBe(2);
     expect(plan.flatMap((r) => r.covers).toSorted()).toEqual([
       "dynamic-arrays",
       "hash-set",
     ]);
 
     for (const review of plan) {
-      expect(review.problem.concepts.every(scheduler.isPassed)).toBe(true);
+      expect(
+        review.problem.concepts.every((id) => scheduler.isPassed(course, id))
+      ).toBe(true);
     }
   });
 
   test("a review starts from the empty stub, even on a solved problem", () => {
-    const solo = soloOf("dynamic-arrays");
-    const started = practice.startProblem(solo, "python", "review");
+    const solo = soloOf(course, "dynamic-arrays");
+    const started = practice.startProblem(course, solo, "python", "review");
 
     expect(readFileSync(started.file, "utf-8").trim()).toBe(
-      content.problem(solo).stubs.python.trim()
+      content.problem(course, solo).stubs.python.trim()
     );
     expect(started.phase).toBe("review");
-    practice.pauseAttempt(solo, "python");
+    practice.pauseAttempt(course, solo, "python");
   });
 
   test("practising an encompassing concept gives partial credit to the passed concept below", () => {
-    const before = memory.cardOf("hash-set");
+    const before = memory.cardOf(course, "hash-set");
 
     if (!before) {
       throw new Error("hash-set should have a card once passed.");
@@ -486,6 +523,7 @@ describe("reviews", () => {
     const later = new Date(Date.now() + 5 * DAY);
 
     const result = fire.propagate(
+      course,
       {},
       new Map([["sequence-starts", 3 as const]]),
       later
@@ -493,7 +531,7 @@ describe("reviews", () => {
 
     const credited = result.credited.find((c) => c.concept === "hash-set");
     expect(credited?.credit).toBe(1);
-    expect(memory.cardOf("hash-set")?.due.getTime()).toBeGreaterThan(
+    expect(memory.cardOf(course, "hash-set")?.due.getTime()).toBeGreaterThan(
       before.due.getTime()
     );
   });
@@ -525,8 +563,10 @@ describe("solution files", () => {
 });
 
 describe("exercises", () => {
+  const course = interview;
+
   test("predict: the engine runs the code to find the answer and hides it until graded", async () => {
-    const shown = exercises.showExercise({
+    const shown = exercises.showExercise(course, {
       code: "const s = new Set([1, 1, 2]);\nconsole.log(s.size);",
       conceptIds: ["sequence-starts"],
       kind: "predict",
@@ -537,23 +577,38 @@ describe("exercises", () => {
     expect(shown.verified_output).toBe("2");
 
     const { exerciseRow } = await db();
-    const before = exercises.exerciseView(exerciseRow(shown.exercise_id));
+
+    const before = exercises.exerciseView(
+      course,
+      exerciseRow(course, shown.exercise_id)
+    );
+
     expect(before.correct_answer).toBeNull();
 
-    const result = exercises.submitExercise(shown.exercise_id, " 2 ", "high");
+    const result = exercises.submitExercise(
+      course,
+      shown.exercise_id,
+      " 2 ",
+      "high"
+    );
+
     expect(result).toMatchObject({ correct: true, status: "graded" });
     expect(() =>
-      exercises.submitExercise(shown.exercise_id, "3", null)
+      exercises.submitExercise(course, shown.exercise_id, "3", null)
     ).toThrow(/already submitted/u);
 
-    const after = exercises.exerciseView(exerciseRow(shown.exercise_id));
+    const after = exercises.exerciseView(
+      course,
+      exerciseRow(course, shown.exercise_id)
+    );
+
     expect(after.correct_answer).toBe("2");
     expect(after.concepts[0]?.result).toBe("pass");
   });
 
   test("a right answer on an untaught concept skips its lesson and its prerequisites' lessons", () => {
     // The predict above targeted sequence-starts, which needs hash-set (passed earlier).
-    expect(scheduler.displayStage("sequence-starts")).toBe("learning");
+    expect(scheduler.displayStage(course, "sequence-starts")).toBe("learning");
   });
 
   test("code that fails or prints nothing is rejected", () => {
@@ -565,13 +620,13 @@ describe("exercises", () => {
     };
 
     expect(() =>
-      exercises.showExercise({ ...base, code: "const a: number = ;" })
+      exercises.showExercise(course, { ...base, code: "const a: number = ;" })
     ).toThrow(/does not run/u);
     expect(() =>
-      exercises.showExercise({ ...base, code: "const a = 1;" })
+      exercises.showExercise(course, { ...base, code: "const a = 1;" })
     ).toThrow(/prints nothing/u);
     expect(() =>
-      exercises.showExercise({
+      exercises.showExercise(course, {
         ...base,
         code: "console.log(1)",
         conceptIds: [],
@@ -588,7 +643,7 @@ describe("exercises", () => {
     ];
 
     const make = () =>
-      exercises.showExercise({
+      exercises.showExercise(course, {
         conceptIds: ["hash-set"],
         distractors: ["seen.clear();"],
         kind: "arrange",
@@ -599,7 +654,12 @@ describe("exercises", () => {
 
     const { exerciseRow } = await db();
     const first = make();
-    const view = exercises.exerciseView(exerciseRow(first.exercise_id));
+
+    const view = exercises.exerciseView(
+      course,
+      exerciseRow(course, first.exercise_id)
+    );
+
     expect(view.lines?.toSorted()).toEqual(
       [...lines, "seen.clear();"].toSorted()
     );
@@ -607,12 +667,18 @@ describe("exercises", () => {
     const [a = "", b = "", c = "", d = ""] = lines;
     // Passing reviews hash-set; it was passed earlier, so this is the review phase.
     expect(
-      exercises.submitExercise(first.exercise_id, [a, c, b, d], "medium")
+      exercises.submitExercise(
+        course,
+        first.exercise_id,
+        [a, c, b, d],
+        "medium"
+      )
     ).toMatchObject({ correct: true });
 
     const second = make();
     expect(
       exercises.submitExercise(
+        course,
         second.exercise_id,
         [a, b, "seen.clear();", d],
         "high"
@@ -623,13 +689,13 @@ describe("exercises", () => {
   test("a concept is reviewed once a day: a same-day retry is practice only", async () => {
     const { exerciseRow } = await db();
     const { openExercise } = await db();
-    const last = openExercise();
+    const last = openExercise(course);
 
     if (!last) {
       throw new Error("An exercise should be on screen.");
     }
 
-    const view = exercises.exerciseView(exerciseRow(last.id));
+    const view = exercises.exerciseView(course, exerciseRow(course, last.id));
     expect(view.status).toBe("graded");
     // SAFETY: results are written by the engine as a list of applied results.
     const applied = JSON.parse(last.results ?? "[]") as { effect: string }[];
@@ -637,7 +703,7 @@ describe("exercises", () => {
   });
 
   test("open answer: the tutor grades each concept, and a hint beyond a question fails", () => {
-    const shown = exercises.showExercise({
+    const shown = exercises.showExercise(course, {
       conceptIds: ["hash-set", "hash-map-counting"],
       kind: "answer",
       modelAnswer: "A set gives O(1) membership checks.",
@@ -650,25 +716,26 @@ describe("exercises", () => {
     });
 
     expect(() =>
-      exercises.gradeAnswer(shown.exercise_id, [
+      exercises.gradeAnswer(course, shown.exercise_id, [
         { concept_id: "hash-set", result: "pass" },
       ])
     ).toThrow(/not submitted/u);
 
     expect(
       exercises.submitExercise(
+        course,
         shown.exercise_id,
         "Because lookups are O(1).",
         null
       )
     ).toMatchObject({ status: "submitted" });
     expect(() =>
-      exercises.gradeAnswer(shown.exercise_id, [
+      exercises.gradeAnswer(course, shown.exercise_id, [
         { concept_id: "hash-set", result: "pass" },
       ])
     ).toThrow(/one verdict for each/u);
 
-    const graded = exercises.gradeAnswer(shown.exercise_id, [
+    const graded = exercises.gradeAnswer(course, shown.exercise_id, [
       { concept_id: "hash-set", result: "pass" },
       {
         concept_id: "hash-map-counting",
@@ -682,14 +749,23 @@ describe("exercises", () => {
 });
 
 /** Open a jq task and write its reference as the learner's answer. */
-const answer = (slug: string, mode: "guided" | "solo" | "review") => {
-  const started = practice.startProblem(slug, "jq", mode);
-  writeFileSync(started.file, content.referenceSolution(slug, "jq") ?? "");
+const answer = (
+  course: Course,
+  slug: string,
+  mode: "guided" | "solo" | "review"
+) => {
+  const started = practice.startProblem(course, slug, "jq", mode);
+  writeFileSync(
+    started.file,
+    content.referenceSolution(course, slug, "jq") ?? ""
+  );
 
-  return practice.submitProblem(slug, "jq");
+  return practice.submitProblem(course, slug, "jq");
 };
 
 describe("jq course", () => {
+  const course = content.courseById("jq");
+
   test("a command line splits the way a shell splits it", () => {
     expect(jq.splitArgs("-r '.[] | .name'")).toEqual(["-r", ".[] | .name"]);
     expect(jq.splitArgs(`--arg who "Ada Lee" '.x == $who'`)).toEqual([
@@ -717,61 +793,61 @@ describe("jq course", () => {
   });
 
   test("the curriculum is sound, and every lesson that is started is complete", () => {
-    content.inCourse("jq", () => {
-      expect(content.validateCurriculum()).toEqual([]);
+    expect(content.validateCurriculum(course)).toEqual([]);
 
-      const written = content
-        .concepts()
-        .filter((c) => content.lessonText(c.id) !== null);
+    const written = content
+      .concepts(course)
+      .filter((c) => content.lessonText(course, c.id) !== null);
 
-      expect(written).toHaveLength(content.concepts().length);
-      expect(written.map((c) => c.id).slice(0, 6)).toEqual([
-        "what-jq-does",
-        "reading-json",
-        "object-fields",
-        "nested-paths",
-        "array-items",
-        "pipes",
-      ]);
-      expect(
-        written.filter((c) => !content.hasLesson(c.id)).map((c) => c.id)
-      ).toEqual([]);
+    expect(written).toHaveLength(content.concepts(course).length);
+    expect(written.map((c) => c.id).slice(0, 6)).toEqual([
+      "what-jq-does",
+      "reading-json",
+      "object-fields",
+      "nested-paths",
+      "array-items",
+      "pipes",
+    ]);
+    expect(
+      written.filter((c) => !content.hasLesson(course, c.id)).map((c) => c.id)
+    ).toEqual([]);
 
-      for (const c of written) {
-        const parts = content.lessonText(c.id)?.split(content.TASK_MARKER);
+    for (const c of written) {
+      const parts = content
+        .lessonText(course, c.id)
+        ?.split(content.TASK_MARKER);
 
-        // One part of text for each guided task, then the summary.
-        expect(parts).toHaveLength(content.guidedSlugs(c.id).length + 1);
-      }
-    });
+      // One part of text for each guided task, then the summary.
+      expect(parts).toHaveLength(content.guidedSlugs(course, c.id).length + 1);
+    }
   });
 
   test("every reference solves its task, and the starting text does not", () => {
-    content.inCourse("jq", () => {
-      const slugs = [
-        ...content.problemIndex().map((p) => p.slug),
-        ...content.concepts().flatMap((c) => content.guidedSlugs(c.id)),
-      ].filter(content.isAuthored);
+    const slugs = [
+      ...content.problemIndex(course).map((p) => p.slug),
+      ...content
+        .concepts(course)
+        .flatMap((c) => content.guidedSlugs(course, c.id)),
+    ].filter((slug) => content.isAuthored(course, slug));
 
-      expect(slugs.length).toBeGreaterThan(40);
+    expect(slugs.length).toBeGreaterThan(40);
 
-      const wrong = slugs.filter((slug) => {
-        const task = content.problem(slug);
+    const wrong = slugs.filter((slug) => {
+      const task = content.problem(course, slug);
 
-        const solved = jq.runJq(
-          task,
-          content.referenceSolution(slug, "jq") ?? ""
-        );
+      const solved = jq.runJq(
+        task,
+        content.referenceSolution(course, slug, "jq") ?? ""
+      );
 
-        const untouched = jq.runJq(task, task.stubs.jq);
+      const untouched = jq.runJq(task, task.stubs.jq);
 
-        return (
-          solved.passed !== solved.total || untouched.passed === untouched.total
-        );
-      });
-
-      expect(wrong).toEqual([]);
+      return (
+        solved.passed !== solved.total || untouched.passed === untouched.total
+      );
     });
+
+    expect(wrong).toEqual([]);
   }, 60_000);
 
   test("a filter task compares values, and a command task compares text", () => {
@@ -818,122 +894,106 @@ describe("jq course", () => {
   });
 
   test("jq's own error text reaches the learner", () => {
-    content.inCourse("jq", () => {
-      const task = content.problem(content.guidedSlug("nested-paths", 3));
-      const seen = jq.previewJq(task, task.stubs.jq);
+    const task = content.problem(course, content.guidedSlug("nested-paths", 3));
+    const seen = jq.previewJq(task, task.stubs.jq);
 
-      expect(seen.matches).toBe(false);
-      expect(seen.error).toBe(
-        'jq: error: Cannot index string with string "name"'
-      );
-      // A filter task starts from a whole command to fix, or from an empty line.
-      expect(task.stubs.jq).toBe("jq '.server.host.name' data.json");
-      expect(content.problem("pipes-solo-1").stubs.jq).toBe("");
-      expect(content.referenceSolution("pipes-solo-1", "jq")).toBe(
-        "jq '.results | length' data.json"
-      );
-      // Nothing typed yet is not an error.
-      expect(jq.previewJq(task, "  ")).toEqual({
-        error: null,
-        matches: false,
-        output: "",
-      });
+    expect(seen.matches).toBe(false);
+    expect(seen.error).toBe(
+      'jq: error: Cannot index string with string "name"'
+    );
+    // A filter task starts from a whole command to fix, or from an empty line.
+    expect(task.stubs.jq).toBe("jq '.server.host.name' data.json");
+    expect(content.problem(course, "pipes-solo-1").stubs.jq).toBe("");
+    expect(content.referenceSolution(course, "pipes-solo-1", "jq")).toBe(
+      "jq '.results | length' data.json"
+    );
+    // Nothing typed yet is not an error.
+    expect(jq.previewJq(task, "  ")).toEqual({
+      error: null,
+      matches: false,
+      output: "",
     });
   });
 
   test("a predict task takes the value the learner types, and shows no output", () => {
-    content.inCourse("jq", () => {
-      const task = content.problem("reading-json-solo-2");
+    const task = content.problem(course, "reading-json-solo-2");
 
-      expect(task.jq?.shown).toBeNull();
-      expect(jq.runJq(task, "[ 5432,\n 6432 ]").passed).toBe(1);
-      expect(jq.runJq(task, "[5432]").passed).toBe(0);
-      expect(jq.runJq(task, "[5432, 6432").cases[0]?.error).toContain(
-        "not valid JSON"
-      );
-      expect(jq.previewJq(task, "[5432, 6432]").output).toBe("");
-      // The answer key is the output, not the filter that made it.
-      expect(content.referenceSolution("reading-json-solo-2", "jq")).toBe(
-        "[\n  5432,\n  6432\n]"
-      );
-      expect(
-        content.problem(content.guidedSlug("what-jq-does", 3)).jq?.shown
-      ).toBe("jq '.pages' data.json");
-    });
+    expect(task.jq?.shown).toBeNull();
+    expect(jq.runJq(task, "[ 5432,\n 6432 ]").passed).toBe(1);
+    expect(jq.runJq(task, "[5432]").passed).toBe(0);
+    expect(jq.runJq(task, "[5432, 6432").cases[0]?.error).toContain(
+      "not valid JSON"
+    );
+    expect(jq.previewJq(task, "[5432, 6432]").output).toBe("");
+    // The answer key is the output, not the filter that made it.
+    expect(content.referenceSolution(course, "reading-json-solo-2", "jq")).toBe(
+      "[\n  5432,\n  6432\n]"
+    );
+    expect(
+      content.problem(course, content.guidedSlug("what-jq-does", 3)).jq?.shown
+    ).toBe("jq '.pages' data.json");
   });
 
   test("a lesson is taught after its three guided tasks and learned after both solo tasks", () => {
-    content.setCourse("jq");
+    const [first, second, third] = content.guidedSlugs(course, "what-jq-does");
+    const [soloOne, soloTwo] = content.soloSlugs(course, "what-jq-does");
 
-    try {
-      const [first, second, third] = content.guidedSlugs("what-jq-does");
-      const [soloOne, soloTwo] = content.soloSlugs("what-jq-does");
-
-      if (!first || !second || !third || !soloOne || !soloTwo) {
-        throw new Error("The first lesson is missing tasks.");
-      }
-
-      expect(content.guidedConcept(third)).toBe("what-jq-does");
-      expect(answer(first, "guided").result?.outcome).toBe("solved");
-      answer(second, "guided");
-      expect(scheduler.lessonStep("what-jq-does")).toBe(1);
-      answer(third, "guided");
-      expect(scheduler.lessonStep("what-jq-does")).toBe(2);
-
-      const one = answer(soloOne, "solo");
-      expect(one.result?.outcome).toBe("solved");
-      expect(one.result?.concepts).toEqual([]);
-      expect(scheduler.isPassed("what-jq-does")).toBe(false);
-
-      const two = answer(soloTwo, "solo");
-      expect(two.result?.outcome).toBe("solved");
-      expect(scheduler.isPassed("what-jq-does")).toBe(true);
-      expect(scheduler.nextLesson()).toBe("reading-json");
-    } finally {
-      content.setCourse("interview");
+    if (!first || !second || !third || !soloOne || !soloTwo) {
+      throw new Error("The first lesson is missing tasks.");
     }
+
+    expect(content.guidedConcept(third)).toBe("what-jq-does");
+    expect(answer(course, first, "guided").result?.outcome).toBe("solved");
+    answer(course, second, "guided");
+    expect(scheduler.lessonStep(course, "what-jq-does")).toBe(1);
+    answer(course, third, "guided");
+    expect(scheduler.lessonStep(course, "what-jq-does")).toBe(2);
+
+    const one = answer(course, soloOne, "solo");
+    expect(one.result?.outcome).toBe("solved");
+    expect(one.result?.concepts).toEqual([]);
+    expect(scheduler.isPassed(course, "what-jq-does")).toBe(false);
+
+    const two = answer(course, soloTwo, "solo");
+    expect(two.result?.outcome).toBe("solved");
+    expect(scheduler.isPassed(course, "what-jq-does")).toBe(true);
+    expect(scheduler.nextLesson(course)).toBe("reading-json");
   });
 
   test("a solo task solved with help holds the lesson back for a day", () => {
-    content.setCourse("jq");
-
-    try {
-      for (const slug of content.guidedSlugs("reading-json")) {
-        answer(slug, "guided");
-      }
-
-      const [soloOne] = content.soloSlugs("reading-json");
-
-      if (!soloOne) {
-        throw new Error("The second lesson has no solo task.");
-      }
-
-      practice.startProblem(soloOne, "jq", "solo");
-      practice.logHint(2);
-      writeFileSync(
-        content.solutionPath(soloOne, "jq"),
-        content.referenceSolution(soloOne, "jq") ?? ""
-      );
-
-      expect(practice.submitProblem(soloOne, "jq").result?.outcome).toBe(
-        "solved_with_help"
-      );
-      expect(scheduler.isPassed("reading-json")).toBe(false);
-      expect(scheduler.lessonStatus("reading-json")).toBe("partial");
-      expect(scheduler.soloWait("reading-json")).not.toBeNull();
-
-      // An attempt left open on a task the course no longer has is set aside.
-      database
-        .open()
-        .query(
-          "INSERT INTO attempts (slug, concept_id, language, started_at) VALUES ('guided-gone', 'gone', 'jq', ?)"
-        )
-        .run(new Date().toISOString());
-      expect(practice.currentAttempt()?.slug).toBe("guided-gone");
-      practice.pauseUnknownAttempts();
-      expect(practice.currentAttempt()).toBeNull();
-    } finally {
-      content.setCourse("interview");
+    for (const slug of content.guidedSlugs(course, "reading-json")) {
+      answer(course, slug, "guided");
     }
+
+    const [soloOne] = content.soloSlugs(course, "reading-json");
+
+    if (!soloOne) {
+      throw new Error("The second lesson has no solo task.");
+    }
+
+    practice.startProblem(course, soloOne, "jq", "solo");
+    practice.logHint(course, 2);
+    writeFileSync(
+      content.solutionPath(course, soloOne, "jq"),
+      content.referenceSolution(course, soloOne, "jq") ?? ""
+    );
+
+    expect(practice.submitProblem(course, soloOne, "jq").result?.outcome).toBe(
+      "solved_with_help"
+    );
+    expect(scheduler.isPassed(course, "reading-json")).toBe(false);
+    expect(scheduler.lessonStatus(course, "reading-json")).toBe("partial");
+    expect(scheduler.soloWait(course, "reading-json")).not.toBeNull();
+
+    // An attempt left open on a task the course no longer has is set aside.
+    database
+      .open(course)
+      .query(
+        "INSERT INTO attempts (slug, concept_id, language, started_at) VALUES ('guided-gone', 'gone', 'jq', ?)"
+      )
+      .run(new Date().toISOString());
+    expect(practice.currentAttempt(course)?.slug).toBe("guided-gone");
+    practice.pauseUnknownAttempts(course);
+    expect(practice.currentAttempt(course)).toBeNull();
   });
 });

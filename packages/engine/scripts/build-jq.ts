@@ -18,15 +18,14 @@ import {
   TASK_MARKER,
   concept,
   concepts,
-  course,
+  courseById,
   guidedSlugs,
   jqCommand,
   jqProblemStub,
   jqSpec,
   problemIndex,
-  setCourse,
 } from "../src/content.ts";
-import type { JqTask, JqTest } from "../src/content.ts";
+import type { Course, JqTask, JqTest } from "../src/content.ts";
 import { runOnce, sameOutput } from "../src/jq.ts";
 
 const MIN_TESTS = 3;
@@ -39,9 +38,9 @@ if (args[0] === "--course") {
   args.splice(0, 2);
 }
 
-setCourse(courseId);
+const target = courseById(courseId);
 
-if (course().kind !== "jq") {
+if (target.kind !== "jq") {
   console.log(`✗ '${courseId}' is not a jq course.`);
   process.exit(1);
 }
@@ -126,13 +125,13 @@ const check = (task: JqTask): string[] => {
 };
 
 /** Build one lesson: its text, its guided tasks and the problems tagged with its concept first. */
-const build = (id: string): string[] => {
+const build = (course: Course, id: string): string[] => {
   const errors: string[] = [];
-  const dir = path.join(course().dir, "lessons", id);
+  const dir = path.join(course.dir, "lessons", id);
   const guidedFile = path.join(dir, "guided.json");
-  const wanted = guidedSlugs(id).length;
+  const wanted = guidedSlugs(course, id).length;
 
-  concept(id);
+  concept(course, id);
 
   const lessonFile = path.join(dir, "lesson.md");
 
@@ -166,8 +165,10 @@ const build = (id: string): string[] => {
     errors.push("guided.json is missing");
   }
 
-  for (const p of problemIndex().filter((info) => info.concepts[0] === id)) {
-    const file = path.join(course().dir, "problems", `${p.slug}.json`);
+  for (const p of problemIndex(course).filter(
+    (info) => info.concepts[0] === id
+  )) {
+    const file = path.join(course.dir, "problems", `${p.slug}.json`);
 
     if (existsSync(file)) {
       const task = read<JqTask>(file);
@@ -184,9 +185,9 @@ const build = (id: string): string[] => {
 // `--all` builds the lessons that exist. A course may list concepts whose lesson is not written yet.
 const ids =
   args[0] === "--all"
-    ? concepts()
+    ? concepts(target)
         .map((c) => c.id)
-        .filter((id) => existsSync(path.join(course().dir, "lessons", id)))
+        .filter((id) => existsSync(path.join(target.dir, "lessons", id)))
     : args;
 
 if (!ids.length) {
@@ -199,7 +200,7 @@ if (!ids.length) {
 let failed = 0;
 
 for (const id of ids) {
-  const errors = build(id);
+  const errors = build(target, id);
 
   if (errors.length) {
     failed += 1;

@@ -7,8 +7,8 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { DEFAULT_LANGUAGE, EXTENSIONS, concept, course } from "./content.ts";
-import type { Language } from "./content.ts";
+import { DEFAULT_LANGUAGE, EXTENSIONS, concept } from "./content.ts";
+import type { Course, Language } from "./content.ts";
 import { closeExercises, exerciseRow, open, openExercise } from "./db.ts";
 import type { Confidence, ExerciseKind, ExerciseRow, Result } from "./db.ts";
 import { grade } from "./grading.ts";
@@ -212,7 +212,7 @@ const prepare = (input: ExerciseInput, language: Language): Prepared => {
 };
 
 /** Check an exercise, store it and put it on screen in place of the last one. */
-export const showExercise = (input: ExerciseInput) => {
+export const showExercise = (course: Course, input: ExerciseInput) => {
   if (new Set(input.conceptIds).size !== input.conceptIds.length) {
     throw new Error("A concept is listed twice.");
   }
@@ -222,11 +222,11 @@ export const showExercise = (input: ExerciseInput) => {
   }
 
   for (const id of input.conceptIds) {
-    concept(id);
+    concept(course, id);
   }
 
   // The engine checks an exercise by running its code, and it runs TypeScript and Python only.
-  if (course().kind === "jq" && input.kind !== "answer") {
+  if (course.kind === "jq" && input.kind !== "answer") {
     throw new Error(
       "In the jq course only an 'answer' exercise can be shown. Explain with short jq examples in chat."
     );
@@ -235,9 +235,9 @@ export const showExercise = (input: ExerciseInput) => {
   const language = input.language ?? DEFAULT_LANGUAGE;
   const { body, key } = prepare(input, language);
   const now = new Date();
-  closeExercises(now);
+  closeExercises(course, now);
 
-  const id = open()
+  const id = open(course)
     .query(
       `INSERT INTO exercises (kind, concepts, language, title, prompt, body, answer, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
@@ -291,13 +291,13 @@ const statusOf = (row: ExerciseRow): "open" | "submitted" | "graded" => {
 };
 
 /** An exercise as the app shows it. The answer key appears only once it is graded. */
-export const exerciseView = (row: ExerciseRow) => {
+export const exerciseView = (course: Course, row: ExerciseRow) => {
   const key = keyOf(row);
   const graded = Boolean(row.graded_at);
   const results = resultsOf(row);
   const targets = targetsOf(row);
   // A review must not name its concepts, so they show only once it is graded.
-  const labelled = graded || !targets.every(isPassed);
+  const labelled = graded || !targets.every((id) => isPassed(course, id));
 
   let correctAnswer: string | string[] | null = null;
 
@@ -316,7 +316,7 @@ export const exerciseView = (row: ExerciseRow) => {
     concepts: (labelled ? targets : []).map((id) => ({
       effect: results?.find((r) => r.concept === id)?.effect ?? null,
       id,
-      name: concept(id).name,
+      name: concept(course, id).name,
       result: results?.find((r) => r.concept === id)?.result ?? null,
     })),
     confidence: row.confidence,
@@ -336,11 +336,12 @@ export const exerciseView = (row: ExerciseRow) => {
 export type ExerciseView = ReturnType<typeof exerciseView>;
 
 const finish = (
+  course: Course,
   row: ExerciseRow,
   results: ConceptResult[],
   now: Date
 ): ReturnType<typeof applyResults> => {
-  const applied = applyResults({
+  const applied = applyResults(course, {
     fromProblem: false,
     now,
     recognitionOk: true,
@@ -348,7 +349,7 @@ const finish = (
     source: { exerciseId: row.id },
   });
 
-  open()
+  open(course)
     .query("UPDATE exercises SET results = ?, graded_at = ? WHERE id = ?")
     .run(JSON.stringify(applied.concepts), now.toISOString(), row.id);
 
@@ -383,11 +384,12 @@ const arrangedRight = (
  * once. Predict and arrange are graded here; an open answer waits for the tutor.
  */
 export const submitExercise = (
+  course: Course,
   id: number,
   response: string | string[],
   confidence: Confidence | null
 ) => {
-  const row = exerciseRow(id);
+  const row = exerciseRow(course, id);
 
   if (row.kind === "example") {
     throw new Error("An example has nothing to submit.");
@@ -401,7 +403,7 @@ export const submitExercise = (
   const key = keyOf(row);
   const text = Array.isArray(response) ? JSON.stringify(response) : response;
 
-  open()
+  open(course)
     .query(
       "UPDATE exercises SET response = ?, confidence = ?, submitted_at = ? WHERE id = ?"
     )
@@ -422,6 +424,7 @@ export const submitExercise = (
         arrangedRight(key, response, language);
 
   const applied = finish(
+    course,
     row,
     grade({
       correct,
@@ -443,10 +446,11 @@ export const submitExercise = (
 
 /** The tutor's reading of an open answer: pass or fail for each concept. */
 export const gradeAnswer = (
+  course: Course,
   id: number,
   verdicts: { concept_id: string; result: Result; reason?: string }[]
 ) => {
-  const row = exerciseRow(id);
+  const row = exerciseRow(course, id);
 
   if (row.kind !== "answer") {
     throw new Error("Only open answers are graded by the tutor.");
@@ -473,6 +477,7 @@ export const gradeAnswer = (
   }
 
   return finish(
+    course,
     row,
     grade({
       correct: false,
@@ -485,12 +490,12 @@ export const gradeAnswer = (
 };
 
 /** What the tutor needs to grade or discuss the exercise on screen, key included. */
-export const currentExercise = () => {
-  const row = openExercise();
+export const currentExercise = (course: Course) => {
+  const row = openExercise(course);
 
   if (!row) {
     return null;
   }
 
-  return { ...exerciseView(row), answer_key: keyOf(row) };
+  return { ...exerciseView(course, row), answer_key: keyOf(row) };
 };

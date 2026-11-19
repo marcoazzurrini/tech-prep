@@ -5,6 +5,7 @@ import { Rating } from "ts-fsrs";
 import type { Grade } from "ts-fsrs";
 
 import { concept, withPrereqs } from "./content.ts";
+import type { Course } from "./content.ts";
 import { conceptRow, lastExplicitReview } from "./db.ts";
 import type { Result } from "./db.ts";
 import { propagate } from "./fire.ts";
@@ -42,8 +43,12 @@ interface ApplyInput {
   now: Date;
 }
 
-const reviewedRecently = (conceptId: string, now: Date): boolean => {
-  const last = lastExplicitReview(conceptId);
+const reviewedRecently = (
+  course: Course,
+  conceptId: string,
+  now: Date
+): boolean => {
+  const last = lastExplicitReview(course, conceptId);
 
   return Boolean(
     last && now.getTime() - new Date(last.reviewed_at).getTime() < REVIEW_GAP_MS
@@ -51,50 +56,54 @@ const reviewedRecently = (conceptId: string, now: Date): boolean => {
 };
 
 /** A concept not passed yet: practice here is teaching, so it never touches the schedule. */
-const applyLearning = (r: ConceptResult, input: ApplyInput): string => {
+const applyLearning = (
+  course: Course,
+  r: ConceptResult,
+  input: ApplyInput
+): string => {
   if (r.result === "fail") {
     if (!input.fromProblem) {
       return "not there yet: teach it, then retry with a new exercise";
     }
 
-    return `still learning (needed help ${recordStruggle(r.concept)} time(s))`;
+    return `still learning (needed help ${recordStruggle(course, r.concept)} time(s))`;
   }
 
   if (input.fromProblem) {
-    pass(r.concept, input.source, input.now);
+    pass(course, r.concept, input.source, input.now);
 
     return "passed: solved without help, reviews start now";
   }
 
   // Knowing a concept implies its prerequisites, so a right answer skips their lessons too.
-  for (const id of withPrereqs([r.concept])) {
-    if (conceptRow(id).stage === "unseen" || id === r.concept) {
-      completeLesson(id, input.now);
+  for (const id of withPrereqs(course, [r.concept])) {
+    if (conceptRow(course, id).stage === "unseen" || id === r.concept) {
+      completeLesson(course, id, input.now);
     }
   }
 
-  return isPassed(r.concept)
+  return isPassed(course, r.concept)
     ? "passed: reviews start now"
     : "known: no lesson needed, a problem comes next";
 };
 
 /** Apply pass or fail per concept, then let credit and penalties flow through the encompassing graph. */
-export const applyResults = (input: ApplyInput) => {
+export const applyResults = (course: Course, input: ApplyInput) => {
   const reviewed = new Map<string, Grade>();
 
   const concepts = input.results.map((r): Applied => {
     const base = {
       concept: r.concept,
-      name: concept(r.concept).name,
+      name: concept(course, r.concept).name,
       reason: r.reason,
       result: r.result,
     };
 
-    if (!isPassed(r.concept)) {
-      return { ...base, effect: applyLearning(r, input) };
+    if (!isPassed(course, r.concept)) {
+      return { ...base, effect: applyLearning(course, r, input) };
     }
 
-    if (reviewedRecently(r.concept, input.now)) {
+    if (reviewedRecently(course, r.concept, input.now)) {
       return {
         ...base,
         effect: "already reviewed today: this one was practice only",
@@ -102,8 +111,17 @@ export const applyResults = (input: ApplyInput) => {
     }
 
     const rating = r.result === "pass" ? Rating.Good : Rating.Again;
-    const card = explicitReview(r.concept, input.source, rating, input.now);
+
+    const card = explicitReview(
+      course,
+      r.concept,
+      input.source,
+      rating,
+      input.now
+    );
+
     updateMastery(
+      course,
       r.concept,
       r.result === "pass",
       input.recognitionOk,
@@ -119,7 +137,7 @@ export const applyResults = (input: ApplyInput) => {
     };
   });
 
-  const implicit = propagate(input.source, reviewed, input.now);
+  const implicit = propagate(course, input.source, reviewed, input.now);
 
   return {
     concepts,

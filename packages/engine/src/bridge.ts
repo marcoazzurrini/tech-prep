@@ -10,25 +10,24 @@ import {
   TASK_MARKER,
   concept,
   concepts,
-  course as openCourse,
   courseErrors,
   courseLanguage,
   courses,
   guidedConcept,
   guidedSlugs,
   hasLesson,
-  inCourse,
   isAuthored,
   lessonText,
   problem,
   problemIndex,
   problemInfo,
+  savedCourse,
   selectCourse,
   soloConcept,
   soloSlugs,
   topics,
 } from "./content.ts";
-import type { Difficulty, Language } from "./content.ts";
+import type { Course, Difficulty, Language } from "./content.ts";
 import {
   addHint,
   closeExercises,
@@ -68,9 +67,9 @@ import {
   soloWait,
 } from "./scheduler.ts";
 
-/** The open course as the app names it. */
-const subject = () => {
-  const { id, initials, kind, name } = openCourse();
+/** A course as the app names it. */
+const subject = (course: Course) => {
+  const { id, initials, kind, name } = course;
 
   return { id, initials, kind, name };
 };
@@ -79,12 +78,12 @@ const subject = () => {
 const MINUTES: Record<Difficulty, number> = { easy: 8, hard: 25, medium: 15 };
 const JQ_MINUTES: Record<Difficulty, number> = { easy: 2, hard: 6, medium: 4 };
 
-const minutes = (difficulty: Difficulty): number =>
-  (openCourse().kind === "jq" ? JQ_MINUTES : MINUTES)[difficulty];
+const minutes = (course: Course, difficulty: Difficulty): number =>
+  (course.kind === "jq" ? JQ_MINUTES : MINUTES)[difficulty];
 
 /** What a jq task shows beside its statement: the input, the wanted output and how to answer. */
-const jqView = (slug: string) => {
-  const spec = isAuthored(slug) ? problem(slug).jq : undefined;
+const jqView = (course: Course, slug: string) => {
+  const spec = isAuthored(course, slug) ? problem(course, slug).jq : undefined;
   const [shown] = spec?.tests ?? [];
 
   if (!spec || !shown) {
@@ -108,79 +107,82 @@ const jqView = (slug: string) => {
 };
 
 /** One problem as the app shows it. It carries no topic, so a review does not give its pattern away. */
-const problemView = (slug: string) => {
-  const info = problemInfo(slug);
+const problemView = (course: Course, slug: string) => {
+  const info = problemInfo(course, slug);
 
   return {
     difficulty: info.difficulty,
-    jq: jqView(slug),
+    jq: jqView(course, slug),
     slug,
-    statement: isAuthored(slug) ? problem(slug).statement : null,
-    status: problemStatus(slug),
+    statement: isAuthored(course, slug)
+      ? problem(course, slug).statement
+      : null,
+    status: problemStatus(course, slug),
     title: info.title,
   };
 };
 
 /** The concept whose lesson an attempt belongs to, or null for a review. */
-const lessonOf = (attempt: AttemptRow): string | null => {
+const lessonOf = (course: Course, attempt: AttemptRow): string | null => {
   if (attempt.mode === "review") {
     return null;
   }
 
-  return guidedConcept(attempt.slug) ?? soloConcept(attempt.slug);
+  return guidedConcept(attempt.slug) ?? soloConcept(course, attempt.slug);
 };
 
-const attemptView = (attempt: AttemptRow) => ({
+const attemptView = (course: Course, attempt: AttemptRow) => ({
   id: attempt.id,
   language: attempt.language,
-  lesson: lessonOf(attempt),
+  lesson: lessonOf(course, attempt),
   mode: attempt.mode,
   slug: attempt.slug,
 });
 
 /** What is open right now: the problem being solved, and the tutor's exercise if one is on screen. */
-const session = () => {
-  const open = currentAttempt();
-  const shown = openExercise();
+const session = (course: Course) => {
+  const open = currentAttempt(course);
+  const shown = openExercise(course);
 
   return {
-    attempt: open && attemptView(open),
-    exercise: shown && exerciseView(shown),
+    attempt: open && attemptView(course, open),
+    exercise: shown && exerciseView(course, shown),
   };
 };
 
 /** The course: topics as chapters and concepts as lessons, with progress. */
-const course = () => {
+const courseView = (course: Course) => {
   // The count that names the course covers its own problems, not the extras.
-  const listed = problemIndex().filter((p) => !p.source);
+  const listed = problemIndex(course).filter((p) => !p.source);
 
   return {
     concepts: {
-      learned: concepts().filter((c) => isPassed(c.id)).length,
-      total: concepts().length,
+      learned: concepts(course).filter((c) => isPassed(course, c.id)).length,
+      total: concepts(course).length,
     },
     courses: courses().map((c) => ({
-      due: inCourse(c.id, dueCount),
+      due: dueCount(c),
       id: c.id,
       initials: c.initials,
       name: c.name,
     })),
-    due: dueCount(),
-    next_lesson: nextLesson(),
+    due: dueCount(course),
+    next_lesson: nextLesson(course),
     problems: {
-      solved: listed.filter((p) => problemStatus(p.slug) === "solved").length,
+      solved: listed.filter((p) => problemStatus(course, p.slug) === "solved")
+        .length,
       total: listed.length,
     },
     skipped: courseErrors(),
-    subject: subject(),
-    topics: topics().map((t) => {
-      const lessons = concepts()
+    subject: subject(course),
+    topics: topics(course).map((t) => {
+      const lessons = concepts(course)
         .filter((c) => c.topic === t.id)
         .map((c) => ({
           id: c.id,
           name: c.name,
-          status: lessonStatus(c.id),
-          written: hasLesson(c.id),
+          status: lessonStatus(course, c.id),
+          written: hasLesson(course, c.id),
         }));
 
       return {
@@ -218,47 +220,47 @@ const tasks = (slugs: string[], done: (slug: string) => boolean) => {
 };
 
 /** A lesson's guided tasks: one counts as done once it is solved, with or without help. */
-const guidedTasks = (id: string) =>
-  tasks(guidedSlugs(id), (s) =>
-    ["solved", "solved_with_help"].includes(problemStatus(s))
+const guidedTasks = (course: Course, id: string) =>
+  tasks(guidedSlugs(course, id), (s) =>
+    ["solved", "solved_with_help"].includes(problemStatus(course, s))
   );
 
 /** A lesson's solo tasks: one counts as done only when it is solved alone. */
-const soloTasks = (id: string) =>
-  tasks(soloSlugs(id), (s) => problemStatus(s) === "solved");
+const soloTasks = (course: Course, id: string) =>
+  tasks(soloSlugs(course, id), (s) => problemStatus(course, s) === "solved");
 
 /**
  * One lesson: its text, the guided task and the solo task to do now, and where the learner
  * stands in it. Most lessons have one task per step; a jq lesson has a few short ones.
  */
-const lesson = (params: Params) => {
+const lesson = (course: Course, params: Params) => {
   const id = conceptOf(params);
-  const c = concept(id);
-  const open = currentAttempt();
-  const mine = open && lessonOf(open) === id ? open : null;
-  const guided = guidedTasks(id);
-  const solo = soloTasks(id);
+  const c = concept(course, id);
+  const open = currentAttempt(course);
+  const mine = open && lessonOf(course, open) === id ? open : null;
+  const guided = guidedTasks(course, id);
+  const solo = soloTasks(course, id);
 
   return {
-    attempt: mine && attemptView(mine),
-    guided: problemView(guided.current),
+    attempt: mine && attemptView(course, mine),
+    guided: problemView(course, guided.current),
     // Every guided task in order, so the app can show one the learner already solved.
-    guided_slugs: guidedSlugs(id),
+    guided_slugs: guidedSlugs(course, id),
     guided_tasks: guided.progress,
     id,
     key_idea: c.key_idea,
     name: c.name,
     // A lesson written in parts: one per guided task, then its summary.
-    parts: lessonText(id)
+    parts: lessonText(course, id)
       ?.split(TASK_MARKER)
       .map((part) => part.trim()),
-    solo: problemView(solo.current),
+    solo: problemView(course, solo.current),
     solo_tasks: solo.progress,
-    status: lessonStatus(id),
-    step: lessonStep(id),
-    text: lessonText(id),
-    topic: topics().find((t) => t.id === c.topic)?.name ?? c.topic,
-    wait_until: soloWait(id),
+    status: lessonStatus(course, id),
+    step: lessonStep(course, id),
+    text: lessonText(course, id),
+    topic: topics(course).find((t) => t.id === c.topic)?.name ?? c.topic,
+    wait_until: soloWait(course, id),
   };
 };
 
@@ -266,36 +268,48 @@ const lesson = (params: Params) => {
  * Start work on a lesson: its guided problem in step 1, its solo problem in step 2. A solo
  * problem that waits after a struggle does not start; the lesson stays readable.
  */
-const openLesson = (params: Params) => {
+const openLesson = (course: Course, params: Params) => {
   const id = conceptOf(params);
 
-  if (!isOpen(id)) {
-    throw new Error(`The lesson '${concept(id).name}' is still locked.`);
+  if (!isOpen(course, id)) {
+    throw new Error(
+      `The lesson '${concept(course, id).name}' is still locked.`
+    );
   }
 
-  if (lessonStep(id) === 1) {
-    startProblem(guidedTasks(id).current, courseLanguage(), "guided");
-  } else if (soloWait(id) === null) {
-    startProblem(soloTasks(id).current, courseLanguage(), "solo");
+  if (lessonStep(course, id) === 1) {
+    startProblem(
+      course,
+      guidedTasks(course, id).current,
+      courseLanguage(course),
+      "guided"
+    );
+  } else if (soloWait(course, id) === null) {
+    startProblem(
+      course,
+      soloTasks(course, id).current,
+      courseLanguage(course),
+      "solo"
+    );
   }
 
-  return lesson(params);
+  return lesson(course, params);
 };
 
 /**
  * The learner reopened the lesson while solving its solo problem. That shows the approach,
  * so it counts as help, like a hint that names the concept.
  */
-const peekLesson = (params: Params) => {
+const peekLesson = (course: Course, params: Params) => {
   const id = conceptOf(params);
-  const open = currentAttempt();
+  const open = currentAttempt(course);
 
   if (
     open?.mode === "solo" &&
-    soloSlugs(id).includes(open.slug) &&
-    !isPassed(id)
+    soloSlugs(course, id).includes(open.slug) &&
+    !isPassed(course, id)
   ) {
-    addHint(open.id, id, 2);
+    addHint(course, open.id, id, 2);
 
     return { counted_as_help: true };
   }
@@ -303,22 +317,25 @@ const peekLesson = (params: Params) => {
   return { counted_as_help: false };
 };
 
-/** What is due in the open course. */
-const track = () => {
-  const plan = reviewPlan();
+/** What is due in one course. */
+const track = (course: Course) => {
+  const plan = reviewPlan(course);
 
   return {
-    ...subject(),
-    due: dueCount(),
-    minutes: plan.reduce((sum, r) => sum + minutes(r.problem.difficulty), 0),
-    next_due: nextDue(),
+    ...subject(course),
+    due: dueCount(course),
+    minutes: plan.reduce(
+      (sum, r) => sum + minutes(course, r.problem.difficulty),
+      0
+    ),
+    next_due: nextDue(course),
     problems: plan.length,
   };
 };
 
 /** What is due, per track. Each course is one track. */
 const reviews = () => {
-  const tracks = courses().map((c) => inCourse(c.id, track));
+  const tracks = courses().map(track);
 
   return {
     due: tracks.reduce((sum, t) => sum + t.due, 0),
@@ -328,23 +345,23 @@ const reviews = () => {
   };
 };
 
-/** The next review of the open course, opened. Null when nothing is due in it. */
-const reviewHere = () => {
-  const open = currentAttempt();
+/** The next review of a course, opened. Null when nothing is due in it. */
+const reviewHere = (course: Course) => {
+  const open = currentAttempt(course);
 
   if (open?.mode === "review") {
-    return problemView(open.slug);
+    return problemView(course, open.slug);
   }
 
-  const next = nextReview();
+  const next = nextReview(course);
 
   if (!next) {
     return null;
   }
 
-  startProblem(next.problem.slug, courseLanguage(), "review");
+  startProblem(course, next.problem.slug, courseLanguage(course), "review");
 
-  return problemView(next.problem.slug);
+  return problemView(course, next.problem.slug);
 };
 
 /**
@@ -352,39 +369,33 @@ const reviewHere = () => {
  * reviewed. Without it every track is: when the open course has nothing left, the next course
  * with a review due opens. Null when nothing is left.
  */
-const startReview = (params: Params) => {
+const startReview = (course: Course, params: Params) => {
   if (params?.course) {
-    selectCourse(params.course);
-
-    return { problem: reviewHere() };
+    return { problem: reviewHere(selectCourse(params.course)) };
   }
 
-  const here = reviewHere();
+  const here = reviewHere(course);
 
   if (here) {
     return { problem: here };
   }
 
-  const other = courses().find((c) => inCourse(c.id, dueCount) > 0);
+  const other = courses().find((c) => dueCount(c) > 0);
 
-  if (!other || inCourse(other.id, nextReview) === null) {
+  if (!other || nextReview(other) === null) {
     return { problem: null };
   }
 
-  selectCourse(other.id);
-
-  return { problem: reviewHere() };
+  return { problem: reviewHere(selectCourse(other.id)) };
 };
 
 /** The learner chose another course. */
-const select = (params: Params) => {
+const select = (_open: Course, params: Params) => {
   if (!params?.course) {
     throw new Error("This method needs a course id.");
   }
 
-  selectCourse(params.course);
-
-  return course();
+  return courseView(selectCourse(params.course));
 };
 
 /** One request line from the app. */
@@ -416,32 +427,34 @@ const slugOf = (params: Params): string => {
 };
 
 /** The language of the open attempt on a problem, else the default. */
-const languageOf = (slug: string): Language => {
-  const open = currentAttempt();
+const languageOf = (course: Course, slug: string): Language => {
+  const open = currentAttempt(course);
 
   // SAFETY: attempts are opened with a Language, and only `startProblem` inserts them.
-  return open?.slug === slug ? (open.language as Language) : courseLanguage();
+  return open?.slug === slug
+    ? (open.language as Language)
+    : courseLanguage(course);
 };
 
 /** The learner's code for a problem. It can be edited only while the tutor has the problem open. */
-const readCode = (params: Params) => {
+const readCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
-  const language = languageOf(slug);
+  const language = languageOf(course, slug);
 
   return {
-    editable: Boolean(openAttempt(slug, language)),
+    editable: Boolean(openAttempt(course, slug, language)),
     language,
-    text: readSolution(slug, language),
+    text: readSolution(course, slug, language),
   };
 };
 
 /** What the learner's filter prints on the shown input, as they type. Nothing is recorded. */
-const preview = (params: Params) =>
-  previewJq(problem(slugOf(params)), params?.text ?? "");
+const preview = (course: Course, params: Params) =>
+  previewJq(problem(course, slugOf(params)), params?.text ?? "");
 
-const saveCode = (params: Params) => {
+const saveCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
-  saveSolution(slug, languageOf(slug), params?.text ?? "");
+  saveSolution(course, slug, languageOf(course, slug), params?.text ?? "");
 
   return { saved: true };
 };
@@ -460,14 +473,15 @@ const runView = (run: RunResult) => ({
   total: run.total,
 });
 
-const runCode = (params: Params) => {
+const runCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
 
-  return runView(testSolution(slug, languageOf(slug)).run);
+  return runView(testSolution(course, slug, languageOf(course, slug)).run);
 };
 
 /** What grading an attempt did, as the app shows it. */
 const resultView = (
+  course: Course,
   result: ReturnType<typeof finishAttempt>,
   mode: AttemptRow["mode"]
 ) => ({
@@ -478,7 +492,9 @@ const resultView = (
           id: c.concept,
           name: c.name,
           next_review:
-            c.next_review ?? cardOf(c.concept)?.due.toISOString() ?? null,
+            c.next_review ??
+            cardOf(course, c.concept)?.due.toISOString() ??
+            null,
           result: c.result,
         }))
       : [],
@@ -487,63 +503,68 @@ const resultView = (
 });
 
 /** The learner pressed Submit on a problem. */
-const submitCode = (params: Params) => {
+const submitCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
-  const language = languageOf(slug);
-  const mode = openAttempt(slug, language)?.mode ?? null;
-  const handed = submitProblem(slug, language);
+  const language = languageOf(course, slug);
+  const mode = openAttempt(course, slug, language)?.mode ?? null;
+  const handed = submitProblem(course, slug, language);
 
   return {
     finished: handed.finished,
-    result: handed.result && resultView(handed.result, mode),
+    result: handed.result && resultView(course, handed.result, mode),
     run: runView(handed.run),
   };
 };
 
-const giveUpCode = (params: Params) => {
+const giveUpCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
-  const language = languageOf(slug);
-  const mode = openAttempt(slug, language)?.mode ?? null;
-  const { result, solution } = giveUp(slug, language);
+  const language = languageOf(course, slug);
+  const mode = openAttempt(course, slug, language)?.mode ?? null;
+  const { result, solution } = giveUp(course, slug, language);
 
-  return { result: resultView(result, mode), solution };
+  return { result: resultView(course, result, mode), solution };
 };
 
-const pauseCode = (params: Params) => {
+const pauseCode = (course: Course, params: Params) => {
   const slug = slugOf(params);
-  pauseAttempt(slug, languageOf(slug));
+  pauseAttempt(course, slug, languageOf(course, slug));
 
   return { paused: true };
 };
 
-const submit = (params: Params) => {
+const submit = (course: Course, params: Params) => {
   if (params?.id === undefined || params.response === undefined) {
     throw new Error("Submitting an exercise needs its id and the response.");
   }
 
   const result = submitExercise(
+    course,
     params.id,
     params.response,
     params.confidence ?? null
   );
 
-  return { exercise: exerciseView(exerciseRow(params.id)), result };
+  return {
+    exercise: exerciseView(course, exerciseRow(course, params.id)),
+    result,
+  };
 };
 
-const closeExercise = () => {
-  closeExercises();
+const closeExercise = (course: Course) => {
+  closeExercises(course);
 
   return { closed: true };
 };
 
-const methods = new Map<string, (params: Params) => object>([
+/** Every method gets the course the learner has open, then the request's parameters. */
+const methods = new Map<string, (course: Course, params: Params) => object>([
   ["attempt.give_up", giveUpCode],
   ["attempt.pause", pauseCode],
   ["code.read", readCode],
   ["code.run", runCode],
   ["code.save", saveCode],
   ["code.submit", submitCode],
-  ["course", course],
+  ["course", courseView],
   ["course.select", select],
   ["exercise.close", closeExercise],
   ["exercise.submit", submit],
@@ -551,7 +572,7 @@ const methods = new Map<string, (params: Params) => object>([
   ["lesson", lesson],
   ["lesson.open", openLesson],
   ["lesson.peek", peekLesson],
-  ["problem", (params) => problemView(slugOf(params))],
+  ["problem", (course, params) => problemView(course, slugOf(params))],
   ["review.next", startReview],
   ["reviews", reviews],
   ["session", session],
@@ -560,8 +581,8 @@ const methods = new Map<string, (params: Params) => object>([
 // An extra exercise lasts for one sitting. One left open by an earlier run would cover the
 // lesson, so the app starts with none on screen.
 for (const c of courses()) {
-  inCourse(c.id, closeExercises);
-  inCourse(c.id, pauseUnknownAttempts);
+  closeExercises(c);
+  pauseUnknownAttempts(c);
 }
 
 for await (const line of console) {
@@ -581,7 +602,9 @@ for await (const line of console) {
       throw new Error(`Unknown method '${request.method}'.`);
     }
 
-    console.log(JSON.stringify({ id, result: method(request.params) }));
+    console.log(
+      JSON.stringify({ id, result: method(savedCourse(), request.params) })
+    );
   } catch (error) {
     console.log(
       JSON.stringify({
