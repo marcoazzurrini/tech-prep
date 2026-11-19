@@ -1,0 +1,31 @@
+{
+  "title": "Two newest versions",
+  "statement": "Print the two newest versions, as an array.\n\nThe versions are in order of age. The newest are at the end.",
+  "reference": ".[-2:]",
+  "tests": [
+    {
+      "input": [
+        "v1.0",
+        "v1.1",
+        "v1.2",
+        "v2.0"
+      ],
+      "expected": "[\n  \"v1.2\",\n  \"v2.0\"\n]"
+    },
+    {
+      "input": [
+        "v0.9",
+        "v1.0"
+      ],
+      "expected": "[\n  \"v0.9\",\n  \"v1.0\"\n]"
+    },
+    {
+      "input": [
+        "v3.0",
+        "v3.1",
+        "v3.2"
+      ],
+      "expected": "[\n  \"v3.1\",\n  \"v3.2\"\n]"
+    }
+  ]
+}

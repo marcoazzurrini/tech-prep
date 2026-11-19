@@ -32,7 +32,12 @@ export {
 
 export type { TestStatus } from "./components/exercise";
 
-export { OutputPanel, OutputPanels, TaskStrip } from "./components/jq";
+export {
+  OutputPanel,
+  OutputPanels,
+  OutputStack,
+  TaskStrip,
+} from "./components/jq";
 
 export type { OutputState } from "./components/jq";
 

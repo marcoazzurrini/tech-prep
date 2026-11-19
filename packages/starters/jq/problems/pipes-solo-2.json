@@ -1,0 +1,34 @@
+{
+  "title": "Settings of a service",
+  "statement": "Print how many settings the service has in `env`.",
+  "reference": ".env | length",
+  "tests": [
+    {
+      "input": {
+        "service": "mail",
+        "env": {
+          "HOST": "smtp-1",
+          "PORT": "25",
+          "TLS": "on"
+        }
+      },
+      "expected": "3"
+    },
+    {
+      "input": {
+        "service": "auth",
+        "env": {
+          "SECRET_FILE": "/run/secret"
+        }
+      },
+      "expected": "1"
+    },
+    {
+      "input": {
+        "service": "cdn",
+        "env": {}
+      },
+      "expected": "0"
+    }
+  ]
+}

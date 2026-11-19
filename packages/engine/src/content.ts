@@ -353,8 +353,10 @@ export interface JqTest {
  * How a jq task is answered.
  * - filter: the learner writes the filter. The task sets the flags.
  * - command: the learner writes everything after `jq`, flags included.
+ * - predict: the learner reads the input, and the filter when it is shown, and types the
+ *   value that comes out. Nothing runs while they type.
  */
-export type JqMode = "filter" | "command";
+export type JqMode = "filter" | "command" | "predict";
 
 /** A jq task as its file holds it. */
 export interface JqTask {
@@ -368,6 +370,8 @@ export interface JqTask {
   stub?: string;
   /** The answer key: a filter, or the text after `jq` in command mode. */
   reference: string;
+  /** In a predict task: show the reference filter, so the learner works out what it prints. */
+  show_filter?: boolean;
   /** The first test is the one shown to the learner. The others are hidden. */
   tests: JqTest[];
   /** True when the output cannot depend on the input, as with `-n`. */
@@ -379,6 +383,8 @@ export interface JqSpec {
   mode: JqMode;
   flags: string[];
   tests: JqTest[];
+  /** The filter a predict task shows, when it shows one. */
+  filter: string | null;
 }
 
 export interface Problem extends ProblemInfo, CallSpec {
@@ -572,6 +578,13 @@ export const isAuthored = (slug: string): boolean => {
   );
 };
 
+/**
+ * The line that ends a part of a lesson. A lesson with several guided tasks is written in
+ * parts: the text before the first marker goes with the first task, and so on. What follows
+ * the last marker is the lesson's summary.
+ */
+export const TASK_MARKER = "<!-- task -->";
+
 /** The lesson text for a concept, or null when it is not written yet. */
 export const lessonText = (conceptId: string): string | null => {
   const file = path.join(lessonsDir(), conceptId, "lesson.md");
@@ -599,7 +612,12 @@ const jqProblem = (slug: string, info: ProblemInfo): Problem => {
   return {
     ...info,
     compare: "exact",
-    jq: { flags: task.flags ?? [], mode, tests: task.tests },
+    jq: {
+      filter: mode === "predict" && task.show_filter ? task.reference : null,
+      flags: task.flags ?? [],
+      mode,
+      tests: task.tests,
+    },
     statement: task.statement,
     stubs: { jq: stub, python: "", typescript: "" },
     tests: [],
@@ -647,7 +665,13 @@ export const referenceSolution = (
   language: Language
 ): string | null => {
   if (course().kind === "jq") {
-    return jqTask(slug)?.reference ?? null;
+    const task = jqTask(slug);
+
+    // The answer to a predict task is the output, not the filter that made it.
+    return (
+      (task?.mode === "predict" ? task.tests[0]?.expected : task?.reference) ??
+      null
+    );
   }
 
   const file = path.join(problemDir(slug), `reference.${EXTENSIONS[language]}`);

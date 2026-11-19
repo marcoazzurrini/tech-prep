@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Finish the chain",
+    "statement": "Print the port from the config.\n\nThe first step takes `config`. The second step is `.`, which changes nothing. Replace the second step so that the chain prints the port.",
+    "stub": ".config | .",
+    "reference": ".config | .port",
+    "tests": [
+      {
+        "input": {
+          "config": {
+            "host": "db-1",
+            "port": 5432
+          },
+          "env": "prod"
+        },
+        "expected": "5432"
+      },
+      {
+        "input": {
+          "config": {
+            "host": "web-1",
+            "port": 443
+          },
+          "env": "prod"
+        },
+        "expected": "443"
+      },
+      {
+        "input": {
+          "config": {
+            "host": "cache-1",
+            "port": 6379
+          },
+          "env": "dev"
+        },
+        "expected": "6379"
+      }
+    ]
+  },
+  {
+    "title": "Tickets in the sprint",
+    "statement": "Print how many tickets the sprint has.\n\nTake the tickets first. Then hand them to `length`.",
+    "reference": ".tickets | length",
+    "tests": [
+      {
+        "input": {
+          "sprint": 14,
+          "tickets": [
+            "T-1",
+            "T-2",
+            "T-3",
+            "T-4"
+          ]
+        },
+        "expected": "4"
+      },
+      {
+        "input": {
+          "sprint": 15,
+          "tickets": [
+            "T-5"
+          ]
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "sprint": 16,
+          "tickets": []
+        },
+        "expected": "0"
+      }
+    ]
+  },
+  {
+    "title": "Settings of the project",
+    "statement": "Print the names of the settings in the project's config, as an array.\n\nThe names of the settings are the keys of `config`.",
+    "reference": ".config | keys",
+    "tests": [
+      {
+        "input": {
+          "project": "api",
+          "config": {
+            "port": 8080,
+            "debug": false,
+            "workers": 4
+          }
+        },
+        "expected": "[\n  \"debug\",\n  \"port\",\n  \"workers\"\n]"
+      },
+      {
+        "input": {
+          "project": "web",
+          "config": {
+            "port": 3000
+          }
+        },
+        "expected": "[\n  \"port\"\n]"
+      },
+      {
+        "input": {
+          "project": "jobs",
+          "config": {
+            "queue": "default",
+            "retries": 3
+          }
+        },
+        "expected": "[\n  \"queue\",\n  \"retries\"\n]"
+      }
+    ]
+  }
+]

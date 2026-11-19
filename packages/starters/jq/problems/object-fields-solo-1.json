@@ -1,0 +1,31 @@
+{
+  "title": "Commit message",
+  "statement": "Print the message of the commit.",
+  "reference": ".message",
+  "tests": [
+    {
+      "input": {
+        "sha": "9f2c1a",
+        "message": "Fix login",
+        "files": 3
+      },
+      "expected": "\"Fix login\""
+    },
+    {
+      "input": {
+        "sha": "77b0de",
+        "message": "Add tests",
+        "files": 5
+      },
+      "expected": "\"Add tests\""
+    },
+    {
+      "input": {
+        "sha": "c41e09",
+        "message": "Update docs",
+        "files": 1
+      },
+      "expected": "\"Update docs\""
+    }
+  ]
+}

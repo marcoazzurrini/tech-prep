@@ -1,0 +1,43 @@
+{
+  "title": "Repository url",
+  "statement": "Print the url of the package's repository.",
+  "reference": ".package.repository.url",
+  "tests": [
+    {
+      "input": {
+        "package": {
+          "name": "left-pad",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/left-pad.git"
+          }
+        }
+      },
+      "expected": "\"https://example.com/left-pad.git\""
+    },
+    {
+      "input": {
+        "package": {
+          "name": "chalk",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/chalk.git"
+          }
+        }
+      },
+      "expected": "\"https://example.com/chalk.git\""
+    },
+    {
+      "input": {
+        "package": {
+          "name": "zod",
+          "repository": {
+            "type": "git",
+            "url": "https://example.com/zod.git"
+          }
+        }
+      },
+      "expected": "\"https://example.com/zod.git\""
+    }
+  ]
+}

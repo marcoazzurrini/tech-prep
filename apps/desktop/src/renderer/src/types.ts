@@ -34,8 +34,13 @@ export interface Problem {
 
 /** A jq task: its input, the output to produce, and how the learner answers. */
 export interface JqTask {
-  /** "filter": the learner writes the filter. "command": everything after `jq`. */
-  mode: "filter" | "command";
+  /**
+   * "filter": the learner writes the filter. "command": everything after `jq`. "predict":
+   * the learner types the value that comes out, and sees no output while typing.
+   */
+  mode: "filter" | "command" | "predict";
+  /** The filter a predict task asks about, when it shows one. */
+  filter: string | null;
   /** Flags the task itself passes to jq. */
   flags: string[];
   input: string;
@@ -192,6 +197,11 @@ export interface Lesson {
   topic: string;
   key_idea: string;
   text: string | null;
+  /**
+   * The text in parts: one per guided task, then the summary. One part when the lesson is
+   * read in one go.
+   */
+  parts?: string[];
   status: LessonStatus;
   /** 1: the guided problem, beside the lesson. 2: the solo problem, alone. */
   step: 1 | 2;

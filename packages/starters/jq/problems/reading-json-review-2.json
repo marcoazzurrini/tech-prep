@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "statement": "Type what jq prints for this input and this filter.\n\nYou may type it on one line.",
+  "mode": "predict",
+  "show_filter": true,
+  "reference": ".owner",
+  "tests": [
+    {
+      "input": {
+        "repo": "api",
+        "owner": {
+          "login": "ada",
+          "admin": true
+        },
+        "stars": 12
+      },
+      "expected": "{\n  \"login\": \"ada\",\n  \"admin\": true\n}"
+    }
+  ]
+}

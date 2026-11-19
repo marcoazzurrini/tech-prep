@@ -1,47 +1,47 @@
 [
   {
-    "id": "paths",
-    "name": "Paths",
+    "id": "first-steps",
+    "name": "First Steps",
     "prereqs": []
   },
   {
-    "id": "building",
-    "name": "Building Values",
+    "id": "lists",
+    "name": "Working with Lists",
     "prereqs": []
   },
   {
-    "id": "streams",
-    "name": "Streams and Arrays",
+    "id": "output",
+    "name": "Shaping the Output",
     "prereqs": []
   },
   {
-    "id": "cli",
-    "name": "The Command Line",
+    "id": "messy",
+    "name": "Missing and Messy Data",
     "prereqs": []
   },
   {
-    "id": "values",
-    "name": "Values and Types",
+    "id": "text",
+    "name": "Working with Text",
     "prereqs": []
   },
   {
-    "id": "strings",
-    "name": "Strings",
+    "id": "summaries",
+    "name": "Sorting and Summaries",
     "prereqs": []
   },
   {
-    "id": "aggregation",
-    "name": "Sorting and Grouping",
-    "prereqs": []
-  },
-  {
-    "id": "updating",
+    "id": "changing",
     "name": "Changing Data",
     "prereqs": []
   },
   {
-    "id": "control",
-    "name": "Variables and Reduce",
+    "id": "command-line",
+    "name": "The Command Line",
+    "prereqs": []
+  },
+  {
+    "id": "programs",
+    "name": "Bigger Programs",
     "prereqs": []
   }
 ]

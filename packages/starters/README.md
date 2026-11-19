@@ -49,9 +49,11 @@ Run `bun scripts/build-problem.ts --all` in `packages/engine` and `bun run test`
 
 ## A jq course
 
-Tasks are short, so a lesson has several: a concept in `curriculum/concepts.json` sets `"guided": 3` and lists its solo tasks in `"solo"`. The other tasks in `curriculum/problems.json` are for reviews.
+The course takes a learner who has never seen jq to fluent use. A lesson starts from a real situation, assumes only the lessons before it, and explains every new word.
 
-- `lessons/<concept id>/lesson.md`: the lesson text, with the same sections as a code lesson. The worked example shows an input, a filter and the output.
+Tasks are short, so a lesson has several: a concept in `curriculum/concepts.json` sets how many guided tasks it has in `"guided"` and lists its solo tasks in `"solo"`. The other tasks in `curriculum/problems.json` are for reviews. A concept can be listed before its lesson is written; the app shows it as not written yet.
+
+- `lessons/<concept id>/lesson.md`: the lesson, written in parts. Each part teaches one small idea and ends with a line that holds only `<!-- task -->`. The first part goes with the first guided task, and so on. The text after the last marker is the summary. The app shows a part when its task comes up, so reading and doing alternate.
 - `lessons/<concept id>/guided.json`: the guided tasks, in order.
 - `problems/<slug>.json`: one solo or review task.
 
@@ -69,6 +71,7 @@ A task:
 - The first test is the one the learner sees. The others are hidden and checked on Submit. Use `input_text` in place of `input` for raw text, such as one JSON value per line.
 - `flags` are flags the task itself passes to jq, such as `["-r"]`.
 - `"mode": "command"` makes the learner write everything after `jq`, flags included. The output text must then match exactly. Otherwise outputs are compared as JSON values.
+- `"mode": "predict"` makes the learner type the value that comes out, with nothing running while they type. The reference filter makes the answer from the first test's input. `"show_filter": true` shows that filter; leave it out to ask a question about the input alone.
 - `stub` is what the editor starts with. It must not solve the task.
 - A solo or review statement says what to produce, never which filter to use.
 

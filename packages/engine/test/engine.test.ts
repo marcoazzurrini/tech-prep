@@ -715,21 +715,33 @@ describe("jq course", () => {
     );
   });
 
-  test("the curriculum is sound and every lesson is written", () => {
+  test("the curriculum is sound, and every lesson that is started is complete", () => {
     content.inCourse("jq", () => {
       expect(content.validateCurriculum()).toEqual([]);
+
+      const written = content
+        .concepts()
+        .filter((c) => content.lessonText(c.id) !== null);
+
+      // The first chapter is written. Later lessons are listed, and written over time.
+      expect(written.map((c) => c.id).slice(0, 6)).toEqual([
+        "what-jq-does",
+        "reading-json",
+        "object-fields",
+        "nested-paths",
+        "array-items",
+        "pipes",
+      ]);
       expect(
-        content
-          .concepts()
-          .filter((c) => !content.hasLesson(c.id))
-          .map((c) => c.id)
+        written.filter((c) => !content.hasLesson(c.id)).map((c) => c.id)
       ).toEqual([]);
-      expect(
-        content
-          .problemIndex()
-          .filter((p) => !content.isAuthored(p.slug))
-          .map((p) => p.slug)
-      ).toEqual([]);
+
+      for (const c of written) {
+        const parts = content.lessonText(c.id)?.split(content.TASK_MARKER);
+
+        // One part of text for each guided task, then the summary.
+        expect(parts).toHaveLength(content.guidedSlugs(c.id).length + 1);
+      }
     });
   });
 
@@ -738,7 +750,9 @@ describe("jq course", () => {
       const slugs = [
         ...content.problemIndex().map((p) => p.slug),
         ...content.concepts().flatMap((c) => content.guidedSlugs(c.id)),
-      ];
+      ].filter(content.isAuthored);
+
+      expect(slugs.length).toBeGreaterThan(40);
 
       const wrong = slugs.filter((slug) => {
         const task = content.problem(slug);
@@ -760,49 +774,59 @@ describe("jq course", () => {
   }, 60_000);
 
   test("a filter task compares values, and a command task compares text", () => {
-    content.inCourse("jq", () => {
-      const filter = content.problem("object-construction-solo-1");
-      const [shown] = filter.jq?.tests ?? [];
+    const want = '{\n  "id": 7,\n  "name": "Ada"\n}';
+    const tests = [{ expected: want, input: {} }];
+    const filter = { filter: null, flags: [], mode: "filter" as const, tests };
+    const command = { ...filter, mode: "command" as const };
 
-      if (!filter.jq || !shown?.expected) {
-        throw new Error("The task has no shown test.");
-      }
-
-      // The same values with another key order and spacing still match.
-      const reordered = JSON.stringify(
-        Object.fromEntries(
-          Object.entries(JSON.parse(shown.expected)).toReversed()
-        )
-      );
-
-      expect(jq.sameOutput(filter.jq, reordered, shown.expected)).toBe(true);
-      expect(jq.sameOutput(filter.jq, "{}", shown.expected)).toBe(false);
-
-      const command = content.problem("compact-output-solo-1");
-      const pretty = jq.previewJq(command, "'.'");
-
-      expect(pretty.error).toBeNull();
-      expect(pretty.matches).toBe(false);
-      expect(
-        jq.previewJq(
-          command,
-          content.referenceSolution("compact-output-solo-1", "jq") ?? ""
-        ).matches
-      ).toBe(true);
-    });
+    // The same values with another key order and spacing still match.
+    expect(jq.sameOutput(filter, '{"name":"Ada","id":7}', want)).toBe(true);
+    expect(jq.sameOutput(filter, "{}", want)).toBe(false);
+    expect(jq.sameOutput(command, '{"name":"Ada","id":7}', want)).toBe(false);
+    expect(jq.runOnce(command, "-c '.'", { input: { id: 7 } }).output).toBe(
+      '{"id":7}'
+    );
+    expect(jq.runOnce(command, "'.'", { input: { id: 7 } }).output).toBe(
+      '{\n  "id": 7\n}'
+    );
   });
 
   test("jq's own error text reaches the learner", () => {
     content.inCourse("jq", () => {
-      const seen = jq.previewJq(
-        content.problem("select-solo-1"),
-        ".items | select(.stock > 0)"
-      );
+      const task = content.problem(content.guidedSlug("nested-paths", 3));
+      const seen = jq.previewJq(task, task.stubs.jq);
 
       expect(seen.matches).toBe(false);
       expect(seen.error).toBe(
-        'jq: error: Cannot index array with string "stock"'
+        'jq: error: Cannot index string with string "name"'
       );
+      // Nothing typed yet is not an error.
+      expect(jq.previewJq(task, "  ")).toEqual({
+        error: null,
+        matches: false,
+        output: "",
+      });
+    });
+  });
+
+  test("a predict task takes the value the learner types, and shows no output", () => {
+    content.inCourse("jq", () => {
+      const task = content.problem("reading-json-solo-2");
+
+      expect(task.jq?.filter).toBeNull();
+      expect(jq.runJq(task, "[ 5432,\n 6432 ]").passed).toBe(1);
+      expect(jq.runJq(task, "[5432]").passed).toBe(0);
+      expect(jq.runJq(task, "[5432, 6432").cases[0]?.error).toContain(
+        "not valid JSON"
+      );
+      expect(jq.previewJq(task, "[5432, 6432]").output).toBe("");
+      // The answer key is the output, not the filter that made it.
+      expect(content.referenceSolution("reading-json-solo-2", "jq")).toBe(
+        "[\n  5432,\n  6432\n]"
+      );
+      expect(
+        content.problem(content.guidedSlug("what-jq-does", 3)).jq?.filter
+      ).toBe(".pages");
     });
   });
 
@@ -810,29 +834,29 @@ describe("jq course", () => {
     content.setCourse("jq");
 
     try {
-      const [first, second, third] = content.guidedSlugs("fields");
-      const [soloOne, soloTwo] = content.soloSlugs("fields");
+      const [first, second, third] = content.guidedSlugs("what-jq-does");
+      const [soloOne, soloTwo] = content.soloSlugs("what-jq-does");
 
       if (!first || !second || !third || !soloOne || !soloTwo) {
-        throw new Error("The fields lesson is missing tasks.");
+        throw new Error("The first lesson is missing tasks.");
       }
 
-      expect(content.guidedConcept(third)).toBe("fields");
+      expect(content.guidedConcept(third)).toBe("what-jq-does");
       expect(answer(first, "guided").result?.outcome).toBe("solved");
       answer(second, "guided");
-      expect(scheduler.lessonStep("fields")).toBe(1);
+      expect(scheduler.lessonStep("what-jq-does")).toBe(1);
       answer(third, "guided");
-      expect(scheduler.lessonStep("fields")).toBe(2);
+      expect(scheduler.lessonStep("what-jq-does")).toBe(2);
 
       const one = answer(soloOne, "solo");
       expect(one.result?.outcome).toBe("solved");
       expect(one.result?.concepts).toEqual([]);
-      expect(scheduler.isPassed("fields")).toBe(false);
+      expect(scheduler.isPassed("what-jq-does")).toBe(false);
 
       const two = answer(soloTwo, "solo");
       expect(two.result?.outcome).toBe("solved");
-      expect(scheduler.isPassed("fields")).toBe(true);
-      expect(scheduler.nextLesson()).toBe("array-index");
+      expect(scheduler.isPassed("what-jq-does")).toBe(true);
+      expect(scheduler.nextLesson()).toBe("reading-json");
     } finally {
       content.setCourse("interview");
     }
@@ -842,14 +866,14 @@ describe("jq course", () => {
     content.setCourse("jq");
 
     try {
-      for (const slug of content.guidedSlugs("array-index")) {
+      for (const slug of content.guidedSlugs("reading-json")) {
         answer(slug, "guided");
       }
 
-      const [soloOne] = content.soloSlugs("array-index");
+      const [soloOne] = content.soloSlugs("reading-json");
 
       if (!soloOne) {
-        throw new Error("The array-index lesson has no solo task.");
+        throw new Error("The second lesson has no solo task.");
       }
 
       practice.startProblem(soloOne, "jq", "solo");
@@ -862,9 +886,9 @@ describe("jq course", () => {
       expect(practice.submitProblem(soloOne, "jq").result?.outcome).toBe(
         "solved_with_help"
       );
-      expect(scheduler.isPassed("array-index")).toBe(false);
-      expect(scheduler.lessonStatus("array-index")).toBe("partial");
-      expect(scheduler.soloWait("array-index")).not.toBeNull();
+      expect(scheduler.isPassed("reading-json")).toBe(false);
+      expect(scheduler.lessonStatus("reading-json")).toBe("partial");
+      expect(scheduler.soloWait("reading-json")).not.toBeNull();
     } finally {
       content.setCourse("interview");
     }

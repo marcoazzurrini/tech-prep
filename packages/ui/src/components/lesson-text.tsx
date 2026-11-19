@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useEffect, useRef } from "react";
 
 import { CodeBlock } from "./code-block";
 import { inline } from "./problem-statement";
@@ -57,27 +58,9 @@ const parse = (text: string): Block[] => {
   return blocks.filter((b) => b.kind !== "p" || b.text);
 };
 
-interface LessonTextProps {
-  /** The lesson's name, shown as the heading. */
-  title: string;
-  /** The lesson.md body. */
-  text: string;
-  /** A chip above the title, such as "Lesson". */
-  label?: ReactNode;
-  /** What follows the lesson in the same column, such as the task to do. */
-  children?: ReactNode;
-}
-
-/** A written lesson: the idea, a worked example, why it works and when to use it. */
-export const LessonText = ({
-  title,
-  text,
-  label,
-  children,
-}: LessonTextProps) => (
-  <article className="tp-lesson-text">
-    {label && <div className="tp-lesson-text__label">{label}</div>}
-    <h1>{title}</h1>
+/** One stretch of lesson text, as headings, paragraphs, lists and code. */
+const Blocks = ({ text }: { text: string }) => (
+  <>
     {parse(text).map((b, i) => {
       if (b.kind === "h") {
         return <h2 key={i}>{b.text}</h2>;
@@ -99,6 +82,61 @@ export const LessonText = ({
 
       return <p key={i}>{inline(b.text)}</p>;
     })}
+  </>
+);
+
+/** One part of a lesson. The part the learner has just reached scrolls into view. */
+const Part = ({
+  current,
+  children,
+}: {
+  current: boolean;
+  children: ReactNode;
+}) => {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (current) {
+      ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [current]);
+
+  return (
+    <section className="tp-lesson-text__part" ref={ref}>
+      {children}
+    </section>
+  );
+};
+
+interface LessonTextProps {
+  /** The lesson's name, shown as the heading. */
+  title: string;
+  /**
+   * The lesson.md body. A list shows a lesson in parts: the last one is the part the learner
+   * is on, and the page scrolls to it when it appears.
+   */
+  text: string | string[];
+  /** A chip above the title, such as "Lesson". */
+  label?: ReactNode;
+  /** What follows the lesson in the same column, such as the task to do. */
+  children?: ReactNode;
+}
+
+/** A written lesson: the idea, a worked example, why it works and when to use it. */
+export const LessonText = ({
+  title,
+  text,
+  label,
+  children,
+}: LessonTextProps) => (
+  <article className="tp-lesson-text">
+    {label && <div className="tp-lesson-text__label">{label}</div>}
+    <h1>{title}</h1>
+    {[text].flat().map((part, i, all) => (
+      <Part current={all.length > 1 && i === all.length - 1} key={i}>
+        <Blocks text={part} />
+      </Part>
+    ))}
     {children}
   </article>
 );

@@ -80,7 +80,7 @@ export const splitArgs = (text: string): string[] => {
 
 /** The arguments jq gets for the learner's text. */
 const argsFor = (spec: JqSpec, text: string): string[] => {
-  if (spec.mode === "filter") {
+  if (spec.mode !== "command") {
     if (!text.trim()) {
       throw new Error("The filter is empty.");
     }
@@ -234,12 +234,51 @@ export const sameOutput = (
   return a !== null && a === b;
 };
 
+/**
+ * Check a predict task: the learner typed the value they think comes out. It is compared
+ * with the real output as JSON values, so spacing does not matter.
+ */
+const predicted = (spec: JqSpec, text: string): RunResult => {
+  const [shown] = spec.tests;
+  const expected = shown?.expected ?? "";
+  const typed = asValues(text);
+  let error: string | undefined;
+
+  if (!text.trim()) {
+    error = "Type the value you think comes out.";
+  } else if (typed === null) {
+    error =
+      'This is not valid JSON. Text needs double quotes, like "Oslo". Check the brackets and commas too.';
+  }
+
+  const ok = !error && typed === asValues(expected);
+
+  return {
+    cases: [
+      {
+        actual: text.trim(),
+        args: [shown?.input_text ?? shown?.input],
+        error,
+        expected,
+        index: 0,
+        ok,
+      },
+    ],
+    passed: ok ? 1 : 0,
+    total: 1,
+  };
+};
+
 /** Run the learner's text on every test of a jq task. */
 export const runJq = (problem: Problem, text: string): RunResult => {
   const spec = problem.jq;
 
   if (!spec) {
     throw new Error(`'${problem.slug}' is not a jq task.`);
+  }
+
+  if (spec.mode === "predict") {
+    return predicted(spec, text);
   }
 
   const cases = spec.tests.map((test, index): CaseResult => {
@@ -270,6 +309,11 @@ export const previewJq = (problem: Problem, text: string) => {
 
   if (!spec || !shown) {
     throw new Error(`'${problem.slug}' is not a jq task.`);
+  }
+
+  // Nothing typed yet is not an error, and a predict task shows no output at all.
+  if (!text.trim() || spec.mode === "predict") {
+    return { error: null, matches: false, output: "" };
   }
 
   const ran = runOnce(spec, text, shown);
