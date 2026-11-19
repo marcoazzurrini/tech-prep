@@ -9,7 +9,15 @@ import path from "node:path";
 
 import { DEFAULT_LANGUAGE, EXTENSIONS, concept } from "./content.ts";
 import type { Course, Language } from "./content.ts";
-import { closeExercises, exerciseRow, open, openExercise } from "./db.ts";
+import {
+  atomically,
+  closeExercises,
+  exerciseRow,
+  insertExercise,
+  openExercise,
+  saveExerciseResponse,
+  saveExerciseResults,
+} from "./db.ts";
 import type { Confidence, ExerciseKind, ExerciseRow, Result } from "./db.ts";
 import { grade } from "./grading.ts";
 import type { ConceptResult } from "./grading.ts";
@@ -238,24 +246,22 @@ export const showExercise = (course: Course, input: ExerciseInput) => {
   const now = new Date();
   closeExercises(course, now);
 
-  const id = open(course)
-    .query(
-      `INSERT INTO exercises (kind, concepts, language, title, prompt, body, answer, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-    )
-    .run(
-      input.kind,
-      JSON.stringify(input.conceptIds),
-      language,
-      input.title.trim(),
-      input.prompt.trim(),
+  const id = insertExercise(
+    course,
+    {
+      answer: JSON.stringify(key),
       body,
-      JSON.stringify(key),
-      now.toISOString()
-    ).lastInsertRowid;
+      concepts: JSON.stringify(input.conceptIds),
+      kind: input.kind,
+      language,
+      prompt: input.prompt.trim(),
+      title: input.title.trim(),
+    },
+    now
+  );
 
   return {
-    exercise_id: Number(id),
+    exercise_id: id,
     kind: input.kind,
     note:
       input.kind === "example"
@@ -341,21 +347,21 @@ const finish = (
   row: ExerciseRow,
   results: ConceptResult[],
   now: Date
-): ReturnType<typeof applyResults> => {
-  const applied = applyResults(course, {
-    fromProblem: false,
-    now,
-    recognitionOk: true,
-    results,
-    source: { exerciseId: row.id },
+): ReturnType<typeof applyResults> =>
+  // The reviews, the concepts and the exercise's results are saved together or not at all.
+  atomically(course, () => {
+    const applied = applyResults(course, {
+      fromProblem: false,
+      now,
+      recognitionOk: true,
+      results,
+      source: { exerciseId: row.id },
+    });
+
+    saveExerciseResults(course, row.id, JSON.stringify(applied.concepts), now);
+
+    return applied;
   });
-
-  open(course)
-    .query("UPDATE exercises SET results = ?, graded_at = ? WHERE id = ?")
-    .run(JSON.stringify(applied.concepts), now.toISOString(), row.id);
-
-  return applied;
-};
 
 /** Is the learner's arrangement right? Another order that prints the same also counts. */
 const arrangedRight = (
@@ -404,11 +410,7 @@ export const submitExercise = (
   const key = keyOf(row);
   const text = Array.isArray(response) ? JSON.stringify(response) : response;
 
-  open(course)
-    .query(
-      "UPDATE exercises SET response = ?, confidence = ?, submitted_at = ? WHERE id = ?"
-    )
-    .run(text, confidence, now.toISOString(), id);
+  saveExerciseResponse(course, id, text, confidence, now);
 
   if (key.kind === "answer") {
     return { exercise_id: id, status: "submitted" as const };
