@@ -21,13 +21,13 @@ import {
 import { tmpdir } from "node:os";
 import path from "node:path";
 
+import { problemDir } from "../src/code.ts";
 import type { CodeProblem, TestCase } from "../src/code.ts";
 import {
   EXTENSIONS,
   LANGUAGES,
   concepts,
-  guidedSlug,
-  problemDir,
+  guidedSlugs,
   problemIndex,
   courseById,
   savedCourse,
@@ -251,7 +251,7 @@ const slugs =
   args[0] === "--all"
     ? [
         ...problemIndex(target).map((p) => p.slug),
-        ...concepts(target).map((c) => guidedSlug(c.id)),
+        ...concepts(target).flatMap((c) => guidedSlugs(target, c.id)),
       ].filter((slug) => isAuthored(target, slug))
     : args;
 

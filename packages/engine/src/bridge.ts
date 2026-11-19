@@ -7,14 +7,11 @@
 // learner's code, and hands problems in for grading. The tutor helps beside it, through MCP.
 
 import {
-  TASK_MARKER,
   concept,
   concepts,
   courseErrors,
   courses,
   guidedConcept,
-  guidedSlugs,
-  lessonText,
   problemIndex,
   savedCourse,
   selectCourse,
@@ -26,6 +23,13 @@ import type { Course, Difficulty } from "./content.ts";
 import { addHint, closeExercises, exerciseRow, openExercise } from "./db.ts";
 import type { AttemptRow, Confidence } from "./db.ts";
 import { exerciseView, submitExercise } from "./exercises.ts";
+import {
+  guidedProgress,
+  lessonParts,
+  movesOn,
+  soloProgress,
+  startLesson,
+} from "./lessons.ts";
 import { cardOf } from "./memory.ts";
 import {
   attemptOn,
@@ -44,7 +48,6 @@ import { short } from "./runner.ts";
 import type { RunResult } from "./runner.ts";
 import {
   dueCount,
-  isOpen,
   isPassed,
   lessonStatus,
   lessonStep,
@@ -176,96 +179,45 @@ const conceptOf = (params: Params): string => {
   return params.concept;
 };
 
-/** A step's tasks: the one to do now, and how far the learner is. */
-const tasks = (slugs: string[], done: (slug: string) => boolean) => {
-  const at = slugs.findIndex((s) => !done(s));
-  const current = slugs.at(at) ?? slugs[0];
-
-  if (!current) {
-    throw new Error("A lesson step has no task.");
-  }
-
-  return {
-    current,
-    progress: { done: at === -1 ? slugs.length : at, total: slugs.length },
-  };
-};
-
-/** A lesson's guided tasks: one counts as done once it is solved, with or without help. */
-const guidedTasks = (course: Course, id: string) =>
-  tasks(guidedSlugs(course, id), (s) =>
-    ["solved", "solved_with_help"].includes(problemStatus(course, s))
-  );
-
-/** A lesson's solo tasks: one counts as done only when it is solved alone. */
-const soloTasks = (course: Course, id: string) =>
-  tasks(soloSlugs(course, id), (s) => problemStatus(course, s) === "solved");
-
 /**
- * One lesson: its text, the guided task and the solo task to do now, and where the learner
- * stands in it. Most lessons have one task per step; a jq lesson has a few short ones.
+ * One lesson: its parts, the guided task and the solo task to do now, and where the learner
+ * stands in it.
  */
-const lesson = (course: Course, params: Params) => {
-  const id = conceptOf(params);
+const lesson = (course: Course, id: string) => {
   const c = concept(course, id);
   const open = currentAttempt(course);
   const mine = open && lessonOf(course, open) === id ? open : null;
-  const guided = guidedTasks(course, id);
-  const solo = soloTasks(course, id);
+  const guided = guidedProgress(course, id);
+  const solo = soloProgress(course, id);
 
   return {
     attempt: mine && attemptView(course, mine),
     guided: problemView(course, guided.current),
-    // Every guided task in order, so the app can show one the learner already solved.
-    guided_slugs: guidedSlugs(course, id),
-    guided_tasks: guided.progress,
+    guided_tasks: { done: guided.done, total: guided.total },
     id,
     key_idea: c.key_idea,
     name: c.name,
-    // A lesson written in parts: one per guided task, then its summary.
-    parts: lessonText(course, id)
-      ?.split(TASK_MARKER)
-      .map((part) => part.trim()),
+    // One part per guided task. Empty while the lesson is not written.
+    parts: lessonParts(course, id),
     solo: problemView(course, solo.current),
-    solo_tasks: solo.progress,
+    solo_tasks: { done: solo.done, total: solo.total },
     status: lessonStatus(course, id),
     step: lessonStep(course, id),
-    text: lessonText(course, id),
     topic: topics(course).find((t) => t.id === c.topic)?.name ?? c.topic,
     wait_until: soloWait(course, id),
   };
 };
 
 /**
- * Start work on a lesson: its guided problem in step 1, its solo problem in step 2. A solo
- * problem that waits after a struggle does not start; the lesson stays readable.
+ * Open a lesson, and start its next task when there is one to start. With `practise`, a
+ * lesson that is already learned starts again too.
  */
 const openLesson = (course: Course, params: Params) => {
   const id = conceptOf(params);
 
-  if (!isOpen(course, id)) {
-    throw new Error(
-      `The lesson '${concept(course, id).name}' is still locked.`
-    );
-  }
+  startLesson(course, id, params?.practise ?? false);
 
-  if (lessonStep(course, id) === 1) {
-    startProblem(
-      course,
-      guidedTasks(course, id).current,
-      courseLanguage(course),
-      "guided"
-    );
-  } else if (soloWait(course, id) === null) {
-    startProblem(
-      course,
-      soloTasks(course, id).current,
-      courseLanguage(course),
-      "solo"
-    );
-  }
-
-  return lesson(course, params);
+  return lesson(course, id);
 };
 
 /**
@@ -383,6 +335,8 @@ interface BridgeRequest {
     concept?: string;
     /** A course id. */
     course?: string;
+    /** Start a lesson again although it is learned. */
+    practise?: boolean;
     response?: string | string[];
     confidence?: Confidence | null;
   };
@@ -462,13 +416,15 @@ const runCode = (course: Course, params: Params) => {
 const resultView = (
   course: Course,
   result: ReturnType<typeof finishAttempt>,
-  mode: AttemptRow["mode"]
+  attempt: AttemptRow
 ) => ({
   concepts:
     "concepts" in result && result.concepts
       ? result.concepts.map((c) => ({
           effect: c.effect,
           id: c.concept,
+          // The approach in a sentence, to show when the concept was missed.
+          key_idea: concept(course, c.concept).key_idea,
           name: c.name,
           next_review:
             c.next_review ??
@@ -477,7 +433,9 @@ const resultView = (
           result: c.result,
         }))
       : [],
-  mode,
+  mode: attempt.mode,
+  // True when the app opens the next task by itself.
+  moves_on: movesOn(course, attempt, lessonOf(course, attempt), result.outcome),
   outcome: result.outcome,
 });
 
@@ -488,7 +446,7 @@ const submitCode = (course: Course, params: Params) => {
 
   return {
     finished: handed.finished,
-    result: handed.result && resultView(course, handed.result, open.mode),
+    result: handed.result && resultView(course, handed.result, open),
     run: runView(handed.run),
   };
 };
@@ -497,7 +455,7 @@ const giveUpCode = (course: Course, params: Params) => {
   const open = attemptOn(course, slugOf(params));
   const { result, solution } = giveUp(course, open);
 
-  return { result: resultView(course, result, open.mode), solution };
+  return { result: resultView(course, result, open), solution };
 };
 
 const pauseCode = (course: Course, params: Params) => {
@@ -547,7 +505,6 @@ const methods = new Map<string, (course: Course, params: Params) => object>([
   ["exercise.close", closeExercise],
   ["exercise.submit", submit],
   ["task.preview", preview],
-  ["lesson", lesson],
   ["lesson.open", openLesson],
   ["lesson.peek", peekLesson],
   ["problem", (course, params) => problemView(course, slugOf(params))],

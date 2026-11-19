@@ -27,7 +27,6 @@ const api = {
       | "course.select"
       | "exercise.close"
       | "exercise.submit"
-      | "lesson"
       | "lesson.open"
       | "lesson.peek"
       | "problem"
@@ -45,6 +44,8 @@ const api = {
       /** A concept id, for the lesson methods. */
       concept?: string;
       response?: string | string[];
+      /** Start a lesson again although it is learned. */
+      practise?: boolean;
     }
   ) => ipcRenderer.invoke("engine", method, params),
   onEngineChanged: (handler: () => void) => on("engine:changed", handler),

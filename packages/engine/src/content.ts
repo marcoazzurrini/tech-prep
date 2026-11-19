@@ -409,22 +409,6 @@ export const problemEntry = (course: Course, slug: string): ProblemInfo => {
   return found;
 };
 
-/** The folder holding a problem's statement, spec and reference solutions. */
-export const problemDir = (course: Course, slug: string): string => {
-  const conceptId = guidedConcept(slug);
-
-  return conceptId
-    ? path.join(lessonsDir(course), conceptId)
-    : path.join(problemsDir(course), slug);
-};
-
-/**
- * The line that ends a part of a lesson. A lesson with several guided tasks is written in
- * parts: the text before the first marker goes with the first task, and so on. What follows
- * the last marker is the lesson's summary.
- */
-export const TASK_MARKER = "<!-- task -->";
-
 /** The lesson text for a concept, or null when it is not written yet. */
 export const lessonText = (
   course: Course,

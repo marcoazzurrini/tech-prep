@@ -134,9 +134,13 @@ export interface Run {
 export interface Result {
   outcome: "solved" | "solved_with_help" | "gave_up" | "paused";
   mode: Mode | null;
+  /** True when the app opens the next task by itself: the answer was right. */
+  moves_on: boolean;
   concepts: {
     id: string;
     name: string;
+    /** The approach in a sentence, shown when the concept was missed. */
+    key_idea: string;
     result: "pass" | "fail";
     effect: string;
     next_review: string | null;
@@ -197,26 +201,34 @@ export interface Course {
   }[];
 }
 
-/** From the bridge's `lesson` and `lesson.open` methods. */
+/** One part of a lesson: one idea, shown alone beside its guided task. */
+export interface LessonPart {
+  /** Its name on the trail in the top bar. */
+  name: string;
+  /** The heading above its text. */
+  title: string;
+  text: string;
+  /** The slug of the guided task that goes with it. */
+  task: string;
+}
+
+/** From the bridge's `lesson.open` method. */
 export interface Lesson {
   id: string;
   name: string;
   /** The chapter's name. */
   topic: string;
   key_idea: string;
-  text: string | null;
   /**
-   * The text in parts: one per guided task, then the summary. One part when the lesson is
-   * read in one go.
+   * The lesson in parts, one per guided task. One part when the lesson is read in one go,
+   * and none while it is not written.
    */
-  parts?: string[];
+  parts: LessonPart[];
   status: LessonStatus;
   /** 1: the guided problem, beside the lesson. 2: the solo problem, alone. */
   step: 1 | 2;
   /** The guided task to do now, and how many of the step's tasks are done. */
   guided: Problem;
-  /** Every guided task in order: one per part of the lesson. */
-  guided_slugs: string[];
   guided_tasks: { done: number; total: number };
   /** The solo task to do now, and how many of the step's tasks are solved alone. */
   solo: Problem;
