@@ -1,0 +1,47 @@
+{
+  "title": "Class of a reply",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'if .status >= 500 then \"server error\" elif .status >= 400 then \"client error\" else \"ok\" end' data.json",
+    "tests": [
+      {
+        "input": {
+          "path": "/cart",
+          "status": 404
+        },
+        "expected": "\"client error\""
+      },
+      {
+        "input": {
+          "path": "/pay",
+          "status": 503
+        },
+        "expected": "\"server error\""
+      },
+      {
+        "input": {
+          "path": "/",
+          "status": 200
+        },
+        "expected": "\"ok\""
+      },
+      {
+        "input": {
+          "path": "/login",
+          "status": 400
+        },
+        "expected": "\"client error\""
+      },
+      {
+        "input": {
+          "path": "/export",
+          "status": 500
+        },
+        "expected": "\"server error\""
+      }
+    ]
+  }
+}

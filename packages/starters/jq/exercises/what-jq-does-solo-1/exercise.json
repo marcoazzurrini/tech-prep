@@ -1,0 +1,36 @@
+{
+  "title": "Status of an order",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.status' data.json",
+    "tests": [
+      {
+        "input": {
+          "id": 801,
+          "status": "shipped",
+          "items": 3
+        },
+        "expected": "\"shipped\""
+      },
+      {
+        "input": {
+          "id": 802,
+          "status": "packed",
+          "items": 1
+        },
+        "expected": "\"packed\""
+      },
+      {
+        "input": {
+          "id": 803,
+          "status": "cancelled",
+          "items": 2
+        },
+        "expected": "\"cancelled\""
+      }
+    ]
+  }
+}

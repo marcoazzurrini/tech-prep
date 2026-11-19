@@ -1,0 +1,71 @@
+{
+  "title": "Deploys per environment",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'group_by(.env) | map({env: .[0].env, count: length})' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "service": "api",
+            "env": "prod"
+          },
+          {
+            "service": "web",
+            "env": "staging"
+          },
+          {
+            "service": "web",
+            "env": "prod"
+          },
+          {
+            "service": "jobs",
+            "env": "prod"
+          }
+        ],
+        "expected": "[\n  {\n    \"env\": \"prod\",\n    \"count\": 3\n  },\n  {\n    \"env\": \"staging\",\n    \"count\": 1\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "service": "api",
+            "env": "dev"
+          },
+          {
+            "service": "api",
+            "env": "dev"
+          }
+        ],
+        "expected": "[\n  {\n    \"env\": \"dev\",\n    \"count\": 2\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "service": "docs",
+            "env": "staging"
+          },
+          {
+            "service": "api",
+            "env": "dev"
+          },
+          {
+            "service": "web",
+            "env": "prod"
+          },
+          {
+            "service": "web",
+            "env": "dev"
+          },
+          {
+            "service": "api",
+            "env": "staging"
+          }
+        ],
+        "expected": "[\n  {\n    \"env\": \"dev\",\n    \"count\": 2\n  },\n  {\n    \"env\": \"prod\",\n    \"count\": 1\n  },\n  {\n    \"env\": \"staging\",\n    \"count\": 2\n  }\n]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Repository url",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.package.repository.url' data.json",
+    "tests": [
+      {
+        "input": {
+          "package": {
+            "name": "left-pad",
+            "repository": {
+              "type": "git",
+              "url": "https://example.com/left-pad.git"
+            }
+          }
+        },
+        "expected": "\"https://example.com/left-pad.git\""
+      },
+      {
+        "input": {
+          "package": {
+            "name": "chalk",
+            "repository": {
+              "type": "git",
+              "url": "https://example.com/chalk.git"
+            }
+          }
+        },
+        "expected": "\"https://example.com/chalk.git\""
+      },
+      {
+        "input": {
+          "package": {
+            "name": "zod",
+            "repository": {
+              "type": "git",
+              "url": "https://example.com/zod.git"
+            }
+          }
+        },
+        "expected": "\"https://example.com/zod.git\""
+      }
+    ]
+  }
+}

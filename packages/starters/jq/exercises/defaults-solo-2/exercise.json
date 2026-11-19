@@ -1,0 +1,35 @@
+{
+  "title": "Name to show",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.display_name // .username' data.json",
+    "tests": [
+      {
+        "input": {
+          "username": "mlind",
+          "display_name": null,
+          "plan": "free"
+        },
+        "expected": "\"mlind\""
+      },
+      {
+        "input": {
+          "username": "ok42",
+          "display_name": "Olga K.",
+          "plan": "pro"
+        },
+        "expected": "\"Olga K.\""
+      },
+      {
+        "input": {
+          "username": "rsato",
+          "plan": "team"
+        },
+        "expected": "\"rsato\""
+      }
+    ]
+  }
+}

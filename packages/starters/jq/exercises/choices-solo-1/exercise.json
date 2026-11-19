@@ -1,0 +1,40 @@
+{
+  "title": "Size of an upload",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'if .bytes > 1000000 then \"large\" else \"small\" end' data.json",
+    "tests": [
+      {
+        "input": {
+          "file": "video.mp4",
+          "bytes": 48200000
+        },
+        "expected": "\"large\""
+      },
+      {
+        "input": {
+          "file": "notes.txt",
+          "bytes": 2048
+        },
+        "expected": "\"small\""
+      },
+      {
+        "input": {
+          "file": "dump.sql",
+          "bytes": 1000000
+        },
+        "expected": "\"small\""
+      },
+      {
+        "input": {
+          "file": "photo.raw",
+          "bytes": 1000001
+        },
+        "expected": "\"large\""
+      }
+    ]
+  }
+}

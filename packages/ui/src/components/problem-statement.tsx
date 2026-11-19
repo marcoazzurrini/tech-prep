@@ -48,7 +48,7 @@ const heading = (line: string): Block | null => {
 };
 
 /**
- * Split a problem.md body (title line already shown) into paragraphs, bullet lists,
+ * Split a statement (title line already shown) into paragraphs, bullet lists,
  * examples and the trailing notes ("Constraints:", "Follow-up:").
  */
 const parse = (statement: string): Block[] => {
@@ -113,7 +113,7 @@ const exampleLine = (line: string, key: number) => {
   );
 };
 
-/** A problem.md body: paragraphs, lists, examples and the closing notes. */
+/** A statement: paragraphs, lists, examples and the closing notes. */
 export const ProblemStatement = ({ text }: { text: string }) => {
   const blocks = parse(text);
   const examples = blocks.filter((b) => b.kind === "example");

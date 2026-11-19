@@ -1,0 +1,26 @@
+{
+  "title": "Longest Run Within Budget",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "longest_run_within_budget",
+      "typescript": "longestRunWithinBudget"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def longest_run_within_budget(costs: list[int], budget: int) -> int:\n    pass\n",
+      "typescript": "export function longestRunWithinBudget(costs: number[], budget: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[2,1,3,4],5],"expected":2},
+      {"args":[[4,2,1,1,3],4],"expected":3},
+      {"args":[[5],4],"expected":0},
+      {"args":[[5],5],"expected":1},
+      {"args":[[1,1,1],3],"expected":3},
+      {"args":[[10,1,10],5],"expected":1},
+      {"args":[[1,2,3,4,5],15],"expected":5},
+      {"args":[[6,7,8],5],"expected":0},
+      {"args":[[3,1,2,1,1,5,1],5],"expected":4}
+    ]
+  }
+}

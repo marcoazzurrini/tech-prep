@@ -1,0 +1,43 @@
+{
+  "title": "Fix the command",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "start": "jq -r '.tags' data.json",
+    "reference": "jq -r '.tags | .[]' data.json",
+    "tests": [
+      {
+        "input": {
+          "image": "shop-api",
+          "tags": [
+            "latest",
+            "v2.1.0",
+            "stable"
+          ]
+        },
+        "expected": "latest\nv2.1.0\nstable"
+      },
+      {
+        "input": {
+          "image": "shop-web",
+          "tags": [
+            "v0.9.3"
+          ]
+        },
+        "expected": "v0.9.3"
+      },
+      {
+        "input": {
+          "image": "worker",
+          "tags": [
+            "nightly",
+            "edge"
+          ]
+        },
+        "expected": "nightly\nedge"
+      }
+    ]
+  }
+}

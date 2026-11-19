@@ -8,14 +8,14 @@ pre-commit:
       glob: "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,css,html,md,mdx,yml,yaml}"
       exclude:
         - bun.lock
-        - "packages/starters/*/problems/**"
+        - "packages/starters/*/exercises/**"
         - ".penna/**"
       run: bunx oxfmt --write {staged_files}
       stage_fixed: true
     - name: lint
       glob: "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}"
       exclude:
-        - "packages/starters/*/problems/**"
+        - "packages/starters/*/exercises/**"
       run: bunx oxlint --deny-warnings {staged_files}
     - name: typecheck
       run: bun run typecheck

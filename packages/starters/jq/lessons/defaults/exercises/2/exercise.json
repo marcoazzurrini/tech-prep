@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.mobile // .landline // \"no phone\"' data.json",
+      "file": "data.json",
+      "input": {
+        "name": "Dee Park",
+        "mobile": null,
+        "landline": "555-0142"
+      },
+      "show_command": true
+    },
+    "expected": "\"555-0142\""
+  }
+}

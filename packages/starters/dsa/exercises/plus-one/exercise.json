@@ -1,0 +1,26 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "plus_one",
+      "typescript": "plusOne"
+    },
+    "stubs": {
+      "python": "def plus_one(digits: list[int]) -> list[int]:\n    pass\n",
+      "typescript": "export function plusOne(digits: number[]): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[1,2,3]],"expected":[1,2,4]},
+      {"args":[[1,9,9]],"expected":[2,0,0]},
+      {"args":[[9]],"expected":[1,0]},
+      {"args":[[0]],"expected":[1]},
+      {"args":[[4,3,2,1]],"expected":[4,3,2,2]},
+      {"args":[[8,9]],"expected":[9,0]},
+      {"args":[[9,9,9]],"expected":[1,0,0,0]},
+      {"args":[[1,0,0]],"expected":[1,0,1]},
+      {"args":[[5,9,0,9]],"expected":[5,9,1,0]},
+      {"args":[[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9]],"expected":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+      {"args":[[9,0,0,7,1,9,9,2,5,4,7,4,0,9,9,1,8,9,9,9]],"expected":[9,0,0,7,1,9,9,2,5,4,7,4,0,9,9,1,9,0,0,0]}
+    ]
+  }
+}

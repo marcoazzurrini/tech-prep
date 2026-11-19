@@ -1,0 +1,56 @@
+{
+  "title": "Sold out",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'select(.stock == 0)' data.json",
+    "reference": "jq 'map(select(.stock == 0))' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "sku": "pen-01",
+            "stock": 14
+          },
+          {
+            "sku": "pad-02",
+            "stock": 0
+          },
+          {
+            "sku": "ink-03",
+            "stock": 0
+          }
+        ],
+        "expected": "[\n  {\n    \"sku\": \"pad-02\",\n    \"stock\": 0\n  },\n  {\n    \"sku\": \"ink-03\",\n    \"stock\": 0\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "sku": "mug-10",
+            "stock": 3
+          },
+          {
+            "sku": "cap-11",
+            "stock": 8
+          }
+        ],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "sku": "bag-20",
+            "stock": 0
+          },
+          {
+            "sku": "hat-21",
+            "stock": 5
+          }
+        ],
+        "expected": "[\n  {\n    \"sku\": \"bag-20\",\n    \"stock\": 0\n  }\n]"
+      }
+    ]
+  }
+}

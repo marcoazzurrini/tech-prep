@@ -1,0 +1,29 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "copy_random_list",
+      "typescript": "copyRandomList"
+    },
+    "params": [
+      "RandomList"
+    ],
+    "returns": "RandomList",
+    "compare": "exact",
+    "stubs": {
+      "python": "from ds import RandomNode\n\n\ndef copy_random_list(head: RandomNode | None) -> RandomNode | None:\n    pass\n",
+      "typescript": "import { RandomNode } from \"./ds.ts\";\n\nexport function copyRandomList(head: RandomNode | null): RandomNode | null {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[[7,null],[13,0],[11,4],[10,2],[1,0]]],"expected":[[7,null],[13,0],[11,4],[10,2],[1,0]]},
+      {"args":[[[1,1],[2,1]]],"expected":[[1,1],[2,1]]},
+      {"args":[[[3,null],[3,0],[3,null]]],"expected":[[3,null],[3,0],[3,null]]},
+      {"args":[[]],"expected":[]},
+      {"args":[[[5,0]]],"expected":[[5,0]]},
+      {"args":[[[5,null]]],"expected":[[5,null]]},
+      {"args":[[[1,3],[2,2],[3,1],[4,0]]],"expected":[[1,3],[2,2],[3,1],[4,0]]},
+      {"args":[[[-1,2],[0,2],[1,2],[2,null]]],"expected":[[-1,2],[0,2],[1,2],[2,null]]},
+      {"args":[[[9,1],[8,0],[7,null],[6,5],[5,3],[4,4],[3,6],[2,0]]],"expected":[[9,1],[8,0],[7,null],[6,5],[5,3],[4,4],[3,6],[2,0]]}
+    ]
+  }
+}

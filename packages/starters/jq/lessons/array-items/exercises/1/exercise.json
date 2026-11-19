@@ -1,0 +1,36 @@
+{
+  "title": "Second step",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[1]' data.json",
+    "tests": [
+      {
+        "input": [
+          "build",
+          "test",
+          "deploy"
+        ],
+        "expected": "\"test\""
+      },
+      {
+        "input": [
+          "lint",
+          "unit",
+          "e2e",
+          "release"
+        ],
+        "expected": "\"unit\""
+      },
+      {
+        "input": [
+          "fetch",
+          "compile"
+        ],
+        "expected": "\"compile\""
+      }
+    ]
+  }
+}

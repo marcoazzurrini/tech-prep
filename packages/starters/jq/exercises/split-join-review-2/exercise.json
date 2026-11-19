@@ -1,0 +1,39 @@
+{
+  "title": "Emails in an export",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.lines | map(split(\",\") | .[1])' data.json",
+    "tests": [
+      {
+        "input": {
+          "columns": "name,email,role",
+          "lines": [
+            "Ada,ada@example.com,admin",
+            "Bo,bo@example.com,dev",
+            "Cy,cy@example.com,dev"
+          ]
+        },
+        "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\",\n  \"cy@example.com\"\n]"
+      },
+      {
+        "input": {
+          "columns": "name,email,role",
+          "lines": [
+            "Dee,dee@example.com,owner"
+          ]
+        },
+        "expected": "[\n  \"dee@example.com\"\n]"
+      },
+      {
+        "input": {
+          "columns": "name,email,role",
+          "lines": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

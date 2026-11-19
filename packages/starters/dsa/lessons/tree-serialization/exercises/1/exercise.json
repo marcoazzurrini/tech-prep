@@ -1,0 +1,26 @@
+{
+  "title": "Depth of an Encoded Tree",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "encoded_tree_depth",
+      "typescript": "encodedTreeDepth"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def encoded_tree_depth(tokens: list[str]) -> int:\n    pass\n",
+      "typescript": "export function encodedTreeDepth(tokens: string[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[["1","2","#","#","#"]],"expected":2},
+      {"args":[["1","#","#"]],"expected":1},
+      {"args":[["#"]],"expected":0},
+      {"args":[["1","#","2","#","#"]],"expected":2},
+      {"args":[["1","2","#","#","3","#","#"]],"expected":2},
+      {"args":[["1","2","3","#","#","#","#"]],"expected":3},
+      {"args":[["5","#","6","#","7","#","8","#","#"]],"expected":4},
+      {"args":[["1","2","#","4","#","#","3","#","#"]],"expected":3},
+      {"args":[["-10","20","#","#","30","40","#","#","#"]],"expected":3}
+    ]
+  }
+}

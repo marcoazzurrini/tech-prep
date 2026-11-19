@@ -1,0 +1,47 @@
+{
+  "title": "Settings of the editor",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.defaults + .user' data.json",
+    "tests": [
+      {
+        "input": {
+          "defaults": {
+            "theme": "light",
+            "font_size": 12,
+            "wrap": true
+          },
+          "user": {
+            "theme": "dark"
+          }
+        },
+        "expected": "{\n  \"theme\": \"dark\",\n  \"font_size\": 12,\n  \"wrap\": true\n}"
+      },
+      {
+        "input": {
+          "defaults": {
+            "theme": "light",
+            "font_size": 12
+          },
+          "user": {}
+        },
+        "expected": "{\n  \"theme\": \"light\",\n  \"font_size\": 12\n}"
+      },
+      {
+        "input": {
+          "defaults": {
+            "theme": "light"
+          },
+          "user": {
+            "font_size": 18,
+            "theme": "sepia"
+          }
+        },
+        "expected": "{\n  \"theme\": \"sepia\",\n  \"font_size\": 18\n}"
+      }
+    ]
+  }
+}

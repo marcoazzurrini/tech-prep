@@ -1,0 +1,42 @@
+{
+  "title": "Settings of the project",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.config | keys' data.json",
+    "tests": [
+      {
+        "input": {
+          "project": "api",
+          "config": {
+            "port": 8080,
+            "debug": false,
+            "workers": 4
+          }
+        },
+        "expected": "[\n  \"debug\",\n  \"port\",\n  \"workers\"\n]"
+      },
+      {
+        "input": {
+          "project": "web",
+          "config": {
+            "port": 3000
+          }
+        },
+        "expected": "[\n  \"port\"\n]"
+      },
+      {
+        "input": {
+          "project": "jobs",
+          "config": {
+            "queue": "default",
+            "retries": 3
+          }
+        },
+        "expected": "[\n  \"queue\",\n  \"retries\"\n]"
+      }
+    ]
+  }
+}

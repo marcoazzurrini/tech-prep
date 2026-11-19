@@ -1,0 +1,63 @@
+{
+  "title": "Paid orders",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.[] | select(.paid) | length' data.json",
+    "reference": "jq 'map(select(.paid)) | length' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 801,
+            "total": 40,
+            "paid": true
+          },
+          {
+            "id": 802,
+            "total": 15,
+            "paid": false
+          },
+          {
+            "id": 803,
+            "total": 99,
+            "paid": true
+          }
+        ],
+        "expected": "2"
+      },
+      {
+        "input": [
+          {
+            "id": 11,
+            "total": 8,
+            "paid": false
+          },
+          {
+            "id": 12,
+            "total": 20,
+            "paid": false
+          }
+        ],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "id": 50,
+            "total": 12,
+            "paid": true
+          },
+          {
+            "id": 51,
+            "total": 7,
+            "paid": false
+          }
+        ],
+        "expected": "1"
+      }
+    ]
+  }
+}

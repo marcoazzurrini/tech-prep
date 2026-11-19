@@ -1,0 +1,59 @@
+{
+  "title": "First cell of each row",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.rows[] | .[0]?' data.json",
+    "tests": [
+      {
+        "input": {
+          "sheet": "q3",
+          "rows": [
+            [
+              "id",
+              "total"
+            ],
+            "-- page 2 --",
+            [
+              "a-1",
+              40
+            ],
+            [
+              "a-2",
+              15
+            ]
+          ]
+        },
+        "expected": "\"id\"\n\"a-1\"\n\"a-2\""
+      },
+      {
+        "input": {
+          "sheet": "q4",
+          "rows": [
+            [
+              "b-7",
+              12
+            ]
+          ]
+        },
+        "expected": "\"b-7\""
+      },
+      {
+        "input": {
+          "sheet": "q1",
+          "rows": [
+            "-- empty --",
+            [
+              "c-3",
+              8
+            ],
+            "-- end --"
+          ]
+        },
+        "expected": "\"c-3\""
+      }
+    ]
+  }
+}

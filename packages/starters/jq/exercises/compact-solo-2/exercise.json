@@ -1,0 +1,42 @@
+{
+  "title": "Scripts of a package",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -c '.scripts' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "shop",
+          "version": "2.1.0",
+          "scripts": {
+            "build": "tsc",
+            "test": "vitest",
+            "lint": "eslint"
+          }
+        },
+        "expected": "{\"build\":\"tsc\",\"test\":\"vitest\",\"lint\":\"eslint\"}"
+      },
+      {
+        "input": {
+          "name": "cli",
+          "version": "0.4.2",
+          "scripts": {
+            "start": "node"
+          }
+        },
+        "expected": "{\"start\":\"node\"}"
+      },
+      {
+        "input": {
+          "name": "notes",
+          "version": "1.0.0",
+          "scripts": {}
+        },
+        "expected": "{}"
+      }
+    ]
+  }
+}

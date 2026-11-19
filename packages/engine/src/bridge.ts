@@ -21,11 +21,21 @@ import {
   soloSlugs,
   topics,
 } from "./content.ts";
-import type { Course, Difficulty } from "./content.ts";
+import type { Course, ProblemInfo } from "./content.ts";
 import type { Method, Methods } from "./contract.ts";
-import { addHint, closeExercises, exerciseRow, openExercise } from "./db.ts";
+import { addHint, closeExtras, extraRow, openExtra } from "./db.ts";
 import type { AttemptRow } from "./db.ts";
-import { exerciseView, submitExercise } from "./exercises.ts";
+import {
+  checkView,
+  checkingOf,
+  hasLesson,
+  isAuthored,
+  previewAnswer,
+  problem,
+  problemInfo,
+  problemLanguage,
+} from "./exercises.ts";
+import { extraView, submitExtra } from "./extras.ts";
 import {
   guidedProgress,
   lessonParts,
@@ -61,41 +71,31 @@ import {
   reviewPlan,
   soloWait,
 } from "./scheduler.ts";
-import {
-  courseLanguage,
-  hasLesson,
-  isAuthored,
-  previewTask,
-  problem,
-  problemInfo,
-  taskType,
-  taskView,
-} from "./tasks.ts";
 
 /** A course as the app names it. */
 const subject = (course: Course) => {
-  const { id, initials, name } = course;
+  const { id, initials, name, noun } = course;
 
-  return { id, initials, name, noun: taskType(course).noun };
+  return { id, initials, name, noun };
 };
 
 /** A rough time to solve a problem, for the review estimate. */
-const minutes = (course: Course, difficulty: Difficulty): number =>
-  taskType(course).minutes[difficulty];
+const minutes = (course: Course, { slug, difficulty }: ProblemInfo): number =>
+  isAuthored(course, slug) ? checkingOf(course, slug).minutes[difficulty] : 0;
 
 /** One problem as the app shows it. It carries no topic, so a review does not give its pattern away. */
 const problemView = (course: Course, slug: string) => {
   const info = problemInfo(course, slug);
 
   return {
+    // How the answer is checked, and what that shows. Null while it is not written.
+    check: checkView(course, slug),
     difficulty: info.difficulty,
     slug,
     statement: isAuthored(course, slug)
       ? problem(course, slug).statement
       : null,
     status: problemStatus(course, slug),
-    // What the workbench of this kind of task shows. Null while the task is not written.
-    task: taskView(course, slug),
     title: info.title,
   };
 };
@@ -120,11 +120,11 @@ const attemptView = (course: Course, attempt: AttemptRow) => ({
 /** What is open right now: the problem being solved, and the tutor's exercise if one is on screen. */
 const session = (course: Course) => {
   const open = currentAttempt(course);
-  const shown = openExercise(course);
+  const shown = openExtra(course);
 
   return {
     attempt: open && attemptView(course, open),
-    exercise: shown && exerciseView(course, shown),
+    exercise: shown && extraView(course, shown),
   };
 };
 
@@ -243,10 +243,7 @@ const track = (course: Course) => {
   return {
     ...subject(course),
     due: dueCount(course),
-    minutes: plan.reduce(
-      (sum, r) => sum + minutes(course, r.problem.difficulty),
-      0
-    ),
+    minutes: plan.reduce((sum, r) => sum + minutes(course, r.problem), 0),
     next_due: nextDue(course),
     problems: plan.length,
   };
@@ -278,7 +275,7 @@ const reviewHere = (course: Course) => {
     return null;
   }
 
-  startProblem(course, next.problem.slug, courseLanguage(course), "review");
+  startProblem(course, next.problem.slug, "review");
 
   return problemView(course, next.problem.slug);
 };
@@ -326,7 +323,7 @@ const openOn = (course: Course, slug: string): AttemptRow | null => {
 /** The learner's code for a problem. It can be edited only while the tutor has the problem open. */
 const readCode = (course: Course, { slug }: Slug) => {
   const open = openOn(course, slug);
-  const language = open?.language ?? courseLanguage(course);
+  const language = open?.language ?? problemLanguage(course, slug);
 
   return {
     editable: Boolean(open),
@@ -336,11 +333,11 @@ const readCode = (course: Course, { slug }: Slug) => {
 };
 
 /** What the learner's text prints on the shown input, as they type. Nothing is recorded. */
-const preview = (course: Course, { slug, text }: Params<"task.preview">) => {
-  const seen = previewTask(course, slug, text);
+const preview = (course: Course, { slug, text }: Params<"answer.preview">) => {
+  const seen = previewAnswer(course, slug, text);
 
   if (!seen) {
-    throw new Error("This kind of task shows no output while typing.");
+    throw new Error("This exercise shows no output while typing.");
   }
 
   return seen;
@@ -367,7 +364,8 @@ const runView = (run: RunResult) => ({
 });
 
 const runCode = (course: Course, { slug }: Slug) => {
-  const language = openOn(course, slug)?.language ?? courseLanguage(course);
+  const language =
+    openOn(course, slug)?.language ?? problemLanguage(course, slug);
 
   return runView(testSolution(course, slug, language).run);
 };
@@ -432,13 +430,13 @@ const submit = (
   course: Course,
   { id, response }: Params<"exercise.submit">
 ) => {
-  const result = submitExercise(course, id, response, null);
+  const result = submitExtra(course, id, response, null);
 
-  return { exercise: exerciseView(course, exerciseRow(course, id)), result };
+  return { exercise: extraView(course, extraRow(course, id)), result };
 };
 
 const closeExercise = (course: Course) => {
-  closeExercises(course);
+  closeExtras(course);
 
   return { closed: true };
 };
@@ -455,6 +453,7 @@ type Handlers = {
 };
 
 const handlers: Handlers = {
+  "answer.preview": preview,
   "attempt.give_up": giveUpCode,
   "attempt.pause": pauseCode,
   "code.read": readCode,
@@ -471,7 +470,6 @@ const handlers: Handlers = {
   "review.next": startReview,
   reviews,
   session,
-  "task.preview": preview,
 };
 
 const none = z.undefined();
@@ -481,6 +479,7 @@ const slugOnly = z.object({ slug: z.string().min(1) });
 type ParamSchemas = { [M in Method]: z.ZodType<Methods[M]["params"]> };
 
 const PARAMS: ParamSchemas = {
+  "answer.preview": z.object({ slug: z.string().min(1), text: z.string() }),
   "attempt.give_up": slugOnly,
   "attempt.pause": slugOnly,
   "code.read": slugOnly,
@@ -503,7 +502,6 @@ const PARAMS: ParamSchemas = {
   "review.next": z.object({ course: z.string().optional() }).optional(),
   reviews: none,
   session: none,
-  "task.preview": z.object({ slug: z.string().min(1), text: z.string() }),
 };
 
 const isMethod = (name: string): name is Method =>
@@ -538,7 +536,7 @@ const Request = z.object({
 // An extra exercise lasts for one sitting. One left open by an earlier run would cover the
 // lesson, so the app starts with none on screen.
 for (const c of courses()) {
-  closeExercises(c);
+  closeExtras(c);
   pauseUnknownAttempts(c);
 }
 

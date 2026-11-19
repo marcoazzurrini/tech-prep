@@ -48,10 +48,10 @@ export const retrievability = (card: Card, now = new Date()): number => {
   return scheduler.get_retrievability(card, now, false);
 };
 
-/** What a review came from: a problem attempt or a tutor-made exercise. */
+/** What a review came from: a problem attempt or an extra exercise from the tutor. */
 export interface Source {
   attemptId?: number;
-  exerciseId?: number;
+  extraId?: number;
 }
 
 const log = (
@@ -71,7 +71,7 @@ const log = (
       concept_id: conceptId,
       difficulty: card.difficulty,
       due: card.due.toISOString(),
-      exercise_id: source.exerciseId ?? null,
+      extra_id: source.extraId ?? null,
       implicit_credit: credit,
       rating,
       source_concept: sourceConcept,

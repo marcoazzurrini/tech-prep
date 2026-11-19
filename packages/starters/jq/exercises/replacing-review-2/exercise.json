@@ -1,0 +1,33 @@
+{
+  "title": "Clean label names",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.labels | ascii_downcase | split(\", \") | map(gsub(\" \"; \"-\"))' data.json",
+    "tests": [
+      {
+        "input": {
+          "issue": 41,
+          "labels": "Bug, Needs Review, High Priority"
+        },
+        "expected": "[\n  \"bug\",\n  \"needs-review\",\n  \"high-priority\"\n]"
+      },
+      {
+        "input": {
+          "issue": 42,
+          "labels": "Docs"
+        },
+        "expected": "[\n  \"docs\"\n]"
+      },
+      {
+        "input": {
+          "issue": 57,
+          "labels": "Good First Issue, UI"
+        },
+        "expected": "[\n  \"good-first-issue\",\n  \"ui\"\n]"
+      }
+    ]
+  }
+}

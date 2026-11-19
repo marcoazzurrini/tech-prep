@@ -1,0 +1,33 @@
+{
+  "title": "Extension of a file",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.file | split(\".\") | .[-1]' data.json",
+    "tests": [
+      {
+        "input": {
+          "file": "report.final.pdf",
+          "size": 2048
+        },
+        "expected": "\"pdf\""
+      },
+      {
+        "input": {
+          "file": "notes.txt",
+          "size": 120
+        },
+        "expected": "\"txt\""
+      },
+      {
+        "input": {
+          "file": "backup.2026.tar.gz",
+          "size": 90311
+        },
+        "expected": "\"gz\""
+      }
+    ]
+  }
+}

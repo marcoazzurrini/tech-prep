@@ -1,0 +1,59 @@
+{
+  "title": "Slow requests",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq --argjson limit 500 '.[] | select(.ms > $limit) | .path' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "path": "/login",
+            "ms": 120
+          },
+          {
+            "path": "/search",
+            "ms": 900
+          },
+          {
+            "path": "/export",
+            "ms": 2400
+          },
+          {
+            "path": "/home",
+            "ms": 500
+          }
+        ],
+        "expected": "\"/search\"\n\"/export\""
+      },
+      {
+        "input": [
+          {
+            "path": "/cart",
+            "ms": 501
+          },
+          {
+            "path": "/pay",
+            "ms": 499
+          }
+        ],
+        "expected": "\"/cart\""
+      },
+      {
+        "input": [
+          {
+            "path": "/health",
+            "ms": 3
+          },
+          {
+            "path": "/ping",
+            "ms": 1
+          }
+        ],
+        "expected": ""
+      }
+    ]
+  }
+}

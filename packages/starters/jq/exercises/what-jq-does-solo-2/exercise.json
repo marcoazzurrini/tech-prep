@@ -1,0 +1,19 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.' data.json",
+      "file": "data.json",
+      "input": {
+        "ok": true,
+        "count": 2
+      },
+      "show_command": true
+    },
+    "expected": "{\n  \"ok\": true,\n  \"count\": 2\n}"
+  }
+}

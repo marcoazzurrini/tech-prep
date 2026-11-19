@@ -1,0 +1,24 @@
+{
+  "title": "Mutual Friends",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "mutual_friends",
+      "typescript": "mutualFriends"
+    },
+    "stubs": {
+      "python": "def mutual_friends(n: int, friendships: list[list[int]], a: int, b: int) -> list[int]:\n    pass\n",
+      "typescript": "export function mutualFriends(n: number, friendships: number[][], a: number, b: number): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[4,[[0,1],[0,2],[1,2],[2,3]],0,1],"expected":[2]},
+      {"args":[3,[],0,1],"expected":[]},
+      {"args":[5,[[0,2],[0,3],[0,4],[1,4],[1,2],[1,3]],0,1],"expected":[2,3,4]},
+      {"args":[4,[[0,1],[0,2],[1,2],[2,3]],0,3],"expected":[2]},
+      {"args":[2,[[0,1]],0,1],"expected":[]},
+      {"args":[5,[[4,0],[4,1],[3,0],[3,1],[0,1]],1,0],"expected":[3,4]},
+      {"args":[4,[[0,1],[2,3]],0,2],"expected":[]},
+      {"args":[6,[[5,0],[5,1],[5,2],[0,3],[1,3],[2,4]],0,1],"expected":[3,5]}
+    ]
+  }
+}

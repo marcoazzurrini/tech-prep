@@ -1,0 +1,39 @@
+{
+  "title": "Readings of a sensor",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.readings[] | tonumber]' data.json",
+    "tests": [
+      {
+        "input": {
+          "sensor": "temp-1",
+          "readings": [
+            "21.5",
+            "22",
+            "19.8"
+          ]
+        },
+        "expected": "[\n  21.5,\n  22,\n  19.8\n]"
+      },
+      {
+        "input": {
+          "sensor": "temp-2",
+          "readings": [
+            "-3.2"
+          ]
+        },
+        "expected": "[\n  -3.2\n]"
+      },
+      {
+        "input": {
+          "sensor": "temp-3",
+          "readings": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

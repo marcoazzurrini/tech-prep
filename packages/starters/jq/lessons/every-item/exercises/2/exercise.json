@@ -1,0 +1,29 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.[] | length' data.json",
+      "file": "data.json",
+      "input": [
+        [
+          "login.test",
+          "logout.test"
+        ],
+        [
+          "cart.test"
+        ],
+        [
+          "pay.test",
+          "refund.test",
+          "tax.test"
+        ]
+      ],
+      "show_command": true
+    },
+    "expected": "2\n1\n3"
+  }
+}

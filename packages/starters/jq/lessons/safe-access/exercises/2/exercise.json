@@ -1,0 +1,27 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.[] | .id?' data.json",
+      "file": "data.json",
+      "input": [
+        {
+          "id": 4
+        },
+        "n/a",
+        {
+          "name": "x"
+        },
+        {
+          "id": 9
+        }
+      ],
+      "show_command": true
+    },
+    "expected": "4\nnull\n9"
+  }
+}

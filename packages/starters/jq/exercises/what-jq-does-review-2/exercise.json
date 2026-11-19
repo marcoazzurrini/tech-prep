@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.done' data.json",
+      "file": "data.json",
+      "input": {
+        "task": "backup",
+        "done": false,
+        "minutes": 12
+      },
+      "show_command": true
+    },
+    "expected": "false"
+  }
+}

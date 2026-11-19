@@ -1,0 +1,83 @@
+{
+  "title": "Busiest reviewer",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'group_by(.reviewer) | map(length) | sort | .[-1]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 71,
+            "reviewer": "kim"
+          },
+          {
+            "id": 72,
+            "reviewer": "lee"
+          },
+          {
+            "id": 73,
+            "reviewer": "kim"
+          },
+          {
+            "id": 74,
+            "reviewer": "sam"
+          },
+          {
+            "id": 75,
+            "reviewer": "kim"
+          }
+        ],
+        "expected": "3"
+      },
+      {
+        "input": [
+          {
+            "id": 80,
+            "reviewer": "ana"
+          },
+          {
+            "id": 81,
+            "reviewer": "ben"
+          }
+        ],
+        "expected": "1"
+      },
+      {
+        "input": [
+          {
+            "id": 90,
+            "reviewer": "uma"
+          },
+          {
+            "id": 91,
+            "reviewer": "pat"
+          },
+          {
+            "id": 92,
+            "reviewer": "pat"
+          },
+          {
+            "id": 93,
+            "reviewer": "uma"
+          },
+          {
+            "id": 94,
+            "reviewer": "joy"
+          },
+          {
+            "id": 95,
+            "reviewer": "pat"
+          },
+          {
+            "id": 96,
+            "reviewer": "pat"
+          }
+        ],
+        "expected": "4"
+      }
+    ]
+  }
+}

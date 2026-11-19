@@ -15,6 +15,7 @@ import {
   syntaxHighlighting,
 } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
+import type { Extension } from "@codemirror/state";
 import {
   EditorView,
   drawSelection,
@@ -109,11 +110,17 @@ const MODES = new Map([
   ["visual", "VISUAL"],
 ]);
 
+/** The languages the editor colours. */
+const GRAMMARS = new Map<string, () => Extension>([
+  ["python", python],
+  ["typescript", () => javascript({ typescript: true })],
+]);
+
 interface CodeEditorProps {
   /** The text the editor opens with. Change `key` to load other text. */
   initialValue: string;
-  /** A jq filter gets no syntax colours: it is a line or two. */
-  language: "typescript" | "python" | "jq";
+  /** What the text is written in. A language the editor has no grammar for gets no colours. */
+  language: string;
   /** Shown in the status strip, such as "two-sum.ts". */
   file: string;
   readOnly?: boolean;
@@ -170,13 +177,7 @@ export const CodeEditor = ({
             ...historyKeymap,
             indentWithTab,
           ]),
-          ...(language === "jq"
-            ? []
-            : [
-                language === "python"
-                  ? python()
-                  : javascript({ typescript: true }),
-              ]),
+          GRAMMARS.get(language)?.() ?? [],
           syntaxHighlighting(syntax),
           theme,
           EditorView.updateListener.of((update) => {

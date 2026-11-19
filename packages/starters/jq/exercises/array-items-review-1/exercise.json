@@ -1,0 +1,43 @@
+{
+  "title": "First track",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.playlist[0]' data.json",
+    "tests": [
+      {
+        "input": {
+          "owner": "ada",
+          "playlist": [
+            "intro",
+            "verse",
+            "bridge",
+            "outro"
+          ]
+        },
+        "expected": "\"intro\""
+      },
+      {
+        "input": {
+          "owner": "bo",
+          "playlist": [
+            "warmup",
+            "sprint"
+          ]
+        },
+        "expected": "\"warmup\""
+      },
+      {
+        "input": {
+          "owner": "cy",
+          "playlist": [
+            "dawn"
+          ]
+        },
+        "expected": "\"dawn\""
+      }
+    ]
+  }
+}

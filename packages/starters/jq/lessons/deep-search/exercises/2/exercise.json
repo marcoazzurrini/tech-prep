@@ -1,0 +1,45 @@
+{
+  "title": "All the text",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.. | select(type == \"string\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "title": "Welcome",
+          "views": 310,
+          "body": {
+            "intro": "Hello there",
+            "links": [
+              "Docs",
+              "Blog"
+            ]
+          }
+        },
+        "expected": "\"Welcome\"\n\"Hello there\"\n\"Docs\"\n\"Blog\""
+      },
+      {
+        "input": {
+          "title": "Empty page",
+          "views": 0,
+          "body": {}
+        },
+        "expected": "\"Empty page\""
+      },
+      {
+        "input": {
+          "views": 12,
+          "body": {
+            "links": [
+              "Help"
+            ]
+          }
+        },
+        "expected": "\"Help\""
+      }
+    ]
+  }
+}

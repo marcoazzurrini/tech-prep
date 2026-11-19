@@ -1,0 +1,43 @@
+{
+  "title": "A request for the log",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'del(.headers.authorization)' data.json",
+    "tests": [
+      {
+        "input": {
+          "method": "GET",
+          "path": "/users",
+          "headers": {
+            "accept": "application/json",
+            "authorization": "Bearer t-19a"
+          }
+        },
+        "expected": "{\n  \"method\": \"GET\",\n  \"path\": \"/users\",\n  \"headers\": {\n    \"accept\": \"application/json\"\n  }\n}"
+      },
+      {
+        "input": {
+          "method": "POST",
+          "path": "/orders",
+          "headers": {
+            "authorization": "Bearer t-77c"
+          }
+        },
+        "expected": "{\n  \"method\": \"POST\",\n  \"path\": \"/orders\",\n  \"headers\": {}\n}"
+      },
+      {
+        "input": {
+          "method": "GET",
+          "path": "/health",
+          "headers": {
+            "accept": "text/plain"
+          }
+        },
+        "expected": "{\n  \"method\": \"GET\",\n  \"path\": \"/health\",\n  \"headers\": {\n    \"accept\": \"text/plain\"\n  }\n}"
+      }
+    ]
+  }
+}

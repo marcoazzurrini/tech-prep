@@ -13,10 +13,10 @@ import {
 import type { Course, ProblemInfo } from "./content.ts";
 import { attemptsFor, conceptRow, saveConceptRow } from "./db.ts";
 import type { AttemptRow, Stage } from "./db.ts";
+import { hasLesson, isAuthored } from "./exercises.ts";
 import { problemCredit } from "./fire.ts";
 import { cardOf, explicitReview, isDue, retrievability } from "./memory.ts";
 import type { Source } from "./memory.ts";
-import { hasLesson, isAuthored } from "./tasks.ts";
 
 const DAY_MS = 86_400_000;
 

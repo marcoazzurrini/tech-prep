@@ -1,0 +1,57 @@
+{
+  "title": "Ticket ids as text",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.tickets[] | .id | tostring]' data.json",
+    "tests": [
+      {
+        "input": {
+          "tickets": [
+            {
+              "id": 101,
+              "title": "Login fails"
+            },
+            {
+              "id": "102",
+              "title": "Typo on home page"
+            },
+            {
+              "id": 103,
+              "title": "Slow search"
+            }
+          ]
+        },
+        "expected": "[\n  \"101\",\n  \"102\",\n  \"103\"\n]"
+      },
+      {
+        "input": {
+          "tickets": [
+            {
+              "id": "7",
+              "title": "Add dark mode"
+            }
+          ]
+        },
+        "expected": "[\n  \"7\"\n]"
+      },
+      {
+        "input": {
+          "tickets": [
+            {
+              "id": 250,
+              "title": "Export to CSV"
+            },
+            {
+              "id": 251,
+              "title": "Fix footer"
+            }
+          ]
+        },
+        "expected": "[\n  \"250\",\n  \"251\"\n]"
+      }
+    ]
+  }
+}

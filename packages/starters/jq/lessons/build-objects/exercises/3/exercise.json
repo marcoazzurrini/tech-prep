@@ -1,0 +1,63 @@
+{
+  "title": "Servers in short",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.[] | {host: .name, port}]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "web-1",
+            "port": 443,
+            "region": "eu",
+            "up": true
+          },
+          {
+            "name": "db-1",
+            "port": 5432,
+            "region": "eu",
+            "up": false
+          }
+        ],
+        "expected": "[\n  {\n    \"host\": \"web-1\",\n    \"port\": 443\n  },\n  {\n    \"host\": \"db-1\",\n    \"port\": 5432\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "cache-1",
+            "port": 6379,
+            "region": "us",
+            "up": true
+          }
+        ],
+        "expected": "[\n  {\n    \"host\": \"cache-1\",\n    \"port\": 6379\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "web-2",
+            "port": 8443,
+            "region": "us",
+            "up": true
+          },
+          {
+            "name": "web-3",
+            "port": 8443,
+            "region": "ap",
+            "up": true
+          },
+          {
+            "name": "mq-1",
+            "port": 5672,
+            "region": "eu",
+            "up": true
+          }
+        ],
+        "expected": "[\n  {\n    \"host\": \"web-2\",\n    \"port\": 8443\n  },\n  {\n    \"host\": \"web-3\",\n    \"port\": 8443\n  },\n  {\n    \"host\": \"mq-1\",\n    \"port\": 5672\n  }\n]"
+      }
+    ]
+  }
+}

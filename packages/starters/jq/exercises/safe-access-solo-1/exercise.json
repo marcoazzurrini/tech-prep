@@ -1,0 +1,50 @@
+{
+  "title": "Messages in the log",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[] | .msg?' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "level": "info",
+            "msg": "server started"
+          },
+          "--- restart ---",
+          {
+            "level": "error",
+            "msg": "disk full"
+          }
+        ],
+        "expected": "\"server started\"\n\"disk full\""
+      },
+      {
+        "input": [
+          {
+            "level": "warn",
+            "msg": "slow query"
+          }
+        ],
+        "expected": "\"slow query\""
+      },
+      {
+        "input": [
+          "--- begin ---",
+          {
+            "level": "info",
+            "msg": "job queued"
+          },
+          {
+            "level": "info",
+            "msg": "job done"
+          },
+          0
+        ],
+        "expected": "\"job queued\"\n\"job done\""
+      }
+    ]
+  }
+}

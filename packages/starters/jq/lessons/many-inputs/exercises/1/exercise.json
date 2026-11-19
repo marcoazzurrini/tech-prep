@@ -1,0 +1,16 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.status' data.jsonl",
+      "file": "data.jsonl",
+      "input_text": "{\"path\": \"/\", \"status\": 200}\n{\"path\": \"/admin\", \"status\": 403}\n{\"path\": \"/old\", \"status\": 404}\n",
+      "show_command": true
+    },
+    "expected": "200\n403\n404"
+  }
+}

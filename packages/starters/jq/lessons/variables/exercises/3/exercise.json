@@ -1,0 +1,59 @@
+{
+  "title": "Branches of every repo",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[] | .repo as $repo | .branches[] | {repo: $repo, branch: .}' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "repo": "api",
+            "branches": [
+              "main",
+              "dev"
+            ]
+          },
+          {
+            "repo": "web",
+            "branches": [
+              "main"
+            ]
+          }
+        ],
+        "expected": "{\n  \"repo\": \"api\",\n  \"branch\": \"main\"\n}\n{\n  \"repo\": \"api\",\n  \"branch\": \"dev\"\n}\n{\n  \"repo\": \"web\",\n  \"branch\": \"main\"\n}"
+      },
+      {
+        "input": [
+          {
+            "repo": "docs",
+            "branches": [
+              "main",
+              "v2",
+              "draft"
+            ]
+          }
+        ],
+        "expected": "{\n  \"repo\": \"docs\",\n  \"branch\": \"main\"\n}\n{\n  \"repo\": \"docs\",\n  \"branch\": \"v2\"\n}\n{\n  \"repo\": \"docs\",\n  \"branch\": \"draft\"\n}"
+      },
+      {
+        "input": [
+          {
+            "repo": "cli",
+            "branches": []
+          },
+          {
+            "repo": "jobs",
+            "branches": [
+              "main",
+              "fix-retry"
+            ]
+          }
+        ],
+        "expected": "{\n  \"repo\": \"jobs\",\n  \"branch\": \"main\"\n}\n{\n  \"repo\": \"jobs\",\n  \"branch\": \"fix-retry\"\n}"
+      }
+    ]
+  }
+}

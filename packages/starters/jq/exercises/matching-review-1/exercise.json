@@ -1,0 +1,40 @@
+{
+  "title": "Secure link or not",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.url | startswith(\"https://\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "label": "Docs",
+          "url": "https://docs.example.com/start"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "label": "Old wiki",
+          "url": "http://wiki.example.com"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "label": "Redirect",
+          "url": "http://example.com/go?to=https://example.com"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "label": "Status",
+          "url": "https://status.example.com"
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "title": "Address of a server",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '\"\\(.host):\\(.port)\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "host": "db-1.internal",
+          "port": 5432,
+          "tls": true
+        },
+        "expected": "\"db-1.internal:5432\""
+      },
+      {
+        "input": {
+          "host": "localhost",
+          "port": 3000,
+          "tls": false
+        },
+        "expected": "\"localhost:3000\""
+      },
+      {
+        "input": {
+          "host": "cache.example.com",
+          "port": 6379,
+          "tls": true
+        },
+        "expected": "\"cache.example.com:6379\""
+      }
+    ]
+  }
+}

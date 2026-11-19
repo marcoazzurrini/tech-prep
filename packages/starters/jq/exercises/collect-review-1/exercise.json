@@ -1,0 +1,77 @@
+{
+  "title": "Steps in each job",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.jobs[] | .steps | length]' data.json",
+    "tests": [
+      {
+        "input": {
+          "workflow": "ci",
+          "jobs": [
+            {
+              "name": "lint",
+              "steps": [
+                "checkout",
+                "lint"
+              ]
+            },
+            {
+              "name": "test",
+              "steps": [
+                "checkout",
+                "install",
+                "unit",
+                "e2e"
+              ]
+            }
+          ]
+        },
+        "expected": "[\n  2,\n  4\n]"
+      },
+      {
+        "input": {
+          "workflow": "release",
+          "jobs": [
+            {
+              "name": "publish",
+              "steps": [
+                "checkout",
+                "build",
+                "upload"
+              ]
+            }
+          ]
+        },
+        "expected": "[\n  3\n]"
+      },
+      {
+        "input": {
+          "workflow": "nightly",
+          "jobs": [
+            {
+              "name": "scan",
+              "steps": [
+                "scan"
+              ]
+            },
+            {
+              "name": "report",
+              "steps": []
+            },
+            {
+              "name": "backup",
+              "steps": [
+                "dump",
+                "copy"
+              ]
+            }
+          ]
+        },
+        "expected": "[\n  1,\n  0,\n  2\n]"
+      }
+    ]
+  }
+}

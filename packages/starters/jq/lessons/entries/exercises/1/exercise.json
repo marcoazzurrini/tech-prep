@@ -1,0 +1,43 @@
+{
+  "title": "Scripts as pairs",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.scripts | .' data.json",
+    "reference": "jq '.scripts | to_entries' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "my-app",
+          "scripts": {
+            "build": "tsc",
+            "test": "vitest"
+          }
+        },
+        "expected": "[\n  {\n    \"key\": \"build\",\n    \"value\": \"tsc\"\n  },\n  {\n    \"key\": \"test\",\n    \"value\": \"vitest\"\n  }\n]"
+      },
+      {
+        "input": {
+          "name": "site",
+          "scripts": {
+            "dev": "vite"
+          }
+        },
+        "expected": "[\n  {\n    \"key\": \"dev\",\n    \"value\": \"vite\"\n  }\n]"
+      },
+      {
+        "input": {
+          "name": "lib",
+          "scripts": {
+            "lint": "eslint .",
+            "format": "prettier -w .",
+            "check": "tsc --noEmit"
+          }
+        },
+        "expected": "[\n  {\n    \"key\": \"lint\",\n    \"value\": \"eslint .\"\n  },\n  {\n    \"key\": \"format\",\n    \"value\": \"prettier -w .\"\n  },\n  {\n    \"key\": \"check\",\n    \"value\": \"tsc --noEmit\"\n  }\n]"
+      }
+    ]
+  }
+}

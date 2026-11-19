@@ -1,0 +1,55 @@
+{
+  "title": "Paid or due",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map(if .due > 0 then \"due\" else \"paid\" end)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": "INV-1",
+            "due": 0
+          },
+          {
+            "id": "INV-2",
+            "due": 120
+          },
+          {
+            "id": "INV-3",
+            "due": 0
+          }
+        ],
+        "expected": "[\n  \"paid\",\n  \"due\",\n  \"paid\"\n]"
+      },
+      {
+        "input": [
+          {
+            "id": "INV-7",
+            "due": 45.5
+          }
+        ],
+        "expected": "[\n  \"due\"\n]"
+      },
+      {
+        "input": [
+          {
+            "id": "INV-8",
+            "due": 10
+          },
+          {
+            "id": "INV-9",
+            "due": 300
+          }
+        ],
+        "expected": "[\n  \"due\",\n  \"due\"\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  }
+}

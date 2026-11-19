@@ -1,0 +1,52 @@
+{
+  "title": "Fix the job list",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "start": "jq -c '.' data.json",
+    "reference": "jq -c '.[]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "job": "backup",
+            "minutes": 12
+          },
+          {
+            "job": "report",
+            "minutes": 3
+          },
+          {
+            "job": "cleanup",
+            "minutes": 1
+          }
+        ],
+        "expected": "{\"job\":\"backup\",\"minutes\":12}\n{\"job\":\"report\",\"minutes\":3}\n{\"job\":\"cleanup\",\"minutes\":1}"
+      },
+      {
+        "input": [
+          {
+            "job": "sync",
+            "minutes": 45
+          },
+          {
+            "job": "index",
+            "minutes": 8
+          }
+        ],
+        "expected": "{\"job\":\"sync\",\"minutes\":45}\n{\"job\":\"index\",\"minutes\":8}"
+      },
+      {
+        "input": [
+          {
+            "job": "email",
+            "minutes": 2
+          }
+        ],
+        "expected": "{\"job\":\"email\",\"minutes\":2}"
+      }
+    ]
+  }
+}

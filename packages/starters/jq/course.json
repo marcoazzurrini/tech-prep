@@ -2,7 +2,7 @@
   "id": "jq",
   "name": "jq",
   "initials": "jq",
-  "kind": "jq",
-  "version": 3,
-  "format": 1
+  "noun": "tasks",
+  "version": 4,
+  "format": 2
 }

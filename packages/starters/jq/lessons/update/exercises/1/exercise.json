@@ -1,0 +1,37 @@
+{
+  "title": "One ticket sold",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.seats_left | . - 1' data.json",
+    "reference": "jq '.seats_left |= . - 1' data.json",
+    "tests": [
+      {
+        "input": {
+          "event": "jq meetup",
+          "city": "Oslo",
+          "seats_left": 12
+        },
+        "expected": "{\n  \"event\": \"jq meetup\",\n  \"city\": \"Oslo\",\n  \"seats_left\": 11\n}"
+      },
+      {
+        "input": {
+          "event": "Go night",
+          "city": "Bergen",
+          "seats_left": 1
+        },
+        "expected": "{\n  \"event\": \"Go night\",\n  \"city\": \"Bergen\",\n  \"seats_left\": 0\n}"
+      },
+      {
+        "input": {
+          "event": "Rust day",
+          "city": "Oslo",
+          "seats_left": 80
+        },
+        "expected": "{\n  \"event\": \"Rust day\",\n  \"city\": \"Oslo\",\n  \"seats_left\": 79\n}"
+      }
+    ]
+  }
+}

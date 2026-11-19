@@ -1,0 +1,44 @@
+{
+  "title": "Trail of a page",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.trail | join(\" / \")' data.json",
+    "tests": [
+      {
+        "input": {
+          "page": "Billing",
+          "trail": [
+            "Home",
+            "Settings",
+            "Billing"
+          ]
+        },
+        "expected": "\"Home / Settings / Billing\""
+      },
+      {
+        "input": {
+          "page": "Home",
+          "trail": [
+            "Home"
+          ]
+        },
+        "expected": "\"Home\""
+      },
+      {
+        "input": {
+          "page": "Keys",
+          "trail": [
+            "Home",
+            "Team",
+            "Security",
+            "Keys"
+          ]
+        },
+        "expected": "\"Home / Team / Security / Keys\""
+      }
+    ]
+  }
+}

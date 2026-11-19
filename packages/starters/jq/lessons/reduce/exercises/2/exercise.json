@@ -1,0 +1,61 @@
+{
+  "title": "Total of the orders",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'reduce .orders[] as $o (0; . + .total)' data.json",
+    "reference": "jq 'reduce .orders[] as $o (0; . + $o.total)' data.json",
+    "tests": [
+      {
+        "input": {
+          "customer": "ada@example.com",
+          "orders": [
+            {
+              "id": 1,
+              "total": 40
+            },
+            {
+              "id": 2,
+              "total": 15
+            },
+            {
+              "id": 3,
+              "total": 7
+            }
+          ]
+        },
+        "expected": "62"
+      },
+      {
+        "input": {
+          "customer": "bo@example.com",
+          "orders": [
+            {
+              "id": 9,
+              "total": 120
+            }
+          ]
+        },
+        "expected": "120"
+      },
+      {
+        "input": {
+          "customer": "cy@example.com",
+          "orders": [
+            {
+              "id": 4,
+              "total": 5
+            },
+            {
+              "id": 5,
+              "total": 5
+            }
+          ]
+        },
+        "expected": "10"
+      }
+    ]
+  }
+}

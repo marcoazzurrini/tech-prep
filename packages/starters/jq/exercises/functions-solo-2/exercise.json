@@ -1,0 +1,105 @@
+{
+  "title": "Newest mail per folder",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'def newest: .[-1].subject; {inbox: .inbox | newest, sent: .sent | newest, drafts: .drafts | newest}' data.json",
+    "tests": [
+      {
+        "input": {
+          "inbox": [
+            {
+              "subject": "Welcome",
+              "read": true
+            },
+            {
+              "subject": "Your invoice",
+              "read": false
+            }
+          ],
+          "sent": [
+            {
+              "subject": "Re: Welcome",
+              "read": true
+            }
+          ],
+          "drafts": [
+            {
+              "subject": "Holiday plan",
+              "read": true
+            }
+          ]
+        },
+        "expected": "{\n  \"inbox\": \"Your invoice\",\n  \"sent\": \"Re: Welcome\",\n  \"drafts\": \"Holiday plan\"\n}"
+      },
+      {
+        "input": {
+          "inbox": [
+            {
+              "subject": "Build failed",
+              "read": false
+            }
+          ],
+          "sent": [
+            {
+              "subject": "Lunch?",
+              "read": true
+            },
+            {
+              "subject": "Fixed it",
+              "read": true
+            }
+          ],
+          "drafts": [
+            {
+              "subject": "Notes",
+              "read": true
+            },
+            {
+              "subject": "Ideas",
+              "read": true
+            }
+          ]
+        },
+        "expected": "{\n  \"inbox\": \"Build failed\",\n  \"sent\": \"Fixed it\",\n  \"drafts\": \"Ideas\"\n}"
+      },
+      {
+        "input": {
+          "inbox": [
+            {
+              "subject": "A",
+              "read": true
+            },
+            {
+              "subject": "B",
+              "read": true
+            },
+            {
+              "subject": "C",
+              "read": false
+            }
+          ],
+          "sent": [
+            {
+              "subject": "D",
+              "read": true
+            }
+          ],
+          "drafts": [
+            {
+              "subject": "E",
+              "read": true
+            },
+            {
+              "subject": "F",
+              "read": true
+            }
+          ]
+        },
+        "expected": "{\n  \"inbox\": \"C\",\n  \"sent\": \"D\",\n  \"drafts\": \"F\"\n}"
+      }
+    ]
+  }
+}

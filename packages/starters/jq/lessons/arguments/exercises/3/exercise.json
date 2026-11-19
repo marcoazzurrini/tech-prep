@@ -1,0 +1,25 @@
+{
+  "title": "A deploy request",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -n --arg service api --argjson replicas 3 '{service: $service, replicas: $replicas}'",
+    "constant": true,
+    "tests": [
+      {
+        "input": null,
+        "expected": "{\n  \"service\": \"api\",\n  \"replicas\": 3\n}"
+      },
+      {
+        "input": null,
+        "expected": "{\n  \"service\": \"api\",\n  \"replicas\": 3\n}"
+      },
+      {
+        "input": null,
+        "expected": "{\n  \"service\": \"api\",\n  \"replicas\": 3\n}"
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "title": "Region of a server",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.region' data.json",
+    "reference": "jq '.region // \"unknown\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "host": "web-3",
+          "port": 443
+        },
+        "expected": "\"unknown\""
+      },
+      {
+        "input": {
+          "host": "db-1",
+          "region": "eu-west",
+          "port": 5432
+        },
+        "expected": "\"eu-west\""
+      },
+      {
+        "input": {
+          "host": "cache-2",
+          "region": null,
+          "port": 6379
+        },
+        "expected": "\"unknown\""
+      },
+      {
+        "input": {
+          "host": "web-9",
+          "region": "us-east",
+          "port": 443
+        },
+        "expected": "\"us-east\""
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "title": "Jobs that ran",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.jsonl",
+    "reference": "jq -s 'map(.job)' data.jsonl",
+    "tests": [
+      {
+        "input_text": "{\"job\": \"backup\", \"ok\": true}\n{\"job\": \"report\", \"ok\": false}\n{\"job\": \"cleanup\", \"ok\": true}\n",
+        "expected": "[\n  \"backup\",\n  \"report\",\n  \"cleanup\"\n]"
+      },
+      {
+        "input_text": "{\"job\": \"sync\", \"ok\": true}\n",
+        "expected": "[\n  \"sync\"\n]"
+      },
+      {
+        "input_text": "{\"job\": \"index\", \"ok\": true}\n{\"job\": \"index\", \"ok\": true}\n",
+        "expected": "[\n  \"index\",\n  \"index\"\n]"
+      }
+    ]
+  }
+}

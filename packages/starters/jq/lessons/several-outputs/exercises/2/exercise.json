@@ -1,0 +1,46 @@
+{
+  "title": "Fix the filter",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.owner | .login, .stars' data.json",
+    "reference": "jq '.owner.login, .stars' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "atlas",
+          "stars": 318,
+          "owner": {
+            "login": "mira",
+            "id": 4821
+          }
+        },
+        "expected": "\"mira\"\n318"
+      },
+      {
+        "input": {
+          "name": "notes",
+          "stars": 0,
+          "owner": {
+            "login": "tomas",
+            "id": 17
+          }
+        },
+        "expected": "\"tomas\"\n0"
+      },
+      {
+        "input": {
+          "name": "router",
+          "stars": 12950,
+          "owner": {
+            "login": "core-team",
+            "id": 2
+          }
+        },
+        "expected": "\"core-team\"\n12950"
+      }
+    ]
+  }
+}

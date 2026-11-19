@@ -1,0 +1,52 @@
+{
+  "title": "Emails in one array",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.[] | .email' data.json",
+    "reference": "jq '[.[] | .email]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "Ada",
+            "email": "ada@example.com"
+          },
+          {
+            "name": "Bo",
+            "email": "bo@example.com"
+          }
+        ],
+        "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "Cy",
+            "email": "cy@example.com"
+          }
+        ],
+        "expected": "[\n  \"cy@example.com\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "Dee",
+            "email": "dee@example.com"
+          },
+          {
+            "name": "Eli",
+            "email": "eli@example.com"
+          },
+          {
+            "name": "Fay",
+            "email": "fay@example.com"
+          }
+        ],
+        "expected": "[\n  \"dee@example.com\",\n  \"eli@example.com\",\n  \"fay@example.com\"\n]"
+      }
+    ]
+  }
+}

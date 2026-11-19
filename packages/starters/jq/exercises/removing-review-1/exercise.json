@@ -1,0 +1,48 @@
+{
+  "title": "The last job is cancelled",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'del(.jobs[-1])' data.json",
+    "tests": [
+      {
+        "input": {
+          "id": 88,
+          "branch": "main",
+          "jobs": [
+            "lint",
+            "test",
+            "deploy"
+          ]
+        },
+        "expected": "{\n  \"id\": 88,\n  \"branch\": \"main\",\n  \"jobs\": [\n    \"lint\",\n    \"test\"\n  ]\n}"
+      },
+      {
+        "input": {
+          "id": 89,
+          "branch": "fix-login",
+          "jobs": [
+            "lint"
+          ]
+        },
+        "expected": "{\n  \"id\": 89,\n  \"branch\": \"fix-login\",\n  \"jobs\": []\n}"
+      },
+      {
+        "input": {
+          "id": 90,
+          "branch": "main",
+          "jobs": [
+            "lint",
+            "test",
+            "build",
+            "scan",
+            "deploy"
+          ]
+        },
+        "expected": "{\n  \"id\": 90,\n  \"branch\": \"main\",\n  \"jobs\": [\n    \"lint\",\n    \"test\",\n    \"build\",\n    \"scan\"\n  ]\n}"
+      }
+    ]
+  }
+}

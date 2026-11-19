@@ -1,0 +1,60 @@
+{
+  "title": "Emails of the team",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r '.members | .[] | .email' data.json",
+    "tests": [
+      {
+        "input": {
+          "team": "web",
+          "members": [
+            {
+              "name": "Lena",
+              "email": "lena@example.com"
+            },
+            {
+              "name": "Omar",
+              "email": "omar@example.com"
+            },
+            {
+              "name": "Kofi",
+              "email": "kofi@example.com"
+            }
+          ]
+        },
+        "expected": "lena@example.com\nomar@example.com\nkofi@example.com"
+      },
+      {
+        "input": {
+          "team": "ops",
+          "members": [
+            {
+              "name": "Ines",
+              "email": "ines@example.com"
+            }
+          ]
+        },
+        "expected": "ines@example.com"
+      },
+      {
+        "input": {
+          "team": "data",
+          "members": [
+            {
+              "name": "Yuki",
+              "email": "yuki@example.com"
+            },
+            {
+              "name": "Sam",
+              "email": "sam@example.com"
+            }
+          ]
+        },
+        "expected": "yuki@example.com\nsam@example.com"
+      }
+    ]
+  }
+}

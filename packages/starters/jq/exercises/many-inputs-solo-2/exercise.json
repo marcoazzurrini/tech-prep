@@ -1,0 +1,28 @@
+{
+  "title": "Payments in the file",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.jsonl",
+    "reference": "jq -s 'length' data.jsonl",
+    "tests": [
+      {
+        "input_text": "{\"id\": \"p-1\", \"amount\": 40, \"currency\": \"EUR\"}\n{\"id\": \"p-2\", \"amount\": 15, \"currency\": \"EUR\"}\n{\"id\": \"p-3\", \"amount\": 99, \"currency\": \"USD\"}\n{\"id\": \"p-4\", \"amount\": 7, \"currency\": \"EUR\"}\n",
+        "expected": "4"
+      },
+      {
+        "input_text": "{\"id\": \"p-9\", \"amount\": 250, \"currency\": \"USD\"}\n",
+        "expected": "1"
+      },
+      {
+        "input_text": "{\"id\": \"p-5\", \"amount\": 3, \"currency\": \"NOK\"}\n{\"id\": \"p-6\", \"amount\": 8, \"currency\": \"NOK\"}\n",
+        "expected": "2"
+      },
+      {
+        "input_text": "",
+        "expected": "0"
+      }
+    ]
+  }
+}

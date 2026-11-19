@@ -1,0 +1,67 @@
+{
+  "title": "Steps of the last run",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.runs[-1].steps | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "runs": [
+            {
+              "id": 1,
+              "steps": [
+                "lint",
+                "test"
+              ]
+            },
+            {
+              "id": 2,
+              "steps": [
+                "lint",
+                "test",
+                "build",
+                "deploy"
+              ]
+            }
+          ]
+        },
+        "expected": "4"
+      },
+      {
+        "input": {
+          "runs": [
+            {
+              "id": 7,
+              "steps": [
+                "lint"
+              ]
+            }
+          ]
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "runs": [
+            {
+              "id": 3,
+              "steps": [
+                "a",
+                "b",
+                "c"
+              ]
+            },
+            {
+              "id": 4,
+              "steps": []
+            }
+          ]
+        },
+        "expected": "0"
+      }
+    ]
+  }
+}

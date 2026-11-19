@@ -1,0 +1,58 @@
+{
+  "title": "Fix the filter",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "start": "jq -r '.[] | @csv' data.json",
+    "reference": "jq -r '.[] | [.id, .title, .done] | @csv' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 1,
+            "title": "Write the docs",
+            "done": true
+          },
+          {
+            "id": 2,
+            "title": "Ship v2",
+            "done": false
+          }
+        ],
+        "expected": "1,\"Write the docs\",true\n2,\"Ship v2\",false"
+      },
+      {
+        "input": [
+          {
+            "id": 14,
+            "title": "Renew the domain",
+            "done": false
+          }
+        ],
+        "expected": "14,\"Renew the domain\",false"
+      },
+      {
+        "input": [
+          {
+            "id": 5,
+            "title": "Fix login",
+            "done": true
+          },
+          {
+            "id": 6,
+            "title": "Add tests",
+            "done": true
+          },
+          {
+            "id": 9,
+            "title": "Clean up, then tag",
+            "done": false
+          }
+        ],
+        "expected": "5,\"Fix login\",true\n6,\"Add tests\",true\n9,\"Clean up, then tag\",false"
+      }
+    ]
+  }
+}

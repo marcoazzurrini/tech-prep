@@ -14,21 +14,47 @@ import {
   TopBar,
 } from "@tech-prep/ui";
 import { Lock } from "lucide-react";
+import type { ComponentType } from "react";
 import { useState } from "react";
 
 import { engine } from "./course";
 import type { Exercise, Submission } from "./types";
 
-const KIND = {
-  answer: "open answer",
-  arrange: "arrange the lines",
-  example: "example",
-  predict: "predict the output",
-};
+/** What the learner hands in: text, or lines in order. Null while there is nothing to hand in. */
+type Response = string | string[] | null;
+
+interface AnswerProps {
+  exercise: Exercise;
+  response: Response;
+  onChange: (response: Response) => void;
+}
+
+/** How the app shows one kind of extra exercise. A new checker adds one entry. */
+interface Extra {
+  /** What the tutor is told the exercise was. */
+  name: string;
+  /** The code the learner reads, above the answer. */
+  code: (exercise: Exercise) => string | null;
+  /** Where the learner answers. Left out when there is nothing to answer. */
+  Answer?: ComponentType<AnswerProps>;
+  /** What the answer area starts with: an answer handed in earlier, or an empty one. */
+  start: (exercise: Exercise) => Response;
+  /** The verdict, once the engine or the tutor graded it. */
+  Verdict: ComponentType<{ exercise: Exercise; note: string }>;
+  /** What the tutor is told about the answer that was handed in. */
+  answered: (exercise: Exercise) => string;
+}
+
+const textOf = (response: Response): string =>
+  Array.isArray(response) ? "" : (response ?? "");
+
+/** The lines of an arrange exercise, mixed. */
+const linesOf = ({ check }: Exercise): string[] =>
+  check.type === "arrange" ? check.lines : [];
 
 /** The learner's earlier arrangement, if they already handed one in. */
 const savedOrder = (exercise: Exercise): string[] | null => {
-  if (exercise.kind !== "arrange" || !exercise.response) {
+  if (exercise.check.type !== "arrange" || !exercise.response) {
     return null;
   }
 
@@ -36,24 +62,148 @@ const savedOrder = (exercise: Exercise): string[] | null => {
   return JSON.parse(exercise.response) as string[];
 };
 
-/** What the tutor needs to know about a handed-in exercise. */
-const report = ({ exercise, result }: Submission): string => {
-  const head = `Exercise ${exercise.id} (${KIND[exercise.kind]}) was submitted.`;
+const ValueAnswer = ({ exercise, response, onChange }: AnswerProps) => {
+  let tone: "green" | "red" | undefined;
 
-  if (result.status === "submitted") {
-    return `${head} Their answer:\n\n${exercise.response}\n\nGrade it with grade_answer.`;
+  if (exercise.correct !== null) {
+    tone = exercise.correct ? "green" : "red";
   }
 
-  const answer =
-    exercise.kind === "arrange"
-      ? `Their order:\n${(savedOrder(exercise) ?? []).join("\n")}`
-      : `They answered: ${exercise.response}. The code prints: ${String(exercise.correct_answer)}.`;
+  return (
+    <PaneSection label="Your answer">
+      <AnswerInput
+        aria-label="Your answer"
+        disabled={exercise.status !== "open"}
+        tone={tone}
+        value={textOf(response)}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </PaneSection>
+  );
+};
+
+const OpenAnswer = ({ exercise, response, onChange }: AnswerProps) => (
+  <PaneSection label="Your answer">
+    <AnswerText
+      aria-label="Your answer"
+      disabled={exercise.status !== "open"}
+      placeholder="In your own words…"
+      value={textOf(response)}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  </PaneSection>
+);
+
+const ArrangeAnswer = ({ exercise, response, onChange }: AnswerProps) => {
+  const order = Array.isArray(response) ? response : [];
+
+  // The lines set aside keep the order the learner left them in.
+  const [spare, setSpare] = useState(
+    linesOf(exercise).filter((line) => !order.includes(line))
+  );
+
+  return (
+    <Arranger
+      disabled={exercise.status !== "open"}
+      lines={order}
+      spare={spare}
+      onChange={(nextOrder, nextSpare) => {
+        setSpare(nextSpare);
+        onChange(nextOrder);
+      }}
+    />
+  );
+};
+
+const nothing = () => null;
+
+const EXTRAS: Record<Exercise["check"]["type"], Extra | null> = {
+  answer: {
+    Answer: OpenAnswer,
+    Verdict: ({ exercise, note }) => {
+      const passed = exercise.concepts.filter(
+        (c) => c.result === "pass"
+      ).length;
+
+      return (
+        <ResultCard
+          note={note}
+          title={`${passed} of ${exercise.concepts.length} points covered`}
+          tone={passed === exercise.concepts.length ? "green" : "red"}
+        >
+          A complete answer:
+          <pre>{exercise.correct_answer}</pre>
+        </ResultCard>
+      );
+    },
+    answered: (exercise) => `Their answer:\n\n${exercise.response}`,
+    code: nothing,
+    name: "open answer",
+    start: (exercise) => exercise.response ?? "",
+  },
+  arrange: {
+    Answer: ArrangeAnswer,
+    Verdict: ({ exercise, note }) => (
+      <ResultCard
+        note={note}
+        title={exercise.correct ? "In order" : "Not in order"}
+        tone={exercise.correct ? "green" : "red"}
+      >
+        {!exercise.correct && exercise.correct_answer && (
+          <>
+            An order that works:
+            <pre>{exercise.correct_answer}</pre>
+          </>
+        )}
+      </ResultCard>
+    ),
+    answered: (exercise) =>
+      `Their order:\n${(savedOrder(exercise) ?? []).join("\n")}`,
+    code: nothing,
+    name: "arrange the lines",
+    start: (exercise) => savedOrder(exercise) ?? linesOf(exercise),
+  },
+  // The tutor does not show these two as extras: they are for a course's own exercises.
+  command: null,
+  function: null,
+  read: {
+    Verdict: nothing,
+    answered: () => "",
+    code: ({ check }) => (check.type === "read" ? check.code : null),
+    name: "example",
+    start: nothing,
+  },
+  value: {
+    Answer: ValueAnswer,
+    Verdict: ({ exercise, note }) => (
+      <ResultCard
+        note={note}
+        title={`It prints ${exercise.correct_answer}`}
+        tone={exercise.correct ? "green" : "red"}
+      />
+    ),
+    answered: (exercise) =>
+      `They answered: ${exercise.response}. The code prints: ${exercise.correct_answer}.`,
+    code: ({ check }) =>
+      check.type === "value" ? (check.shown[0]?.text ?? null) : null,
+    name: "predict the output",
+    start: (exercise) => exercise.response ?? "",
+  },
+};
+
+/** What the tutor needs to know about a handed-in exercise. */
+const report = (extra: Extra, { exercise, result }: Submission): string => {
+  const head = `Exercise ${exercise.id} (${extra.name}) was submitted.`;
+
+  if (result.status === "submitted") {
+    return `${head} ${extra.answered(exercise)}\n\nGrade it with grade_answer.`;
+  }
 
   const effects = (result.concepts ?? [])
     .map((c) => `${c.name}: ${c.result} (${c.effect})`)
     .join("; ");
 
-  return `${head} Result: ${result.correct ? "right" : "wrong"}. ${answer}\n${effects}`;
+  return `${head} Result: ${result.correct ? "right" : "wrong"}. ${extra.answered(exercise)}\n${effects}`;
 };
 
 const Chips = ({ exercise }: { exercise: Exercise }) => {
@@ -89,7 +239,8 @@ const effects = (exercise: Exercise): string =>
     .map((c) => `${c.name}: ${c.effect}.`)
     .join(" ");
 
-const Result = ({ exercise }: { exercise: Exercise }) => {
+/** Where an exercise stands once it is handed in: with the tutor, or graded. */
+const Outcome = ({ exercise, extra }: { exercise: Exercise; extra: Extra }) => {
   if (exercise.status === "submitted") {
     return (
       <ResultCard title="With the tutor" tone="amber">
@@ -98,121 +249,14 @@ const Result = ({ exercise }: { exercise: Exercise }) => {
     );
   }
 
-  if (exercise.status !== "graded") {
-    return null;
-  }
-
-  const tone = exercise.correct ? "green" : "red";
-  const note = effects(exercise);
-
-  if (exercise.kind === "predict") {
-    return (
-      <ResultCard
-        note={note}
-        title={`It prints ${String(exercise.correct_answer)}`}
-        tone={tone}
-      />
-    );
-  }
-
-  if (exercise.kind === "arrange") {
-    return (
-      <ResultCard
-        note={note}
-        title={exercise.correct ? "In order" : "Not in order"}
-        tone={tone}
-      >
-        {!exercise.correct && Array.isArray(exercise.correct_answer) && (
-          <>
-            An order that works:
-            <pre>{exercise.correct_answer.join("\n")}</pre>
-          </>
-        )}
-      </ResultCard>
-    );
-  }
-
-  const passed = exercise.concepts.filter((c) => c.result === "pass").length;
-
-  return (
-    <ResultCard
-      note={note}
-      title={`${passed} of ${exercise.concepts.length} points covered`}
-      tone={passed === exercise.concepts.length ? "green" : "red"}
-    >
-      A complete answer:
-      <pre>{String(exercise.correct_answer)}</pre>
-    </ResultCard>
-  );
+  return exercise.status === "graded" ? (
+    <extra.Verdict exercise={exercise} note={effects(exercise)} />
+  ) : null;
 };
 
-interface AnswerAreaProps {
-  exercise: Exercise;
-  answer: string;
-  onAnswer: (answer: string) => void;
-  order: string[];
-  spare: string[];
-  onArrange: (order: string[], spare: string[]) => void;
-}
-
-/** Where the learner answers: a short box, the lines to arrange, or a text box. */
-const AnswerArea = ({
-  exercise,
-  answer,
-  onAnswer,
-  order,
-  spare,
-  onArrange,
-}: AnswerAreaProps) => {
-  const open = exercise.status === "open";
-
-  if (exercise.kind === "arrange") {
-    return (
-      <Arranger
-        disabled={!open}
-        lines={order}
-        spare={spare}
-        onChange={onArrange}
-      />
-    );
-  }
-
-  if (exercise.kind === "predict") {
-    let tone: "green" | "red" | undefined;
-
-    if (exercise.correct !== null) {
-      tone = exercise.correct ? "green" : "red";
-    }
-
-    return (
-      <PaneSection label="Your answer">
-        <AnswerInput
-          aria-label="Your answer"
-          disabled={!open}
-          tone={tone}
-          value={answer}
-          onChange={(e) => onAnswer(e.target.value)}
-        />
-      </PaneSection>
-    );
-  }
-
-  if (exercise.kind === "answer") {
-    return (
-      <PaneSection label="Your answer">
-        <AnswerText
-          aria-label="Your answer"
-          disabled={!open}
-          placeholder="In your own words…"
-          value={answer}
-          onChange={(e) => onAnswer(e.target.value)}
-        />
-      </PaneSection>
-    );
-  }
-
-  return null;
-};
+/** True when there is something to hand in. */
+const isFilled = (response: Response): boolean =>
+  Array.isArray(response) || (response ?? "").trim() !== "";
 
 interface ExercisePaneProps {
   exercise: Exercise;
@@ -222,29 +266,20 @@ interface ExercisePaneProps {
   onAskTutor: () => void;
 }
 
-/** One tutor-made exercise: the task, the answer area, and the result once it is handed in. */
+/** One extra exercise: the task, the answer area, and the result once it is handed in. */
 export const ExercisePane = ({
   exercise,
   onChanged,
   onAskTutor,
 }: ExercisePaneProps) => {
-  const [answer, setAnswer] = useState(
-    exercise.kind === "arrange" ? "" : (exercise.response ?? "")
-  );
-
-  const [order, setOrder] = useState(
-    savedOrder(exercise) ?? exercise.lines ?? []
-  );
-
-  const [spare, setSpare] = useState(
-    (exercise.lines ?? []).filter(
-      (line) => savedOrder(exercise)?.includes(line) === false
-    )
-  );
-
+  const extra = EXTRAS[exercise.check.type];
+  const [response, setResponse] = useState(extra?.start(exercise) ?? null);
   const [sending, setSending] = useState(false);
   const open = exercise.status === "open";
-  const filled = exercise.kind === "arrange" || answer.trim() !== "";
+
+  if (!extra) {
+    return null;
+  }
 
   const submit = async () => {
     setSending(true);
@@ -252,10 +287,10 @@ export const ExercisePane = ({
     try {
       const submission = await engine("exercise.submit", {
         id: exercise.id,
-        response: exercise.kind === "arrange" ? order : answer.trim(),
+        response: Array.isArray(response) ? response : (response ?? "").trim(),
       });
 
-      window.tp.tutor.notify(report(submission));
+      window.tp.tutor.notify(report(extra, submission));
     } catch {
       // The engine refused it, for example a second submit. Reloading shows the real state.
     }
@@ -269,42 +304,36 @@ export const ExercisePane = ({
     window.tp.tutor.notify("The learner asked for a hint on this exercise.");
   };
 
-  if (exercise.kind === "example") {
-    return (
-      <PaneBody>
-        <TaskHeader
-          chips={<Chips exercise={exercise} />}
-          description={exercise.prompt}
-          title={exercise.title}
-        />
-        {exercise.code && <CodeBlock code={exercise.code} />}
-      </PaneBody>
-    );
+  const code = extra.code(exercise);
+
+  const header = (
+    <>
+      <TaskHeader
+        chips={<Chips exercise={exercise} />}
+        description={exercise.prompt}
+        title={exercise.title}
+      />
+      {code && <CodeBlock code={code} />}
+    </>
+  );
+
+  // Something that is only read has no answer area and no footer.
+  if (!extra.Answer) {
+    return <PaneBody>{header}</PaneBody>;
   }
 
   return (
     <>
       <PaneBody>
-        <TaskHeader
-          chips={<Chips exercise={exercise} />}
-          description={exercise.prompt}
-          title={exercise.title}
-        />
-        {exercise.code && <CodeBlock code={exercise.code} />}
-        <AnswerArea
-          answer={answer}
+        {header}
+        <extra.Answer
           exercise={exercise}
-          order={order}
-          spare={spare}
-          onAnswer={setAnswer}
-          onArrange={(nextOrder, nextSpare) => {
-            setOrder(nextOrder);
-            setSpare(nextSpare);
-          }}
+          response={response}
+          onChange={setResponse}
         />
         {!open && (
           <PaneSection>
-            <Result exercise={exercise} />
+            <Outcome exercise={exercise} extra={extra} />
           </PaneSection>
         )}
       </PaneBody>
@@ -317,7 +346,7 @@ export const ExercisePane = ({
       >
         {open && <Button onClick={hint}>Show hint</Button>}
         <Button
-          disabled={!open || !filled || sending}
+          disabled={!open || !isFilled(response) || sending}
           variant="primary"
           onClick={() => {
             void submit();

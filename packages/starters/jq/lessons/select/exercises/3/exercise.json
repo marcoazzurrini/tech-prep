@@ -1,0 +1,51 @@
+{
+  "title": "Hosts that are down",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.[] | select(.status == \"down\") | .host]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "host": "web-1",
+            "status": "up"
+          },
+          {
+            "host": "web-2",
+            "status": "down"
+          },
+          {
+            "host": "db-1",
+            "status": "down"
+          }
+        ],
+        "expected": "[\n  \"web-2\",\n  \"db-1\"\n]"
+      },
+      {
+        "input": [
+          {
+            "host": "cache-1",
+            "status": "up"
+          }
+        ],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "host": "mail-1",
+            "status": "down"
+          },
+          {
+            "host": "mail-2",
+            "status": "up"
+          }
+        ],
+        "expected": "[\n  \"mail-1\"\n]"
+      }
+    ]
+  }
+}

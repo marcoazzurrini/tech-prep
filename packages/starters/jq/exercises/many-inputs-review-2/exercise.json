@@ -1,0 +1,24 @@
+{
+  "title": "The last two results",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.jsonl",
+    "reference": "jq -s -c '.[-2:]' data.jsonl",
+    "tests": [
+      {
+        "input_text": "{\"test\": \"login\", \"pass\": true}\n{\"test\": \"search\", \"pass\": false}\n{\"test\": \"cart\", \"pass\": true}\n{\"test\": \"pay\", \"pass\": true}\n",
+        "expected": "[{\"test\":\"cart\",\"pass\":true},{\"test\":\"pay\",\"pass\":true}]"
+      },
+      {
+        "input_text": "{\"test\": \"signup\", \"pass\": false}\n{\"test\": \"logout\", \"pass\": true}\n",
+        "expected": "[{\"test\":\"signup\",\"pass\":false},{\"test\":\"logout\",\"pass\":true}]"
+      },
+      {
+        "input_text": "{\"test\": \"export\", \"pass\": true}\n",
+        "expected": "[{\"test\":\"export\",\"pass\":true}]"
+      }
+    ]
+  }
+}

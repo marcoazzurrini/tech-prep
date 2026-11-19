@@ -1,0 +1,33 @@
+{
+  "title": "Package as a folder",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.package | split(\".\") | join(\"/\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "package": "com.example.app",
+          "version": 3
+        },
+        "expected": "\"com/example/app\""
+      },
+      {
+        "input": {
+          "package": "org.demo.tools.cli",
+          "version": 1
+        },
+        "expected": "\"org/demo/tools/cli\""
+      },
+      {
+        "input": {
+          "package": "util",
+          "version": 9
+        },
+        "expected": "\"util\""
+      }
+    ]
+  }
+}

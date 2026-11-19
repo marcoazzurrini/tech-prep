@@ -1,0 +1,40 @@
+{
+  "title": "One step too far",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.server.host.name' data.json",
+    "reference": "jq '.server.host' data.json",
+    "tests": [
+      {
+        "input": {
+          "server": {
+            "host": "web-1",
+            "port": 443
+          }
+        },
+        "expected": "\"web-1\""
+      },
+      {
+        "input": {
+          "server": {
+            "host": "db-1",
+            "port": 5432
+          }
+        },
+        "expected": "\"db-1\""
+      },
+      {
+        "input": {
+          "server": {
+            "host": "cache-1",
+            "port": 6379
+          }
+        },
+        "expected": "\"cache-1\""
+      }
+    ]
+  }
+}

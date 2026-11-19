@@ -1,0 +1,60 @@
+{
+  "title": "Headers of the reply",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.headers | from_entries' data.json",
+    "tests": [
+      {
+        "input": {
+          "status": 200,
+          "headers": [
+            {
+              "key": "content-type",
+              "value": "text/html"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache"
+            }
+          ]
+        },
+        "expected": "{\n  \"content-type\": \"text/html\",\n  \"cache-control\": \"no-cache\"\n}"
+      },
+      {
+        "input": {
+          "status": 404,
+          "headers": [
+            {
+              "key": "content-type",
+              "value": "text/plain"
+            }
+          ]
+        },
+        "expected": "{\n  \"content-type\": \"text/plain\"\n}"
+      },
+      {
+        "input": {
+          "status": 301,
+          "headers": [
+            {
+              "key": "location",
+              "value": "/new"
+            },
+            {
+              "key": "server",
+              "value": "nginx"
+            },
+            {
+              "key": "age",
+              "value": "12"
+            }
+          ]
+        },
+        "expected": "{\n  \"location\": \"/new\",\n  \"server\": \"nginx\",\n  \"age\": \"12\"\n}"
+      }
+    ]
+  }
+}

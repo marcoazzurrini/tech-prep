@@ -1,0 +1,48 @@
+{
+  "title": "Tidy emails",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.users | map(.email | ascii_downcase)' data.json",
+    "tests": [
+      {
+        "input": {
+          "users": [
+            {
+              "id": 1,
+              "email": "Ada@Example.com"
+            },
+            {
+              "id": 2,
+              "email": "BO@EXAMPLE.COM"
+            },
+            {
+              "id": 3,
+              "email": "cy@example.com"
+            }
+          ]
+        },
+        "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\",\n  \"cy@example.com\"\n]"
+      },
+      {
+        "input": {
+          "users": [
+            {
+              "id": 4,
+              "email": "Dee.Park@example.com"
+            }
+          ]
+        },
+        "expected": "[\n  \"dee.park@example.com\"\n]"
+      },
+      {
+        "input": {
+          "users": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

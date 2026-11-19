@@ -1,0 +1,49 @@
+{
+  "title": "All the commits",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.. | .sha? | select(. != null)]' data.json",
+    "tests": [
+      {
+        "input": {
+          "sha": "9f2c1a",
+          "parent": {
+            "sha": "77b0de",
+            "author": "ada"
+          },
+          "tags": [
+            {
+              "name": "v2",
+              "sha": "c41e09"
+            },
+            {
+              "name": "draft"
+            }
+          ]
+        },
+        "expected": "[\n  \"9f2c1a\",\n  \"77b0de\",\n  \"c41e09\"\n]"
+      },
+      {
+        "input": {
+          "sha": "0a0a0a",
+          "tags": []
+        },
+        "expected": "[\n  \"0a0a0a\"\n]"
+      },
+      {
+        "input": {
+          "branch": "main",
+          "head": {
+            "commit": {
+              "sha": "e5d4c3"
+            }
+          }
+        },
+        "expected": "[\n  \"e5d4c3\"\n]"
+      }
+    ]
+  }
+}

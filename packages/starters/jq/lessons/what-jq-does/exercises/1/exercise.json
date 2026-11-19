@@ -1,0 +1,34 @@
+{
+  "title": "The whole input",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "Ada",
+          "city": "Oslo",
+          "active": true
+        },
+        "expected": "{\n  \"name\": \"Ada\",\n  \"city\": \"Oslo\",\n  \"active\": true\n}"
+      },
+      {
+        "input": {
+          "name": "Bo",
+          "city": "Bergen",
+          "active": false
+        },
+        "expected": "{\n  \"name\": \"Bo\",\n  \"city\": \"Bergen\",\n  \"active\": false\n}"
+      },
+      {
+        "input": {
+          "id": 7
+        },
+        "expected": "{\n  \"id\": 7\n}"
+      }
+    ]
+  }
+}

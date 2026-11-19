@@ -1,0 +1,62 @@
+{
+  "title": "Invoices to chase",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.[] | select(.overdue and .amount >= 1000) | .id]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": "inv-1",
+            "amount": 2400,
+            "overdue": true
+          },
+          {
+            "id": "inv-2",
+            "amount": 300,
+            "overdue": true
+          },
+          {
+            "id": "inv-3",
+            "amount": 5000,
+            "overdue": false
+          },
+          {
+            "id": "inv-4",
+            "amount": 1000,
+            "overdue": true
+          }
+        ],
+        "expected": "[\n  \"inv-1\",\n  \"inv-4\"\n]"
+      },
+      {
+        "input": [
+          {
+            "id": "inv-9",
+            "amount": 999,
+            "overdue": true
+          },
+          {
+            "id": "inv-10",
+            "amount": 8000,
+            "overdue": false
+          }
+        ],
+        "expected": "[]"
+      },
+      {
+        "input": [
+          {
+            "id": "inv-20",
+            "amount": 1500,
+            "overdue": true
+          }
+        ],
+        "expected": "[\n  \"inv-20\"\n]"
+      }
+    ]
+  }
+}

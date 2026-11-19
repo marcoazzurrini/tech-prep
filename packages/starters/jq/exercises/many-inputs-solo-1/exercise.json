@@ -1,0 +1,24 @@
+{
+  "title": "Messages of a log",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.jsonl",
+    "reference": "jq -r '.msg' data.jsonl",
+    "tests": [
+      {
+        "input_text": "{\"level\": \"info\", \"msg\": \"cache warmed\"}\n{\"level\": \"warn\", \"msg\": \"slow query\"}\n{\"level\": \"error\", \"msg\": \"connection lost\"}\n",
+        "expected": "cache warmed\nslow query\nconnection lost"
+      },
+      {
+        "input_text": "{\"level\": \"info\", \"msg\": \"job done\"}\n",
+        "expected": "job done"
+      },
+      {
+        "input_text": "{\"level\": \"warn\", \"msg\": \"retry 1\"}\n{\"level\": \"warn\", \"msg\": \"retry 2\"}\n",
+        "expected": "retry 1\nretry 2"
+      }
+    ]
+  }
+}

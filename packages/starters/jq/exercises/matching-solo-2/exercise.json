@@ -1,0 +1,40 @@
+{
+  "title": "Release candidate or not",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.version | contains(\"-rc\")' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "api",
+          "version": "2.4.0-rc1"
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "name": "api",
+          "version": "2.4.0"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "name": "arc-tools",
+          "version": "0.9.1"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "name": "web",
+          "version": "3.0.0-rc2+build5"
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

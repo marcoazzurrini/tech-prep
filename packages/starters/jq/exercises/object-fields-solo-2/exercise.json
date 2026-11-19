@@ -1,0 +1,33 @@
+{
+  "title": "Request id",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[\"x-request-id\"]' data.json",
+    "tests": [
+      {
+        "input": {
+          "x-request-id": "req-71",
+          "status": 200
+        },
+        "expected": "\"req-71\""
+      },
+      {
+        "input": {
+          "x-request-id": "req-72",
+          "status": 404
+        },
+        "expected": "\"req-72\""
+      },
+      {
+        "input": {
+          "x-request-id": "req-90",
+          "status": 500
+        },
+        "expected": "\"req-90\""
+      }
+    ]
+  }
+}

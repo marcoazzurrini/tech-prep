@@ -1,0 +1,23 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq 'del(.queue[0])' data.json",
+      "file": "data.json",
+      "input": {
+        "queue": [
+          "a",
+          "b",
+          "c"
+        ],
+        "open": true
+      },
+      "show_command": true
+    },
+    "expected": "{\n  \"queue\": [\n    \"b\",\n    \"c\"\n  ],\n  \"open\": true\n}"
+  }
+}

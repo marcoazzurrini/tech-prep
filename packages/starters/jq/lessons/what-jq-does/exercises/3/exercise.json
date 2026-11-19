@@ -1,0 +1,20 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.pages' data.json",
+      "file": "data.json",
+      "input": {
+        "title": "Dune",
+        "pages": 412,
+        "author": "Frank Herbert"
+      },
+      "show_command": true
+    },
+    "expected": "412"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Author and reviewer",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'def who: {login, id}; {author: .author | who}' data.json",
+    "reference": "jq 'def who: {login, id}; {author: .author | who, reviewer: .reviewer | who}' data.json",
+    "tests": [
+      {
+        "input": {
+          "number": 12,
+          "author": {
+            "login": "ada",
+            "id": 7,
+            "admin": false
+          },
+          "reviewer": {
+            "login": "bo",
+            "id": 9,
+            "admin": true
+          }
+        },
+        "expected": "{\n  \"author\": {\n    \"login\": \"ada\",\n    \"id\": 7\n  },\n  \"reviewer\": {\n    \"login\": \"bo\",\n    \"id\": 9\n  }\n}"
+      },
+      {
+        "input": {
+          "number": 13,
+          "author": {
+            "login": "cy",
+            "id": 2,
+            "admin": false
+          },
+          "reviewer": {
+            "login": "ada",
+            "id": 7,
+            "admin": false
+          }
+        },
+        "expected": "{\n  \"author\": {\n    \"login\": \"cy\",\n    \"id\": 2\n  },\n  \"reviewer\": {\n    \"login\": \"ada\",\n    \"id\": 7\n  }\n}"
+      },
+      {
+        "input": {
+          "number": 20,
+          "author": {
+            "login": "dee",
+            "id": 31,
+            "admin": true
+          },
+          "reviewer": {
+            "login": "eli",
+            "id": 44,
+            "admin": false
+          }
+        },
+        "expected": "{\n  \"author\": {\n    \"login\": \"dee\",\n    \"id\": 31\n  },\n  \"reviewer\": {\n    \"login\": \"eli\",\n    \"id\": 44\n  }\n}"
+      }
+    ]
+  }
+}

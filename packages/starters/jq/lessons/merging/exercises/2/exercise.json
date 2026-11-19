@@ -1,0 +1,39 @@
+{
+  "title": "One more label",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.labels + \"urgent\"' data.json",
+    "reference": "jq '.labels + [\"urgent\"]' data.json",
+    "tests": [
+      {
+        "input": {
+          "ticket": 311,
+          "labels": [
+            "bug",
+            "login"
+          ]
+        },
+        "expected": "[\n  \"bug\",\n  \"login\",\n  \"urgent\"\n]"
+      },
+      {
+        "input": {
+          "ticket": 312,
+          "labels": []
+        },
+        "expected": "[\n  \"urgent\"\n]"
+      },
+      {
+        "input": {
+          "ticket": 313,
+          "labels": [
+            "docs"
+          ]
+        },
+        "expected": "[\n  \"docs\",\n  \"urgent\"\n]"
+      }
+    ]
+  }
+}

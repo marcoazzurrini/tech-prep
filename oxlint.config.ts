@@ -9,8 +9,8 @@ export default defineConfig({
     ...(core.ignorePatterns ?? []),
     // Design mockups and the design skill's working files, not project code.
     "**/.impeccable/**",
-    // Reference solutions are answer keys checked by `build-problem --all`.
-    "packages/starters/*/problems/**",
+    // Reference solutions are answer keys checked by the engine's `build --all`.
+    "packages/starters/*/exercises/**",
     "packages/starters/*/lessons/**",
   ],
 });

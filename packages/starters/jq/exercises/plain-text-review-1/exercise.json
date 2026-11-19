@@ -1,0 +1,42 @@
+{
+  "title": "Last line of the log",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r '.lines[-1]' data.json",
+    "tests": [
+      {
+        "input": {
+          "job": "deploy",
+          "lines": [
+            "Pulling image",
+            "Starting 3 containers",
+            "Deploy finished"
+          ]
+        },
+        "expected": "Deploy finished"
+      },
+      {
+        "input": {
+          "job": "test",
+          "lines": [
+            "Running 212 tests",
+            "2 tests failed"
+          ]
+        },
+        "expected": "2 tests failed"
+      },
+      {
+        "input": {
+          "job": "lint",
+          "lines": [
+            "No problems found"
+          ]
+        },
+        "expected": "No problems found"
+      }
+    ]
+  }
+}

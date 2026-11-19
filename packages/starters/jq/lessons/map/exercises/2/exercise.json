@@ -1,0 +1,68 @@
+{
+  "title": "Size of each team",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map(.members | length)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "team": "core",
+            "members": [
+              "ada",
+              "bo",
+              "cy"
+            ]
+          },
+          {
+            "team": "ops",
+            "members": [
+              "dee"
+            ]
+          }
+        ],
+        "expected": "[\n  3,\n  1\n]"
+      },
+      {
+        "input": [
+          {
+            "team": "data",
+            "members": []
+          },
+          {
+            "team": "web",
+            "members": [
+              "eli",
+              "fay"
+            ]
+          },
+          {
+            "team": "qa",
+            "members": [
+              "gus"
+            ]
+          }
+        ],
+        "expected": "[\n  0,\n  2,\n  1\n]"
+      },
+      {
+        "input": [
+          {
+            "team": "all",
+            "members": [
+              "ada",
+              "bo",
+              "cy",
+              "dee",
+              "eli"
+            ]
+          }
+        ],
+        "expected": "[\n  5\n]"
+      }
+    ]
+  }
+}

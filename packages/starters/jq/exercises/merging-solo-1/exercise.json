@@ -1,0 +1,37 @@
+{
+  "title": "Archive the repo",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '. + {archived: true}' data.json",
+    "tests": [
+      {
+        "input": {
+          "name": "old-api",
+          "owner": "ada",
+          "stars": 14
+        },
+        "expected": "{\n  \"name\": \"old-api\",\n  \"owner\": \"ada\",\n  \"stars\": 14,\n  \"archived\": true\n}"
+      },
+      {
+        "input": {
+          "name": "legacy-web",
+          "owner": "bo",
+          "stars": 0
+        },
+        "expected": "{\n  \"name\": \"legacy-web\",\n  \"owner\": \"bo\",\n  \"stars\": 0,\n  \"archived\": true\n}"
+      },
+      {
+        "input": {
+          "name": "tools",
+          "owner": "cy",
+          "stars": 3,
+          "archived": false
+        },
+        "expected": "{\n  \"name\": \"tools\",\n  \"owner\": \"cy\",\n  \"stars\": 3,\n  \"archived\": true\n}"
+      }
+    ]
+  }
+}

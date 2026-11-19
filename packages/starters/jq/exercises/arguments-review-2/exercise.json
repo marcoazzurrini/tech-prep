@@ -1,0 +1,67 @@
+{
+  "title": "Who to page",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r --arg team ops --argjson level 3 '.[] | select(.team == $team and .level >= $level) | .email' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "email": "ada@example.com",
+            "team": "ops",
+            "level": 4
+          },
+          {
+            "email": "bo@example.com",
+            "team": "web",
+            "level": 5
+          },
+          {
+            "email": "cy@example.com",
+            "team": "ops",
+            "level": 2
+          },
+          {
+            "email": "dee@example.com",
+            "team": "ops",
+            "level": 3
+          }
+        ],
+        "expected": "ada@example.com\ndee@example.com"
+      },
+      {
+        "input": [
+          {
+            "email": "eli@example.com",
+            "team": "ops",
+            "level": 3
+          },
+          {
+            "email": "fay@example.com",
+            "team": "data",
+            "level": 3
+          }
+        ],
+        "expected": "eli@example.com"
+      },
+      {
+        "input": [
+          {
+            "email": "gus@example.com",
+            "team": "web",
+            "level": 1
+          },
+          {
+            "email": "hal@example.com",
+            "team": "ops",
+            "level": 1
+          }
+        ],
+        "expected": ""
+      }
+    ]
+  }
+}

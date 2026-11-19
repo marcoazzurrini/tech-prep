@@ -1,0 +1,42 @@
+{
+  "title": "Version to paste",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r '.app.version' data.json",
+    "tests": [
+      {
+        "input": {
+          "app": {
+            "name": "shop-api",
+            "version": "3.4.1"
+          },
+          "env": "prod"
+        },
+        "expected": "3.4.1"
+      },
+      {
+        "input": {
+          "app": {
+            "name": "shop-web",
+            "version": "0.12.0"
+          },
+          "env": "staging"
+        },
+        "expected": "0.12.0"
+      },
+      {
+        "input": {
+          "app": {
+            "name": "worker",
+            "version": "1.0.0-rc.2"
+          },
+          "env": "dev"
+        },
+        "expected": "1.0.0-rc.2"
+      }
+    ]
+  }
+}

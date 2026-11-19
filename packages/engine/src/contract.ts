@@ -25,23 +25,28 @@ export interface Problem {
   difficulty: Difficulty;
   statement: string | null;
   status: ProblemStatus;
-  /** What the workbench of this kind of task shows. Null while the task is not written. */
-  task: TaskView | null;
+  /** How the answer is checked, and what that shows. Null while it is not written. */
+  check: CheckView | null;
 }
 
-/** What a task shows beyond its statement. Each kind of task has its own workbench. */
-export type TaskView = { kind: "code" } | JqTask;
+/** One thing an exercise shows the learner to work from, such as its input file. */
+export interface Shown {
+  label: string;
+  /** The file the text is in, when the learner's answer names it. */
+  file?: string;
+  text: string;
+}
 
-/** A jq task: its input, the output to produce, and how the learner answers. */
-export interface JqTask {
-  kind: "jq";
-  /**
-   * False: the learner types the whole jq command, as in a terminal. True: they type the
-   * value that comes out, and see no output while typing.
-   */
-  predict: boolean;
-  /** The command a predict task asks about, when it shows one. */
-  command: string | null;
+/** The learner writes a function or a class, and test cases call it. */
+export interface FunctionView {
+  type: "function";
+}
+
+/** The learner types a whole command, as in a terminal, and sees what it prints. */
+export interface CommandView {
+  type: "command";
+  /** The program the command starts with. */
+  program: string;
   /** The file the input is in. The learner's command names it. */
   file: string;
   input: string;
@@ -50,8 +55,44 @@ export interface JqTask {
   hidden: number;
 }
 
-/** From the bridge's `task.preview` method: what the learner's text prints on the shown input. */
-export interface JqPreview {
+/** The learner types the value that comes out of what is shown. */
+export interface ValueView {
+  type: "value";
+  shown: Shown[];
+}
+
+/** The learner puts lines in order and sets some aside. */
+export interface ArrangeView {
+  type: "arrange";
+  /** The lines, mixed. */
+  lines: string[];
+}
+
+/** The learner answers in their own words, and the tutor grades it. */
+export interface AnswerView {
+  type: "answer";
+}
+
+/** Code to read while the tutor explains it. There is nothing to answer. */
+export interface ReadView {
+  type: "read";
+  code: string;
+}
+
+/**
+ * How an exercise is checked, as the app sees it: the answer is left out. Each type has its
+ * own way of taking an answer on screen.
+ */
+export type CheckView =
+  | FunctionView
+  | CommandView
+  | ValueView
+  | ArrangeView
+  | AnswerView
+  | ReadView;
+
+/** From the bridge's `answer.preview` method: what the learner's text prints on the shown input. */
+export interface Preview {
   output: string;
   error: string | null;
   matches: boolean;
@@ -66,18 +107,12 @@ export interface Attempt {
   lesson: string | null;
 }
 
-export type ExerciseKind = "example" | "predict" | "arrange" | "answer";
-
-/** A tutor-made exercise, from the engine bridge. The answer appears once it is graded. */
+/** An extra exercise from the tutor. Its answer appears once it is graded. */
 export interface Exercise {
   id: number;
-  kind: ExerciseKind;
-  language: "typescript" | "python" | "jq";
   title: string;
   prompt: string;
-  code: string | null;
-  /** Arrange: the lines, shuffled. */
-  lines: string[] | null;
+  check: CheckView;
   /** Empty for a review until it is graded, so the concepts are not given away. */
   concepts: {
     id: string;
@@ -89,7 +124,7 @@ export interface Exercise {
   status: "open" | "submitted" | "graded";
   response: string | null;
   correct: boolean | null;
-  correct_answer: string | string[] | null;
+  correct_answer: string | null;
 }
 
 /** What handing in an exercise did, from the bridge's `exercise.submit` method. */
@@ -105,7 +140,8 @@ export interface Submission {
 /** From the bridge's `code.read` method. */
 export interface Code {
   text: string;
-  language: "typescript" | "python" | "jq";
+  /** What the answer is written in, such as "typescript". */
+  language: string;
   editable: boolean;
 }
 
@@ -167,8 +203,8 @@ export interface Course {
     id: string;
     name: string;
     initials: string;
-    /** What the course calls its tasks. */
-    noun: "problems" | "tasks";
+    /** What the course calls the things its learner solves. */
+    noun: "problems" | "tasks" | "exercises";
   };
   /** Every course the app found, with its concepts due for review. */
   courses: { id: string; name: string; initials: string; due: number }[];
@@ -249,6 +285,8 @@ export interface Reviews {
 
 /** Every bridge method: its parameters and its reply. */
 export interface Methods {
+  /** What the learner's text prints on the shown input, as they type. */
+  "answer.preview": { params: { slug: string; text: string }; result: Preview };
   /** The learner gave up: the attempt closes, and a worked solution comes back. */
   "attempt.give_up": { params: { slug: string }; result: GaveUp };
   /** Set the open attempt aside with no grade. */
@@ -291,8 +329,6 @@ export interface Methods {
   };
   reviews: { params: undefined; result: Reviews };
   session: { params: undefined; result: Session };
-  /** What the learner's text prints on the shown input, as they type. */
-  "task.preview": { params: { slug: string; text: string }; result: JqPreview };
 }
 
 export type Method = keyof Methods;

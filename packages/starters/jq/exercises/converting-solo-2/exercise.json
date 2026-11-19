@@ -1,0 +1,36 @@
+{
+  "title": "A clean server record",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '{host: .host, port: .port | tonumber}' data.json",
+    "tests": [
+      {
+        "input": {
+          "host": "web-1",
+          "port": "443",
+          "region": "eu"
+        },
+        "expected": "{\n  \"host\": \"web-1\",\n  \"port\": 443\n}"
+      },
+      {
+        "input": {
+          "host": "db-2",
+          "port": "5432",
+          "region": "us"
+        },
+        "expected": "{\n  \"host\": \"db-2\",\n  \"port\": 5432\n}"
+      },
+      {
+        "input": {
+          "host": "dev-box",
+          "port": "8080",
+          "region": "eu"
+        },
+        "expected": "{\n  \"host\": \"dev-box\",\n  \"port\": 8080\n}"
+      }
+    ]
+  }
+}

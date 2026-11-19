@@ -9,7 +9,6 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 
 import {
-  DEFAULT_LANGUAGE,
   concept,
   courseErrors,
   savedCourse,
@@ -19,35 +18,45 @@ import {
   solutionPath,
   solutionsDir,
   topics,
+  tutorGuide,
   validateCurriculum,
   withPrereqs,
 } from "./content.ts";
 import type { Course, Language } from "./content.ts";
 import { addNote, attemptsFor, notesFor, orphans } from "./db.ts";
-import type { ExerciseKind, Result } from "./db.ts";
-import { currentExercise, gradeAnswer, showExercise } from "./exercises.ts";
+import type { Result } from "./db.ts";
+import {
+  checkingOf,
+  isAuthored,
+  problemInfo,
+  problemLanguage,
+  referenceSolution,
+} from "./exercises.ts";
+import {
+  checkOfDraft,
+  currentExtra,
+  gradeAnswer,
+  showExtra,
+} from "./extras.ts";
+import type { Draft } from "./extras.ts";
 import {
   currentAttempt,
   logHint,
   readSolution,
   testSolution,
 } from "./practice.ts";
+import { PROGRAM_LANGUAGES } from "./program.ts";
 import { formatRun } from "./runner.ts";
 import { conceptStatus, problemStatus, topicProgress } from "./scheduler.ts";
-import {
-  courseLanguage,
-  isAuthored,
-  problemInfo,
-  referenceSolution,
-  tutorTaskView,
-} from "./tasks.ts";
 
 const server = new McpServer({ name: "tech-prep", version: "0.2.0" });
 
 const languageInput = z
-  .enum(["python", "typescript"])
+  .string()
   .optional()
-  .describe(`Defaults to ${DEFAULT_LANGUAGE}.`);
+  .describe(
+    `One of: ${PROGRAM_LANGUAGES.join(", ")}. Defaults to the language the problem is solved in.`
+  );
 
 const reply = (text: string) => ({
   content: [{ text, type: "text" as const }],
@@ -105,7 +114,7 @@ server.registerTool(
   "get_session",
   {
     description:
-      "What the learner has on screen right now: the problem they are solving, why it is open (a lesson's guided problem, a lesson's solo problem, or a review), the lesson it belongs to, their code, and your exercise if one is showing. Call it first, every time the learner writes to you, because the app moves on without you. In a review, never say which concept or lesson the problem is about.",
+      "What the learner has on screen right now: the problem they are solving, why it is open (a lesson's guided problem, a lesson's solo problem, or a review), the lesson it belongs to, their code, and your exercise if one is showing. `course_guide` holds the course's own teaching rules, and `task` says how the answer is checked. Call it first, every time the learner writes to you, because the app moves on without you. In a review, never say which concept or lesson the problem is about.",
     inputSchema: {},
   },
   safely((course) => {
@@ -114,6 +123,8 @@ server.registerTool(
     // Empty unless a course, the curriculum or the progress data is inconsistent.
     const extra = {
       course: course.name,
+      // How to tutor this course, in the course's own words.
+      course_guide: tutorGuide(course),
       data_warnings: [
         ...courseErrors(),
         ...validateCurriculum(course),
@@ -140,7 +151,7 @@ server.registerTool(
     return {
       attempt_id: open.id,
       code: readSolution(course, open.slug, language),
-      exercise_on_screen: Boolean(currentExercise(course)),
+      exercise_on_screen: Boolean(currentExtra(course)),
       file: solutionPath(course, open.slug, language),
       hints_so_far: open.max_hint_level,
       language,
@@ -148,7 +159,8 @@ server.registerTool(
       mode: open.mode,
       problem: open.slug,
       rules: MODE_RULES[open.mode ?? "review"],
-      task: tutorTaskView(course, open.slug),
+      // How the answer is checked: what the learner types, and what never to give away.
+      task: checkingOf(course, open.slug).tutor(),
       title: problemInfo(course, open.slug).title,
       workspace: solutionsDir(course),
       ...extra,
@@ -239,7 +251,7 @@ server.registerTool(
         reference_solution: referenceSolution(
           course,
           slug,
-          language ?? courseLanguage(course)
+          language ?? problemLanguage(course, slug)
         ),
         status: problemStatus(course, slug),
       };
@@ -276,6 +288,20 @@ server.registerTool(
 );
 
 // ── Exercises (written by the tutor, verified here, shown in the app) ────
+
+/** What `show_exercise` takes. */
+interface ExerciseArgs {
+  kind: Draft["kind"];
+  concept_ids: string[];
+  language?: Language;
+  title: string;
+  prompt: string;
+  code?: string;
+  lines?: string[];
+  distractors?: string[];
+  rubric?: { concept_id: string; points: string[] }[];
+  model_answer?: string;
+}
 
 server.registerTool(
   "show_exercise",
@@ -330,34 +356,13 @@ server.registerTool(
       title: z.string().describe("A few words, e.g. 'Predict the output'."),
     },
   },
-  safely(
-    (
-      course,
-      args: {
-        kind: ExerciseKind;
-        concept_ids: string[];
-        language?: Language;
-        title: string;
-        prompt: string;
-        code?: string;
-        lines?: string[];
-        distractors?: string[];
-        rubric?: { concept_id: string; points: string[] }[];
-        model_answer?: string;
-      }
-    ) =>
-      showExercise(course, {
-        code: args.code,
-        conceptIds: args.concept_ids,
-        distractors: args.distractors,
-        kind: args.kind,
-        language: args.language,
-        lines: args.lines,
-        modelAnswer: args.model_answer,
-        prompt: args.prompt,
-        rubric: args.rubric,
-        title: args.title,
-      })
+  safely((course, args: ExerciseArgs) =>
+    showExtra(course, {
+      check: checkOfDraft({ ...args, modelAnswer: args.model_answer }),
+      conceptIds: args.concept_ids,
+      prompt: args.prompt,
+      title: args.title,
+    })
   )
 );
 
@@ -369,7 +374,7 @@ server.registerTool(
     inputSchema: {},
   },
   safely(
-    (course) => currentExercise(course) ?? { note: "No exercise is on screen." }
+    (course) => currentExtra(course) ?? { note: "No exercise is on screen." }
   )
 );
 
@@ -433,7 +438,7 @@ server.registerTool(
   "log_hint",
   {
     description:
-      "Record a hint before you give it. It counts for whatever is on screen: the exercise, else the problem. Levels: 1 = a question that redirects attention, 2 = name the concept or data structure, 3 = outline the approach, 4 = show the solution. Level 1 still counts as working alone; from level 2 the exercise cannot pass.",
+      "Record a hint before you give it. It counts for whatever is on screen: the exercise, else the problem. Levels: 1 = a question that redirects attention, 2 = name the concept, 3 = outline the approach, 4 = show the solution. Level 1 still counts as working alone; from level 2 the exercise cannot pass.",
     inputSchema: { level: z.number().int().min(1).max(4) },
   },
   safely((course, { level }: { level: number }) => logHint(course, level))

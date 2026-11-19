@@ -1,0 +1,44 @@
+{
+  "title": "Over the quota",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.used_gb > .quota_gb' data.json",
+    "tests": [
+      {
+        "input": {
+          "account": "acme",
+          "used_gb": 120,
+          "quota_gb": 100
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "account": "labs",
+          "used_gb": 12,
+          "quota_gb": 50
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "account": "solo",
+          "used_gb": 10,
+          "quota_gb": 10
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "account": "north",
+          "used_gb": 501,
+          "quota_gb": 500
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "A number",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.temp' data.json",
+      "file": "data.json",
+      "input": {
+        "city": "Oslo",
+        "temp": 4,
+        "rain": true,
+        "note": null
+      }
+    },
+    "expected": "4"
+  }
+}

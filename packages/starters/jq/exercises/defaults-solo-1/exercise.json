@@ -1,0 +1,51 @@
+{
+  "title": "Theme of the app",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.settings.theme // \"light\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "user": "ada",
+          "settings": {
+            "lang": "en",
+            "theme": null
+          }
+        },
+        "expected": "\"light\""
+      },
+      {
+        "input": {
+          "user": "bo",
+          "settings": {
+            "lang": "no",
+            "theme": "dark"
+          }
+        },
+        "expected": "\"dark\""
+      },
+      {
+        "input": {
+          "user": "cy",
+          "settings": {
+            "lang": "en"
+          }
+        },
+        "expected": "\"light\""
+      },
+      {
+        "input": {
+          "user": "dee",
+          "settings": {
+            "lang": "de",
+            "theme": "contrast"
+          }
+        },
+        "expected": "\"contrast\""
+      }
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "title": "Log lines per level",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'group_by(.level) | map(length)' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "level": "info",
+            "msg": "started"
+          },
+          {
+            "level": "error",
+            "msg": "disk full"
+          },
+          {
+            "level": "info",
+            "msg": "request"
+          },
+          {
+            "level": "warn",
+            "msg": "slow"
+          },
+          {
+            "level": "info",
+            "msg": "stopped"
+          }
+        ],
+        "expected": "[\n  1,\n  3,\n  1\n]"
+      },
+      {
+        "input": [
+          {
+            "level": "warn",
+            "msg": "retry"
+          },
+          {
+            "level": "warn",
+            "msg": "retry"
+          },
+          {
+            "level": "error",
+            "msg": "gave up"
+          }
+        ],
+        "expected": "[\n  1,\n  2\n]"
+      },
+      {
+        "input": [
+          {
+            "level": "debug",
+            "msg": "tick"
+          },
+          {
+            "level": "debug",
+            "msg": "tick"
+          },
+          {
+            "level": "debug",
+            "msg": "tick"
+          },
+          {
+            "level": "debug",
+            "msg": "tick"
+          }
+        ],
+        "expected": "[\n  4\n]"
+      }
+    ]
+  }
+}

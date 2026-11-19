@@ -1,0 +1,25 @@
+{
+  "title": "A value inside",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.repo.branch' data.json",
+      "file": "data.json",
+      "input": {
+        "build": 77,
+        "repo": {
+          "name": "api",
+          "branch": "main"
+        },
+        "steps": [
+          "lint",
+          "test"
+        ]
+      }
+    },
+    "expected": "\"main\""
+  }
+}

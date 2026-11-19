@@ -1,0 +1,55 @@
+{
+  "title": "Titles of the tracks",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.tracks | map(.title)' data.json",
+    "tests": [
+      {
+        "input": {
+          "playlist": "Focus",
+          "tracks": [
+            {
+              "title": "Low Tide",
+              "seconds": 214
+            },
+            {
+              "title": "Paper Boats",
+              "seconds": 187
+            }
+          ]
+        },
+        "expected": "[\n  \"Low Tide\",\n  \"Paper Boats\"\n]"
+      },
+      {
+        "input": {
+          "playlist": "Run",
+          "tracks": [
+            {
+              "title": "Start Line",
+              "seconds": 201
+            },
+            {
+              "title": "Hill",
+              "seconds": 240
+            },
+            {
+              "title": "Last Lap",
+              "seconds": 176
+            }
+          ]
+        },
+        "expected": "[\n  \"Start Line\",\n  \"Hill\",\n  \"Last Lap\"\n]"
+      },
+      {
+        "input": {
+          "playlist": "New",
+          "tracks": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

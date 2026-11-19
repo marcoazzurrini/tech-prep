@@ -1,0 +1,46 @@
+{
+  "title": "Open issues of a repo",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '\"\\(.repo) has \\(.issues) open issues\"' data.json",
+    "reference": "jq '\"\\(.repo) has \\(.issues | length) open issues\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "repo": "atlas",
+          "issues": [
+            212,
+            215,
+            230
+          ]
+        },
+        "expected": "\"atlas has 3 open issues\""
+      },
+      {
+        "input": {
+          "repo": "notes",
+          "issues": []
+        },
+        "expected": "\"notes has 0 open issues\""
+      },
+      {
+        "input": {
+          "repo": "router",
+          "issues": [
+            7,
+            9,
+            14,
+            15,
+            21,
+            30,
+            31
+          ]
+        },
+        "expected": "\"router has 7 open issues\""
+      }
+    ]
+  }
+}

@@ -53,17 +53,19 @@ Per concept:
 
 Plus `fail_count` (learning-phase struggles since the last lesson) and the FSRS card.
 
-Per problem attempt: why it was opened (a lesson's guided problem, its solo problem, or a review), phase (learning or review), outcome, hint events (level 1-4), tests passed.
+Per attempt on a course's exercise: why it was opened (a lesson's guided exercise, its solo exercise, or a review), phase (learning or review), outcome, hint events (level 1-4), tests passed.
 
-Per exercise: its kind, target concepts, the hidden answer, the learner's answer, and the result per concept.
+Per extra exercise from the tutor: its target concepts, how it is checked with the hidden answer, the learner's answer, and the result per concept.
 
-## Problems and exercises
+## Exercises
 
-A problem or exercise targets one to three concepts: the ones it cannot be done without.
+An exercise is something to solve that gets checked. It targets one to three concepts: the ones it cannot be done without. Each exercise says how its answer is checked: by calling the learner's function, by running their command, by comparing a value they typed, and so on. A course calls its exercises "problems" or "tasks".
 
-- **Curriculum problems**, with tests. Solving one from an empty file, without help, is the strongest evidence, so only this passes a concept.
-- **Guided problems**, one per lesson, also with tests. They are solved with the lesson beside them, so they are teaching, not evidence. Solving one marks the concept as taught.
-- **Exercises the tutor writes** when the learner asks for more practice: a worked example to read, predict the output, arrange the lines, and an open answer in the learner's own words. The engine runs the code of a predict or arrange exercise before the learner sees it, so the key cannot be wrong. The learner answers once.
+Where an exercise sits decides what its result means:
+
+- **A solo or review exercise**, from the course. Solving one from its starting text, without help, is the strongest evidence, so only this passes a concept. The learner may try until it is right.
+- **A guided exercise**, also from the course. It is solved with the lesson beside it, so it is teaching, not evidence. Solving a lesson's guided exercises marks the concept as taught.
+- **An extra exercise**, written by the tutor when the learner asks for more practice: an example to read, predict the output, arrange the lines, or an open answer in the learner's own words. The engine builds it before the learner sees it, so the key cannot be wrong. The learner answers once: the first answer is the evidence.
 
 ## Grading
 

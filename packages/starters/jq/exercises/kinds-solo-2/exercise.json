@@ -1,0 +1,23 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.replicas | type' data.json",
+      "file": "data.json",
+      "input": {
+        "service": "api",
+        "replicas": "3",
+        "ports": [
+          80,
+          443
+        ]
+      },
+      "show_command": true
+    },
+    "expected": "\"string\""
+  }
+}

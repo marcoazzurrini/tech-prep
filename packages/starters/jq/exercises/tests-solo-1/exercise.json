@@ -1,0 +1,36 @@
+{
+  "title": "Did the command fail?",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.exit_code != 0' data.json",
+    "tests": [
+      {
+        "input": {
+          "cmd": "npm test",
+          "exit_code": 1,
+          "seconds": 12
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "cmd": "npm run build",
+          "exit_code": 0,
+          "seconds": 48
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "cmd": "make deploy",
+          "exit_code": 127,
+          "seconds": 1
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

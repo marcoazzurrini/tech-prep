@@ -13,11 +13,11 @@ import type { Finished, Flow, FlowEvent } from "./lesson-flow";
 import type { Lesson, Problem } from "./types";
 
 const problem = (slug: string): Problem => ({
+  check: { type: "function" },
   difficulty: "easy",
   slug,
   statement: "Do it.",
   status: "unattempted",
-  task: { kind: "code" },
   title: slug,
 });
 

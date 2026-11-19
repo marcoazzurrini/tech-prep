@@ -30,12 +30,13 @@ export const COURSES_DIR =
 
 export const WORKSPACE_DIR = path.join(HOME_DIR, "workspace");
 
-/** The newest course format this engine reads. A course that needs a newer one is skipped. */
-export const COURSE_FORMAT = 1;
+/** The course format this engine reads. A course written for another one is skipped. */
+export const COURSE_FORMAT = 2;
 
-export type CourseKind = "code" | "jq";
+/** What a course calls the things its learner solves. */
+export type Noun = "problems" | "tasks" | "exercises";
 
-/** A course: one folder with a `course.json` manifest, a curriculum, lessons and problems. */
+/** A course: one folder with a `course.json` manifest, a curriculum, lessons and exercises. */
 export interface Course {
   /** Stable id. Progress is stored under it, so it never changes. */
   id: string;
@@ -44,27 +45,31 @@ export interface Course {
   initials: string;
   /** Rises with every content change. The highest version of a course id is the one used. */
   version: number;
-  /** What a task is: code checked by tests, or a jq filter checked by its output. */
-  kind: CourseKind;
+  noun: Noun;
+  /** Ids the course had before. Progress saved under one of them moves to `id`. */
+  formerly: string[];
   dir: string;
   /** True when the course ships with the app. */
   builtin: boolean;
 }
 
-// SAFETY: callers only read the curriculum and problem files, which are authored to these
-// shapes and checked by `validateCurriculum` and `build-problem`.
+// SAFETY: callers only read the curriculum files, which are authored to these shapes and
+// checked by `validateCurriculum`.
 export const readJson = <T>(file: string): T =>
   JSON.parse(readFileSync(file, "utf-8")) as T;
 
 /** The `course.json` manifest. */
+const CourseId = z
+  .string()
+  .regex(/^[a-z0-9][a-z0-9-]*$/u, "use lowercase letters, digits and dashes");
+
 const Manifest = z.object({
   format: z.number().int().positive(),
-  id: z
-    .string()
-    .regex(/^[a-z0-9][a-z0-9-]*$/u, "use lowercase letters, digits and dashes"),
+  formerly: z.array(CourseId).default([]),
+  id: CourseId,
   initials: z.string().min(1).max(3),
-  kind: z.enum(["code", "jq"]).default("code"),
   name: z.string().trim().min(1),
+  noun: z.enum(["problems", "tasks", "exercises"]).default("exercises"),
   version: z.number().int(),
 });
 
@@ -82,21 +87,21 @@ const readCourse = (dir: string, builtin: boolean): Course => {
     );
   }
 
-  const { format, id, initials, kind, name, version } = parsed.data;
+  const { format, formerly, id, initials, name, noun, version } = parsed.data;
 
-  if (format > COURSE_FORMAT) {
+  if (format !== COURSE_FORMAT) {
     throw new Error(
-      `it needs course format ${format}, and this app reads up to ${COURSE_FORMAT}`
+      `it is written in course format ${format}, and this app reads format ${COURSE_FORMAT}`
     );
   }
 
-  for (const file of ["topics.json", "concepts.json", "problems.json"]) {
+  for (const file of ["topics.json", "concepts.json", "exercises.json"]) {
     if (!existsSync(path.join(dir, "curriculum", file))) {
       throw new Error(`curriculum/${file} is missing`);
     }
   }
 
-  return { builtin, dir, id, initials, kind, name, version };
+  return { builtin, dir, formerly, id, initials, name, noun, version };
 };
 
 interface Found {
@@ -166,18 +171,9 @@ const STATE_FILE = path.join(HOME_DIR, "state.json");
 
 const State = z.object({ course: z.string() });
 
-/** Course ids that changed, old to new. Progress and the saved choice follow the new id. */
-export const RENAMED_COURSES: ReadonlyMap<string, string> = new Map([
-  ["interview", "dsa"],
-]);
-
 const savedCourseId = (): string | null => {
   try {
-    const { course } = State.parse(
-      JSON.parse(readFileSync(STATE_FILE, "utf-8"))
-    );
-
-    return RENAMED_COURSES.get(course) ?? course;
+    return State.parse(JSON.parse(readFileSync(STATE_FILE, "utf-8"))).course;
   } catch {
     return null;
   }
@@ -200,7 +196,12 @@ export const courseById = (id: string): Course => {
  */
 export const savedCourse = (): Course => {
   const saved = savedCourseId();
-  const found = courses().find((c) => c.id === saved) ?? courses()[0];
+
+  // A choice saved under a course's earlier id opens that course.
+  const found =
+    courses().find((c) => c.id === saved) ??
+    courses().find((c) => saved !== null && c.formerly.includes(saved)) ??
+    courses()[0];
 
   if (!found) {
     throw new Error(
@@ -224,8 +225,8 @@ export const selectCourse = (id: string): Course => {
 const curriculumDir = (course: Course): string =>
   path.join(course.dir, "curriculum");
 
-export const problemsDir = (course: Course): string =>
-  path.join(course.dir, "problems");
+const exercisesDir = (course: Course): string =>
+  path.join(course.dir, "exercises");
 
 export const lessonsDir = (course: Course): string =>
   path.join(course.dir, "lessons");
@@ -234,10 +235,10 @@ export const lessonsDir = (course: Course): string =>
 export const solutionsDir = (course: Course): string => {
   const dir = path.join(WORKSPACE_DIR, course.id);
 
-  for (const [from, to] of RENAMED_COURSES) {
-    const old = path.join(WORKSPACE_DIR, from);
+  for (const earlier of course.formerly) {
+    const old = path.join(WORKSPACE_DIR, earlier);
 
-    if (to === course.id && !existsSync(dir) && existsSync(old)) {
+    if (!existsSync(dir) && existsSync(old)) {
       renameSync(old, dir);
     }
   }
@@ -245,20 +246,20 @@ export const solutionsDir = (course: Course): string => {
   return dir;
 };
 
-export type Language = "python" | "typescript" | "jq";
+/**
+ * What an answer is written in, such as "typescript". Each exercise names its own,
+ * so the engine keeps no list of them.
+ */
+export type Language = string;
 
-/** The languages a code problem is solved in. */
-export const LANGUAGES: Language[] = ["python", "typescript"];
+const EXTENSIONS = new Map([
+  ["python", "py"],
+  ["typescript", "ts"],
+]);
 
-export const EXTENSIONS: Record<Language, string> = {
-  jq: "jq",
-  python: "py",
-  typescript: "ts",
-};
-
-/** The language of code problems. */
-export const DEFAULT_LANGUAGE: Language =
-  process.env.TECHPREP_LANG === "python" ? "python" : "typescript";
+/** The file extension of an answer in a language: its usual one, else the language's name. */
+export const extension = (language: Language): string =>
+  EXTENSIONS.get(language) ?? language;
 
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -288,16 +289,16 @@ export interface Concept {
 }
 
 /**
- * Where a problem comes from. The NeetCode 150 problems carry no source. An "extra" fills a
- * concept the list has no problem for. A "guided" problem belongs to one lesson and is solved
- * with the lesson beside it.
+ * Where a problem comes from. A course's own problems carry no source. An "extra" is one the
+ * course added to fill a concept, and is left out of the count that names the course. A
+ * "guided" problem belongs to one lesson and is solved with the lesson beside it.
  */
 export type ProblemSource = "extra" | "guided";
 
 /** A problem's place in the curriculum: always available, even before its tests are written. */
 export interface ProblemInfo {
   slug: string;
-  /** A jq task may leave it out of the index: its file holds the title. */
+  /** The index may leave it out: the exercise's own file can hold the title. */
   title: string;
   topic: string;
   difficulty: Difficulty;
@@ -359,7 +360,7 @@ export const concept = (course: Course, id: string): Concept => {
 export const problemIndex = (course: Course): ProblemInfo[] => {
   const c = cache(course);
   c.index ??= readJson<ProblemInfo[]>(
-    path.join(curriculumDir(course), "problems.json")
+    path.join(curriculumDir(course), "exercises.json")
   );
 
   return c.index;
@@ -428,6 +429,30 @@ export const problemEntry = (course: Course, slug: string): ProblemInfo => {
   }
 
   return found;
+};
+
+/**
+ * The folder that holds an exercise: its statement, how it is checked and its answer key.
+ * A lesson's guided exercises sit in the lesson's folder, numbered from 1.
+ */
+export const exerciseDir = (course: Course, slug: string): string => {
+  const conceptId = guidedConcept(slug);
+
+  return conceptId
+    ? path.join(
+        lessonsDir(course),
+        conceptId,
+        "exercises",
+        String(guidedNumber(slug))
+      )
+    : path.join(exercisesDir(course), slug);
+};
+
+/** How to tutor this course, in the course's own words. Null when it gives no guide. */
+export const tutorGuide = (course: Course): string | null => {
+  const file = path.join(course.dir, "tutor.md");
+
+  return existsSync(file) ? readFileSync(file, "utf-8").trim() : null;
 };
 
 /** The lesson text for a concept, or null when it is not written yet. */
@@ -629,7 +654,7 @@ export const solutionPath = (
   course: Course,
   slug: string,
   language: Language
-): string => path.join(solutionsDir(course), `${slug}.${EXTENSIONS[language]}`);
+): string => path.join(solutionsDir(course), `${slug}.${extension(language)}`);
 
 /** Word-wrap one line of prose for comment headers in solution and lesson files. */
 export const wrap = (line: string, width: number): string[] => {

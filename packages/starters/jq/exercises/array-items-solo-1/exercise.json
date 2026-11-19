@@ -1,0 +1,60 @@
+{
+  "title": "State of the last job",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.jobs[-1].state' data.json",
+    "tests": [
+      {
+        "input": {
+          "queue": "emails",
+          "jobs": [
+            {
+              "id": 1,
+              "state": "done"
+            },
+            {
+              "id": 2,
+              "state": "failed"
+            },
+            {
+              "id": 3,
+              "state": "waiting"
+            }
+          ]
+        },
+        "expected": "\"waiting\""
+      },
+      {
+        "input": {
+          "queue": "images",
+          "jobs": [
+            {
+              "id": 8,
+              "state": "running"
+            }
+          ]
+        },
+        "expected": "\"running\""
+      },
+      {
+        "input": {
+          "queue": "reports",
+          "jobs": [
+            {
+              "id": 4,
+              "state": "done"
+            },
+            {
+              "id": 5,
+              "state": "done"
+            }
+          ]
+        },
+        "expected": "\"done\""
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Count Absent Students",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "count_absent",
+      "typescript": "countAbsent"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def count_absent(roster: list[str], present: list[str]) -> int:\n    pass\n",
+      "typescript": "export function countAbsent(roster: string[], present: string[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[["ana","li","sam"],["li"]],"expected":2},
+      {"args":[["ana"],["ana","bo"]],"expected":0},
+      {"args":[[],[]],"expected":0},
+      {"args":[["ana"],[]],"expected":1},
+      {"args":[[],["bo"]],"expected":0},
+      {"args":[["ana","li"],["li","ana"]],"expected":0},
+      {"args":[["ana","li","sam","kim"],["bo","bo","li","li"]],"expected":3},
+      {"args":[["a","b","c","d","e","f","g","h"],["h","x","c","a","y","a"]],"expected":5}
+    ]
+  }
+}

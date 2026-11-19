@@ -1,0 +1,25 @@
+{
+  "title": "Smallest Pile after Doubling",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "smallest_after_doubling",
+      "typescript": "smallestAfterDoubling"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "import heapq\n\n\ndef smallest_after_doubling(piles: list[int], k: int) -> int:\n    pass\n",
+      "typescript": "import { Heap } from \"./ds.ts\";\n\nexport function smallestAfterDoubling(piles: number[], k: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[1,2,3],1],"expected":2},
+      {"args":[[1,8],3],"expected":8},
+      {"args":[[4,9],0],"expected":4},
+      {"args":[[5],3],"expected":40},
+      {"args":[[1,1,1],2],"expected":1},
+      {"args":[[3,4,5],4],"expected":8},
+      {"args":[[7,7],1],"expected":7},
+      {"args":[[10,1,6,3,2],6],"expected":6}
+    ]
+  }
+}

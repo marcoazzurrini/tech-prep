@@ -1,0 +1,76 @@
+{
+  "title": "Items in each order",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.orders[] | .items | length' data.json",
+    "tests": [
+      {
+        "input": {
+          "shop": "north",
+          "orders": [
+            {
+              "id": 801,
+              "items": [
+                "pen",
+                "pad",
+                "ink"
+              ]
+            },
+            {
+              "id": 802,
+              "items": [
+                "lamp"
+              ]
+            }
+          ]
+        },
+        "expected": "3\n1"
+      },
+      {
+        "input": {
+          "shop": "south",
+          "orders": [
+            {
+              "id": 77,
+              "items": []
+            },
+            {
+              "id": 78,
+              "items": [
+                "desk",
+                "chair"
+              ]
+            },
+            {
+              "id": 79,
+              "items": [
+                "mug"
+              ]
+            }
+          ]
+        },
+        "expected": "0\n2\n1"
+      },
+      {
+        "input": {
+          "shop": "east",
+          "orders": [
+            {
+              "id": 5,
+              "items": [
+                "cable",
+                "plug",
+                "fuse",
+                "tape"
+              ]
+            }
+          ]
+        },
+        "expected": "4"
+      }
+    ]
+  }
+}

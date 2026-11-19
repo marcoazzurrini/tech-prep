@@ -1,0 +1,26 @@
+{
+  "title": "Cheapest With Tickets",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "cheapest_with_tickets",
+      "typescript": "cheapestWithTickets"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def cheapest_with_tickets(n: int, rides: list[list[int]], tickets: int) -> list[int]:\n    pass\n",
+      "typescript": "export function cheapestWithTickets(n: number, rides: number[][], tickets: number): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[3,[[0,1,2],[1,2,2],[0,2,9]],1],"expected":[0,2,9]},
+      {"args":[3,[[0,1,2],[1,2,2],[0,2,9]],2],"expected":[0,2,4]},
+      {"args":[1,[],3],"expected":[0]},
+      {"args":[3,[[0,1,5]],0],"expected":[0,-1,-1]},
+      {"args":[4,[[0,1,1],[1,2,1],[2,3,1]],1],"expected":[0,1,-1,-1]},
+      {"args":[4,[[0,1,1],[1,2,1],[2,3,1]],2],"expected":[0,1,2,-1]},
+      {"args":[4,[[2,3,1],[1,2,1],[0,1,1]],3],"expected":[0,1,2,3]},
+      {"args":[3,[[0,1,4],[1,0,1],[1,2,3],[0,2,10]],5],"expected":[0,4,7]},
+      {"args":[4,[[0,1,3],[0,2,8],[1,2,2],[2,3,1],[1,3,9]],2],"expected":[0,3,5,9]}
+    ]
+  }
+}

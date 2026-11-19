@@ -1,0 +1,79 @@
+{
+  "title": "Rows of a report",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq -r '.rows | .[] | @tsv' data.json",
+    "tests": [
+      {
+        "input": {
+          "report": "signups",
+          "rows": [
+            [
+              "week",
+              "signups",
+              "paid"
+            ],
+            [
+              "2024-W09",
+              310,
+              42
+            ],
+            [
+              "2024-W10",
+              355,
+              51
+            ]
+          ]
+        },
+        "expected": "week\tsignups\tpaid\n2024-W09\t310\t42\n2024-W10\t355\t51"
+      },
+      {
+        "input": {
+          "report": "errors",
+          "rows": [
+            [
+              "service",
+              "count"
+            ],
+            [
+              "api",
+              17
+            ]
+          ]
+        },
+        "expected": "service\tcount\napi\t17"
+      },
+      {
+        "input": {
+          "report": "latency",
+          "rows": [
+            [
+              "route",
+              "p50",
+              "p99"
+            ],
+            [
+              "/users",
+              31,
+              240
+            ],
+            [
+              "/orders",
+              58,
+              910
+            ],
+            [
+              "/health",
+              2,
+              9
+            ]
+          ]
+        },
+        "expected": "route\tp50\tp99\n/users\t31\t240\n/orders\t58\t910\n/health\t2\t9"
+      }
+    ]
+  }
+}

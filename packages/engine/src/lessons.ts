@@ -5,6 +5,7 @@
 import { concept, guidedSlugs, lessonText, soloSlugs } from "./content.ts";
 import type { Course } from "./content.ts";
 import type { AttemptRow, Outcome } from "./db.ts";
+import { hasLesson } from "./exercises.ts";
 import { startProblem } from "./practice.ts";
 import {
   isOpen,
@@ -13,7 +14,6 @@ import {
   problemStatus,
   soloWait,
 } from "./scheduler.ts";
-import { courseLanguage, hasLesson } from "./tasks.ts";
 
 /**
  * The line that ends a part of a lesson. A lesson with several guided tasks is written in
@@ -128,19 +128,9 @@ export const startLesson = (
   }
 
   if (lessonStep(course, id) === 1) {
-    startProblem(
-      course,
-      guidedProgress(course, id).current,
-      courseLanguage(course),
-      "guided"
-    );
+    startProblem(course, guidedProgress(course, id).current, "guided");
   } else if (soloWait(course, id) === null) {
-    startProblem(
-      course,
-      soloProgress(course, id).current,
-      courseLanguage(course),
-      "solo"
-    );
+    startProblem(course, soloProgress(course, id).current, "solo");
   }
 };
 

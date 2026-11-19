@@ -1,0 +1,26 @@
+{
+  "title": "Words from Letter Choices",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "count_spellable",
+      "typescript": "countSpellable"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def count_spellable(words: list[str], choices: list[str]) -> int:\n    pass\n",
+      "typescript": "export function countSpellable(words: string[], choices: string[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[["cat","cot","dog","cut"],["cd","ao","t"]],"expected":2},
+      {"args":[["at","ate"],["a","t"]],"expected":1},
+      {"args":[["a"],["b"]],"expected":0},
+      {"args":[[],["abc"]],"expected":0},
+      {"args":[["a"],["a"]],"expected":1},
+      {"args":[["ab","ba","aa","bb"],["ab","ab"]],"expected":4},
+      {"args":[["bad","dad","mad","pad"],["bdm","a","d"]],"expected":3},
+      {"args":[["tea","ten","to","tan"],["t","eo","an"]],"expected":2},
+      {"args":[["stop","step","slip","shop","ship","skip","spot"],["s","thk","oie","p"]],"expected":5}
+    ]
+  }
+}

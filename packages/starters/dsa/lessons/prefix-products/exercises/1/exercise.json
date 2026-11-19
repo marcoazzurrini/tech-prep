@@ -1,0 +1,26 @@
+{
+  "title": "Largest Value Elsewhere",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "largest_elsewhere",
+      "typescript": "largestElsewhere"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def largest_elsewhere(nums: list[int]) -> list[int]:\n    pass\n",
+      "typescript": "export function largestElsewhere(nums: number[]): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[3,9,4]],"expected":[9,4,9]},
+      {"args":[[5,5]],"expected":[5,5]},
+      {"args":[[-3,-1,-2]],"expected":[-1,-2,-1]},
+      {"args":[[1,2]],"expected":[2,1]},
+      {"args":[[7,7,7,7]],"expected":[7,7,7,7]},
+      {"args":[[1,2,3,4,5]],"expected":[5,5,5,5,4]},
+      {"args":[[10,-5,10,0]],"expected":[10,10,10,10]},
+      {"args":[[0,-8]],"expected":[-8,0]},
+      {"args":[[4,1,8,3,8,2,6,5]],"expected":[8,8,8,8,8,8,8,8]}
+    ]
+  }
+}

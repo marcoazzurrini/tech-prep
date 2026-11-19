@@ -1,0 +1,25 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "letter_combinations",
+      "typescript": "letterCombinations"
+    },
+    "compare": "unordered",
+    "stubs": {
+      "python": "def letter_combinations(digits: str) -> list[str]:\n    pass\n",
+      "typescript": "export function letterCombinations(digits: string): string[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":["23"],"expected":["ad","ae","af","bd","be","bf","cd","ce","cf"]},
+      {"args":[""],"expected":[]},
+      {"args":["2"],"expected":["a","b","c"]},
+      {"args":["7"],"expected":["p","q","r","s"]},
+      {"args":["22"],"expected":["aa","ab","ac","ba","bb","bc","ca","cb","cc"]},
+      {"args":["79"],"expected":["pw","px","py","pz","qw","qx","qy","qz","rw","rx","ry","rz","sw","sx","sy","sz"]},
+      {"args":["58"],"expected":["jt","ju","jv","kt","ku","kv","lt","lu","lv"]},
+      {"args":["234"],"expected":["adg","adh","adi","aeg","aeh","aei","afg","afh","afi","bdg","bdh","bdi","beg","beh","bei","bfg","bfh","bfi","cdg","cdh","cdi","ceg","ceh","cei","cfg","cfh","cfi"]},
+      {"args":["9"],"expected":["w","x","y","z"]}
+    ]
+  }
+}

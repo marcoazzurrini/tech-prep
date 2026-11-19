@@ -1,0 +1,27 @@
+{
+  "title": "Min Max Machine",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "eval_min_max",
+      "typescript": "evalMinMax"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def eval_min_max(tokens: list[str]) -> int:\n    pass\n",
+      "typescript": "export function evalMinMax(tokens: string[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[["3","5","max"]],"expected":5},
+      {"args":[["2","9","max","4","min"]],"expected":4},
+      {"args":[["4","neg"]],"expected":-4},
+      {"args":[["4"]],"expected":4},
+      {"args":[["3","5","min"]],"expected":3},
+      {"args":[["1","2","3","max","min"]],"expected":1},
+      {"args":[["-6","neg","2","max"]],"expected":6},
+      {"args":[["5","neg","neg"]],"expected":5},
+      {"args":[["7","1","min","neg","-3","max"]],"expected":-1},
+      {"args":[["8","3","neg","min","10","2","max","neg","max","neg","6","min"]],"expected":3}
+    ]
+  }
+}

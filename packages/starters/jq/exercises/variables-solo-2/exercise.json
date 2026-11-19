@@ -1,0 +1,50 @@
+{
+  "title": "Services of a deploy",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.env as $env | .version as $version | .services | map({name, env: $env, version: $version})' data.json",
+    "tests": [
+      {
+        "input": {
+          "env": "prod",
+          "version": "2.4.0",
+          "services": [
+            {
+              "name": "api",
+              "port": 8080
+            },
+            {
+              "name": "web",
+              "port": 3000
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"api\",\n    \"env\": \"prod\",\n    \"version\": \"2.4.0\"\n  },\n  {\n    \"name\": \"web\",\n    \"env\": \"prod\",\n    \"version\": \"2.4.0\"\n  }\n]"
+      },
+      {
+        "input": {
+          "env": "staging",
+          "version": "2.5.0-rc1",
+          "services": [
+            {
+              "name": "api",
+              "port": 8080
+            }
+          ]
+        },
+        "expected": "[\n  {\n    \"name\": \"api\",\n    \"env\": \"staging\",\n    \"version\": \"2.5.0-rc1\"\n  }\n]"
+      },
+      {
+        "input": {
+          "env": "dev",
+          "version": "0.0.1",
+          "services": []
+        },
+        "expected": "[]"
+      }
+    ]
+  }
+}

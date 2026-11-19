@@ -1,0 +1,37 @@
+{
+  "title": "Result of the build",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'if .failed == 0 then \"passed\" else . end' data.json",
+    "reference": "jq 'if .failed == 0 then \"passed\" else \"failed\" end' data.json",
+    "tests": [
+      {
+        "input": {
+          "build": 118,
+          "tests": 240,
+          "failed": 2
+        },
+        "expected": "\"failed\""
+      },
+      {
+        "input": {
+          "build": 119,
+          "tests": 240,
+          "failed": 0
+        },
+        "expected": "\"passed\""
+      },
+      {
+        "input": {
+          "build": 120,
+          "tests": 241,
+          "failed": 17
+        },
+        "expected": "\"failed\""
+      }
+    ]
+  }
+}

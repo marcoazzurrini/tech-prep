@@ -1,0 +1,40 @@
+{
+  "title": "A list without emails",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map(del(.email))' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 1,
+            "name": "Ada",
+            "email": "ada@example.com"
+          },
+          {
+            "id": 2,
+            "name": "Bo",
+            "email": "bo@example.com"
+          }
+        ],
+        "expected": "[\n  {\n    \"id\": 1,\n    \"name\": \"Ada\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Bo\"\n  }\n]"
+      },
+      {
+        "input": [
+          {
+            "id": 7,
+            "name": "Cy"
+          }
+        ],
+        "expected": "[\n  {\n    \"id\": 7,\n    \"name\": \"Cy\"\n  }\n]"
+      },
+      {
+        "input": [],
+        "expected": "[]"
+      }
+    ]
+  }
+}

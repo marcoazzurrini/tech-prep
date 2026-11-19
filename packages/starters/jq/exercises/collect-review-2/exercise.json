@@ -1,0 +1,84 @@
+{
+  "title": "Everyone's email",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '[.teams[] | .members[] | .email]' data.json",
+    "tests": [
+      {
+        "input": {
+          "org": "acme",
+          "teams": [
+            {
+              "name": "core",
+              "members": [
+                {
+                  "name": "Ada",
+                  "email": "ada@example.com"
+                },
+                {
+                  "name": "Bo",
+                  "email": "bo@example.com"
+                }
+              ]
+            },
+            {
+              "name": "ops",
+              "members": [
+                {
+                  "name": "Cy",
+                  "email": "cy@example.com"
+                }
+              ]
+            }
+          ]
+        },
+        "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\",\n  \"cy@example.com\"\n]"
+      },
+      {
+        "input": {
+          "org": "solo",
+          "teams": [
+            {
+              "name": "all",
+              "members": [
+                {
+                  "name": "Dee",
+                  "email": "dee@example.com"
+                }
+              ]
+            }
+          ]
+        },
+        "expected": "[\n  \"dee@example.com\"\n]"
+      },
+      {
+        "input": {
+          "org": "labs",
+          "teams": [
+            {
+              "name": "new",
+              "members": []
+            },
+            {
+              "name": "data",
+              "members": [
+                {
+                  "name": "Eli",
+                  "email": "eli@example.com"
+                },
+                {
+                  "name": "Fay",
+                  "email": "fay@example.com"
+                }
+              ]
+            }
+          ]
+        },
+        "expected": "[\n  \"eli@example.com\",\n  \"fay@example.com\"\n]"
+      }
+    ]
+  }
+}

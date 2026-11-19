@@ -1,0 +1,49 @@
+{
+  "title": "Short form of an issue",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'def brief: {id, title}; .issue | .' data.json",
+    "reference": "jq 'def brief: {id, title}; .issue | brief' data.json",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "issue": {
+            "id": 41,
+            "title": "Login fails",
+            "state": "open",
+            "comments": 3
+          }
+        },
+        "expected": "{\n  \"id\": 41,\n  \"title\": \"Login fails\"\n}"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "issue": {
+            "id": 7,
+            "title": "Dark mode",
+            "state": "closed",
+            "comments": 12
+          }
+        },
+        "expected": "{\n  \"id\": 7,\n  \"title\": \"Dark mode\"\n}"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "issue": {
+            "id": 108,
+            "title": "Typo in the guide",
+            "state": "open",
+            "comments": 0
+          }
+        },
+        "expected": "{\n  \"id\": 108,\n  \"title\": \"Typo in the guide\"\n}"
+      }
+    ]
+  }
+}

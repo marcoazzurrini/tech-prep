@@ -1,0 +1,24 @@
+{
+  "title": "Same Group Queries",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "same_group_queries",
+      "typescript": "sameGroupQueries"
+    },
+    "stubs": {
+      "python": "def same_group_queries(n: int, links: list[list[int]], queries: list[list[int]]) -> list[bool]:\n    pass\n",
+      "typescript": "export function sameGroupQueries(n: number, links: number[][], queries: number[][]): boolean[] {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[4,[[0,1],[2,3]],[[0,1],[1,2],[3,2]]],"expected":[true,false,true]},
+      {"args":[3,[],[[0,1],[2,2]]],"expected":[false,true]},
+      {"args":[1,[],[[0,0]]],"expected":[true]},
+      {"args":[4,[[0,1],[1,2],[2,3]],[[0,3],[3,1]]],"expected":[true,true]},
+      {"args":[5,[[0,1],[1,2]],[]],"expected":[]},
+      {"args":[5,[[0,1],[0,1],[1,0]],[[0,1],[0,2]]],"expected":[true,false]},
+      {"args":[6,[[0,1],[2,3],[4,5],[1,2]],[[0,3],[0,4],[5,4],[3,5]]],"expected":[true,false,true,false]},
+      {"args":[7,[[6,5],[5,4],[3,2],[2,1],[4,3]],[[6,1],[0,6],[0,0]]],"expected":[true,false,true]}
+    ]
+  }
+}

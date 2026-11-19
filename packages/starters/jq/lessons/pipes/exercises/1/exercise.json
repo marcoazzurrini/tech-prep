@@ -1,0 +1,43 @@
+{
+  "title": "Finish the chain",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.config | .' data.json",
+    "reference": "jq '.config | .port' data.json",
+    "tests": [
+      {
+        "input": {
+          "config": {
+            "host": "db-1",
+            "port": 5432
+          },
+          "env": "prod"
+        },
+        "expected": "5432"
+      },
+      {
+        "input": {
+          "config": {
+            "host": "web-1",
+            "port": 443
+          },
+          "env": "prod"
+        },
+        "expected": "443"
+      },
+      {
+        "input": {
+          "config": {
+            "host": "cache-1",
+            "port": 6379
+          },
+          "env": "dev"
+        },
+        "expected": "6379"
+      }
+    ]
+  }
+}

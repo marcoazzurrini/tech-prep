@@ -1,0 +1,42 @@
+{
+  "title": "Newest release",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.releases | to_entries | .[-1] | {date: .key, version: .value}' data.json",
+    "tests": [
+      {
+        "input": {
+          "package": "left-pad",
+          "releases": {
+            "2024-03-01": "1.0.0",
+            "2025-01-15": "1.1.0",
+            "2026-02-09": "2.0.0"
+          }
+        },
+        "expected": "{\n  \"date\": \"2026-02-09\",\n  \"version\": \"2.0.0\"\n}"
+      },
+      {
+        "input": {
+          "package": "tiny-log",
+          "releases": {
+            "2025-11-30": "0.1.0"
+          }
+        },
+        "expected": "{\n  \"date\": \"2025-11-30\",\n  \"version\": \"0.1.0\"\n}"
+      },
+      {
+        "input": {
+          "package": "fast-csv",
+          "releases": {
+            "2023-06-12": "3.0.0",
+            "2024-08-20": "3.1.0"
+          }
+        },
+        "expected": "{\n  \"date\": \"2024-08-20\",\n  \"version\": \"3.1.0\"\n}"
+      }
+    ]
+  }
+}

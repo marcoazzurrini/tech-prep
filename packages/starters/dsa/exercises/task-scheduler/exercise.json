@@ -1,0 +1,26 @@
+{
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "least_interval",
+      "typescript": "leastInterval"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "import heapq\n\n\ndef least_interval(tasks: list[str], n: int) -> int:\n    pass\n",
+      "typescript": "import { Heap } from \"./ds.ts\";\n\nexport function leastInterval(tasks: string[], n: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[["A","A","A","B","B","B"],2],"expected":8},
+      {"args":[["A","C","A","B","D","B"],1],"expected":6},
+      {"args":[["A","A","A","B","B","B"],3],"expected":10},
+      {"args":[["A","A","A","B","B","B"],0],"expected":6},
+      {"args":[["A"],5],"expected":1},
+      {"args":[["A","A"],3],"expected":5},
+      {"args":[["A","B","C","D"],3],"expected":4},
+      {"args":[["A","A","B","B","C","C"],2],"expected":6},
+      {"args":[["A","A","A","A","A","A","B","C","D","E","F","G"],2],"expected":16},
+      {"args":[["A","A","A","B","B","B","C","C","C","D","D","E"],2],"expected":12}
+    ]
+  }
+}

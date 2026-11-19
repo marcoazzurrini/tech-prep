@@ -1,0 +1,26 @@
+{
+  "title": "Best Common Letter Score",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "best_common_score",
+      "typescript": "bestCommonScore"
+    },
+    "stubs": {
+      "python": "def best_common_score(a: str, b: str) -> int:\n    pass\n",
+      "typescript": "export function bestCommonScore(a: string, b: string): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":["abc","abc"],"expected":6},
+      {"args":["za","az"],"expected":26},
+      {"args":["abc","def"],"expected":0},
+      {"args":["","abc"],"expected":0},
+      {"args":["a","a"],"expected":1},
+      {"args":["zz","z"],"expected":26},
+      {"args":["aaz","zaa"],"expected":26},
+      {"args":["abcde","ace"],"expected":9},
+      {"args":["hello","yellow"],"expected":44},
+      {"args":["bdzbd","zbdbd"],"expected":32}
+    ]
+  }
+}

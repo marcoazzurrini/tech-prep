@@ -1,0 +1,26 @@
+{
+  "title": "Is It a Consecutive Run",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "is_consecutive_run",
+      "typescript": "isConsecutiveRun"
+    },
+    "compare": "exact",
+    "stubs": {
+      "python": "def is_consecutive_run(nums: list[int]) -> bool:\n    pass\n",
+      "typescript": "export function isConsecutiveRun(nums: number[]): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[3,1,2]],"expected":true},
+      {"args":[[1,3,2,5]],"expected":false},
+      {"args":[[2,2,3]],"expected":false},
+      {"args":[[5]],"expected":true},
+      {"args":[[-1,1,0]],"expected":true},
+      {"args":[[10,7,9,8]],"expected":true},
+      {"args":[[1,2,4]],"expected":false},
+      {"args":[[4,4]],"expected":false},
+      {"args":[[0,-2,-1,-3,1]],"expected":true}
+    ]
+  }
+}

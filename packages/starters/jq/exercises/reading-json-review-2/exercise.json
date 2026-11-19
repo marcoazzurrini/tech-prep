@@ -1,0 +1,23 @@
+{
+  "title": "What comes out?",
+  "check": {
+    "type": "value",
+    "compare": "json",
+    "source": {
+      "run": "command",
+      "program": "jq",
+      "command": "jq '.owner' data.json",
+      "file": "data.json",
+      "input": {
+        "repo": "api",
+        "owner": {
+          "login": "ada",
+          "admin": true
+        },
+        "stars": 12
+      },
+      "show_command": true
+    },
+    "expected": "{\n  \"login\": \"ada\",\n  \"admin\": true\n}"
+  }
+}

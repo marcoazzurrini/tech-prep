@@ -1,0 +1,45 @@
+{
+  "title": "Build times in order",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.durations | .' data.json",
+    "reference": "jq '.durations | sort' data.json",
+    "tests": [
+      {
+        "input": {
+          "job": "test",
+          "durations": [
+            42,
+            17,
+            63,
+            8
+          ]
+        },
+        "expected": "[\n  8,\n  17,\n  42,\n  63\n]"
+      },
+      {
+        "input": {
+          "job": "lint",
+          "durations": [
+            5,
+            3,
+            9
+          ]
+        },
+        "expected": "[\n  3,\n  5,\n  9\n]"
+      },
+      {
+        "input": {
+          "job": "deploy",
+          "durations": [
+            120
+          ]
+        },
+        "expected": "[\n  120\n]"
+      }
+    ]
+  }
+}

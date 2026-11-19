@@ -1,0 +1,74 @@
+{
+  "title": "Second result's user",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.data.results[1].user.login' data.json",
+    "tests": [
+      {
+        "input": {
+          "data": {
+            "results": [
+              {
+                "user": {
+                  "login": "ada"
+                }
+              },
+              {
+                "user": {
+                  "login": "bo"
+                }
+              }
+            ]
+          }
+        },
+        "expected": "\"bo\""
+      },
+      {
+        "input": {
+          "data": {
+            "results": [
+              {
+                "user": {
+                  "login": "cy"
+                }
+              },
+              {
+                "user": {
+                  "login": "dee"
+                }
+              },
+              {
+                "user": {
+                  "login": "eli"
+                }
+              }
+            ]
+          }
+        },
+        "expected": "\"dee\""
+      },
+      {
+        "input": {
+          "data": {
+            "results": [
+              {
+                "user": {
+                  "login": "fay"
+                }
+              },
+              {
+                "user": {
+                  "login": "gus"
+                }
+              }
+            ]
+          }
+        },
+        "expected": "\"gus\""
+      }
+    ]
+  }
+}

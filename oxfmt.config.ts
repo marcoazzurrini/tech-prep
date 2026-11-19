@@ -9,9 +9,9 @@ export default defineConfig({
     "**/.impeccable/**",
     // The penna design, which penna writes itself.
     ".penna/**",
-    // Problem data: spec.json is written by build-problem, and the reference
-    // solutions are answer keys checked by `build-problem --all`.
-    "packages/starters/*/problems/**",
+    // Exercise data: exercise.json is written by the engine's build, and the reference
+    // solutions are answer keys it checks.
+    "packages/starters/*/exercises/**",
     "packages/starters/*/lessons/**",
     "bun.lock",
   ],

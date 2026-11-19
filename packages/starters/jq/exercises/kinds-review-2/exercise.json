@@ -1,0 +1,46 @@
+{
+  "title": "A valid timeout",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.timeout | type == \"number\" and . > 0' data.json",
+    "tests": [
+      {
+        "input": {
+          "service": "api",
+          "timeout": "30"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "service": "web",
+          "timeout": 30
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "service": "jobs",
+          "timeout": 0
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "service": "mail"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "service": "auth",
+          "timeout": 2.5
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}

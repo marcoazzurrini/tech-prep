@@ -1,0 +1,48 @@
+{
+  "title": "Author of the deploy",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.deploy.commit.author' data.json",
+    "tests": [
+      {
+        "input": {
+          "deploy": {
+            "env": "prod",
+            "commit": {
+              "sha": "9f2c1a",
+              "author": "cy"
+            }
+          }
+        },
+        "expected": "\"cy\""
+      },
+      {
+        "input": {
+          "deploy": {
+            "env": "staging",
+            "commit": {
+              "sha": "77b0de",
+              "author": "ada"
+            }
+          }
+        },
+        "expected": "\"ada\""
+      },
+      {
+        "input": {
+          "deploy": {
+            "env": "prod",
+            "commit": {
+              "sha": "c41e09",
+              "author": "bo"
+            }
+          }
+        },
+        "expected": "\"bo\""
+      }
+    ]
+  }
+}

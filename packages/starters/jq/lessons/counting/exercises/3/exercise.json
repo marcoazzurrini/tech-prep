@@ -1,0 +1,58 @@
+{
+  "title": "Empty carts",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map(select(.items | length == 0)) | length' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "user": "ada",
+            "items": [
+              "pen",
+              "pad"
+            ]
+          },
+          {
+            "user": "bo",
+            "items": []
+          },
+          {
+            "user": "cy",
+            "items": []
+          }
+        ],
+        "expected": "2"
+      },
+      {
+        "input": [
+          {
+            "user": "dee",
+            "items": [
+              "lamp"
+            ]
+          }
+        ],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "user": "eli",
+            "items": []
+          },
+          {
+            "user": "fay",
+            "items": [
+              "mug"
+            ]
+          }
+        ],
+        "expected": "1"
+      }
+    ]
+  }
+}

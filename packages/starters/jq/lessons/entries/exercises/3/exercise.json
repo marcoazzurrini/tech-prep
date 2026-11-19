@@ -1,0 +1,51 @@
+{
+  "title": "Role of each user",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq 'map({key: .login, value: .role}) | from_entries' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "login": "kim",
+            "role": "admin"
+          },
+          {
+            "login": "lee",
+            "role": "viewer"
+          },
+          {
+            "login": "sam",
+            "role": "editor"
+          }
+        ],
+        "expected": "{\n  \"kim\": \"admin\",\n  \"lee\": \"viewer\",\n  \"sam\": \"editor\"\n}"
+      },
+      {
+        "input": [
+          {
+            "login": "ana",
+            "role": "owner"
+          }
+        ],
+        "expected": "{\n  \"ana\": \"owner\"\n}"
+      },
+      {
+        "input": [
+          {
+            "login": "uma",
+            "role": "viewer"
+          },
+          {
+            "login": "pat",
+            "role": "viewer"
+          }
+        ],
+        "expected": "{\n  \"uma\": \"viewer\",\n  \"pat\": \"viewer\"\n}"
+      }
+    ]
+  }
+}

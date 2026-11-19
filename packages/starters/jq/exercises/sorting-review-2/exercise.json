@@ -1,0 +1,72 @@
+{
+  "title": "Most discussed issues",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.issues | sort_by(.comments) | reverse | .[:2] | map(.title)' data.json",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "issues": [
+            {
+              "title": "Slow login",
+              "comments": 4
+            },
+            {
+              "title": "Crash on save",
+              "comments": 19
+            },
+            {
+              "title": "Typo in docs",
+              "comments": 1
+            },
+            {
+              "title": "Dark mode",
+              "comments": 11
+            }
+          ]
+        },
+        "expected": "[\n  \"Crash on save\",\n  \"Dark mode\"\n]"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "issues": [
+            {
+              "title": "Broken link",
+              "comments": 2
+            },
+            {
+              "title": "Add search",
+              "comments": 8
+            },
+            {
+              "title": "Update logo",
+              "comments": 5
+            }
+          ]
+        },
+        "expected": "[\n  \"Add search\",\n  \"Update logo\"\n]"
+      },
+      {
+        "input": {
+          "repo": "cli",
+          "issues": [
+            {
+              "title": "Flag ignored",
+              "comments": 30
+            },
+            {
+              "title": "Bad exit code",
+              "comments": 31
+            }
+          ]
+        },
+        "expected": "[\n  \"Bad exit code\",\n  \"Flag ignored\"\n]"
+      }
+    ]
+  }
+}

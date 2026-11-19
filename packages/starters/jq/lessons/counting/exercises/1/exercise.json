@@ -1,0 +1,56 @@
+{
+  "title": "Unread messages",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq 'map(select(.unread)) | .' data.json",
+    "reference": "jq 'map(select(.unread)) | length' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "from": "ada@example.com",
+            "unread": true
+          },
+          {
+            "from": "bo@example.com",
+            "unread": false
+          },
+          {
+            "from": "cy@example.com",
+            "unread": true
+          }
+        ],
+        "expected": "2"
+      },
+      {
+        "input": [
+          {
+            "from": "dee@example.com",
+            "unread": false
+          }
+        ],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "from": "eli@example.com",
+            "unread": true
+          },
+          {
+            "from": "fay@example.com",
+            "unread": true
+          },
+          {
+            "from": "gus@example.com",
+            "unread": true
+          }
+        ],
+        "expected": "3"
+      }
+    ]
+  }
+}

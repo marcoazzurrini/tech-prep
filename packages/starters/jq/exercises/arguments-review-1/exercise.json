@@ -1,0 +1,51 @@
+{
+  "title": "Packages by license",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "text",
+    "file": "data.json",
+    "reference": "jq --arg license MIT '[.[] | select(.license == $license) | .name]' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "left-pad",
+            "license": "MIT"
+          },
+          {
+            "name": "fastdb",
+            "license": "GPL-3.0"
+          },
+          {
+            "name": "tinylog",
+            "license": "MIT"
+          }
+        ],
+        "expected": "[\n  \"left-pad\",\n  \"tinylog\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "colors",
+            "license": "MIT"
+          },
+          {
+            "name": "netkit",
+            "license": "Apache-2.0"
+          }
+        ],
+        "expected": "[\n  \"colors\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "parsely",
+            "license": "ISC"
+          }
+        ],
+        "expected": "[]"
+      }
+    ]
+  }
+}

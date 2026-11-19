@@ -1,0 +1,28 @@
+{
+  "title": "Sum of the First Half",
+  "check": {
+    "type": "function",
+    "function": {
+      "python": "sum_first_half",
+      "typescript": "sumFirstHalf"
+    },
+    "params": [
+      "ListNode"
+    ],
+    "compare": "exact",
+    "stubs": {
+      "python": "from ds import ListNode\n\n\ndef sum_first_half(head: ListNode | None) -> int:\n    pass\n",
+      "typescript": "import { ListNode } from \"./ds.ts\";\n\nexport function sumFirstHalf(head: ListNode | null): number {\n  throw new Error(\"not implemented\");\n}\n"
+    },
+    "tests": [
+      {"args":[[1,2,3,4]],"expected":3},
+      {"args":[[5,1,9,7,2]],"expected":6},
+      {"args":[[8]],"expected":0},
+      {"args":[[]],"expected":0},
+      {"args":[[4,6]],"expected":4},
+      {"args":[[2,2,2]],"expected":2},
+      {"args":[[10,20,30,40,50,60]],"expected":60},
+      {"args":[[1,2,3,4,5,6,7,8,9,10,11]],"expected":15}
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "title": "Labels of the issue",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "start": "jq '.labels | sort' data.json",
+    "reference": "jq '.labels | unique' data.json",
+    "tests": [
+      {
+        "input": {
+          "issue": 214,
+          "labels": [
+            "bug",
+            "ui",
+            "bug",
+            "urgent",
+            "ui"
+          ]
+        },
+        "expected": "[\n  \"bug\",\n  \"ui\",\n  \"urgent\"\n]"
+      },
+      {
+        "input": {
+          "issue": 215,
+          "labels": [
+            "docs",
+            "docs"
+          ]
+        },
+        "expected": "[\n  \"docs\"\n]"
+      },
+      {
+        "input": {
+          "issue": 216,
+          "labels": [
+            "perf",
+            "api",
+            "perf",
+            "api",
+            "perf"
+          ]
+        },
+        "expected": "[\n  \"api\",\n  \"perf\"\n]"
+      }
+    ]
+  }
+}

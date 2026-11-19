@@ -1,0 +1,57 @@
+{
+  "title": "Names with addresses",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.[] | \"\\(.name) <\\(.email)>\"' data.json",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "Lena",
+            "email": "lena@example.com",
+            "team": "web"
+          },
+          {
+            "name": "Omar",
+            "email": "omar@example.com",
+            "team": "data"
+          }
+        ],
+        "expected": "\"Lena <lena@example.com>\"\n\"Omar <omar@example.com>\""
+      },
+      {
+        "input": [
+          {
+            "name": "Ines",
+            "email": "ines@example.com",
+            "team": "ops"
+          }
+        ],
+        "expected": "\"Ines <ines@example.com>\""
+      },
+      {
+        "input": [
+          {
+            "name": "Kofi",
+            "email": "kofi@example.com",
+            "team": "web"
+          },
+          {
+            "name": "Yuki",
+            "email": "yuki@example.com",
+            "team": "web"
+          },
+          {
+            "name": "Sam",
+            "email": "sam@example.com",
+            "team": "ops"
+          }
+        ],
+        "expected": "\"Kofi <kofi@example.com>\"\n\"Yuki <yuki@example.com>\"\n\"Sam <sam@example.com>\""
+      }
+    ]
+  }
+}

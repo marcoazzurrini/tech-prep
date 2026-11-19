@@ -1,0 +1,72 @@
+{
+  "title": "Slowest test",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.tests | max_by(.ms) | .name' data.json",
+    "tests": [
+      {
+        "input": {
+          "suite": "api",
+          "tests": [
+            {
+              "name": "login",
+              "ms": 120
+            },
+            {
+              "name": "upload",
+              "ms": 940
+            },
+            {
+              "name": "logout",
+              "ms": 35
+            }
+          ]
+        },
+        "expected": "\"upload\""
+      },
+      {
+        "input": {
+          "suite": "ui",
+          "tests": [
+            {
+              "name": "render",
+              "ms": 18
+            },
+            {
+              "name": "click",
+              "ms": 7
+            }
+          ]
+        },
+        "expected": "\"render\""
+      },
+      {
+        "input": {
+          "suite": "db",
+          "tests": [
+            {
+              "name": "migrate",
+              "ms": 2100
+            },
+            {
+              "name": "seed",
+              "ms": 800
+            },
+            {
+              "name": "query",
+              "ms": 15
+            },
+            {
+              "name": "backup",
+              "ms": 1900
+            }
+          ]
+        },
+        "expected": "\"migrate\""
+      }
+    ]
+  }
+}

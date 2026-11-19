@@ -1,0 +1,48 @@
+{
+  "title": "A list of results?",
+  "check": {
+    "type": "command",
+    "program": "jq",
+    "compare": "json",
+    "file": "data.json",
+    "reference": "jq '.results | type == \"array\"' data.json",
+    "tests": [
+      {
+        "input": {
+          "query": "lamp",
+          "results": {
+            "error": "index offline"
+          }
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "query": "desk",
+          "results": [
+            {
+              "id": 5
+            },
+            {
+              "id": 9
+            }
+          ]
+        },
+        "expected": "true"
+      },
+      {
+        "input": {
+          "query": "sofa"
+        },
+        "expected": "false"
+      },
+      {
+        "input": {
+          "query": "rug",
+          "results": []
+        },
+        "expected": "true"
+      }
+    ]
+  }
+}
