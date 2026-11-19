@@ -79,7 +79,7 @@ export interface ExerciseRow {
   kind: ExerciseKind;
   /** JSON list of target concept ids. */
   concepts: string;
-  language: string;
+  language: Language;
   title: string;
   prompt: string;
   /** What the learner sees: the code to read, or a JSON list of shuffled lines. */

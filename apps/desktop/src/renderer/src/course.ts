@@ -28,10 +28,6 @@ export const inDays = (iso: string): string => {
   return days === 1 ? "tomorrow" : `in ${days} days`;
 };
 
-/** Call the engine bridge and read its reply as `T`. */
-export const engine = async <T>(
-  method: Parameters<typeof window.tp.engine>[0],
-  params?: Parameters<typeof window.tp.engine>[1]
-): Promise<T> =>
-  // SAFETY: each bridge method returns the shape its caller names; the shapes are in types.ts.
-  (await window.tp.engine(method, params)) as T;
+/** Call the engine bridge. The contract types what each method takes and answers. */
+export const engine: typeof window.tp.engine = (method, ...params) =>
+  window.tp.engine(method, ...params);

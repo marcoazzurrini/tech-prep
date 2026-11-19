@@ -1,3 +1,4 @@
+import type { Method, Methods } from "@tech-prep/engine/contract";
 import { contextBridge, ipcRenderer } from "electron";
 import type { IpcRendererEvent } from "electron";
 
@@ -14,40 +15,14 @@ const on = <T>(
 };
 
 const api = {
-  /** Call the engine bridge. The methods and their replies are listed in the renderer's types. */
-  engine: (
-    method:
-      | "attempt.give_up"
-      | "attempt.pause"
-      | "code.read"
-      | "code.run"
-      | "code.save"
-      | "code.submit"
-      | "course"
-      | "course.select"
-      | "exercise.close"
-      | "exercise.submit"
-      | "lesson.open"
-      | "lesson.peek"
-      | "problem"
-      | "review.next"
-      | "reviews"
-      | "session"
-      | "task.preview",
-    params?: {
-      slug?: string;
-      text?: string;
-      /** An exercise id. */
-      id?: number;
-      /** A course id. */
-      course?: string;
-      /** A concept id, for the lesson methods. */
-      concept?: string;
-      response?: string | string[];
-      /** Start a lesson again although it is learned. */
-      practise?: boolean;
-    }
-  ) => ipcRenderer.invoke("engine", method, params),
+  /** Call the engine bridge. The contract lists every method, what it takes and what it answers. */
+  engine: <M extends Method>(
+    method: M,
+    ...params: Methods[M]["params"] extends undefined
+      ? [params?: Methods[M]["params"]]
+      : [params: Methods[M]["params"]]
+  ): Promise<Methods[M]["result"]> =>
+    ipcRenderer.invoke("engine", method, params[0]),
   onEngineChanged: (handler: () => void) => on("engine:changed", handler),
   tutor: {
     /** Tell the tutor what happened in the app. It is not shown as a learner message. */

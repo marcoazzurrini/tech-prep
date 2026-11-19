@@ -6,6 +6,8 @@
 // The app leads the course through it: it opens lessons and reviews, saves and runs the
 // learner's code, and hands problems in for grading. The tutor helps beside it, through MCP.
 
+import { z } from "zod";
+
 import {
   concept,
   concepts,
@@ -20,8 +22,9 @@ import {
   topics,
 } from "./content.ts";
 import type { Course, Difficulty } from "./content.ts";
+import type { Method, Methods } from "./contract.ts";
 import { addHint, closeExercises, exerciseRow, openExercise } from "./db.ts";
-import type { AttemptRow, Confidence } from "./db.ts";
+import type { AttemptRow } from "./db.ts";
 import { exerciseView, submitExercise } from "./exercises.ts";
 import {
   guidedProgress,
@@ -171,14 +174,6 @@ const courseView = (course: Course) => {
   };
 };
 
-const conceptOf = (params: Params): string => {
-  if (!params?.concept) {
-    throw new Error("This method needs a concept id.");
-  }
-
-  return params.concept;
-};
-
 /**
  * One lesson: its parts, the guided task and the solo task to do now, and where the learner
  * stands in it.
@@ -212,10 +207,11 @@ const lesson = (course: Course, id: string) => {
  * Open a lesson, and start its next task when there is one to start. With `practise`, a
  * lesson that is already learned starts again too.
  */
-const openLesson = (course: Course, params: Params) => {
-  const id = conceptOf(params);
-
-  startLesson(course, id, params?.practise ?? false);
+const openLesson = (
+  course: Course,
+  { concept: id, practise }: Params<"lesson.open">
+) => {
+  startLesson(course, id, practise ?? false);
 
   return lesson(course, id);
 };
@@ -224,8 +220,7 @@ const openLesson = (course: Course, params: Params) => {
  * The learner reopened the lesson while solving its solo problem. That shows the approach,
  * so it counts as help, like a hint that names the concept.
  */
-const peekLesson = (course: Course, params: Params) => {
-  const id = conceptOf(params);
+const peekLesson = (course: Course, { concept: id }: Params<"lesson.peek">) => {
   const open = currentAttempt(course);
 
   if (
@@ -293,7 +288,7 @@ const reviewHere = (course: Course) => {
  * reviewed. Without it every track is: when the open course has nothing left, the next course
  * with a review due opens. Null when nothing is left.
  */
-const startReview = (course: Course, params: Params) => {
+const startReview = (course: Course, params: Params<"review.next">) => {
   if (params?.course) {
     return { problem: reviewHere(selectCourse(params.course)) };
   }
@@ -314,43 +309,12 @@ const startReview = (course: Course, params: Params) => {
 };
 
 /** The learner chose another course. */
-const select = (_open: Course, params: Params) => {
-  if (!params?.course) {
-    throw new Error("This method needs a course id.");
-  }
+const select = (_open: Course, { course }: Params<"course.select">) =>
+  courseView(selectCourse(course));
 
-  return courseView(selectCourse(params.course));
-};
+type Params<M extends Method> = Methods[M]["params"];
 
-/** One request line from the app. */
-interface BridgeRequest {
-  id: unknown;
-  method: string;
-  params?: {
-    slug?: string;
-    text?: string;
-    /** An exercise id. */
-    id?: number;
-    /** A concept id, for the lesson methods. */
-    concept?: string;
-    /** A course id. */
-    course?: string;
-    /** Start a lesson again although it is learned. */
-    practise?: boolean;
-    response?: string | string[];
-    confidence?: Confidence | null;
-  };
-}
-
-type Params = BridgeRequest["params"];
-
-const slugOf = (params: Params): string => {
-  if (!params?.slug) {
-    throw new Error("This method needs a slug.");
-  }
-
-  return params.slug;
-};
+type Slug = Params<"problem">;
 
 /** The open attempt, when it is on this problem. Null for a problem that is only shown. */
 const openOn = (course: Course, slug: string): AttemptRow | null => {
@@ -360,8 +324,7 @@ const openOn = (course: Course, slug: string): AttemptRow | null => {
 };
 
 /** The learner's code for a problem. It can be edited only while the tutor has the problem open. */
-const readCode = (course: Course, params: Params) => {
-  const slug = slugOf(params);
+const readCode = (course: Course, { slug }: Slug) => {
   const open = openOn(course, slug);
   const language = open?.language ?? courseLanguage(course);
 
@@ -373,8 +336,8 @@ const readCode = (course: Course, params: Params) => {
 };
 
 /** What the learner's text prints on the shown input, as they type. Nothing is recorded. */
-const preview = (course: Course, params: Params) => {
-  const seen = previewTask(course, slugOf(params), params?.text ?? "");
+const preview = (course: Course, { slug, text }: Params<"task.preview">) => {
+  const seen = previewTask(course, slug, text);
 
   if (!seen) {
     throw new Error("This kind of task shows no output while typing.");
@@ -383,9 +346,8 @@ const preview = (course: Course, params: Params) => {
   return seen;
 };
 
-const saveCode = (course: Course, params: Params) => {
-  const slug = slugOf(params);
-  saveSolution(course, attemptOn(course, slug), params?.text ?? "");
+const saveCode = (course: Course, { slug, text }: Params<"code.save">) => {
+  saveSolution(course, attemptOn(course, slug), text);
 
   return { saved: true };
 };
@@ -404,9 +366,7 @@ const runView = (run: RunResult) => ({
   total: run.total,
 });
 
-const runCode = (course: Course, params: Params) => {
-  const slug = slugOf(params);
-
+const runCode = (course: Course, { slug }: Slug) => {
   const language = openOn(course, slug)?.language ?? courseLanguage(course);
 
   return runView(testSolution(course, slug, language).run);
@@ -440,8 +400,8 @@ const resultView = (
 });
 
 /** The learner pressed Submit on a problem. */
-const submitCode = (course: Course, params: Params) => {
-  const open = attemptOn(course, slugOf(params));
+const submitCode = (course: Course, { slug }: Slug) => {
+  const open = attemptOn(course, slug);
   const handed = submitProblem(course, open);
 
   return {
@@ -451,15 +411,15 @@ const submitCode = (course: Course, params: Params) => {
   };
 };
 
-const giveUpCode = (course: Course, params: Params) => {
-  const open = attemptOn(course, slugOf(params));
+const giveUpCode = (course: Course, { slug }: Slug) => {
+  const open = attemptOn(course, slug);
   const { result, solution } = giveUp(course, open);
 
   return { result: resultView(course, result, open), solution };
 };
 
-const pauseCode = (course: Course, params: Params) => {
-  const open = openOn(course, slugOf(params));
+const pauseCode = (course: Course, { slug }: Slug) => {
+  const open = openOn(course, slug);
 
   if (open) {
     pauseAttempt(course, open);
@@ -468,22 +428,13 @@ const pauseCode = (course: Course, params: Params) => {
   return { paused: true };
 };
 
-const submit = (course: Course, params: Params) => {
-  if (params?.id === undefined || params.response === undefined) {
-    throw new Error("Submitting an exercise needs its id and the response.");
-  }
+const submit = (
+  course: Course,
+  { id, response }: Params<"exercise.submit">
+) => {
+  const result = submitExercise(course, id, response, null);
 
-  const result = submitExercise(
-    course,
-    params.id,
-    params.response,
-    params.confidence ?? null
-  );
-
-  return {
-    exercise: exerciseView(course, exerciseRow(course, params.id)),
-    result,
-  };
+  return { exercise: exerciseView(course, exerciseRow(course, id)), result };
 };
 
 const closeExercise = (course: Course) => {
@@ -492,26 +443,97 @@ const closeExercise = (course: Course) => {
   return { closed: true };
 };
 
-/** Every method gets the course the learner has open, then the request's parameters. */
-const methods = new Map<string, (course: Course, params: Params) => object>([
-  ["attempt.give_up", giveUpCode],
-  ["attempt.pause", pauseCode],
-  ["code.read", readCode],
-  ["code.run", runCode],
-  ["code.save", saveCode],
-  ["code.submit", submitCode],
-  ["course", courseView],
-  ["course.select", select],
-  ["exercise.close", closeExercise],
-  ["exercise.submit", submit],
-  ["task.preview", preview],
-  ["lesson.open", openLesson],
-  ["lesson.peek", peekLesson],
-  ["problem", (course, params) => problemView(course, slugOf(params))],
-  ["review.next", startReview],
-  ["reviews", reviews],
-  ["session", session],
-]);
+/**
+ * Every method of the contract. Each gets the course the learner has open, then the
+ * request's parameters. The type holds each reply to the shape the app expects.
+ */
+type Handlers = {
+  [M in Method]: (
+    course: Course,
+    params: Methods[M]["params"]
+  ) => Methods[M]["result"];
+};
+
+const handlers: Handlers = {
+  "attempt.give_up": giveUpCode,
+  "attempt.pause": pauseCode,
+  "code.read": readCode,
+  "code.run": runCode,
+  "code.save": saveCode,
+  "code.submit": submitCode,
+  course: courseView,
+  "course.select": select,
+  "exercise.close": closeExercise,
+  "exercise.submit": submit,
+  "lesson.open": openLesson,
+  "lesson.peek": peekLesson,
+  problem: (course, { slug }) => problemView(course, slug),
+  "review.next": startReview,
+  reviews,
+  session,
+  "task.preview": preview,
+};
+
+const none = z.undefined();
+const slugOnly = z.object({ slug: z.string().min(1) });
+
+/** What each method must be sent. A request that does not fit is refused, with the reason. */
+type ParamSchemas = { [M in Method]: z.ZodType<Methods[M]["params"]> };
+
+const PARAMS: ParamSchemas = {
+  "attempt.give_up": slugOnly,
+  "attempt.pause": slugOnly,
+  "code.read": slugOnly,
+  "code.run": slugOnly,
+  "code.save": z.object({ slug: z.string().min(1), text: z.string() }),
+  "code.submit": slugOnly,
+  course: none,
+  "course.select": z.object({ course: z.string().min(1) }),
+  "exercise.close": none,
+  "exercise.submit": z.object({
+    id: z.number().int(),
+    response: z.union([z.string(), z.array(z.string())]),
+  }),
+  "lesson.open": z.object({
+    concept: z.string().min(1),
+    practise: z.boolean().optional(),
+  }),
+  "lesson.peek": z.object({ concept: z.string().min(1) }),
+  problem: slugOnly,
+  "review.next": z.object({ course: z.string().optional() }).optional(),
+  reviews: none,
+  session: none,
+  "task.preview": z.object({ slug: z.string().min(1), text: z.string() }),
+};
+
+const isMethod = (name: string): name is Method =>
+  Object.hasOwn(handlers, name);
+
+/** Answer one request: check its parameters, then run its method on the open course. */
+const answer = <M extends Method>(
+  method: M,
+  // oxlint-disable-next-line anti-slop/no-unknown-parameters -- whatever the request line held, checked just below
+  raw: unknown
+): Methods[M]["result"] => {
+  const params = PARAMS[method].safeParse(raw ?? undefined);
+
+  if (!params.success) {
+    const [issue] = params.error.issues;
+
+    throw new Error(
+      `'${method}' was sent wrong parameters: \`${issue?.path.join(".") ?? ""}\` ${issue?.message ?? "is not valid"}.`
+    );
+  }
+
+  return handlers[method](savedCourse(), params.data);
+};
+
+/** One request line from the app. */
+const Request = z.object({
+  id: z.unknown().optional(),
+  method: z.string(),
+  params: z.unknown().optional(),
+});
 
 // An extra exercise lasts for one sitting. One left open by an earlier run would cover the
 // lesson, so the app starts with none on screen.
@@ -520,32 +542,31 @@ for (const c of courses()) {
   pauseUnknownAttempts(c);
 }
 
-for await (const line of console) {
-  if (!line.trim()) {
-    continue;
-  }
-
-  let id: BridgeRequest["id"] = null;
+/** The reply to one request line: the method's result, or why it could not be given. */
+const respond = (line: string) => {
+  let request: z.infer<typeof Request> | undefined;
 
   try {
-    // SAFETY: `id` is only echoed back, a `method` that is not a known name misses the table below, and an unknown slug fails the curriculum lookup.
-    const request = JSON.parse(line) as BridgeRequest;
-    ({ id } = request);
-    const method = methods.get(request.method);
+    request = Request.parse(JSON.parse(line));
 
-    if (!method) {
+    if (!isMethod(request.method)) {
       throw new Error(`Unknown method '${request.method}'.`);
     }
 
-    console.log(
-      JSON.stringify({ id, result: method(savedCourse(), request.params) })
-    );
+    return {
+      id: request.id,
+      result: answer(request.method, request.params),
+    };
   } catch (error) {
-    console.log(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : String(error),
-        id,
-      })
-    );
+    return {
+      error: error instanceof Error ? error.message : String(error),
+      id: request?.id ?? null,
+    };
+  }
+};
+
+for await (const line of console) {
+  if (line.trim()) {
+    console.log(JSON.stringify(respond(line)));
   }
 }

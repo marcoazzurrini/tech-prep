@@ -1130,3 +1130,54 @@ describe("jq course", () => {
     practice.pauseAttempt(course, solo);
   });
 });
+
+/** Send request lines to a bridge process of its own, and read its replies. */
+const ask = (requests: object[]) => {
+  const proc = Bun.spawnSync(
+    [process.execPath, path.join(import.meta.dir, "..", "src", "bridge.ts")],
+    {
+      env: { ...process.env, TECHPREP_HOME: home },
+      stdin: Buffer.from(
+        `${requests.map((r) => JSON.stringify(r)).join("\n")}\n`
+      ),
+    }
+  );
+
+  return proc.stdout
+    .toString()
+    .trim()
+    .split("\n")
+    .map((line): { id?: number; error?: string; result?: object } =>
+      JSON.parse(line)
+    );
+};
+
+describe("bridge", () => {
+  test("it answers the contract's methods, with or without parameters", () => {
+    const [course, reviews, problem] = ask([
+      { id: 1, method: "course" },
+      { id: 2, method: "reviews", params: null },
+      { id: 3, method: "problem", params: { slug: "two-sum" } },
+    ]);
+
+    expect(course).toMatchObject({ id: 1, result: { subject: {} } });
+    expect(reviews).toMatchObject({ id: 2, result: { tracks: [{}, {}, {}] } });
+    expect(problem).toMatchObject({
+      id: 3,
+      result: { slug: "two-sum", task: { kind: "code" } },
+    });
+  });
+
+  test("a request that does not fit is refused with the reason", () => {
+    const [unknown, missing, wrong] = ask([
+      { id: 1, method: "nope" },
+      { id: 2, method: "problem", params: {} },
+      { id: 3, method: "lesson.open", params: { concept: 7 } },
+    ]);
+
+    expect(unknown).toEqual({ error: "Unknown method 'nope'.", id: 1 });
+    expect(missing?.error).toContain("'problem' was sent wrong parameters");
+    expect(missing?.error).toContain("`slug`");
+    expect(wrong?.error).toContain("`concept`");
+  });
+});

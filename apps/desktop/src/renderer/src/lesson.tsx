@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
 import { TaskAside, TaskWorkbench, isCompact } from "./task-kinds";
-import type { Code, Lesson, LessonPart, Problem } from "./types";
+import type { Lesson, LessonPart, Problem } from "./types";
 import type { Finished } from "./workbench";
 
 /** " · Task 2 of 3" for a step with several tasks, else nothing. */
@@ -52,7 +52,7 @@ const SavedCode = ({ slug }: { slug: string }) => {
     let current = true;
 
     const load = async () => {
-      const code = await engine<Code>("code.read", { slug });
+      const code = await engine("code.read", { slug });
 
       if (current) {
         setText(code.text);
@@ -151,7 +151,7 @@ const PastTask = ({ slug, back, onBack, onOpenTutor }: PastTaskProps) => {
     let current = true;
 
     const load = async () => {
-      const loaded = await engine<Problem>("problem", { slug });
+      const loaded = await engine("problem", { slug });
 
       if (current) {
         setProblem(loaded);
@@ -514,7 +514,7 @@ export const LessonScreen = ({
     const load = async () => {
       // The engine starts the lesson's next task when there is one to start. A finished
       // lesson is only shown, unless the learner asks to practise it again.
-      const loaded = await engine<Lesson>("lesson.open", {
+      const loaded = await engine("lesson.open", {
         concept: id,
         practise: request.start,
       });

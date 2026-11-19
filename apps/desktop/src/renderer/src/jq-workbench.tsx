@@ -16,15 +16,7 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { engine } from "./course";
-import type {
-  Code,
-  GaveUp,
-  Handed,
-  JqPreview,
-  JqTask,
-  Problem,
-  Run,
-} from "./types";
+import type { Code, JqPreview, JqTask, Problem, Run } from "./types";
 import { jqOf } from "./types";
 import type { Finished } from "./workbench";
 
@@ -230,7 +222,7 @@ export const JqWorkbench = ({
       return;
     }
 
-    const seen = await engine<JqPreview>("task.preview", {
+    const seen = await engine("task.preview", {
       slug,
       text: current,
     });
@@ -245,7 +237,7 @@ export const JqWorkbench = ({
     let current = true;
 
     const load = async () => {
-      const loaded = await engine<Code>("code.read", { slug });
+      const loaded = await engine("code.read", { slug });
 
       if (!current) {
         return;
@@ -257,9 +249,7 @@ export const JqWorkbench = ({
       if (loaded.editable) {
         await refresh();
       } else if (!predict) {
-        setPreview(
-          await engine<JqPreview>("task.preview", { slug, text: loaded.text })
-        );
+        setPreview(await engine("task.preview", { slug, text: loaded.text }));
       }
     };
 
@@ -307,7 +297,7 @@ export const JqWorkbench = ({
 
   const submit = () =>
     act(async () => {
-      const handed = await engine<Handed>("code.submit", { slug });
+      const handed = await engine("code.submit", { slug });
       setRun(handed.run);
 
       if (handed.result) {
@@ -318,12 +308,12 @@ export const JqWorkbench = ({
 
   const giveUp = () =>
     act(async () => {
-      const gave = await engine<GaveUp>("attempt.give_up", { slug });
+      const gave = await engine("attempt.give_up", { slug });
       setSolution(gave.solution);
 
       if (!predict) {
         setPreview(
-          await engine<JqPreview>("task.preview", {
+          await engine("task.preview", {
             slug,
             text: gave.solution ?? "",
           })
