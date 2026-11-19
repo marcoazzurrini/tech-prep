@@ -1,0 +1,26 @@
+{
+  "function": {
+    "python": "is_balanced",
+    "typescript": "isBalanced"
+  },
+  "params": [
+    "TreeNode"
+  ],
+  "compare": "exact",
+  "stubs": {
+    "python": "from ds import TreeNode\n\n\ndef is_balanced(root: TreeNode | None) -> bool:\n    pass\n",
+    "typescript": "import { TreeNode } from \"./ds.ts\";\n\nexport function isBalanced(root: TreeNode | null): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[3,9,20,null,null,15,7]],"expected":true},
+    {"args":[[1,2,2,3,3,null,null,4,4]],"expected":false},
+    {"args":[[]],"expected":true},
+    {"args":[[1]],"expected":true},
+    {"args":[[1,2]],"expected":true},
+    {"args":[[1,2,null,3]],"expected":false},
+    {"args":[[1,null,2,null,3]],"expected":false},
+    {"args":[[1,2,3,4,null,null,5,6,null,null,7]],"expected":false},
+    {"args":[[1,2,3,4,5,6,7,8]],"expected":true},
+    {"args":[[1,2,3,4,5,null,null,6,7,8,9,10]],"expected":false}
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Longest Substring With a Letter Limit",
+  "function": {
+    "python": "longest_with_letter_limit",
+    "typescript": "longestWithLetterLimit"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def longest_with_letter_limit(s: str, limit: int) -> int:\n    pass\n",
+    "typescript": "export function longestWithLetterLimit(s: string, limit: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["aabbb",2],"expected":4},
+    {"args":["aaaa",1],"expected":1},
+    {"args":["abab",1],"expected":2},
+    {"args":["a",3],"expected":1},
+    {"args":["abc",1],"expected":3},
+    {"args":["aabaab",2],"expected":4},
+    {"args":["zzzyzz",2],"expected":3},
+    {"args":["abcabcabc",2],"expected":6},
+    {"args":["mississippi",2],"expected":6}
+  ]
+}

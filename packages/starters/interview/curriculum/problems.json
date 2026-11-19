@@ -1,5 +1,13 @@
 [
   {
+    "slug": "concatenation-of-array",
+    "title": "Concatenation of Array",
+    "topic": "arrays-hashing",
+    "difficulty": "easy",
+    "concepts": ["dynamic-arrays"],
+    "source": "extra"
+  },
+  {
     "slug": "contains-duplicate",
     "title": "Contains Duplicate",
     "topic": "arrays-hashing",
@@ -49,6 +57,13 @@
     "concepts": ["prefix-products"]
   },
   {
+    "slug": "valid-sudoku",
+    "title": "Valid Sudoku",
+    "topic": "arrays-hashing",
+    "difficulty": "medium",
+    "concepts": ["hash-set", "canonical-key"]
+  },
+  {
     "slug": "longest-consecutive-sequence",
     "title": "Longest Consecutive Sequence",
     "topic": "arrays-hashing",
@@ -56,10 +71,25 @@
     "concepts": ["sequence-starts"]
   },
   {
+    "slug": "array-partition",
+    "title": "Array Partition",
+    "topic": "two-pointers",
+    "difficulty": "easy",
+    "concepts": ["sorting"],
+    "source": "extra"
+  },
+  {
     "slug": "valid-palindrome",
     "title": "Valid Palindrome",
     "topic": "two-pointers",
     "difficulty": "easy",
+    "concepts": ["two-pointers-opposite"]
+  },
+  {
+    "slug": "two-sum-ii-input-array-is-sorted",
+    "title": "Two Sum II - Input Array Is Sorted",
+    "topic": "two-pointers",
+    "difficulty": "medium",
     "concepts": ["two-pointers-opposite"]
   },
   {
@@ -77,11 +107,60 @@
     "concepts": ["two-pointers-opposite"]
   },
   {
+    "slug": "trapping-rain-water",
+    "title": "Trapping Rain Water",
+    "topic": "two-pointers",
+    "difficulty": "hard",
+    "concepts": ["two-pointers-opposite", "running-best"]
+  },
+  {
     "slug": "valid-parentheses",
     "title": "Valid Parentheses",
     "topic": "stack",
     "difficulty": "easy",
     "concepts": ["stack-matching"]
+  },
+  {
+    "slug": "min-stack",
+    "title": "Min Stack",
+    "topic": "stack",
+    "difficulty": "medium",
+    "concepts": ["stack-design"]
+  },
+  {
+    "slug": "evaluate-reverse-polish-notation",
+    "title": "Evaluate Reverse Polish Notation",
+    "topic": "stack",
+    "difficulty": "medium",
+    "concepts": ["stack-evaluation"]
+  },
+  {
+    "slug": "generate-parentheses",
+    "title": "Generate Parentheses",
+    "topic": "stack",
+    "difficulty": "medium",
+    "concepts": ["backtracking-constraints"]
+  },
+  {
+    "slug": "daily-temperatures",
+    "title": "Daily Temperatures",
+    "topic": "stack",
+    "difficulty": "medium",
+    "concepts": ["monotonic-stack"]
+  },
+  {
+    "slug": "car-fleet",
+    "title": "Car Fleet",
+    "topic": "stack",
+    "difficulty": "medium",
+    "concepts": ["monotonic-stack", "sorting"]
+  },
+  {
+    "slug": "largest-rectangle-in-histogram",
+    "title": "Largest Rectangle in Histogram",
+    "topic": "stack",
+    "difficulty": "hard",
+    "concepts": ["monotonic-stack"]
   },
   {
     "slug": "best-time-to-buy-and-sell-stock",
@@ -105,11 +184,46 @@
     "concepts": ["window-counts"]
   },
   {
+    "slug": "permutation-in-string",
+    "title": "Permutation in String",
+    "topic": "sliding-window",
+    "difficulty": "medium",
+    "concepts": ["fixed-window"]
+  },
+  {
     "slug": "minimum-window-substring",
     "title": "Minimum Window Substring",
     "topic": "sliding-window",
     "difficulty": "hard",
     "concepts": ["window-counts"]
+  },
+  {
+    "slug": "sliding-window-maximum",
+    "title": "Sliding Window Maximum",
+    "topic": "sliding-window",
+    "difficulty": "hard",
+    "concepts": ["monotonic-queue"]
+  },
+  {
+    "slug": "binary-search",
+    "title": "Binary Search",
+    "topic": "binary-search",
+    "difficulty": "easy",
+    "concepts": ["binary-search"]
+  },
+  {
+    "slug": "search-a-2d-matrix",
+    "title": "Search a 2D Matrix",
+    "topic": "binary-search",
+    "difficulty": "medium",
+    "concepts": ["binary-search"]
+  },
+  {
+    "slug": "koko-eating-bananas",
+    "title": "Koko Eating Bananas",
+    "topic": "binary-search",
+    "difficulty": "medium",
+    "concepts": ["binary-search-answer"]
   },
   {
     "slug": "find-minimum-in-rotated-sorted-array",
@@ -124,6 +238,28 @@
     "topic": "binary-search",
     "difficulty": "medium",
     "concepts": ["binary-search-rotated"]
+  },
+  {
+    "slug": "time-based-key-value-store",
+    "title": "Time Based Key-Value Store",
+    "topic": "binary-search",
+    "difficulty": "medium",
+    "concepts": ["binary-search-bounds", "hash-map-index"]
+  },
+  {
+    "slug": "median-of-two-sorted-arrays",
+    "title": "Median of Two Sorted Arrays",
+    "topic": "binary-search",
+    "difficulty": "hard",
+    "concepts": ["binary-search-partition"]
+  },
+  {
+    "slug": "convert-binary-number-in-a-linked-list-to-integer",
+    "title": "Convert Binary Number in a Linked List to Integer",
+    "topic": "linked-list",
+    "difficulty": "easy",
+    "concepts": ["linked-list-traversal"],
+    "source": "extra"
   },
   {
     "slug": "reverse-linked-list",
@@ -147,6 +283,20 @@
     "concepts": ["fast-slow-pointers"]
   },
   {
+    "slug": "find-the-duplicate-number",
+    "title": "Find the Duplicate Number",
+    "topic": "linked-list",
+    "difficulty": "medium",
+    "concepts": ["cycle-entry"]
+  },
+  {
+    "slug": "lru-cache",
+    "title": "LRU Cache",
+    "topic": "linked-list",
+    "difficulty": "medium",
+    "concepts": ["linked-hash-map"]
+  },
+  {
     "slug": "reorder-list",
     "title": "Reorder List",
     "topic": "linked-list",
@@ -161,11 +311,40 @@
     "concepts": ["gap-pointers", "dummy-node"]
   },
   {
+    "slug": "copy-list-with-random-pointer",
+    "title": "Copy List with Random Pointer",
+    "topic": "linked-list",
+    "difficulty": "medium",
+    "concepts": ["linked-list-traversal", "hash-map-index"]
+  },
+  {
+    "slug": "add-two-numbers",
+    "title": "Add Two Numbers",
+    "topic": "linked-list",
+    "difficulty": "medium",
+    "concepts": ["dummy-node"]
+  },
+  {
     "slug": "merge-k-sorted-lists",
     "title": "Merge K Sorted Lists",
     "topic": "linked-list",
     "difficulty": "hard",
     "concepts": ["dummy-node", "heap"]
+  },
+  {
+    "slug": "reverse-nodes-in-k-group",
+    "title": "Reverse Nodes in k-Group",
+    "topic": "linked-list",
+    "difficulty": "hard",
+    "concepts": ["list-reversal", "dummy-node"]
+  },
+  {
+    "slug": "fibonacci-number",
+    "title": "Fibonacci Number",
+    "topic": "trees",
+    "difficulty": "easy",
+    "concepts": ["recursion"],
+    "source": "extra"
   },
   {
     "slug": "invert-binary-tree",
@@ -177,6 +356,20 @@
   {
     "slug": "maximum-depth-of-binary-tree",
     "title": "Maximum Depth of Binary Tree",
+    "topic": "trees",
+    "difficulty": "easy",
+    "concepts": ["tree-dfs"]
+  },
+  {
+    "slug": "diameter-of-binary-tree",
+    "title": "Diameter of Binary Tree",
+    "topic": "trees",
+    "difficulty": "easy",
+    "concepts": ["tree-path-max"]
+  },
+  {
+    "slug": "balanced-binary-tree",
+    "title": "Balanced Binary Tree",
     "topic": "trees",
     "difficulty": "easy",
     "concepts": ["tree-dfs"]
@@ -208,6 +401,20 @@
     "topic": "trees",
     "difficulty": "medium",
     "concepts": ["tree-bfs"]
+  },
+  {
+    "slug": "binary-tree-right-side-view",
+    "title": "Binary Tree Right Side View",
+    "topic": "trees",
+    "difficulty": "medium",
+    "concepts": ["tree-bfs"]
+  },
+  {
+    "slug": "count-good-nodes-in-binary-tree",
+    "title": "Count Good Nodes in Binary Tree",
+    "topic": "trees",
+    "difficulty": "medium",
+    "concepts": ["tree-path-state"]
   },
   {
     "slug": "validate-binary-search-tree",
@@ -256,7 +463,7 @@
     "title": "Design Add and Search Words Data Structure",
     "topic": "tries",
     "difficulty": "medium",
-    "concepts": ["trie", "backtracking"]
+    "concepts": ["trie-search"]
   },
   {
     "slug": "word-search-ii",
@@ -266,11 +473,60 @@
     "concepts": ["trie-search", "grid-dfs"]
   },
   {
+    "slug": "kth-largest-element-in-a-stream",
+    "title": "Kth Largest Element in a Stream",
+    "topic": "heap",
+    "difficulty": "easy",
+    "concepts": ["heap"]
+  },
+  {
+    "slug": "last-stone-weight",
+    "title": "Last Stone Weight",
+    "topic": "heap",
+    "difficulty": "easy",
+    "concepts": ["heap"]
+  },
+  {
+    "slug": "k-closest-points-to-origin",
+    "title": "K Closest Points to Origin",
+    "topic": "heap",
+    "difficulty": "medium",
+    "concepts": ["heap"]
+  },
+  {
+    "slug": "kth-largest-element-in-an-array",
+    "title": "Kth Largest Element in an Array",
+    "topic": "heap",
+    "difficulty": "medium",
+    "concepts": ["heap"]
+  },
+  {
+    "slug": "task-scheduler",
+    "title": "Task Scheduler",
+    "topic": "heap",
+    "difficulty": "medium",
+    "concepts": ["heap", "hash-map-counting"]
+  },
+  {
+    "slug": "design-twitter",
+    "title": "Design Twitter",
+    "topic": "heap",
+    "difficulty": "medium",
+    "concepts": ["heap", "hash-map-index"]
+  },
+  {
     "slug": "find-median-from-data-stream",
     "title": "Find Median from Data Stream",
     "topic": "heap",
     "difficulty": "hard",
     "concepts": ["two-heaps"]
+  },
+  {
+    "slug": "subsets",
+    "title": "Subsets",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": ["backtracking"]
   },
   {
     "slug": "combination-sum",
@@ -280,11 +536,61 @@
     "concepts": ["backtracking"]
   },
   {
+    "slug": "permutations",
+    "title": "Permutations",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": ["backtracking-permutations"]
+  },
+  {
+    "slug": "subsets-ii",
+    "title": "Subsets II",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": ["backtracking-dedupe"]
+  },
+  {
+    "slug": "combination-sum-ii",
+    "title": "Combination Sum II",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": ["backtracking-dedupe"]
+  },
+  {
     "slug": "word-search",
     "title": "Word Search",
     "topic": "backtracking",
     "difficulty": "medium",
     "concepts": ["grid-dfs", "backtracking"]
+  },
+  {
+    "slug": "palindrome-partitioning",
+    "title": "Palindrome Partitioning",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": ["backtracking", "two-pointers-opposite"]
+  },
+  {
+    "slug": "letter-combinations-of-a-phone-number",
+    "title": "Letter Combinations of a Phone Number",
+    "topic": "backtracking",
+    "difficulty": "medium",
+    "concepts": ["backtracking"]
+  },
+  {
+    "slug": "n-queens",
+    "title": "N-Queens",
+    "topic": "backtracking",
+    "difficulty": "hard",
+    "concepts": ["backtracking-constraints"]
+  },
+  {
+    "slug": "find-the-town-judge",
+    "title": "Find the Town Judge",
+    "topic": "graphs",
+    "difficulty": "easy",
+    "concepts": ["graph-representation"],
+    "source": "extra"
   },
   {
     "slug": "number-of-islands",
@@ -294,6 +600,21 @@
     "concepts": ["grid-dfs", "graph-traversal"]
   },
   {
+    "slug": "max-area-of-island",
+    "title": "Max Area of Island",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": ["grid-dfs", "graph-traversal"]
+  },
+  {
+    "slug": "shortest-path-in-binary-matrix",
+    "title": "Shortest Path in Binary Matrix",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": ["bfs-shortest-path"],
+    "source": "extra"
+  },
+  {
     "slug": "clone-graph",
     "title": "Clone Graph",
     "topic": "graphs",
@@ -301,8 +622,29 @@
     "concepts": ["graph-traversal", "hash-map-index"]
   },
   {
+    "slug": "walls-and-gates",
+    "title": "Walls and Gates",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": ["multi-source-bfs"]
+  },
+  {
+    "slug": "rotting-oranges",
+    "title": "Rotting Oranges",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": ["multi-source-bfs"]
+  },
+  {
     "slug": "pacific-atlantic-water-flow",
     "title": "Pacific Atlantic Water Flow",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": ["reverse-search"]
+  },
+  {
+    "slug": "surrounded-regions",
+    "title": "Surrounded Regions",
     "topic": "graphs",
     "difficulty": "medium",
     "concepts": ["reverse-search"]
@@ -313,6 +655,13 @@
     "topic": "graphs",
     "difficulty": "medium",
     "concepts": ["graph-representation", "cycle-detection"]
+  },
+  {
+    "slug": "course-schedule-ii",
+    "title": "Course Schedule II",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": ["topological-sort"]
   },
   {
     "slug": "graph-valid-tree",
@@ -329,8 +678,29 @@
     "concepts": ["union-find"]
   },
   {
+    "slug": "redundant-connection",
+    "title": "Redundant Connection",
+    "topic": "graphs",
+    "difficulty": "medium",
+    "concepts": ["union-find"]
+  },
+  {
+    "slug": "word-ladder",
+    "title": "Word Ladder",
+    "topic": "graphs",
+    "difficulty": "hard",
+    "concepts": ["bfs-shortest-path"]
+  },
+  {
     "slug": "climbing-stairs",
     "title": "Climbing Stairs",
+    "topic": "dp-1d",
+    "difficulty": "easy",
+    "concepts": ["dp-1d"]
+  },
+  {
+    "slug": "min-cost-climbing-stairs",
+    "title": "Min Cost Climbing Stairs",
     "topic": "dp-1d",
     "difficulty": "easy",
     "concepts": ["dp-1d"]
@@ -399,6 +769,13 @@
     "concepts": ["dp-subsequence"]
   },
   {
+    "slug": "partition-equal-subset-sum",
+    "title": "Partition Equal Subset Sum",
+    "topic": "dp-1d",
+    "difficulty": "medium",
+    "concepts": ["dp-subset-sum"]
+  },
+  {
     "slug": "insert-interval",
     "title": "Insert Interval",
     "topic": "intervals",
@@ -434,6 +811,13 @@
     "concepts": ["interval-sweep"]
   },
   {
+    "slug": "minimum-interval-to-include-each-query",
+    "title": "Minimum Interval to Include Each Query",
+    "topic": "intervals",
+    "difficulty": "hard",
+    "concepts": ["interval-sweep"]
+  },
+  {
     "slug": "maximum-subarray",
     "title": "Maximum Subarray",
     "topic": "greedy",
@@ -448,11 +832,88 @@
     "concepts": ["greedy-reach"]
   },
   {
+    "slug": "jump-game-ii",
+    "title": "Jump Game II",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": ["greedy-reach"]
+  },
+  {
+    "slug": "gas-station",
+    "title": "Gas Station",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": ["kadane"]
+  },
+  {
+    "slug": "hand-of-straights",
+    "title": "Hand of Straights",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": ["hash-map-counting", "sorting"]
+  },
+  {
+    "slug": "merge-triplets-to-form-target-triplet",
+    "title": "Merge Triplets to Form Target Triplet",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": ["running-best"]
+  },
+  {
+    "slug": "partition-labels",
+    "title": "Partition Labels",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": ["greedy-reach", "hash-map-index"]
+  },
+  {
+    "slug": "valid-parenthesis-string",
+    "title": "Valid Parenthesis String",
+    "topic": "greedy",
+    "difficulty": "medium",
+    "concepts": ["greedy-ranges"]
+  },
+  {
+    "slug": "reconstruct-itinerary",
+    "title": "Reconstruct Itinerary",
+    "topic": "advanced-graphs",
+    "difficulty": "hard",
+    "concepts": ["eulerian-path"]
+  },
+  {
+    "slug": "min-cost-to-connect-all-points",
+    "title": "Min Cost to Connect All Points",
+    "topic": "advanced-graphs",
+    "difficulty": "medium",
+    "concepts": ["minimum-spanning-tree"]
+  },
+  {
+    "slug": "network-delay-time",
+    "title": "Network Delay Time",
+    "topic": "advanced-graphs",
+    "difficulty": "medium",
+    "concepts": ["dijkstra"]
+  },
+  {
+    "slug": "swim-in-rising-water",
+    "title": "Swim in Rising Water",
+    "topic": "advanced-graphs",
+    "difficulty": "hard",
+    "concepts": ["dijkstra", "grid-dfs"]
+  },
+  {
     "slug": "alien-dictionary",
     "title": "Alien Dictionary",
     "topic": "advanced-graphs",
     "difficulty": "hard",
     "concepts": ["graph-representation", "topological-sort"]
+  },
+  {
+    "slug": "cheapest-flights-within-k-stops",
+    "title": "Cheapest Flights Within K Stops",
+    "topic": "advanced-graphs",
+    "difficulty": "medium",
+    "concepts": ["bellman-ford"]
   },
   {
     "slug": "unique-paths",
@@ -467,6 +928,76 @@
     "topic": "dp-2d",
     "difficulty": "medium",
     "concepts": ["dp-two-strings"]
+  },
+  {
+    "slug": "best-time-to-buy-and-sell-stock-with-cooldown",
+    "title": "Best Time to Buy and Sell Stock with Cooldown",
+    "topic": "dp-2d",
+    "difficulty": "medium",
+    "concepts": ["dp-state-machine"]
+  },
+  {
+    "slug": "coin-change-ii",
+    "title": "Coin Change II",
+    "topic": "dp-2d",
+    "difficulty": "medium",
+    "concepts": ["dp-unbounded"]
+  },
+  {
+    "slug": "target-sum",
+    "title": "Target Sum",
+    "topic": "dp-2d",
+    "difficulty": "medium",
+    "concepts": ["dp-subset-sum"]
+  },
+  {
+    "slug": "interleaving-string",
+    "title": "Interleaving String",
+    "topic": "dp-2d",
+    "difficulty": "medium",
+    "concepts": ["dp-two-strings"]
+  },
+  {
+    "slug": "longest-increasing-path-in-a-matrix",
+    "title": "Longest Increasing Path in a Matrix",
+    "topic": "dp-2d",
+    "difficulty": "hard",
+    "concepts": ["dp-memo-grid"]
+  },
+  {
+    "slug": "distinct-subsequences",
+    "title": "Distinct Subsequences",
+    "topic": "dp-2d",
+    "difficulty": "hard",
+    "concepts": ["dp-two-strings"]
+  },
+  {
+    "slug": "edit-distance",
+    "title": "Edit Distance",
+    "topic": "dp-2d",
+    "difficulty": "medium",
+    "concepts": ["dp-two-strings"]
+  },
+  {
+    "slug": "burst-balloons",
+    "title": "Burst Balloons",
+    "topic": "dp-2d",
+    "difficulty": "hard",
+    "concepts": ["dp-interval"]
+  },
+  {
+    "slug": "regular-expression-matching",
+    "title": "Regular Expression Matching",
+    "topic": "dp-2d",
+    "difficulty": "hard",
+    "concepts": ["dp-two-strings"]
+  },
+  {
+    "slug": "single-number",
+    "title": "Single Number",
+    "topic": "bit-manipulation",
+    "difficulty": "easy",
+    "concepts": ["xor-tricks"]
   },
   {
     "slug": "number-of-1-bits",
@@ -504,6 +1035,13 @@
     "concepts": ["bit-arithmetic"]
   },
   {
+    "slug": "reverse-integer",
+    "title": "Reverse Integer",
+    "topic": "bit-manipulation",
+    "difficulty": "medium",
+    "concepts": ["digit-arithmetic"]
+  },
+  {
     "slug": "rotate-image",
     "title": "Rotate Image",
     "topic": "math-geometry",
@@ -523,5 +1061,40 @@
     "topic": "math-geometry",
     "difficulty": "medium",
     "concepts": ["in-place-markers"]
+  },
+  {
+    "slug": "happy-number",
+    "title": "Happy Number",
+    "topic": "math-geometry",
+    "difficulty": "easy",
+    "concepts": ["hash-set"]
+  },
+  {
+    "slug": "plus-one",
+    "title": "Plus One",
+    "topic": "math-geometry",
+    "difficulty": "easy",
+    "concepts": ["digit-arithmetic"]
+  },
+  {
+    "slug": "powx-n",
+    "title": "Pow(x, n)",
+    "topic": "math-geometry",
+    "difficulty": "medium",
+    "concepts": ["fast-exponentiation"]
+  },
+  {
+    "slug": "multiply-strings",
+    "title": "Multiply Strings",
+    "topic": "math-geometry",
+    "difficulty": "medium",
+    "concepts": ["digit-arithmetic"]
+  },
+  {
+    "slug": "detect-squares",
+    "title": "Detect Squares",
+    "topic": "math-geometry",
+    "difficulty": "medium",
+    "concepts": ["hash-map-counting"]
   }
 ]

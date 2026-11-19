@@ -1,0 +1,24 @@
+{
+  "title": "Room Count Range",
+  "function": {
+    "python": "room_count_range",
+    "typescript": "roomCountRange"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def room_count_range(log: str) -> list[int]:\n    pass\n",
+    "typescript": "export function roomCountRange(log: string): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["E?L"],"expected":[0,1]},
+    {"args":[""],"expected":[0,0]},
+    {"args":["L"],"expected":[]},
+    {"args":["?"],"expected":[0,1]},
+    {"args":["EEL"],"expected":[1,1]},
+    {"args":["?L"],"expected":[0,0]},
+    {"args":["?LL"],"expected":[]},
+    {"args":["E??LL?"],"expected":[0,2]},
+    {"args":["ELEL?"],"expected":[0,1]},
+    {"args":["ELL?"],"expected":[]}
+  ]
+}

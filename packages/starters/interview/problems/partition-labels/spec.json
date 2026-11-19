@@ -1,0 +1,24 @@
+{
+  "function": {
+    "python": "partition_labels",
+    "typescript": "partitionLabels"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def partition_labels(s: str) -> list[int]:\n    pass\n",
+    "typescript": "export function partitionLabels(s: string): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["ababcbacadefegdehijhklij"],"expected":[9,7,8]},
+    {"args":["eccbbbbdec"],"expected":[10]},
+    {"args":["a"],"expected":[1]},
+    {"args":["abc"],"expected":[1,1,1]},
+    {"args":["aaaa"],"expected":[4]},
+    {"args":["abab"],"expected":[4]},
+    {"args":["abacdcde"],"expected":[3,4,1]},
+    {"args":["caedbdedda"],"expected":[1,9]},
+    {"args":["qiejxqfnqceocmy"],"expected":[13,1,1]},
+    {"args":["abcdefga"],"expected":[8]},
+    {"args":["zzyyxxwwvv"],"expected":[2,2,2,2,2]}
+  ]
+}

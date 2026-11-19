@@ -4,7 +4,9 @@
 //   bun scripts/build-problem.ts <slug...>    build the given problems
 //   bun scripts/build-problem.ts --all        build every authored problem
 //
-// For each problem in content/problems/<slug>/:
+// A lesson's guided problem has the slug `guided-<concept id>` and lives in the lesson's folder.
+//
+// For each problem:
 // 1. Tests without an `expected` value get it from reference.py.
 // 2. reference.py and reference.ts must both pass every test.
 // 3. Both stubs must load (a crash per case is fine; a load error is not).
@@ -22,8 +24,10 @@ import path from "node:path";
 import {
   EXTENSIONS,
   LANGUAGES,
-  PROBLEMS_DIR,
+  concepts,
+  guidedSlug,
   isAuthored,
+  problemDir,
   problemIndex,
   problemInfo,
 } from "../src/content.ts";
@@ -41,11 +45,11 @@ type Spec = Partial<Omit<Problem, keyof ProblemInfo | "statement">>;
 const load = (slug: string) => {
   // SAFETY: every field of `Spec` is optional; `checkSpec` validates the ones the build relies on.
   const spec = JSON.parse(
-    readFileSync(path.join(PROBLEMS_DIR, slug, "spec.json"), "utf-8")
+    readFileSync(path.join(problemDir(slug), "spec.json"), "utf-8")
   ) as Spec;
 
   const statement = readFileSync(
-    path.join(PROBLEMS_DIR, slug, "problem.md"),
+    path.join(problemDir(slug), "problem.md"),
     "utf-8"
   );
 
@@ -122,7 +126,7 @@ const fillExpected = (
   }
 
   const reference = readFileSync(
-    path.join(PROBLEMS_DIR, slug, "reference.py"),
+    path.join(problemDir(slug), "reference.py"),
     "utf-8"
   );
 
@@ -153,7 +157,7 @@ const fillExpected = (
 
   if (!errors.length) {
     writeFileSync(
-      path.join(PROBLEMS_DIR, slug, "spec.json"),
+      path.join(problemDir(slug), "spec.json"),
       formatSpec(spec, tests)
     );
   }
@@ -172,7 +176,7 @@ const build = (slug: string): string[] => {
       "reference.py",
       "reference.ts",
     ]) {
-      if (!existsSync(path.join(PROBLEMS_DIR, slug, name))) {
+      if (!existsSync(path.join(problemDir(slug), name))) {
         errors.push(`missing ${name}`);
       }
     }
@@ -202,7 +206,7 @@ const build = (slug: string): string[] => {
 
     for (const language of LANGUAGES) {
       const source = readFileSync(
-        path.join(PROBLEMS_DIR, slug, `reference.${EXTENSIONS[language]}`),
+        path.join(problemDir(slug), `reference.${EXTENSIONS[language]}`),
         "utf-8"
       );
 
@@ -232,9 +236,10 @@ const args = process.argv.slice(2);
 
 const slugs =
   args[0] === "--all"
-    ? problemIndex()
-        .map((p) => p.slug)
-        .filter(isAuthored)
+    ? [
+        ...problemIndex().map((p) => p.slug),
+        ...concepts().map((c) => guidedSlug(c.id)),
+      ].filter(isAuthored)
     : args;
 
 if (!slugs.length) {

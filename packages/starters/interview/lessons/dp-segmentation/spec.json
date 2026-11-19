@@ -1,0 +1,23 @@
+{
+  "title": "Split into Short Palindromes",
+  "function": {
+    "python": "can_split_into_short_palindromes",
+    "typescript": "canSplitIntoShortPalindromes"
+  },
+  "stubs": {
+    "python": "def can_split_into_short_palindromes(s: str) -> bool:\n    pass\n",
+    "typescript": "export function canSplitIntoShortPalindromes(s: string): boolean {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":["aabab"],"expected":true},
+    {"args":["abaa"],"expected":false},
+    {"args":["abacc"],"expected":true},
+    {"args":["a"],"expected":false},
+    {"args":["aa"],"expected":true},
+    {"args":["ab"],"expected":false},
+    {"args":["aaaaa"],"expected":true},
+    {"args":["ababa"],"expected":false},
+    {"args":["aabaa"],"expected":false},
+    {"args":["xyxzzaba"],"expected":true}
+  ]
+}

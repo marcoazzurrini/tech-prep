@@ -1,0 +1,24 @@
+{
+  "function": {
+    "python": "trap",
+    "typescript": "trap"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def trap(height: list[int]) -> int:\n    pass\n",
+    "typescript": "export function trap(height: number[]): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[0,1,0,2,1,0,1,3,2,1,2,1]],"expected":6},
+    {"args":[[4,2,0,3,2,5]],"expected":9},
+    {"args":[[1,2,3]],"expected":0},
+    {"args":[[5]],"expected":0},
+    {"args":[[0,0]],"expected":0},
+    {"args":[[3,2,1]],"expected":0},
+    {"args":[[2,0,2]],"expected":2},
+    {"args":[[3,0,0,1]],"expected":2},
+    {"args":[[5,5,5]],"expected":0},
+    {"args":[[4,1,3,1,5,0,2]],"expected":9},
+    {"args":[[6,0,5,0,4,0,3,0,2,0,1,0,2,0,3]],"expected":28}
+  ]
+}

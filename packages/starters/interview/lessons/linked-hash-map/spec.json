@@ -1,0 +1,20 @@
+{
+  "title": "Waiting Line",
+  "kind": "design",
+  "class": "WaitingLine",
+  "compare": "exact",
+  "stubs": {
+    "python": "class Node:\n    def __init__(self, person: int = 0):\n        self.person = person\n        self.prev = None\n        self.next = None\n\n\nclass WaitingLine:\n    def __init__(self):\n        self.nodes = {}  # person -> node\n        # Dummy nodes at both ends: the front is after head, the back is before tail.\n        self.head = Node()\n        self.tail = Node()\n        self.head.next = self.tail\n        self.tail.prev = self.head\n\n    def join(self, person: int) -> None:\n        pass\n\n    def leave(self, person: int) -> None:\n        pass\n\n    def serve(self) -> int:\n        pass\n",
+    "typescript": "class LineNode {\n  person: number;\n  prev: LineNode | null = null;\n  next: LineNode | null = null;\n\n  constructor(person = 0) {\n    this.person = person;\n  }\n}\n\nexport class WaitingLine {\n  private nodes = new Map<number, LineNode>(); // person -> node\n  // Dummy nodes at both ends: the front is after head, the back is before tail.\n  private head = new LineNode();\n  private tail = new LineNode();\n\n  constructor() {\n    this.head.next = this.tail;\n    this.tail.prev = this.head;\n  }\n\n  join(person: number): void {\n    throw new Error(\"not implemented\");\n  }\n\n  leave(person: number): void {\n    throw new Error(\"not implemented\");\n  }\n\n  serve(): number {\n    throw new Error(\"not implemented\");\n  }\n}\n"
+  },
+  "tests": [
+    {"ops":["WaitingLine","join","join","join","leave","serve","serve","serve"],"args":[[],[4],[7],[9],[7],[],[],[]],"expected":[null,null,null,null,null,4,9,-1]},
+    {"ops":["WaitingLine","serve"],"args":[[],[]],"expected":[null,-1]},
+    {"ops":["WaitingLine","join","serve","serve"],"args":[[],[5],[],[]],"expected":[null,null,5,-1]},
+    {"ops":["WaitingLine","join","join","leave","serve","serve"],"args":[[],[1],[2],[1],[],[]],"expected":[null,null,null,null,2,-1]},
+    {"ops":["WaitingLine","join","join","leave","serve","serve"],"args":[[],[1],[2],[2],[],[]],"expected":[null,null,null,null,1,-1]},
+    {"ops":["WaitingLine","join","leave","leave","serve"],"args":[[],[3],[8],[3],[]],"expected":[null,null,null,null,-1]},
+    {"ops":["WaitingLine","join","leave","join","join","serve","serve"],"args":[[],[6],[6],[2],[6],[],[]],"expected":[null,null,null,null,null,2,6]},
+    {"ops":["WaitingLine","join","join","join","join","join","leave","serve","leave","join","serve","serve","serve","serve"],"args":[[],[10],[20],[30],[40],[50],[30],[],[50],[10],[],[],[],[]],"expected":[null,null,null,null,null,null,null,10,null,null,20,40,10,-1]}
+  ]
+}

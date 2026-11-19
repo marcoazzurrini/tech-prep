@@ -12,11 +12,12 @@ const STARTERS_DIR =
     Bun.resolveSync("@tech-prep/starters/package.json", import.meta.dir)
   );
 
-/** The interview starter (Blind 75). */
+/** The interview starter (NeetCode 150). */
 export const CONTENT_DIR = path.join(STARTERS_DIR, "interview");
 
 export const CURRICULUM_DIR = path.join(CONTENT_DIR, "curriculum");
 export const PROBLEMS_DIR = path.join(CONTENT_DIR, "problems");
+export const LESSONS_DIR = path.join(CONTENT_DIR, "lessons");
 
 export const HOME_DIR =
   process.env.TECHPREP_HOME ?? path.join(homedir(), ".tech-prep");
@@ -53,7 +54,16 @@ export interface Concept {
   /** "Practising this concept also practises w of that one." Hand-set, only on prerequisite edges. */
   encompasses: { id: string; w: number }[];
   key_idea: string;
+  /** The curriculum problem its lesson ends on, solved without the lesson. */
+  solo: string;
 }
+
+/**
+ * Where a problem comes from. The NeetCode 150 problems carry no source. An "extra" fills a
+ * concept the list has no problem for. A "guided" problem belongs to one lesson and is solved
+ * with the lesson beside it.
+ */
+export type ProblemSource = "extra" | "guided";
 
 /** A problem's place in the curriculum: always available, even before its tests are written. */
 export interface ProblemInfo {
@@ -62,6 +72,7 @@ export interface ProblemInfo {
   topic: string;
   difficulty: Difficulty;
   concepts: string[];
+  source?: ProblemSource;
 }
 
 /**
@@ -89,9 +100,9 @@ export interface CallSpec {
   decode?: string;
   /** Roundtrip value type. */
   type?: string;
-  /** Argument types: "json" (default), "ListNode", "ListNode[]", "CycleList", "TreeNode", "TreeNodeRef", "GraphNode". */
+  /** Argument types: "json" (default), "ListNode", "ListNode[]", "CycleList", "TreeNode", "TreeNodeRef", "GraphNode", "RandomList". */
   params?: string[];
-  /** Return type: "json" (default), "ListNode", "TreeNode", "TreeNodeVal", "GraphNode", "void". */
+  /** Return type: "json" (default), "ListNode", "TreeNode", "TreeNodeVal", "GraphNode", "RandomList", "void". */
   returns?: string;
   /** "arg0" when the function changes its first argument in place and returns nothing. */
   output?: "return" | "arg0";
@@ -148,7 +159,44 @@ export const problemIndex = (): ProblemInfo[] => {
   return indexCache;
 };
 
+/** A lesson's guided problem has the slug `guided-<concept id>` and lives in the lesson's folder. */
+const GUIDED_PREFIX = "guided-";
+
+export const guidedSlug = (conceptId: string): string =>
+  `${GUIDED_PREFIX}${conceptId}`;
+
+/** The concept a guided problem belongs to, or null for a curriculum problem. */
+export const guidedConcept = (slug: string): string | null =>
+  slug.startsWith(GUIDED_PREFIX) ? slug.slice(GUIDED_PREFIX.length) : null;
+
+/** The folder holding a problem's statement, spec and reference solutions. */
+export const problemDir = (slug: string): string => {
+  const conceptId = guidedConcept(slug);
+
+  return conceptId
+    ? path.join(LESSONS_DIR, conceptId)
+    : path.join(PROBLEMS_DIR, slug);
+};
+
 export const problemInfo = (slug: string): ProblemInfo => {
+  const conceptId = guidedConcept(slug);
+
+  if (conceptId) {
+    const c = concept(conceptId);
+    const spec = path.join(LESSONS_DIR, conceptId, "spec.json");
+
+    return {
+      concepts: [conceptId],
+      difficulty: "easy",
+      slug,
+      source: "guided",
+      title: existsSync(spec)
+        ? (readJson<{ title?: string }>(spec).title ?? c.name)
+        : c.name,
+      topic: c.topic,
+    };
+  }
+
   const found = problemIndex().find((p) => p.slug === slug);
 
   if (!found) {
@@ -160,8 +208,21 @@ export const problemInfo = (slug: string): ProblemInfo => {
 
 /** True when the problem has a statement and tests, so it can be practised. */
 export const isAuthored = (slug: string): boolean =>
-  existsSync(path.join(PROBLEMS_DIR, slug, "spec.json")) &&
-  existsSync(path.join(PROBLEMS_DIR, slug, "problem.md"));
+  existsSync(path.join(problemDir(slug), "spec.json")) &&
+  existsSync(path.join(problemDir(slug), "problem.md"));
+
+/** The lesson text for a concept, or null when it is not written yet. */
+export const lessonText = (conceptId: string): string | null => {
+  const file = path.join(LESSONS_DIR, conceptId, "lesson.md");
+
+  return existsSync(file) ? readFileSync(file, "utf-8") : null;
+};
+
+/** True when a concept has its lesson text, its guided problem and its solo problem. */
+export const hasLesson = (conceptId: string): boolean =>
+  lessonText(conceptId) !== null &&
+  isAuthored(guidedSlug(conceptId)) &&
+  isAuthored(concept(conceptId).solo);
 
 export const problem = (slug: string): Problem => {
   const cached = problemCache.get(slug);
@@ -177,11 +238,11 @@ export const problem = (slug: string): Problem => {
   }
 
   const spec = readJson<Omit<Problem, keyof ProblemInfo | "statement">>(
-    path.join(PROBLEMS_DIR, slug, "spec.json")
+    path.join(problemDir(slug), "spec.json")
   );
 
   const statement = readFileSync(
-    path.join(PROBLEMS_DIR, slug, "problem.md"),
+    path.join(problemDir(slug), "problem.md"),
     "utf-8"
   );
 
@@ -196,11 +257,7 @@ export const referenceSolution = (
   slug: string,
   language: Language
 ): string | null => {
-  const file = path.join(
-    PROBLEMS_DIR,
-    slug,
-    `reference.${EXTENSIONS[language]}`
-  );
+  const file = path.join(problemDir(slug), `reference.${EXTENSIONS[language]}`);
 
   return existsSync(file) ? readFileSync(file, "utf-8") : null;
 };
@@ -224,6 +281,66 @@ export const aliases = (): Aliases => {
   const raw = readJson<Partial<Aliases>>(file);
 
   return { concepts: raw.concepts ?? {}, problems: raw.problems ?? {} };
+};
+
+/** A concept plus all of its prerequisites, prerequisites first. */
+export const withPrereqs = (conceptIds: string[]): string[] => {
+  const ordered: string[] = [];
+
+  const visit = (id: string) => {
+    if (ordered.includes(id)) {
+      return;
+    }
+
+    for (const p of concept(id).prereqs) {
+      visit(p);
+    }
+
+    ordered.push(id);
+  };
+
+  for (const id of conceptIds) {
+    visit(id);
+  }
+
+  return ordered;
+};
+
+/** Every lesson ends on its own problem, and that problem needs nothing taught later. */
+const soloErrors = (conceptIds: Set<string>): string[] => {
+  const errors: string[] = [];
+  const solos = new Set<string>();
+
+  for (const c of concepts()) {
+    const solo = problemIndex().find((p) => p.slug === c.solo);
+
+    if (!solo) {
+      errors.push(`concept ${c.id}: unknown solo problem ${c.solo}`);
+      continue;
+    }
+
+    if (solos.has(c.solo)) {
+      errors.push(`concept ${c.id}: solo problem ${c.solo} is used twice`);
+    }
+
+    solos.add(c.solo);
+
+    if (!solo.concepts.includes(c.id)) {
+      errors.push(`concept ${c.id}: solo problem ${c.solo} does not use it`);
+    }
+
+    const known = new Set(conceptIds.has(c.id) ? withPrereqs([c.id]) : []);
+
+    for (const other of solo.concepts) {
+      if (!known.has(other)) {
+        errors.push(
+          `concept ${c.id}: solo problem ${c.solo} needs ${other}, which is not a prerequisite`
+        );
+      }
+    }
+  }
+
+  return errors;
 };
 
 /** Structural problems in the curriculum files. An empty list means the curriculum is sound. */
@@ -320,30 +437,7 @@ export const validateCurriculum = (): string[] => {
     }
   }
 
-  return errors;
-};
-
-/** A concept plus all of its prerequisites, prerequisites first. */
-export const withPrereqs = (conceptIds: string[]): string[] => {
-  const ordered: string[] = [];
-
-  const visit = (id: string) => {
-    if (ordered.includes(id)) {
-      return;
-    }
-
-    for (const p of concept(id).prereqs) {
-      visit(p);
-    }
-
-    ordered.push(id);
-  };
-
-  for (const id of conceptIds) {
-    visit(id);
-  }
-
-  return ordered;
+  return [...errors, ...soloErrors(conceptIds)];
 };
 
 /** The name the harness calls, for function problems. */

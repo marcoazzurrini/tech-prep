@@ -1,0 +1,25 @@
+{
+  "function": {
+    "python": "binary_search",
+    "typescript": "binarySearch"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def binary_search(nums: list[int], target: int) -> int:\n    pass\n",
+    "typescript": "export function binarySearch(nums: number[], target: number): number {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[-1,0,3,5,9,12],9],"expected":4},
+    {"args":[[-1,0,3,5,9,12],2],"expected":-1},
+    {"args":[[5],5],"expected":0},
+    {"args":[[5],-5],"expected":-1},
+    {"args":[[1,3],1],"expected":0},
+    {"args":[[1,3],3],"expected":1},
+    {"args":[[1,3,5,7,9],0],"expected":-1},
+    {"args":[[1,3,5,7,9],10],"expected":-1},
+    {"args":[[-10,-5,-2],-5],"expected":1},
+    {"args":[[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40],34],"expected":16},
+    {"args":[[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40],2],"expected":0},
+    {"args":[[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40],21],"expected":-1}
+  ]
+}

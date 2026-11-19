@@ -11,5 +11,6 @@ export default defineConfig({
     "**/.impeccable/**",
     // Reference solutions are answer keys checked by `build-problem --all`.
     "packages/starters/*/problems/**",
+    "packages/starters/*/lessons/**",
   ],
 });

@@ -1,0 +1,23 @@
+{
+  "function": {
+    "python": "max_sliding_window",
+    "typescript": "maxSlidingWindow"
+  },
+  "compare": "exact",
+  "stubs": {
+    "python": "def max_sliding_window(nums: list[int], k: int) -> list[int]:\n    pass\n",
+    "typescript": "export function maxSlidingWindow(nums: number[], k: number): number[] {\n  throw new Error(\"not implemented\");\n}\n"
+  },
+  "tests": [
+    {"args":[[1,3,-1,-3,5,3,6,7],3],"expected":[3,3,5,5,6,7]},
+    {"args":[[1],1],"expected":[1]},
+    {"args":[[1,-1],1],"expected":[1,-1]},
+    {"args":[[9,8,7,6],2],"expected":[9,8,7]},
+    {"args":[[1,2,3,4],2],"expected":[2,3,4]},
+    {"args":[[4,4,4],2],"expected":[4,4]},
+    {"args":[[7,2,4],3],"expected":[7]},
+    {"args":[[-5,-2,-9,-1],2],"expected":[-2,-2,-1]},
+    {"args":[[1,3,1,2,0,5],3],"expected":[3,3,2,5]},
+    {"args":[[10,9,8,7,6,5,4,3,2,1,2,3,4,5,6,7,8,9,10],5],"expected":[10,9,8,7,6,5,4,3,4,5,6,7,8,9,10]}
+  ]
+}
