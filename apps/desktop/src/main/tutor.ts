@@ -32,23 +32,19 @@ const ACTIVITY = new Map([
   ["get_progress", "Checking your progress"],
   ["get_roadmap", "Checking your progress"],
   ["log_hint", "Noting the hint"],
-  ["next_up", "Checking what is next"],
+  ["get_session", "Looking at your screen"],
   ["run_tests", "Running your tests"],
   ["show_exercise", "Writing an exercise"],
-  ["start_problem", "Opening the problem"],
 ]);
 
 const APP_NOTE = `
-You are running inside the tech-prep desktop app. The main pane shows the exercise or the
-problem you opened, with its own editor, Run and Submit. You are in a narrow pane beside it.
+You are running inside the tech-prep desktop app. Use the tutor skill. The app leads the
+course: the main pane shows the lesson or the problem the learner is on, with its own
+editor, Run and Submit. You are in a narrow pane beside it and help when asked.
 Messages that start with "[app]" come from the app, not from the learner.
 Your messages render as Markdown in a narrow pane: keep them short, avoid tables,
 and never paste the learner's whole file back to them.
 `.trim();
-
-/** The first message of a session. */
-const START =
-  "Use the tutor skill. Start a practice session: call `next_up` and follow the action it returns.";
 
 export type TutorEvent =
   | { type: "message"; text: string }
@@ -111,8 +107,9 @@ export class Tutor {
       return;
     }
 
+    // The tutor waits for the learner. The app leads the course, so the tutor has nothing
+    // to do until it is asked.
     void this.read(this.session);
-    this.send(START);
   }
 
   /** Queue a message for the tutor. */
