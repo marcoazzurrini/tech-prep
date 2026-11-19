@@ -32,6 +32,7 @@ Requires Bun, Python 3 and gitleaks (`brew install gitleaks`).
 bun run dev           # open the app from source
 bun run storybook     # browse UI components at localhost:6006
 bun run check         # format, lint, typecheck, test and build, as CI does
+bun run e2e           # drive the built app through its main screens, on an empty profile
 ```
 
 The development build keeps its data in `~/Library/Application Support/tech-prep-dev`, apart from the installed app.

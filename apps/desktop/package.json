@@ -13,7 +13,8 @@
     "install-app": "bun run --cwd ../../packages/engine build && electron-vite build && bun scripts/stage.ts && electron-builder --mac dir && bun scripts/install.ts",
     "typecheck": "tsc --noEmit",
     "postinstall": "[ -n \"$CI\" ] || node node_modules/electron/install.js",
-    "test": "bun test"
+    "test": "bun test",
+    "e2e": "electron-vite build && node --test --test-timeout=30000 \"e2e/*.e2e.mjs\""
   },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.3.296",
@@ -30,6 +31,7 @@
     "electron-builder": "^26.18.0",
     "electron-vite": "^5.0.0",
     "lucide-react": "^1.61.0",
+    "playwright-core": "^1.65.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-markdown": "^10.1.0",
