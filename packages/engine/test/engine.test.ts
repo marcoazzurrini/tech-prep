@@ -1,3 +1,4 @@
+import { Database } from "bun:sqlite";
 import { afterAll, describe, expect, test } from "bun:test";
 import {
   existsSync,
@@ -158,6 +159,80 @@ describe("architecture", () => {
       .filter((name) => name.endsWith(".ts") && !own.has(name))
       .filter((name) =>
         /\.kind\b[^\n]*"(?:jq|code)"|=== "jq"|!== "jq"|\.jq\b/u.test(
+          readFileSync(path.join(src, name), "utf-8")
+        )
+      );
+
+    expect(leaks).toEqual([]);
+  });
+});
+
+/** Where a course keeps its progress. */
+const progressFile = (id: string) => path.join(home, "progress", `${id}.db`);
+
+describe("progress store", () => {
+  test("writes made together are saved together or not at all", () => {
+    const small = content.courseById("mini");
+    const before = scheduler.conceptStatus(small, "first-idea").stage;
+
+    expect(() =>
+      database.atomically(small, () => {
+        database.addNote(small, "first-idea", "kept only if all is kept", null);
+
+        throw new Error("the second write failed");
+      })
+    ).toThrow("the second write failed");
+    expect(database.notesFor(small, "first-idea")).toEqual([]);
+    expect(scheduler.conceptStatus(small, "first-idea").stage).toBe(before);
+  });
+
+  test("an old database is copied, then brought up to date once", () => {
+    mkdirSync(path.join(home, "progress"), { recursive: true });
+
+    const old = new Database(progressFile("old-one"), { create: true });
+    old.exec(
+      "CREATE TABLE concept_state (concept_id TEXT PRIMARY KEY, stage TEXT NOT NULL DEFAULT 'unseen', card TEXT, introduced_at TEXT)"
+    );
+    old.exec(
+      "INSERT INTO concept_state (concept_id, stage) VALUES ('dynamic-arrays', 'practicing')"
+    );
+    old.close();
+
+    const course = { ...interview, id: "old-one" };
+
+    expect(database.conceptRow(course, "dynamic-arrays")).toMatchObject({
+      fail_count: 0,
+      stage: "passed",
+    });
+    expect(database.open(course).query("PRAGMA user_version").get()).toEqual({
+      user_version: 1,
+    });
+    expect(existsSync(`${progressFile("old-one")}.before-v1.bak`)).toBe(true);
+    // A new database has nothing to keep, so it gets no copy.
+    expect(existsSync(`${progressFile("interview")}.before-v1.bak`)).toBe(
+      false
+    );
+  });
+
+  test("a database from a newer app is refused, not changed", () => {
+    mkdirSync(path.join(home, "progress"), { recursive: true });
+
+    const newer = new Database(progressFile("newer-one"), { create: true });
+    newer.exec("PRAGMA user_version = 99");
+    newer.close();
+
+    expect(() => database.open({ ...interview, id: "newer-one" })).toThrow(
+      "newer version of the app"
+    );
+  });
+
+  test("only the store writes SQL", () => {
+    const src = path.join(import.meta.dir, "..", "src");
+
+    const leaks = readdirSync(src)
+      .filter((name) => name.endsWith(".ts") && name !== "db.ts")
+      .filter((name) =>
+        /\.query\(|\.exec\(\s*["`]/u.test(
           readFileSync(path.join(src, name), "utf-8")
         )
       );

@@ -11,12 +11,17 @@ import {
 import type { Course, Language } from "./content.ts";
 import {
   addHint,
+  atomically,
   attempt,
   attemptsFor,
+  closeAttempt,
   closeExercises,
-  open,
+  insertAttempt,
   openAttempt,
   openExercise,
+  pauseOtherAttempts,
+  raiseExerciseHint,
+  recordTestRun,
 } from "./db.ts";
 import type { AttemptRow, Mode, Outcome, Phase, Recognition } from "./db.ts";
 import { INDEPENDENT_HINT_LEVEL, grade } from "./grading.ts";
@@ -41,15 +46,6 @@ const BANNER =
 /** A solution file's text without the old banner. */
 export const withoutBanner = (text: string): string => text.replace(BANNER, "");
 
-/** Set aside every other open attempt, with no grade, so one problem is open at a time. */
-const pauseOthers = (course: Course, slug: string): void => {
-  open(course)
-    .query(
-      "UPDATE attempts SET finished_at = ?, outcome = 'paused' WHERE finished_at IS NULL AND slug != ?"
-    )
-    .run(new Date().toISOString(), slug);
-};
-
 /** True when a guided task was solved, with or without help. */
 const isSolved = (course: Course, slug: string): boolean =>
   ["solved", "solved_with_help"].includes(problemStatus(course, slug));
@@ -66,11 +62,8 @@ const soloTasksLeft = (course: Course, slug: string): boolean => {
   );
 };
 
-/**
- * Create the solution file if needed and open (or resume) an attempt. A review starts from
- * the empty stub, even on a problem solved before: recalling the approach is the review.
- */
-export const startProblem = (
+/** Open or resume an attempt. `startProblem` saves it as one. */
+const begin = (
   course: Course,
   slug: string,
   language: Language = courseLanguage(course),
@@ -105,7 +98,8 @@ export const startProblem = (
     }
   }
 
-  pauseOthers(course, slug);
+  // One problem is open at a time.
+  pauseOtherAttempts(course, slug, new Date());
 
   if (!current) {
     const [mainConcept] = p.concepts;
@@ -120,20 +114,11 @@ export const startProblem = (
 
     closeExercises(course);
 
-    const id = open(course)
-      .query(
-        "INSERT INTO attempts (slug, concept_id, language, started_at, phase, mode) VALUES (?, ?, ?, ?, ?, ?)"
-      )
-      .run(
-        slug,
-        mainConcept,
-        language,
-        new Date().toISOString(),
-        phase,
-        mode
-      ).lastInsertRowid;
-
-    current = attempt(course, Number(id));
+    current = insertAttempt(
+      course,
+      { concept_id: mainConcept, language, mode, phase, slug },
+      new Date()
+    );
   }
 
   return {
@@ -149,6 +134,19 @@ export const startProblem = (
   };
 };
 
+/**
+ * Create the solution file if needed and open (or resume) an attempt. A review starts from
+ * the empty stub, even on a problem solved before: recalling the approach is the review.
+ */
+export const startProblem = (
+  course: Course,
+  slug: string,
+  language: Language = courseLanguage(course),
+  mode: Mode | null = null
+): ReturnType<typeof begin> =>
+  // Setting the other attempts aside and opening this one are saved together.
+  atomically(course, () => begin(course, slug, language, mode));
+
 /** Run the tests and, when an attempt is open, record the result on it. */
 export const testSolution = (
   course: Course,
@@ -160,11 +158,7 @@ export const testSolution = (
   const current = openAttempt(course, slug, language);
 
   if (current) {
-    open(course)
-      .query(
-        "UPDATE attempts SET test_runs = test_runs + 1, last_passed = ?, last_total = ? WHERE id = ?"
-      )
-      .run(run.passed, run.total, current.id);
+    recordTestRun(course, current.id, run.passed, run.total);
   }
 
   return { attempt_id: current?.id ?? null, run };
@@ -179,11 +173,7 @@ export const pauseUnknownAttempts = (course: Course): void => {
     try {
       problemInfo(course, a.slug);
     } catch {
-      open(course)
-        .query(
-          "UPDATE attempts SET finished_at = ?, outcome = 'paused' WHERE id = ?"
-        )
-        .run(new Date().toISOString(), a.id);
+      closeAttempt(course, a.id, { outcome: "paused" }, new Date());
     }
   }
 };
@@ -230,11 +220,7 @@ export const logHint = (course: Course, level: number) => {
   const exercise = openExercise(course);
 
   if (exercise && !exercise.graded_at && exercise.kind !== "example") {
-    open(course)
-      .query(
-        "UPDATE exercises SET max_hint_level = MAX(max_hint_level, ?) WHERE id = ?"
-      )
-      .run(level, exercise.id);
+    raiseExerciseHint(course, exercise.id, level);
 
     return {
       on: `exercise ${exercise.id}`,
@@ -265,18 +251,12 @@ const closeUngraded = (
   notes: string | null,
   now: Date
 ): void => {
-  open(course)
-    .query(
-      "UPDATE attempts SET finished_at = ?, outcome = ?, gave_up = ?, rating = ?, notes = ? WHERE id = ?"
-    )
-    .run(
-      now.toISOString(),
-      outcome,
-      outcome === "gave_up" ? 1 : 0,
-      outcome === "solved" ? 3 : null,
-      notes,
-      id
-    );
+  closeAttempt(
+    course,
+    id,
+    { notes, outcome, rating: outcome === "solved" ? 3 : null },
+    now
+  );
 };
 
 /**
@@ -340,11 +320,8 @@ export interface FinishInput {
   notes?: string;
 }
 
-/**
- * Close an attempt. Every target concept gets the same pass or fail: a pass needs the tests
- * to pass with no hint beyond a guiding question. See docs/learning-model.md.
- */
-export const finishAttempt = (course: Course, input: FinishInput) => {
+/** Close an attempt and apply what it says about each concept. `finishAttempt` saves it as one. */
+const closeGraded = (course: Course, input: FinishInput) => {
   const current = attempt(course, input.attemptId);
 
   if (current.finished_at) {
@@ -355,11 +332,12 @@ export const finishAttempt = (course: Course, input: FinishInput) => {
   const now = new Date();
 
   if (input.stopped === "paused") {
-    open(course)
-      .query(
-        "UPDATE attempts SET finished_at = ?, outcome = 'paused', notes = ? WHERE id = ?"
-      )
-      .run(now.toISOString(), input.notes ?? null, current.id);
+    closeAttempt(
+      course,
+      current.id,
+      { notes: input.notes ?? null, outcome: "paused" },
+      now
+    );
 
     const outcome: Outcome = "paused";
 
@@ -431,21 +409,18 @@ export const finishAttempt = (course: Course, input: FinishInput) => {
   const minutes =
     (now.getTime() - new Date(current.started_at).getTime()) / 60_000;
 
-  open(course)
-    .query(
-      `UPDATE attempts SET finished_at = ?, phase = ?, outcome = ?, recognition = ?, gave_up = ?,
-         rating = ?, notes = ? WHERE id = ?`
-    )
-    .run(
-      now.toISOString(),
-      phase,
+  closeAttempt(
+    course,
+    current.id,
+    {
+      notes: input.notes ?? null,
       outcome,
+      phase,
+      rating: alone ? 3 : 1,
       recognition,
-      outcome === "gave_up" ? 1 : 0,
-      alone ? 3 : 1,
-      input.notes ?? null,
-      current.id
-    );
+    },
+    now
+  );
 
   return {
     concepts: applied.concepts,
@@ -456,6 +431,17 @@ export const finishAttempt = (course: Course, input: FinishInput) => {
     tests: `${run.passed}/${run.total}`,
   };
 };
+
+/**
+ * Close an attempt. Every target concept gets the same pass or fail: a pass needs the tests
+ * to pass with no hint beyond a guiding question. See docs/learning-model.md.
+ */
+export const finishAttempt = (
+  course: Course,
+  input: FinishInput
+): ReturnType<typeof closeGraded> =>
+  // The attempt, its reviews and its concepts are saved together or not at all.
+  atomically(course, () => closeGraded(course, input));
 
 /** What handing in a problem did, as the app shows it. */
 export interface Handed {

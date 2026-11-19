@@ -11,7 +11,7 @@ import {
 import type { Card, Grade } from "ts-fsrs";
 
 import type { Course } from "./content.ts";
-import { conceptRow, open, saveConceptRow } from "./db.ts";
+import { conceptRow, insertReview, saveConceptRow } from "./db.ts";
 
 // No same-day relearning steps: repeating an item within a day adds little to long-term memory.
 const scheduler = fsrs(
@@ -64,23 +64,21 @@ const log = (
   credit: number | null,
   sourceConcept: string | null
 ) => {
-  open(course)
-    .query(
-      `INSERT INTO reviews (concept_id, attempt_id, exercise_id, rating, reviewed_at, due, stability, difficulty, implicit_credit, source_concept)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
-    .run(
-      conceptId,
-      source.attemptId ?? 0,
-      source.exerciseId ?? null,
+  insertReview(
+    course,
+    {
+      attempt_id: source.attemptId ?? 0,
+      concept_id: conceptId,
+      difficulty: card.difficulty,
+      due: card.due.toISOString(),
+      exercise_id: source.exerciseId ?? null,
+      implicit_credit: credit,
       rating,
-      now.toISOString(),
-      card.due.toISOString(),
-      card.stability,
-      card.difficulty,
-      credit,
-      sourceConcept
-    );
+      source_concept: sourceConcept,
+      stability: card.stability,
+    },
+    now
+  );
 };
 
 const save = (course: Course, conceptId: string, card: Card): void => {
