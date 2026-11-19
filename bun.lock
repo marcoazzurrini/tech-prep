@@ -39,6 +39,7 @@
         "@tech-prep/starters": "workspace:*",
         "@tech-prep/tutor": "workspace:*",
         "@tech-prep/ui": "workspace:*",
+        "@types/bun": "catalog:",
         "@types/node": "catalog:",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
