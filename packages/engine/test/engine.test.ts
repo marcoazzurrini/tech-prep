@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, test } from "bun:test";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -17,10 +17,11 @@ const exercises = await import("../src/exercises.ts");
 afterAll(() => rmSync(home, { force: true, recursive: true }));
 
 describe("curriculum", () => {
-  test("the index holds the Blind 75 with known topics and concepts", () => {
+  test("the index holds the NeetCode 150 with known topics and concepts", () => {
     const topicIds = new Set(content.topics().map((t) => t.id));
     const conceptIds = new Set(content.concepts().map((c) => c.id));
-    expect(content.problemIndex()).toHaveLength(75);
+    expect(content.problemIndex().filter((p) => !p.source)).toHaveLength(150);
+    expect(content.validateCurriculum()).toEqual([]);
 
     for (const p of content.problemIndex()) {
       expect(topicIds.has(p.topic)).toBe(true);
@@ -29,6 +30,25 @@ describe("curriculum", () => {
         expect(conceptIds.has(c)).toBe(true);
       }
     }
+  });
+
+  test("every concept has a written lesson, a guided problem and a solo problem", () => {
+    const missing = content
+      .concepts()
+      .filter((c) => !content.hasLesson(c.id))
+      .map((c) => c.id);
+
+    expect(missing).toEqual([]);
+  });
+
+  test("a guided problem belongs to its lesson and is not a curriculum problem", () => {
+    const slug = content.guidedSlug("canonical-key");
+    expect(content.problemInfo(slug)).toMatchObject({
+      concepts: ["canonical-key"],
+      source: "guided",
+      title: "Group Words by Length",
+    });
+    expect(content.problemIndex().some((p) => p.slug === slug)).toBe(false);
   });
 
   test("concept prerequisites resolve, prerequisites first", () => {
@@ -175,118 +195,151 @@ describe("fractional implicit repetition", () => {
   });
 });
 
-const solve = (slug: string, source: string) => {
-  const started = practice.startProblem(slug, "python");
-  writeFileSync(started.file, source);
+/** Open a problem and write its reference solution as the learner's code. */
+const solve = (slug: string, mode: "guided" | "solo" | "review") => {
+  const started = practice.startProblem(slug, "python", mode);
+  const reference = content.referenceSolution(slug, "python");
+
+  if (!reference) {
+    throw new Error(`'${slug}' has no Python reference.`);
+  }
+
+  writeFileSync(started.file, reference);
 
   return started;
 };
 
-describe("session flow", () => {
+/** Do both steps of a lesson without help. */
+const learn = (conceptId: string) => {
+  solve(content.guidedSlug(conceptId), "guided");
+  practice.submitProblem(content.guidedSlug(conceptId), "python");
+  solve(content.concept(conceptId).solo, "solo");
+
+  return practice.submitProblem(content.concept(conceptId).solo, "python");
+};
+
+describe("lessons", () => {
   const DAY = 86_400_000;
 
-  const CONTAINS =
-    "def contains_duplicate(nums):\n    return len(set(nums)) != len(nums)\n";
+  test("the course starts with the first concept, and later ones are locked", () => {
+    expect(scheduler.nextLesson()).toBe("dynamic-arrays");
+    expect(scheduler.lessonStatus("dynamic-arrays")).toBe("todo");
+    expect(scheduler.lessonStatus("hash-set")).toBe("locked");
+    expect(scheduler.lessonStep("dynamic-arrays")).toBe(1);
+  });
 
-  const ANAGRAM =
-    "from collections import Counter\ndef is_anagram(s, t):\n    return Counter(s) == Counter(t)\n";
+  test("solving the guided problem teaches the concept without passing it", () => {
+    const guided = content.guidedSlug("dynamic-arrays");
+    solve(guided, "guided");
+    const handed = practice.submitProblem(guided, "python");
 
-  test("the first problem teaches its untaught concepts, prerequisites first", () => {
-    const first = scheduler.nextUp();
-    expect(first).toMatchObject({
-      action: "learn",
-      problem: "contains-duplicate",
-    });
-    expect(first.action === "learn" && first.new_concepts).toEqual([
+    expect(handed.finished).toBe(true);
+    expect(handed.result?.outcome).toBe("solved");
+    expect(scheduler.lessonStep("dynamic-arrays")).toBe(2);
+    expect(scheduler.displayStage("dynamic-arrays")).toBe("learning");
+    expect(memory.cardOf("dynamic-arrays")).toBeNull();
+  });
+
+  test("a submit with failing tests keeps the attempt open", () => {
+    const { solo } = content.concept("dynamic-arrays");
+    const started = practice.startProblem(solo, "python", "solo");
+    const handed = practice.submitProblem(solo, "python");
+
+    expect(handed.finished).toBe(false);
+    expect(practice.currentAttempt()?.id).toBe(started.attempt_id);
+    expect(scheduler.displayStage("dynamic-arrays")).toBe("learning");
+  });
+
+  test("an unaided solo solve passes the concept, starts its reviews and opens the next lesson", () => {
+    const { solo } = content.concept("dynamic-arrays");
+    solve(solo, "solo");
+    const handed = practice.submitProblem(solo, "python");
+
+    expect(handed.result?.outcome).toBe("solved");
+    expect(scheduler.lessonStatus("dynamic-arrays")).toBe("done");
+    expect(memory.cardOf("dynamic-arrays")).not.toBeNull();
+    expect(scheduler.problemStatus(solo)).toBe("solved");
+    expect(scheduler.lessonStatus("hash-set")).toBe("todo");
+    expect(scheduler.nextLesson()).toBe("hash-set");
+  });
+
+  test("help on the solo problem keeps the concept in learning, and the problem waits a day", () => {
+    expect(learn("hash-set").result?.outcome).toBe("solved");
+
+    const guided = content.guidedSlug("hash-map-counting");
+    solve(guided, "guided");
+    practice.submitProblem(guided, "python");
+    solve("valid-anagram", "solo");
+    practice.logHint(2);
+    const handed = practice.submitProblem("valid-anagram", "python");
+
+    expect(handed.result?.outcome).toBe("solved_with_help");
+    expect(scheduler.lessonStatus("hash-map-counting")).toBe("partial");
+    expect(memory.cardOf("hash-map-counting")).toBeNull();
+    expect(scheduler.soloWait("hash-map-counting")).not.toBeNull();
+    // The course moves on to the next open lesson while this one waits.
+    expect(scheduler.nextLesson()).toBe("hash-map-index");
+    expect(scheduler.nextLesson(new Date(Date.now() + 1.1 * DAY))).toBe(
+      "hash-map-counting"
+    );
+  });
+
+  test("giving up closes the attempt and returns a solution", () => {
+    const guided = content.guidedSlug("hash-map-index");
+    practice.startProblem(guided, "python", "guided");
+    const { result, solution } = practice.giveUp(guided, "python");
+
+    expect(result.outcome).toBe("gave_up");
+    expect(solution).toBe(content.referenceSolution(guided, "python"));
+    expect(scheduler.lessonStep("hash-map-index")).toBe(1);
+    expect(practice.currentAttempt()).toBeNull();
+  });
+
+  test("opening another problem sets the open one aside with no grade", () => {
+    const guided = content.guidedSlug("hash-map-index");
+    practice.startProblem(guided, "python", "guided");
+    practice.startProblem("two-sum", "python", "solo");
+
+    expect(practice.currentAttempt()?.slug).toBe("two-sum");
+    practice.pauseAttempt("two-sum", "python");
+    expect(practice.currentAttempt()).toBeNull();
+    expect(scheduler.problemStatus("two-sum")).toBe("unattempted");
+  });
+});
+
+describe("reviews", () => {
+  const DAY = 86_400_000;
+
+  test("nothing is due straight after learning", () => {
+    expect(scheduler.dueCount()).toBe(0);
+    expect(scheduler.nextReview()).toBeNull();
+    expect(scheduler.nextDue()).not.toBeNull();
+  });
+
+  test("due concepts are reviewed with a problem whose concepts are all passed", () => {
+    const later = new Date(Date.now() + 60 * DAY);
+    const plan = scheduler.reviewPlan(later);
+
+    expect(scheduler.dueCount(later)).toBe(2);
+    expect(plan.flatMap((r) => r.covers).toSorted()).toEqual([
       "dynamic-arrays",
       "hash-set",
     ]);
-    expect(scheduler.displayStage("hash-set")).toBe("locked");
 
-    // dynamic-arrays has no problems of its own, so its lesson passes it and unlocks hash-set.
-    expect(scheduler.completeLesson("dynamic-arrays")).toBe("passed");
-    expect(scheduler.displayStage("hash-set")).toBe("available");
-    expect(scheduler.completeLesson("hash-set")).toBe("learning");
-    expect(scheduler.nextUp()).toMatchObject({
-      action: "practice",
-      problem: "contains-duplicate",
-    });
+    for (const review of plan) {
+      expect(review.problem.concepts.every(scheduler.isPassed)).toBe(true);
+    }
   });
 
-  test("an independent solve passes the concept and starts its reviews", () => {
-    const started = solve("contains-duplicate", CONTAINS);
-    expect(started.phase).toBe("learning");
-    expect(scheduler.nextUp()).toMatchObject({
-      action: "resume",
-      problem: "contains-duplicate",
-    });
+  test("a review starts from the empty stub, even on a solved problem", () => {
+    const { solo } = content.concept("dynamic-arrays");
+    const started = practice.startProblem(solo, "python", "review");
 
-    const result = practice.finishAttempt({
-      attemptId: started.attempt_id,
-      recognition: "skipped",
-    });
-
-    expect(result.outcome).toBe("solved");
-    expect(scheduler.displayStage("hash-set")).toBe("passed");
-    expect(memory.cardOf("hash-set")).not.toBeNull();
-    expect(scheduler.problemStatus("contains-duplicate")).toBe("solved");
-  });
-
-  test("help in the learning phase does not touch FSRS, and the problem waits a day", () => {
-    scheduler.completeLesson("hash-map-counting");
-    const started = solve("valid-anagram", ANAGRAM);
-    practice.logHint(2);
-
-    const result = practice.finishAttempt({ attemptId: started.attempt_id });
-
-    expect(result.outcome).toBe("solved_with_help");
-    expect(scheduler.displayStage("hash-map-counting")).toBe("learning");
-    expect(memory.cardOf("hash-map-counting")).toBeNull();
-    expect(scheduler.nextUp()).not.toMatchObject({ problem: "valid-anagram" });
-    expect(scheduler.nextUp(new Date(Date.now() + 1.1 * DAY))).toMatchObject({
-      problem: "valid-anagram",
-    });
-  });
-
-  test("a second struggle triggers re-teaching; a new lesson resets it", () => {
-    const started = solve(
-      "valid-anagram",
-      "def is_anagram(s, t):\n    return False\n"
+    expect(readFileSync(started.file, "utf-8").trim()).toBe(
+      content.problem(solo).stubs.python.trim()
     );
-
-    expect(() =>
-      practice.finishAttempt({ attemptId: started.attempt_id })
-    ).toThrow(/do not pass/u);
-    practice.finishAttempt({
-      attemptId: started.attempt_id,
-      stopped: "gave_up",
-    });
-    expect(scheduler.nextUp()).toMatchObject({
-      action: "reteach",
-      concept: "hash-map-counting",
-    });
-    scheduler.completeLesson("hash-map-counting");
-    expect(scheduler.nextUp()).not.toMatchObject({ action: "reteach" });
-  });
-
-  test("a paused attempt records no grade", () => {
-    const started = solve("two-sum", "def two_sum(nums, target):\n    pass\n");
-    expect(
-      practice.finishAttempt({
-        attemptId: started.attempt_id,
-        stopped: "paused",
-      }).outcome
-    ).toBe("paused");
-    expect(scheduler.problemStatus("two-sum")).toBe("unattempted");
-  });
-
-  test("due concepts are reviewed with the problem that covers them best", () => {
-    const next = scheduler.nextUp(new Date(Date.now() + 60 * DAY));
-    expect(next).toMatchObject({
-      action: "review",
-      problem: "contains-duplicate",
-    });
-    expect(next.action === "review" && next.covers).toContain("hash-set");
+    expect(started.phase).toBe("review");
+    practice.pauseAttempt(solo, "python");
   });
 
   test("practising an encompassing concept gives partial credit to the passed concept below", () => {

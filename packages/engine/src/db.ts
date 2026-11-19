@@ -9,6 +9,9 @@ export type Stage = "unseen" | "learning" | "passed" | "mastered";
 
 export type Phase = "learning" | "review";
 
+/** Why an attempt was opened: a lesson's guided problem, its solo problem, or a review. */
+export type Mode = "guided" | "solo" | "review";
+
 export type Outcome = "solved" | "solved_with_help" | "gave_up" | "paused";
 
 export type Recognition = "correct" | "partial" | "wrong" | "skipped";
@@ -39,6 +42,7 @@ export interface AttemptRow {
   started_at: string;
   finished_at: string | null;
   phase: Phase | null;
+  mode: Mode | null;
   outcome: Outcome | null;
   recognition: Recognition | null;
   hints_used: number;
@@ -211,6 +215,7 @@ const migrate = (database: Database): void => {
   addColumn(database, "attempts", "phase", "TEXT");
   addColumn(database, "attempts", "outcome", "TEXT");
   addColumn(database, "attempts", "recognition", "TEXT");
+  addColumn(database, "attempts", "mode", "TEXT");
   addColumn(database, "reviews", "implicit_credit", "REAL");
   addColumn(database, "reviews", "source_concept", "TEXT");
   addColumn(database, "reviews", "exercise_id", "INTEGER");

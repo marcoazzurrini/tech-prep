@@ -1,13 +1,16 @@
 import {
   Button,
+  CodeBlock,
   CodeEditor,
   PaneFooter,
   PaneSection,
   TestRow,
 } from "@tech-prep/ui";
+import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { Code, Problem, Run } from "./types";
+import { engine } from "./course";
+import type { Code, GaveUp, Handed, Problem, Result, Run } from "./types";
 
 /** Wait this long after the last keystroke before saving. */
 const SAVE_DELAY_MS = 400;
@@ -23,18 +26,6 @@ const detail = (c: Run["cases"][number]): string | undefined => {
   return c.error
     ? `${c.input} → ${c.error}`
     : `${c.input} → expected ${c.expected}, got ${c.actual}`;
-};
-
-const summary = (run: Run): string => {
-  if (run.fatal) {
-    return `The code did not run: ${run.fatal.split("\n").at(-1)}`;
-  }
-
-  const failed = run.cases.find((c) => !c.ok);
-
-  return failed
-    ? `${run.passed} of ${run.total} tests pass. First failing case: ${detail(failed)}.`
-    : `All ${run.total} tests pass.`;
 };
 
 const Tests = ({ run }: { run: Run | null }) => {
@@ -66,18 +57,39 @@ const Tests = ({ run }: { run: Run | null }) => {
   );
 };
 
-interface WorkbenchProps {
-  problem: Problem;
-  /** Open the tutor pane, for when the learner asks for a hint. */
-  onAskTutor: () => void;
+/** How a problem ended: its grade, and a worked solution when the learner gave up. */
+export interface Finished {
+  result: Result;
+  solution: string | null;
 }
 
-/** The editor, the tests and the Run and Submit buttons for the problem the tutor opened. */
-export const Workbench = ({ problem, onAskTutor }: WorkbenchProps) => {
+interface WorkbenchProps {
+  problem: Problem;
+  /** Shown on the left of the footer while the learner works. */
+  note?: string;
+  /** Open the tutor pane, for when the learner asks for a hint. */
+  onAskTutor: () => void;
+  /** Called once, when the problem is solved or given up. */
+  onFinished: (finished: Finished) => void;
+  /** Once finished: the footer's note and its buttons, such as "Next lesson". */
+  done?: { note: string; actions: ReactNode };
+}
+
+/**
+ * The editor, the tests and the footer for one open problem. Submit runs the tests; when
+ * they all pass, the engine grades the attempt and the footer changes to what comes next.
+ */
+export const Workbench = ({
+  problem,
+  note,
+  onAskTutor,
+  onFinished,
+  done,
+}: WorkbenchProps) => {
   const [code, setCode] = useState<Code | null>(null);
   const [run, setRun] = useState<Run | null>(null);
   const [busy, setBusy] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [solution, setSolution] = useState<string | null>(null);
   const text = useRef("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { slug } = problem;
@@ -86,8 +98,7 @@ export const Workbench = ({ problem, onAskTutor }: WorkbenchProps) => {
     let current = true;
 
     const load = async () => {
-      // SAFETY: the bridge's `code.read` method returns a Code.
-      const loaded = (await window.tp.engine("code.read", { slug })) as Code;
+      const loaded = await engine<Code>("code.read", { slug });
 
       if (current) {
         text.current = loaded.text;
@@ -107,7 +118,7 @@ export const Workbench = ({ problem, onAskTutor }: WorkbenchProps) => {
       clearTimeout(timer.current);
     }
 
-    await window.tp.engine("code.save", { slug, text: text.current });
+    await engine("code.save", { slug, text: text.current });
   }, [slug]);
 
   const edit = useCallback(
@@ -125,23 +136,13 @@ export const Workbench = ({ problem, onAskTutor }: WorkbenchProps) => {
     [save]
   );
 
-  /** Run the tests. Submit also hands the result to the tutor. */
-  const test = async (handIn: boolean) => {
+  /** Run a step that talks to the engine, showing its error in the test list if it fails. */
+  const act = async (step: () => Promise<void>) => {
     setBusy(true);
 
     try {
       await save();
-      // SAFETY: the bridge's `code.run` method returns a Run.
-      const result = (await window.tp.engine("code.run", { slug })) as Run;
-      setRun(result);
-
-      if (handIn) {
-        const passed = !result.fatal && result.passed === result.total;
-        setSubmitted(passed);
-        window.tp.tutor.notify(
-          `The learner submitted '${problem.title}'. ${summary(result)}${passed ? " Read their code, then do the teach-back." : ""}`
-        );
-      }
+      await step();
     } catch (error) {
       setRun({
         cases: [],
@@ -153,6 +154,28 @@ export const Workbench = ({ problem, onAskTutor }: WorkbenchProps) => {
 
     setBusy(false);
   };
+
+  const test = () =>
+    act(async () => {
+      setRun(await engine<Run>("code.run", { slug }));
+    });
+
+  const submit = () =>
+    act(async () => {
+      const handed = await engine<Handed>("code.submit", { slug });
+      setRun(handed.run);
+
+      if (handed.result) {
+        onFinished({ result: handed.result, solution: null });
+      }
+    });
+
+  const giveUp = () =>
+    act(async () => {
+      const gave = await engine<GaveUp>("attempt.give_up", { slug });
+      setSolution(gave.solution);
+      onFinished(gave);
+    });
 
   const hint = () => {
     onAskTutor();
@@ -171,46 +194,65 @@ export const Workbench = ({ problem, onAskTutor }: WorkbenchProps) => {
       : `Tests · ${run.passed} of ${run.total} passed`;
   }
 
-  const locked = busy || submitted;
-
   return (
     <>
-      <CodeEditor
-        file={`${slug}.${EXTENSION[code.language]}`}
-        initialValue={code.text}
-        key={slug}
-        language={code.language}
-        onChange={edit}
-      />
-      <PaneSection dock label={label}>
-        <Tests run={run} />
+      {solution ? (
+        <CodeBlock code={solution.trimEnd()} grow lineNumbers />
+      ) : (
+        <CodeEditor
+          file={`${slug}.${EXTENSION[code.language]}`}
+          initialValue={code.text}
+          key={slug}
+          language={code.language}
+          onChange={edit}
+        />
+      )}
+      <PaneSection dock label={solution ? "A solution" : label}>
+        {!solution && <Tests run={run} />}
       </PaneSection>
-      <PaneFooter
-        start={
-          submitted ? (
-            <span className="tp-pane-footer__note">Submitted</span>
-          ) : undefined
-        }
-      >
-        {!submitted && <Button onClick={hint}>Show hint</Button>}
-        <Button
-          disabled={locked}
-          onClick={() => {
-            void test(false);
-          }}
+      {done ? (
+        <PaneFooter
+          start={<span className="tp-pane-footer__note">{done.note}</span>}
         >
-          Run tests
-        </Button>
-        <Button
-          disabled={locked}
-          variant="primary"
-          onClick={() => {
-            void test(true);
-          }}
+          {done.actions}
+        </PaneFooter>
+      ) : (
+        <PaneFooter
+          start={
+            <>
+              <Button
+                disabled={busy}
+                variant="ghost"
+                onClick={() => {
+                  void giveUp();
+                }}
+              >
+                Give up
+              </Button>
+              {note && <span className="tp-pane-footer__note">{note}</span>}
+            </>
+          }
         >
-          Submit
-        </Button>
-      </PaneFooter>
+          <Button onClick={hint}>Show hint</Button>
+          <Button
+            disabled={busy}
+            onClick={() => {
+              void test();
+            }}
+          >
+            Run tests
+          </Button>
+          <Button
+            disabled={busy}
+            variant="primary"
+            onClick={() => {
+              void submit();
+            }}
+          >
+            Submit
+          </Button>
+        </PaneFooter>
+      )}
     </>
   );
 };

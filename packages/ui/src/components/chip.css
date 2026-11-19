@@ -38,3 +38,16 @@
 .tp-dot--red {
   background: var(--color-red);
 }
+
+/* An icon that reports a result takes the result's colour. The words beside it say it too. */
+.tp-tone--green {
+  color: var(--color-green);
+}
+
+.tp-tone--amber {
+  color: var(--color-amber);
+}
+
+.tp-tone--red {
+  color: var(--color-red);
+}

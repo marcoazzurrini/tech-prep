@@ -35,6 +35,19 @@ body {
   -webkit-app-region: drag;
 }
 
+/*
+ * A focused screen has no lessons column. The strip then covers the rail only, and the top
+ * bar starts further right, clear of the window buttons.
+ */
+.tp-shell--focus::before {
+  grid-column: 1;
+  border-right: 0;
+}
+
+.tp-shell--focus .tp-top-bar {
+  padding-left: 40px;
+}
+
 .tp-rail {
   padding-top: 12px;
 }

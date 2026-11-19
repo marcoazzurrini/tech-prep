@@ -1,64 +1,64 @@
 import { AppShell, Badge, Rail, RailDivider, RailItem } from "@tech-prep/ui";
 import { CalendarCheck } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { dueCount } from "./course";
-import { ExerciseLesson, LessonView } from "./lesson";
+import { engine } from "./course";
+import { ExerciseScreen } from "./exercise";
+import { LessonScreen } from "./lesson";
 import { Lessons } from "./lessons";
+import { ReviewSession, ReviewsScreen } from "./reviews";
 import { Tutor } from "./tutor";
-import type { Problem, Roadmap, Session } from "./types";
+import type { Course, Reviews, Session } from "./types";
 
-/** The only subject so far. */
-const SUBJECT = { initials: "75", name: "Blind 75" };
+/** What the main pane shows. */
+type View =
+  | { kind: "lesson"; id: string }
+  /** The list of what is due, per track. */
+  | { kind: "reviews" }
+  /** A review session in progress. */
+  | { kind: "review"; planned: number };
 
 export const App = () => {
+  const [course, setCourse] = useState<Course | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
-  /** A problem the learner picked; null follows the tutor's current problem. */
-  const pickedSlug = useRef<string | null>(null);
-  const [picked, setPicked] = useState<Problem | null>(null);
+  const [view, setView] = useState<View | null>(null);
+  /** Chapters the learner opened. */
   const [open, setOpen] = useState<Set<string>>(new Set());
-  const [tutorOpen, setTutorOpen] = useState(true);
-
-  const load = useCallback(async (slug: string) => {
-    // SAFETY: the bridge's `problem` method returns the engine's Problem shape.
-    const problem = (await window.tp.engine("problem", { slug })) as Problem;
-
-    // Skip a reply that arrives after the learner picked something else.
-    if (pickedSlug.current === slug) {
-      setPicked(problem);
-    }
-  }, []);
-
-  const followTutor = useCallback(() => {
-    pickedSlug.current = null;
-    setPicked(null);
-  }, []);
+  /** The current chapter, when the learner closed it. */
+  const [closed, setClosed] = useState<Set<string>>(new Set());
+  const [tutorOpen, setTutorOpen] = useState(false);
 
   const refresh = useCallback(() => {
-    const loadSession = async () => {
-      // SAFETY: the bridge's `session` method returns the engine's Session shape.
-      const next = (await window.tp.engine("session")) as Session;
-      setSession(next);
-      const topic = next.problem?.topic;
+    const load = async () => {
+      const [nextCourse, nextSession] = await Promise.all([
+        engine<Course>("course"),
+        engine<Session>("session"),
+      ]);
 
-      if (topic) {
-        setOpen((all) => (all.has(topic) ? all : new Set([...all, topic])));
-      }
+      setCourse(nextCourse);
+      setSession(nextSession);
+
+      // On start, go back to what was open: a review, or the lesson the learner was on.
+      setView((current) => {
+        if (current) {
+          return current;
+        }
+
+        if (nextSession.attempt?.mode === "review") {
+          return { kind: "review", planned: 1 };
+        }
+
+        const id =
+          nextSession.attempt?.lesson ??
+          nextCourse.next_lesson ??
+          nextCourse.topics[0]?.lessons[0]?.id;
+
+        return id ? { id, kind: "lesson" } : { kind: "reviews" };
+      });
     };
 
-    const loadRoadmap = async () => {
-      // SAFETY: the bridge's `roadmap` method returns the engine's Roadmap shape.
-      setRoadmap((await window.tp.engine("roadmap")) as Roadmap);
-    };
-
-    void loadSession();
-    void loadRoadmap();
-
-    if (pickedSlug.current) {
-      void load(pickedSlug.current);
-    }
-  }, [load]);
+    void load();
+  }, []);
 
   useEffect(() => {
     refresh();
@@ -66,20 +66,20 @@ export const App = () => {
     return window.tp.onEngineChanged(refresh);
   }, [refresh]);
 
-  const select = useCallback(
-    (slug: string) => {
-      if (slug === session?.problem?.slug) {
-        followTutor();
-      } else {
-        pickedSlug.current = slug;
-        void load(slug);
-      }
-    },
-    [followTutor, load, session]
-  );
+  const lessonId = view?.kind === "lesson" ? view.id : null;
 
-  const toggleTopic = useCallback((topic: string) => {
-    setOpen((all) => {
+  // The chapter of the lesson on screen is open unless the learner closed it.
+  const currentTopic = course?.topics.find((t) =>
+    t.lessons.some((l) => l.id === lessonId)
+  )?.id;
+
+  const openTopics =
+    currentTopic && !closed.has(currentTopic)
+      ? new Set([...open, currentTopic])
+      : open;
+
+  const toggleTopic = (topic: string) => {
+    const flip = (all: Set<string>) => {
       const next = new Set(all);
 
       if (!next.delete(topic)) {
@@ -87,7 +87,27 @@ export const App = () => {
       }
 
       return next;
-    });
+    };
+
+    // The current chapter is open by default, so closing it is what gets remembered.
+    if (topic === currentTopic) {
+      setClosed(flip);
+    } else {
+      setOpen(flip);
+    }
+  };
+
+  const select = useCallback((id: string) => {
+    setView({ id, kind: "lesson" });
+  }, []);
+
+  const startReviews = useCallback(() => {
+    const start = async () => {
+      const reviews = await engine<Reviews>("reviews");
+      setView({ kind: "review", planned: reviews.problems });
+    };
+
+    void start();
   }, []);
 
   // Cmd+L opens the tutor and puts the cursor in it.
@@ -112,74 +132,122 @@ export const App = () => {
     return () => window.removeEventListener("keydown", onKey, true);
   }, []);
 
-  if (!session || !roadmap) {
+  if (!course || !session || !view) {
     return null;
   }
 
-  const shown = picked ?? session.problem;
-  // The tutor's exercise takes the main pane unless the learner picked a problem to read.
-  const exercise = picked ? null : session.exercise;
-  const due = dueCount(roadmap);
+  const openTutor = () => setTutorOpen(true);
+  const toggleTutor = () => setTutorOpen((o) => !o);
+  const inLesson = view.kind === "lesson";
+  const lessons = course.topics.flatMap((t) => t.lessons);
+  const shown = lessons.find((l) => l.id === lessonId);
+  // The lesson after the one on screen, for "Next lesson".
+  const after = lessons[lessons.findIndex((l) => l.id === lessonId) + 1];
+
+  let pane = null;
+
+  if (session.exercise) {
+    // The tutor put an extra exercise on screen. It stays until the learner closes it.
+    pane = (
+      <ExerciseScreen
+        exercise={session.exercise}
+        tutorOpen={tutorOpen}
+        onChanged={refresh}
+        onOpenTutor={openTutor}
+        onToggleTutor={toggleTutor}
+      />
+    );
+  } else if (view.kind === "lesson") {
+    pane = (
+      <LessonScreen
+        id={view.id}
+        key={view.id}
+        next={course.next_lesson ?? after?.id ?? null}
+        tutorOpen={tutorOpen}
+        onChanged={refresh}
+        onOpenTutor={openTutor}
+        onSelect={select}
+        onToggleTutor={toggleTutor}
+      />
+    );
+  } else if (view.kind === "reviews") {
+    pane = (
+      <ReviewsScreen
+        tutorOpen={tutorOpen}
+        onStart={startReviews}
+        onToggleTutor={toggleTutor}
+      />
+    );
+  } else {
+    pane = (
+      <ReviewSession
+        nextLesson={course.next_lesson}
+        planned={view.planned}
+        track={course.subject.name}
+        tutorOpen={tutorOpen}
+        onChanged={refresh}
+        onEnd={() => setView({ kind: "reviews" })}
+        onOpenLesson={select}
+        onOpenTutor={openTutor}
+        onToggleTutor={toggleTutor}
+      />
+    );
+  }
 
   return (
     <AppShell
       nav={
-        <Lessons
-          current={session.problem?.slug ?? null}
-          open={open}
-          roadmap={roadmap}
-          selected={shown?.slug ?? null}
-          subject={SUBJECT.name}
-          onSelect={select}
-          onToggle={toggleTopic}
-        />
+        inLesson ? (
+          <Lessons
+            course={course}
+            open={openTopics}
+            selected={lessonId}
+            onSelect={select}
+            onToggle={toggleTopic}
+          />
+        ) : undefined
       }
       rail={
         <Rail>
           <RailItem
-            active={!picked}
-            count={due || undefined}
-            label="Today"
-            onClick={followTutor}
+            active={!inLesson}
+            count={course.due || undefined}
+            label="Reviews"
+            onClick={() => {
+              // A review in progress stays open; leaving it is done with "End reviews".
+              if (view.kind !== "review") {
+                setView({ kind: "reviews" });
+              }
+            }}
           >
             <CalendarCheck size={16} />
           </RailItem>
           <RailDivider />
-          <RailItem active label={SUBJECT.name}>
-            <Badge active initials={SUBJECT.initials} />
+          <RailItem
+            active={inLesson}
+            label={course.subject.name}
+            onClick={() => {
+              const id = course.next_lesson ?? lessons[0]?.id;
+
+              if (!inLesson && view.kind !== "review" && id) {
+                select(id);
+              }
+            }}
+          >
+            <Badge active={inLesson} initials={course.subject.initials} />
           </RailItem>
         </Rail>
       }
       tutor={
         <Tutor
-          context={session.exercise?.title ?? session.problem?.title}
+          // A review's problem is not named to the tutor pane's header either way; the lesson's name is.
+          context={view.kind === "review" ? "Review" : shown?.name}
           onClose={() => setTutorOpen(false)}
         />
       }
       tutorOpen={tutorOpen}
     >
-      {exercise ? (
-        <ExerciseLesson
-          chapter={
-            roadmap.topics.find((t) => t.id === session.problem?.topic)?.name
-          }
-          exercise={exercise}
-          tutorOpen={tutorOpen}
-          onChanged={refresh}
-          onOpenTutor={() => setTutorOpen(true)}
-          onToggleTutor={() => setTutorOpen((o) => !o)}
-        />
-      ) : (
-        <LessonView
-          problem={shown}
-          roadmap={roadmap}
-          session={session}
-          tutorOpen={tutorOpen}
-          onOpenTutor={() => setTutorOpen(true)}
-          onSelect={select}
-          onToggleTutor={() => setTutorOpen((o) => !o)}
-        />
-      )}
+      {pane}
     </AppShell>
   );
 };

@@ -30,3 +30,25 @@ type Story = StoryObj<typeof meta>;
 export const TutorClosed: Story = {};
 
 export const TutorOpen: Story = { args: { tutorOpen: true } };
+
+/** A lesson has two steps; the dots show which one the learner is on. */
+export const WithSteps: Story = {
+  args: {
+    onNext: undefined,
+    onPrevious: undefined,
+    position: "Step 2 of 2 · On your own",
+    steps: { at: 1, count: 2 },
+  },
+};
+
+/** A review names no chapter, so nothing gives its pattern away. */
+export const Review: Story = {
+  args: {
+    chapter: undefined,
+    lesson: "NeetCode 150 · Review",
+    onNext: undefined,
+    onPrevious: undefined,
+    position: "1 of 3",
+    steps: { at: 0, count: 3 },
+  },
+};

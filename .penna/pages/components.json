@@ -863,10 +863,10 @@
                 {
                  "id": "EKR6B",
                  "type": "text",
-                 "text": "75",
+                 "text": "150",
                  "style": {
                   "color": "var(--color-on-light)",
-                  "fontSize": 10,
+                  "fontSize": 8,
                   "fontWeight": 700,
                   "whiteSpace": "pre"
                  },
@@ -1638,7 +1638,7 @@
             {
              "id": "CsjBQ",
              "type": "text",
-             "text": "Blind 75",
+             "text": "NeetCode 150",
              "style": {
               "color": "var(--color-ink)",
               "fontSize": 20,
@@ -1675,7 +1675,7 @@
             {
              "id": "bk7jf",
              "type": "text",
-             "text": "3 of 75 problems solved · 2 due today",
+             "text": "4 of 89 concepts · 3 of 150 problems",
              "style": {
               "color": "var(--color-mute)",
               "fontSize": 14
@@ -2884,188 +2884,7 @@
         "flexWrap": "wrap",
         "alignSelf": "stretch"
        },
-       "children": [
-        {
-         "id": "7jdji",
-         "type": "frame",
-         "name": "Spec / Confidence",
-         "style": {
-          "display": "flex",
-          "flexDirection": "column",
-          "alignItems": "flex-start",
-          "gap": 10
-         },
-         "children": [
-          {
-           "id": "9YD6f",
-           "type": "frame",
-           "name": "Confidence",
-           "style": {
-            "display": "flex",
-            "gap": 8
-           },
-           "children": [
-            {
-             "id": "iLyjw",
-             "type": "text",
-             "name": "Guessing",
-             "text": "Guessing",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "height": 32,
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "border": "1px solid var(--color-border)",
-              "background": "transparent",
-              "color": "var(--color-body)",
-              "fontSize": 14,
-              "whiteSpace": "pre"
-             }
-            },
-            {
-             "id": "ec3xE",
-             "type": "text",
-             "name": "Fairly sure",
-             "text": "Fairly sure",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "height": 32,
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "border": "1px solid var(--color-border)",
-              "background": "transparent",
-              "color": "var(--color-body)",
-              "fontSize": 14,
-              "whiteSpace": "pre"
-             }
-            },
-            {
-             "id": "MC7Ar",
-             "type": "text",
-             "name": "Certain",
-             "text": "Certain",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "height": 32,
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "border": "1px solid var(--color-border)",
-              "background": "transparent",
-              "color": "var(--color-body)",
-              "fontSize": 14,
-              "whiteSpace": "pre"
-             }
-            }
-           ],
-           "component": true
-          },
-          {
-           "id": "u7UQ5",
-           "type": "text",
-           "name": "Caption",
-           "text": "Confidence, nothing picked: Submit stays off",
-           "style": {
-            "color": "var(--color-mute)",
-            "fontSize": 13,
-            "lineHeight": "18px"
-           }
-          }
-         ]
-        },
-        {
-         "id": "LF2SG",
-         "type": "frame",
-         "name": "Spec / Confidence / Picked",
-         "style": {
-          "display": "flex",
-          "flexDirection": "column",
-          "alignItems": "flex-start",
-          "gap": 10
-         },
-         "children": [
-          {
-           "id": "ajQzF",
-           "type": "frame",
-           "name": "Confidence / Picked",
-           "style": {
-            "display": "flex",
-            "gap": 8
-           },
-           "children": [
-            {
-             "id": "9tqaw",
-             "type": "text",
-             "name": "Guessing",
-             "text": "Guessing",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "height": 32,
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "border": "1px solid var(--color-border)",
-              "background": "transparent",
-              "color": "var(--color-body)",
-              "fontSize": 14,
-              "whiteSpace": "pre"
-             }
-            },
-            {
-             "id": "SpyHZ",
-             "type": "text",
-             "name": "Fairly sure",
-             "text": "Fairly sure",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "height": 32,
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "border": "1px solid var(--color-accent-line)",
-              "background": "var(--color-accent-bg)",
-              "color": "var(--color-ink)",
-              "fontSize": 14,
-              "whiteSpace": "pre"
-             }
-            },
-            {
-             "id": "7gtDk",
-             "type": "text",
-             "name": "Certain",
-             "text": "Certain",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "height": 32,
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "border": "1px solid var(--color-border)",
-              "background": "transparent",
-              "color": "var(--color-body)",
-              "fontSize": 14,
-              "whiteSpace": "pre"
-             }
-            }
-           ],
-           "component": true
-          },
-          {
-           "id": "Cg5Pa",
-           "type": "text",
-           "name": "Caption",
-           "text": "Confidence, picked",
-           "style": {
-            "color": "var(--color-mute)",
-            "fontSize": 13,
-            "lineHeight": "18px"
-           }
-          }
-         ]
-        }
-       ]
+       "children": []
       },
       {
        "id": "DDHLP",

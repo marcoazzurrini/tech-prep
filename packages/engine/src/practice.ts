@@ -3,7 +3,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import {
   DEFAULT_LANGUAGE,
   WORKSPACE_DIR,
+  guidedConcept,
   problem as getProblem,
+  referenceSolution,
   solutionPath,
 } from "./content.ts";
 import type { Language } from "./content.ts";
@@ -16,11 +18,11 @@ import {
   openAttempt,
   openExercise,
 } from "./db.ts";
-import type { Outcome, Phase, Recognition } from "./db.ts";
+import type { Mode, Outcome, Phase, Recognition } from "./db.ts";
 import { INDEPENDENT_HINT_LEVEL, grade } from "./grading.ts";
 import { applyResults } from "./outcomes.ts";
 import { ensureDataStructures, runTests } from "./runner.ts";
-import { isPassed } from "./scheduler.ts";
+import { completeLesson, isPassed } from "./scheduler.ts";
 
 /**
  * Solution files once began with the problem statement as a comment banner. The app shows
@@ -32,19 +34,35 @@ const BANNER =
 /** A solution file's text without the old banner. */
 export const withoutBanner = (text: string): string => text.replace(BANNER, "");
 
-/** Create the solution file if needed and open (or resume) an attempt. */
+/** Set aside every other open attempt, with no grade, so one problem is open at a time. */
+const pauseOthers = (slug: string): void => {
+  open()
+    .query(
+      "UPDATE attempts SET finished_at = ?, outcome = 'paused' WHERE finished_at IS NULL AND slug != ?"
+    )
+    .run(new Date().toISOString(), slug);
+};
+
+/**
+ * Create the solution file if needed and open (or resume) an attempt. A review starts from
+ * the empty stub, even on a problem solved before: recalling the approach is the review.
+ */
 export const startProblem = (
   slug: string,
-  language: Language = DEFAULT_LANGUAGE
+  language: Language = DEFAULT_LANGUAGE,
+  mode: Mode | null = null
 ) => {
   const p = getProblem(slug);
   mkdirSync(WORKSPACE_DIR, { recursive: true });
   ensureDataStructures(WORKSPACE_DIR, language);
   const file = solutionPath(slug, language);
-  const created = !existsSync(file);
+  let current = openAttempt(slug, language);
+  const resumed = Boolean(current);
+  const stub = `${p.stubs[language].trimEnd()}\n`;
+  const created = !existsSync(file) || (mode === "review" && !resumed);
 
   if (created) {
-    writeFileSync(file, `${p.stubs[language].trimEnd()}\n`);
+    writeFileSync(file, stub);
   } else {
     const text = readFileSync(file, "utf-8");
     const clean = withoutBanner(text);
@@ -54,8 +72,7 @@ export const startProblem = (
     }
   }
 
-  let current = openAttempt(slug, language);
-  const resumed = Boolean(current);
+  pauseOthers(slug);
 
   if (!current) {
     const [mainConcept] = p.concepts;
@@ -69,14 +86,15 @@ export const startProblem = (
 
     const id = open()
       .query(
-        "INSERT INTO attempts (slug, concept_id, language, started_at, phase) VALUES (?, ?, ?, ?, ?)"
+        "INSERT INTO attempts (slug, concept_id, language, started_at, phase, mode) VALUES (?, ?, ?, ?, ?, ?)"
       )
       .run(
         slug,
         mainConcept,
         language,
         new Date().toISOString(),
-        phase
+        phase,
+        mode
       ).lastInsertRowid;
 
     current = attempt(Number(id));
@@ -88,6 +106,7 @@ export const startProblem = (
     difficulty: p.difficulty,
     file,
     file_created: created,
+    mode: current.mode,
     phase: current.phase,
     resumed,
     title: p.title,
@@ -221,6 +240,43 @@ export const finishAttempt = (input: FinishInput) => {
     );
   }
 
+  const guided = guidedConcept(current.slug);
+
+  // A guided problem is solved with the lesson beside it, so it is teaching, not evidence.
+  // Solving it marks the concept as taught; its solo problem decides the rest.
+  if (guided) {
+    const helped = current.max_hint_level > INDEPENDENT_HINT_LEVEL;
+    let guidedOutcome: Outcome = "gave_up";
+
+    if (solved) {
+      completeLesson(guided, now);
+      guidedOutcome = helped ? "solved_with_help" : "solved";
+    }
+
+    open()
+      .query(
+        "UPDATE attempts SET finished_at = ?, outcome = ?, gave_up = ?, notes = ? WHERE id = ?"
+      )
+      .run(
+        now.toISOString(),
+        guidedOutcome,
+        solved ? 0 : 1,
+        input.notes ?? null,
+        current.id
+      );
+
+    return {
+      concepts: [],
+      implicit_credit: [],
+      minutes: Math.round(
+        (now.getTime() - new Date(current.started_at).getTime()) / 60_000
+      ),
+      outcome: guidedOutcome,
+      pulled_forward: [],
+      tests: `${run.passed}/${run.total}`,
+    };
+  }
+
   const results = grade({
     correct: solved,
     maxHintLevel: current.max_hint_level,
@@ -273,4 +329,62 @@ export const finishAttempt = (input: FinishInput) => {
     pulled_forward: applied.pulled_forward,
     tests: `${run.passed}/${run.total}`,
   };
+};
+
+/** What handing in a problem did, as the app shows it. */
+export interface Handed {
+  /** False when the tests do not pass yet: the learner keeps going. */
+  finished: boolean;
+  run: ReturnType<typeof testSolution>["run"];
+  result: ReturnType<typeof finishAttempt> | null;
+}
+
+/**
+ * The learner pressed Submit. The tests run; if they pass, the attempt closes and is graded.
+ * In a review the learner chose the approach unprompted, so an unaided solve counts as
+ * recognising it.
+ */
+export const submitProblem = (slug: string, language: Language): Handed => {
+  const current = openAttempt(slug, language);
+
+  if (!current) {
+    throw new Error(`No attempt is open for '${slug}'.`);
+  }
+
+  const { run } = testSolution(slug, language);
+
+  if (run.fatal || run.passed !== run.total) {
+    return { finished: false, result: null, run };
+  }
+
+  const alone = current.max_hint_level <= INDEPENDENT_HINT_LEVEL;
+
+  const result = finishAttempt({
+    attemptId: current.id,
+    recognition: current.mode === "review" && alone ? "correct" : "skipped",
+  });
+
+  return { finished: true, result, run };
+};
+
+/** The learner gave up: the attempt closes as a struggle, and a worked solution is shown. */
+export const giveUp = (slug: string, language: Language) => {
+  const current = openAttempt(slug, language);
+
+  if (!current) {
+    throw new Error(`No attempt is open for '${slug}'.`);
+  }
+
+  const result = finishAttempt({ attemptId: current.id, stopped: "gave_up" });
+
+  return { result, solution: referenceSolution(slug, language) };
+};
+
+/** Set the open attempt aside with no grade, for example when the learner ends a review session. */
+export const pauseAttempt = (slug: string, language: Language): void => {
+  const current = openAttempt(slug, language);
+
+  if (current) {
+    finishAttempt({ attemptId: current.id, stopped: "paused" });
+  }
 };

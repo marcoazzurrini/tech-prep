@@ -6,7 +6,8 @@ import "./app-shell.css";
 
 interface AppShellProps {
   rail: ReactNode;
-  nav: ReactNode;
+  /** The lessons column. Leave it out for a focused screen, such as a review. */
+  nav?: ReactNode;
   /** The lesson pane. */
   children: ReactNode;
   tutor?: ReactNode;
@@ -14,7 +15,7 @@ interface AppShellProps {
   tutorOpen?: boolean;
 }
 
-/** The course layout: icon rail, lessons, the lesson itself and the tutor. */
+/** The course layout: icon rail, lessons, the lesson itself and the tutor. Without the lessons column it is a focused screen. */
 export const AppShell = ({
   rail,
   nav,
@@ -23,7 +24,11 @@ export const AppShell = ({
   tutorOpen = true,
 }: AppShellProps) => (
   <div
-    className={cx("tp-shell", Boolean(tutor) && tutorOpen && "tp-shell--tutor")}
+    className={cx(
+      "tp-shell",
+      !nav && "tp-shell--focus",
+      Boolean(tutor) && tutorOpen && "tp-shell--tutor"
+    )}
   >
     {rail}
     {nav}

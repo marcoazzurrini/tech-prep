@@ -1,6 +1,6 @@
 # tech-prep
 
-A desktop study app with an AI tutor that follows learning science. Each subject is a course of chapters and lessons, with a tutor in a pane beside the lesson. The tutor teaches, writes the exercises and schedules reviews of what you've learned. The first subject is the Blind 75.
+A desktop study app that follows learning science. Each subject is a course of chapters and lessons. A lesson teaches one concept, then you solve a problem alone, and spaced reviews bring each concept back later. An AI tutor sits in a pane beside the lesson and helps when you ask. The first subject is the NeetCode 150.
 
 - [PRODUCT.md](PRODUCT.md): what the app is for and how it should behave.
 - [docs/learning-model.md](docs/learning-model.md): the learning model.

@@ -5,17 +5,18 @@ import {
   Button,
   Chip,
   CodeBlock,
-  Confidence,
+  LessonPane,
   PaneBody,
   PaneFooter,
   PaneSection,
   ResultCard,
   TaskHeader,
+  TopBar,
 } from "@tech-prep/ui";
-import type { ConfidenceLevel } from "@tech-prep/ui";
 import { Lock } from "lucide-react";
 import { useState } from "react";
 
+import { engine } from "./course";
 import type { Exercise, Submission } from "./types";
 
 const KIND = {
@@ -36,11 +37,8 @@ const savedOrder = (exercise: Exercise): string[] | null => {
 };
 
 /** What the tutor needs to know about a handed-in exercise. */
-const report = (
-  { exercise, result }: Submission,
-  confidence: ConfidenceLevel
-): string => {
-  const head = `Exercise ${exercise.id} (${KIND[exercise.kind]}) was submitted. Confidence: ${confidence}.`;
+const report = ({ exercise, result }: Submission): string => {
+  const head = `Exercise ${exercise.id} (${KIND[exercise.kind]}) was submitted.`;
 
   if (result.status === "submitted") {
     return `${head} Their answer:\n\n${exercise.response}\n\nGrade it with grade_answer.`;
@@ -244,30 +242,20 @@ export const ExercisePane = ({
     )
   );
 
-  const [confidence, setConfidence] = useState<ConfidenceLevel | null>(
-    exercise.confidence
-  );
-
   const [sending, setSending] = useState(false);
   const open = exercise.status === "open";
   const filled = exercise.kind === "arrange" || answer.trim() !== "";
 
   const submit = async () => {
-    if (!confidence) {
-      return;
-    }
-
     setSending(true);
 
     try {
-      // SAFETY: the bridge's `exercise.submit` method returns a Submission.
-      const submission = (await window.tp.engine("exercise.submit", {
-        confidence,
+      const submission = await engine<Submission>("exercise.submit", {
         id: exercise.id,
         response: exercise.kind === "arrange" ? order : answer.trim(),
-      })) as Submission;
+      });
 
-      window.tp.tutor.notify(report(submission, confidence));
+      window.tp.tutor.notify(report(submission));
     } catch {
       // The engine refused it, for example a second submit. Reloading shows the real state.
     }
@@ -314,11 +302,7 @@ export const ExercisePane = ({
             setSpare(nextSpare);
           }}
         />
-        {open ? (
-          <PaneSection label="How sure are you?">
-            <Confidence value={confidence} onChange={setConfidence} />
-          </PaneSection>
-        ) : (
+        {!open && (
           <PaneSection>
             <Result exercise={exercise} />
           </PaneSection>
@@ -333,7 +317,7 @@ export const ExercisePane = ({
       >
         {open && <Button onClick={hint}>Show hint</Button>}
         <Button
-          disabled={!open || !filled || !confidence || sending}
+          disabled={!open || !filled || sending}
           variant="primary"
           onClick={() => {
             void submit();
@@ -343,5 +327,55 @@ export const ExercisePane = ({
         </Button>
       </PaneFooter>
     </>
+  );
+};
+
+interface ExerciseScreenProps {
+  exercise: Exercise;
+  tutorOpen: boolean;
+  onToggleTutor: () => void;
+  onOpenTutor: () => void;
+  /** Called after the learner hands in or closes the exercise, so the app reloads its state. */
+  onChanged: () => void;
+}
+
+/** The main pane while an extra exercise from the tutor is on screen. */
+export const ExerciseScreen = ({
+  exercise,
+  tutorOpen,
+  onToggleTutor,
+  onOpenTutor,
+  onChanged,
+}: ExerciseScreenProps) => {
+  const close = async () => {
+    await engine("exercise.close");
+    onChanged();
+  };
+
+  return (
+    <LessonPane>
+      <TopBar
+        actions={
+          <Button
+            variant="ghost"
+            onClick={() => {
+              void close();
+            }}
+          >
+            Close exercise
+          </Button>
+        }
+        chapter="Extra practice"
+        lesson={exercise.title}
+        tutorOpen={tutorOpen}
+        onToggleTutor={onToggleTutor}
+      />
+      <ExercisePane
+        exercise={exercise}
+        key={exercise.id}
+        onAskTutor={onOpenTutor}
+        onChanged={onChanged}
+      />
+    </LessonPane>
   );
 };

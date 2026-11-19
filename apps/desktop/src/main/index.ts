@@ -75,17 +75,16 @@ const createWindow = (): void => {
   }
 
   window.on("closed", () => (window = null));
-  // For checking the layout from a script: TECHPREP_SCREENSHOT=/path/shot.png [TECHPREP_VIEW=roadmap]
-  // saves a screenshot after a delay, then quits.
+  // For checking the layout from a script: TECHPREP_SCREENSHOT=/path/shot.png saves a
+  // screenshot after a delay, then quits. TECHPREP_RUN is JavaScript to run in the page
+  // first, for example to click a button.
   const shot = process.env.TECHPREP_SCREENSHOT;
 
   if (shot) {
     setTimeout(
       async () => {
-        if (process.env.TECHPREP_VIEW) {
-          await window?.webContents.executeJavaScript(
-            `document.querySelector('[aria-label="${process.env.TECHPREP_VIEW === "roadmap" ? "Roadmap" : "Today"}"]').click()`
-          );
+        if (process.env.TECHPREP_RUN) {
+          await window?.webContents.executeJavaScript(process.env.TECHPREP_RUN);
         }
 
         setTimeout(async () => {

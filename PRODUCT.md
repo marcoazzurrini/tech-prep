@@ -10,37 +10,37 @@ Desktop app.
 
 One person: the owner, a TypeScript developer who studies in focused sessions at their desk and needs text that is easy to read. Three jobs, in their words:
 
-- prepare for coding challenges (Blind 75 first);
+- prepare for coding challenges (NeetCode 150 first);
 - learn to answer conceptual interview questions;
 - learn new libraries and languages (for example JavaScript `Set`, `jq`).
 
 ## Product Purpose
 
-A study app for deliberate practice, "a gym for coding" now that AI writes most code. Each subject has its own permanent tutor agent, for example a TypeScript agent or a jq agent, with its own environment. There are no throwaway chats. Each subject is a course with chapters and lessons, laid out like a programming course. The lesson fills the screen, and the tutor sits in a pane beside it. The tutor teaches, writes the exercises and decides what to practise next from a learning model. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
+A study app for deliberate practice, "a gym for coding" now that AI writes most code. Each subject is a course with chapters and lessons, laid out like a programming course. A lesson teaches one concept: a short written lesson with a worked example, a small problem solved with the lesson beside it, then a problem solved alone. Spaced reviews bring each concept back as a full problem that does not say what it tests. Each subject has its own permanent tutor agent, which sits in a pane beside the work and helps when asked. Success is durable skill: concepts recalled and applied weeks later without being told the topic.
 
 ## Positioning
 
-The agent does as much of the work as possible. The app is a harness the agent drives: it shows exercises and takes the learner's input, stores the learner's state (such as review schedules) and stores each subject's curriculum. Skills hold the teaching method. When a high-quality source exists, such as Blind 75 or NeetCode 150 for algorithms, the curriculum and exercises come from it. Otherwise the agent writes them.
+The app leads the course. It shows the lessons, opens the problems, runs the tests, grades what the learner hands in and schedules the reviews. The learner never has to ask what comes next. The tutor is a helper: it answers questions, gives hints one step at a time and explains mistakes. Skills hold its teaching method.
 
-The engine schedules **concepts**, not questions, with spaced repetition (FSRS). One exercise can refresh up to three due concepts, and practising an advanced concept partly refreshes its prerequisites (fractional implicit repetition, as in Math Academy). The rules are in `docs/learning-model.md`.
+When a high-quality source exists, such as NeetCode 150 for algorithms, the curriculum and problems come from it. Lessons and statements are written for the app, in plain words.
+
+The engine schedules **concepts**, not questions, with spaced repetition (FSRS). One problem can refresh up to three due concepts, and practising an advanced concept partly refreshes its prerequisites (fractional implicit repetition, as in Math Academy). The rules are in `docs/learning-model.md`.
 
 ## Operating Context
 
-- Structure: topic (a group, not scheduled), concept (the smallest rule you could get wrong on its own; scheduled), exercise (from the curriculum, or written by the tutor; targets one to three concepts). Concepts link to prerequisites, forming a graph. A subject's curriculum is built once, not as the learner goes.
-- Content and exercise types are independent. Interview prep is one fixed content set (Blind 75), not a separate mode. A curriculum can also be built from a body of knowledge (docs, man pages).
-- Target skill for a library or language: read first (predict the output), write second.
-- Exercise ladder, based on PRIMM: predict the output; fix or modify working code; arrange given lines in order (Parsons problem); write code from a need. Conceptual questions are answered in the learner's own words.
-- Cycle for one concept: probe (a short test first if there is prior knowledge), teach on failure (short explanation and one worked example built around the exact mistake), retry with a new surface, schedule. A completely new concept starts with a worked example.
-- Review: when concepts are due, the learner gets one exercise that covers as many as possible, without being told what it reviews. Each concept is pass or fail.
-- Every answer comes with a confidence level. A wrong answer the learner was sure of shows a wrong idea, and the tutor teaches that idea.
+- Structure: topic (a chapter, not scheduled), concept (the smallest rule you could get wrong on its own; scheduled; one lesson each), problem (targets one to three concepts). Concepts link to prerequisites, forming a graph. A subject's curriculum is built once, not as the learner goes.
+- A lesson has two steps. Step 1: the lesson text beside a small guided problem. Step 2: the lesson closes and the learner solves a problem from the source list alone. Only step 2 decides whether the concept is learned. Opening the lesson again during step 2 counts as help.
+- Each concept's lesson ends on one problem. The other problems of the list are kept for reviews, so a review is usually a problem the learner has not seen.
+- Review: when concepts are due, the learner solves a full problem that covers as many as possible. The screen shows no lesson, no chapter and no lessons column, so nothing names the approach. Choosing the approach is the skill being tested. Each concept is pass or fail.
+- The reviews screen lists what is due per subject. The learner starts one subject, or all of them mixed.
 - Progress: the lessons column shows each chapter and lesson with its status. Concepts have the stages locked, available, learning, passed and mastered, and a recall score.
 
 ## Capabilities and Constraints
 
-- The tutor is Claude, running through Claude Code on the user's subscription. It never writes the learner's solution during practice. Hints go one small step at a time.
-- Lesson types: explanation with worked example, predict the output, Parsons (arrange lines), mini code editor with Vim keys and runnable tests, conceptual answer.
+- The tutor is Claude, running through Claude Code on the user's subscription. It never writes the learner's solution during practice. Hints go one small step at a time, and a hint that names the approach makes the solve count as "with help".
+- The tutor can put an extra exercise on screen when the learner asks for more practice: a worked example, predict the output, arrange the lines, or an open question.
 - Writing tasks use a light in-app editor with Vim keybindings.
-- Coding tasks have Run, which only runs the tests, and Submit, which hands in the answer. Predict and arrange have Submit only: the first answer is the evidence, so there is no trial run.
+- A problem has Run, which only runs the tests, and Submit, which hands in the answer once the tests pass. The learner can give up to see a solution.
 - Default language TypeScript; Python is supported.
 - No failure state while learning. Help or giving up only delays a retry.
 
@@ -54,7 +54,7 @@ Dark, sleek and minimal, in the family of Linear, t3code and assistant-ui. The l
 
 ## Product Principles
 
-1. The curriculum is the spine. The learner works through chapters and lessons, one lesson at a time in the main pane. The tutor sits beside the lesson: it explains, hints and chooses what comes next. The learner can close it.
+1. The curriculum is the spine. The learner works through chapters and lessons, one lesson at a time in the main pane, and the app always shows what comes next. The tutor sits beside the lesson and helps when asked. It is closed until the learner opens it.
 2. Teach, never hand over answers during practice.
 3. Show where the learner stands and what comes next, without pressure or failure marks.
 4. Every screen must be easy to read at a glance.
