@@ -423,6 +423,10 @@ const methods = new Map<string, (params: Params) => object>([
   ["session", session],
 ]);
 
+// An extra exercise lasts for one sitting. One left open by an earlier run would cover the
+// lesson, so the app starts with none on screen.
+closeExercises();
+
 for await (const line of console) {
   if (!line.trim()) {
     continue;

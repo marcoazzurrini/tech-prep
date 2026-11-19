@@ -97,9 +97,26 @@ export const App = () => {
     }
   };
 
-  const select = useCallback((id: string) => {
-    setView({ id, kind: "lesson" });
-  }, []);
+  /** Change what the main pane shows. An extra exercise on screen closes, so it never blocks the way. */
+  const go = useCallback(
+    (next: View) => {
+      const leave = async () => {
+        await engine("exercise.close");
+        refresh();
+      };
+
+      void leave();
+      setView(next);
+    },
+    [refresh]
+  );
+
+  const select = useCallback(
+    (id: string) => {
+      go({ id, kind: "lesson" });
+    },
+    [go]
+  );
 
   const startReviews = useCallback(() => {
     const start = async () => {
@@ -216,7 +233,7 @@ export const App = () => {
             onClick={() => {
               // A review in progress stays open; leaving it is done with "End reviews".
               if (view.kind !== "review") {
-                setView({ kind: "reviews" });
+                go({ kind: "reviews" });
               }
             }}
           >
