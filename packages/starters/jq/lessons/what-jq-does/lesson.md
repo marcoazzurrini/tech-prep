@@ -42,7 +42,11 @@ That is already useful. `jq '.'` turns dense JSON into something you can read.
 
 ## In this course
 
-The app runs jq for you. You type only the filter. On the right you see the input, what your filter prints, and the output the task wants.
+The app runs jq for you. You type only the filter: the part between the single quotes. You leave out `jq`, the quotes and the file name.
+
+For the command above, you would type one character: the dot.
+
+On the right you see the input, what your filter prints, and the output the task wants.
 
 <!-- task -->
 

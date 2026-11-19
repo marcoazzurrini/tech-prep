@@ -801,6 +801,13 @@ describe("jq course", () => {
       expect(seen.error).toBe(
         'jq: error: Cannot index string with string "name"'
       );
+      // The whole command, or the filter in quotes, gets a plain hint and not a syntax error.
+      expect(jq.previewJq(task, 'jq "." user.json').error).toContain(
+        "Type only the filter"
+      );
+      expect(jq.previewJq(task, "'.server.host'").error).toContain(
+        "Leave out the single quotes"
+      );
       // Nothing typed yet is not an error.
       expect(jq.previewJq(task, "  ")).toEqual({
         error: null,
