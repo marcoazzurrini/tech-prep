@@ -33,7 +33,10 @@ jobs:
       - run: bun run lint
       - run: bun run typecheck
       - run: bun run test
-      - name: Check every problem's reference solutions
-        run: bun scripts/build-problem.ts --all
+      - name: Build every exercise of every course
+        run: |
+          for course in ../starters/*/; do
+            bun scripts/build.ts --course "$(basename "$course")" --all
+          done
         working-directory: packages/engine
       - run: bun run build
