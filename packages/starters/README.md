@@ -44,6 +44,7 @@ A lesson folder holds `lesson.md` and a guided problem: `problem.md`, `spec.json
 - `lesson.md` has the concept's name as its title, the idea in a few sentences, then three sections: "Worked example" with one TypeScript block, "Why it works" and "When to use it".
 - The guided problem is small and needs exactly this concept. It is solved with the lesson beside it, so the worked example must not solve it line by line. Neither may solve the concept's solo problem.
 - Build the guided problem with `bun scripts/build-problem.ts guided-<concept id>`.
+- A lesson may have several guided problems, so reading and doing alternate. Set `guided` to their number on the concept in `concepts.json`, and split `lesson.md` into parts as "A jq course" describes. The first guided problem stays in the lesson folder. Put the later ones in `task-2/`, `task-3/` inside it, and build them as `guided-<concept id>.2`, and so on.
 
 Run `bun scripts/build-problem.ts --all` in `packages/engine` and `bun run test` before committing.
 

@@ -84,6 +84,8 @@ const runner = await import("../src/runner.ts");
 const exercises = await import("../src/exercises.ts");
 const jq = await import("../src/jq.ts");
 const tasks = await import("../src/tasks.ts");
+const lessons = await import("../src/lessons.ts");
+const codeTasks = await import("../src/code.ts");
 const database = await import("../src/db.ts");
 
 type Course = ReturnType<typeof content.courseById>;
@@ -872,13 +874,38 @@ describe("jq course", () => {
     ).toEqual([]);
 
     for (const c of written) {
-      const parts = content
-        .lessonText(course, c.id)
-        ?.split(content.TASK_MARKER);
+      const parts = lessons.lessonParts(course, c.id);
+      const guided = content.guidedSlugs(course, c.id);
 
-      // One part of text for each guided task, then the summary.
-      expect(parts).toHaveLength(content.guidedSlugs(course, c.id).length + 1);
+      // One part for each guided task, named by its heading. The summary closes the last.
+      expect(parts.map((p) => p.task)).toEqual(guided);
+      expect(parts.filter((p) => /^Part \d+$/u.test(p.name))).toEqual([]);
+      expect(parts.filter((p) => p.text.includes("<!--"))).toEqual([]);
+      expect(parts[0]?.title).toBe(c.name);
+      expect(parts.at(-1)?.text).toContain("## Remember");
     }
+  });
+
+  test("a code lesson can have several guided problems, each in its own folder", () => {
+    const lesson = path.join(interview.dir, "lessons", "dynamic-arrays");
+
+    expect(codeTasks.problemDir(interview, "guided-dynamic-arrays")).toBe(
+      lesson
+    );
+    expect(codeTasks.problemDir(interview, "guided-dynamic-arrays.2")).toBe(
+      path.join(lesson, "task-2")
+    );
+  });
+
+  test("a lesson that is not split has one part, whatever the course", () => {
+    const [part, ...rest] = lessons.lessonParts(interview, "dynamic-arrays");
+
+    expect(rest).toEqual([]);
+    expect(part).toMatchObject({
+      name: "Dynamic Arrays",
+      task: "guided-dynamic-arrays",
+      title: "Dynamic Arrays",
+    });
   });
 
   test("every reference solves its task, and the starting text does not", () => {
@@ -1061,5 +1088,45 @@ describe("jq course", () => {
     expect(practice.currentAttempt(course)?.slug).toBe("guided-gone");
     practice.pauseUnknownAttempts(course);
     expect(practice.currentAttempt(course)).toBeNull();
+  });
+
+  test("the engine decides what starts and what moves on", () => {
+    // Nothing starts on a locked lesson, or on one that waits after a struggle.
+    lessons.startLesson(course, "pipes", false);
+    expect(practice.currentAttempt(course)).toBeNull();
+    lessons.startLesson(course, "reading-json", false);
+    expect(practice.currentAttempt(course)).toBeNull();
+
+    // A learned lesson starts again only when the learner asks to practise it.
+    lessons.startLesson(course, "what-jq-does", false);
+    expect(practice.currentAttempt(course)).toBeNull();
+    lessons.startLesson(course, "what-jq-does", true);
+
+    const solo = practice.currentAttempt(course);
+
+    if (!solo) {
+      throw new Error("Practising a learned lesson starts its solo task.");
+    }
+
+    expect(solo.mode).toBe("solo");
+
+    const guided = { ...solo, mode: "guided" as const };
+    const review = { ...solo, mode: "review" as const };
+    const lesson = "what-jq-does";
+
+    // A right guided answer moves on, with or without help. A given-up one shows a solution.
+    expect(lessons.movesOn(course, guided, lesson, "solved")).toBe(true);
+    expect(lessons.movesOn(course, guided, lesson, "solved_with_help")).toBe(
+      true
+    );
+    expect(lessons.movesOn(course, guided, lesson, "gave_up")).toBe(false);
+    // A review moves on when it is solved alone.
+    expect(lessons.movesOn(course, review, null, "solved")).toBe(true);
+    expect(lessons.movesOn(course, review, null, "solved_with_help")).toBe(
+      false
+    );
+    // Both solo tasks of this lesson are solved, so the last one stays with its verdict.
+    expect(lessons.movesOn(course, solo, lesson, "solved")).toBe(false);
+    practice.pauseAttempt(course, solo);
   });
 });

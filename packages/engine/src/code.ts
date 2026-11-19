@@ -7,7 +7,9 @@ import {
   DEFAULT_LANGUAGE,
   EXTENSIONS,
   guidedConcept,
-  problemDir,
+  guidedNumber,
+  lessonsDir,
+  problemsDir,
   readJson,
 } from "./content.ts";
 import type { Course, Language, ProblemInfo } from "./content.ts";
@@ -52,6 +54,23 @@ export interface CodeProblem extends Problem, CallSpec {
   compare: CompareMode;
   tests: TestCase[];
 }
+
+/**
+ * The folder holding a problem's statement, spec and reference solutions. A lesson's first
+ * guided problem sits in the lesson's folder, and a later one in `task-2`, `task-3` inside it.
+ */
+export const problemDir = (course: Course, slug: string): string => {
+  const conceptId = guidedConcept(slug);
+
+  if (!conceptId) {
+    return path.join(problemsDir(course), slug);
+  }
+
+  const n = guidedNumber(slug);
+  const lesson = path.join(lessonsDir(course), conceptId);
+
+  return n === 1 ? lesson : path.join(lesson, `task-${n}`);
+};
 
 const specFile = (course: Course, slug: string): string =>
   path.join(problemDir(course, slug), "spec.json");

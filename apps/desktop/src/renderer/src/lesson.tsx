@@ -21,49 +21,9 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
-import { JqInput, JqWorkbench } from "./jq-workbench";
-import { jqOf } from "./types";
-import type { Code, Lesson, Problem } from "./types";
-import { Workbench } from "./workbench";
+import { TaskAside, TaskWorkbench, isCompact } from "./task-kinds";
+import type { Code, Lesson, LessonPart, Problem } from "./types";
 import type { Finished } from "./workbench";
-
-/** One part of a lesson: one idea, shown alone beside its guided task. */
-interface Part {
-  /** Its name on the trail in the top bar. */
-  name: string;
-  /** The heading above its text. */
-  title: string;
-  text: string;
-}
-
-/**
- * A lesson's parts, one per guided task. A part is named by its first "## " heading. The
- * first part opens the lesson, so it keeps the lesson's name as its heading; a later part
- * is headed by its own name. The lesson's summary closes the last part. Empty for a lesson
- * that is read in one go.
- */
-const partsOf = (lesson: Lesson): Part[] => {
-  const all = lesson.parts ?? [];
-  const { total } = lesson.guided_tasks;
-
-  if (total < 2 || all.length < total) {
-    return [];
-  }
-
-  const summary = all.slice(total).join("\n\n");
-
-  return all.slice(0, total).map((part, i) => {
-    const name = /^## (?<name>.+)$/mu.exec(part)?.groups?.name?.trim();
-    const body = i === total - 1 ? `${part}\n\n${summary}` : part;
-    const headed = i > 0 && name !== undefined && part.startsWith("## ");
-
-    return {
-      name: name ?? `Part ${i + 1}`,
-      text: headed ? body.slice(body.indexOf("\n") + 1) : body,
-      title: headed ? name : lesson.name,
-    };
-  });
-};
 
 /** " · Task 2 of 3" for a step with several tasks, else nothing. */
 const taskOf = ({ done, total }: { done: number; total: number }): string =>
@@ -139,61 +99,28 @@ const GuidedStep = ({
   onContinue,
 }: GuidedProps) => {
   const working = lesson.attempt?.slug === lesson.guided.slug;
-  const gaveUp = finished?.result.outcome === "gave_up";
-  const lead = gaveUp ? "A solution is shown" : "Solved";
-  const jq = jqOf(lesson.guided);
 
-  if (jq && (working || finished)) {
-    // A right answer moves on by itself, so only a task that was given up stays finished.
-    return (
-      <Split>
-        <SplitSide key={lesson.guided.slug}>{text}</SplitSide>
-        <SplitSide stack>
-          <JqWorkbench
-            done={
-              finished
-                ? {
-                    actions: (
-                      <Button variant="primary" onClick={onContinue}>
-                        Try again
-                      </Button>
-                    ),
-                    note: "A solution is shown. Do the task again to move on.",
-                  }
-                : undefined
-            }
-            key={lesson.guided.slug}
-            note={note}
-            problem={lesson.guided}
-            strip={{ label: "Try it" }}
-            onAskTutor={onOpenTutor}
-            onFinished={onFinished}
-          />
-        </SplitSide>
-      </Split>
-    );
-  }
+  // A right answer moves on by itself, so only a task that was given up stays finished.
+  const again = finished && {
+    actions: (
+      <Button variant="primary" onClick={onContinue}>
+        Try again
+      </Button>
+    ),
+    note: "A solution is shown. Do the task again to move on.",
+  };
 
   return (
     <Split>
-      <SplitSide>{text}</SplitSide>
+      <SplitSide key={lesson.guided.slug}>{text}</SplitSide>
       <SplitSide stack>
         {working || finished ? (
-          <Workbench
-            done={
-              finished
-                ? {
-                    actions: (
-                      <Button variant="primary" onClick={onContinue}>
-                        Continue to the problem
-                      </Button>
-                    ),
-                    note: `${lead}. Next: ${lesson.solo.title}, without the lesson beside you.`,
-                  }
-                : undefined
-            }
+          <TaskWorkbench
+            done={again ?? undefined}
             key={lesson.guided.slug}
+            note={note}
             problem={lesson.guided}
+            strip={isCompact(lesson.guided) ? { label: "Try it" } : undefined}
             onAskTutor={onOpenTutor}
             onFinished={onFinished}
           />
@@ -238,12 +165,12 @@ const PastTask = ({ slug, back, onBack, onOpenTutor }: PastTaskProps) => {
     };
   }, [slug]);
 
-  if (!problem || !jqOf(problem) || problem.slug !== slug) {
+  if (!problem || problem.slug !== slug) {
     return null;
   }
 
   return (
-    <JqWorkbench
+    <TaskWorkbench
       done={{
         actions: (
           <Button variant="primary" onClick={onBack}>
@@ -254,7 +181,7 @@ const PastTask = ({ slug, back, onBack, onOpenTutor }: PastTaskProps) => {
       }}
       key={slug}
       problem={problem}
-      strip={{ label: "Try it" }}
+      strip={isCompact(problem) ? { label: "Try it" } : undefined}
       onAskTutor={onOpenTutor}
       onFinished={() => {
         // The task is finished already: nothing can be handed in.
@@ -269,7 +196,7 @@ interface SoloProps extends StepProps {
   onSelect: (lesson: string) => void;
   /** Start the solo problem again on a lesson that is already learned, or its next solo task. */
   onPractise: () => void;
-  /** For a jq task: show the task above the filter, when the statement is not beside it. */
+  /** Show the task above the editor, when its statement is not beside it. */
   strip?: { label: string };
 }
 
@@ -293,9 +220,7 @@ const SoloWork = ({
     </Button>
   );
 
-  const jq = jqOf(lesson.solo);
-
-  if (jq && (lesson.attempt?.slug === lesson.solo.slug || finished)) {
+  if (lesson.attempt?.slug === lesson.solo.slug || finished) {
     // A task solved alone moves on to the next one by itself. What stays finished is the
     // last task, or one that needed help.
     const footer = finished && {
@@ -303,34 +228,19 @@ const SoloWork = ({
       note: soloNote(lesson, finished),
     };
 
+    // A compact task says beside its statement that the lesson is closed.
+    const closed =
+      learned || isCompact(lesson.solo)
+        ? ""
+        : "The lesson is closed. Opening it counts as help.";
+
     return (
-      <JqWorkbench
+      <TaskWorkbench
         done={footer ?? undefined}
         key={lesson.solo.slug}
-        note={note}
+        note={[note, closed].filter(Boolean).join(" ") || undefined}
         problem={lesson.solo}
         strip={strip}
-        onAskTutor={onOpenTutor}
-        onFinished={onFinished}
-      />
-    );
-  }
-
-  if (lesson.attempt?.slug === lesson.solo.slug || finished) {
-    return (
-      <Workbench
-        done={
-          finished
-            ? { actions: nextButton, note: soloNote(lesson, finished) }
-            : undefined
-        }
-        key={lesson.solo.slug}
-        note={
-          learned
-            ? undefined
-            : "The lesson is closed. Opening it counts as help."
-        }
-        problem={lesson.solo}
         onAskTutor={onOpenTutor}
         onFinished={onFinished}
       />
@@ -399,29 +309,32 @@ const SoloStatement = ({
 };
 
 /**
- * A jq task that is right opens the next one by itself. This is what the footer of the next
- * task says about it. Null for a task that stays on screen: a solution to read, a task that
- * needed help, or the last task with its verdict.
+ * A task that is right opens the next one by itself: the engine says so with the result.
+ * This is what the footer of the next task says about it. Null for a task that stays on
+ * screen: a solution to read, a task that needed help, or the last task with its verdict.
  */
 const movedOn = (
   lesson: Lesson,
   step: 1 | 2,
   { result }: Finished
 ): string | null => {
-  const { done, total } = lesson.solo_tasks;
-
-  if (step === 1) {
-    return jqOf(lesson.guided) && result.outcome !== "gave_up"
-      ? `${partsOf(lesson).length ? "Part" : "Task"} ${lesson.guided_tasks.done + 1} was right.`
-      : null;
+  if (!result.moves_on) {
+    return null;
   }
 
-  return jqOf(lesson.solo) && result.outcome === "solved" && done + 1 < total
-    ? `Task ${done + 1} was right.`
-    : null;
+  if (step === 2) {
+    return `Task ${lesson.solo_tasks.done + 1} was right.`;
+  }
+
+  // A lesson with one guided task has nothing to number.
+  if (lesson.guided_tasks.total === 1) {
+    return "That was right.";
+  }
+
+  return `${lesson.parts.length > 1 ? "Part" : "Task"} ${lesson.guided_tasks.done + 1} was right.`;
 };
 
-/** A jq solo task to read beside the command: its statement and its input. */
+/** A compact solo task to read beside its editor: its statement and what its kind shows. */
 const SoloTaskText = ({ lesson, task }: { lesson: Lesson; task: string }) => (
   <TaskText
     chips={
@@ -436,7 +349,7 @@ const SoloTaskText = ({ lesson, task }: { lesson: Lesson; task: string }) => (
     title={lesson.solo.title}
   >
     <ProblemStatement text={lesson.solo.statement ?? ""} />
-    <JqInput problem={lesson.solo} />
+    <TaskAside problem={lesson.solo} />
     {lesson.status !== "done" && (
       <p className="tp-task-text__note">
         The lesson is closed. Opening it counts as help.
@@ -452,13 +365,13 @@ const LessonBody = ({
   task,
 }: {
   lesson: Lesson;
-  part?: Part;
-  /** Show the guided task under the text. A jq task sits beside it. */
+  part?: LessonPart;
+  /** Show the guided task under the text. A compact task sits above its editor. */
   task: boolean;
 }) => (
   <LessonText
     label={<Chip icon={BookOpen}>Lesson</Chip>}
-    text={part?.text ?? lesson.text ?? ""}
+    text={part?.text ?? ""}
     title={part?.title ?? lesson.name}
   >
     {task && (
@@ -471,7 +384,7 @@ const LessonBody = ({
 
 interface TrailOf {
   lesson: Lesson;
-  parts: Part[];
+  parts: LessonPart[];
   step: 1 | 2;
   /** The part whose guided task is the one to do. */
   at: number;
@@ -537,7 +450,7 @@ const StepsBar = ({
   <TopBar
     actions={
       step === 2 &&
-      lesson.text && (
+      lesson.parts.length > 0 && (
         <Button aria-pressed={peeking} icon={BookOpen} onClick={onPeek}>
           Lesson
         </Button>
@@ -599,17 +512,12 @@ export const LessonScreen = ({
 
   useEffect(() => {
     const load = async () => {
-      const seen = await engine<Lesson>("lesson", { concept: id });
-
-      // A finished lesson is only shown, unless the learner asks to practise it again.
-      const work =
-        seen.text !== null &&
-        seen.status !== "locked" &&
-        (request.start || seen.status !== "done");
-
-      const loaded = work
-        ? await engine<Lesson>("lesson.open", { concept: id })
-        : seen;
+      // The engine starts the lesson's next task when there is one to start. A finished
+      // lesson is only shown, unless the learner asks to practise it again.
+      const loaded = await engine<Lesson>("lesson.open", {
+        concept: id,
+        practise: request.start,
+      });
 
       setLesson(loaded);
       setStep(loaded.step);
@@ -626,8 +534,9 @@ export const LessonScreen = ({
     return <LessonPane>{null}</LessonPane>;
   }
 
-  const parts = partsOf(lesson);
-  const paged = parts.length > 0;
+  const { parts } = lesson;
+  /** A lesson in several parts shows one at a time, with a trail to move between them. */
+  const paged = parts.length > 1;
   /** The part whose guided task is the one to do. */
   const at = Math.min(lesson.guided_tasks.done, parts.length - 1);
   /** With the lesson reopened in step 2, it sits beside the solo task. That counts as help. */
@@ -694,7 +603,7 @@ export const LessonScreen = ({
     />
   );
 
-  if (!lesson.text) {
+  if (!parts.length) {
     return (
       <LessonPane>
         {bar}
@@ -712,11 +621,11 @@ export const LessonScreen = ({
     <LessonBody
       lesson={lesson}
       part={parts[view ?? at]}
-      task={step === 1 && !jqOf(lesson.guided)}
+      task={step === 1 && !isCompact(lesson.guided)}
     />
   );
 
-  const pastSlug = view === null ? undefined : lesson.guided_slugs[view];
+  const pastSlug = view === null ? undefined : parts[view]?.task;
 
   // An earlier part: its text, and its task with the answer the learner gave.
   if (step === 1 && pastSlug) {
@@ -757,9 +666,9 @@ export const LessonScreen = ({
 
   const soloTask = `Task ${Math.min(lesson.solo_tasks.done + 1, lesson.solo_tasks.total)} of ${lesson.solo_tasks.total}`;
 
-  // A jq task is short: its statement and input sit on the left, the filter on the right.
-  // With the lesson reopened, the lesson takes the left and the task moves above the filter.
-  if (jqOf(lesson.solo)) {
+  // A compact task is short: its statement sits on the left, its editor on the right. With
+  // the lesson reopened, the lesson takes the left and the task moves above the editor.
+  if (isCompact(lesson.solo)) {
     return (
       <LessonPane>
         {bar}
@@ -794,6 +703,7 @@ export const LessonScreen = ({
         finished={finished}
         lesson={lesson}
         next={next}
+        note={note}
         onFinished={finish}
         onOpenTutor={onOpenTutor}
         onPractise={() => restart()}

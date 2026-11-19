@@ -15,7 +15,6 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import {
-  TASK_MARKER,
   concept,
   concepts,
   courseById,
@@ -31,6 +30,7 @@ import {
   runOnce,
   sameOutput,
 } from "../src/jq.ts";
+import { TASK_MARKER } from "../src/lessons.ts";
 
 const MIN_TESTS = 3;
 

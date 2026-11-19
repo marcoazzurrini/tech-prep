@@ -361,9 +361,11 @@ export const finishAttempt = (course: Course, input: FinishInput) => {
       )
       .run(now.toISOString(), input.notes ?? null, current.id);
 
+    const outcome: Outcome = "paused";
+
     return {
       note: "No grade recorded. The problem can be started again at any time.",
-      outcome: "paused",
+      outcome,
     };
   }
 

@@ -21,10 +21,8 @@ import { ArrowRight, BookOpen, CircleCheck, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
-import { JqInput, JqWorkbench } from "./jq-workbench";
-import { jqOf } from "./types";
-import type { Lesson, Problem, Result, Reviews } from "./types";
-import { Workbench } from "./workbench";
+import { TaskAside, TaskWorkbench } from "./task-kinds";
+import type { Problem, Result, Reviews } from "./types";
 import type { Finished } from "./workbench";
 
 const plural = (n: number, word: string): string =>
@@ -189,28 +187,8 @@ const Verdict = ({
   onOpenLesson: (lesson: string) => void;
 }) => {
   const { result } = finished;
-  const [ideas, setIdeas] = useState<Lesson[]>([]);
-
-  // The lessons of the concepts that were missed, joined so the effect has one stable input.
-  const missed = result.concepts
-    .filter((c) => c.result === "fail")
-    .map((c) => c.id)
-    .join(" ");
-
-  useEffect(() => {
-    const load = async () => {
-      setIdeas(
-        await Promise.all(
-          missed
-            .split(" ")
-            .filter(Boolean)
-            .map((concept) => engine<Lesson>("lesson", { concept }))
-        )
-      );
-    };
-
-    void load();
-  }, [missed]);
+  // The concepts that were missed: their approach is shown, with a way back to the lesson.
+  const ideas = result.concepts.filter((c) => c.result === "fail");
 
   const chips = (
     <div className="tp-result__chips">
@@ -390,7 +368,7 @@ export const ReviewSession = ({
    * One that needed help stays on screen, so the learner can read what it reviewed.
    */
   const finish = (result: Finished) => {
-    if (result.result.outcome === "solved") {
+    if (result.result.moves_on) {
       void advance(result);
     } else {
       setFinished(result);
@@ -431,68 +409,39 @@ export const ReviewSession = ({
             title={problem.title}
           >
             <ProblemStatement text={problem.statement ?? ""} />
-            <JqInput problem={problem} />
+            <TaskAside problem={problem} />
             {finished && (
               <Verdict finished={finished} onOpenLesson={onOpenLesson} />
             )}
           </TaskText>
         </SplitSide>
         <SplitSide stack>
-          {jqOf(problem) ? (
-            <JqWorkbench
-              done={
-                finished
-                  ? {
-                      actions: (
-                        <>
-                          <Button onClick={onOpenTutor}>Ask the tutor</Button>
-                          <Button
-                            variant="primary"
-                            onClick={() => {
-                              void advance(finished);
-                            }}
-                          >
-                            Next review
-                          </Button>
-                        </>
-                      ),
-                      note: "",
-                    }
-                  : undefined
-              }
-              key={problem.slug}
-              problem={problem}
-              onAskTutor={onOpenTutor}
-              onFinished={finish}
-            />
-          ) : (
-            <Workbench
-              done={
-                finished
-                  ? {
-                      actions: (
-                        <>
-                          <Button onClick={onOpenTutor}>Ask the tutor</Button>
-                          <Button
-                            variant="primary"
-                            onClick={() => {
-                              void advance(finished);
-                            }}
-                          >
-                            Next review
-                          </Button>
-                        </>
-                      ),
-                      note: "",
-                    }
-                  : undefined
-              }
-              key={problem.slug}
-              problem={problem}
-              onAskTutor={onOpenTutor}
-              onFinished={finish}
-            />
-          )}
+          <TaskWorkbench
+            done={
+              finished
+                ? {
+                    actions: (
+                      <>
+                        <Button onClick={onOpenTutor}>Ask the tutor</Button>
+                        <Button
+                          variant="primary"
+                          onClick={() => {
+                            void advance(finished);
+                          }}
+                        >
+                          Next review
+                        </Button>
+                      </>
+                    ),
+                    note: "",
+                  }
+                : undefined
+            }
+            key={problem.slug}
+            problem={problem}
+            onAskTutor={onOpenTutor}
+            onFinished={finish}
+          />
         </SplitSide>
       </Split>
     </LessonPane>
