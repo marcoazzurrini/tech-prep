@@ -1,0 +1,163 @@
+[
+  {
+    "title": "Short form of an issue",
+    "statement": "Print the issue with only its `id` and `title`.\n\nThe filter below defines `brief`, which gives that short form. But the last step is `.`, which changes nothing. Replace the last step with `brief`.",
+    "stub": "def brief: {id, title}; .issue | .",
+    "reference": "def brief: {id, title}; .issue | brief",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "issue": {
+            "id": 41,
+            "title": "Login fails",
+            "state": "open",
+            "comments": 3
+          }
+        },
+        "expected": "{\n  \"id\": 41,\n  \"title\": \"Login fails\"\n}"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "issue": {
+            "id": 7,
+            "title": "Dark mode",
+            "state": "closed",
+            "comments": 12
+          }
+        },
+        "expected": "{\n  \"id\": 7,\n  \"title\": \"Dark mode\"\n}"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "issue": {
+            "id": 108,
+            "title": "Typo in the guide",
+            "state": "open",
+            "comments": 0
+          }
+        },
+        "expected": "{\n  \"id\": 108,\n  \"title\": \"Typo in the guide\"\n}"
+      }
+    ]
+  },
+  {
+    "title": "Author and reviewer",
+    "statement": "Print an object with the keys `author` and `reviewer`. Each one holds only the `login` and `id` of that person.\n\nThe filter below defines `who` and uses it for the author. So it prints only the author. Add the reviewer in the same way.",
+    "stub": "def who: {login, id}; {author: .author | who}",
+    "reference": "def who: {login, id}; {author: .author | who, reviewer: .reviewer | who}",
+    "tests": [
+      {
+        "input": {
+          "number": 12,
+          "author": {
+            "login": "ada",
+            "id": 7,
+            "admin": false
+          },
+          "reviewer": {
+            "login": "bo",
+            "id": 9,
+            "admin": true
+          }
+        },
+        "expected": "{\n  \"author\": {\n    \"login\": \"ada\",\n    \"id\": 7\n  },\n  \"reviewer\": {\n    \"login\": \"bo\",\n    \"id\": 9\n  }\n}"
+      },
+      {
+        "input": {
+          "number": 13,
+          "author": {
+            "login": "cy",
+            "id": 2,
+            "admin": false
+          },
+          "reviewer": {
+            "login": "ada",
+            "id": 7,
+            "admin": false
+          }
+        },
+        "expected": "{\n  \"author\": {\n    \"login\": \"cy\",\n    \"id\": 2\n  },\n  \"reviewer\": {\n    \"login\": \"ada\",\n    \"id\": 7\n  }\n}"
+      },
+      {
+        "input": {
+          "number": 20,
+          "author": {
+            "login": "dee",
+            "id": 31,
+            "admin": true
+          },
+          "reviewer": {
+            "login": "eli",
+            "id": 44,
+            "admin": false
+          }
+        },
+        "expected": "{\n  \"author\": {\n    \"login\": \"dee\",\n    \"id\": 31\n  },\n  \"reviewer\": {\n    \"login\": \"eli\",\n    \"id\": 44\n  }\n}"
+      }
+    ]
+  },
+  {
+    "title": "Deploys in short",
+    "statement": "Print an object with two keys. `latest` holds the last deploy. `history` holds the array of all deploys. Show every deploy with only its `sha` and `author`.\n\nDefine a filter with `def` that gives the short form of one deploy. Use it for `latest`, and inside `map` for `history`.",
+    "reference": "def short: {sha, author}; {latest: .deploys[-1] | short, history: .deploys | map(short)}",
+    "tests": [
+      {
+        "input": {
+          "app": "api",
+          "deploys": [
+            {
+              "sha": "9f2c1a",
+              "author": "cy",
+              "seconds": 84
+            },
+            {
+              "sha": "77b0de",
+              "author": "ada",
+              "seconds": 91
+            }
+          ]
+        },
+        "expected": "{\n  \"latest\": {\n    \"sha\": \"77b0de\",\n    \"author\": \"ada\"\n  },\n  \"history\": [\n    {\n      \"sha\": \"9f2c1a\",\n      \"author\": \"cy\"\n    },\n    {\n      \"sha\": \"77b0de\",\n      \"author\": \"ada\"\n    }\n  ]\n}"
+      },
+      {
+        "input": {
+          "app": "web",
+          "deploys": [
+            {
+              "sha": "c41e09",
+              "author": "bo",
+              "seconds": 60
+            }
+          ]
+        },
+        "expected": "{\n  \"latest\": {\n    \"sha\": \"c41e09\",\n    \"author\": \"bo\"\n  },\n  \"history\": [\n    {\n      \"sha\": \"c41e09\",\n      \"author\": \"bo\"\n    }\n  ]\n}"
+      },
+      {
+        "input": {
+          "app": "jobs",
+          "deploys": [
+            {
+              "sha": "a1",
+              "author": "ada",
+              "seconds": 30
+            },
+            {
+              "sha": "b2",
+              "author": "ada",
+              "seconds": 31
+            },
+            {
+              "sha": "c3",
+              "author": "dee",
+              "seconds": 29
+            }
+          ]
+        },
+        "expected": "{\n  \"latest\": {\n    \"sha\": \"c3\",\n    \"author\": \"dee\"\n  },\n  \"history\": [\n    {\n      \"sha\": \"a1\",\n      \"author\": \"ada\"\n    },\n    {\n      \"sha\": \"b2\",\n      \"author\": \"ada\"\n    },\n    {\n      \"sha\": \"c3\",\n      \"author\": \"dee\"\n    }\n  ]\n}"
+      }
+    ]
+  }
+]

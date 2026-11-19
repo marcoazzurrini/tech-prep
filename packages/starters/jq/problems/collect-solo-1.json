@@ -1,0 +1,46 @@
+{
+  "title": "Names of the packages",
+  "statement": "Print the names of the packages that the app depends on.\n\nThe packages are under `dependencies`. Print one array of names, in the order of the input.",
+  "reference": "[.dependencies[] | .name]",
+  "tests": [
+    {
+      "input": {
+        "name": "shop-web",
+        "dependencies": [
+          {
+            "name": "react",
+            "version": "18.2.0"
+          },
+          {
+            "name": "zod",
+            "version": "3.22.4"
+          },
+          {
+            "name": "vite",
+            "version": "5.0.8"
+          }
+        ]
+      },
+      "expected": "[\n  \"react\",\n  \"zod\",\n  \"vite\"\n]"
+    },
+    {
+      "input": {
+        "name": "cli-tool",
+        "dependencies": [
+          {
+            "name": "chalk",
+            "version": "5.3.0"
+          }
+        ]
+      },
+      "expected": "[\n  \"chalk\"\n]"
+    },
+    {
+      "input": {
+        "name": "empty-app",
+        "dependencies": []
+      },
+      "expected": "[]"
+    }
+  ]
+}

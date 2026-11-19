@@ -1,0 +1,53 @@
+{
+  "title": "Top three scores",
+  "statement": "Print the three highest scores, the highest first.\n\nThe scores are in `scores`, in no fixed order. Print one array. When there are fewer than three scores, print them all.",
+  "reference": ".scores | sort | reverse | .[:3]",
+  "tests": [
+    {
+      "input": {
+        "game": "chess",
+        "scores": [
+          1200,
+          1850,
+          990,
+          1430,
+          1675
+        ]
+      },
+      "expected": "[\n  1850,\n  1675,\n  1430\n]"
+    },
+    {
+      "input": {
+        "game": "go",
+        "scores": [
+          3,
+          11
+        ]
+      },
+      "expected": "[\n  11,\n  3\n]"
+    },
+    {
+      "input": {
+        "game": "darts",
+        "scores": [
+          60,
+          180,
+          100,
+          140
+        ]
+      },
+      "expected": "[\n  180,\n  140,\n  100\n]"
+    },
+    {
+      "input": {
+        "game": "golf",
+        "scores": [
+          72,
+          68,
+          75
+        ]
+      },
+      "expected": "[\n  75,\n  72,\n  68\n]"
+    }
+  ]
+}

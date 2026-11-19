@@ -1,0 +1,40 @@
+{
+  "title": "A flat account",
+  "statement": "Print the account as one flat object: the `id` of the account, and all the keys of `profile` next to it.\n\nThe output is one object. It has the key `id` and every key that is inside `profile`. It has no `profile` key and no `plan` key.",
+  "reference": "{id} + .profile",
+  "tests": [
+    {
+      "input": {
+        "id": 9041,
+        "plan": "pro",
+        "profile": {
+          "name": "Ada Berg",
+          "email": "ada@example.com"
+        }
+      },
+      "expected": "{\n  \"id\": 9041,\n  \"name\": \"Ada Berg\",\n  \"email\": \"ada@example.com\"\n}"
+    },
+    {
+      "input": {
+        "id": 17,
+        "plan": "free",
+        "profile": {
+          "name": "Bo Lind"
+        }
+      },
+      "expected": "{\n  \"id\": 17,\n  \"name\": \"Bo Lind\"\n}"
+    },
+    {
+      "input": {
+        "id": 520,
+        "plan": "team",
+        "profile": {
+          "name": "Cy Moe",
+          "email": "cy@example.com",
+          "city": "Oslo"
+        }
+      },
+      "expected": "{\n  \"id\": 520,\n  \"name\": \"Cy Moe\",\n  \"email\": \"cy@example.com\",\n  \"city\": \"Oslo\"\n}"
+    }
+  ]
+}

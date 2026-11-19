@@ -1,0 +1,33 @@
+{
+  "title": "Publish the article",
+  "statement": "The article is published. Print the whole article with two changes: the `draft_notes` key is gone, and `version` is one higher.\n\nThe output is one object. `title` and `author` stay as they are.",
+  "reference": "del(.draft_notes) | .version |= . + 1",
+  "tests": [
+    {
+      "input": {
+        "title": "Why we moved to jq",
+        "author": "ada",
+        "version": 3,
+        "draft_notes": "check the intro"
+      },
+      "expected": "{\n  \"title\": \"Why we moved to jq\",\n  \"author\": \"ada\",\n  \"version\": 4\n}"
+    },
+    {
+      "input": {
+        "title": "Release 2.0",
+        "author": "bo",
+        "version": 1,
+        "draft_notes": ""
+      },
+      "expected": "{\n  \"title\": \"Release 2.0\",\n  \"author\": \"bo\",\n  \"version\": 2\n}"
+    },
+    {
+      "input": {
+        "title": "Team update",
+        "author": "cy",
+        "version": 12
+      },
+      "expected": "{\n  \"title\": \"Team update\",\n  \"author\": \"cy\",\n  \"version\": 13\n}"
+    }
+  ]
+}

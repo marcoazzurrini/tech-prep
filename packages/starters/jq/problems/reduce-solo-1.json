@@ -1,0 +1,46 @@
+{
+  "title": "Size of a folder",
+  "statement": "Print the total size of all the files in the folder, as one number.\n\nEach file has its size under `size`. A folder with no files has the total 0.",
+  "reference": "reduce .files[] as $f (0; . + $f.size)",
+  "tests": [
+    {
+      "input": {
+        "dir": "logs",
+        "files": [
+          {
+            "name": "app.log",
+            "size": 1200
+          },
+          {
+            "name": "db.log",
+            "size": 300
+          },
+          {
+            "name": "old.log",
+            "size": 45
+          }
+        ]
+      },
+      "expected": "1545"
+    },
+    {
+      "input": {
+        "dir": "tmp",
+        "files": []
+      },
+      "expected": "0"
+    },
+    {
+      "input": {
+        "dir": "img",
+        "files": [
+          {
+            "name": "logo.png",
+            "size": 8100
+          }
+        ]
+      },
+      "expected": "8100"
+    }
+  ]
+}

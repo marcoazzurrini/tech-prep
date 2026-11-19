@@ -1,0 +1,48 @@
+{
+  "title": "Enough approvals",
+  "statement": "Print `true` when the pull request has enough approvals, and `false` when it does not.\n\nThe people who approved are listed under `approvals`. Two or more people are enough.",
+  "reference": ".approvals | length >= 2",
+  "tests": [
+    {
+      "input": {
+        "number": 52,
+        "title": "Add search",
+        "approvals": [
+          "ada",
+          "bo"
+        ]
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "number": 53,
+        "title": "Fix typo",
+        "approvals": [
+          "cy"
+        ]
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "number": 54,
+        "title": "New API",
+        "approvals": []
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "number": 55,
+        "title": "Upgrade deps",
+        "approvals": [
+          "dee",
+          "eli",
+          "fay"
+        ]
+      },
+      "expected": "true"
+    }
+  ]
+}

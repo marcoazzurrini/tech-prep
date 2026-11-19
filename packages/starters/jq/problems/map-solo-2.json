@@ -1,0 +1,55 @@
+{
+  "title": "Topics per result",
+  "statement": "Print how many topics each search result has, as one array.\n\nThe results are under `results`. The array holds one number for each result, in the order of the input.",
+  "reference": ".results | map(.topics | length)",
+  "tests": [
+    {
+      "input": {
+        "query": "json",
+        "results": [
+          {
+            "repo": "fastjson",
+            "topics": [
+              "json",
+              "parser",
+              "speed"
+            ]
+          },
+          {
+            "repo": "tinyq",
+            "topics": [
+              "cli"
+            ]
+          },
+          {
+            "repo": "notes",
+            "topics": []
+          }
+        ]
+      },
+      "expected": "[\n  3,\n  1,\n  0\n]"
+    },
+    {
+      "input": {
+        "query": "http",
+        "results": [
+          {
+            "repo": "reqs",
+            "topics": [
+              "http",
+              "client"
+            ]
+          }
+        ]
+      },
+      "expected": "[\n  2\n]"
+    },
+    {
+      "input": {
+        "query": "none",
+        "results": []
+      },
+      "expected": "[]"
+    }
+  ]
+}

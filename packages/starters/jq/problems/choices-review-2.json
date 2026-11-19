@@ -1,0 +1,62 @@
+{
+  "title": "Names on the shelf",
+  "statement": "Print one array with a label for every item, in the same order.\n\nThe items are in `items`. The label is the item's `name`. When the item's `qty` is 0, the label is `\"sold out\"`.",
+  "reference": ".items | map(if .qty == 0 then \"sold out\" else .name end)",
+  "tests": [
+    {
+      "input": {
+        "shop": "north",
+        "items": [
+          {
+            "name": "lamp",
+            "qty": 3
+          },
+          {
+            "name": "desk",
+            "qty": 0
+          },
+          {
+            "name": "rug",
+            "qty": 12
+          }
+        ]
+      },
+      "expected": "[\n  \"lamp\",\n  \"sold out\",\n  \"rug\"\n]"
+    },
+    {
+      "input": {
+        "shop": "south",
+        "items": [
+          {
+            "name": "sofa",
+            "qty": 0
+          }
+        ]
+      },
+      "expected": "[\n  \"sold out\"\n]"
+    },
+    {
+      "input": {
+        "shop": "east",
+        "items": [
+          {
+            "name": "vase",
+            "qty": 1
+          },
+          {
+            "name": "clock",
+            "qty": 7
+          }
+        ]
+      },
+      "expected": "[\n  \"vase\",\n  \"clock\"\n]"
+    },
+    {
+      "input": {
+        "shop": "west",
+        "items": []
+      },
+      "expected": "[]"
+    }
+  ]
+}

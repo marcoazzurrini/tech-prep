@@ -1,0 +1,42 @@
+{
+  "title": "Everyone with access",
+  "statement": "Print everyone who can open the project: the admins first, then the members.\n\nThe output is one array of names.",
+  "reference": ".admins + .members",
+  "tests": [
+    {
+      "input": {
+        "project": "billing",
+        "admins": [
+          "ada"
+        ],
+        "members": [
+          "bo",
+          "cy",
+          "dee"
+        ]
+      },
+      "expected": "[\n  \"ada\",\n  \"bo\",\n  \"cy\",\n  \"dee\"\n]"
+    },
+    {
+      "input": {
+        "project": "docs",
+        "admins": [
+          "eli",
+          "fay"
+        ],
+        "members": []
+      },
+      "expected": "[\n  \"eli\",\n  \"fay\"\n]"
+    },
+    {
+      "input": {
+        "project": "infra",
+        "admins": [],
+        "members": [
+          "gus"
+        ]
+      },
+      "expected": "[\n  \"gus\"\n]"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Emails in an export",
+  "statement": "Print the email of every person, as one array.\n\nEach string in `lines` is one person: the name, the email and the role, with commas between them. Keep the order of the input.",
+  "reference": ".lines | map(split(\",\") | .[1])",
+  "tests": [
+    {
+      "input": {
+        "columns": "name,email,role",
+        "lines": [
+          "Ada,ada@example.com,admin",
+          "Bo,bo@example.com,dev",
+          "Cy,cy@example.com,dev"
+        ]
+      },
+      "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\",\n  \"cy@example.com\"\n]"
+    },
+    {
+      "input": {
+        "columns": "name,email,role",
+        "lines": [
+          "Dee,dee@example.com,owner"
+        ]
+      },
+      "expected": "[\n  \"dee@example.com\"\n]"
+    },
+    {
+      "input": {
+        "columns": "name,email,role",
+        "lines": []
+      },
+      "expected": "[]"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "title": "A clean server record",
+  "statement": "Print an object with the `host` and the `port` of the server. The port must be a number.\n\nIn the input the port is a string. Leave out the other keys.",
+  "reference": "{host: .host, port: .port | tonumber}",
+  "tests": [
+    {
+      "input": {
+        "host": "web-1",
+        "port": "443",
+        "region": "eu"
+      },
+      "expected": "{\n  \"host\": \"web-1\",\n  \"port\": 443\n}"
+    },
+    {
+      "input": {
+        "host": "db-2",
+        "port": "5432",
+        "region": "us"
+      },
+      "expected": "{\n  \"host\": \"db-2\",\n  \"port\": 5432\n}"
+    },
+    {
+      "input": {
+        "host": "dev-box",
+        "port": "8080",
+        "region": "eu"
+      },
+      "expected": "{\n  \"host\": \"dev-box\",\n  \"port\": 8080\n}"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Email of the employee",
+  "statement": "Print the email address of the employee: the `login`, then `@`, then the `domain`.\n\nThe output is one string, such as `\"ada@example.com\"`.",
+  "reference": ".login + \"@\" + .domain",
+  "tests": [
+    {
+      "input": {
+        "login": "ada",
+        "domain": "example.com",
+        "team": "core"
+      },
+      "expected": "\"ada@example.com\""
+    },
+    {
+      "input": {
+        "login": "bo.lind",
+        "domain": "example.com",
+        "team": "sales"
+      },
+      "expected": "\"bo.lind@example.com\""
+    },
+    {
+      "input": {
+        "login": "cy",
+        "domain": "mail.example.com",
+        "team": "infra"
+      },
+      "expected": "\"cy@mail.example.com\""
+    }
+  ]
+}

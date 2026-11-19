@@ -1,0 +1,35 @@
+{
+  "title": "Secure link or not",
+  "statement": "Print `true` when the link is secure, and `false` when it is not.\n\nA link is secure when its `url` begins with `https://`.",
+  "reference": ".url | startswith(\"https://\")",
+  "tests": [
+    {
+      "input": {
+        "label": "Docs",
+        "url": "https://docs.example.com/start"
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "label": "Old wiki",
+        "url": "http://wiki.example.com"
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "label": "Redirect",
+        "url": "http://example.com/go?to=https://example.com"
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "label": "Status",
+        "url": "https://status.example.com"
+      },
+      "expected": "true"
+    }
+  ]
+}

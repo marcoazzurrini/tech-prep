@@ -1,0 +1,73 @@
+{
+  "title": "Emails of the sign-ups",
+  "statement": "Print the email of every person who signed up.\n\nThe sign-ups are under `results`. Each one holds a `user` with an `email`. Print each email as its own output, in the order of the input.",
+  "reference": ".results[] | .user.email",
+  "tests": [
+    {
+      "input": {
+        "page": 1,
+        "results": [
+          {
+            "plan": "pro",
+            "user": {
+              "name": "Ada",
+              "email": "ada@example.com"
+            }
+          },
+          {
+            "plan": "free",
+            "user": {
+              "name": "Bo",
+              "email": "bo@example.com"
+            }
+          }
+        ]
+      },
+      "expected": "\"ada@example.com\"\n\"bo@example.com\""
+    },
+    {
+      "input": {
+        "page": 2,
+        "results": [
+          {
+            "plan": "team",
+            "user": {
+              "name": "Cy",
+              "email": "cy@example.com"
+            }
+          }
+        ]
+      },
+      "expected": "\"cy@example.com\""
+    },
+    {
+      "input": {
+        "page": 3,
+        "results": [
+          {
+            "plan": "free",
+            "user": {
+              "name": "Dee",
+              "email": "dee@example.com"
+            }
+          },
+          {
+            "plan": "free",
+            "user": {
+              "name": "Eli",
+              "email": "eli@example.com"
+            }
+          },
+          {
+            "plan": "pro",
+            "user": {
+              "name": "Fay",
+              "email": "fay@example.com"
+            }
+          }
+        ]
+      },
+      "expected": "\"dee@example.com\"\n\"eli@example.com\"\n\"fay@example.com\""
+    }
+  ]
+}

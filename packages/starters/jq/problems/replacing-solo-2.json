@@ -1,0 +1,28 @@
+{
+  "title": "Digits of a phone",
+  "statement": "Print the phone number of the contact with all dashes removed.\n\nThe number is in `phone`. For `555-010-2233`, print `5550102233`.",
+  "reference": ".phone | gsub(\"-\"; \"\")",
+  "tests": [
+    {
+      "input": {
+        "name": "Ada",
+        "phone": "555-010-2233"
+      },
+      "expected": "\"5550102233\""
+    },
+    {
+      "input": {
+        "name": "Bo",
+        "phone": "555-0147"
+      },
+      "expected": "\"5550147\""
+    },
+    {
+      "input": {
+        "name": "Cy",
+        "phone": "1-555-010-9981"
+      },
+      "expected": "\"15550109981\""
+    }
+  ]
+}

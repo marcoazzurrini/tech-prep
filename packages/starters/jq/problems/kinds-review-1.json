@@ -1,0 +1,43 @@
+{
+  "title": "A list of results?",
+  "statement": "Print `true` when `results` holds an array, and `false` when it holds anything else.\n\nIn some replies `results` is an object, a string or missing. Those give `false`.",
+  "reference": ".results | type == \"array\"",
+  "tests": [
+    {
+      "input": {
+        "query": "lamp",
+        "results": {
+          "error": "index offline"
+        }
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "query": "desk",
+        "results": [
+          {
+            "id": 5
+          },
+          {
+            "id": 9
+          }
+        ]
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "query": "sofa"
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "query": "rug",
+        "results": []
+      },
+      "expected": "true"
+    }
+  ]
+}

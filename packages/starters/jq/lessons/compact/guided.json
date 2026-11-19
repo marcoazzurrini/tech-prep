@@ -1,0 +1,152 @@
+[
+  {
+    "title": "Build on one line",
+    "statement": "Print the build on one line, with no spaces.\n\nThe command below prints the build over several lines. Add the flag `-c` in front of the filter.",
+    "mode": "command",
+    "stub": "'.build'",
+    "reference": "-c '.build'",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "build": {
+            "id": 212,
+            "ok": true,
+            "steps": [
+              "lint",
+              "test"
+            ]
+          }
+        },
+        "expected": "{\"id\":212,\"ok\":true,\"steps\":[\"lint\",\"test\"]}"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "build": {
+            "id": 87,
+            "ok": false,
+            "steps": [
+              "lint"
+            ]
+          }
+        },
+        "expected": "{\"id\":87,\"ok\":false,\"steps\":[\"lint\"]}"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "build": {
+            "id": 5,
+            "ok": true,
+            "steps": []
+          }
+        },
+        "expected": "{\"id\":5,\"ok\":true,\"steps\":[]}"
+      }
+    ]
+  },
+  {
+    "title": "Fix the job list",
+    "statement": "Print each job on its own line, with no spaces.\n\nThe command below prints all the jobs on one long line. Change the filter so that every job is its own output.",
+    "mode": "command",
+    "stub": "-c '.'",
+    "reference": "-c '.[]'",
+    "tests": [
+      {
+        "input": [
+          {
+            "job": "backup",
+            "minutes": 12
+          },
+          {
+            "job": "report",
+            "minutes": 3
+          },
+          {
+            "job": "cleanup",
+            "minutes": 1
+          }
+        ],
+        "expected": "{\"job\":\"backup\",\"minutes\":12}\n{\"job\":\"report\",\"minutes\":3}\n{\"job\":\"cleanup\",\"minutes\":1}"
+      },
+      {
+        "input": [
+          {
+            "job": "sync",
+            "minutes": 45
+          },
+          {
+            "job": "index",
+            "minutes": 8
+          }
+        ],
+        "expected": "{\"job\":\"sync\",\"minutes\":45}\n{\"job\":\"index\",\"minutes\":8}"
+      },
+      {
+        "input": [
+          {
+            "job": "email",
+            "minutes": 2
+          }
+        ],
+        "expected": "{\"job\":\"email\",\"minutes\":2}"
+      }
+    ]
+  },
+  {
+    "title": "Values of the settings",
+    "statement": "Print the `value` of every setting, each on one line.\n\nSome values are strings and some are arrays. Print a string as plain text, with no quotes. Print an array on one line, with no spaces. You need two flags.",
+    "mode": "command",
+    "stub": "'.'",
+    "reference": "-c -r '.[] | .value'",
+    "tests": [
+      {
+        "input": [
+          {
+            "key": "region",
+            "value": "eu-west"
+          },
+          {
+            "key": "zones",
+            "value": [
+              "a",
+              "b"
+            ]
+          },
+          {
+            "key": "tier",
+            "value": "small"
+          }
+        ],
+        "expected": "eu-west\n[\"a\",\"b\"]\nsmall"
+      },
+      {
+        "input": [
+          {
+            "key": "ports",
+            "value": [
+              80,
+              443,
+              8080
+            ]
+          },
+          {
+            "key": "mode",
+            "value": "fast"
+          }
+        ],
+        "expected": "[80,443,8080]\nfast"
+      },
+      {
+        "input": [
+          {
+            "key": "owners",
+            "value": []
+          }
+        ],
+        "expected": "[]"
+      }
+    ]
+  }
+]

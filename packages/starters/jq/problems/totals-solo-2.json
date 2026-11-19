@@ -1,0 +1,55 @@
+{
+  "title": "Size of the upload",
+  "statement": "Print the size of the whole upload in bytes.\n\nThe files are in `files`. Each file has its size in `bytes`. Print one number: the sizes of all files together.",
+  "reference": ".files | map(.bytes) | add",
+  "tests": [
+    {
+      "input": {
+        "upload": "u-81",
+        "files": [
+          {
+            "name": "logo.png",
+            "bytes": 2048
+          },
+          {
+            "name": "notes.txt",
+            "bytes": 310
+          },
+          {
+            "name": "data.csv",
+            "bytes": 5120
+          }
+        ]
+      },
+      "expected": "7478"
+    },
+    {
+      "input": {
+        "upload": "u-82",
+        "files": [
+          {
+            "name": "cv.pdf",
+            "bytes": 90500
+          }
+        ]
+      },
+      "expected": "90500"
+    },
+    {
+      "input": {
+        "upload": "u-83",
+        "files": [
+          {
+            "name": "a.jpg",
+            "bytes": 700
+          },
+          {
+            "name": "b.jpg",
+            "bytes": 650
+          }
+        ]
+      },
+      "expected": "1350"
+    }
+  ]
+}

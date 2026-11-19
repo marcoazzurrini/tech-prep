@@ -1,0 +1,164 @@
+[
+  {
+    "title": "Unread messages",
+    "statement": "Print how many messages are unread.\n\nThe first step below makes an array of the unread messages. The second step is `.`, which changes nothing. Replace the second step so that the chain prints how many there are.",
+    "stub": "map(select(.unread)) | .",
+    "reference": "map(select(.unread)) | length",
+    "tests": [
+      {
+        "input": [
+          {
+            "from": "ada@example.com",
+            "unread": true
+          },
+          {
+            "from": "bo@example.com",
+            "unread": false
+          },
+          {
+            "from": "cy@example.com",
+            "unread": true
+          }
+        ],
+        "expected": "2"
+      },
+      {
+        "input": [
+          {
+            "from": "dee@example.com",
+            "unread": false
+          }
+        ],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "from": "eli@example.com",
+            "unread": true
+          },
+          {
+            "from": "fay@example.com",
+            "unread": true
+          },
+          {
+            "from": "gus@example.com",
+            "unread": true
+          }
+        ],
+        "expected": "3"
+      }
+    ]
+  },
+  {
+    "title": "Paid orders",
+    "statement": "Print how many orders are paid, as one number.\n\nThe filter below should do the job, but it prints one number for each paid order, and none of them is the count. Fix it.",
+    "stub": ".[] | select(.paid) | length",
+    "reference": "map(select(.paid)) | length",
+    "tests": [
+      {
+        "input": [
+          {
+            "id": 801,
+            "total": 40,
+            "paid": true
+          },
+          {
+            "id": 802,
+            "total": 15,
+            "paid": false
+          },
+          {
+            "id": 803,
+            "total": 99,
+            "paid": true
+          }
+        ],
+        "expected": "2"
+      },
+      {
+        "input": [
+          {
+            "id": 11,
+            "total": 8,
+            "paid": false
+          },
+          {
+            "id": 12,
+            "total": 20,
+            "paid": false
+          }
+        ],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "id": 50,
+            "total": 12,
+            "paid": true
+          },
+          {
+            "id": 51,
+            "total": 7,
+            "paid": false
+          }
+        ],
+        "expected": "1"
+      }
+    ]
+  },
+  {
+    "title": "Empty carts",
+    "statement": "Print how many carts are empty.\n\nThe input is an array of carts. A cart is empty when its `items` list has no items.",
+    "reference": "map(select(.items | length == 0)) | length",
+    "tests": [
+      {
+        "input": [
+          {
+            "user": "ada",
+            "items": [
+              "pen",
+              "pad"
+            ]
+          },
+          {
+            "user": "bo",
+            "items": []
+          },
+          {
+            "user": "cy",
+            "items": []
+          }
+        ],
+        "expected": "2"
+      },
+      {
+        "input": [
+          {
+            "user": "dee",
+            "items": [
+              "lamp"
+            ]
+          }
+        ],
+        "expected": "0"
+      },
+      {
+        "input": [
+          {
+            "user": "eli",
+            "items": []
+          },
+          {
+            "user": "fay",
+            "items": [
+              "mug"
+            ]
+          }
+        ],
+        "expected": "1"
+      }
+    ]
+  }
+]

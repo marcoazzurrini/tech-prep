@@ -1,0 +1,47 @@
+{
+  "title": "Needs approval",
+  "statement": "Print `true` when the deploy needs approval, and `false` when it does not.\n\nA deploy needs approval when its `env` is `\"prod\"`, or when it changes more than 20 files. One of the two is enough. The number of files is under `files_changed`.",
+  "reference": ".env == \"prod\" or .files_changed > 20",
+  "tests": [
+    {
+      "input": {
+        "id": "d-88",
+        "env": "prod",
+        "files_changed": 3
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "id": "d-89",
+        "env": "staging",
+        "files_changed": 4
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "id": "d-90",
+        "env": "staging",
+        "files_changed": 35
+      },
+      "expected": "true"
+    },
+    {
+      "input": {
+        "id": "d-91",
+        "env": "dev",
+        "files_changed": 20
+      },
+      "expected": "false"
+    },
+    {
+      "input": {
+        "id": "d-92",
+        "env": "prod",
+        "files_changed": 60
+      },
+      "expected": "true"
+    }
+  ]
+}

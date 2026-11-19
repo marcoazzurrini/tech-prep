@@ -1,0 +1,145 @@
+[
+  {
+    "title": "What comes out?",
+    "statement": "Type what jq prints for this input and this filter.",
+    "mode": "predict",
+    "show_filter": true,
+    "reference": ".hours | add",
+    "tests": [
+      {
+        "input": {
+          "week": 12,
+          "hours": [
+            8,
+            6,
+            7
+          ]
+        },
+        "expected": "21"
+      }
+    ]
+  },
+  {
+    "title": "Items in the order",
+    "statement": "Print how many items the order has in total. That is the sum of every `qty`.\n\nThe filter below should do that, but it prints an object, not a number. Fix it.",
+    "stub": ".items | add",
+    "reference": ".items | map(.qty) | add",
+    "tests": [
+      {
+        "input": {
+          "order": "A-17",
+          "items": [
+            {
+              "sku": "cup",
+              "qty": 2
+            },
+            {
+              "sku": "plate",
+              "qty": 6
+            },
+            {
+              "sku": "fork",
+              "qty": 4
+            }
+          ]
+        },
+        "expected": "12"
+      },
+      {
+        "input": {
+          "order": "A-18",
+          "items": [
+            {
+              "sku": "lamp",
+              "qty": 1
+            }
+          ]
+        },
+        "expected": "1"
+      },
+      {
+        "input": {
+          "order": "A-19",
+          "items": [
+            {
+              "sku": "pen",
+              "qty": 10
+            },
+            {
+              "sku": "ink",
+              "qty": 3
+            }
+          ]
+        },
+        "expected": "13"
+      }
+    ]
+  },
+  {
+    "title": "Slowest test",
+    "statement": "Print the name of the slowest test.\n\nThe tests are in `tests`. Each has its time in `ms`. Take the test with the largest `ms` with `max_by`, then take its `name`. Print one string.",
+    "reference": ".tests | max_by(.ms) | .name",
+    "tests": [
+      {
+        "input": {
+          "suite": "api",
+          "tests": [
+            {
+              "name": "login",
+              "ms": 120
+            },
+            {
+              "name": "upload",
+              "ms": 940
+            },
+            {
+              "name": "logout",
+              "ms": 35
+            }
+          ]
+        },
+        "expected": "\"upload\""
+      },
+      {
+        "input": {
+          "suite": "ui",
+          "tests": [
+            {
+              "name": "render",
+              "ms": 18
+            },
+            {
+              "name": "click",
+              "ms": 7
+            }
+          ]
+        },
+        "expected": "\"render\""
+      },
+      {
+        "input": {
+          "suite": "db",
+          "tests": [
+            {
+              "name": "migrate",
+              "ms": 2100
+            },
+            {
+              "name": "seed",
+              "ms": 800
+            },
+            {
+              "name": "query",
+              "ms": 15
+            },
+            {
+              "name": "backup",
+              "ms": 1900
+            }
+          ]
+        },
+        "expected": "\"migrate\""
+      }
+    ]
+  }
+]

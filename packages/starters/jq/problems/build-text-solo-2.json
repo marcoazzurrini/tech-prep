@@ -1,0 +1,55 @@
+{
+  "title": "How long each step took",
+  "statement": "For each step of the build, print one string that says how long it took. For the first step that is `\"lint took 12s\"`.\n\nThe steps are in `steps`. Each string is its own output.",
+  "reference": ".steps | .[] | \"\\(.name) took \\(.seconds)s\"",
+  "tests": [
+    {
+      "input": {
+        "build": 88,
+        "steps": [
+          {
+            "name": "lint",
+            "seconds": 12
+          },
+          {
+            "name": "test",
+            "seconds": 140
+          },
+          {
+            "name": "deploy",
+            "seconds": 35
+          }
+        ]
+      },
+      "expected": "\"lint took 12s\"\n\"test took 140s\"\n\"deploy took 35s\""
+    },
+    {
+      "input": {
+        "build": 89,
+        "steps": [
+          {
+            "name": "lint",
+            "seconds": 9
+          }
+        ]
+      },
+      "expected": "\"lint took 9s\""
+    },
+    {
+      "input": {
+        "build": 90,
+        "steps": [
+          {
+            "name": "install",
+            "seconds": 61
+          },
+          {
+            "name": "bundle",
+            "seconds": 0
+          }
+        ]
+      },
+      "expected": "\"install took 61s\"\n\"bundle took 0s\""
+    }
+  ]
+}

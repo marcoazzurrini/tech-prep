@@ -1,0 +1,52 @@
+{
+  "title": "Tickets of one person",
+  "statement": "Print every ticket that belongs to one person.\n\nDo not write the person inside the filter. Pass the text `bo` into the command under the name `owner`, and compare each ticket's `owner` with it. Print each matching ticket as a whole object, each as its own output.",
+  "mode": "command",
+  "stub": "'.'",
+  "reference": "--arg owner bo '.[] | select(.owner == $owner)'",
+  "tests": [
+    {
+      "input": [
+        {
+          "id": "T-1",
+          "owner": "bo"
+        },
+        {
+          "id": "T-2",
+          "owner": "ada"
+        },
+        {
+          "id": "T-3",
+          "owner": "bo"
+        }
+      ],
+      "expected": "{\n  \"id\": \"T-1\",\n  \"owner\": \"bo\"\n}\n{\n  \"id\": \"T-3\",\n  \"owner\": \"bo\"\n}"
+    },
+    {
+      "input": [
+        {
+          "id": "T-8",
+          "owner": "cy"
+        },
+        {
+          "id": "T-9",
+          "owner": "bo"
+        }
+      ],
+      "expected": "{\n  \"id\": \"T-9\",\n  \"owner\": \"bo\"\n}"
+    },
+    {
+      "input": [
+        {
+          "id": "T-20",
+          "owner": "ada"
+        },
+        {
+          "id": "T-21",
+          "owner": "cy"
+        }
+      ],
+      "expected": ""
+    }
+  ]
+}

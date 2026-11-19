@@ -5,6 +5,7 @@ import {
   guidedConcept,
   guidedSlugs,
   problem as getProblem,
+  problemInfo,
   referenceSolution,
   soloConcept,
   soloSlugs,
@@ -158,6 +159,24 @@ export const testSolution = (
   }
 
   return { attempt_id: current?.id ?? null, run };
+};
+
+/**
+ * Set aside open attempts on problems the course no longer has, for example after its
+ * lessons were rewritten. Such an attempt has nothing to show, so it must not be resumed.
+ */
+export const pauseUnknownAttempts = (): void => {
+  for (const a of attemptsFor({}).filter((row) => !row.finished_at)) {
+    try {
+      problemInfo(a.slug);
+    } catch {
+      open()
+        .query(
+          "UPDATE attempts SET finished_at = ?, outcome = 'paused' WHERE id = ?"
+        )
+        .run(new Date().toISOString(), a.id);
+    }
+  }
 };
 
 /** The attempt the learner is working on, if any. */

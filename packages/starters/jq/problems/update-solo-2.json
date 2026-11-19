@@ -1,0 +1,40 @@
+{
+  "title": "Move the server port",
+  "statement": "The server must listen on port `8443` from now on. Print the whole config with the new port.\n\nThe port is inside `server`. Everything else stays as it is.",
+  "reference": ".server.port = 8443",
+  "tests": [
+    {
+      "input": {
+        "env": "prod",
+        "server": {
+          "host": "web-1",
+          "port": 443
+        },
+        "debug": false
+      },
+      "expected": "{\n  \"env\": \"prod\",\n  \"server\": {\n    \"host\": \"web-1\",\n    \"port\": 8443\n  },\n  \"debug\": false\n}"
+    },
+    {
+      "input": {
+        "env": "dev",
+        "server": {
+          "host": "localhost",
+          "port": 3000
+        },
+        "debug": true
+      },
+      "expected": "{\n  \"env\": \"dev\",\n  \"server\": {\n    \"host\": \"localhost\",\n    \"port\": 8443\n  },\n  \"debug\": true\n}"
+    },
+    {
+      "input": {
+        "env": "staging",
+        "server": {
+          "host": "web-9",
+          "port": 8080
+        },
+        "debug": false
+      },
+      "expected": "{\n  \"env\": \"staging\",\n  \"server\": {\n    \"host\": \"web-9\",\n    \"port\": 8443\n  },\n  \"debug\": false\n}"
+    }
+  ]
+}

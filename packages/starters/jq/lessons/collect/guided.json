@@ -1,0 +1,169 @@
+[
+  {
+    "title": "Emails in one array",
+    "statement": "Print the emails of all the users as one array.\n\nThe filter below prints each email as its own output. Change it so that it prints one array of emails.",
+    "stub": ".[] | .email",
+    "reference": "[.[] | .email]",
+    "tests": [
+      {
+        "input": [
+          {
+            "name": "Ada",
+            "email": "ada@example.com"
+          },
+          {
+            "name": "Bo",
+            "email": "bo@example.com"
+          }
+        ],
+        "expected": "[\n  \"ada@example.com\",\n  \"bo@example.com\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "Cy",
+            "email": "cy@example.com"
+          }
+        ],
+        "expected": "[\n  \"cy@example.com\"\n]"
+      },
+      {
+        "input": [
+          {
+            "name": "Dee",
+            "email": "dee@example.com"
+          },
+          {
+            "name": "Eli",
+            "email": "eli@example.com"
+          },
+          {
+            "name": "Fay",
+            "email": "fay@example.com"
+          }
+        ],
+        "expected": "[\n  \"dee@example.com\",\n  \"eli@example.com\",\n  \"fay@example.com\"\n]"
+      }
+    ]
+  },
+  {
+    "title": "Authors of the commits",
+    "statement": "Print the authors of all the commits as one array.\n\nThe filter below should do that, but it prints one small array for each commit. Fix it so that it prints one array with every author.",
+    "stub": ".commits[] | [.author]",
+    "reference": "[.commits[] | .author]",
+    "tests": [
+      {
+        "input": {
+          "repo": "api",
+          "commits": [
+            {
+              "sha": "9f2c1a",
+              "author": "cy"
+            },
+            {
+              "sha": "77b0de",
+              "author": "ada"
+            },
+            {
+              "sha": "c41e09",
+              "author": "cy"
+            }
+          ]
+        },
+        "expected": "[\n  \"cy\",\n  \"ada\",\n  \"cy\"\n]"
+      },
+      {
+        "input": {
+          "repo": "web",
+          "commits": [
+            {
+              "sha": "0aa1f3",
+              "author": "bo"
+            },
+            {
+              "sha": "5be2c7",
+              "author": "dee"
+            }
+          ]
+        },
+        "expected": "[\n  \"bo\",\n  \"dee\"\n]"
+      },
+      {
+        "input": {
+          "repo": "docs",
+          "commits": [
+            {
+              "sha": "e09d41",
+              "author": "ada"
+            },
+            {
+              "sha": "b7730c",
+              "author": "ada"
+            }
+          ]
+        },
+        "expected": "[\n  \"ada\",\n  \"ada\"\n]"
+      }
+    ]
+  },
+  {
+    "title": "Every reviewer",
+    "statement": "Print the reviewers of all the pull requests as one flat array.\n\nEach pull request has a list under `reviewers`. Put every reviewer of every pull request into one array, in the order of the input. A name may appear more than once.",
+    "reference": "[.[] | .reviewers[]]",
+    "tests": [
+      {
+        "input": [
+          {
+            "pr": 41,
+            "reviewers": [
+              "ada",
+              "bo"
+            ]
+          },
+          {
+            "pr": 42,
+            "reviewers": [
+              "cy"
+            ]
+          },
+          {
+            "pr": 43,
+            "reviewers": [
+              "bo",
+              "dee"
+            ]
+          }
+        ],
+        "expected": "[\n  \"ada\",\n  \"bo\",\n  \"cy\",\n  \"bo\",\n  \"dee\"\n]"
+      },
+      {
+        "input": [
+          {
+            "pr": 7,
+            "reviewers": []
+          },
+          {
+            "pr": 8,
+            "reviewers": [
+              "eli"
+            ]
+          }
+        ],
+        "expected": "[\n  \"eli\"\n]"
+      },
+      {
+        "input": [
+          {
+            "pr": 90,
+            "reviewers": [
+              "fay",
+              "ada",
+              "cy"
+            ]
+          }
+        ],
+        "expected": "[\n  \"fay\",\n  \"ada\",\n  \"cy\"\n]"
+      }
+    ]
+  }
+]

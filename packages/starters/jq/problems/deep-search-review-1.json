@@ -1,0 +1,80 @@
+{
+  "title": "Tasks still open",
+  "statement": "Print the `title` of every task that is not done.\n\nA task is an object with `title` and `done`. Tasks can sit inside the `subtasks` of other tasks, at any depth. A task is not done when its `done` is `false`. Print each title as its own output.",
+  "reference": ".. | select(type == \"object\") | select(.done == false) | .title",
+  "tests": [
+    {
+      "input": {
+        "project": "launch",
+        "tasks": [
+          {
+            "title": "Write docs",
+            "done": true,
+            "subtasks": [
+              {
+                "title": "Fix typos",
+                "done": false,
+                "subtasks": []
+              }
+            ]
+          },
+          {
+            "title": "Ship",
+            "done": false,
+            "subtasks": []
+          }
+        ]
+      },
+      "expected": "\"Fix typos\"\n\"Ship\""
+    },
+    {
+      "input": {
+        "project": "cleanup",
+        "tasks": [
+          {
+            "title": "Delete logs",
+            "done": true,
+            "subtasks": [
+              {
+                "title": "Empty the bin",
+                "done": false,
+                "subtasks": []
+              }
+            ]
+          },
+          {
+            "title": "Close tickets",
+            "done": true,
+            "subtasks": []
+          }
+        ]
+      },
+      "expected": "\"Empty the bin\""
+    },
+    {
+      "input": {
+        "project": "audit",
+        "tasks": [
+          {
+            "title": "Review",
+            "done": false,
+            "subtasks": [
+              {
+                "title": "Read code",
+                "done": false,
+                "subtasks": [
+                  {
+                    "title": "Take notes",
+                    "done": false,
+                    "subtasks": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "\"Review\"\n\"Read code\"\n\"Take notes\""
+    }
+  ]
+}

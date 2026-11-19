@@ -1,0 +1,70 @@
+{
+  "title": "Seats to book",
+  "statement": "Print how many seats the meetings need in total.\n\nThe input is an array of meetings. Each meeting lists its people under `attendees`. Every person in every meeting needs a seat, so a person in two meetings counts twice. Print one number.",
+  "reference": "[.[] | .attendees[]] | length",
+  "tests": [
+    {
+      "input": [
+        {
+          "room": "A",
+          "attendees": [
+            "ada",
+            "bo",
+            "cy"
+          ]
+        },
+        {
+          "room": "B",
+          "attendees": [
+            "ada",
+            "dee"
+          ]
+        }
+      ],
+      "expected": "5"
+    },
+    {
+      "input": [
+        {
+          "room": "C",
+          "attendees": []
+        },
+        {
+          "room": "D",
+          "attendees": [
+            "eli"
+          ]
+        }
+      ],
+      "expected": "1"
+    },
+    {
+      "input": [
+        {
+          "room": "E",
+          "attendees": [
+            "fay",
+            "gus"
+          ]
+        },
+        {
+          "room": "F",
+          "attendees": [
+            "hal",
+            "fay"
+          ]
+        },
+        {
+          "room": "G",
+          "attendees": [
+            "ada",
+            "bo",
+            "cy",
+            "dee"
+          ]
+        }
+      ],
+      "expected": "8"
+    }
+  ]
+}

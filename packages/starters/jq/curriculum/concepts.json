@@ -261,7 +261,7 @@
     "id": "choices",
     "name": "Choose with if",
     "topic": "messy",
-    "prereqs": ["tests"],
+    "prereqs": ["tests", "map"],
     "encompasses": [
       {
         "id": "tests",

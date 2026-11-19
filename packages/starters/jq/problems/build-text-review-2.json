@@ -1,0 +1,34 @@
+{
+  "title": "Staff badge",
+  "statement": "Print an object with two keys: `id` and `name`.\n\n`id` is the person's own `id`. `name` is one string: the first name, a space, and the last name. For the first input the name is `\"Lena Brandt\"`.",
+  "reference": "{id, name: \"\\(.first_name) \\(.last_name)\"}",
+  "tests": [
+    {
+      "input": {
+        "id": 301,
+        "first_name": "Lena",
+        "last_name": "Brandt",
+        "team": "web"
+      },
+      "expected": "{\n  \"id\": 301,\n  \"name\": \"Lena Brandt\"\n}"
+    },
+    {
+      "input": {
+        "id": 302,
+        "first_name": "Omar",
+        "last_name": "Haddad",
+        "team": "data"
+      },
+      "expected": "{\n  \"id\": 302,\n  \"name\": \"Omar Haddad\"\n}"
+    },
+    {
+      "input": {
+        "id": 417,
+        "first_name": "Yuki",
+        "last_name": "Mori",
+        "team": "ops"
+      },
+      "expected": "{\n  \"id\": 417,\n  \"name\": \"Yuki Mori\"\n}"
+    }
+  ]
+}

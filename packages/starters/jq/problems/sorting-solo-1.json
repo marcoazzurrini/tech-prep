@@ -1,0 +1,58 @@
+{
+  "title": "Servers by load",
+  "statement": "Print the servers ordered by their load, the lowest load first.\n\nThe input is an array of servers. Print one array of whole server objects.",
+  "reference": "sort_by(.load)",
+  "tests": [
+    {
+      "input": [
+        {
+          "host": "web-1",
+          "load": 0.8
+        },
+        {
+          "host": "db-1",
+          "load": 0.3
+        },
+        {
+          "host": "cache-1",
+          "load": 0.5
+        }
+      ],
+      "expected": "[\n  {\n    \"host\": \"db-1\",\n    \"load\": 0.3\n  },\n  {\n    \"host\": \"cache-1\",\n    \"load\": 0.5\n  },\n  {\n    \"host\": \"web-1\",\n    \"load\": 0.8\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "host": "web-2",
+          "load": 2.4
+        },
+        {
+          "host": "web-3",
+          "load": 1.1
+        }
+      ],
+      "expected": "[\n  {\n    \"host\": \"web-3\",\n    \"load\": 1.1\n  },\n  {\n    \"host\": \"web-2\",\n    \"load\": 2.4\n  }\n]"
+    },
+    {
+      "input": [
+        {
+          "host": "a",
+          "load": 4
+        },
+        {
+          "host": "b",
+          "load": 3
+        },
+        {
+          "host": "c",
+          "load": 2
+        },
+        {
+          "host": "d",
+          "load": 1
+        }
+      ],
+      "expected": "[\n  {\n    \"host\": \"d\",\n    \"load\": 1\n  },\n  {\n    \"host\": \"c\",\n    \"load\": 2\n  },\n  {\n    \"host\": \"b\",\n    \"load\": 3\n  },\n  {\n    \"host\": \"a\",\n    \"load\": 4\n  }\n]"
+    }
+  ]
+}

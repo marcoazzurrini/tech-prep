@@ -1,0 +1,55 @@
+{
+  "title": "Entries of the log",
+  "statement": "Print every entry of the log.\n\nThe entries are under `entries`. Print each entry as a whole object and as its own output, in the order of the input. Do not print an array.",
+  "reference": ".entries[]",
+  "tests": [
+    {
+      "input": {
+        "service": "api",
+        "entries": [
+          {
+            "level": "info",
+            "msg": "started"
+          },
+          {
+            "level": "error",
+            "msg": "db timeout"
+          }
+        ]
+      },
+      "expected": "{\n  \"level\": \"info\",\n  \"msg\": \"started\"\n}\n{\n  \"level\": \"error\",\n  \"msg\": \"db timeout\"\n}"
+    },
+    {
+      "input": {
+        "service": "web",
+        "entries": [
+          {
+            "level": "warn",
+            "msg": "slow page"
+          }
+        ]
+      },
+      "expected": "{\n  \"level\": \"warn\",\n  \"msg\": \"slow page\"\n}"
+    },
+    {
+      "input": {
+        "service": "jobs",
+        "entries": [
+          {
+            "level": "info",
+            "msg": "queued"
+          },
+          {
+            "level": "info",
+            "msg": "running"
+          },
+          {
+            "level": "info",
+            "msg": "done"
+          }
+        ]
+      },
+      "expected": "{\n  \"level\": \"info\",\n  \"msg\": \"queued\"\n}\n{\n  \"level\": \"info\",\n  \"msg\": \"running\"\n}\n{\n  \"level\": \"info\",\n  \"msg\": \"done\"\n}"
+    }
+  ]
+}

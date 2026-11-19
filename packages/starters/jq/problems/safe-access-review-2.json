@@ -1,0 +1,80 @@
+{
+  "title": "Items of every order",
+  "statement": "Print the `sku` of every item of every order, each as its own output.\n\nThe orders are in `orders`. Each order has its items in `items`. A cancelled order has `null` in place of its items. Skip it.",
+  "reference": ".orders[] | .items[]? | .sku",
+  "tests": [
+    {
+      "input": {
+        "orders": [
+          {
+            "id": 1,
+            "items": [
+              {
+                "sku": "A-1"
+              },
+              {
+                "sku": "B-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "items": null
+          },
+          {
+            "id": 3,
+            "items": [
+              {
+                "sku": "C-3"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "\"A-1\"\n\"B-2\"\n\"C-3\""
+    },
+    {
+      "input": {
+        "orders": [
+          {
+            "id": 8,
+            "items": [
+              {
+                "sku": "K-10"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": "\"K-10\""
+    },
+    {
+      "input": {
+        "orders": [
+          {
+            "id": 4,
+            "items": null
+          },
+          {
+            "id": 5,
+            "items": [
+              {
+                "sku": "D-4"
+              },
+              {
+                "sku": "E-5"
+              },
+              {
+                "sku": "F-6"
+              }
+            ]
+          },
+          {
+            "id": 6
+          }
+        ]
+      },
+      "expected": "\"D-4\"\n\"E-5\"\n\"F-6\""
+    }
+  ]
+}

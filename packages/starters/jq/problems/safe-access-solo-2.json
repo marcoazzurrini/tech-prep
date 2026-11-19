@@ -1,0 +1,54 @@
+{
+  "title": "First cell of each row",
+  "statement": "Print the first cell of every row, each as its own output.\n\nThe rows are in `rows`. A row is an array of cells. Some rows are not arrays: they are a string that marks a break. Skip those.",
+  "reference": ".rows[] | .[0]?",
+  "tests": [
+    {
+      "input": {
+        "sheet": "q3",
+        "rows": [
+          [
+            "id",
+            "total"
+          ],
+          "-- page 2 --",
+          [
+            "a-1",
+            40
+          ],
+          [
+            "a-2",
+            15
+          ]
+        ]
+      },
+      "expected": "\"id\"\n\"a-1\"\n\"a-2\""
+    },
+    {
+      "input": {
+        "sheet": "q4",
+        "rows": [
+          [
+            "b-7",
+            12
+          ]
+        ]
+      },
+      "expected": "\"b-7\""
+    },
+    {
+      "input": {
+        "sheet": "q1",
+        "rows": [
+          "-- empty --",
+          [
+            "c-3",
+            8
+          ],
+          "-- end --"
+        ]
+      },
+      "expected": "\"c-3\""
+    }
+  ]
+}
