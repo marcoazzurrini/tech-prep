@@ -1,10 +1,18 @@
-import { existsSync, readFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
 
+import { z } from "zod";
+
 /**
- * The starters folder. The packaged app ships its own copy and points `TECHPREP_STARTERS`
- * at it; from the repo it is the `@tech-prep/starters` package.
+ * The courses that ship with the app. The packaged app points `TECHPREP_STARTERS` at its own
+ * copy; from the repo it is the `@tech-prep/starters` package.
  */
 const STARTERS_DIR =
   process.env.TECHPREP_STARTERS ??
@@ -12,17 +20,223 @@ const STARTERS_DIR =
     Bun.resolveSync("@tech-prep/starters/package.json", import.meta.dir)
   );
 
-/** The interview starter (NeetCode 150). */
-export const CONTENT_DIR = path.join(STARTERS_DIR, "interview");
-
-export const CURRICULUM_DIR = path.join(CONTENT_DIR, "curriculum");
-export const PROBLEMS_DIR = path.join(CONTENT_DIR, "problems");
-export const LESSONS_DIR = path.join(CONTENT_DIR, "lessons");
-
 export const HOME_DIR =
   process.env.TECHPREP_HOME ?? path.join(homedir(), ".tech-prep");
 
+/** Courses added beside the app. The app finds them at startup, with no reinstall. */
+export const COURSES_DIR =
+  process.env.TECHPREP_COURSES ?? path.join(HOME_DIR, "courses");
+
 export const WORKSPACE_DIR = path.join(HOME_DIR, "workspace");
+
+/** The newest course format this engine reads. A course that needs a newer one is skipped. */
+export const COURSE_FORMAT = 1;
+
+/** A course: one folder with a `course.json` manifest, a curriculum, lessons and problems. */
+export interface Course {
+  /** Stable id. Progress is stored under it, so it never changes. */
+  id: string;
+  name: string;
+  /** Two or three characters for the course's badge. */
+  initials: string;
+  /** Rises with every content change. The highest version of a course id is the one used. */
+  version: number;
+  dir: string;
+  /** True when the course ships with the app. */
+  builtin: boolean;
+}
+
+// SAFETY: callers only read the curriculum and problem files, which are authored to these
+// shapes and checked by `validateCurriculum` and `build-problem`.
+const readJson = <T>(file: string): T =>
+  JSON.parse(readFileSync(file, "utf-8")) as T;
+
+/** The `course.json` manifest. */
+const Manifest = z.object({
+  format: z.number().int().positive(),
+  id: z
+    .string()
+    .regex(/^[a-z0-9][a-z0-9-]*$/u, "use lowercase letters, digits and dashes"),
+  initials: z.string().min(1).max(3),
+  name: z.string().trim().min(1),
+  version: z.number().int(),
+});
+
+/** Read one course folder. Throws with the reason when the course cannot be used. */
+const readCourse = (dir: string, builtin: boolean): Course => {
+  const parsed = Manifest.safeParse(
+    JSON.parse(readFileSync(path.join(dir, "course.json"), "utf-8"))
+  );
+
+  if (!parsed.success) {
+    const [issue] = parsed.error.issues;
+
+    throw new Error(
+      `course.json: \`${issue?.path.join(".") ?? ""}\` ${issue?.message ?? "is not valid"}`
+    );
+  }
+
+  const { format, id, initials, name, version } = parsed.data;
+
+  if (format > COURSE_FORMAT) {
+    throw new Error(
+      `it needs course format ${format}, and this app reads up to ${COURSE_FORMAT}`
+    );
+  }
+
+  for (const file of ["topics.json", "concepts.json", "problems.json"]) {
+    if (!existsSync(path.join(dir, "curriculum", file))) {
+      throw new Error(`curriculum/${file} is missing`);
+    }
+  }
+
+  return { builtin, dir, id, initials, name, version };
+};
+
+interface Found {
+  courses: Course[];
+  /** One line per course folder that could not be used. */
+  errors: string[];
+}
+
+let scanned: Found | undefined;
+
+/**
+ * Scan the built-in folder, then the folder beside the app. A broken course is reported and
+ * skipped, so it never hides the others. When two folders hold the same course id, the higher
+ * version is used; on a tie the one beside the app wins, so a draft can be tried as it is.
+ */
+const discover = (): Found => {
+  const byId = new Map<string, Course>();
+  const errors: string[] = [];
+
+  for (const [root, builtin] of [
+    [STARTERS_DIR, true],
+    [COURSES_DIR, false],
+  ] as const) {
+    const folders = existsSync(root)
+      ? readdirSync(root, { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => path.join(root, entry.name))
+          .filter((dir) => existsSync(path.join(dir, "course.json")))
+          .toSorted()
+      : [];
+
+    for (const dir of folders) {
+      try {
+        const next = readCourse(dir, builtin);
+        const current = byId.get(next.id);
+
+        if (!current || next.version >= current.version) {
+          byId.set(next.id, next);
+        }
+      } catch (error) {
+        errors.push(
+          `Course in ${dir} was skipped: ${error instanceof Error ? error.message : String(error)}.`
+        );
+      }
+    }
+  }
+
+  return { courses: [...byId.values()], errors };
+};
+
+/** Every usable course, built-in ones first. */
+export const courses = (): Course[] => {
+  scanned ??= discover();
+
+  return scanned.courses;
+};
+
+/** Why a course folder was skipped. Empty when every folder could be read. */
+export const courseErrors = (): string[] => {
+  scanned ??= discover();
+
+  return scanned.errors;
+};
+
+/** The file that remembers which course the learner has open. The app and the tutor share it. */
+const STATE_FILE = path.join(HOME_DIR, "state.json");
+
+const State = z.object({ course: z.string() });
+
+const savedCourseId = (): string | null => {
+  try {
+    return State.parse(JSON.parse(readFileSync(STATE_FILE, "utf-8"))).course;
+  } catch {
+    return null;
+  }
+};
+
+let active: Course | undefined;
+
+const findCourse = (id: string | null): Course | undefined =>
+  courses().find((c) => c.id === id);
+
+/** The course every other function reads from: the one the learner has open. */
+export const course = (): Course => {
+  active ??= findCourse(savedCourseId()) ?? courses()[0];
+
+  if (!active) {
+    throw new Error(
+      `No course was found. ${courseErrors().join(" ")}`.trimEnd()
+    );
+  }
+
+  return active;
+};
+
+/** Read from another course from now on. Nothing is saved. */
+export const setCourse = (id: string): Course => {
+  const next = findCourse(id);
+
+  if (!next) {
+    throw new Error(`Unknown course '${id}'.`);
+  }
+
+  active = next;
+
+  return next;
+};
+
+/** Open a course and remember the choice, so the app and the tutor both start on it. */
+export const selectCourse = (id: string): Course => {
+  const next = setCourse(id);
+
+  mkdirSync(HOME_DIR, { recursive: true });
+  writeFileSync(STATE_FILE, `${JSON.stringify({ course: id }, null, 2)}\n`);
+
+  return next;
+};
+
+/** Follow the course the app has open. The tutor calls this before it answers. */
+export const followSavedCourse = (): void => {
+  const saved = findCourse(savedCourseId());
+
+  if (saved) {
+    active = saved;
+  }
+};
+
+/** Run `fn` against another course, then return to the open one. */
+export const inCourse = <T>(id: string, fn: () => T): T => {
+  const before = course();
+
+  setCourse(id);
+
+  try {
+    return fn();
+  } finally {
+    active = before;
+  }
+};
+
+const curriculumDir = (): string => path.join(course().dir, "curriculum");
+const problemsDir = (): string => path.join(course().dir, "problems");
+const lessonsDir = (): string => path.join(course().dir, "lessons");
+
+/** Where the learner's solution files for the open course live. */
+export const solutionsDir = (): string => path.join(WORKSPACE_DIR, course().id);
 
 export type Language = "python" | "typescript";
 
@@ -115,29 +329,43 @@ export interface Problem extends ProblemInfo, CallSpec {
   statement: string;
 }
 
-// SAFETY: callers only read the curriculum and problem files, which are authored to these
-// shapes and checked by `validateCurriculum` and `build-problem`.
-const readJson = <T>(file: string): T =>
-  JSON.parse(readFileSync(file, "utf-8")) as T;
+/** What was read from one course's files. */
+interface Cache {
+  topics?: Topic[];
+  concepts?: Concept[];
+  index?: ProblemInfo[];
+  problems: Map<string, Problem>;
+}
 
-let topicsCache: Topic[] | undefined;
-let conceptsCache: Concept[] | undefined;
-let indexCache: ProblemInfo[] | undefined;
-const problemCache = new Map<string, Problem>();
+const caches = new Map<string, Cache>();
+
+const cache = (): Cache => {
+  const { id } = course();
+  let current = caches.get(id);
+
+  if (!current) {
+    current = { problems: new Map() };
+    caches.set(id, current);
+  }
+
+  return current;
+};
 
 /** Topics in roadmap order. */
 export const topics = (): Topic[] => {
-  topicsCache ??= readJson<Topic[]>(path.join(CURRICULUM_DIR, "topics.json"));
+  const c = cache();
+  c.topics ??= readJson<Topic[]>(path.join(curriculumDir(), "topics.json"));
 
-  return topicsCache;
+  return c.topics;
 };
 
 export const concepts = (): Concept[] => {
-  conceptsCache ??= readJson<Concept[]>(
-    path.join(CURRICULUM_DIR, "concepts.json")
+  const c = cache();
+  c.concepts ??= readJson<Concept[]>(
+    path.join(curriculumDir(), "concepts.json")
   );
 
-  return conceptsCache;
+  return c.concepts;
 };
 
 export const concept = (id: string): Concept => {
@@ -152,11 +380,12 @@ export const concept = (id: string): Concept => {
 
 /** All problems in curriculum order (topic order, then the order within each topic). */
 export const problemIndex = (): ProblemInfo[] => {
-  indexCache ??= readJson<ProblemInfo[]>(
-    path.join(CURRICULUM_DIR, "problems.json")
+  const c = cache();
+  c.index ??= readJson<ProblemInfo[]>(
+    path.join(curriculumDir(), "problems.json")
   );
 
-  return indexCache;
+  return c.index;
 };
 
 /** A lesson's guided problem has the slug `guided-<concept id>` and lives in the lesson's folder. */
@@ -174,8 +403,8 @@ export const problemDir = (slug: string): string => {
   const conceptId = guidedConcept(slug);
 
   return conceptId
-    ? path.join(LESSONS_DIR, conceptId)
-    : path.join(PROBLEMS_DIR, slug);
+    ? path.join(lessonsDir(), conceptId)
+    : path.join(problemsDir(), slug);
 };
 
 export const problemInfo = (slug: string): ProblemInfo => {
@@ -183,7 +412,7 @@ export const problemInfo = (slug: string): ProblemInfo => {
 
   if (conceptId) {
     const c = concept(conceptId);
-    const spec = path.join(LESSONS_DIR, conceptId, "spec.json");
+    const spec = path.join(lessonsDir(), conceptId, "spec.json");
 
     return {
       concepts: [conceptId],
@@ -213,7 +442,7 @@ export const isAuthored = (slug: string): boolean =>
 
 /** The lesson text for a concept, or null when it is not written yet. */
 export const lessonText = (conceptId: string): string | null => {
-  const file = path.join(LESSONS_DIR, conceptId, "lesson.md");
+  const file = path.join(lessonsDir(), conceptId, "lesson.md");
 
   return existsSync(file) ? readFileSync(file, "utf-8") : null;
 };
@@ -225,7 +454,7 @@ export const hasLesson = (conceptId: string): boolean =>
   isAuthored(concept(conceptId).solo);
 
 export const problem = (slug: string): Problem => {
-  const cached = problemCache.get(slug);
+  const cached = cache().problems.get(slug);
 
   if (cached) {
     return cached;
@@ -247,7 +476,7 @@ export const problem = (slug: string): Problem => {
   );
 
   const full: Problem = { ...spec, ...info, statement };
-  problemCache.set(slug, full);
+  cache().problems.set(slug, full);
 
   return full;
 };
@@ -272,7 +501,7 @@ export interface Aliases {
 
 /** Old id -> new id, so learner progress follows a rename. */
 export const aliases = (): Aliases => {
-  const file = path.join(CURRICULUM_DIR, "aliases.json");
+  const file = path.join(curriculumDir(), "aliases.json");
 
   if (!existsSync(file)) {
     return { concepts: {}, problems: {} };
@@ -479,7 +708,7 @@ export const reservedNames = (language: Language): Set<string> => {
 };
 
 export const solutionPath = (slug: string, language: Language): string =>
-  path.join(WORKSPACE_DIR, `${slug}.${EXTENSIONS[language]}`);
+  path.join(solutionsDir(), `${slug}.${EXTENSIONS[language]}`);
 
 /** Word-wrap one line of prose for comment headers in solution and lesson files. */
 export const wrap = (line: string, width: number): string[] => {

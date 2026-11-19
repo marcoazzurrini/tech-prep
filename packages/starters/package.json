@@ -1,5 +1,5 @@
 {
   "name": "@tech-prep/starters",
   "private": true,
-  "description": "Ready-made agents. Each folder holds one agent's curriculum and problems; interview/ is the NeetCode 150."
+  "description": "The courses that ship with the app. Each folder with a course.json is one course; interview/ is the NeetCode 150."
 }

@@ -53,7 +53,7 @@ const ENGINE_DIR = RESOURCES
 export const engineEntry = (name: "bridge" | "index"): string =>
   path.join(ENGINE_DIR, `${name}.${RESOURCES ? "js" : "ts"}`);
 
-/** The ready-made subjects. */
+/** The courses that ship with the app. More can sit in the `courses` folder of the learner's data. */
 const STARTERS_DIR = RESOURCES
   ? path.join(RESOURCES, "starters")
   : packageDir("@tech-prep/starters");
@@ -112,6 +112,7 @@ const adoptLegacyHome = (): void => {
     !app.isPackaged ||
     process.env.TECHPREP_HOME ||
     existsSync(progress) ||
+    existsSync(path.join(HOME_DIR, "progress")) ||
     !existsSync(path.join(LEGACY_HOME, "progress.db"))
   ) {
     return;

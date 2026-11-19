@@ -1,8 +1,14 @@
 import { Database } from "bun:sqlite";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, renameSync } from "node:fs";
 import path from "node:path";
 
-import { HOME_DIR, aliases, concepts, problemIndex } from "./content.ts";
+import {
+  HOME_DIR,
+  aliases,
+  concepts,
+  course,
+  problemIndex,
+} from "./content.ts";
 
 /** Stored stages. "locked" and "available" are derived from prerequisites, never stored. */
 export type Stage = "unseen" | "learning" | "passed" | "mastered";
@@ -111,7 +117,8 @@ export interface ReviewRow {
   source_concept: string | null;
 }
 
-let db: Database | undefined;
+/** One database per course, opened on first use. */
+const dbs = new Map<string, Database>();
 
 const addColumn = (
   database: Database,
@@ -249,18 +256,46 @@ const migrate = (database: Database): void => {
   }
 };
 
-export const open = (): Database => {
-  if (db) {
-    return db;
+const PROGRESS_DIR = path.join(HOME_DIR, "progress");
+
+/** The course whose progress lived in `progress.db` before each course had its own file. */
+const FIRST_COURSE = "interview";
+
+/** Move the single database of earlier versions to its course's file. */
+const adoptOldDatabase = (file: string): void => {
+  const old = path.join(HOME_DIR, "progress.db");
+
+  if (existsSync(file) || !existsSync(old)) {
+    return;
   }
 
-  mkdirSync(HOME_DIR, { recursive: true });
-  db = new Database(path.join(HOME_DIR, "progress.db"), {
-    create: true,
-    strict: true,
-  });
+  for (const suffix of ["", "-wal", "-shm"]) {
+    if (existsSync(old + suffix)) {
+      renameSync(old + suffix, file + suffix);
+    }
+  }
+};
+
+/** The progress database of the open course. */
+export const open = (): Database => {
+  const { id } = course();
+  const current = dbs.get(id);
+
+  if (current) {
+    return current;
+  }
+
+  mkdirSync(PROGRESS_DIR, { recursive: true });
+  const file = path.join(PROGRESS_DIR, `${id}.db`);
+
+  if (id === FIRST_COURSE) {
+    adoptOldDatabase(file);
+  }
+
+  const db = new Database(file, { create: true, strict: true });
   db.exec("PRAGMA journal_mode = WAL;");
   migrate(db);
+  dbs.set(id, db);
 
   return db;
 };

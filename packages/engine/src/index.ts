@@ -10,15 +10,18 @@ import { z } from "zod";
 
 import {
   DEFAULT_LANGUAGE,
-  WORKSPACE_DIR,
   concept,
   concepts,
+  course,
+  courseErrors,
+  followSavedCourse,
   guidedConcept,
   isAuthored,
   problemInfo,
   problemsUsing,
   referenceSolution,
   solutionPath,
+  solutionsDir,
   topics,
   validateCurriculum,
   withPrereqs,
@@ -52,6 +55,9 @@ const safelyText =
   <A>(fn: (args: A) => string) =>
   (args: A) => {
     try {
+      // The learner may have switched course in the app since the last call.
+      followSavedCourse();
+
       return reply(fn(args));
     } catch (error) {
       return {
@@ -102,14 +108,18 @@ server.registerTool(
   },
   safely(() => {
     const open = currentAttempt();
-    // Empty unless the curriculum or the progress data is inconsistent.
-    const extra = { data_warnings: [...validateCurriculum(), ...orphans()] };
+
+    // Empty unless a course, the curriculum or the progress data is inconsistent.
+    const extra = {
+      course: course().name,
+      data_warnings: [...courseErrors(), ...validateCurriculum(), ...orphans()],
+    };
 
     if (!open) {
       return {
         on_screen:
           "No problem is open. The learner is between lessons or reviews.",
-        workspace: WORKSPACE_DIR,
+        workspace: solutionsDir(),
         ...extra,
       };
     }
@@ -136,7 +146,7 @@ server.registerTool(
       problem: open.slug,
       rules: MODE_RULES[open.mode ?? "review"],
       title: problemInfo(open.slug).title,
-      workspace: WORKSPACE_DIR,
+      workspace: solutionsDir(),
       ...extra,
     };
   })

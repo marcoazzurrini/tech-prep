@@ -1,5 +1,12 @@
 import { afterAll, describe, expect, test } from "bun:test";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -8,6 +15,67 @@ const home = mkdtempSync(path.join(tmpdir(), "tech-prep-test-"));
 
 process.env.TECHPREP_HOME = home;
 
+// Courses beside the app: a small one, a newer copy of it, and one with a broken manifest.
+const extra = path.join(home, "courses");
+
+/** A manifest as a test writes it: any field may be wrong or missing. */
+interface Draft {
+  format: number;
+  id: string;
+  initials: string;
+  name?: string;
+  version: number;
+}
+
+const writeCourse = (folder: string, manifest: Draft): void => {
+  const dir = path.join(extra, folder, "curriculum");
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(
+    path.join(extra, folder, "course.json"),
+    JSON.stringify(manifest)
+  );
+  writeFileSync(
+    path.join(dir, "topics.json"),
+    JSON.stringify([{ id: "basics", name: "Basics", prereqs: [] }])
+  );
+  writeFileSync(
+    path.join(dir, "concepts.json"),
+    JSON.stringify([
+      {
+        encompasses: [],
+        id: "first-idea",
+        key_idea: "The first idea.",
+        name: `First Idea in ${folder}`,
+        prereqs: [],
+        solo: "first-task",
+        topic: "basics",
+      },
+    ])
+  );
+  writeFileSync(
+    path.join(dir, "problems.json"),
+    JSON.stringify([
+      {
+        concepts: ["first-idea"],
+        difficulty: "easy",
+        slug: "first-task",
+        title: "First Task",
+        topic: "basics",
+      },
+    ])
+  );
+};
+
+const mini = { format: 1, id: "mini", initials: "Mi", name: "Mini" };
+
+writeCourse("mini-old", { ...mini, version: 1 });
+
+writeCourse("mini-new", { ...mini, version: 2 });
+
+writeCourse("too-new", { ...mini, format: 99, id: "too-new", version: 1 });
+
+writeCourse("no-name", { format: 1, id: "no-name", initials: "X", version: 1 });
+
 const content = await import("../src/content.ts");
 const practice = await import("../src/practice.ts");
 const scheduler = await import("../src/scheduler.ts");
@@ -15,6 +83,55 @@ const runner = await import("../src/runner.ts");
 const exercises = await import("../src/exercises.ts");
 
 afterAll(() => rmSync(home, { force: true, recursive: true }));
+
+describe("courses", () => {
+  test("the app's own courses come first, then the ones beside it", () => {
+    expect(content.courses().map((c) => c.id)).toEqual(["interview", "mini"]);
+    expect(content.course().id).toBe("interview");
+  });
+
+  test("the higher version of a course id is the one used", () => {
+    const found = content.courses().find((c) => c.id === "mini");
+    expect(found).toMatchObject({ builtin: false, version: 2 });
+    expect(found?.dir).toBe(path.join(extra, "mini-new"));
+  });
+
+  test("a broken course is reported and skipped", () => {
+    const errors = content.courseErrors();
+    expect(errors).toHaveLength(2);
+    expect(errors.join("\n")).toContain("course format 99");
+    expect(errors.join("\n")).toContain("`name`");
+  });
+
+  test("each course has its own curriculum and its own progress", () => {
+    const practised = content.inCourse("mini", () => {
+      expect(content.validateCurriculum()).toEqual([]);
+      scheduler.completeLesson("first-idea");
+
+      return {
+        names: content.concepts().map((c) => c.name),
+        status: scheduler.conceptStatus("first-idea").stage,
+      };
+    });
+
+    expect(practised.names).toEqual(["First Idea in mini-new"]);
+    expect(practised.status).not.toBe("available");
+    expect(content.course().id).toBe("interview");
+    expect(content.concepts().length).toBeGreaterThan(1);
+    expect(() => content.concept("first-idea")).toThrow();
+    expect(existsSync(path.join(home, "progress", "mini.db"))).toBe(true);
+  });
+
+  test("the chosen course is remembered for the app and the tutor", () => {
+    content.selectCourse("mini");
+    expect(content.course().id).toBe("mini");
+    content.setCourse("interview");
+    content.followSavedCourse();
+    expect(content.course().id).toBe("mini");
+    content.selectCourse("interview");
+    expect(() => content.selectCourse("nope")).toThrow("Unknown course");
+  });
+});
 
 describe("curriculum", () => {
   test("the index holds the NeetCode 150 with known topics and concepts", () => {

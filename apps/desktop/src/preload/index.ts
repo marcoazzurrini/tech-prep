@@ -24,6 +24,7 @@ const api = {
       | "code.save"
       | "code.submit"
       | "course"
+      | "course.select"
       | "exercise.close"
       | "exercise.submit"
       | "lesson"
@@ -38,6 +39,8 @@ const api = {
       text?: string;
       /** An exercise id. */
       id?: number;
+      /** A course id. */
+      course?: string;
       /** A concept id, for the lesson methods. */
       concept?: string;
       response?: string | string[];

@@ -30,6 +30,7 @@ import {
   problemDir,
   problemIndex,
   problemInfo,
+  setCourse,
 } from "../src/content.ts";
 import type {
   Language,
@@ -234,6 +235,12 @@ const build = (slug: string): string[] => {
 
 const args = process.argv.slice(2);
 
+// `--course <id>` builds another course's problems. The default is the course that is open.
+if (args[0] === "--course") {
+  setCourse(args[1] ?? "");
+  args.splice(0, 2);
+}
+
 const slugs =
   args[0] === "--all"
     ? [
@@ -243,7 +250,9 @@ const slugs =
     : args;
 
 if (!slugs.length) {
-  console.log("usage: bun scripts/build-problem.ts <slug...> | --all");
+  console.log(
+    "usage: bun scripts/build-problem.ts [--course <id>] <slug...> | --all"
+  );
   process.exit(1);
 }
 

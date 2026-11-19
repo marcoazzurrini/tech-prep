@@ -131,7 +131,12 @@ export interface Session {
 
 /** From the bridge's `course` method. */
 export interface Course {
+  /** The course that is open. */
   subject: { id: string; name: string; initials: string };
+  /** Every course the app found, with its concepts due for review. */
+  courses: { id: string; name: string; initials: string; due: number }[];
+  /** Why a course folder could not be used, one line each. */
+  skipped: string[];
   concepts: { learned: number; total: number };
   problems: { solved: number; total: number };
   /** Concepts due for review. */

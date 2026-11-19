@@ -1,15 +1,23 @@
 #!/usr/bin/env bun
 // Small CLI for checking the engine from a shell, e.g. `bun src/cli.ts check`.
 
-import { validateCurriculum } from "./content.ts";
+import { courseErrors, setCourse, validateCurriculum } from "./content.ts";
 import { orphans } from "./db.ts";
 import { nextLesson, nextReview, topicProgress } from "./scheduler.ts";
 
-const [command] = process.argv.slice(2);
+const args = process.argv.slice(2);
+
+// `--course <id>` reads another course. The default is the course that is open.
+if (args[0] === "--course") {
+  setCourse(args[1] ?? "");
+  args.splice(0, 2);
+}
+
+const [command] = args;
 
 switch (command) {
   case "check": {
-    const problems = [...validateCurriculum(), ...orphans()];
+    const problems = [...courseErrors(), ...validateCurriculum(), ...orphans()];
     console.log(
       problems.length
         ? problems.map((p) => `✗ ${p}`).join("\n")
@@ -45,7 +53,9 @@ switch (command) {
   }
 
   default: {
-    console.log("usage: bun src/cli.ts next | progress | check");
+    console.log(
+      "usage: bun src/cli.ts [--course <id>] next | progress | check"
+    );
     process.exit(command ? 1 : 0);
   }
 }

@@ -3,7 +3,7 @@
 //   bin/bun      the Bun runtime this script runs on
 //   bin/claude   Claude Code, from the Agent SDK's package for this platform
 //   engine/      the bundled engine (run `bun run build` in packages/engine first)
-//   starters/    the ready-made subjects
+//   starters/    the courses that ship with the app
 //   tutor/       the Claude Code plugin, with an MCP config that points at the files above
 
 import {
@@ -11,6 +11,7 @@ import {
   cpSync,
   existsSync,
   mkdirSync,
+  readdirSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -60,7 +61,12 @@ for (const [name, from] of [
 
 cpSync(engine, path.join(OUT, "engine"), { recursive: true });
 
-for (const name of ["package.json", "interview"]) {
+// Every folder with a manifest is a course.
+const courses = readdirSync(starters).filter((name) =>
+  existsSync(path.join(starters, name, "course.json"))
+);
+
+for (const name of ["package.json", ...courses]) {
   cpSync(path.join(starters, name), path.join(OUT, "starters", name), {
     recursive: true,
   });

@@ -18,6 +18,7 @@
     "dev": "bun --filter @tech-prep/desktop dev",
     "storybook": "bun --filter @tech-prep/demo dev",
     "install-app": "bun run --cwd apps/desktop install-app",
+    "sync-courses": "bun scripts/sync-courses.ts",
     "build": "bun --filter '*' build",
     "typecheck": "bun --filter '*' typecheck",
     "test": "bun --filter '*' test",
