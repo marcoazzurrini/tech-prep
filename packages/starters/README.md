@@ -1,6 +1,30 @@
 # Starters
 
-Ready-made subjects. `interview/` is the NeetCode 150, taught concept by concept.
+The courses that ship with the app. `interview/` is the NeetCode 150, taught concept by concept.
+
+## Courses
+
+A course is a folder with a `course.json` manifest, a `curriculum/` folder, and its lessons and problems.
+
+```json
+{
+  "id": "interview",
+  "name": "NeetCode 150",
+  "initials": "150",
+  "version": 1,
+  "format": 1
+}
+```
+
+- `id` never changes. Progress is stored under it.
+- `version` goes up with every content change.
+- `format` is the course format the content is written for. The app skips a course that needs a newer format than it reads.
+
+The app looks for courses in two places when it starts: the ones it ships with, and the `courses` folder in its data folder. It lists every course it finds. When both places hold the same `id`, the higher `version` is used; on a tie, the one in the data folder wins. A course that cannot be read is skipped, and the others still load.
+
+`bun run sync-courses` copies the courses here into the installed app's data folder. Restart the app to see them. So a content change needs no reinstall. Pass course ids to copy only those.
+
+The scripts below work on the open course. Pass `--course <id>` first to work on another one.
 
 Each concept in `interview/curriculum/concepts.json` has a lesson in `interview/lessons/<concept id>/` and a `solo` problem, the one its lesson ends on. Problems that no lesson ends on are used for reviews. A problem with `"source": "extra"` is not on the NeetCode list; it fills a concept the list has no fitting problem for.
 

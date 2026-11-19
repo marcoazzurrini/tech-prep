@@ -2,11 +2,11 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import {
   DEFAULT_LANGUAGE,
-  WORKSPACE_DIR,
   guidedConcept,
   problem as getProblem,
   referenceSolution,
   solutionPath,
+  solutionsDir,
 } from "./content.ts";
 import type { Language } from "./content.ts";
 import {
@@ -53,8 +53,8 @@ export const startProblem = (
   mode: Mode | null = null
 ) => {
   const p = getProblem(slug);
-  mkdirSync(WORKSPACE_DIR, { recursive: true });
-  ensureDataStructures(WORKSPACE_DIR, language);
+  mkdirSync(solutionsDir(), { recursive: true });
+  ensureDataStructures(solutionsDir(), language);
   const file = solutionPath(slug, language);
   let current = openAttempt(slug, language);
   const resumed = Boolean(current);

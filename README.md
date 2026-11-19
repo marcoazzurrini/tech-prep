@@ -18,6 +18,8 @@ bun run install-app --open   # the same, then open it
 
 To update, run `git pull`, then `bun run install-app` again. It quits the running app, backs up your progress and replaces the app. Your progress lives outside the app, so it survives every install.
 
+When only course content changed, run `bun run sync-courses` and restart the app. No reinstall is needed. `packages/starters/README.md` explains how the app finds courses.
+
 The app is signed ad hoc, without an Apple Developer account. A copy you build yourself opens normally. A copy downloaded from elsewhere needs "Open Anyway" once, in System Settings, Privacy & Security.
 
 Your progress and workspace live in `~/Library/Application Support/tech-prep`. The first run copies any data from the old `~/.tech-prep` folder and leaves that folder untouched. Set `TECHPREP_HOME` to use another folder.

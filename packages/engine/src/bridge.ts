@@ -10,14 +10,19 @@ import {
   DEFAULT_LANGUAGE,
   concept,
   concepts,
+  course as openCourse,
+  courseErrors,
+  courses,
   guidedConcept,
   guidedSlug,
   hasLesson,
+  inCourse,
   isAuthored,
   lessonText,
   problem,
   problemIndex,
   problemInfo,
+  selectCourse,
   topics,
 } from "./content.ts";
 import type { Difficulty, Language } from "./content.ts";
@@ -58,8 +63,12 @@ import {
   soloWait,
 } from "./scheduler.ts";
 
-/** The only subject so far. */
-const SUBJECT = { id: "interview", initials: "150", name: "NeetCode 150" };
+/** The open course as the app names it. */
+const subject = () => {
+  const { id, initials, name } = openCourse();
+
+  return { id, initials, name };
+};
 
 /** A rough time to solve a problem, for the review estimate. */
 const MINUTES: Record<Difficulty, number> = { easy: 8, hard: 25, medium: 15 };
@@ -119,13 +128,20 @@ const course = () => {
       learned: concepts().filter((c) => isPassed(c.id)).length,
       total: concepts().length,
     },
+    courses: courses().map((c) => ({
+      due: inCourse(c.id, dueCount),
+      id: c.id,
+      initials: c.initials,
+      name: c.name,
+    })),
     due: dueCount(),
     next_lesson: nextLesson(),
     problems: {
       solved: listed.filter((p) => problemStatus(p.slug) === "solved").length,
       total: listed.length,
     },
-    subject: SUBJECT,
+    skipped: courseErrors(),
+    subject: subject(),
     topics: topics().map((t) => {
       const lessons = concepts()
         .filter((c) => c.topic === t.id)
@@ -218,47 +234,88 @@ const peekLesson = (params: Params) => {
   return { counted_as_help: false };
 };
 
-/** What is due, per track. One track so far. */
-const reviews = () => {
+/** What is due in the open course. */
+const track = () => {
   const plan = reviewPlan();
-  const due = dueCount();
 
   return {
-    due,
+    ...subject(),
+    due: dueCount(),
     minutes: plan.reduce((sum, r) => sum + MINUTES[r.problem.difficulty], 0),
+    next_due: nextDue(),
     problems: plan.length,
-    tracks: [
-      {
-        ...SUBJECT,
-        due,
-        minutes: plan.reduce(
-          (sum, r) => sum + MINUTES[r.problem.difficulty],
-          0
-        ),
-        next_due: nextDue(),
-        problems: plan.length,
-      },
-    ],
   };
 };
 
-/** Open the next review, or resume the one that is open. Null when nothing is left. */
-const startReview = () => {
+/** What is due, per track. Each course is one track. */
+const reviews = () => {
+  const tracks = courses().map((c) => inCourse(c.id, track));
+
+  return {
+    due: tracks.reduce((sum, t) => sum + t.due, 0),
+    minutes: tracks.reduce((sum, t) => sum + t.minutes, 0),
+    problems: tracks.reduce((sum, t) => sum + t.problems, 0),
+    tracks,
+  };
+};
+
+/** The next review of the open course, opened. Null when nothing is due in it. */
+const reviewHere = () => {
   const open = currentAttempt();
 
   if (open?.mode === "review") {
-    return { problem: problemView(open.slug) };
+    return problemView(open.slug);
   }
 
   const next = nextReview();
 
   if (!next) {
-    return { problem: null };
+    return null;
   }
 
   startProblem(next.problem.slug, DEFAULT_LANGUAGE, "review");
 
-  return { problem: problemView(next.problem.slug) };
+  return problemView(next.problem.slug);
+};
+
+/**
+ * Open the next review, or resume the one that is open. With `course`, only that track is
+ * reviewed. Without it every track is: when the open course has nothing left, the next course
+ * with a review due opens. Null when nothing is left.
+ */
+const startReview = (params: Params) => {
+  if (params?.course) {
+    selectCourse(params.course);
+
+    return { problem: reviewHere() };
+  }
+
+  const here = reviewHere();
+
+  if (here) {
+    return { problem: here };
+  }
+
+  const other = courses().find((c) => inCourse(c.id, dueCount) > 0);
+
+  if (!other || inCourse(other.id, nextReview) === null) {
+    return { problem: null };
+  }
+
+  selectCourse(other.id);
+
+  return { problem: reviewHere() };
+};
+
+/** The learner chose another course. */
+const select = (params: Params) => {
+  if (!params?.course) {
+    throw new Error("This method needs a course id.");
+  }
+
+  selectCourse(params.course);
+
+  return course();
 };
 
 /** One request line from the app. */
@@ -272,6 +329,8 @@ interface BridgeRequest {
     id?: number;
     /** A concept id, for the lesson methods. */
     concept?: string;
+    /** A course id. */
+    course?: string;
     response?: string | string[];
     confidence?: Confidence | null;
   };
@@ -412,6 +471,7 @@ const methods = new Map<string, (params: Params) => object>([
   ["code.save", saveCode],
   ["code.submit", submitCode],
   ["course", course],
+  ["course.select", select],
   ["exercise.close", closeExercise],
   ["exercise.submit", submit],
   ["lesson", lesson],
@@ -425,7 +485,9 @@ const methods = new Map<string, (params: Params) => object>([
 
 // An extra exercise lasts for one sitting. One left open by an earlier run would cover the
 // lesson, so the app starts with none on screen.
-closeExercises();
+for (const c of courses()) {
+  inCourse(c.id, closeExercises);
+}
 
 for await (const line of console) {
   if (!line.trim()) {

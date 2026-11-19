@@ -27,8 +27,20 @@ const TARGET = path.join("/Applications", `${NAME}.app`);
 /** Where the installed app keeps the learner's progress. */
 const DATA_DIR = path.join(homedir(), "Library", "Application Support", NAME);
 const BACKUPS_DIR = path.join(DATA_DIR, "backups");
-const DATABASE = "progress.db";
-const DATABASE_FILES = [DATABASE, `${DATABASE}-wal`, `${DATABASE}-shm`];
+
+/** One database per course. */
+const PROGRESS = "progress";
+
+/** The single database of earlier versions. The app moves it into `progress/` when it opens. */
+const OLD_DATABASE = "progress.db";
+
+const PROGRESS_FILES = [
+  PROGRESS,
+  OLD_DATABASE,
+  `${OLD_DATABASE}-wal`,
+  `${OLD_DATABASE}-shm`,
+];
+
 const BACKUPS_TO_KEEP = 10;
 
 const step = (message: string): void => {
@@ -70,9 +82,9 @@ const quitApp = async (): Promise<void> => {
   }
 };
 
-/** Copies the database into backups/<timestamp>/ and keeps the newest few. */
+/** Copies the progress databases into backups/<timestamp>/ and keeps the newest few. */
 const backUpProgress = (): string | null => {
-  if (!existsSync(path.join(DATA_DIR, DATABASE))) {
+  if (!PROGRESS_FILES.some((file) => existsSync(path.join(DATA_DIR, file)))) {
     return null;
   }
 
@@ -81,11 +93,11 @@ const backUpProgress = (): string | null => {
   const target = path.join(BACKUPS_DIR, stamp);
   mkdirSync(target, { recursive: true });
 
-  for (const file of DATABASE_FILES) {
+  for (const file of PROGRESS_FILES) {
     const source = path.join(DATA_DIR, file);
 
     if (existsSync(source)) {
-      cpSync(source, path.join(target, file));
+      cpSync(source, path.join(target, file), { recursive: true });
     }
   }
 

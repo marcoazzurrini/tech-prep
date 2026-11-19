@@ -16,7 +16,7 @@ type View =
   /** The list of what is due, per track. */
   | { kind: "reviews" }
   /** A review session in progress. */
-  | { kind: "review"; planned: number };
+  | { kind: "review"; planned: number; track?: string };
 
 export const App = () => {
   const [course, setCourse] = useState<Course | null>(null);
@@ -118,14 +118,40 @@ export const App = () => {
     [go]
   );
 
-  const startReviews = useCallback(() => {
+  /** Start the reviews of one track, or of every track when none is named. */
+  const startReviews = useCallback((track?: string) => {
     const start = async () => {
       const reviews = await engine<Reviews>("reviews");
-      setView({ kind: "review", planned: reviews.problems });
+      const chosen = reviews.tracks.find((t) => t.id === track);
+
+      setView({
+        kind: "review",
+        planned: chosen?.problems ?? reviews.problems,
+        track,
+      });
     };
 
     void start();
   }, []);
+
+  /** Open another course, on the lesson the learner should do next in it. */
+  const switchCourse = useCallback(
+    (id: string) => {
+      const change = async () => {
+        await engine("exercise.close");
+        await engine("course.select", { course: id });
+        const next = await engine<Course>("course");
+        const lesson = next.next_lesson ?? next.topics[0]?.lessons[0]?.id;
+
+        setCourse(next);
+        setView(lesson ? { id: lesson, kind: "lesson" } : { kind: "reviews" });
+        refresh();
+      };
+
+      void change();
+    },
+    [refresh]
+  );
 
   // Cmd+L opens the tutor and puts the cursor in it.
   useEffect(() => {
@@ -199,6 +225,7 @@ export const App = () => {
     pane = (
       <ReviewSession
         nextLesson={course.next_lesson}
+        only={view.track}
         planned={view.planned}
         track={course.subject.name}
         tutorOpen={tutorOpen}
@@ -228,7 +255,9 @@ export const App = () => {
         <Rail>
           <RailItem
             active={!inLesson}
-            count={course.due || undefined}
+            count={
+              course.courses.reduce((sum, c) => sum + c.due, 0) || undefined
+            }
             label="Reviews"
             onClick={() => {
               // A review in progress stays open; leaving it is done with "End reviews".
@@ -240,19 +269,35 @@ export const App = () => {
             <CalendarCheck size={16} />
           </RailItem>
           <RailDivider />
-          <RailItem
-            active={inLesson}
-            label={course.subject.name}
-            onClick={() => {
-              const id = course.next_lesson ?? lessons[0]?.id;
+          {course.courses.map((c) => {
+            const current = c.id === course.subject.id;
 
-              if (!inLesson && view.kind !== "review" && id) {
-                select(id);
-              }
-            }}
-          >
-            <Badge active={inLesson} initials={course.subject.initials} />
-          </RailItem>
+            return (
+              <RailItem
+                active={inLesson && current}
+                key={c.id}
+                label={c.name}
+                onClick={() => {
+                  // A review in progress stays open; leaving it is done with "End reviews".
+                  if (view.kind === "review" || (inLesson && current)) {
+                    return;
+                  }
+
+                  if (current) {
+                    const id = course.next_lesson ?? lessons[0]?.id;
+
+                    if (id) {
+                      select(id);
+                    }
+                  } else {
+                    switchCourse(c.id);
+                  }
+                }}
+              >
+                <Badge active={inLesson && current} initials={c.initials} />
+              </RailItem>
+            );
+          })}
         </Rail>
       }
       tutor={

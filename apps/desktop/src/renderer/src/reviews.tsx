@@ -44,8 +44,8 @@ const trackDetail = (t: Track): string => {
 interface ReviewsScreenProps {
   tutorOpen: boolean;
   onToggleTutor: () => void;
-  /** Start the reviews of the tracks the learner chose. */
-  onStart: () => void;
+  /** Start the reviews of one track, or of every track when none is named. */
+  onStart: (track?: string) => void;
 }
 
 /** What is due, per track. The calendar icon opens this screen. */
@@ -102,7 +102,7 @@ export const ReviewsScreen = ({
                 iconEnd={ArrowRight}
                 size="large"
                 variant="primary"
-                onClick={onStart}
+                onClick={() => onStart()}
               >
                 Review all
               </Button>
@@ -121,7 +121,7 @@ export const ReviewsScreen = ({
                     <Button
                       iconEnd={ArrowRight}
                       variant={several ? "secondary" : "primary"}
-                      onClick={onStart}
+                      onClick={() => onStart(t.id)}
                     >
                       Start
                     </Button>
@@ -145,9 +145,11 @@ export const ReviewsScreen = ({
   );
 };
 
-/** Open the next review in the engine. Null when nothing is left. */
-const nextReview = async (): Promise<Problem | null> => {
-  const reply = await engine<{ problem: Problem | null }>("review.next");
+/** Open the next review in the engine, of one track or of all. Null when nothing is left. */
+const nextReview = async (course?: string): Promise<Problem | null> => {
+  const reply = await engine<{ problem: Problem | null }>("review.next", {
+    course,
+  });
 
   return reply.problem;
 };
@@ -161,6 +163,8 @@ interface Done {
 interface ReviewSessionProps {
   /** The track's name, shown in the top bar so the learner knows which course they are in. */
   track: string;
+  /** The one track being reviewed. Every track is reviewed when it is left out. */
+  only?: string;
   /** How many reviews were due when the session started. */
   planned: number;
   tutorOpen: boolean;
@@ -262,6 +266,7 @@ const Verdict = ({
  */
 export const ReviewSession = ({
   track,
+  only,
   planned,
   tutorOpen,
   onToggleTutor,
@@ -279,12 +284,12 @@ export const ReviewSession = ({
   // Open the first review, or resume the one that was open.
   useEffect(() => {
     const load = async () => {
-      setProblem(await nextReview());
+      setProblem(await nextReview(only));
       onChanged();
     };
 
     void load();
-  }, [onChanged]);
+  }, [onChanged, only]);
 
   if (problem === "loading") {
     return <LessonPane>{null}</LessonPane>;
@@ -379,7 +384,7 @@ export const ReviewSession = ({
       ]);
     }
 
-    const upcoming = await nextReview();
+    const upcoming = await nextReview(only);
     setFinished(null);
     setProblem(upcoming);
     onChanged();
