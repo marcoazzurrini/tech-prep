@@ -20,13 +20,17 @@ import {
   concepts,
   courseById,
   guidedSlugs,
+  problemIndex,
+} from "../src/content.ts";
+import type { Course } from "../src/content.ts";
+import type { JqTask, JqTest } from "../src/jq.ts";
+import {
   jqCommand,
   jqProblemStub,
   jqSpec,
-  problemIndex,
-} from "../src/content.ts";
-import type { Course, JqTask, JqTest } from "../src/content.ts";
-import { runOnce, sameOutput } from "../src/jq.ts";
+  runOnce,
+  sameOutput,
+} from "../src/jq.ts";
 
 const MIN_TESTS = 3;
 

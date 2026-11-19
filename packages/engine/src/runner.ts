@@ -2,9 +2,9 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-import { EXTENSIONS, functionName } from "./content.ts";
-import type { CompareMode, Language, Problem } from "./content.ts";
-import { runJq } from "./jq.ts";
+import type { CodeProblem, CompareMode } from "./code.ts";
+import { EXTENSIONS } from "./content.ts";
+import type { Language } from "./content.ts";
 
 const TIMEOUT_MS = 10_000;
 const HARNESS_DIR = path.join(import.meta.dir, "harness");
@@ -94,12 +94,13 @@ export const equal = (
   );
 };
 
-export const runTests = (
-  problem: Problem,
+/** Run a code problem's test cases on the solution in `file`. */
+export const runCode = (
+  problem: CodeProblem,
   language: Language,
   file: string
 ): RunResult => {
-  const total = problem.jq?.tests.length ?? problem.tests.length;
+  const total = problem.tests.length;
 
   if (!existsSync(file)) {
     return {
@@ -110,10 +111,6 @@ export const runTests = (
     };
   }
 
-  if (language === "jq") {
-    return runJq(problem, readFileSync(file, "utf-8"));
-  }
-
   ensureDataStructures(path.dirname(file), language);
 
   const request = {
@@ -122,7 +119,7 @@ export const runTests = (
     decode: problem.decode,
     encode: problem.encode,
     file,
-    function: functionName(problem, language),
+    function: problem.function?.[language],
     kind: problem.kind ?? "function",
     output: problem.output,
     params: problem.params,

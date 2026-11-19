@@ -21,29 +21,23 @@ import {
 import { tmpdir } from "node:os";
 import path from "node:path";
 
+import type { CodeProblem, TestCase } from "../src/code.ts";
 import {
   EXTENSIONS,
   LANGUAGES,
   concepts,
   guidedSlug,
-  isAuthored,
   problemDir,
   problemIndex,
-  problemInfo,
   courseById,
   savedCourse,
 } from "../src/content.ts";
-import type {
-  Course,
-  Language,
-  Problem,
-  ProblemInfo,
-  TestCase,
-} from "../src/content.ts";
-import { formatRun, runTests } from "../src/runner.ts";
+import type { Course, Language, ProblemInfo } from "../src/content.ts";
+import { formatRun, runCode } from "../src/runner.ts";
+import { isAuthored, problemInfo } from "../src/tasks.ts";
 
 /** spec.json as authored: any field may be missing until `checkSpec` passes. */
-type Spec = Partial<Omit<Problem, keyof ProblemInfo | "statement">>;
+type Spec = Partial<Omit<CodeProblem, keyof ProblemInfo | "statement">>;
 
 const load = (course: Course, slug: string) => {
   // SAFETY: every field of `Spec` is optional; `checkSpec` validates the ones the build relies on.
@@ -61,7 +55,7 @@ const load = (course: Course, slug: string) => {
     ...spec,
     ...problemInfo(course, slug),
     statement,
-  } as Problem;
+  } as CodeProblem;
 
   return { problem, spec };
 };
@@ -77,7 +71,7 @@ const formatSpec = (spec: Spec, tests: TestCase[]): string => {
 };
 
 const runFile = (
-  problem: Problem,
+  problem: CodeProblem,
   language: Language,
   source: string,
   dir: string
@@ -89,7 +83,7 @@ const runFile = (
 
   writeFileSync(file, source);
 
-  return runTests(problem, language, file);
+  return runCode(problem, language, file);
 };
 
 /** Fields every spec needs: stubs, function names (for function problems) and enough tests. */
@@ -122,7 +116,7 @@ const fillExpected = (
   slug: string,
   spec: Spec,
   tests: TestCase[],
-  problem: Problem,
+  problem: CodeProblem,
   dir: string
 ): string[] => {
   const missing = tests.flatMap((t, i) =>
@@ -230,7 +224,7 @@ const build = (course: Course, slug: string): string[] => {
 
     // 3. Stubs must load.
     for (const language of LANGUAGES) {
-      const run = runFile(built, language, built.stubs[language], dir);
+      const run = runFile(built, language, built.stubs[language] ?? "", dir);
 
       if (run.fatal) {
         errors.push(`stub (${language}) does not load: ${run.fatal}`);

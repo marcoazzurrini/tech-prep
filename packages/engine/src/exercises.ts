@@ -17,6 +17,7 @@ import { applyResults } from "./outcomes.ts";
 import type { Applied } from "./outcomes.ts";
 import { ensureDataStructures } from "./runner.ts";
 import { MAX_TARGETS, isPassed } from "./scheduler.ts";
+import { taskType } from "./tasks.ts";
 
 const TIMEOUT_MS = 10_000;
 
@@ -225,10 +226,10 @@ export const showExercise = (course: Course, input: ExerciseInput) => {
     concept(course, id);
   }
 
-  // The engine checks an exercise by running its code, and it runs TypeScript and Python only.
-  if (course.kind === "jq" && input.kind !== "answer") {
+  // Every other kind of exercise is checked by running its code.
+  if (!taskType(course).runsExerciseCode && input.kind !== "answer") {
     throw new Error(
-      "In the jq course only an 'answer' exercise can be shown. Explain with short jq examples in chat."
+      `In the ${course.name} course only an 'answer' exercise can be shown. Explain with short examples in chat.`
     );
   }
 

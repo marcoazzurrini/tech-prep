@@ -3,6 +3,7 @@ import {
   existsSync,
   mkdirSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   rmSync,
   writeFileSync,
@@ -82,6 +83,7 @@ const scheduler = await import("../src/scheduler.ts");
 const runner = await import("../src/runner.ts");
 const exercises = await import("../src/exercises.ts");
 const jq = await import("../src/jq.ts");
+const tasks = await import("../src/tasks.ts");
 const database = await import("../src/db.ts");
 
 type Course = ReturnType<typeof content.courseById>;
@@ -143,6 +145,25 @@ describe("courses", () => {
   });
 });
 
+describe("architecture", () => {
+  // What a task is belongs to the task types. Engine code that branched on the kind of
+  // course, or on the jq language, would have to change for every new kind.
+  test("only the task types know the kind of a course", () => {
+    const src = path.join(import.meta.dir, "..", "src");
+    const own = new Set(["code.ts", "jq.ts", "tasks.ts"]);
+
+    const leaks = readdirSync(src)
+      .filter((name) => name.endsWith(".ts") && !own.has(name))
+      .filter((name) =>
+        /\.kind\b[^\n]*"(?:jq|code)"|=== "jq"|!== "jq"|\.jq\b/u.test(
+          readFileSync(path.join(src, name), "utf-8")
+        )
+      );
+
+    expect(leaks).toEqual([]);
+  });
+});
+
 describe("curriculum", () => {
   const course = interview;
 
@@ -166,7 +187,7 @@ describe("curriculum", () => {
   test("every concept has a written lesson, a guided problem and a solo problem", () => {
     const missing = content
       .concepts(course)
-      .filter((c) => !content.hasLesson(course, c.id))
+      .filter((c) => !tasks.hasLesson(course, c.id))
       .map((c) => c.id);
 
     expect(missing).toEqual([]);
@@ -174,7 +195,7 @@ describe("curriculum", () => {
 
   test("a guided problem belongs to its lesson and is not a curriculum problem", () => {
     const slug = content.guidedSlug("canonical-key");
-    expect(content.problemInfo(course, slug)).toMatchObject({
+    expect(tasks.problemInfo(course, slug)).toMatchObject({
       concepts: ["canonical-key"],
       source: "guided",
       title: "Group Words by Length",
@@ -216,34 +237,36 @@ describe("runner", () => {
   };
 
   test("python: passing, failing, crashing and syntax errors", () => {
-    const twoSum = content.problem(course, "two-sum");
+    const twoSum = "two-sum";
 
     const good = write(
       "good.py",
       "def two_sum(nums, target):\n    seen = {}\n    for i, n in enumerate(nums):\n        if target - n in seen:\n            return [seen[target - n], i]\n        seen[n] = i\n"
     );
 
-    expect(runner.runTests(twoSum, "python", good).passed).toBe(
-      twoSum.tests.length
-    );
+    const goodRun = tasks.runTests(course, twoSum, "python", good);
+    expect(goodRun.passed).toBe(goodRun.total);
+    expect(goodRun.total).toBeGreaterThan(0);
 
     const bad = write(
       "bad.py",
       "def two_sum(nums, target):\n    print('debug')\n    return [0, 0]\n"
     );
 
-    const badRun = runner.runTests(twoSum, "python", bad);
+    const badRun = tasks.runTests(course, twoSum, "python", bad);
     expect(badRun.passed).toBeLessThan(badRun.total);
     expect(badRun.cases.find((c) => !c.ok)?.stdout).toContain("debug");
     expect(
-      runner.runTests(
+      tasks.runTests(
+        course,
         twoSum,
         "python",
         write("crash.py", "def two_sum(nums, target):\n    return nums[999]\n")
       ).cases[0]?.error
     ).toContain("IndexError");
     expect(
-      runner.runTests(
+      tasks.runTests(
+        course,
         twoSum,
         "python",
         write("syntax.py", "def two_sum(nums target):\n    pass\n")
@@ -252,16 +275,15 @@ describe("runner", () => {
   });
 
   test("typescript: linked lists, design classes and wrong answers", () => {
-    const reverse = content.problem(course, "reverse-linked-list");
+    const reverse = "reverse-linked-list";
 
     const good = write(
       "rev.ts",
       'import { ListNode } from "./ds.ts";\nexport function reverseList(head: ListNode | null): ListNode | null {\n  let prev: ListNode | null = null;\n  while (head) { const next: ListNode | null = head.next; head.next = prev; prev = head; head = next; }\n  return prev;\n}\n'
     );
 
-    expect(runner.runTests(reverse, "typescript", good).passed).toBe(
-      reverse.tests.length
-    );
+    const goodRun = tasks.runTests(course, reverse, "typescript", good);
+    expect(goodRun.passed).toBe(goodRun.total);
 
     const identity = write(
       "same.ts",
@@ -269,19 +291,18 @@ describe("runner", () => {
     );
 
     expect(
-      runner.runTests(reverse, "typescript", identity).passed
-    ).toBeLessThan(reverse.tests.length);
+      tasks.runTests(course, reverse, "typescript", identity).passed
+    ).toBeLessThan(goodRun.total);
 
-    const trie = content.problem(course, "implement-trie-prefix-tree");
+    const trie = "implement-trie-prefix-tree";
 
     const naive = write(
       "trie.ts",
       "export class Trie {\n  words: string[] = [];\n  insert(w: string) { this.words.push(w); }\n  search(w: string) { return this.words.includes(w); }\n  startsWith(p: string) { return this.words.some((w) => w.startsWith(p)); }\n}\n"
     );
 
-    expect(runner.runTests(trie, "typescript", naive).passed).toBe(
-      trie.tests.length
-    );
+    const naiveRun = tasks.runTests(course, trie, "typescript", naive);
+    expect(naiveRun.passed).toBe(naiveRun.total);
   });
 });
 
@@ -363,7 +384,7 @@ const solve = (
   mode: "guided" | "solo" | "review"
 ) => {
   const started = practice.startProblem(course, slug, "python", mode);
-  const reference = content.referenceSolution(course, slug, "python");
+  const reference = tasks.referenceSolution(course, slug, "python");
 
   if (!reference) {
     throw new Error(`'${slug}' has no Python reference.`);
@@ -483,7 +504,7 @@ describe("lessons", () => {
     );
 
     expect(result.outcome).toBe("gave_up");
-    expect(solution).toBe(content.referenceSolution(course, guided, "python"));
+    expect(solution).toBe(tasks.referenceSolution(course, guided, "python"));
     expect(scheduler.lessonStep(course, "hash-map-index")).toBe(1);
     expect(practice.currentAttempt(course)).toBeNull();
   });
@@ -533,7 +554,7 @@ describe("reviews", () => {
     const started = practice.startProblem(course, solo, "python", "review");
 
     expect(readFileSync(started.file, "utf-8").trim()).toBe(
-      content.problem(course, solo).stubs.python.trim()
+      tasks.problem(course, solo).stubs.python?.trim() ?? ""
     );
     expect(started.phase).toBe("review");
     practice.pauseAttempt(course, practice.attemptOn(course, solo));
@@ -783,7 +804,7 @@ const answer = (
   const started = practice.startProblem(course, slug, "jq", mode);
   writeFileSync(
     started.file,
-    content.referenceSolution(course, slug, "jq") ?? ""
+    tasks.referenceSolution(course, slug, "jq") ?? ""
   );
 
   return practice.submitProblem(course, practice.attemptOn(course, slug));
@@ -791,6 +812,18 @@ const answer = (
 
 describe("jq course", () => {
   const course = content.courseById("jq");
+  const answers = mkdtempSync(path.join(tmpdir(), "tech-prep-jq-answers-"));
+
+  /** Check a typed answer on every test of a task, as Submit does. */
+  const check = (slug: string, text: string) => {
+    const file = path.join(answers, "answer.jq");
+    writeFileSync(file, text);
+
+    return tasks.runTests(course, slug, "jq", file);
+  };
+
+  const preview = (slug: string, text: string) =>
+    tasks.previewTask(course, slug, text);
 
   test("a command line splits the way a shell splits it", () => {
     expect(jq.splitArgs("-r '.[] | .name'")).toEqual(["-r", ".[] | .name"]);
@@ -835,7 +868,7 @@ describe("jq course", () => {
       "pipes",
     ]);
     expect(
-      written.filter((c) => !content.hasLesson(course, c.id)).map((c) => c.id)
+      written.filter((c) => !tasks.hasLesson(course, c.id)).map((c) => c.id)
     ).toEqual([]);
 
     for (const c of written) {
@@ -854,19 +887,19 @@ describe("jq course", () => {
       ...content
         .concepts(course)
         .flatMap((c) => content.guidedSlugs(course, c.id)),
-    ].filter((slug) => content.isAuthored(course, slug));
+    ].filter((slug) => tasks.isAuthored(course, slug));
 
     expect(slugs.length).toBeGreaterThan(40);
 
     const wrong = slugs.filter((slug) => {
-      const task = content.problem(course, slug);
+      const task = tasks.problem(course, slug);
 
-      const solved = jq.runJq(
-        task,
-        content.referenceSolution(course, slug, "jq") ?? ""
+      const solved = check(
+        slug,
+        tasks.referenceSolution(course, slug, "jq") ?? ""
       );
 
-      const untouched = jq.runJq(task, task.stubs.jq);
+      const untouched = check(slug, task.stubs.jq ?? "");
 
       return (
         solved.passed !== solved.total || untouched.passed === untouched.total
@@ -920,21 +953,22 @@ describe("jq course", () => {
   });
 
   test("jq's own error text reaches the learner", () => {
-    const task = content.problem(course, content.guidedSlug("nested-paths", 3));
-    const seen = jq.previewJq(task, task.stubs.jq);
+    const slug = content.guidedSlug("nested-paths", 3);
+    const task = tasks.problem(course, slug);
+    const seen = preview(slug, task.stubs.jq ?? "");
 
-    expect(seen.matches).toBe(false);
-    expect(seen.error).toBe(
+    expect(seen?.matches).toBe(false);
+    expect(seen?.error).toBe(
       'jq: error: Cannot index string with string "name"'
     );
     // A filter task starts from a whole command to fix, or from an empty line.
     expect(task.stubs.jq).toBe("jq '.server.host.name' data.json");
-    expect(content.problem(course, "pipes-solo-1").stubs.jq).toBe("");
-    expect(content.referenceSolution(course, "pipes-solo-1", "jq")).toBe(
+    expect(tasks.problem(course, "pipes-solo-1").stubs.jq).toBe("");
+    expect(tasks.referenceSolution(course, "pipes-solo-1", "jq")).toBe(
       "jq '.results | length' data.json"
     );
     // Nothing typed yet is not an error.
-    expect(jq.previewJq(task, "  ")).toEqual({
+    expect(preview(slug, "  ")).toEqual({
       error: null,
       matches: false,
       output: "",
@@ -942,22 +976,27 @@ describe("jq course", () => {
   });
 
   test("a predict task takes the value the learner types, and shows no output", () => {
-    const task = content.problem(course, "reading-json-solo-2");
+    const task = "reading-json-solo-2";
 
-    expect(task.jq?.shown).toBeNull();
-    expect(jq.runJq(task, "[ 5432,\n 6432 ]").passed).toBe(1);
-    expect(jq.runJq(task, "[5432]").passed).toBe(0);
-    expect(jq.runJq(task, "[5432, 6432").cases[0]?.error).toContain(
+    expect(tasks.taskView(course, task)).toMatchObject({
+      command: null,
+      kind: "jq",
+      predict: true,
+      wanted: "",
+    });
+    expect(check(task, "[ 5432,\n 6432 ]").passed).toBe(1);
+    expect(check(task, "[5432]").passed).toBe(0);
+    expect(check(task, "[5432, 6432").cases[0]?.error).toContain(
       "not valid JSON"
     );
-    expect(jq.previewJq(task, "[5432, 6432]").output).toBe("");
+    expect(preview(task, "[5432, 6432]")?.output).toBe("");
     // The answer key is the output, not the filter that made it.
-    expect(content.referenceSolution(course, "reading-json-solo-2", "jq")).toBe(
+    expect(tasks.referenceSolution(course, "reading-json-solo-2", "jq")).toBe(
       "[\n  5432,\n  6432\n]"
     );
     expect(
-      content.problem(course, content.guidedSlug("what-jq-does", 3)).jq?.shown
-    ).toBe("jq '.pages' data.json");
+      tasks.taskView(course, content.guidedSlug("what-jq-does", 3))
+    ).toMatchObject({ command: "jq '.pages' data.json" });
   });
 
   test("a lesson is taught after its three guided tasks and learned after both solo tasks", () => {
@@ -1001,7 +1040,7 @@ describe("jq course", () => {
     practice.logHint(course, 2);
     writeFileSync(
       content.solutionPath(course, soloOne, "jq"),
-      content.referenceSolution(course, soloOne, "jq") ?? ""
+      tasks.referenceSolution(course, soloOne, "jq") ?? ""
     );
 
     expect(

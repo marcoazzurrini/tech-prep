@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
 import { JqInput, JqWorkbench } from "./jq-workbench";
+import { jqOf } from "./types";
 import type { Code, Lesson, Problem } from "./types";
 import { Workbench } from "./workbench";
 import type { Finished } from "./workbench";
@@ -140,7 +141,7 @@ const GuidedStep = ({
   const working = lesson.attempt?.slug === lesson.guided.slug;
   const gaveUp = finished?.result.outcome === "gave_up";
   const lead = gaveUp ? "A solution is shown" : "Solved";
-  const { jq } = lesson.guided;
+  const jq = jqOf(lesson.guided);
 
   if (jq && (working || finished)) {
     // A right answer moves on by itself, so only a task that was given up stays finished.
@@ -161,7 +162,6 @@ const GuidedStep = ({
                   }
                 : undefined
             }
-            jq={jq}
             key={lesson.guided.slug}
             note={note}
             problem={lesson.guided}
@@ -238,7 +238,7 @@ const PastTask = ({ slug, back, onBack, onOpenTutor }: PastTaskProps) => {
     };
   }, [slug]);
 
-  if (!problem?.jq || problem.slug !== slug) {
+  if (!problem || !jqOf(problem) || problem.slug !== slug) {
     return null;
   }
 
@@ -252,7 +252,6 @@ const PastTask = ({ slug, back, onBack, onOpenTutor }: PastTaskProps) => {
         ),
         note: "You solved this part.",
       }}
-      jq={problem.jq}
       key={slug}
       problem={problem}
       strip={{ label: "Try it" }}
@@ -294,7 +293,7 @@ const SoloWork = ({
     </Button>
   );
 
-  const { jq } = lesson.solo;
+  const jq = jqOf(lesson.solo);
 
   if (jq && (lesson.attempt?.slug === lesson.solo.slug || finished)) {
     // A task solved alone moves on to the next one by itself. What stays finished is the
@@ -307,7 +306,6 @@ const SoloWork = ({
     return (
       <JqWorkbench
         done={footer ?? undefined}
-        jq={jq}
         key={lesson.solo.slug}
         note={note}
         problem={lesson.solo}
@@ -413,12 +411,12 @@ const movedOn = (
   const { done, total } = lesson.solo_tasks;
 
   if (step === 1) {
-    return lesson.guided.jq && result.outcome !== "gave_up"
+    return jqOf(lesson.guided) && result.outcome !== "gave_up"
       ? `${partsOf(lesson).length ? "Part" : "Task"} ${lesson.guided_tasks.done + 1} was right.`
       : null;
   }
 
-  return lesson.solo.jq && result.outcome === "solved" && done + 1 < total
+  return jqOf(lesson.solo) && result.outcome === "solved" && done + 1 < total
     ? `Task ${done + 1} was right.`
     : null;
 };
@@ -438,7 +436,7 @@ const SoloTaskText = ({ lesson, task }: { lesson: Lesson; task: string }) => (
     title={lesson.solo.title}
   >
     <ProblemStatement text={lesson.solo.statement ?? ""} />
-    {lesson.solo.jq && <JqInput jq={lesson.solo.jq} />}
+    <JqInput problem={lesson.solo} />
     {lesson.status !== "done" && (
       <p className="tp-task-text__note">
         The lesson is closed. Opening it counts as help.
@@ -714,7 +712,7 @@ export const LessonScreen = ({
     <LessonBody
       lesson={lesson}
       part={parts[view ?? at]}
-      task={step === 1 && !lesson.guided.jq}
+      task={step === 1 && !jqOf(lesson.guided)}
     />
   );
 
@@ -761,7 +759,7 @@ export const LessonScreen = ({
 
   // A jq task is short: its statement and input sit on the left, the filter on the right.
   // With the lesson reopened, the lesson takes the left and the task moves above the filter.
-  if (lesson.solo.jq) {
+  if (jqOf(lesson.solo)) {
     return (
       <LessonPane>
         {bar}

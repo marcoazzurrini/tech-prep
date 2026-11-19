@@ -51,7 +51,7 @@ export const Lessons = ({
     <CourseNav
       header={
         <CourseHeader
-          meta={`${concepts.learned} of ${concepts.total} concepts · ${problems.solved} of ${problems.total} ${course.subject.kind === "jq" ? "tasks" : "problems"}`}
+          meta={`${concepts.learned} of ${concepts.total} concepts · ${problems.solved} of ${problems.total} ${course.subject.noun}`}
           progress={concepts.total ? concepts.learned / concepts.total : 0}
           title={course.subject.name}
         />

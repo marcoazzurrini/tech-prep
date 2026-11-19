@@ -11,15 +11,10 @@ import { z } from "zod";
 import {
   DEFAULT_LANGUAGE,
   concept,
-  courseLanguage,
   courseErrors,
   savedCourse,
   guidedConcept,
-  isAuthored,
-  problem as getProblem,
-  problemInfo,
   problemsUsing,
-  referenceSolution,
   soloConcept,
   solutionPath,
   solutionsDir,
@@ -31,7 +26,6 @@ import type { Course, Language } from "./content.ts";
 import { addNote, attemptsFor, notesFor, orphans } from "./db.ts";
 import type { ExerciseKind, Result } from "./db.ts";
 import { currentExercise, gradeAnswer, showExercise } from "./exercises.ts";
-import { inputText } from "./jq.ts";
 import {
   currentAttempt,
   logHint,
@@ -40,6 +34,13 @@ import {
 } from "./practice.ts";
 import { formatRun } from "./runner.ts";
 import { conceptStatus, problemStatus, topicProgress } from "./scheduler.ts";
+import {
+  courseLanguage,
+  isAuthored,
+  problemInfo,
+  referenceSolution,
+  tutorTaskView,
+} from "./tasks.ts";
 
 const server = new McpServer({ name: "tech-prep", version: "0.2.0" });
 
@@ -86,25 +87,6 @@ const conceptView = (course: Course, id: string) => {
     recall: s.retrievability,
     stage: s.stage,
     topic: c.topic,
-  };
-};
-
-/** A jq task as the learner sees it: the input, the output to produce, and how they answer. */
-const jqTaskView = (course: Course, slug: string) => {
-  const spec = getProblem(course, slug).jq;
-  const [shown] = spec?.tests ?? [];
-
-  if (!spec || !shown) {
-    return null;
-  }
-
-  return {
-    answer_is: spec.predict
-      ? "the value that comes out, typed as JSON. They cannot see the wanted output, so never state it."
-      : `the whole jq command, as in a terminal, reading the file ${spec.file}`,
-    input: inputText(shown),
-    input_file: spec.file,
-    wanted_output: shown.expected,
   };
 };
 
@@ -161,12 +143,12 @@ server.registerTool(
       exercise_on_screen: Boolean(currentExercise(course)),
       file: solutionPath(course, open.slug, language),
       hints_so_far: open.max_hint_level,
-      jq_task: jqTaskView(course, open.slug),
       language,
       lesson: lessonId && conceptView(course, lessonId),
       mode: open.mode,
       problem: open.slug,
       rules: MODE_RULES[open.mode ?? "review"],
+      task: tutorTaskView(course, open.slug),
       title: problemInfo(course, open.slug).title,
       workspace: solutionsDir(course),
       ...extra,

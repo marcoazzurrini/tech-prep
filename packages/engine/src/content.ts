@@ -52,7 +52,7 @@ export interface Course {
 
 // SAFETY: callers only read the curriculum and problem files, which are authored to these
 // shapes and checked by `validateCurriculum` and `build-problem`.
-const readJson = <T>(file: string): T =>
+export const readJson = <T>(file: string): T =>
   JSON.parse(readFileSync(file, "utf-8")) as T;
 
 /** The `course.json` manifest. */
@@ -214,10 +214,11 @@ export const selectCourse = (id: string): Course => {
 const curriculumDir = (course: Course): string =>
   path.join(course.dir, "curriculum");
 
-const problemsDir = (course: Course): string =>
+export const problemsDir = (course: Course): string =>
   path.join(course.dir, "problems");
 
-const lessonsDir = (course: Course): string => path.join(course.dir, "lessons");
+export const lessonsDir = (course: Course): string =>
+  path.join(course.dir, "lessons");
 
 /** Where the learner's solution files for a course live. */
 export const solutionsDir = (course: Course): string =>
@@ -237,10 +238,6 @@ export const EXTENSIONS: Record<Language, string> = {
 /** The language of code problems. */
 export const DEFAULT_LANGUAGE: Language =
   process.env.TECHPREP_LANG === "python" ? "python" : "typescript";
-
-/** The language a course's tasks are written in. */
-export const courseLanguage = (course: Course): Language =>
-  course.kind === "jq" ? "jq" : DEFAULT_LANGUAGE;
 
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -287,155 +284,11 @@ export interface ProblemInfo {
   source?: ProblemSource;
 }
 
-/**
- * How a returned value is compared with the expected one.
- * - exact: deep equality.
- * - unordered: the top-level array may be in any order.
- * - deep-unordered: every nested array may be in any order (e.g. lists of groups).
- * - one-of: `expected` is a list of acceptable answers.
- */
-export type CompareMode = "exact" | "unordered" | "deep-unordered" | "one-of";
-
-export interface TestCase {
-  args: unknown[];
-  /** Method names for design problems; the first entry is the constructor. */
-  ops?: string[];
-  expected?: unknown;
-}
-
-/** How the harness calls a solution. See server/src/harness/*_harness.* for the semantics. */
-export interface CallSpec {
-  kind?: "function" | "design" | "roundtrip";
-  function?: Record<Language, string>;
-  class?: string;
-  encode?: string;
-  decode?: string;
-  /** Roundtrip value type. */
-  type?: string;
-  /** Argument types: "json" (default), "ListNode", "ListNode[]", "CycleList", "TreeNode", "TreeNodeRef", "GraphNode", "RandomList". */
-  params?: string[];
-  /** Return type: "json" (default), "ListNode", "TreeNode", "TreeNodeVal", "GraphNode", "RandomList", "void". */
-  returns?: string;
-  /** "arg0" when the function changes its first argument in place and returns nothing. */
-  output?: "return" | "arg0";
-}
-
-/** One input a jq task is checked on, with the output the reference filter gives. */
-export interface JqTest {
-  /** The input as JSON. */
-  input?: unknown;
-  /** The input as raw text, for line-delimited JSON and `-R` tasks. */
-  input_text?: string;
-  expected?: string;
-}
-
-/**
- * How a jq task is written. The learner always types the whole command, as in a terminal:
- * `jq 'filter' data.json`. The mode says what the task's `reference` and `stub` hold.
- * - filter: the filter alone. The engine adds `jq`, the quotes and the file name.
- * - command: everything after `jq` except the file name, flags included. The output text
- *   must then match exactly, because the flags are the point.
- * - predict: a filter. The learner reads the input, and the command when it is shown, and
- *   types the value that comes out. Nothing runs while they type.
- */
-export type JqMode = "filter" | "command" | "predict";
-
-/** A jq task as its file holds it. */
-export interface JqTask {
-  title?: string;
-  /** The task, in the statement subset of Markdown. */
-  statement: string;
-  mode?: JqMode;
-  /** Flags a filter task's command needs, such as `["-r"]`. The learner types them. */
-  flags?: string[];
-  /** The file the input is in. `data.json` when left out. */
-  file?: string;
-  /**
-   * What the editor starts with, in the same form as `reference`. Left out, the editor
-   * starts empty and the learner types the whole command.
-   */
-  stub?: string;
-  /** The answer key: a filter, or the text after `jq` in command mode. */
-  reference: string;
-  /** In a predict task: show the command, so the learner works out what it prints. */
-  show_filter?: boolean;
-  /** The first test is the one shown to the learner. The others are hidden. */
-  tests: JqTest[];
-  /** True when the output cannot depend on the input, as with `-n`. */
-  constant?: boolean;
-}
-
-/** The jq part of a problem. */
-export interface JqSpec {
-  /** True when the learner types the output and not a command. */
-  predict: boolean;
-  /** True when the output text must match exactly. Otherwise outputs are compared as values. */
-  exact: boolean;
-  /** The name of the file the input is in. The learner's command reads it. */
-  file: string;
-  tests: JqTest[];
-  /** The command a predict task shows, when it shows one. */
-  shown: string | null;
-}
-
-const NO_INPUT = /(?:^|\s)(?:-n|--null-input)(?:\s|$)/u;
-
-/** The file a jq task's input is in. */
-const jqFile = (task: JqTask): string =>
-  task.file ??
-  (task.tests[0]?.input_text === undefined ? "data.json" : "data.jsonl");
-
-/**
- * The whole command for a task's filter, or for its text after `jq`: what a learner would
- * type in a terminal. A command that reads no input gets no file name.
- */
-export const jqCommand = (task: JqTask, text: string): string => {
-  const head =
-    task.mode === "command"
-      ? text
-      : [...(task.flags ?? []), `'${text}'`].join(" ");
-
-  return `jq ${head}${NO_INPUT.test(head) ? "" : ` ${jqFile(task)}`}`;
-};
-
-/** What the editor starts with: empty, or a whole command to change. */
-export const jqProblemStub = (task: JqTask): string => {
-  const stub = task.stub?.trim() ?? "";
-
-  // `.` and `'.'` are the "nothing yet" filters: the learner then starts from an empty line.
-  return !stub || stub === "." || stub === "'.'" || task.mode === "predict"
-    ? ""
-    : jqCommand(task, stub);
-};
-
-/** How a jq task is run and checked. */
-export const jqSpec = (task: JqTask): JqSpec => ({
-  exact: task.mode === "command" || Boolean(task.flags?.length),
-  file: jqFile(task),
-  predict: task.mode === "predict",
-  shown:
-    task.mode === "predict" && task.show_filter
-      ? jqCommand(task, task.reference)
-      : null,
-  tests: task.tests,
-});
-
-export interface Problem extends ProblemInfo, CallSpec {
-  compare: CompareMode;
-  /** A code problem has no `jq` stub, and a jq task has only that one. */
-  stubs: Record<Language, string>;
-  tests: TestCase[];
-  statement: string;
-  /** Set for a jq task. */
-  jq?: JqSpec;
-}
-
 /** What was read from one course's files. */
 interface Cache {
   topics?: Topic[];
   concepts?: Concept[];
   index?: ProblemInfo[];
-  problems: Map<string, Problem>;
 }
 
 const caches = new Map<string, Cache>();
@@ -445,7 +298,7 @@ const cache = (course: Course): Cache => {
   let current = caches.get(id);
 
   if (!current) {
-    current = { problems: new Map() };
+    current = {};
     caches.set(id, current);
   }
 
@@ -510,7 +363,7 @@ export const guidedConcept = (slug: string): string | null =>
     : null;
 
 /** Which of its lesson's guided tasks a guided slug is, counted from 1. */
-const guidedNumber = (slug: string): number =>
+export const guidedNumber = (slug: string): number =>
   Number(GUIDED_NUMBER.exec(slug)?.groups?.n ?? 1);
 
 /** A lesson's guided tasks, in order. */
@@ -527,36 +380,14 @@ export const soloSlugs = (course: Course, conceptId: string): string[] =>
 export const soloConcept = (course: Course, slug: string): string | null =>
   concepts(course).find((c) => [c.solo].flat().includes(slug))?.id ?? null;
 
-/** A jq task's file content, or null when it is not written. */
-const jqTask = (course: Course, slug: string): JqTask | null => {
+/**
+ * A problem's place in the curriculum. A guided problem is not in the index: it belongs to
+ * its lesson, is easy, and is named after the concept unless its own file gives a title.
+ */
+export const problemEntry = (course: Course, slug: string): ProblemInfo => {
   const conceptId = guidedConcept(slug);
 
   if (conceptId) {
-    const file = path.join(lessonsDir(course), conceptId, "guided.json");
-
-    return existsSync(file)
-      ? (readJson<JqTask[]>(file)[guidedNumber(slug) - 1] ?? null)
-      : null;
-  }
-
-  const file = path.join(problemsDir(course), `${slug}.json`);
-
-  return existsSync(file) ? readJson<JqTask>(file) : null;
-};
-
-/** The folder holding a problem's statement, spec and reference solutions. */
-export const problemDir = (course: Course, slug: string): string => {
-  const conceptId = guidedConcept(slug);
-
-  return conceptId
-    ? path.join(lessonsDir(course), conceptId)
-    : path.join(problemsDir(course), slug);
-};
-
-export const problemInfo = (course: Course, slug: string): ProblemInfo => {
-  const conceptId = guidedConcept(slug);
-
-  if (conceptId && course.kind === "jq") {
     const c = concept(course, conceptId);
 
     return {
@@ -564,23 +395,7 @@ export const problemInfo = (course: Course, slug: string): ProblemInfo => {
       difficulty: "easy",
       slug,
       source: "guided",
-      title: jqTask(course, slug)?.title ?? c.name,
-      topic: c.topic,
-    };
-  }
-
-  if (conceptId) {
-    const c = concept(course, conceptId);
-    const spec = path.join(lessonsDir(course), conceptId, "spec.json");
-
-    return {
-      concepts: [conceptId],
-      difficulty: "easy",
-      slug,
-      source: "guided",
-      title: existsSync(spec)
-        ? (readJson<{ title?: string }>(spec).title ?? c.name)
-        : c.name,
+      title: c.name,
       topic: c.topic,
     };
   }
@@ -591,26 +406,16 @@ export const problemInfo = (course: Course, slug: string): ProblemInfo => {
     throw new Error(`Unknown problem '${slug}'.`);
   }
 
-  // A jq task carries its own title, so the index need not repeat it.
-  return course.kind === "jq"
-    ? { ...found, title: jqTask(course, slug)?.title ?? found.title ?? slug }
-    : found;
+  return found;
 };
 
-/** True when the problem has a statement and tests, so it can be practised. */
-export const isAuthored = (course: Course, slug: string): boolean => {
-  if (course.kind === "jq") {
-    const task = jqTask(course, slug);
+/** The folder holding a problem's statement, spec and reference solutions. */
+export const problemDir = (course: Course, slug: string): string => {
+  const conceptId = guidedConcept(slug);
 
-    return Boolean(
-      task?.tests.length && task.tests.every((t) => t.expected !== undefined)
-    );
-  }
-
-  return (
-    existsSync(path.join(problemDir(course, slug), "spec.json")) &&
-    existsSync(path.join(problemDir(course, slug), "problem.md"))
-  );
+  return conceptId
+    ? path.join(lessonsDir(course), conceptId)
+    : path.join(problemsDir(course), slug);
 };
 
 /**
@@ -626,96 +431,6 @@ export const lessonText = (
   conceptId: string
 ): string | null => {
   const file = path.join(lessonsDir(course), conceptId, "lesson.md");
-
-  return existsSync(file) ? readFileSync(file, "utf-8") : null;
-};
-
-/** True when a concept has its lesson text, its guided problem and its solo problem. */
-export const hasLesson = (course: Course, conceptId: string): boolean =>
-  lessonText(course, conceptId) !== null &&
-  guidedSlugs(course, conceptId).every((s) => isAuthored(course, s)) &&
-  soloSlugs(course, conceptId).every((s) => isAuthored(course, s));
-
-/** A jq task as a problem: the filter is its only "language", and its tests are jq runs. */
-const jqProblem = (
-  course: Course,
-  slug: string,
-  info: ProblemInfo
-): Problem => {
-  const task = jqTask(course, slug);
-
-  if (!task) {
-    throw new Error(`Task '${slug}' is not written yet.`);
-  }
-
-  return {
-    ...info,
-    compare: "exact",
-    jq: jqSpec(task),
-    statement: task.statement,
-    stubs: { jq: jqProblemStub(task), python: "", typescript: "" },
-    tests: [],
-  };
-};
-
-export const problem = (course: Course, slug: string): Problem => {
-  const cached = cache(course).problems.get(slug);
-
-  if (cached) {
-    return cached;
-  }
-
-  const info = problemInfo(course, slug);
-
-  if (!isAuthored(course, slug)) {
-    throw new Error(`Problem '${slug}' has no tests yet.`);
-  }
-
-  if (course.kind === "jq") {
-    const task = jqProblem(course, slug, info);
-    cache(course).problems.set(slug, task);
-
-    return task;
-  }
-
-  const spec = readJson<Omit<Problem, keyof ProblemInfo | "statement">>(
-    path.join(problemDir(course, slug), "spec.json")
-  );
-
-  const statement = readFileSync(
-    path.join(problemDir(course, slug), "problem.md"),
-    "utf-8"
-  );
-
-  const full: Problem = { ...spec, ...info, statement };
-  cache(course).problems.set(slug, full);
-
-  return full;
-};
-
-/** The tutor's answer key for a problem, if one exists. */
-export const referenceSolution = (
-  course: Course,
-  slug: string,
-  language: Language
-): string | null => {
-  if (course.kind === "jq") {
-    const task = jqTask(course, slug);
-
-    if (!task) {
-      return null;
-    }
-
-    // The answer to a predict task is the output, not the command that made it.
-    return task.mode === "predict"
-      ? (task.tests[0]?.expected ?? null)
-      : jqCommand(task, task.reference);
-  }
-
-  const file = path.join(
-    problemDir(course, slug),
-    `reference.${EXTENSIONS[language]}`
-  );
 
   return existsSync(file) ? readFileSync(file, "utf-8") : null;
 };
@@ -903,47 +618,6 @@ export const validateCurriculum = (course: Course): string[] => {
   }
 
   return [...errors, ...soloErrors(course, conceptIds)];
-};
-
-/** The name the harness calls, for function problems. */
-export const functionName = (
-  p: Problem,
-  language: Language
-): string | undefined => p.function?.[language];
-
-/** Generic names that lessons may define freely, even though a practice problem uses them. */
-const GENERIC_NAMES = new Set([
-  "is_valid",
-  "isValid",
-  "find_min",
-  "findMin",
-  "get_sum",
-  "getSum",
-]);
-
-/**
- * Practice-problem function names a lesson must not define, so generated lessons never
- * solve a practice problem. One-word names (search, merge, rob, ...) are too common to block.
- */
-export const reservedNames = (
-  course: Course,
-  language: Language
-): Set<string> => {
-  const names = new Set<string>();
-
-  for (const info of problemIndex(course)) {
-    if (!isAuthored(course, info.slug)) {
-      continue;
-    }
-
-    const name = problem(course, info.slug).function?.[language];
-
-    if (name && /[A-Z_]/u.test(name) && !GENERIC_NAMES.has(name)) {
-      names.add(name);
-    }
-  }
-
-  return names;
 };
 
 export const solutionPath = (

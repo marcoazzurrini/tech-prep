@@ -25,6 +25,7 @@ import type {
   Problem,
   Run,
 } from "./types";
+import { jqOf } from "./types";
 import type { Finished } from "./workbench";
 
 /** Wait this long after the last keystroke before running the filter and saving it. */
@@ -42,21 +43,27 @@ const stateOf = (preview: JqPreview): OutputState => {
 const shownOutput = (preview: JqPreview): string =>
   [preview.output, preview.error].filter(Boolean).join("\n");
 
-/** A jq task's input, for the column that holds its statement. */
-export const JqInput = ({ jq }: { jq: JqTask }) => (
-  <>
-    <p className="tp-task-text__label">
-      Input<code> · {jq.file}</code>
-    </p>
-    <CodeBlock code={jq.input} />
-    {jq.command && (
+/** A jq task's input, for the column that holds its statement. Nothing for another kind of task. */
+export const JqInput = ({ problem }: { problem: Problem }) => {
+  const jq = jqOf(problem);
+
+  return (
+    jq && (
       <>
-        <p className="tp-task-text__label">Command</p>
-        <CodeBlock code={jq.command} />
+        <p className="tp-task-text__label">
+          Input<code> · {jq.file}</code>
+        </p>
+        <CodeBlock code={jq.input} />
+        {jq.command && (
+          <>
+            <p className="tp-task-text__label">Command</p>
+            <CodeBlock code={jq.command} />
+          </>
+        )}
       </>
-    )}
-  </>
-);
+    )
+  );
+};
 
 /** The first hidden input the answer got wrong, so the learner sees why Submit said no. */
 const Failed = ({ run, predict }: { run: Run; predict: boolean }) => {
@@ -171,7 +178,6 @@ const Footer = ({
 
 interface JqWorkbenchProps {
   problem: Problem;
-  jq: JqTask;
   /**
    * The task above the filter, with the input beside the outputs. Left out when the
    * statement and the input are shown elsewhere on the screen.
@@ -192,7 +198,6 @@ interface JqWorkbenchProps {
  */
 export const JqWorkbench = ({
   problem,
-  jq,
   strip,
   note,
   onAskTutor,
@@ -209,7 +214,8 @@ export const JqWorkbench = ({
   const text = useRef("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { slug } = problem;
-  const { predict } = jq;
+  const jq = jqOf(problem);
+  const predict = jq?.predict ?? false;
 
   /** Run the text on the shown input and save it. */
   const refresh = useCallback(async () => {
@@ -224,7 +230,10 @@ export const JqWorkbench = ({
       return;
     }
 
-    const seen = await engine<JqPreview>("jq.preview", { slug, text: current });
+    const seen = await engine<JqPreview>("task.preview", {
+      slug,
+      text: current,
+    });
 
     // A slow run must not overwrite the output of what was typed after it.
     if (text.current === current) {
@@ -249,7 +258,7 @@ export const JqWorkbench = ({
         await refresh();
       } else if (!predict) {
         setPreview(
-          await engine<JqPreview>("jq.preview", { slug, text: loaded.text })
+          await engine<JqPreview>("task.preview", { slug, text: loaded.text })
         );
       }
     };
@@ -314,7 +323,7 @@ export const JqWorkbench = ({
 
       if (!predict) {
         setPreview(
-          await engine<JqPreview>("jq.preview", {
+          await engine<JqPreview>("task.preview", {
             slug,
             text: gave.solution ?? "",
           })
@@ -329,7 +338,7 @@ export const JqWorkbench = ({
     window.tp.tutor.notify("The learner asked for a hint on this task.");
   };
 
-  if (!code) {
+  if (!code || !jq) {
     return null;
   }
 

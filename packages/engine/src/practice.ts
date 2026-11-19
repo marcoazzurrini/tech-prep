@@ -1,12 +1,8 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import {
-  courseLanguage,
   guidedConcept,
   guidedSlugs,
-  problem as getProblem,
-  problemInfo,
-  referenceSolution,
   soloConcept,
   soloSlugs,
   solutionPath,
@@ -25,8 +21,15 @@ import {
 import type { AttemptRow, Mode, Outcome, Phase, Recognition } from "./db.ts";
 import { INDEPENDENT_HINT_LEVEL, grade } from "./grading.ts";
 import { applyResults } from "./outcomes.ts";
-import { ensureDataStructures, runTests } from "./runner.ts";
 import { completeLesson, isPassed, problemStatus } from "./scheduler.ts";
+import {
+  courseLanguage,
+  problem as getProblem,
+  problemInfo,
+  referenceSolution,
+  runTests,
+  taskType,
+} from "./tasks.ts";
 
 /**
  * Solution files once began with the problem statement as a comment banner. The app shows
@@ -76,19 +79,18 @@ export const startProblem = (
   const p = getProblem(course, slug);
   mkdirSync(solutionsDir(course), { recursive: true });
 
-  if (language !== "jq") {
-    ensureDataStructures(solutionsDir(course), language);
-  }
+  taskType(course).prepare?.(solutionsDir(course), language);
 
   const file = solutionPath(course, slug, language);
   let current = openAttempt(course, slug, language);
   const resumed = Boolean(current);
-  const stub = `${p.stubs[language].trimEnd()}\n`;
+  const stub = `${(p.stubs[language] ?? "").trimEnd()}\n`;
 
   // A review starts from the stub. So does a task that is taken again after it was solved:
   // with short tasks, the old answer would give the new attempt away.
   const fresh =
-    !resumed && (mode === "review" || (language === "jq" && mode !== null));
+    !resumed &&
+    (mode === "review" || (taskType(course).retakeFromStub && mode !== null));
 
   const created = !existsSync(file) || fresh;
 
@@ -154,7 +156,7 @@ export const testSolution = (
   language: Language = courseLanguage(course),
   file = solutionPath(course, slug, language)
 ) => {
-  const run = runTests(getProblem(course, slug), language, file);
+  const run = runTests(course, slug, language, file);
   const current = openAttempt(course, slug, language);
 
   if (current) {
