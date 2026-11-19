@@ -3,6 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { App } from "./app";
+import { Failure } from "./failure";
 
 import "./styles.css";
 
@@ -14,6 +15,8 @@ if (!root) {
 
 createRoot(root).render(
   <StrictMode>
-    <App />
+    <Failure>
+      <App />
+    </Failure>
   </StrictMode>
 );

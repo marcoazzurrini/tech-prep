@@ -1,4 +1,3 @@
-import { appendFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { app, BrowserWindow, ipcMain, screen, shell } from "electron";
@@ -17,17 +16,7 @@ const send = (channel: string, payload?: TutorEvent) =>
 const engine = new Engine();
 
 const tutor = new Tutor(
-  (event) => {
-    // For checking the tutor from a script: TECHPREP_DEBUG=/path/log.txt logs each event.
-    if (process.env.TECHPREP_DEBUG) {
-      appendFileSync(
-        process.env.TECHPREP_DEBUG,
-        `${JSON.stringify(event).slice(0, 400)}\n`
-      );
-    }
-
-    send("tutor:event", event);
-  },
+  (event) => send("tutor:event", event),
   () => send("engine:changed")
 );
 
@@ -46,8 +35,9 @@ const createWindow = (): void => {
     trafficLightPosition: { x: 12, y: 18 },
     webPreferences: {
       contextIsolation: true,
-      preload: path.join(import.meta.dirname, "../preload/index.mjs"),
-      sandbox: false,
+      preload: path.join(import.meta.dirname, "../preload/index.cjs"),
+      // The page gets no Node: it reaches the engine and the tutor only through the preload.
+      sandbox: true,
     },
     width,
     x,
@@ -75,31 +65,6 @@ const createWindow = (): void => {
   }
 
   window.on("closed", () => (window = null));
-  // For checking the layout from a script: TECHPREP_SCREENSHOT=/path/shot.png saves a
-  // screenshot after a delay, then quits. TECHPREP_RUN is JavaScript to run in the page
-  // first, for example to click a button.
-  const shot = process.env.TECHPREP_SCREENSHOT;
-
-  if (shot) {
-    setTimeout(
-      async () => {
-        if (process.env.TECHPREP_RUN) {
-          await window?.webContents.executeJavaScript(process.env.TECHPREP_RUN);
-        }
-
-        setTimeout(async () => {
-          if (!window) {
-            return;
-          }
-
-          const image = await window.webContents.capturePage();
-          writeFileSync(shot, image.toPNG());
-          app.quit();
-        }, 1500);
-      },
-      Number(process.env.TECHPREP_SCREENSHOT_DELAY ?? 20_000)
-    );
-  }
 };
 
 ipcMain.handle("engine", (_event, method: string, params?: Json) =>

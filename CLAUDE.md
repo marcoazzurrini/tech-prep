@@ -31,6 +31,7 @@ Keep them lean:
 
 - `main` is protected. Work on a branch, open a PR and wait for CI. Merges are rebase-only. Ask before merging.
 - Run `bun run check` before pushing. It runs what CI runs.
+- Run `bun run e2e` after changing a screen or how the app talks to the engine. It needs a display, so CI does not run it.
 - Git hooks format, lint, typecheck and scan for secrets on commit, and run tests on push. Don't bypass them.
 - The repo is public. Keep personal details out of code, docs and commits.
 - After a merge that changes the app, pull `main` and run `bun run install-app`, so the installed app matches `main`.

@@ -53,17 +53,38 @@ export class Engine {
         waiting.resolve(reply.result);
       }
     });
-    child.stderr.on("data", (chunk) =>
-      process.stderr.write(`[engine] ${chunk}`)
-    );
-    child.on("exit", () => {
+    // The last thing the engine wrote before it stopped says why it stopped.
+    let lastWords = "";
+
+    child.stderr.on("data", (chunk) => {
+      process.stderr.write(`[engine] ${chunk}`);
+      lastWords =
+        String(chunk)
+          .split("\n")
+          .findLast((line) => /error/iu.test(line))
+          ?.trim() ?? lastWords;
+    });
+
+    /** Fail every request that waits, and start a new engine on the next one. */
+    const stopped = (reason: string) => {
       for (const waiting of this.pending.values()) {
-        waiting.reject(new Error("The engine stopped."));
+        waiting.reject(new Error(reason));
       }
 
       this.pending.clear();
-      this.child = null;
-    });
+
+      if (this.child === child) {
+        this.child = null;
+      }
+    };
+
+    child.on("exit", () =>
+      stopped(["The engine stopped.", lastWords].filter(Boolean).join(" "))
+    );
+    // Without a listener, a failure to start would bring the whole app down.
+    child.on("error", (error) =>
+      stopped(`The engine could not start: ${error.message}`)
+    );
 
     return child;
   }

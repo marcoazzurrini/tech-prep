@@ -103,6 +103,8 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 **Lesson parts.** A lesson in any course can be written as a series of parts: each part is one idea and its task, and it fills the screen alone. The top bar then lists the parts in place of the chapter and the lesson, which the sidebar names: the part on screen is bold, a finished part has a green tick and can be opened again, and a part not reached yet is dim. A lesson with one part keeps the chapter and the lesson in the top bar. In every course, a right answer on Submit opens the next task without another click. A task that needed help stays on screen.
 
+**When something fails.** If the app cannot go on, the whole window shows one centred message: "Something went wrong", the reason in plain words, and a Reload button in the footer. It never stays blank.
+
 **Focused screens.** Reviews have no lessons column, no chapter name and no lesson, so nothing on screen names the approach. A review puts the problem on the left and the editor on the right. Screens that are read, not worked in, such as the list of reviews, use one centred column.
 
 **Large displays.** The UI keeps its size on every display: nothing scales up. A wider window gives the extra room to the lesson. On windows 2200px wide or more, the tutor pane also widens, from 380px to 576px, for longer chat lines. Lesson content stays aligned to the left edge of the pane, as on smaller screens.
