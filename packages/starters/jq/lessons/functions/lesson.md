@@ -1,10 +1,6 @@
 # Your Own Filters
 
-`length` and `keys` are filters with names. You can make your own. Then a step that you need more than once is written only once.
-
 ## Give a filter a name
-
-A user object has many fields. You want a short form of it: only the name and the email.
 
 **Input**
 
@@ -24,32 +20,25 @@ def contact: {name, email}; .lead | contact
 {"name": "Ada", "email": "ada@example.com"}
 ```
 
-The filter has two halves.
+```steps
+def contact: {name, email}; .lead => {"name": "Ada", "email": "ada@example.com", "age": 36, "city": "Oslo"}
+def contact: {name, email}; .lead «| contact» => {"name": "Ada", "email": "ada@example.com"}
+```
 
-The first half is the **definition**. It makes a new filter and prints nothing:
+**Rule:** `def name: body;` makes a new filter and prints nothing. The program after the `;` is what runs.
 
-- `def` starts it.
-- `contact` is the name you choose.
-- After the colon comes the **body**: what the filter does. Here it is `{name, email}`.
-- The semicolon `;` ends it.
+`def contact: {name, email};` reads as: from now on, `contact` means `{name, email}`. You choose the name. The body comes after the colon, and the `;` ends it.
 
-The second half is the program that runs: `.lead | contact`. Here `contact` works like `length`. It takes its input from the pipe. In the body, the dot is that input.
-
-Read `def contact: {name, email};` as "from now on, `contact` means `{name, email}`".
+`contact` works like `length`. It takes its input from the pipe. In the body, the dot is that input.
 
 <!-- task -->
 
 ## Use it in more than one place
 
-A name is most useful when you need the same step twice. Here the lead and the backup both need the short form.
-
 **Input**
 
 ```json
-{
-  "lead": {"name": "Ada", "email": "ada@example.com", "age": 36},
-  "backup": {"name": "Bo", "email": "bo@example.com", "age": 41}
-}
+{"lead": {"name": "Ada", "email": "ada@example.com", "age": 36}, "backup": {"name": "Bo", "email": "bo@example.com", "age": 41}}
 ```
 
 **Filter**
@@ -61,21 +50,18 @@ def contact: {name, email}; {lead: .lead | contact, backup: .backup | contact}
 **Output**
 
 ```json
-{
-  "lead": {"name": "Ada", "email": "ada@example.com"},
-  "backup": {"name": "Bo", "email": "bo@example.com"}
-}
+{"lead": {"name": "Ada", "email": "ada@example.com"}, "backup": {"name": "Bo", "email": "bo@example.com"}}
 ```
 
-In a new object, the value of a key can be a short chain. `lead: .lead | contact` means: take `lead`, hand it to `contact`, and store the result under `lead`. The comma ends the chain.
+**Rule:** Write a step once, then use its name in every place that needs it. To change the step, you change one place.
 
-Without the name, you would write `{name, email}` twice. With the name, you write it once. If you want the city too, you change one place.
+`lead: .lead | contact` takes `lead`, hands it to `contact`, and stores the result under `lead`. The comma ends the chain.
+
+`def mail: .email;` works too. The body can be any filter, such as a path or a `map`.
 
 <!-- task -->
 
 ## Inside map, and what goes wrong
-
-Your filter works in every place where a filter works. Inside `map`, it runs on every item:
 
 **Input**
 
@@ -95,30 +81,57 @@ def contact: {name, email}; {owner: .owner | contact, guests: .guests | map(cont
 {"owner": {"name": "Cy", "email": "cy@example.com"}, "guests": [{"name": "Dee", "email": "dee@example.com"}]}
 ```
 
-Two mistakes are common.
+**Rule:** Your filter works in every place where a filter works. Inside `map`, it runs on every item.
 
-**The name is not known.** You forgot the definition, or you spelled the name in two ways:
+**Common mistake:** A name that jq does not know.
 
-```text
-jq: error: contact/0 is not defined
+**Wrong**
+
+```jq
+def contact: {name, email}; .owner | «contat»
 ```
 
-Read it as "there is no filter called `contact`". You can ignore the `/0`.
-
-**The semicolon is missing.** Then jq cannot tell where the body ends:
+**Error**
 
 ```text
-jq: error: syntax error, unexpected end of file
+jq: error: contat/0 is not defined at <top-level>, line 1:
 ```
 
-The definition always comes first, and it always ends with `;`.
+**Fix**
+
+```jq
+def contact: {name, email}; .owner | «contact»
+```
+
+It means there is no filter called `contat`. Ignore the `/0`. The definition is missing, or the name is spelled in two ways.
+
+**Common mistake:** No `;` after the definition.
+
+**Wrong**
+
+```jq
+def contact: {name, email} .owner | contact
+```
+
+**Error**
+
+```text
+jq: error: syntax error, unexpected end of file (Unix shell quoting issues?) at <top-level>, line 1:
+```
+
+**Fix**
+
+```jq
+def contact: {name, email}«;» .owner | contact
+```
+
+Without the `;`, jq cannot tell where the body ends. The words after `syntax error` differ from case to case. In a filter with a `def`, check the `;` first. Ignore the note about shell quoting.
 
 <!-- task -->
 
 ## Remember
 
-- `def name: body;` makes a new filter. It comes before the program that uses it.
-- Use the name like `length`: hand it a value with a pipe.
-- In the body, `.` is the value the filter was handed.
+- `def name: body;` makes a new filter. It comes before the program that uses it, and it ends with `;`.
+- Use the name like `length`: hand it a value with a pipe. In the body, `.` is that value.
 - Write a step once, and use it in many places, also inside `map`.
 - `name/0 is not defined` means the definition is missing or the name is spelled wrong.

@@ -1,39 +1,42 @@
 # Reading JSON
 
-jq works on JSON, so you need to read JSON with ease. JSON has only six kinds of value. This lesson shows each one.
-
 ## Simple values
 
-Four kinds of value are simple. Each is one thing.
+- `"Oslo"` is a **string**. It is text, and it always sits in double quotes.
+- `36` and `4.5` are **numbers**. They have no quotes.
+- `true` and `false` are **booleans**. They have no quotes.
+- `null` means "nothing here". It has no quotes.
 
-- Text, called a **string**. It always sits in double quotes: `"Oslo"`.
-- A **number**, with no quotes: `36` or `4.5`.
-- `true` or `false`, with no quotes. This kind is called a **boolean**.
-- `null`. It means "nothing here".
-
-Quotes matter. `"36"` is text. `36` is a number.
+**Rule:** Quotes make text. `"36"` is a string. `36` is a number.
 
 ## Objects: values with names
-
-An **object** holds values under names. It is written with curly braces:
 
 ```json
 {"city": "Oslo", "temp": 4}
 ```
 
-- Each entry has a name and a value, with a colon between them. The name is called a **key**.
-- Keys are always text in double quotes.
+**Rule:** An **object** holds values under names, between curly braces. A name is called a **key**.
+
+- A key is always text in double quotes.
+- A colon sits between the key and its value.
 - Commas separate the entries.
 
-Here the key `city` holds the text `"Oslo"`, and the key `temp` holds the number `4`.
-
-In this lesson you do not write filters. You read the input and type a value from it, exactly as JSON writes it.
+Here the key `city` holds the string `"Oslo"`, and the key `temp` holds the number `4`.
 
 <!-- task -->
 
 ## Quotes are part of the value
 
-When you type text, type its double quotes too. `"web-1"` is JSON. Without the quotes, `web-1` is not JSON at all, and jq would reject it.
+```json
+{"name": "Ada", "age": 36}
+```
+
+- The value under `name` is `"Ada"`, with its quotes.
+- The value under `age` is `36`, with no quotes.
+
+**Rule:** When you type text, type its double quotes too.
+
+`Ada` without the quotes is not JSON at all. jq would reject it.
 
 Numbers, `true`, `false` and `null` never have quotes.
 
@@ -41,21 +44,19 @@ Numbers, `true`, `false` and `null` never have quotes.
 
 ## Arrays: values in order
 
-An **array** is a list of values in order. It is written with square brackets:
-
 ```json
 ["admin", "dev", "oncall"]
 ```
 
+**Rule:** An **array** is a list of values in order, between square brackets.
+
 - Commas separate the items.
 - The items can be any kind of value.
-- The whole array is one value. An object can hold it under a key, like any other value.
+- The whole array is one value. An object can hold it under a key: `{"roles": ["admin", "dev"]}`.
 
 <!-- task -->
 
 ## Values inside values
-
-An object can hold another object, or an array. An array can hold objects. Real JSON is built this way, layer on layer:
 
 ```json
 {
@@ -68,13 +69,13 @@ An object can hold another object, or an array. An array can hold objects. Real 
 }
 ```
 
-Read it from the outside in:
+**Rule:** Values hold other values. Read them from the outside in.
 
 - The whole thing is an object with three keys: `id`, `customer` and `items`.
 - `customer` holds an object with two keys.
 - `items` holds an array of two objects.
 
-To find a value, name the steps: "inside `customer`, the value under `city`".
+To find a value, name the steps: inside `customer`, the value under `city` is `"Bergen"`.
 
 <!-- task -->
 
@@ -82,6 +83,5 @@ To find a value, name the steps: "inside `customer`, the value under `city`".
 
 - JSON has six kinds of value: string, number, boolean, null, array and object.
 - A string always has double quotes. Nothing else does.
-- An object holds values under keys: `{"key": value}`.
-- An array holds values in order: `[value, value]`.
+- An object holds values under keys: `{"key": value}`. An array holds values in order: `[value, value]`.
 - Values nest. Read them from the outside in.

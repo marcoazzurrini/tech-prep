@@ -1,48 +1,79 @@
 # Plain Text with -r
 
-jq prints a string with double quotes, because its output is JSON. Often you want the bare text: a name to paste, or a list of lines for another program. For that, you tell jq to print plain text.
-
 ## A flag changes how jq works
 
-Until now your commands had three parts: `jq`, the filter and the file.
+**Input**
+
+```json
+{"name": "Ada", "city": "Oslo"}
+```
+
+**Command**
 
 ```sh
-jq '.name' user.json
+jq '.name' data.json
 ```
+
+**Output**
 
 ```text
 "Ada"
 ```
 
-A **flag** is an extra word between `jq` and the filter. It starts with a dash. It does not change the filter. It changes how jq works.
-
-The flag `-r` stands for "raw output". With it, jq prints a string as plain text, without the quotes:
+**Command**
 
 ```sh
-jq -r '.name' user.json
+jq -r '.name' data.json
 ```
+
+**Output**
 
 ```text
 Ada
 ```
 
-In the tasks of this lesson you add the flag yourself. Type it after `jq` and before the filter.
+**Rule:** A flag is an extra word between `jq` and the filter. `-r` prints a string as plain text, without the quotes.
 
-One more thing is different. In these tasks the output must match exactly as text, quotes included. So a missing `-r` makes the task fail.
+`-r` stands for "raw output". A flag starts with a dash. It does not change the filter. It changes how jq works.
+
+`-r` is only for tasks that ask for plain text. There, the output must match as text, so a missing `-r` makes the task fail. In the other lessons the wanted output keeps its quotes, so an extra `-r` makes the task fail.
 
 <!-- task -->
 
 ## Only strings change
 
-`-r` changes one thing: how jq prints an output that is a string.
+**Input**
 
-A number, `true`, `false` and `null` have no quotes, so they look the same with `-r`.
+```json
+{"name": "Ada", "age": 36, "langs": ["ts", "go"]}
+```
 
-An array or an object is still printed as JSON, and the strings inside it keep their quotes. Take the input `{"name": "Ada", "langs": ["ts", "go"]}`:
+**Command**
 
 ```sh
-jq -r '.langs' user.json
+jq -r '.langs | .[]' data.json
 ```
+
+**Output**
+
+```text
+ts
+go
+```
+
+**Rule:** `-r` changes only an output that is a string. So make each string its own output.
+
+`jq -r '.age' data.json` prints `36`. A number, `true`, `false` and `null` have no quotes, so they look the same with `-r`.
+
+**Common mistake:** `-r` on a whole array.
+
+**Wrong**
+
+```sh
+jq -r '.langs' data.json
+```
+
+**Output**
 
 ```text
 [
@@ -51,26 +82,17 @@ jq -r '.langs' user.json
 ]
 ```
 
-The output is an array, not a string. So `-r` did nothing.
-
-To get plain text, each string must be its own output. `.[]` does that:
+**Fix**
 
 ```sh
-jq -r '.langs | .[]' user.json
+jq -r '.langs« | .[]»' data.json
 ```
 
-```text
-ts
-go
-```
+The output is an array, not a string, so `-r` did nothing. An array or an object is still printed as JSON, and the strings inside it keep their quotes.
 
 <!-- task -->
 
 ## One line for each output
-
-jq prints each output on its own line. With `-r` you get clean lines of text. Other terminal tools read lines like these. One example is `sort`, which puts lines in order. With the quotes left on, such a tool would get the quotes too.
-
-Most of the time you start from an array of objects and want one field as lines. Take every item, then the field:
 
 **Input**
 
@@ -81,23 +103,34 @@ Most of the time you start from an array of objects and want one field as lines.
 ]
 ```
 
+**Command**
+
 ```sh
-jq -r '.[] | .name' users.json
+jq -r '.[] | .name' data.json
 ```
+
+**Output**
 
 ```text
 Ada
 Bo
 ```
 
-`.[]` gives each user as its own output. `.name` takes the name of each one. Each name is a string, so `-r` prints it without quotes.
+```steps
+jq '.[]' data.json => {"name": "Ada", "city": "Oslo"} ;; {"name": "Bo", "city": "Bergen"}
+jq '.[] «| .name»' data.json => "Ada" ;; "Bo"
+jq «-r» '.[] | .name' data.json => Ada ;; Bo
+```
+
+**Rule:** jq prints each output on its own line. With `-r`, each string is a clean line of text.
+
+`sort` and other terminal tools read lines like these. With the quotes left on, such a tool would get the quotes too.
 
 <!-- task -->
 
 ## Remember
 
-- A flag goes between `jq` and the filter: `jq -r '.name' user.json`.
-- `-r` prints a string output as plain text, without quotes.
+- A flag goes between `jq` and the filter: `jq -r '.name' data.json`.
+- `-r` prints a string output as plain text, without quotes. Use it only when a task asks for plain text.
 - Numbers look the same. Arrays and objects are still printed as JSON.
 - Make each string its own output, with `.[]`, to get one plain line for each.
-- The order is: `jq`, the flags, the filter in single quotes, the file.

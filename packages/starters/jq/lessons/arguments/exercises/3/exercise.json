@@ -9,15 +9,15 @@
     "constant": true,
     "tests": [
       {
-        "input": null,
+        "input_text": "",
         "expected": "{\n  \"service\": \"api\",\n  \"replicas\": 3\n}"
       },
       {
-        "input": null,
+        "input_text": "",
         "expected": "{\n  \"service\": \"api\",\n  \"replicas\": 3\n}"
       },
       {
-        "input": null,
+        "input_text": "",
         "expected": "{\n  \"service\": \"api\",\n  \"replicas\": 3\n}"
       }
     ]

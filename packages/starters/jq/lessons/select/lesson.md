@@ -1,24 +1,11 @@
 # Keep Only Some Items
 
-A list often holds more than you want. You want only the failed builds, or only the adults. A test answers yes or no for one item. Now you use a test to decide which items stay.
-
 ## select keeps or drops a value
-
-`select` takes a test between round brackets. It runs the test on its input.
-
-- When the test gives `true`, `select` passes the input on, unchanged.
-- When the test gives `false`, `select` gives no output. The value is dropped.
-
-Use it on each item, after `.[]`:
 
 **Input**
 
 ```json
-[
-  {"name": "Ada", "age": 36},
-  {"name": "Bo", "age": 15},
-  {"name": "Cy", "age": 52}
-]
+[{"name": "Ada", "age": 36}, {"name": "Bo", "age": 15}, {"name": "Cy", "age": 52}]
 ```
 
 **Filter**
@@ -34,15 +21,24 @@ Use it on each item, after `.[]`:
 {"name": "Cy", "age": 52}
 ```
 
-`.[]` gives each person. `select` runs once for each. For Bo the test is false, so Bo is dropped.
+```steps
+.[] => {"name": "Ada", "age": 36} ;; {"name": "Bo", "age": 15} ;; {"name": "Cy", "age": 52}
+.[] «| select(.age >= 18)» => {"name": "Ada", "age": 36} ;; {"name": "Cy", "age": 52}
+```
 
-The output is the whole item, not `true` or `false`. The test only decides.
+**Rule:** `select(test)` passes its input on when the test is true. Otherwise it gives no output.
+
+`select` gives the whole item, not `true` or `false`. The test only decides.
 
 <!-- task -->
 
 ## Keep an array with map
 
-`.[] | select(...)` gives separate outputs. To get one array, put `select` inside `map`. The input is the same as above:
+**Input**
+
+```json
+[{"name": "Ada", "age": 36}, {"name": "Bo", "age": 15}, {"name": "Cy", "age": 52}]
+```
 
 **Filter**
 
@@ -53,31 +49,42 @@ map(select(.age >= 18))
 **Output**
 
 ```json
-[
-  {"name": "Ada", "age": 36},
-  {"name": "Cy", "age": 52}
-]
+[{"name": "Ada", "age": 36}, {"name": "Cy", "age": 52}]
 ```
 
-An array goes in. A shorter array comes out. `map` runs `select` on every item and collects the items that pass.
+**Rule:** `map(select(test))` gives one array with the items that pass.
 
-A common mistake is to use `select` on the whole array:
+**Common mistake:** `select` on the whole array.
+
+**Wrong**
 
 ```jq
 select(.age >= 18)
 ```
 
+**Error**
+
 ```text
 jq: error: Cannot index array with string "age"
 ```
 
-Here `select` got the array, not one item. An array has no `age`. The test must run on each item, so put `select` after `.[]` or inside `map`.
+**Fix**
+
+```jq
+«map(»select(.age >= 18))
+```
+
+`select` got the array, and an array has no `age`. Put `select` after `.[]` or inside `map`, so the test runs on each item.
 
 <!-- task -->
 
 ## Carry on after select
 
-What `select` passes on goes to the next step, like any output. So you can keep some items and then take one field from each. The input is the same again:
+**Input**
+
+```json
+[{"name": "Ada", "age": 36}, {"name": "Bo", "age": 15}, {"name": "Cy", "age": 52}]
+```
 
 **Filter**
 
@@ -92,24 +99,43 @@ What `select` passes on goes to the next step, like any output. So you can keep 
 "Cy"
 ```
 
-Square brackets around the whole chain collect the names into one array:
+```steps
+.[] => {"name": "Ada", "age": 36} ;; {"name": "Bo", "age": 15} ;; {"name": "Cy", "age": 52}
+.[] «| select(.age >= 18)» => {"name": "Ada", "age": 36} ;; {"name": "Cy", "age": 52}
+.[] | select(.age >= 18) «| .name» => "Ada" ;; "Cy"
+```
+
+**Rule:** What `select` passes on goes to the next step.
+
+`[.[] | select(.age >= 18) | .name]` gives `["Ada", "Cy"]`. Square brackets around the whole chain collect the names.
+
+**Common mistake:** `select` after `.name`.
+
+**Wrong**
 
 ```jq
-[.[] | select(.age >= 18) | .name]
+.[] | .name | select(.age >= 18)
 ```
 
-```json
-["Ada", "Cy"]
+**Error**
+
+```text
+jq: error: Cannot index string with string "age"
 ```
 
-The order of the steps matters. `select` comes first, while the item still has its `age`. After `.name`, only a string is left, and the test would have nothing to look at.
+**Fix**
+
+```jq
+.[] | select(.age >= 18) | .name
+```
+
+After `.name` only a string is left. Put `select` first, while the item still has its `age`.
 
 <!-- task -->
 
 ## Remember
 
-- `select(test)` passes a value on when the test is true, and drops it when the test is false.
-- It works on one item: `.[] | select(.age >= 18)`.
-- `map(select(...))` gives one array with the items that pass.
-- After `select` you can carry on: `.[] | select(...) | .name`.
+- `.[] | select(test)` keeps the items where the test is true.
+- `map(select(test))` gives them as one array.
+- You can carry on after it: `.[] | select(test) | .name`.
 - `Cannot index array` means `select` got the whole array, not one item.

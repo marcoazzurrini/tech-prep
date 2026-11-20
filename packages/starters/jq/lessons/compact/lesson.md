@@ -1,22 +1,22 @@
 # One Line per Value with -c
 
-jq prints its output in a tidy way, spread over many lines. That is good for your eyes. But many terminal tools read their input line by line. They need each value on one line.
-
 ## The -c flag
 
-Here is a small file, `server.json`:
+**Input**
 
 ```json
 {"host": "web-1", "ports": [80, 443], "up": true}
 ```
 
-Run jq on it as you always did:
+**Command**
 
 ```sh
-jq '.' server.json
+jq '.' data.json
 ```
 
-```json
+**Output**
+
+```text
 {
   "host": "web-1",
   "ports": [
@@ -27,77 +27,89 @@ jq '.' server.json
 }
 ```
 
-One value takes eight lines. Now add the flag `-c`:
+**Command**
 
 ```sh
-jq -c '.' server.json
+jq -c '.' data.json
 ```
 
-```json
+**Output**
+
+```text
 {"host":"web-1","ports":[80,443],"up":true}
 ```
 
-The same value takes one line. jq also leaves out every space it does not need.
+**Rule:** `-c` prints the value on one line, with no spaces it does not need. Many terminal tools read line by line.
 
-The `c` stands for **compact**, which means "packed small". The flag does not change the value. It changes only how jq prints it.
+`-c` is short for **compact**: packed small. It does not change the value. It changes only how jq prints it.
 
-Like `-r`, the flag goes between `jq` and the filter.
+`-c` goes between `jq` and the filter, outside the single quotes, like `-r`.
 
 <!-- task -->
 
 ## One line for each output
 
-`-c` gives one line to each **output**. It does not join outputs together.
-
-Here is `commits.json`:
+**Input**
 
 ```json
 [{"sha": "a1f", "author": "ada"}, {"sha": "c07", "author": "bo"}, {"sha": "e92", "author": "ada"}]
 ```
 
-The filter `.` gives one output: the whole array. So `-c` prints one line:
+**Command**
 
 ```sh
-jq -c '.' commits.json
+jq -c '.[]' data.json
 ```
 
-```json
-[{"sha":"a1f","author":"ada"},{"sha":"c07","author":"bo"},{"sha":"e92","author":"ada"}]
-```
+**Output**
 
-That is the common mistake. A tool that reads line by line sees one long line here, not three commits.
-
-The filter `.[]` gives every item as its own output. Now `-c` prints one line for each commit:
-
-```sh
-jq -c '.[]' commits.json
-```
-
-```json
+```text
 {"sha":"a1f","author":"ada"}
 {"sha":"c07","author":"bo"}
 {"sha":"e92","author":"ada"}
 ```
 
-This is the shape that line tools want. One line is one commit. A tool that counts lines now counts commits. A tool that searches lines now finds whole commits.
+**Rule:** `-c` gives one line to each output. It does not join outputs, and it does not split one.
+
+**Common mistake:** A filter that gives the whole array as one output.
+
+**Wrong**
+
+```sh
+jq -c '«.»' data.json
+```
+
+**Output**
+
+```text
+[{"sha":"a1f","author":"ada"},{"sha":"c07","author":"bo"},{"sha":"e92","author":"ada"}]
+```
+
+**Fix**
+
+```sh
+jq -c '«.[]»' data.json
+```
+
+A tool that reads line by line sees one long line, not three commits. `.[]` makes every item its own output, so one line is one commit.
 
 <!-- task -->
 
 ## Two flags in one command
 
-`-c` changes how jq prints arrays and objects. It does not touch strings. A string still comes out with its quotes. To drop the quotes you need `-r`, as before.
-
-You can use both flags in one command. Here is `form.json`:
+**Input**
 
 ```json
 [{"question": "name", "answer": "Ada"}, {"question": "langs", "answer": ["ts", "go"]}]
 ```
 
-One answer is a string. The other is an array. With `-r` alone, the array spreads over several lines:
+**Command**
 
 ```sh
-jq -r '.[] | .answer' form.json
+jq -r '.[] | .answer' data.json
 ```
+
+**Output**
 
 ```text
 Ada
@@ -107,24 +119,29 @@ Ada
 ]
 ```
 
-With both flags, each answer takes one line, and the string has no quotes:
+**Command**
 
 ```sh
-jq -c -r '.[] | .answer' form.json
+jq -c -r '.[] | .answer' data.json
 ```
+
+**Output**
 
 ```text
 Ada
 ["ts","go"]
 ```
 
-Put a space between the two flags. Their order does not matter: `-r -c` does the same.
+**Rule:** `-c` packs arrays and objects onto one line. `-r` drops the quotes of a string. Use both flags to get both.
+
+`-c` alone prints `"Ada"` with its quotes. It does not touch strings.
+
+`-r -c` does the same as `-c -r`. Put a space between the two flags.
 
 <!-- task -->
 
 ## Remember
 
-- By default jq spreads an array or an object over many lines.
 - `-c` prints each output on one line, with no extra spaces.
 - `-c` does not join outputs. `jq -c '.'` prints an array as one line. `jq -c '.[]'` prints one line for each item.
 - `-c` does not change strings. Add `-r` to drop their quotes: `jq -c -r '...'`.

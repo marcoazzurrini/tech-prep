@@ -1,10 +1,6 @@
 # Replace Text
 
-Data often comes with text that is almost right. A branch name has the wrong prefix. A title has spaces where you need dashes. An email has capital letters. You want the same string with a small change.
-
 ## Replace the first match
-
-`sub` finds a piece of text in a string and puts other text in its place:
 
 **Input**
 
@@ -24,45 +20,79 @@ Data often comes with text that is almost right. A branch name has the wrong pre
 "feat/login"
 ```
 
-`sub` takes two texts, with a **semicolon** between them. The first is the text to find. The second is the text to put there. Read it as "replace `feature` with `feat`".
+```steps
+.branch => "feature/login"
+.branch «| sub("feature"; "feat")» => "feat/login"
+```
 
-To remove text, replace it with an empty string: `sub("feature/"; "")` gives `"login"`.
+**Rule:** `sub("old"; "new")` finds the first `old` in a string and puts `new` in its place.
 
-A common mistake is to write a comma in place of the semicolon. Then jq stops:
+`.branch | sub("feature/"; "")` gives `"login"`. An empty string removes the text.
+
+**Common mistake:** A comma between the two texts.
+
+**Wrong**
+
+```jq
+.branch | sub("feature"«,» "feat")
+```
+
+**Error**
 
 ```text
 jq: error: sub/1 is not defined at <top-level>, line 1:
 ```
 
-`sub/1` means "`sub` with one text". jq did not see two texts, because a comma does not separate them. Write a semicolon.
+**Fix**
+
+```jq
+.branch | sub("feature"«;» "feat")
+```
+
+`sub/1` means "`sub` with one text". Only a **semicolon** separates the two texts.
 
 <!-- task -->
 
 ## Replace every match
 
-`sub` stops after the first match. `gsub` goes on and replaces every match. It is written the same way:
-
 **Input**
 
 ```json
-{"title": "Fix login bug"}
-```
-
-- `.title | sub(" "; "-")` gives `"Fix-login bug"`. Only the first space changed.
-- `.title | gsub(" "; "-")` gives `"Fix-login-bug"`.
-
-There is a trap. The first text is not plain text. It is a **pattern**, in which some marks have a special meaning. Letters, digits, spaces, `-` and `_` stand for themselves. But a dot stands for "any character":
-
-**Input**
-
-```json
-"1.2.3"
+{"title": "Fix login bug", "version": "1.2.3"}
 ```
 
 **Filter**
 
 ```jq
-gsub("."; "-")
+.title | sub(" "; "-")
+```
+
+**Output**
+
+```json
+"Fix-login bug"
+```
+
+**Filter**
+
+```jq
+.title | gsub(" "; "-")
+```
+
+**Output**
+
+```json
+"Fix-login-bug"
+```
+
+**Rule:** `gsub("old"; "new")` replaces every match. `sub` stops after the first.
+
+**Common mistake:** A dot in the first text.
+
+**Wrong**
+
+```jq
+.version | gsub(«"."»; "-")
 ```
 
 **Output**
@@ -71,20 +101,17 @@ gsub("."; "-")
 "-----"
 ```
 
-Every character was replaced, not only the dots. Other marks with a special meaning are `*`, `+`, `?`, `(`, `[`, `^` and `$`.
+**Fix**
 
-For those, use what you know: split, then join. `split(".") | join("-")` gives `"1-2-3"`.
+```jq
+.version | «split(".") | join("-")»
+```
+
+The first text is a **pattern**. In it a dot stands for "any character". Other marks with a special meaning are `*`, `+`, `?`, `(`, `[`, `^` and `$`. Letters, digits, spaces, `-` and `_` stand for themselves.
 
 <!-- task -->
 
 ## Change the case
-
-Two strings that differ only in capital letters are different strings for jq. `"Ada@Example.com"` is not `"ada@example.com"`. To compare or tidy such text, bring it all to one case first.
-
-- `ascii_downcase` makes every letter a small letter.
-- `ascii_upcase` makes every letter a capital letter.
-
-They take no text in parentheses. They change their input:
 
 **Input**
 
@@ -104,18 +131,35 @@ They take no text in parentheses. They change their input:
 "ada lovelace"
 ```
 
-Each of these filters takes a string and gives a string. So you can chain them with pipes:
+**Filter**
 
-- `.name | ascii_downcase | gsub(" "; "-")` gives `"ada-lovelace"`.
+```jq
+.name | ascii_downcase | gsub(" "; "-")
+```
 
-The word `ascii` says which letters change: the plain letters `a` to `z`. A letter with an accent, such as `É`, stays as it is.
+**Output**
+
+```json
+"ada-lovelace"
+```
+
+```steps
+.name => "Ada Lovelace"
+.name «| ascii_downcase» => "ada lovelace"
+.name | ascii_downcase «| gsub(" "; "-")» => "ada-lovelace"
+```
+
+**Rule:** `ascii_downcase` makes every letter a small letter. `ascii_upcase` makes every letter a capital letter.
+
+`.name | ascii_upcase` gives `"ADA LOVELACE"`. Both take a string and give a string, with nothing in parentheses.
+
+`"É" | ascii_downcase` gives `"É"`. Only the plain letters `a` to `z` change.
 
 <!-- task -->
 
 ## Remember
 
 - `sub("old"; "new")` replaces the first match. `gsub("old"; "new")` replaces every match.
-- The two texts are separated by a semicolon, not a comma.
-- Replace with `""` to remove text.
-- The first text is a pattern. A dot means "any character". For dots and other special marks, use `split` and `join`.
+- The two texts are separated by a semicolon, not a comma. Replace with `""` to remove text.
+- The first text is a pattern. For dots and other special marks, use `split` and `join`.
 - `ascii_downcase` and `ascii_upcase` change the case of the letters.
