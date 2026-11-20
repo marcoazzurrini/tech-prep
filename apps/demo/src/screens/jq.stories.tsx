@@ -16,27 +16,57 @@ import {
   TaskText,
   TopBar,
 } from "@tech-prep/ui";
-import { BookOpen, User } from "lucide-react";
+import { User } from "lucide-react";
 import { fn } from "storybook/test";
 
 const LESSON = `# Keep Items with select
 
-\`select(test)\` passes a value on when the test is true. It drops the value when the test is false.
+**Input**
 
-## Worked example
-
-Give the titles of the books that cost less than 10.
+\`\`\`json
+[{"name": "Ada", "age": 36}, {"name": "Bo", "age": 15}]
+\`\`\`
 
 **Filter**
 
 \`\`\`jq
-.[] | select(.price < 10) | .title
+.[] | select(.age >= 18)
 \`\`\`
 
-## Why it works
+**Output**
 
-- \`.[]\` gives one book at a time.
-- \`select(.price < 10)\` keeps a book only when its price is under 10.
+\`\`\`json
+{"name": "Ada", "age": 36}
+\`\`\`
+
+\`\`\`steps
+.[] => {"name": "Ada", "age": 36} and {"name": "Bo", "age": 15}
+.[] «| select(.age >= 18)» => {"name": "Ada", "age": 36}
+\`\`\`
+
+**Rule:** \`select(test)\` passes its input on when the test is true. Otherwise it gives no output.
+
+\`map(select(.age >= 18))\` gives the same items as one array.
+
+**Common mistake:** \`select\` on the whole array.
+
+**Wrong**
+
+\`\`\`sh
+jq 'select(.age >= 18)' data.json
+\`\`\`
+
+**Error**
+
+\`\`\`text
+jq: error: Cannot index array with string "age"
+\`\`\`
+
+**Fix**
+
+\`\`\`sh
+jq '«.[] | »select(.age >= 18)' data.json
+\`\`\`
 `;
 
 const USERS = `[
@@ -90,9 +120,9 @@ const JqScreen = ({ screen }: { screen: Screen }) => {
                   <Chip muted>Task 1 of 2</Chip>
                 </>
               }
-              title="Products in stock"
+              title="Print the name of every product that is in stock."
             >
-              <ProblemStatement text="Give the name of every product that is in stock." />
+              <ProblemStatement text="A product is in stock when its `stock` is above 0." />
               <p className="tp-task-text__label">Input</p>
               <CodeBlock code={SHOP} />
               <p className="tp-task-text__note">
@@ -100,17 +130,13 @@ const JqScreen = ({ screen }: { screen: Screen }) => {
               </p>
             </TaskText>
           ) : (
-            <LessonText
-              label={<Chip icon={BookOpen}>Lesson</Chip>}
-              text={LESSON}
-              title="Keep Items with select"
-            />
+            <LessonText text={LESSON} title="Keep Items with select" />
           )}
         </SplitSide>
         <SplitSide stack>
           {!solo && (
-            <TaskStrip label="Try it" title="Active users">
-              <ProblemStatement text="Give the name of every user who is active." />
+            <TaskStrip title="Print the name of every user who is active.">
+              <ProblemStatement text="The input is a list of users. Each user has `name` and `active`." />
             </TaskStrip>
           )}
           <CodeEditor

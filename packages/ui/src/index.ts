@@ -64,7 +64,7 @@ export {
   PageNote,
 } from "./components/page";
 
-export { ProblemStatement } from "./components/problem-statement";
+export { inline, lead, ProblemStatement } from "./components/problem-statement";
 
 export { Progress } from "./components/progress";
 

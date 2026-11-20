@@ -1080,7 +1080,8 @@ describe("jq course", () => {
       expect(parts.map((p) => p.task)).toEqual(guided);
       expect(parts.filter((p) => /^Part \d+$/u.test(p.name))).toEqual([]);
       expect(parts.filter((p) => p.text.includes("<!--"))).toEqual([]);
-      expect(parts[0]?.title).toBe(c.name);
+      // The first part is headed by its own heading, or by the lesson's name.
+      expect([c.name, parts[0]?.name]).toContain(parts[0]?.title);
       expect(parts.at(-1)?.text).toContain("## Remember");
     }
   });

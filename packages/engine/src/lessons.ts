@@ -34,11 +34,13 @@ export interface LessonPart {
 }
 
 const HEADING = /^## (?<name>.+)$/mu;
+const TITLE_LINE = /^# .*\n/u;
 
 /**
- * A lesson's parts, one per guided task. A part is named by its first "## " heading. The
- * first part opens the lesson, so it is headed by the lesson's name; a later part is headed
- * by its own. The summary closes the last part. A lesson that is not split has one part.
+ * A lesson's parts, one per guided task. A part is named by its first "## " heading. A part
+ * that opens with its heading is headed by it. A first part that opens with other text is
+ * headed by the lesson's name. The summary closes the last part. A lesson that is not split
+ * has one part.
  * Empty when the lesson is not written.
  */
 export const lessonParts = (course: Course, id: string): LessonPart[] => {
@@ -64,8 +66,13 @@ export const lessonParts = (course: Course, id: string): LessonPart[] => {
   return slugs.map((task, i) => {
     const piece = pieces[i] ?? "";
     const name = HEADING.exec(piece)?.groups?.name?.trim();
-    const body = i === slugs.length - 1 ? `${piece}\n\n${summary}` : piece;
-    const headed = i > 0 && name !== undefined && piece.startsWith("## ");
+
+    // The lesson's own title line is the page's to show.
+    const body = (i === slugs.length - 1 ? `${piece}\n\n${summary}` : piece)
+      .replace(TITLE_LINE, "")
+      .trim();
+
+    const headed = name !== undefined && body.startsWith("## ");
 
     return {
       name: name ?? `Part ${i + 1}`,

@@ -16,6 +16,38 @@ export const inline = (text: string): ReactNode[] =>
     return part;
   });
 
+/** Where the first sentence of a paragraph ends. A full stop inside `code` does not count. */
+const sentenceEnd = (text: string): number => {
+  let code = false;
+
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text.charAt(i);
+
+    if (ch === "`") {
+      code = !code;
+    } else if (!code && ".?!".includes(ch) && /^\s/u.test(text.charAt(i + 1))) {
+      return i + 1;
+    }
+  }
+
+  return text.length;
+};
+
+/**
+ * A statement as a heading and the text under it: its first sentence, then the rest. A
+ * short task has no name of its own, so its first sentence says what to do.
+ */
+export const lead = (statement: string) => {
+  const [first = "", ...paragraphs] = statement.trim().split(/\n\s*\n/u);
+  const line = first.replaceAll(/\s*\n\s*/gu, " ");
+  const end = sentenceEnd(line);
+
+  return {
+    rest: [line.slice(end).trim(), ...paragraphs].filter(Boolean).join("\n\n"),
+    title: line.slice(0, end),
+  };
+};
+
 type Block =
   | { kind: "p"; text: string }
   | { kind: "list"; items: string[] }

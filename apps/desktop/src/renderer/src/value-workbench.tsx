@@ -1,6 +1,8 @@
 import {
   CodeBlock,
   CodeEditor,
+  inline,
+  lead,
   OutputPanel,
   OutputStack,
   PaneSection,
@@ -92,12 +94,14 @@ export const ValueWorkbench = ({
 
   const failed = run && (run.fatal || run.passed !== run.total);
   const shown = solution ?? handedIn;
+  // A short task is headed by the first sentence of its statement.
+  const heading = lead(problem.statement ?? "");
 
   return (
     <>
       {strip && (
-        <TaskStrip label={strip.label} title={problem.title}>
-          <ProblemStatement text={problem.statement ?? ""} />
+        <TaskStrip title={inline(heading.title)}>
+          <ProblemStatement text={heading.rest} />
         </TaskStrip>
       )}
       {/* Without a strip, what the exercise shows sits beside its statement. */}

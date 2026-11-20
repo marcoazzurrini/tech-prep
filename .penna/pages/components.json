@@ -4840,6 +4840,1238 @@
        ]
       }
      ]
+    },
+    {
+     "id": "R47Qb",
+     "type": "frame",
+     "name": "Lesson text",
+     "style": {
+      "display": "flex",
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "gap": 32,
+      "alignSelf": "stretch"
+     },
+     "children": [
+      {
+       "id": "yMgmi",
+       "type": "frame",
+       "name": "Section header",
+       "style": {
+        "display": "flex",
+        "alignItems": "center",
+        "gap": 16,
+        "padding": "0px 0px 20px 0px",
+        "borderBottom": "1px solid var(--color-border)",
+        "alignSelf": "stretch"
+       },
+       "children": [
+        {
+         "id": "LhRYL",
+         "type": "text",
+         "name": "Number",
+         "text": "09",
+         "style": {
+          "color": "var(--color-mute)",
+          "fontSize": 13,
+          "fontFamily": "var(--font-mono)",
+          "whiteSpace": "pre"
+         }
+        },
+        {
+         "id": "znk9D",
+         "type": "text",
+         "name": "Title",
+         "text": "Lesson text",
+         "style": {
+          "color": "var(--color-ink)",
+          "fontSize": 20,
+          "fontWeight": 600,
+          "whiteSpace": "pre"
+         }
+        },
+        {
+         "id": "mCncY",
+         "type": "text",
+         "name": "Note",
+         "text": "The fixed blocks of a lesson part, and the task strip of a short task.",
+         "style": {
+          "color": "var(--color-mute)",
+          "fontSize": 14,
+          "marginLeft": "auto"
+         }
+        }
+       ]
+      },
+      {
+       "id": "VL6bR",
+       "type": "frame",
+       "name": "Spec / Lesson part",
+       "style": {
+        "display": "flex",
+        "gap": 48,
+        "alignItems": "flex-start"
+       },
+       "children": [
+        {
+         "id": "4M6FY",
+         "type": "frame",
+         "name": "Lesson column",
+         "style": {
+          "width": 776,
+          "padding": "40px 48px",
+          "background": "var(--color-panel)",
+          "border": "1px solid var(--color-border)",
+          "borderRadius": 8
+         },
+         "children": [
+          {
+           "id": "NBDR6",
+           "type": "frame",
+           "name": "Lesson part",
+           "style": {
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": 28,
+            "maxWidth": 680,
+            "alignSelf": "auto",
+            "width": "100%",
+            "marginLeft": 0,
+            "marginRight": 0,
+            "fontFamily": "Libron, 'Atkinson Hyperlegible Next', sans-serif"
+           },
+           "children": [
+            {
+             "id": "QG7du",
+             "type": "text",
+             "text": "The output of one step is the input of the next",
+             "style": {
+              "color": "var(--color-ink)",
+              "fontSize": 36,
+              "fontWeight": 600,
+              "lineHeight": "46px"
+             },
+             "name": "The output of one step …"
+            },
+            {
+             "id": "97Buy",
+             "type": "frame",
+             "name": "Lesson block / Example",
+             "style": {
+              "display": "flex",
+              "flexDirection": "column",
+              "gap": 14,
+              "alignSelf": "stretch",
+              "borderLeft": "2px solid var(--color-accent)",
+              "paddingLeft": 20
+             },
+             "children": [
+              {
+               "id": "vDQYP",
+               "type": "text",
+               "name": "Block label",
+               "text": "Example",
+               "style": {
+                "color": "var(--color-accent)",
+                "fontSize": 15,
+                "fontWeight": 700,
+                "letterSpacing": "0.6px",
+                "textTransform": "uppercase",
+                "fontFamily": "'Atkinson Hyperlegible Next', sans-serif"
+               }
+              },
+              {
+               "id": "DqJVq",
+               "type": "frame",
+               "style": {
+                "display": "flex",
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": -6
+               },
+               "name": "Frame",
+               "children": [
+                {
+                 "id": "6tLGG",
+                 "type": "text",
+                 "text": "Input",
+                 "style": {
+                  "color": "var(--color-mute)",
+                  "fontSize": 15,
+                  "fontWeight": 500,
+                  "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                 },
+                 "name": "Input"
+                }
+               ]
+              },
+              {
+               "id": "cqZQY",
+               "type": "frame",
+               "name": "Code",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "flex-start",
+                "padding": "16px 20px",
+                "background": "var(--color-canvas)",
+                "alignSelf": "stretch",
+                "flexShrink": 0,
+                "border": "1px solid var(--color-border)",
+                "borderRadius": 8
+               },
+               "children": [
+                {
+                 "id": "V2a3j",
+                 "type": "text",
+                 "name": "Line",
+                 "spans": [
+                  {
+                   "text": "{\"user\": "
+                  },
+                  {
+                   "text": "{\"name\": "
+                  },
+                  {
+                   "text": "\"Ada\"",
+                   "style": {
+                    "color": "var(--color-syntax-string)"
+                   }
+                  },
+                  {
+                   "text": ", \"langs\": "
+                  },
+                  {
+                   "text": "["
+                  },
+                  {
+                   "text": "\"ts\"",
+                   "style": {
+                    "color": "var(--color-syntax-string)"
+                   }
+                  },
+                  {
+                   "text": ", "
+                  },
+                  {
+                   "text": "\"go\"",
+                   "style": {
+                    "color": "var(--color-syntax-string)"
+                   }
+                  },
+                  {
+                   "text": "]"
+                  },
+                  {
+                   "text": "}"
+                  },
+                  {
+                   "text": "}"
+                  }
+                 ],
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 16,
+                  "lineHeight": "26px",
+                  "whiteSpace": "pre",
+                  "color": "var(--color-body)"
+                 }
+                }
+               ]
+              },
+              {
+               "id": "NNhqS",
+               "type": "frame",
+               "style": {
+                "display": "flex",
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": -6
+               },
+               "name": "Frame",
+               "children": [
+                {
+                 "id": "nExxm",
+                 "type": "text",
+                 "text": "Filter",
+                 "style": {
+                  "color": "var(--color-mute)",
+                  "fontSize": 15,
+                  "fontWeight": 500,
+                  "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                 },
+                 "name": "Filter"
+                }
+               ]
+              },
+              {
+               "id": "ApBEM",
+               "type": "frame",
+               "name": "Code",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "flex-start",
+                "padding": "16px 20px",
+                "background": "var(--color-canvas)",
+                "alignSelf": "stretch",
+                "flexShrink": 0,
+                "border": "1px solid var(--color-border)",
+                "borderRadius": 8
+               },
+               "children": [
+                {
+                 "id": "eH9Lm",
+                 "type": "text",
+                 "name": "Line",
+                 "spans": [
+                  {
+                   "text": ".user | .langs"
+                  }
+                 ],
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 16,
+                  "lineHeight": "26px",
+                  "whiteSpace": "pre",
+                  "color": "var(--color-body)"
+                 }
+                }
+               ]
+              },
+              {
+               "id": "J6sge",
+               "type": "frame",
+               "style": {
+                "display": "flex",
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": -6
+               },
+               "name": "Frame",
+               "children": [
+                {
+                 "id": "bYdRt",
+                 "type": "text",
+                 "text": "Output",
+                 "style": {
+                  "color": "var(--color-mute)",
+                  "fontSize": 15,
+                  "fontWeight": 500,
+                  "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                 },
+                 "name": "Output"
+                }
+               ]
+              },
+              {
+               "id": "ftq8z",
+               "type": "frame",
+               "name": "Code",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "flex-start",
+                "padding": "16px 20px",
+                "background": "var(--color-canvas)",
+                "alignSelf": "stretch",
+                "flexShrink": 0,
+                "border": "1px solid var(--color-border)",
+                "borderRadius": 8
+               },
+               "children": [
+                {
+                 "id": "DwE7P",
+                 "type": "text",
+                 "name": "Line",
+                 "spans": [
+                  {
+                   "text": "["
+                  },
+                  {
+                   "text": "\"ts\"",
+                   "style": {
+                    "color": "var(--color-syntax-string)"
+                   }
+                  },
+                  {
+                   "text": ", "
+                  },
+                  {
+                   "text": "\"go\"",
+                   "style": {
+                    "color": "var(--color-syntax-string)"
+                   }
+                  },
+                  {
+                   "text": "]"
+                  }
+                 ],
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 16,
+                  "lineHeight": "26px",
+                  "whiteSpace": "pre",
+                  "color": "var(--color-body)"
+                 }
+                }
+               ]
+              },
+              {
+               "id": "Ja6CQ",
+               "type": "frame",
+               "style": {
+                "display": "flex",
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": -6
+               },
+               "name": "Frame",
+               "children": [
+                {
+                 "id": "TzLPP",
+                 "type": "text",
+                 "text": "Step by step",
+                 "style": {
+                  "color": "var(--color-mute)",
+                  "fontSize": 15,
+                  "fontWeight": 500,
+                  "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                 },
+                 "name": "Step by step"
+                }
+               ]
+              },
+              {
+               "id": "xrAsp",
+               "type": "frame",
+               "name": "Steps",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "flex-start",
+                "padding": "16px 20px",
+                "background": "var(--color-canvas)",
+                "alignSelf": "stretch",
+                "flexShrink": 0,
+                "border": "1px solid var(--color-border)",
+                "borderRadius": 8,
+                "gap": 14
+               },
+               "children": [
+                {
+                 "id": "YYc5P",
+                 "type": "frame",
+                 "style": {
+                  "display": "flex",
+                  "flexDirection": "column",
+                  "gap": 4,
+                  "alignSelf": "stretch"
+                 },
+                 "name": "Frame",
+                 "children": [
+                  {
+                   "id": "qNvwb",
+                   "type": "frame",
+                   "style": {
+                    "display": "grid",
+                    "gridTemplateColumns": "180px 1fr",
+                    "columnGap": 16,
+                    "alignItems": "baseline"
+                   },
+                   "name": "Frame",
+                   "children": [
+                    {
+                     "id": "KVW4X",
+                     "type": "text",
+                     "name": "Line",
+                     "spans": [
+                      {
+                       "text": ".user"
+                      }
+                     ],
+                     "style": {
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 16,
+                      "lineHeight": "26px",
+                      "whiteSpace": "pre",
+                      "color": "var(--color-ink)"
+                     }
+                    },
+                    {
+                     "id": "ctpp6",
+                     "type": "frame",
+                     "style": {
+                      "display": "flex",
+                      "gap": 12,
+                      "alignItems": "baseline"
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "DvLpf",
+                       "type": "icon",
+                       "icon": "arrow-right",
+                       "style": {
+                        "width": 14,
+                        "height": 14,
+                        "color": "var(--color-mute)",
+                        "flexShrink": 0,
+                        "alignSelf": "center"
+                       },
+                       "name": "arrow-right"
+                      },
+                      {
+                       "id": "x8Rtd",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": "{\"name\": "
+                        },
+                        {
+                         "text": "\"Ada\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": ", \"langs\": "
+                        },
+                        {
+                         "text": "["
+                        },
+                        {
+                         "text": "\"ts\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": ", "
+                        },
+                        {
+                         "text": "\"go\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": "]"
+                        },
+                        {
+                         "text": "}"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-body)"
+                       }
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 ]
+                },
+                {
+                 "id": "V3QTB",
+                 "type": "frame",
+                 "style": {
+                  "display": "flex",
+                  "flexDirection": "column",
+                  "gap": 4,
+                  "alignSelf": "stretch"
+                 },
+                 "name": "Frame",
+                 "children": [
+                  {
+                   "id": "Rs23J",
+                   "type": "frame",
+                   "style": {
+                    "display": "grid",
+                    "gridTemplateColumns": "180px 1fr",
+                    "columnGap": 16,
+                    "alignItems": "baseline"
+                   },
+                   "name": "Frame",
+                   "children": [
+                    {
+                     "id": "tR85r",
+                     "type": "text",
+                     "name": "Line",
+                     "spans": [
+                      {
+                       "text": ".user "
+                      },
+                      {
+                       "text": "| .langs",
+                       "style": {
+                        "color": "var(--color-accent)",
+                        "background": "color-mix(in srgb, var(--color-accent) 16%, transparent)",
+                        "borderRadius": 4,
+                        "padding": "1px 3px",
+                        "margin": "0 -3px"
+                       }
+                      }
+                     ],
+                     "style": {
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 16,
+                      "lineHeight": "26px",
+                      "whiteSpace": "pre",
+                      "color": "var(--color-ink)"
+                     }
+                    },
+                    {
+                     "id": "fzQ26",
+                     "type": "frame",
+                     "style": {
+                      "display": "flex",
+                      "gap": 12,
+                      "alignItems": "baseline"
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "sc4mZ",
+                       "type": "icon",
+                       "icon": "arrow-right",
+                       "style": {
+                        "width": 14,
+                        "height": 14,
+                        "color": "var(--color-mute)",
+                        "flexShrink": 0,
+                        "alignSelf": "center"
+                       },
+                       "name": "arrow-right"
+                      },
+                      {
+                       "id": "Wex5t",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": "["
+                        },
+                        {
+                         "text": "\"ts\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": ", "
+                        },
+                        {
+                         "text": "\"go\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": "]"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-body)"
+                       }
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ],
+             "component": true
+            },
+            {
+             "id": "MLdc9",
+             "type": "frame",
+             "name": "Lesson block / Rule",
+             "style": {
+              "display": "flex",
+              "flexDirection": "column",
+              "gap": 0,
+              "alignSelf": "stretch",
+              "borderLeft": "2px solid transparent",
+              "paddingLeft": 20
+             },
+             "children": [
+              {
+               "id": "CVsNn",
+               "type": "frame",
+               "name": "Rule callout",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "gap": 6,
+                "alignSelf": "stretch",
+                "padding": "14px 20px 16px",
+                "borderRadius": 8,
+                "background": "var(--color-accent-bg)",
+                "border": "1px solid var(--color-accent-line)"
+               },
+               "children": [
+                {
+                 "id": "TkKMQ",
+                 "type": "text",
+                 "text": "Rule",
+                 "style": {
+                  "color": "var(--color-accent)",
+                  "fontSize": 13,
+                  "fontWeight": 700,
+                  "letterSpacing": "0.6px",
+                  "textTransform": "uppercase",
+                  "fontFamily": "'Atkinson Hyperlegible Next', sans-serif"
+                 },
+                 "name": "Rule"
+                },
+                {
+                 "id": "xJvKF",
+                 "type": "text",
+                 "spans": [
+                  {
+                   "text": "a | b",
+                   "style": {
+                    "fontFamily": "JetBrains Mono",
+                    "fontSize": 17,
+                    "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                    "borderRadius": 4,
+                    "padding": "1px 5px"
+                   }
+                  },
+                  {
+                   "text": " runs "
+                  },
+                  {
+                   "text": "a",
+                   "style": {
+                    "fontFamily": "JetBrains Mono",
+                    "fontSize": 17,
+                    "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                    "borderRadius": 4,
+                    "padding": "1px 5px"
+                   }
+                  },
+                  {
+                   "text": ", then runs "
+                  },
+                  {
+                   "text": "b",
+                   "style": {
+                    "fontFamily": "JetBrains Mono",
+                    "fontSize": 17,
+                    "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                    "borderRadius": 4,
+                    "padding": "1px 5px"
+                   }
+                  },
+                  {
+                   "text": " on what "
+                  },
+                  {
+                   "text": "a",
+                   "style": {
+                    "fontFamily": "JetBrains Mono",
+                    "fontSize": 17,
+                    "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                    "borderRadius": 4,
+                    "padding": "1px 5px"
+                   }
+                  },
+                  {
+                   "text": " gave."
+                  }
+                 ],
+                 "style": {
+                  "color": "var(--color-ink)",
+                  "fontSize": 22,
+                  "lineHeight": "34px",
+                  "alignSelf": "stretch"
+                 },
+                 "name": "a | b runs a, then runs…"
+                }
+               ]
+              }
+             ],
+             "component": true
+            },
+            {
+             "id": "r5e7g",
+             "type": "frame",
+             "name": "Lesson block / Notes",
+             "style": {
+              "display": "flex",
+              "flexDirection": "column",
+              "gap": 10,
+              "alignSelf": "stretch",
+              "borderLeft": "2px solid transparent",
+              "paddingLeft": 20
+             },
+             "children": [
+              {
+               "id": "PKgFz",
+               "type": "text",
+               "spans": [
+                {
+                 "text": ".user.langs",
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 17,
+                  "background": "var(--color-raised)",
+                  "borderRadius": 4,
+                  "padding": "1px 5px"
+                 }
+                },
+                {
+                 "text": " gives the same result. For paths, the dot does the job of the pipe."
+                }
+               ],
+               "style": {
+                "color": "var(--color-body)",
+                "fontSize": 22,
+                "lineHeight": "34px",
+                "alignSelf": "stretch"
+               },
+               "name": ".user.langs gives the s…"
+              },
+              {
+               "id": "MqxQq",
+               "type": "text",
+               "spans": [
+                {
+                 "text": ".user | .user",
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 17,
+                  "background": "var(--color-raised)",
+                  "borderRadius": 4,
+                  "padding": "1px 5px"
+                 }
+                },
+                {
+                 "text": " gives "
+                },
+                {
+                 "text": "null",
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 17,
+                  "background": "var(--color-raised)",
+                  "borderRadius": 4,
+                  "padding": "1px 5px"
+                 }
+                },
+                {
+                 "text": ". After a pipe, the dot is the inner object, and it has no "
+                },
+                {
+                 "text": "user",
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 17,
+                  "background": "var(--color-raised)",
+                  "borderRadius": 4,
+                  "padding": "1px 5px"
+                 }
+                },
+                {
+                 "text": "."
+                }
+               ],
+               "style": {
+                "color": "var(--color-body)",
+                "fontSize": 22,
+                "lineHeight": "34px",
+                "alignSelf": "stretch"
+               },
+               "name": ".user | .user gives nul…"
+              }
+             ],
+             "component": true
+            },
+            {
+             "id": "K6XqC",
+             "type": "frame",
+             "name": "Lesson block / Common mistake",
+             "style": {
+              "display": "flex",
+              "flexDirection": "column",
+              "gap": 14,
+              "alignSelf": "stretch",
+              "borderLeft": "2px solid transparent",
+              "paddingLeft": 20
+             },
+             "children": [
+              {
+               "id": "vpNB5",
+               "type": "text",
+               "name": "Block label",
+               "text": "Common mistake",
+               "style": {
+                "color": "var(--color-red)",
+                "fontSize": 15,
+                "fontWeight": 700,
+                "letterSpacing": "0.6px",
+                "textTransform": "uppercase",
+                "fontFamily": "'Atkinson Hyperlegible Next', sans-serif"
+               }
+              },
+              {
+               "id": "yUhJU",
+               "type": "text",
+               "spans": [
+                {
+                 "text": "No single quotes around the filter."
+                }
+               ],
+               "style": {
+                "color": "var(--color-body)",
+                "fontSize": 22,
+                "lineHeight": "34px",
+                "alignSelf": "stretch"
+               },
+               "name": "No single quotes around…"
+              },
+              {
+               "id": "awnfS",
+               "type": "frame",
+               "style": {
+                "display": "flex",
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": -6
+               },
+               "name": "Frame",
+               "children": [
+                {
+                 "id": "XjvCq",
+                 "type": "icon",
+                 "icon": "x",
+                 "style": {
+                  "width": 14,
+                  "height": 14,
+                  "color": "var(--color-red)",
+                  "flexShrink": 0
+                 },
+                 "name": "x"
+                },
+                {
+                 "id": "L2AR8",
+                 "type": "text",
+                 "text": "Wrong",
+                 "style": {
+                  "color": "var(--color-red)",
+                  "fontSize": 15,
+                  "fontWeight": 500,
+                  "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                 },
+                 "name": "Wrong"
+                }
+               ]
+              },
+              {
+               "id": "Mwinh",
+               "type": "frame",
+               "name": "Code",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "flex-start",
+                "padding": "16px 20px",
+                "background": "var(--color-canvas)",
+                "alignSelf": "stretch",
+                "flexShrink": 0,
+                "border": "1px solid color-mix(in srgb, var(--color-red) 45%, transparent)",
+                "borderRadius": 8
+               },
+               "children": [
+                {
+                 "id": "RDvS9",
+                 "type": "text",
+                 "name": "Line",
+                 "spans": [
+                  {
+                   "text": "jq .user | .langs data.json"
+                  }
+                 ],
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 16,
+                  "lineHeight": "26px",
+                  "whiteSpace": "pre",
+                  "color": "var(--color-body)"
+                 }
+                }
+               ]
+              },
+              {
+               "id": "QaXSp",
+               "type": "frame",
+               "style": {
+                "display": "flex",
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": -6
+               },
+               "name": "Frame",
+               "children": [
+                {
+                 "id": "p6NLR",
+                 "type": "text",
+                 "text": "Error",
+                 "style": {
+                  "color": "var(--color-red)",
+                  "fontSize": 15,
+                  "fontWeight": 500,
+                  "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                 },
+                 "name": "Error"
+                }
+               ]
+              },
+              {
+               "id": "fnank",
+               "type": "frame",
+               "name": "Code",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "flex-start",
+                "padding": "16px 20px",
+                "background": "var(--color-canvas)",
+                "alignSelf": "stretch",
+                "flexShrink": 0,
+                "border": "1px solid color-mix(in srgb, var(--color-red) 45%, transparent)",
+                "borderRadius": 8
+               },
+               "children": [
+                {
+                 "id": "HqU4W",
+                 "type": "text",
+                 "name": "Line",
+                 "spans": [
+                  {
+                   "text": "jq: error: Could not open file |: No such file or directory"
+                  }
+                 ],
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 16,
+                  "lineHeight": "26px",
+                  "whiteSpace": "pre",
+                  "color": "var(--color-red)"
+                 }
+                }
+               ]
+              },
+              {
+               "id": "xuUxY",
+               "type": "frame",
+               "style": {
+                "display": "flex",
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": -6
+               },
+               "name": "Frame",
+               "children": [
+                {
+                 "id": "JnKWc",
+                 "type": "icon",
+                 "icon": "check",
+                 "style": {
+                  "width": 14,
+                  "height": 14,
+                  "color": "var(--color-green)",
+                  "flexShrink": 0
+                 },
+                 "name": "check"
+                },
+                {
+                 "id": "XiUCL",
+                 "type": "text",
+                 "text": "Fix",
+                 "style": {
+                  "color": "var(--color-green)",
+                  "fontSize": 15,
+                  "fontWeight": 500,
+                  "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                 },
+                 "name": "Fix"
+                }
+               ]
+              },
+              {
+               "id": "U9guM",
+               "type": "frame",
+               "name": "Code",
+               "style": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "flex-start",
+                "padding": "16px 20px",
+                "background": "var(--color-canvas)",
+                "alignSelf": "stretch",
+                "flexShrink": 0,
+                "border": "1px solid color-mix(in srgb, var(--color-green) 45%, transparent)",
+                "borderRadius": 8
+               },
+               "children": [
+                {
+                 "id": "frcsJ",
+                 "type": "text",
+                 "name": "Line",
+                 "spans": [
+                  {
+                   "text": "jq "
+                  },
+                  {
+                   "text": "'",
+                   "style": {
+                    "color": "var(--color-green)",
+                    "background": "color-mix(in srgb, var(--color-green) 16%, transparent)",
+                    "borderRadius": 4,
+                    "padding": "1px 3px",
+                    "margin": "0 -3px"
+                   }
+                  },
+                  {
+                   "text": ".user | .langs"
+                  },
+                  {
+                   "text": "'",
+                   "style": {
+                    "color": "var(--color-green)",
+                    "background": "color-mix(in srgb, var(--color-green) 16%, transparent)",
+                    "borderRadius": 4,
+                    "padding": "1px 3px",
+                    "margin": "0 -3px"
+                   }
+                  },
+                  {
+                   "text": " data.json"
+                  }
+                 ],
+                 "style": {
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 16,
+                  "lineHeight": "26px",
+                  "whiteSpace": "pre",
+                  "color": "var(--color-body)"
+                 }
+                }
+               ]
+              }
+             ],
+             "component": true
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "SLS9J",
+         "type": "frame",
+         "name": "Task strip column",
+         "style": {
+          "width": 640,
+          "background": "var(--color-panel)",
+          "border": "1px solid var(--color-border)",
+          "borderRadius": 8,
+          "overflow": "hidden"
+         },
+         "children": [
+          {
+           "id": "HeRUm",
+           "type": "frame",
+           "name": "Task strip",
+           "style": {
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": 10,
+            "padding": "20px 24px",
+            "alignSelf": "stretch",
+            "flexShrink": 0,
+            "background": "var(--color-accent-bg)",
+            "borderBottom": "1px solid var(--color-accent-line)"
+           },
+           "children": [
+            {
+             "id": "fyLvn",
+             "type": "text",
+             "text": "Print the port from the config.",
+             "style": {
+              "color": "var(--color-ink)",
+              "fontSize": 24,
+              "fontWeight": 600,
+              "lineHeight": "32px",
+              "maxWidth": 620
+             },
+             "name": "Give every user who is …"
+            },
+            {
+             "id": "y3nMi",
+             "type": "text",
+             "spans": [
+              {
+               "text": "The first step takes "
+              },
+              {
+               "text": "config",
+               "style": {
+                "fontFamily": "JetBrains Mono",
+                "fontSize": 14,
+                "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                "borderRadius": 4,
+                "padding": "1px 5px"
+               }
+              },
+              {
+               "text": ". The second step is "
+              },
+              {
+               "text": ".",
+               "style": {
+                "fontFamily": "JetBrains Mono",
+                "fontSize": 14,
+                "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                "borderRadius": 4,
+                "padding": "1px 5px"
+               }
+              },
+              {
+               "text": ", which changes nothing. Replace the second step so that the chain prints the port."
+              }
+             ],
+             "style": {
+              "color": "var(--color-body)",
+              "fontSize": 16,
+              "lineHeight": "26px",
+              "marginTop": 0,
+              "maxWidth": 540
+             },
+             "name": "The first step takes co…"
+            }
+           ],
+           "component": true
+          }
+         ]
+        }
+       ]
+      }
+     ]
     }
    ],
    "x": 0,

@@ -62,6 +62,16 @@ typography:
     fontSize: "13px"
     fontWeight: 400
     lineHeight: "18px"
+  lesson-title:
+    fontFamily: "Libron, Georgia, serif"
+    fontSize: "36px"
+    fontWeight: 700
+    lineHeight: "46px"
+  lesson:
+    fontFamily: "Libron, Georgia, serif"
+    fontSize: "22px"
+    fontWeight: 400
+    lineHeight: "34px"
   code:
     fontFamily: "JetBrains Mono, ui-monospace, monospace"
     fontSize: "14px"
@@ -99,7 +109,16 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 **Lesson layout.** A lesson's first step splits the main pane in two: the lesson text on the left, the work on the right. The text ends in a "Your turn" box on `accent-bg`, which holds the task. Its second step shows the problem alone. The top bar shows the two steps as dots.
 
-**jq task.** A jq task is short, so everything about it sits in one pane: a task strip on `accent-bg`, an editor a few lines tall, where the learner types the whole command as in a terminal, then the input, the learner's output and the wanted output on the canvas colour. The output updates as the learner types and says "Matches" in green, "Differs" in amber or "Error" in red, with jq's own error text. The input sits beside the outputs when the pane is wide and above them when it is narrow. On their own, the learner sees the statement and the input on the left and the filter on the right. A "what comes out?" task shows the input and the filter, then the editor for the answer, and no output panels.
+**Lesson text.** Lesson text is set in Libron, larger than the rest of the app, in a centred column 680px wide: about 65 characters to a line. Code in a lesson is 16px. Nothing sits above the title. A lesson part is built from fixed blocks, always in this order, so the eye knows where to go:
+
+- **Example**: the input, the filter and the output, each under a small `mute` label, then the filter one step at a time with the value each step gives. A blue label and a blue line in the left margin mark it.
+- **Rule**: one line in a box on `accent-bg`.
+- **Notes**: at most two short lines of plain text, with no colour.
+- **Common mistake**: a red label, then the wrong command and its error with a red border, then the fix with a green border. "Wrong" has a cross and "Fix" has a tick, so colour never speaks alone.
+
+One spot in a line of code can be tinted: the step that is new, or what the fix adds.
+
+**jq task.** A jq task is short, so everything about it sits in one pane: a task strip on `accent-bg`, an editor a few lines tall, where the learner types the whole command as in a terminal, then the input, the learner's output and the wanted output on the canvas colour. The output updates as the learner types and says "Matches" in green, "Differs" in amber or "Error" in red, with jq's own error text. The input sits beside the outputs when the pane is wide and above them when it is narrow. A short task has no name on screen: its heading is the first sentence of its statement, which says what to do, and the rest follows in lines of about 65 characters. On their own, the learner sees the statement and the input on the left and the filter on the right. A "what comes out?" task shows the input and the filter, then the editor for the answer, and no output panels.
 
 **Lesson parts.** A lesson in any course can be written as a series of parts: each part is one idea and its task, and it fills the screen alone. The top bar then lists the parts in place of the chapter and the lesson, which the sidebar names: the part on screen is bold, a finished part has a green tick and can be opened again, and a part not reached yet is dim. A lesson with one part keeps the chapter and the lesson in the top bar. In every course, a right answer on Submit opens the next task without another click. A task that needed help stays on screen.
 
@@ -107,17 +126,17 @@ Calm, layered dark surfaces in the family of Linear. One accent for what the tut
 
 **Focused screens.** Reviews have no lessons column, no chapter name and no lesson, so nothing on screen names the approach. A review puts the problem on the left and the editor on the right. Screens that are read, not worked in, such as the list of reviews, use one centred column.
 
-**Large displays.** The UI keeps its size on every display: nothing scales up. A wider window gives the extra room to the lesson. On windows 2200px wide or more, the tutor pane also widens, from 380px to 576px, for longer chat lines. Lesson content stays aligned to the left edge of the pane, as on smaller screens.
+**Large displays.** The UI keeps its size on every display: nothing scales up. A wider window gives the extra room to the lesson. On windows 2200px wide or more, the tutor pane also widens, from 380px to 576px, for longer chat lines. The lesson text stays in its narrow column, centred in its pane.
 
 **Surfaces step up.** The rail and the lessons column sit on `sidebar`, the lesson on `panel`, and the tutor on `canvas`, the darkest surface. Content inside steps up again: `surface`, then `raised`. A light grey covers small cards only, never a whole region. Separate surfaces with a 1px `border` hairline, not with gaps or colour blocks.
 
-**One blue.** `accent` marks only what the tutor opened, the current item, and focus. Never use it for decoration or headings.
+**One blue.** `accent` marks what the tutor opened, the current item, focus, and the example and the rule of a lesson. Never use it for decoration or headings.
 
 **Colour reports results.** Green means correct, amber means partial, red means wrong. Show status as a coloured dot next to words, never as coloured text alone.
 
 **No red for concepts.** A concept or learning stage is never red. "Still learning" is amber or neutral. Red is only for a concrete wrong answer or failing test.
 
-**Two fonts.** Atkinson Hyperlegible Next for all prose and UI. JetBrains Mono only for code, with ligatures off. Text is never smaller than 13px. Subject badges are icons, so their initials can be smaller.
+**Three fonts.** Atkinson Hyperlegible Next for the UI, task statements and the tutor. Libron for lesson text only. JetBrains Mono only for code, with ligatures off. Text is never smaller than 13px. Subject badges are icons, so their initials can be smaller.
 
 **Text greys have jobs.** `ink` for titles, `body` for prose, `mute` for metadata and icons, `dim` only for placeholders and disabled text.
 

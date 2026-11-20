@@ -3,6 +3,7 @@ import {
   Chip,
   CodeBlock,
   EmptyState,
+  inline,
   LessonPane,
   LessonText,
   PaneBody,
@@ -20,7 +21,12 @@ import { BookOpen, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useReducer, useState } from "react";
 
-import { ExerciseAside, ExerciseWorkbench, isCompact } from "./checks";
+import {
+  ExerciseAside,
+  ExerciseWorkbench,
+  isCompact,
+  taskHeading,
+} from "./checks";
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
 import {
   currentPart,
@@ -129,7 +135,7 @@ const GuidedStep = ({
             key={`${lesson.guided.slug}:${lesson.attempt?.id ?? ""}`}
             note={note}
             problem={lesson.guided}
-            strip={isCompact(lesson.guided) ? { label: "Try it" } : undefined}
+            strip={isCompact(lesson.guided)}
             onAskTutor={onOpenTutor}
             onFinished={onFinished}
           />
@@ -190,7 +196,7 @@ const PastTask = ({ slug, back, onBack, onOpenTutor }: PastTaskProps) => {
       }}
       key={slug}
       problem={problem}
-      strip={isCompact(problem) ? { label: "Try it" } : undefined}
+      strip={isCompact(problem)}
       onAskTutor={onOpenTutor}
       onFinished={() => {
         // The task is finished already: nothing can be handed in.
@@ -206,7 +212,7 @@ interface SoloProps extends StepProps {
   /** Start the solo problem again on a lesson that is already learned, or its next solo task. */
   onPractise: () => void;
   /** Show the task above the editor, when its statement is not beside it. */
-  strip?: { label: string };
+  strip?: boolean;
 }
 
 /** What sits under the statement in step 2: the editor, the saved code, or a note to come back. */
@@ -318,28 +324,32 @@ const SoloStatement = ({
 };
 
 /** A compact solo task to read beside its editor: its statement and what its kind shows. */
-const SoloTaskText = ({ lesson, task }: { lesson: Lesson; task: string }) => (
-  <TaskText
-    chips={
-      <>
-        <Chip icon={User}>On your own</Chip>
-        <Chip muted>{task}</Chip>
-        {lesson.status === "done" && (
-          <Chip tone="green">{lesson.name} · Learned</Chip>
-        )}
-      </>
-    }
-    title={lesson.solo.title}
-  >
-    <ProblemStatement text={lesson.solo.statement ?? ""} />
-    <ExerciseAside problem={lesson.solo} />
-    {lesson.status !== "done" && (
-      <p className="tp-task-text__note">
-        The lesson is closed. Opening it counts as help.
-      </p>
-    )}
-  </TaskText>
-);
+const SoloTaskText = ({ lesson, task }: { lesson: Lesson; task: string }) => {
+  const heading = taskHeading(lesson.solo);
+
+  return (
+    <TaskText
+      chips={
+        <>
+          <Chip icon={User}>On your own</Chip>
+          <Chip muted>{task}</Chip>
+          {lesson.status === "done" && (
+            <Chip tone="green">{lesson.name} · Learned</Chip>
+          )}
+        </>
+      }
+      title={inline(heading.title)}
+    >
+      <ProblemStatement text={heading.statement} />
+      <ExerciseAside problem={lesson.solo} />
+      {lesson.status !== "done" && (
+        <p className="tp-task-text__note">
+          The lesson is closed. Opening it counts as help.
+        </p>
+      )}
+    </TaskText>
+  );
+};
 
 /** The lesson's text, or one part of it, with the task of a code lesson under it. */
 const LessonBody = ({
@@ -352,11 +362,7 @@ const LessonBody = ({
   /** Show the guided task under the text. A compact task sits above its editor. */
   task: boolean;
 }) => (
-  <LessonText
-    label={<Chip icon={BookOpen}>Lesson</Chip>}
-    text={part?.text ?? ""}
-    title={part?.title ?? lesson.name}
-  >
+  <LessonText text={part?.text ?? ""} title={part?.title ?? lesson.name}>
     {task && (
       <YourTurn label="Your turn · with the lesson" title={lesson.guided.title}>
         <ProblemStatement text={lesson.guided.statement ?? ""} />
@@ -569,9 +575,7 @@ export const LessonScreen = ({
               lesson={lesson}
               next={next}
               note={note}
-              strip={
-                reading ? { label: `${soloTask} · on your own` } : undefined
-              }
+              strip={reading}
               onFinished={finish}
               onOpenTutor={onOpenTutor}
               onPractise={again}

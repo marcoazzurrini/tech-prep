@@ -7,17 +7,15 @@ import { highlight } from "../lib/highlight";
 import "./jq.css";
 
 interface TaskStripProps {
-  /** Such as "Try it". */
-  label: string;
-  title: string;
-  /** The statement. */
+  /** What to do, in one line: the first line of the statement. */
+  title: ReactNode;
+  /** The rest of the statement. */
   children?: ReactNode;
 }
 
 /** The task above a jq command: what to do. The top bar says which part of the lesson it is. */
-export const TaskStrip = ({ label, title, children }: TaskStripProps) => (
+export const TaskStrip = ({ title, children }: TaskStripProps) => (
   <section className="tp-task-strip">
-    <p className="tp-task-strip__label">{label}</p>
     <h2>{title}</h2>
     {children}
   </section>

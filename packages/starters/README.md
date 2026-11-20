@@ -123,11 +123,25 @@ The checkers `arrange`, `answer` and `read` are for the tutor's extra exercises.
 
 ## A lesson
 
-`lessons/<concept id>/lesson.md` holds the lesson text. A lesson starts from a real situation, assumes only the lessons before it, and explains every new word.
+`lessons/<concept id>/lesson.md` holds the lesson text. A lesson assumes only the lessons before it, and explains every new word.
+
+The reader looks at the example first, so the example carries the teaching. Write as little prose as the idea needs.
 
 - A guided exercise is small and needs exactly this concept. It is solved with the lesson beside it, so the lesson must not solve it line by line. Neither may it solve the concept's solo exercises.
 - A lesson with several guided exercises is written in parts, so reading and doing alternate. Each part teaches one small idea and ends with a line that holds only `<!-- task -->`. The first part goes with the first guided exercise, and so on. The text after the last marker is the summary; the app shows it under the last part.
-- A part is named by its first `## ` heading, and the app lists these names in the top bar. Start every part after the first with that heading, and keep it short.
+- A part is named by its first `## ` heading, and the app lists these names in the top bar. Start every part with that heading, and keep it short.
+- A part is shown alone, so it shows its own input. It never points at "the input above".
+
+A part is built from fixed blocks, in this order. Leave out a block that has nothing to say.
+
+1. **Example.** `**Input**`, `**Filter**` and `**Output**`, each on a line of its own above a code block. Use `**Command**` for a whole command, when a flag is the point. A `steps` code block then shows the filter one step at a time: each line is `filter so far => the value it gives`, and `;;` separates several outputs.
+2. **Rule.** One paragraph that starts with `**Rule:**` and names what the example showed.
+3. **Notes.** At most two short paragraphs. Start each with a filter and say what it gives.
+4. **Common mistake.** A paragraph that starts with `**Common mistake:**`, then `**Wrong**`, `**Error**` and `**Fix**`, each above a code block. The error is the text the app prints. Use `**Output**` in place of `**Error**` when the mistake prints a wrong result.
+
+Put `«` and `»` around the one spot to look at in a step, a wrong command or a fix. The lesson ends with `## Remember`: the rules, in at most four lines.
+
+A part with nothing to run is written as headings, short paragraphs and code.
 
 ## Tutoring
 
