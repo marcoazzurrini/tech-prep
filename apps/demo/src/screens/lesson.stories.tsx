@@ -179,11 +179,7 @@ const Frame = ({
 );
 
 const lessonText = (turn: boolean) => (
-  <LessonText
-    label={<Chip icon={BookOpen}>Lesson</Chip>}
-    text={LESSON}
-    title="Canonical Keys"
-  >
+  <LessonText text={LESSON} title="Canonical Keys">
     {turn && (
       <YourTurn
         label="Your turn · with the lesson"

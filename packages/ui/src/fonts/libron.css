@@ -1,0 +1,16 @@
+/* Libron, the serif for lesson text. It ships with the app under the SIL Open Font License. */
+@font-face {
+  font-family: Libron;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./Libron-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Libron;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./Libron-Bold.ttf") format("truetype");
+}

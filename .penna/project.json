@@ -54,6 +54,7 @@
   "radius-md": "6px",
   "radius-lg": "8px",
   "radius-xl": "12px",
-  "radius-full": "999px"
+  "radius-full": "999px",
+  "font-serif": "\"Libron\", Georgia, serif"
  }
 }

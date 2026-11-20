@@ -29,6 +29,8 @@
 
   --font-sans: "Atkinson Hyperlegible Next", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Lesson text only. */
+  --font-serif: "Libron", Georgia, serif;
 
   --radius-sm: 4px;
   --radius-md: 6px;

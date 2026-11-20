@@ -22174,47 +22174,6 @@
                  },
                  "children": [
                   {
-                   "id": "BE2cS",
-                   "type": "frame",
-                   "name": "Chip",
-                   "style": {
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": 6,
-                    "padding": "0px 10px",
-                    "borderRadius": 999,
-                    "border": "1px solid var(--color-border)",
-                    "height": 24,
-                    "flexShrink": 0,
-                    "alignSelf": "flex-start"
-                   },
-                   "children": [
-                    {
-                     "id": "YT7Uy",
-                     "type": "icon",
-                     "icon": "book-open",
-                     "style": {
-                      "width": 12,
-                      "height": 12,
-                      "color": "#8A8F98",
-                      "flexShrink": 0
-                     },
-                     "name": "book-open"
-                    },
-                    {
-                     "id": "AtQnP",
-                     "type": "text",
-                     "text": "Lesson",
-                     "style": {
-                      "color": "var(--color-mute)",
-                      "fontSize": 13,
-                      "whiteSpace": "pre"
-                     },
-                     "name": "Lesson"
-                    }
-                   ]
-                  },
-                  {
                    "id": "Cycmi",
                    "type": "text",
                    "text": "Canonical Keys",
@@ -25770,47 +25729,6 @@
                   "alignSelf": "stretch"
                  },
                  "children": [
-                  {
-                   "id": "FiG9c",
-                   "type": "frame",
-                   "name": "Chip",
-                   "style": {
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": 6,
-                    "padding": "0px 10px",
-                    "borderRadius": 999,
-                    "border": "1px solid var(--color-border)",
-                    "height": 24,
-                    "flexShrink": 0,
-                    "alignSelf": "flex-start"
-                   },
-                   "children": [
-                    {
-                     "id": "pL3qi",
-                     "type": "icon",
-                     "icon": "book-open",
-                     "style": {
-                      "width": 12,
-                      "height": 12,
-                      "color": "#8A8F98",
-                      "flexShrink": 0
-                     },
-                     "name": "book-open"
-                    },
-                    {
-                     "id": "kkyPw",
-                     "type": "text",
-                     "text": "Lesson",
-                     "style": {
-                      "color": "var(--color-mute)",
-                      "fontSize": 13,
-                      "whiteSpace": "pre"
-                     },
-                     "name": "Lesson"
-                    }
-                   ]
-                  },
                   {
                    "id": "WLD5a",
                    "type": "text",
@@ -29978,47 +29896,6 @@
                   "alignSelf": "stretch"
                  },
                  "children": [
-                  {
-                   "id": "MZNKY",
-                   "type": "frame",
-                   "name": "Chip",
-                   "style": {
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": 6,
-                    "padding": "0px 10px",
-                    "borderRadius": 999,
-                    "border": "1px solid var(--color-border)",
-                    "height": 24,
-                    "flexShrink": 0,
-                    "alignSelf": "flex-start"
-                   },
-                   "children": [
-                    {
-                     "id": "ZsB9X",
-                     "type": "icon",
-                     "icon": "book-open",
-                     "style": {
-                      "width": 12,
-                      "height": 12,
-                      "color": "#8A8F98",
-                      "flexShrink": 0
-                     },
-                     "name": "book-open"
-                    },
-                    {
-                     "id": "ZHfpF",
-                     "type": "text",
-                     "text": "Lesson",
-                     "style": {
-                      "color": "var(--color-mute)",
-                      "fontSize": 13,
-                      "whiteSpace": "pre"
-                     },
-                     "name": "Lesson"
-                    }
-                   ]
-                  },
                   {
                    "id": "EPWF5",
                    "type": "text",
@@ -46140,7 +46017,7 @@
          }
         },
         {
-         "id": "WDVak",
+         "id": "GMzGw",
          "type": "frame",
          "name": "Lesson · guided problem",
          "style": {
@@ -46149,13 +46026,13 @@
           "background": "var(--color-canvas)",
           "overflow": "hidden",
           "width": 2560,
-          "height": 1440,
           "flexShrink": 0,
-          "position": "relative"
+          "position": "relative",
+          "height": 1440
          },
          "children": [
           {
-           "id": "hq9Hg",
+           "id": "954H2",
            "type": "frame",
            "name": "Sidebar",
            "style": {
@@ -46169,7 +46046,7 @@
            },
            "children": [
             {
-             "id": "XtBqq",
+             "id": "FP9vW",
              "type": "frame",
              "name": "Title strip",
              "style": {
@@ -46180,7 +46057,7 @@
              }
             },
             {
-             "id": "qUZF2",
+             "id": "vR45m",
              "type": "frame",
              "name": "Columns",
              "style": {
@@ -46191,7 +46068,7 @@
              },
              "children": [
               {
-               "id": "bfRFn",
+               "id": "x2NMW",
                "type": "frame",
                "name": "Rail",
                "style": {
@@ -46207,7 +46084,7 @@
                },
                "children": [
                 {
-                 "id": "EAsbF",
+                 "id": "M38Tj",
                  "type": "frame",
                  "name": "Logo",
                  "style": {
@@ -46222,7 +46099,7 @@
                  },
                  "children": [
                   {
-                   "id": "zAzew",
+                   "id": "dPJni",
                    "type": "icon",
                    "name": "check",
                    "icon": "check",
@@ -46236,7 +46113,7 @@
                  ]
                 },
                 {
-                 "id": "bkFaJ",
+                 "id": "kpWHH",
                  "type": "frame",
                  "name": "Gap",
                  "style": {
@@ -46247,7 +46124,7 @@
                  "children": []
                 },
                 {
-                 "id": "5upja",
+                 "id": "EhiM5",
                  "type": "frame",
                  "name": "Search",
                  "style": {
@@ -46262,7 +46139,7 @@
                  },
                  "children": [
                   {
-                   "id": "tkSqa",
+                   "id": "qzSf2",
                    "type": "icon",
                    "name": "search",
                    "icon": "search",
@@ -46276,7 +46153,7 @@
                  ]
                 },
                 {
-                 "id": "iDTzW",
+                 "id": "XKs3C",
                  "type": "frame",
                  "name": "Today",
                  "style": {
@@ -46291,7 +46168,7 @@
                  },
                  "children": [
                   {
-                   "id": "Kz3WG",
+                   "id": "JYrag",
                    "type": "icon",
                    "name": "calendar-check",
                    "icon": "calendar-check",
@@ -46303,7 +46180,7 @@
                    }
                   },
                   {
-                   "id": "7xBu6",
+                   "id": "yvnSy",
                    "type": "frame",
                    "name": "Count",
                    "style": {
@@ -46319,7 +46196,7 @@
                    },
                    "children": [
                     {
-                     "id": "ZLmu4",
+                     "id": "YuPyF",
                      "type": "text",
                      "text": "2",
                      "style": {
@@ -46335,7 +46212,7 @@
                  ]
                 },
                 {
-                 "id": "6wHdq",
+                 "id": "FC9BX",
                  "type": "frame",
                  "name": "Divider",
                  "style": {
@@ -46347,7 +46224,7 @@
                  "children": []
                 },
                 {
-                 "id": "hRZKn",
+                 "id": "VyZFQ",
                  "type": "frame",
                  "name": "Subject / Blind 75",
                  "style": {
@@ -46362,7 +46239,7 @@
                  },
                  "children": [
                   {
-                   "id": "DPzkG",
+                   "id": "VBHCH",
                    "type": "frame",
                    "name": "Badge",
                    "style": {
@@ -46377,7 +46254,7 @@
                    },
                    "children": [
                     {
-                     "id": "t4BSW",
+                     "id": "ymPbQ",
                      "type": "text",
                      "text": "DSA",
                      "style": {
@@ -46393,7 +46270,7 @@
                  ]
                 },
                 {
-                 "id": "P87zT",
+                 "id": "8ZxTa",
                  "type": "frame",
                  "name": "Subject / TypeScript",
                  "style": {
@@ -46408,7 +46285,7 @@
                  },
                  "children": [
                   {
-                   "id": "6bsGY",
+                   "id": "JC58a",
                    "type": "frame",
                    "name": "Badge",
                    "style": {
@@ -46423,7 +46300,7 @@
                    },
                    "children": [
                     {
-                     "id": "BK2WG",
+                     "id": "aHgRf",
                      "type": "text",
                      "text": "TS",
                      "style": {
@@ -46439,7 +46316,7 @@
                  ]
                 },
                 {
-                 "id": "wnCBS",
+                 "id": "h93Vj",
                  "type": "frame",
                  "name": "Subject / jq",
                  "style": {
@@ -46455,7 +46332,7 @@
                  },
                  "children": [
                   {
-                   "id": "NNtaq",
+                   "id": "Fb8f3",
                    "type": "frame",
                    "name": "Badge",
                    "style": {
@@ -46470,7 +46347,7 @@
                    },
                    "children": [
                     {
-                     "id": "S4r3P",
+                     "id": "9RAce",
                      "type": "text",
                      "text": "jq",
                      "style": {
@@ -46486,7 +46363,7 @@
                  ]
                 },
                 {
-                 "id": "j4BY5",
+                 "id": "aXaNe",
                  "type": "frame",
                  "name": "New subject",
                  "style": {
@@ -46501,7 +46378,7 @@
                  },
                  "children": [
                   {
-                   "id": "4ZDu8",
+                   "id": "SJgBM",
                    "type": "icon",
                    "name": "plus",
                    "icon": "plus",
@@ -46515,7 +46392,7 @@
                  ]
                 },
                 {
-                 "id": "7gbR6",
+                 "id": "5Kgcm",
                  "type": "frame",
                  "name": "Spacer",
                  "style": {
@@ -46526,7 +46403,7 @@
                  "children": []
                 },
                 {
-                 "id": "MrZ3Y",
+                 "id": "7eTaF",
                  "type": "frame",
                  "name": "Settings",
                  "style": {
@@ -46541,7 +46418,7 @@
                  },
                  "children": [
                   {
-                   "id": "aGMsU",
+                   "id": "T3RGS",
                    "type": "icon",
                    "name": "settings",
                    "icon": "settings",
@@ -46557,7 +46434,7 @@
                ]
               },
               {
-               "id": "X9feG",
+               "id": "FF4Ku",
                "type": "frame",
                "name": "Lessons",
                "style": {
@@ -46572,7 +46449,7 @@
                },
                "children": [
                 {
-                 "id": "TSunJ",
+                 "id": "Z4ZYG",
                  "type": "frame",
                  "name": "Subject header",
                  "style": {
@@ -46586,7 +46463,7 @@
                  },
                  "children": [
                   {
-                   "id": "9cgGw",
+                   "id": "awpJ9",
                    "type": "text",
                    "name": "Title",
                    "text": "jq",
@@ -46598,7 +46475,7 @@
                    }
                   },
                   {
-                   "id": "FJecr",
+                   "id": "xuDWx",
                    "type": "frame",
                    "name": "Progress",
                    "style": {
@@ -46610,7 +46487,7 @@
                    },
                    "children": [
                     {
-                     "id": "tMvVb",
+                     "id": "2ar29",
                      "type": "frame",
                      "name": "Track",
                      "style": {
@@ -46623,7 +46500,7 @@
                      },
                      "children": [
                       {
-                       "id": "KtiiM",
+                       "id": "ZucTE",
                        "type": "frame",
                        "name": "Fill",
                        "style": {
@@ -46638,7 +46515,7 @@
                      ]
                     },
                     {
-                     "id": "2rkQ3",
+                     "id": "9kCmk",
                      "type": "text",
                      "name": "Meta",
                      "text": "10 of 38 concepts",
@@ -46653,7 +46530,7 @@
                  ]
                 },
                 {
-                 "id": "NxJmY",
+                 "id": "9V9eB",
                  "type": "frame",
                  "name": "Chapters",
                  "style": {
@@ -46666,7 +46543,7 @@
                  },
                  "children": [
                   {
-                   "id": "Vxt77",
+                   "id": "7GwZd",
                    "type": "frame",
                    "name": "Chapter / 1  Paths",
                    "style": {
@@ -46681,7 +46558,7 @@
                    },
                    "children": [
                     {
-                     "id": "dYu6A",
+                     "id": "LWGj9",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -46693,7 +46570,7 @@
                      }
                     },
                     {
-                     "id": "DE6zG",
+                     "id": "wAcCE",
                      "type": "text",
                      "name": "Label",
                      "text": "1  Paths",
@@ -46709,7 +46586,7 @@
                      }
                     },
                     {
-                     "id": "3VAke",
+                     "id": "nm3UW",
                      "type": "text",
                      "name": "Meta",
                      "text": "5 / 5",
@@ -46722,7 +46599,7 @@
                    ]
                   },
                   {
-                   "id": "nXi6c",
+                   "id": "UJH2V",
                    "type": "frame",
                    "name": "Chapter / 2  Building values",
                    "style": {
@@ -46737,7 +46614,7 @@
                    },
                    "children": [
                     {
-                     "id": "iKNrj",
+                     "id": "pypmB",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -46749,7 +46626,7 @@
                      }
                     },
                     {
-                     "id": "d635r",
+                     "id": "kcW6S",
                      "type": "text",
                      "name": "Label",
                      "text": "2  Building values",
@@ -46765,7 +46642,7 @@
                      }
                     },
                     {
-                     "id": "f49zy",
+                     "id": "f2inw",
                      "type": "text",
                      "name": "Meta",
                      "text": "4 / 4",
@@ -46778,7 +46655,7 @@
                    ]
                   },
                   {
-                   "id": "JxrDV",
+                   "id": "TH7gM",
                    "type": "frame",
                    "name": "Chapter / 3  Streams and arrays",
                    "style": {
@@ -46793,7 +46670,7 @@
                    },
                    "children": [
                     {
-                     "id": "Adhax",
+                     "id": "KyGng",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-down",
@@ -46805,7 +46682,7 @@
                      }
                     },
                     {
-                     "id": "kt4wb",
+                     "id": "4k99P",
                      "type": "text",
                      "name": "Label",
                      "text": "3  Streams and arrays",
@@ -46821,7 +46698,7 @@
                      }
                     },
                     {
-                     "id": "sbiaW",
+                     "id": "Xtj24",
                      "type": "text",
                      "name": "Meta",
                      "text": "1 / 5",
@@ -46834,7 +46711,7 @@
                    ]
                   },
                   {
-                   "id": "WHyrH",
+                   "id": "VaLWH",
                    "type": "frame",
                    "name": "Lesson list",
                    "style": {
@@ -46847,7 +46724,7 @@
                    },
                    "children": [
                     {
-                     "id": "XVXes",
+                     "id": "HcNux",
                      "type": "frame",
                      "name": "Concept / One Item at a Time",
                      "style": {
@@ -46862,7 +46739,7 @@
                      },
                      "children": [
                       {
-                       "id": "W4Czq",
+                       "id": "ku8AA",
                        "type": "icon",
                        "name": "Status",
                        "icon": "circle-check",
@@ -46874,7 +46751,7 @@
                        }
                       },
                       {
-                       "id": "zqw8v",
+                       "id": "vVgEa",
                        "type": "text",
                        "name": "Label",
                        "text": "One Item at a Time",
@@ -46890,7 +46767,7 @@
                        }
                       },
                       {
-                       "id": "NUrWK",
+                       "id": "Ckcpa",
                        "type": "text",
                        "name": "Meta",
                        "text": "",
@@ -46903,7 +46780,7 @@
                      ]
                     },
                     {
-                     "id": "tRBNm",
+                     "id": "H76tG",
                      "type": "frame",
                      "name": "Concept / Keep Items with select",
                      "style": {
@@ -46919,7 +46796,7 @@
                      },
                      "children": [
                       {
-                       "id": "F9dwB",
+                       "id": "dA77P",
                        "type": "icon",
                        "name": "Status",
                        "icon": "circle-dot",
@@ -46931,7 +46808,7 @@
                        }
                       },
                       {
-                       "id": "54Ev8",
+                       "id": "dT3Vw",
                        "type": "text",
                        "name": "Label",
                        "text": "Keep Items with select",
@@ -46947,7 +46824,7 @@
                        }
                       },
                       {
-                       "id": "h3v4Z",
+                       "id": "L9Rij",
                        "type": "text",
                        "name": "Meta",
                        "text": "",
@@ -46960,7 +46837,7 @@
                      ]
                     },
                     {
-                     "id": "vzCcJ",
+                     "id": "xgfTg",
                      "type": "frame",
                      "name": "Concept / Change Every Item with map",
                      "style": {
@@ -46975,7 +46852,7 @@
                      },
                      "children": [
                       {
-                       "id": "Bp9fE",
+                       "id": "rANDp",
                        "type": "icon",
                        "name": "Status",
                        "icon": "circle",
@@ -46987,7 +46864,7 @@
                        }
                       },
                       {
-                       "id": "A5Vdn",
+                       "id": "L9Lzt",
                        "type": "text",
                        "name": "Label",
                        "text": "Change Every Item with map",
@@ -47003,7 +46880,7 @@
                        }
                       },
                       {
-                       "id": "S8Ldv",
+                       "id": "uJsQx",
                        "type": "text",
                        "name": "Meta",
                        "text": "",
@@ -47016,7 +46893,7 @@
                      ]
                     },
                     {
-                     "id": "DzwRD",
+                     "id": "PpNAv",
                      "type": "frame",
                      "name": "Concept / Collect a Stream",
                      "style": {
@@ -47031,7 +46908,7 @@
                      },
                      "children": [
                       {
-                       "id": "Af9jh",
+                       "id": "ZmU85",
                        "type": "icon",
                        "name": "Status",
                        "icon": "circle",
@@ -47043,7 +46920,7 @@
                        }
                       },
                       {
-                       "id": "Cy8nE",
+                       "id": "8u6zb",
                        "type": "text",
                        "name": "Label",
                        "text": "Collect a Stream",
@@ -47059,7 +46936,7 @@
                        }
                       },
                       {
-                       "id": "KxLiE",
+                       "id": "u6fvU",
                        "type": "text",
                        "name": "Meta",
                        "text": "",
@@ -47072,7 +46949,7 @@
                      ]
                     },
                     {
-                     "id": "5K6QU",
+                     "id": "Rr6xq",
                      "type": "frame",
                      "name": "Concept / Drop Values with empty",
                      "style": {
@@ -47087,7 +46964,7 @@
                      },
                      "children": [
                       {
-                       "id": "zPmfG",
+                       "id": "NruA5",
                        "type": "icon",
                        "name": "Status",
                        "icon": "circle",
@@ -47099,7 +46976,7 @@
                        }
                       },
                       {
-                       "id": "fFdrV",
+                       "id": "LZnd7",
                        "type": "text",
                        "name": "Label",
                        "text": "Drop Values with empty",
@@ -47115,7 +46992,7 @@
                        }
                       },
                       {
-                       "id": "ErT4i",
+                       "id": "7y9Ap",
                        "type": "text",
                        "name": "Meta",
                        "text": "",
@@ -47130,7 +47007,7 @@
                    ]
                   },
                   {
-                   "id": "Yep97",
+                   "id": "6bvZ4",
                    "type": "frame",
                    "name": "Chapter / 4  Values and types",
                    "style": {
@@ -47145,7 +47022,7 @@
                    },
                    "children": [
                     {
-                     "id": "iXmgK",
+                     "id": "Wd9Ja",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -47157,7 +47034,7 @@
                      }
                     },
                     {
-                     "id": "6LMmJ",
+                     "id": "n5fX3",
                      "type": "text",
                      "name": "Label",
                      "text": "4  Values and types",
@@ -47173,7 +47050,7 @@
                      }
                     },
                     {
-                     "id": "fSUYz",
+                     "id": "iTMCs",
                      "type": "text",
                      "name": "Meta",
                      "text": "0 / 5",
@@ -47186,7 +47063,7 @@
                    ]
                   },
                   {
-                   "id": "xAxcF",
+                   "id": "yHJfq",
                    "type": "frame",
                    "name": "Chapter / 5  Strings",
                    "style": {
@@ -47201,7 +47078,7 @@
                    },
                    "children": [
                     {
-                     "id": "eB7bx",
+                     "id": "Afxmx",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -47213,7 +47090,7 @@
                      }
                     },
                     {
-                     "id": "6CaNp",
+                     "id": "vQu2t",
                      "type": "text",
                      "name": "Label",
                      "text": "5  Strings",
@@ -47229,7 +47106,7 @@
                      }
                     },
                     {
-                     "id": "cnhjd",
+                     "id": "pwNf9",
                      "type": "text",
                      "name": "Meta",
                      "text": "0 / 5",
@@ -47242,7 +47119,7 @@
                    ]
                   },
                   {
-                   "id": "Zmf5a",
+                   "id": "4MqSZ",
                    "type": "frame",
                    "name": "Chapter / 6  Aggregation",
                    "style": {
@@ -47257,7 +47134,7 @@
                    },
                    "children": [
                     {
-                     "id": "bE56H",
+                     "id": "SFhP6",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -47269,7 +47146,7 @@
                      }
                     },
                     {
-                     "id": "3rLPa",
+                     "id": "Fcu36",
                      "type": "text",
                      "name": "Label",
                      "text": "6  Aggregation",
@@ -47285,7 +47162,7 @@
                      }
                     },
                     {
-                     "id": "ef3JU",
+                     "id": "yvWaM",
                      "type": "text",
                      "name": "Meta",
                      "text": "0 / 5",
@@ -47298,7 +47175,7 @@
                    ]
                   },
                   {
-                   "id": "A9jUU",
+                   "id": "VSNPt",
                    "type": "frame",
                    "name": "Chapter / 7  Updating",
                    "style": {
@@ -47313,7 +47190,7 @@
                    },
                    "children": [
                     {
-                     "id": "fnbJQ",
+                     "id": "2Xn8z",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -47325,7 +47202,7 @@
                      }
                     },
                     {
-                     "id": "CNpPb",
+                     "id": "UNCcU",
                      "type": "text",
                      "name": "Label",
                      "text": "7  Updating",
@@ -47341,7 +47218,7 @@
                      }
                     },
                     {
-                     "id": "fQSVK",
+                     "id": "GjzSZ",
                      "type": "text",
                      "name": "Meta",
                      "text": "0 / 4",
@@ -47354,7 +47231,7 @@
                    ]
                   },
                   {
-                   "id": "FPvv9",
+                   "id": "jcn2G",
                    "type": "frame",
                    "name": "Chapter / 8  Variables and control",
                    "style": {
@@ -47369,7 +47246,7 @@
                    },
                    "children": [
                     {
-                     "id": "pzhtJ",
+                     "id": "3BVFT",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -47381,7 +47258,7 @@
                      }
                     },
                     {
-                     "id": "8nSNJ",
+                     "id": "KruZB",
                      "type": "text",
                      "name": "Label",
                      "text": "8  Variables and control",
@@ -47397,7 +47274,7 @@
                      }
                     },
                     {
-                     "id": "RzrmC",
+                     "id": "jvszN",
                      "type": "text",
                      "name": "Meta",
                      "text": "0 / 5",
@@ -47410,7 +47287,7 @@
                    ]
                   },
                   {
-                   "id": "3GMS7",
+                   "id": "AiWBr",
                    "type": "frame",
                    "name": "Chapter / 9  The command line",
                    "style": {
@@ -47425,7 +47302,7 @@
                    },
                    "children": [
                     {
-                     "id": "uf8qA",
+                     "id": "Gzbh7",
                      "type": "icon",
                      "name": "Chevron",
                      "icon": "chevron-right",
@@ -47437,7 +47314,7 @@
                      }
                     },
                     {
-                     "id": "BpHHc",
+                     "id": "xwNey",
                      "type": "text",
                      "name": "Label",
                      "text": "9  The command line",
@@ -47453,7 +47330,7 @@
                      }
                     },
                     {
-                     "id": "RfmK9",
+                     "id": "xCS36",
                      "type": "text",
                      "name": "Meta",
                      "text": "0 / 5",
@@ -47474,7 +47351,7 @@
            ]
           },
           {
-           "id": "8KuaW",
+           "id": "6jGpJ",
            "type": "frame",
            "name": "Lesson",
            "style": {
@@ -47488,7 +47365,7 @@
            },
            "children": [
             {
-             "id": "eBbkJ",
+             "id": "jCVV2",
              "type": "frame",
              "name": "Top bar",
              "style": {
@@ -47503,7 +47380,7 @@
              },
              "children": [
               {
-               "id": "CF4Pn",
+               "id": "UfNBg",
                "type": "frame",
                "name": "Parts",
                "style": {
@@ -47515,7 +47392,7 @@
                },
                "children": [
                 {
-                 "id": "Y7A2j",
+                 "id": "8WCji",
                  "type": "frame",
                  "name": "Part / now",
                  "style": {
@@ -47530,15 +47407,15 @@
                  },
                  "children": [
                   {
-                   "id": "EKEGR",
+                   "id": "FLgQS",
                    "type": "text",
-                   "text": "Keep what passes a test",
+                   "text": "The output of one step is the input of the next",
                    "name": "Keep what passes a test"
                   }
                  ]
                 },
                 {
-                 "id": "HhWuj",
+                 "id": "Leef5",
                  "type": "icon",
                  "icon": "chevron-right",
                  "style": {
@@ -47550,7 +47427,7 @@
                  "name": "chevron-right"
                 },
                 {
-                 "id": "Jd7Ms",
+                 "id": "XmKTr",
                  "type": "frame",
                  "name": "Part / todo",
                  "style": {
@@ -47565,15 +47442,15 @@
                  },
                  "children": [
                   {
-                   "id": "ThErg",
+                   "id": "VWJMV",
                    "type": "text",
-                   "text": "Compare a field",
+                   "text": "Filters with names",
                    "name": "Compare a field"
                   }
                  ]
                 },
                 {
-                 "id": "pnBHT",
+                 "id": "MY2Cs",
                  "type": "icon",
                  "icon": "chevron-right",
                  "style": {
@@ -47585,7 +47462,7 @@
                  "name": "chevron-right"
                 },
                 {
-                 "id": "WhfZZ",
+                 "id": "4j7n9",
                  "type": "frame",
                  "name": "Part / todo",
                  "style": {
@@ -47600,15 +47477,15 @@
                  },
                  "children": [
                   {
-                   "id": "GkdR7",
+                   "id": "5WgWy",
                    "type": "text",
-                   "text": "Take one field",
+                   "text": "Build a chain step by step",
                    "name": "Take one field"
                   }
                  ]
                 },
                 {
-                 "id": "NU5mM",
+                 "id": "JaD5p",
                  "type": "icon",
                  "icon": "chevron-right",
                  "style": {
@@ -47620,7 +47497,7 @@
                  "name": "chevron-right"
                 },
                 {
-                 "id": "4kD2s",
+                 "id": "Un3Yf",
                  "type": "frame",
                  "name": "Part / todo",
                  "style": {
@@ -47635,7 +47512,7 @@
                  },
                  "children": [
                   {
-                   "id": "FmdNV",
+                   "id": "M3JK6",
                    "type": "text",
                    "text": "On your own",
                    "name": "On your own"
@@ -47645,7 +47522,7 @@
                ]
               },
               {
-               "id": "Xfj4r",
+               "id": "EMhfW",
                "type": "frame",
                "name": "Tutor toggle",
                "style": {
@@ -47660,7 +47537,7 @@
                },
                "children": [
                 {
-                 "id": "7ZQnD",
+                 "id": "G452y",
                  "type": "icon",
                  "name": "panel-right",
                  "icon": "panel-right",
@@ -47672,7 +47549,7 @@
                  }
                 },
                 {
-                 "id": "FH8vb",
+                 "id": "YVpRe",
                  "type": "text",
                  "text": "Tutor",
                  "style": {
@@ -47688,7 +47565,7 @@
              ]
             },
             {
-             "id": "pweJg",
+             "id": "sXQgB",
              "type": "frame",
              "name": "Split",
              "style": {
@@ -47699,7 +47576,7 @@
              },
              "children": [
               {
-               "id": "YNn4v",
+               "id": "6qQiG",
                "type": "frame",
                "name": "Lesson text",
                "style": {
@@ -47710,388 +47587,1078 @@
                 "alignSelf": "stretch",
                 "borderRight": "1px solid var(--color-border)",
                 "padding": "40px 48px",
-                "overflow": "hidden"
+                "overflow": "hidden",
+                "position": "relative"
                },
                "children": [
                 {
-                 "id": "MEvQR",
+                 "id": "7NhFJ",
                  "type": "frame",
                  "name": "Column",
                  "style": {
                   "display": "flex",
                   "flexDirection": "column",
-                  "gap": 16,
-                  "maxWidth": 760,
-                  "alignSelf": "stretch"
+                  "gap": 28,
+                  "maxWidth": 680,
+                  "alignSelf": "center",
+                  "width": "100%",
+                  "marginLeft": "auto",
+                  "marginRight": "auto",
+                  "fontFamily": "Libron, 'Atkinson Hyperlegible Next', sans-serif"
                  },
                  "children": [
                   {
-                   "id": "bgZPi",
-                   "type": "frame",
-                   "name": "Chip",
-                   "style": {
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": 6,
-                    "padding": "0px 10px",
-                    "borderRadius": 999,
-                    "border": "1px solid var(--color-border)",
-                    "height": 24,
-                    "flexShrink": 0,
-                    "alignSelf": "flex-start"
-                   },
-                   "children": [
-                    {
-                     "id": "WWTxa",
-                     "type": "icon",
-                     "icon": "book-open",
-                     "style": {
-                      "width": 12,
-                      "height": 12,
-                      "color": "#8A8F98",
-                      "flexShrink": 0
-                     },
-                     "name": "book-open"
-                    },
-                    {
-                     "id": "gqQMe",
-                     "type": "text",
-                     "text": "Lesson",
-                     "style": {
-                      "color": "var(--color-mute)",
-                      "fontSize": 13,
-                      "whiteSpace": "pre"
-                     },
-                     "name": "Lesson"
-                    }
-                   ]
-                  },
-                  {
-                   "id": "c4W5Z",
+                   "id": "mWpJm",
                    "type": "text",
-                   "text": "Keep what passes a test",
+                   "text": "The output of one step is the input of the next",
                    "style": {
                     "color": "var(--color-ink)",
-                    "fontSize": 28,
+                    "fontSize": 36,
                     "fontWeight": 600,
-                    "lineHeight": "36px"
+                    "lineHeight": "46px"
                    },
-                   "name": "Keep what passes a test"
+                   "name": "The output of one step …"
                   },
                   {
-                   "id": "jDRYq",
-                   "type": "text",
-                   "spans": [
-                    {
-                     "text": "select(test)",
-                     "style": {
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 14,
-                      "background": "var(--color-raised)",
-                      "borderRadius": 4,
-                      "padding": "1px 5px"
-                     }
-                    },
-                    {
-                     "text": " looks at one value. When the test is true, the value passes on. When the test is false, the value is dropped."
-                    }
-                   ],
-                   "style": {
-                    "color": "var(--color-body)",
-                    "fontSize": 16,
-                    "lineHeight": "26px",
-                    "alignSelf": "stretch"
-                   },
-                   "name": "select(test) looks at o…"
-                  },
-                  {
-                   "id": "9HhKb",
-                   "type": "text",
-                   "text": "Input",
-                   "style": {
-                    "color": "var(--color-mute)",
-                    "fontSize": 13,
-                    "fontWeight": 500,
-                    "marginBottom": -8
-                   },
-                   "name": "Input"
-                  },
-                  {
-                   "id": "k7CUe",
+                   "id": "zgivy",
                    "type": "frame",
-                   "name": "Code",
+                   "name": "Block / Example",
                    "style": {
                     "display": "flex",
                     "flexDirection": "column",
-                    "alignItems": "flex-start",
-                    "padding": "16px 20px",
-                    "background": "var(--color-canvas)",
+                    "gap": 14,
                     "alignSelf": "stretch",
-                    "flexShrink": 0,
-                    "border": "1px solid var(--color-border)",
-                    "borderRadius": 8
+                    "borderLeft": "2px solid var(--color-accent)",
+                    "paddingLeft": 20
                    },
                    "children": [
                     {
-                     "id": "VzYTR",
+                     "id": "bhhEs",
                      "type": "text",
-                     "name": "Line",
-                     "spans": [
-                      {
-                       "text": "["
-                      }
-                     ],
+                     "name": "Block label",
+                     "text": "Example",
                      "style": {
-                      "fontFamily": "JetBrains Mono",
+                      "color": "var(--color-accent)",
                       "fontSize": 15,
-                      "lineHeight": "24px",
-                      "whiteSpace": "pre",
-                      "color": "var(--color-body)"
+                      "fontWeight": 700,
+                      "letterSpacing": "0.6px",
+                      "textTransform": "uppercase",
+                      "fontFamily": "'Atkinson Hyperlegible Next', sans-serif"
                      }
                     },
                     {
-                     "id": "JZTk9",
-                     "type": "text",
-                     "name": "Line",
-                     "spans": [
-                      {
-                       "text": "  {"
-                      },
-                      {
-                       "text": "\"title\""
-                      },
-                      {
-                       "text": ": "
-                      },
-                      {
-                       "text": "\"Dune\"",
-                       "style": {
-                        "color": "var(--color-syntax-string)"
-                       }
-                      },
-                      {
-                       "text": ", "
-                      },
-                      {
-                       "text": "\"new\""
-                      },
-                      {
-                       "text": ": "
-                      },
-                      {
-                       "text": "true",
-                       "style": {
-                        "color": "var(--color-syntax-number)"
-                       }
-                      },
-                      {
-                       "text": "},"
-                      }
-                     ],
+                     "id": "z84mH",
+                     "type": "frame",
                      "style": {
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 15,
-                      "lineHeight": "24px",
-                      "whiteSpace": "pre",
-                      "color": "var(--color-body)"
-                     }
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": 6,
+                      "marginBottom": -6
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "5e7Yb",
+                       "type": "text",
+                       "text": "Input",
+                       "style": {
+                        "color": "var(--color-mute)",
+                        "fontSize": 15,
+                        "fontWeight": 500,
+                        "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                       },
+                       "name": "Input"
+                      }
+                     ]
                     },
                     {
-                     "id": "YsY5s",
-                     "type": "text",
-                     "name": "Line",
-                     "spans": [
-                      {
-                       "text": "  {"
-                      },
-                      {
-                       "text": "\"title\""
-                      },
-                      {
-                       "text": ": "
-                      },
-                      {
-                       "text": "\"Emma\"",
-                       "style": {
-                        "color": "var(--color-syntax-string)"
-                       }
-                      },
-                      {
-                       "text": ", "
-                      },
-                      {
-                       "text": "\"new\""
-                      },
-                      {
-                       "text": ": "
-                      },
-                      {
-                       "text": "false",
-                       "style": {
-                        "color": "var(--color-syntax-number)"
-                       }
-                      },
-                      {
-                       "text": "}"
-                      }
-                     ],
+                     "id": "GwHu8",
+                     "type": "frame",
+                     "name": "Code",
                      "style": {
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 15,
-                      "lineHeight": "24px",
-                      "whiteSpace": "pre",
-                      "color": "var(--color-body)"
-                     }
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "alignItems": "flex-start",
+                      "padding": "16px 20px",
+                      "background": "var(--color-canvas)",
+                      "alignSelf": "stretch",
+                      "flexShrink": 0,
+                      "border": "1px solid var(--color-border)",
+                      "borderRadius": 8
+                     },
+                     "children": [
+                      {
+                       "id": "6QGJx",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": "{\"user\": "
+                        },
+                        {
+                         "text": "{\"name\": "
+                        },
+                        {
+                         "text": "\"Ada\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": ", \"langs\": "
+                        },
+                        {
+                         "text": "["
+                        },
+                        {
+                         "text": "\"ts\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": ", "
+                        },
+                        {
+                         "text": "\"go\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": "]"
+                        },
+                        {
+                         "text": "}"
+                        },
+                        {
+                         "text": "}"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-body)"
+                       }
+                      }
+                     ]
                     },
                     {
-                     "id": "C6exg",
-                     "type": "text",
-                     "name": "Line",
-                     "spans": [
-                      {
-                       "text": "]"
-                      }
-                     ],
+                     "id": "pLs5M",
+                     "type": "frame",
                      "style": {
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 15,
-                      "lineHeight": "24px",
-                      "whiteSpace": "pre",
-                      "color": "var(--color-body)"
-                     }
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": 6,
+                      "marginBottom": -6
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "gEzuU",
+                       "type": "text",
+                       "text": "Filter",
+                       "style": {
+                        "color": "var(--color-mute)",
+                        "fontSize": 15,
+                        "fontWeight": 500,
+                        "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                       },
+                       "name": "Filter"
+                      }
+                     ]
+                    },
+                    {
+                     "id": "sXtDe",
+                     "type": "frame",
+                     "name": "Code",
+                     "style": {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "alignItems": "flex-start",
+                      "padding": "16px 20px",
+                      "background": "var(--color-canvas)",
+                      "alignSelf": "stretch",
+                      "flexShrink": 0,
+                      "border": "1px solid var(--color-border)",
+                      "borderRadius": 8
+                     },
+                     "children": [
+                      {
+                       "id": "g9ytD",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": ".user | .langs"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-body)"
+                       }
+                      }
+                     ]
+                    },
+                    {
+                     "id": "7rwBP",
+                     "type": "frame",
+                     "style": {
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": 6,
+                      "marginBottom": -6
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "WeLZN",
+                       "type": "text",
+                       "text": "Output",
+                       "style": {
+                        "color": "var(--color-mute)",
+                        "fontSize": 15,
+                        "fontWeight": 500,
+                        "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                       },
+                       "name": "Output"
+                      }
+                     ]
+                    },
+                    {
+                     "id": "FCVMi",
+                     "type": "frame",
+                     "name": "Code",
+                     "style": {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "alignItems": "flex-start",
+                      "padding": "16px 20px",
+                      "background": "var(--color-canvas)",
+                      "alignSelf": "stretch",
+                      "flexShrink": 0,
+                      "border": "1px solid var(--color-border)",
+                      "borderRadius": 8
+                     },
+                     "children": [
+                      {
+                       "id": "mwwr9",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": "["
+                        },
+                        {
+                         "text": "\"ts\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": ", "
+                        },
+                        {
+                         "text": "\"go\"",
+                         "style": {
+                          "color": "var(--color-syntax-string)"
+                         }
+                        },
+                        {
+                         "text": "]"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-body)"
+                       }
+                      }
+                     ]
+                    },
+                    {
+                     "id": "SKqL5",
+                     "type": "frame",
+                     "style": {
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": 6,
+                      "marginBottom": -6
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "pEFNj",
+                       "type": "text",
+                       "text": "Step by step",
+                       "style": {
+                        "color": "var(--color-mute)",
+                        "fontSize": 15,
+                        "fontWeight": 500,
+                        "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                       },
+                       "name": "Step by step"
+                      }
+                     ]
+                    },
+                    {
+                     "id": "KQzpn",
+                     "type": "frame",
+                     "name": "Steps",
+                     "style": {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "alignItems": "flex-start",
+                      "padding": "16px 20px",
+                      "background": "var(--color-canvas)",
+                      "alignSelf": "stretch",
+                      "flexShrink": 0,
+                      "border": "1px solid var(--color-border)",
+                      "borderRadius": 8,
+                      "gap": 14
+                     },
+                     "children": [
+                      {
+                       "id": "k5jPf",
+                       "type": "frame",
+                       "style": {
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "gap": 4,
+                        "alignSelf": "stretch"
+                       },
+                       "name": "Frame",
+                       "children": [
+                        {
+                         "id": "VgNkX",
+                         "type": "frame",
+                         "style": {
+                          "display": "grid",
+                          "gridTemplateColumns": "180px 1fr",
+                          "columnGap": 16,
+                          "alignItems": "baseline"
+                         },
+                         "name": "Frame",
+                         "children": [
+                          {
+                           "id": "ysnSr",
+                           "type": "text",
+                           "name": "Line",
+                           "spans": [
+                            {
+                             "text": ".user"
+                            }
+                           ],
+                           "style": {
+                            "fontFamily": "JetBrains Mono",
+                            "fontSize": 16,
+                            "lineHeight": "26px",
+                            "whiteSpace": "pre",
+                            "color": "var(--color-ink)"
+                           }
+                          },
+                          {
+                           "id": "8vP4z",
+                           "type": "frame",
+                           "style": {
+                            "display": "flex",
+                            "gap": 12,
+                            "alignItems": "baseline"
+                           },
+                           "name": "Frame",
+                           "children": [
+                            {
+                             "id": "7RWpe",
+                             "type": "icon",
+                             "icon": "arrow-right",
+                             "style": {
+                              "width": 14,
+                              "height": 14,
+                              "color": "var(--color-mute)",
+                              "flexShrink": 0,
+                              "alignSelf": "center"
+                             },
+                             "name": "arrow-right"
+                            },
+                            {
+                             "id": "CRznR",
+                             "type": "text",
+                             "name": "Line",
+                             "spans": [
+                              {
+                               "text": "{\"name\": "
+                              },
+                              {
+                               "text": "\"Ada\"",
+                               "style": {
+                                "color": "var(--color-syntax-string)"
+                               }
+                              },
+                              {
+                               "text": ", \"langs\": "
+                              },
+                              {
+                               "text": "["
+                              },
+                              {
+                               "text": "\"ts\"",
+                               "style": {
+                                "color": "var(--color-syntax-string)"
+                               }
+                              },
+                              {
+                               "text": ", "
+                              },
+                              {
+                               "text": "\"go\"",
+                               "style": {
+                                "color": "var(--color-syntax-string)"
+                               }
+                              },
+                              {
+                               "text": "]"
+                              },
+                              {
+                               "text": "}"
+                              }
+                             ],
+                             "style": {
+                              "fontFamily": "JetBrains Mono",
+                              "fontSize": 16,
+                              "lineHeight": "26px",
+                              "whiteSpace": "pre",
+                              "color": "var(--color-body)"
+                             }
+                            }
+                           ]
+                          }
+                         ]
+                        }
+                       ]
+                      },
+                      {
+                       "id": "YyLXQ",
+                       "type": "frame",
+                       "style": {
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "gap": 4,
+                        "alignSelf": "stretch"
+                       },
+                       "name": "Frame",
+                       "children": [
+                        {
+                         "id": "aJuJG",
+                         "type": "frame",
+                         "style": {
+                          "display": "grid",
+                          "gridTemplateColumns": "180px 1fr",
+                          "columnGap": 16,
+                          "alignItems": "baseline"
+                         },
+                         "name": "Frame",
+                         "children": [
+                          {
+                           "id": "CAmdA",
+                           "type": "text",
+                           "name": "Line",
+                           "spans": [
+                            {
+                             "text": ".user "
+                            },
+                            {
+                             "text": "| .langs",
+                             "style": {
+                              "color": "var(--color-accent)",
+                              "background": "color-mix(in srgb, var(--color-accent) 16%, transparent)",
+                              "borderRadius": 4,
+                              "padding": "1px 3px",
+                              "margin": "0 -3px"
+                             }
+                            }
+                           ],
+                           "style": {
+                            "fontFamily": "JetBrains Mono",
+                            "fontSize": 16,
+                            "lineHeight": "26px",
+                            "whiteSpace": "pre",
+                            "color": "var(--color-ink)"
+                           }
+                          },
+                          {
+                           "id": "GNmWU",
+                           "type": "frame",
+                           "style": {
+                            "display": "flex",
+                            "gap": 12,
+                            "alignItems": "baseline"
+                           },
+                           "name": "Frame",
+                           "children": [
+                            {
+                             "id": "n7Ljv",
+                             "type": "icon",
+                             "icon": "arrow-right",
+                             "style": {
+                              "width": 14,
+                              "height": 14,
+                              "color": "var(--color-mute)",
+                              "flexShrink": 0,
+                              "alignSelf": "center"
+                             },
+                             "name": "arrow-right"
+                            },
+                            {
+                             "id": "S53TJ",
+                             "type": "text",
+                             "name": "Line",
+                             "spans": [
+                              {
+                               "text": "["
+                              },
+                              {
+                               "text": "\"ts\"",
+                               "style": {
+                                "color": "var(--color-syntax-string)"
+                               }
+                              },
+                              {
+                               "text": ", "
+                              },
+                              {
+                               "text": "\"go\"",
+                               "style": {
+                                "color": "var(--color-syntax-string)"
+                               }
+                              },
+                              {
+                               "text": "]"
+                              }
+                             ],
+                             "style": {
+                              "fontFamily": "JetBrains Mono",
+                              "fontSize": 16,
+                              "lineHeight": "26px",
+                              "whiteSpace": "pre",
+                              "color": "var(--color-body)"
+                             }
+                            }
+                           ]
+                          }
+                         ]
+                        }
+                       ]
+                      }
+                     ]
                     }
                    ]
                   },
                   {
-                   "id": "F7y9i",
-                   "type": "text",
-                   "text": "Command",
-                   "style": {
-                    "color": "var(--color-mute)",
-                    "fontSize": 13,
-                    "fontWeight": 500,
-                    "marginBottom": -8
-                   },
-                   "name": "Command"
-                  },
-                  {
-                   "id": "NXssf",
+                   "id": "u6Sxw",
                    "type": "frame",
-                   "name": "Code",
+                   "name": "Block / Rule",
                    "style": {
                     "display": "flex",
                     "flexDirection": "column",
-                    "alignItems": "flex-start",
-                    "padding": "16px 20px",
-                    "background": "var(--color-canvas)",
+                    "gap": 0,
                     "alignSelf": "stretch",
-                    "flexShrink": 0,
-                    "border": "1px solid var(--color-border)",
-                    "borderRadius": 8
+                    "borderLeft": "2px solid transparent",
+                    "paddingLeft": 20
                    },
                    "children": [
                     {
-                     "id": "XbuRP",
-                     "type": "text",
-                     "name": "Line",
-                     "spans": [
-                      {
-                       "text": "jq '.[] | select(.new)' books.json"
-                      }
-                     ],
+                     "id": "Dgf4f",
+                     "type": "frame",
+                     "name": "Rule callout",
                      "style": {
-                      "fontFamily": "JetBrains Mono",
-                      "fontSize": 15,
-                      "lineHeight": "24px",
-                      "whiteSpace": "pre",
-                      "color": "var(--color-body)"
-                     }
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "gap": 6,
+                      "alignSelf": "stretch",
+                      "padding": "14px 20px 16px",
+                      "borderRadius": 8,
+                      "background": "var(--color-accent-bg)",
+                      "border": "1px solid var(--color-accent-line)"
+                     },
+                     "children": [
+                      {
+                       "id": "cbiyn",
+                       "type": "text",
+                       "text": "Rule",
+                       "style": {
+                        "color": "var(--color-accent)",
+                        "fontSize": 13,
+                        "fontWeight": 700,
+                        "letterSpacing": "0.6px",
+                        "textTransform": "uppercase",
+                        "fontFamily": "'Atkinson Hyperlegible Next', sans-serif"
+                       },
+                       "name": "Rule"
+                      },
+                      {
+                       "id": "WqSpc",
+                       "type": "text",
+                       "spans": [
+                        {
+                         "text": "a | b",
+                         "style": {
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 17,
+                          "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                          "borderRadius": 4,
+                          "padding": "1px 5px"
+                         }
+                        },
+                        {
+                         "text": " runs "
+                        },
+                        {
+                         "text": "a",
+                         "style": {
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 17,
+                          "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                          "borderRadius": 4,
+                          "padding": "1px 5px"
+                         }
+                        },
+                        {
+                         "text": ", then runs "
+                        },
+                        {
+                         "text": "b",
+                         "style": {
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 17,
+                          "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                          "borderRadius": 4,
+                          "padding": "1px 5px"
+                         }
+                        },
+                        {
+                         "text": " on what "
+                        },
+                        {
+                         "text": "a",
+                         "style": {
+                          "fontFamily": "JetBrains Mono",
+                          "fontSize": 17,
+                          "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                          "borderRadius": 4,
+                          "padding": "1px 5px"
+                         }
+                        },
+                        {
+                         "text": " gave."
+                        }
+                       ],
+                       "style": {
+                        "color": "var(--color-ink)",
+                        "fontSize": 22,
+                        "lineHeight": "34px",
+                        "alignSelf": "stretch"
+                       },
+                       "name": "a | b runs a, then runs…"
+                      }
+                     ]
                     }
                    ]
                   },
                   {
-                   "id": "rZahD",
-                   "type": "text",
-                   "text": "Output",
-                   "style": {
-                    "color": "var(--color-mute)",
-                    "fontSize": 13,
-                    "fontWeight": 500,
-                    "marginBottom": -8
-                   },
-                   "name": "Output"
-                  },
-                  {
-                   "id": "bcdy5",
+                   "id": "SUCLJ",
                    "type": "frame",
-                   "name": "Code",
+                   "name": "Block / Compare",
                    "style": {
                     "display": "flex",
                     "flexDirection": "column",
-                    "alignItems": "flex-start",
-                    "padding": "16px 20px",
-                    "background": "var(--color-canvas)",
+                    "gap": 10,
                     "alignSelf": "stretch",
-                    "flexShrink": 0,
-                    "border": "1px solid var(--color-border)",
-                    "borderRadius": 8
+                    "borderLeft": "2px solid transparent",
+                    "paddingLeft": 20
                    },
                    "children": [
                     {
-                     "id": "Ni4qW",
+                     "id": "98HuS",
                      "type": "text",
-                     "name": "Line",
                      "spans": [
                       {
-                       "text": "{"
-                      },
-                      {
-                       "text": "\"title\""
-                      },
-                      {
-                       "text": ": "
-                      },
-                      {
-                       "text": "\"Dune\"",
+                       "text": ".user.langs",
                        "style": {
-                        "color": "var(--color-syntax-string)"
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 17,
+                        "background": "var(--color-raised)",
+                        "borderRadius": 4,
+                        "padding": "1px 5px"
                        }
                       },
                       {
-                       "text": ", "
-                      },
-                      {
-                       "text": "\"new\""
-                      },
-                      {
-                       "text": ": "
-                      },
-                      {
-                       "text": "true",
-                       "style": {
-                        "color": "var(--color-syntax-number)"
-                       }
-                      },
-                      {
-                       "text": "}"
+                       "text": " gives the same result. For paths, the dot does the job of the pipe."
                       }
                      ],
                      "style": {
-                      "fontFamily": "JetBrains Mono",
+                      "color": "var(--color-body)",
+                      "fontSize": 22,
+                      "lineHeight": "34px",
+                      "alignSelf": "stretch"
+                     },
+                     "name": ".user.langs gives the s…"
+                    },
+                    {
+                     "id": "4v9qL",
+                     "type": "text",
+                     "spans": [
+                      {
+                       "text": ".user | .user",
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 17,
+                        "background": "var(--color-raised)",
+                        "borderRadius": 4,
+                        "padding": "1px 5px"
+                       }
+                      },
+                      {
+                       "text": " gives "
+                      },
+                      {
+                       "text": "null",
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 17,
+                        "background": "var(--color-raised)",
+                        "borderRadius": 4,
+                        "padding": "1px 5px"
+                       }
+                      },
+                      {
+                       "text": ". After a pipe, the dot is the inner object, and it has no "
+                      },
+                      {
+                       "text": "user",
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 17,
+                        "background": "var(--color-raised)",
+                        "borderRadius": 4,
+                        "padding": "1px 5px"
+                       }
+                      },
+                      {
+                       "text": "."
+                      }
+                     ],
+                     "style": {
+                      "color": "var(--color-body)",
+                      "fontSize": 22,
+                      "lineHeight": "34px",
+                      "alignSelf": "stretch"
+                     },
+                     "name": ".user | .user gives nul…"
+                    }
+                   ]
+                  },
+                  {
+                   "id": "Zx6R3",
+                   "type": "frame",
+                   "name": "Block / Common mistake",
+                   "style": {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "gap": 14,
+                    "alignSelf": "stretch",
+                    "borderLeft": "2px solid transparent",
+                    "paddingLeft": 20
+                   },
+                   "children": [
+                    {
+                     "id": "MBhbh",
+                     "type": "text",
+                     "name": "Block label",
+                     "text": "Common mistake",
+                     "style": {
+                      "color": "var(--color-red)",
                       "fontSize": 15,
-                      "lineHeight": "24px",
-                      "whiteSpace": "pre",
-                      "color": "var(--color-body)"
+                      "fontWeight": 700,
+                      "letterSpacing": "0.6px",
+                      "textTransform": "uppercase",
+                      "fontFamily": "'Atkinson Hyperlegible Next', sans-serif"
                      }
+                    },
+                    {
+                     "id": "hhZUw",
+                     "type": "text",
+                     "spans": [
+                      {
+                       "text": "No single quotes around the filter."
+                      }
+                     ],
+                     "style": {
+                      "color": "var(--color-body)",
+                      "fontSize": 22,
+                      "lineHeight": "34px",
+                      "alignSelf": "stretch"
+                     },
+                     "name": "No single quotes around…"
+                    },
+                    {
+                     "id": "3Mx38",
+                     "type": "frame",
+                     "style": {
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": 6,
+                      "marginBottom": -6
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "YgvYV",
+                       "type": "icon",
+                       "icon": "x",
+                       "style": {
+                        "width": 14,
+                        "height": 14,
+                        "color": "var(--color-red)",
+                        "flexShrink": 0
+                       },
+                       "name": "x"
+                      },
+                      {
+                       "id": "A8a2T",
+                       "type": "text",
+                       "text": "Wrong",
+                       "style": {
+                        "color": "var(--color-red)",
+                        "fontSize": 15,
+                        "fontWeight": 500,
+                        "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                       },
+                       "name": "Wrong"
+                      }
+                     ]
+                    },
+                    {
+                     "id": "2CMLG",
+                     "type": "frame",
+                     "name": "Code",
+                     "style": {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "alignItems": "flex-start",
+                      "padding": "16px 20px",
+                      "background": "var(--color-canvas)",
+                      "alignSelf": "stretch",
+                      "flexShrink": 0,
+                      "border": "1px solid color-mix(in srgb, var(--color-red) 45%, transparent)",
+                      "borderRadius": 8
+                     },
+                     "children": [
+                      {
+                       "id": "wWxfz",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": "jq .user | .langs data.json"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-body)"
+                       }
+                      }
+                     ]
+                    },
+                    {
+                     "id": "wGxP7",
+                     "type": "frame",
+                     "style": {
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": 6,
+                      "marginBottom": -6
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "WwJpv",
+                       "type": "text",
+                       "text": "Error",
+                       "style": {
+                        "color": "var(--color-red)",
+                        "fontSize": 15,
+                        "fontWeight": 500,
+                        "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                       },
+                       "name": "Error"
+                      }
+                     ]
+                    },
+                    {
+                     "id": "Ca4Ha",
+                     "type": "frame",
+                     "name": "Code",
+                     "style": {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "alignItems": "flex-start",
+                      "padding": "16px 20px",
+                      "background": "var(--color-canvas)",
+                      "alignSelf": "stretch",
+                      "flexShrink": 0,
+                      "border": "1px solid color-mix(in srgb, var(--color-red) 45%, transparent)",
+                      "borderRadius": 8
+                     },
+                     "children": [
+                      {
+                       "id": "ZEREq",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": "jq: error: Could not open file |: No such file or directory"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-red)"
+                       }
+                      }
+                     ]
+                    },
+                    {
+                     "id": "9MctK",
+                     "type": "frame",
+                     "style": {
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": 6,
+                      "marginBottom": -6
+                     },
+                     "name": "Frame",
+                     "children": [
+                      {
+                       "id": "JJPEr",
+                       "type": "icon",
+                       "icon": "check",
+                       "style": {
+                        "width": 14,
+                        "height": 14,
+                        "color": "var(--color-green)",
+                        "flexShrink": 0
+                       },
+                       "name": "check"
+                      },
+                      {
+                       "id": "WF4dT",
+                       "type": "text",
+                       "text": "Fix",
+                       "style": {
+                        "color": "var(--color-green)",
+                        "fontSize": 15,
+                        "fontWeight": 500,
+                        "fontFamily": "\"Atkinson Hyperlegible Next\", system-ui, sans-serif"
+                       },
+                       "name": "Fix"
+                      }
+                     ]
+                    },
+                    {
+                     "id": "MQnRm",
+                     "type": "frame",
+                     "name": "Code",
+                     "style": {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "alignItems": "flex-start",
+                      "padding": "16px 20px",
+                      "background": "var(--color-canvas)",
+                      "alignSelf": "stretch",
+                      "flexShrink": 0,
+                      "border": "1px solid color-mix(in srgb, var(--color-green) 45%, transparent)",
+                      "borderRadius": 8
+                     },
+                     "children": [
+                      {
+                       "id": "qa8dU",
+                       "type": "text",
+                       "name": "Line",
+                       "spans": [
+                        {
+                         "text": "jq "
+                        },
+                        {
+                         "text": "'",
+                         "style": {
+                          "color": "var(--color-green)",
+                          "background": "color-mix(in srgb, var(--color-green) 16%, transparent)",
+                          "borderRadius": 4,
+                          "padding": "1px 3px",
+                          "margin": "0 -3px"
+                         }
+                        },
+                        {
+                         "text": ".user | .langs"
+                        },
+                        {
+                         "text": "'",
+                         "style": {
+                          "color": "var(--color-green)",
+                          "background": "color-mix(in srgb, var(--color-green) 16%, transparent)",
+                          "borderRadius": 4,
+                          "padding": "1px 3px",
+                          "margin": "0 -3px"
+                         }
+                        },
+                        {
+                         "text": " data.json"
+                        }
+                       ],
+                       "style": {
+                        "fontFamily": "JetBrains Mono",
+                        "fontSize": 16,
+                        "lineHeight": "26px",
+                        "whiteSpace": "pre",
+                        "color": "var(--color-body)"
+                       }
+                      }
+                     ]
                     }
                    ]
                   }
                  ]
+                },
+                {
+                 "id": "YFEVP",
+                 "type": "frame",
+                 "name": "Scrollbar",
+                 "style": {
+                  "position": "absolute",
+                  "top": 6,
+                  "right": 6,
+                  "width": 8,
+                  "height": 1100,
+                  "borderRadius": 999,
+                  "background": "var(--color-border-strong)"
+                 }
                 }
                ]
               },
               {
-               "id": "jRk3L",
+               "id": "4DFV3",
                "type": "frame",
                "name": "Work",
                "style": {
@@ -48103,13 +48670,13 @@
                },
                "children": [
                 {
-                 "id": "Pcwaa",
+                 "id": "nv62H",
                  "type": "frame",
                  "name": "Task",
                  "style": {
                   "display": "flex",
                   "flexDirection": "column",
-                  "gap": 8,
+                  "gap": 10,
                   "padding": "20px 24px",
                   "alignSelf": "stretch",
                   "flexShrink": 0,
@@ -48118,34 +48685,65 @@
                  },
                  "children": [
                   {
-                   "id": "H27Ye",
+                   "id": "87MhF",
                    "type": "text",
-                   "text": "TRY IT",
-                   "style": {
-                    "color": "var(--color-accent)",
-                    "fontSize": 12,
-                    "fontWeight": 600,
-                    "letterSpacing": "0.6px",
-                    "whiteSpace": "pre"
-                   },
-                   "name": "TRY IT"
-                  },
-                  {
-                   "id": "Shczk",
-                   "type": "text",
-                   "text": "Give every user who is active.",
+                   "text": "Print the port from the config.",
                    "style": {
                     "color": "var(--color-ink)",
-                    "fontSize": 18,
+                    "fontSize": 24,
                     "fontWeight": 600,
-                    "lineHeight": "26px"
+                    "lineHeight": "32px",
+                    "maxWidth": 620
                    },
                    "name": "Give every user who is …"
+                  },
+                  {
+                   "id": "9FpX7",
+                   "type": "text",
+                   "spans": [
+                    {
+                     "text": "The first step takes "
+                    },
+                    {
+                     "text": "config",
+                     "style": {
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 14,
+                      "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                      "borderRadius": 4,
+                      "padding": "1px 5px"
+                     }
+                    },
+                    {
+                     "text": ". The second step is "
+                    },
+                    {
+                     "text": ".",
+                     "style": {
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 14,
+                      "background": "color-mix(in srgb, var(--color-accent) 22%, transparent)",
+                      "borderRadius": 4,
+                      "padding": "1px 5px"
+                     }
+                    },
+                    {
+                     "text": ", which changes nothing. Replace the second step so that the chain prints the port."
+                    }
+                   ],
+                   "style": {
+                    "color": "var(--color-body)",
+                    "fontSize": 16,
+                    "lineHeight": "26px",
+                    "marginTop": 0,
+                    "maxWidth": 540
+                   },
+                   "name": "The first step takes co…"
                   }
                  ]
                 },
                 {
-                 "id": "kjru3",
+                 "id": "2JGdA",
                  "type": "frame",
                  "name": "Filter",
                  "style": {
@@ -48157,7 +48755,7 @@
                  },
                  "children": [
                   {
-                   "id": "GnC2d",
+                   "id": "EfC4g",
                    "type": "frame",
                    "name": "Code",
                    "style": {
@@ -48168,7 +48766,7 @@
                    },
                    "children": [
                     {
-                     "id": "x9E6K",
+                     "id": "qTZgY",
                      "type": "frame",
                      "name": "Line",
                      "style": {
@@ -48181,7 +48779,7 @@
                      },
                      "children": [
                       {
-                       "id": "eRqkx",
+                       "id": "zdNDU",
                        "type": "frame",
                        "name": "Gutter",
                        "style": {
@@ -48193,7 +48791,7 @@
                        },
                        "children": [
                         {
-                         "id": "BQNVj",
+                         "id": "76G8c",
                          "type": "text",
                          "text": "1",
                          "style": {
@@ -48208,12 +48806,12 @@
                        ]
                       },
                       {
-                       "id": "8MR33",
+                       "id": "Tz4ZA",
                        "type": "text",
                        "name": "Line",
                        "spans": [
                         {
-                         "text": "jq '.[] | select(.name)' data.json"
+                         "text": "jq '.config | .' data.json"
                         }
                        ],
                        "style": {
@@ -48229,7 +48827,7 @@
                    ]
                   },
                   {
-                   "id": "jxczF",
+                   "id": "juQK2",
                    "type": "frame",
                    "name": "Status bar",
                    "style": {
@@ -48244,7 +48842,7 @@
                    },
                    "children": [
                     {
-                     "id": "dzmtC",
+                     "id": "jKtjc",
                      "type": "text",
                      "text": "INSERT",
                      "style": {
@@ -48257,7 +48855,7 @@
                      "name": "INSERT"
                     },
                     {
-                     "id": "9v9xX",
+                     "id": "KaepH",
                      "type": "text",
                      "text": "terminal",
                      "style": {
@@ -48270,7 +48868,7 @@
                      "name": "filter.jq"
                     },
                     {
-                     "id": "7pgEE",
+                     "id": "kmqjX",
                      "type": "text",
                      "text": "1:35",
                      "style": {
@@ -48286,7 +48884,7 @@
                  ]
                 },
                 {
-                 "id": "MQdd6",
+                 "id": "Bstgg",
                  "type": "frame",
                  "name": "Panels",
                  "style": {
@@ -48298,7 +48896,7 @@
                  },
                  "children": [
                   {
-                   "id": "eCxPD",
+                   "id": "gvTZA",
                    "type": "frame",
                    "name": "Input",
                    "style": {
@@ -48313,7 +48911,7 @@
                    },
                    "children": [
                     {
-                     "id": "M39NY",
+                     "id": "kKQDJ",
                      "type": "frame",
                      "name": "Panel label",
                      "style": {
@@ -48325,7 +48923,7 @@
                      },
                      "children": [
                       {
-                       "id": "hawrn",
+                       "id": "zYtqp",
                        "type": "text",
                        "style": {
                         "color": "var(--color-mute)",
@@ -48354,7 +48952,7 @@
                      ]
                     },
                     {
-                     "id": "7szvA",
+                     "id": "idCbh",
                      "type": "frame",
                      "name": "Lines",
                      "style": {
@@ -48363,53 +48961,41 @@
                      },
                      "children": [
                       {
-                       "id": "GWkrv",
+                       "id": "GWmfR",
                        "type": "text",
                        "name": "Line",
                        "spans": [
                         {
-                         "text": "["
+                         "text": "{"
                         }
                        ],
                        "style": {
                         "fontFamily": "JetBrains Mono",
-                        "fontSize": 14,
+                        "fontSize": 15,
                         "lineHeight": "24px",
                         "whiteSpace": "pre",
                         "color": "var(--color-body)"
                        }
                       },
                       {
-                       "id": "rXtw7",
+                       "id": "73NAZ",
                        "type": "text",
                        "name": "Line",
                        "spans": [
                         {
-                         "text": "  {"
+                         "text": "  \"config\": {\"host\": "
                         },
                         {
-                         "text": "\"name\""
-                        },
-                        {
-                         "text": ": "
-                        },
-                        {
-                         "text": "\"Ada\"",
+                         "text": "\"db-1\"",
                          "style": {
                           "color": "var(--color-syntax-string)"
                          }
                         },
                         {
-                         "text": ", "
+                         "text": ", \"port\": "
                         },
                         {
-                         "text": "\"active\""
-                        },
-                        {
-                         "text": ": "
-                        },
-                        {
-                         "text": "true",
+                         "text": "5432",
                          "style": {
                           "color": "var(--color-syntax-number)"
                          }
@@ -48420,118 +49006,47 @@
                        ],
                        "style": {
                         "fontFamily": "JetBrains Mono",
-                        "fontSize": 14,
+                        "fontSize": 15,
                         "lineHeight": "24px",
                         "whiteSpace": "pre",
                         "color": "var(--color-body)"
                        }
                       },
                       {
-                       "id": "xEJ5z",
+                       "id": "byX2F",
                        "type": "text",
                        "name": "Line",
                        "spans": [
                         {
-                         "text": "  {"
+                         "text": "  \"env\": "
                         },
                         {
-                         "text": "\"name\""
-                        },
-                        {
-                         "text": ": "
-                        },
-                        {
-                         "text": "\"Bo\"",
+                         "text": "\"prod\"",
                          "style": {
                           "color": "var(--color-syntax-string)"
                          }
-                        },
-                        {
-                         "text": ", "
-                        },
-                        {
-                         "text": "\"active\""
-                        },
-                        {
-                         "text": ": "
-                        },
-                        {
-                         "text": "false",
-                         "style": {
-                          "color": "var(--color-syntax-number)"
-                         }
-                        },
-                        {
-                         "text": "},"
                         }
                        ],
                        "style": {
                         "fontFamily": "JetBrains Mono",
-                        "fontSize": 14,
+                        "fontSize": 15,
                         "lineHeight": "24px",
                         "whiteSpace": "pre",
                         "color": "var(--color-body)"
                        }
                       },
                       {
-                       "id": "Yp4WZ",
+                       "id": "JLWZx",
                        "type": "text",
                        "name": "Line",
                        "spans": [
-                        {
-                         "text": "  {"
-                        },
-                        {
-                         "text": "\"name\""
-                        },
-                        {
-                         "text": ": "
-                        },
-                        {
-                         "text": "\"Cy\"",
-                         "style": {
-                          "color": "var(--color-syntax-string)"
-                         }
-                        },
-                        {
-                         "text": ", "
-                        },
-                        {
-                         "text": "\"active\""
-                        },
-                        {
-                         "text": ": "
-                        },
-                        {
-                         "text": "true",
-                         "style": {
-                          "color": "var(--color-syntax-number)"
-                         }
-                        },
                         {
                          "text": "}"
                         }
                        ],
                        "style": {
                         "fontFamily": "JetBrains Mono",
-                        "fontSize": 14,
-                        "lineHeight": "24px",
-                        "whiteSpace": "pre",
-                        "color": "var(--color-body)"
-                       }
-                      },
-                      {
-                       "id": "jYq6c",
-                       "type": "text",
-                       "name": "Line",
-                       "spans": [
-                        {
-                         "text": "]"
-                        }
-                       ],
-                       "style": {
-                        "fontFamily": "JetBrains Mono",
-                        "fontSize": 14,
+                        "fontSize": 15,
                         "lineHeight": "24px",
                         "whiteSpace": "pre",
                         "color": "var(--color-body)"
@@ -48542,7 +49057,7 @@
                    ]
                   },
                   {
-                   "id": "6Mfdq",
+                   "id": "Ehtvh",
                    "type": "frame",
                    "name": "Outputs",
                    "style": {
@@ -48553,7 +49068,7 @@
                    },
                    "children": [
                     {
-                     "id": "aYUGU",
+                     "id": "njrkk",
                      "type": "frame",
                      "name": "Your output",
                      "style": {
@@ -48568,7 +49083,7 @@
                      },
                      "children": [
                       {
-                       "id": "ym7g8",
+                       "id": "kBMQA",
                        "type": "frame",
                        "name": "Panel label",
                        "style": {
@@ -48580,7 +49095,7 @@
                        },
                        "children": [
                         {
-                         "id": "3QqTi",
+                         "id": "SaeYb",
                          "type": "text",
                          "text": "YOUR OUTPUT",
                          "style": {
@@ -48594,7 +49109,7 @@
                          "name": "YOUR OUTPUT"
                         },
                         {
-                         "id": "jBaHt",
+                         "id": "TnGye",
                          "type": "frame",
                          "name": "Match",
                          "style": {
@@ -48604,7 +49119,7 @@
                          },
                          "children": [
                           {
-                           "id": "6vxwm",
+                           "id": "56UwA",
                            "type": "icon",
                            "icon": "circle-alert",
                            "style": {
@@ -48616,7 +49131,7 @@
                            "name": "circle-alert"
                           },
                           {
-                           "id": "TW4FZ",
+                           "id": "WhTSd",
                            "type": "text",
                            "text": "Differs",
                            "style": {
@@ -48632,7 +49147,7 @@
                        ]
                       },
                       {
-                       "id": "FWHVC",
+                       "id": "4mtCj",
                        "type": "frame",
                        "name": "Lines",
                        "style": {
@@ -48641,36 +49156,24 @@
                        },
                        "children": [
                         {
-                         "id": "CNh8r",
+                         "id": "hWNk5",
                          "type": "text",
                          "name": "Line",
                          "spans": [
                           {
-                           "text": "{"
+                           "text": "{\"host\": "
                           },
                           {
-                           "text": "\"name\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "\"Ada\"",
+                           "text": "\"db-1\"",
                            "style": {
                             "color": "var(--color-syntax-string)"
                            }
                           },
                           {
-                           "text": ","
+                           "text": ", \"port\": "
                           },
                           {
-                           "text": "\"active\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "true",
+                           "text": "5432",
                            "style": {
                             "color": "var(--color-syntax-number)"
                            }
@@ -48681,101 +49184,7 @@
                          ],
                          "style": {
                           "fontFamily": "JetBrains Mono",
-                          "fontSize": 14,
-                          "lineHeight": "24px",
-                          "whiteSpace": "pre",
-                          "color": "var(--color-body)"
-                         }
-                        },
-                        {
-                         "id": "DQCbN",
-                         "type": "text",
-                         "name": "Line",
-                         "spans": [
-                          {
-                           "text": "{"
-                          },
-                          {
-                           "text": "\"name\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "\"Bo\"",
-                           "style": {
-                            "color": "var(--color-syntax-string)"
-                           }
-                          },
-                          {
-                           "text": ","
-                          },
-                          {
-                           "text": "\"active\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "false",
-                           "style": {
-                            "color": "var(--color-syntax-number)"
-                           }
-                          },
-                          {
-                           "text": "}"
-                          }
-                         ],
-                         "style": {
-                          "fontFamily": "JetBrains Mono",
-                          "fontSize": 14,
-                          "lineHeight": "24px",
-                          "whiteSpace": "pre",
-                          "color": "var(--color-body)"
-                         }
-                        },
-                        {
-                         "id": "VXE6N",
-                         "type": "text",
-                         "name": "Line",
-                         "spans": [
-                          {
-                           "text": "{"
-                          },
-                          {
-                           "text": "\"name\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "\"Cy\"",
-                           "style": {
-                            "color": "var(--color-syntax-string)"
-                           }
-                          },
-                          {
-                           "text": ","
-                          },
-                          {
-                           "text": "\"active\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "true",
-                           "style": {
-                            "color": "var(--color-syntax-number)"
-                           }
-                          },
-                          {
-                           "text": "}"
-                          }
-                         ],
-                         "style": {
-                          "fontFamily": "JetBrains Mono",
-                          "fontSize": 14,
+                          "fontSize": 15,
                           "lineHeight": "24px",
                           "whiteSpace": "pre",
                           "color": "var(--color-body)"
@@ -48786,7 +49195,7 @@
                      ]
                     },
                     {
-                     "id": "W9DDS",
+                     "id": "eGDw5",
                      "type": "frame",
                      "name": "Wanted output",
                      "style": {
@@ -48800,7 +49209,7 @@
                      },
                      "children": [
                       {
-                       "id": "LxrKF",
+                       "id": "3bqEW",
                        "type": "frame",
                        "name": "Panel label",
                        "style": {
@@ -48812,7 +49221,7 @@
                        },
                        "children": [
                         {
-                         "id": "rGH7H",
+                         "id": "Y7Bb3",
                          "type": "text",
                          "text": "WANTED OUTPUT",
                          "style": {
@@ -48828,7 +49237,7 @@
                        ]
                       },
                       {
-                       "id": "jBi47",
+                       "id": "Ps2zy",
                        "type": "frame",
                        "name": "Lines",
                        "style": {
@@ -48837,94 +49246,20 @@
                        },
                        "children": [
                         {
-                         "id": "NApw5",
+                         "id": "LKsDf",
                          "type": "text",
                          "name": "Line",
                          "spans": [
                           {
-                           "text": "{"
-                          },
-                          {
-                           "text": "\"name\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "\"Ada\"",
-                           "style": {
-                            "color": "var(--color-syntax-string)"
-                           }
-                          },
-                          {
-                           "text": ","
-                          },
-                          {
-                           "text": "\"active\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "true",
+                           "text": "5432",
                            "style": {
                             "color": "var(--color-syntax-number)"
                            }
-                          },
-                          {
-                           "text": "}"
                           }
                          ],
                          "style": {
                           "fontFamily": "JetBrains Mono",
-                          "fontSize": 14,
-                          "lineHeight": "24px",
-                          "whiteSpace": "pre",
-                          "color": "var(--color-body)"
-                         }
-                        },
-                        {
-                         "id": "k3j6G",
-                         "type": "text",
-                         "name": "Line",
-                         "spans": [
-                          {
-                           "text": "{"
-                          },
-                          {
-                           "text": "\"name\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "\"Cy\"",
-                           "style": {
-                            "color": "var(--color-syntax-string)"
-                           }
-                          },
-                          {
-                           "text": ","
-                          },
-                          {
-                           "text": "\"active\""
-                          },
-                          {
-                           "text": ":"
-                          },
-                          {
-                           "text": "true",
-                           "style": {
-                            "color": "var(--color-syntax-number)"
-                           }
-                          },
-                          {
-                           "text": "}"
-                          }
-                         ],
-                         "style": {
-                          "fontFamily": "JetBrains Mono",
-                          "fontSize": 14,
+                          "fontSize": 15,
                           "lineHeight": "24px",
                           "whiteSpace": "pre",
                           "color": "var(--color-body)"
@@ -48939,7 +49274,7 @@
                  ]
                 },
                 {
-                 "id": "wGpvN",
+                 "id": "W75p3",
                  "type": "frame",
                  "name": "Footer",
                  "style": {
@@ -48954,7 +49289,7 @@
                  },
                  "children": [
                   {
-                   "id": "Rkg7Q",
+                   "id": "GJTts",
                    "type": "frame",
                    "name": "Left",
                    "style": {
@@ -48965,7 +49300,7 @@
                    },
                    "children": [
                     {
-                     "id": "VNCgf",
+                     "id": "HEXRt",
                      "type": "text",
                      "name": "Give up",
                      "text": "Give up",
@@ -48979,7 +49314,7 @@
                    ]
                   },
                   {
-                   "id": "V7D4K",
+                   "id": "dehXB",
                    "type": "frame",
                    "name": "Show hint",
                    "style": {
@@ -48994,7 +49329,7 @@
                    },
                    "children": [
                     {
-                     "id": "EuAWG",
+                     "id": "dY7Kq",
                      "type": "text",
                      "name": "Label",
                      "text": "Show hint",
@@ -49008,7 +49343,7 @@
                    ]
                   },
                   {
-                   "id": "VFrmZ",
+                   "id": "c9AqU",
                    "type": "frame",
                    "name": "Submit",
                    "style": {
@@ -49022,7 +49357,7 @@
                    },
                    "children": [
                     {
-                     "id": "uKLKv",
+                     "id": "yUFeS",
                      "type": "text",
                      "name": "Label",
                      "text": "Submit",
@@ -49044,7 +49379,7 @@
            ]
           },
           {
-           "id": "HUjQ9",
+           "id": "DYFUA",
            "type": "frame",
            "name": "Window buttons",
            "style": {
@@ -49056,7 +49391,7 @@
            },
            "children": [
             {
-             "id": "YqcY5",
+             "id": "8HtdJ",
              "type": "frame",
              "name": "Close",
              "style": {
@@ -49068,7 +49403,7 @@
              }
             },
             {
-             "id": "LNxRP",
+             "id": "MAfd6",
              "type": "frame",
              "name": "Minimise",
              "style": {
@@ -49080,7 +49415,7 @@
              }
             },
             {
-             "id": "MAL2T",
+             "id": "Bn6az",
              "type": "frame",
              "name": "Zoom",
              "style": {
@@ -50717,47 +51052,6 @@
                  },
                  "children": [
                   {
-                   "id": "HduEp",
-                   "type": "frame",
-                   "name": "Chip",
-                   "style": {
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": 6,
-                    "padding": "0px 10px",
-                    "borderRadius": 999,
-                    "border": "1px solid var(--color-border)",
-                    "height": 24,
-                    "flexShrink": 0,
-                    "alignSelf": "flex-start"
-                   },
-                   "children": [
-                    {
-                     "id": "jx3BQ",
-                     "type": "icon",
-                     "icon": "book-open",
-                     "style": {
-                      "width": 12,
-                      "height": 12,
-                      "color": "#8A8F98",
-                      "flexShrink": 0
-                     },
-                     "name": "book-open"
-                    },
-                    {
-                     "id": "8VDEF",
-                     "type": "text",
-                     "text": "Lesson",
-                     "style": {
-                      "color": "var(--color-mute)",
-                      "fontSize": 13,
-                      "whiteSpace": "pre"
-                     },
-                     "name": "Lesson"
-                    }
-                   ]
-                  },
-                  {
                    "id": "8d3MP",
                    "type": "text",
                    "text": "Compare a field",
@@ -51120,19 +51414,6 @@
                   "borderBottom": "1px solid var(--color-accent-line)"
                  },
                  "children": [
-                  {
-                   "id": "fVQPL",
-                   "type": "text",
-                   "text": "TRY IT",
-                   "style": {
-                    "color": "var(--color-accent)",
-                    "fontSize": 12,
-                    "fontWeight": 600,
-                    "letterSpacing": "0.6px",
-                    "whiteSpace": "pre"
-                   },
-                   "name": "TRY IT"
-                  },
                   {
                    "id": "RKbFs",
                    "type": "text",

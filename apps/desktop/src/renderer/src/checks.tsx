@@ -1,3 +1,4 @@
+import { lead } from "@tech-prep/ui";
 import type { ComponentType, ReactNode } from "react";
 
 import { CommandAside, CommandWorkbench } from "./command-workbench";
@@ -13,7 +14,7 @@ export interface WorkbenchProps {
    * Show the statement above the answer. Only a compact workbench does: it is set when the
    * statement is not shown elsewhere on the screen.
    */
-  strip?: { label: string };
+  strip?: boolean;
   /** Shown on the left of the footer while the learner works. */
   note?: string;
   /** Open the tutor pane, for when the learner asks for a hint. */
@@ -62,6 +63,23 @@ const benchOf = (problem: Problem): Bench =>
 /** True when the exercise's statement sits beside its answer. */
 export const isCompact = (problem: Problem): boolean =>
   benchOf(problem).compact;
+
+/**
+ * What heads a task, and the text under it. A problem from a list has a name. A short task
+ * has none worth showing: its heading is the first line of its statement, which says what
+ * to do.
+ */
+export const taskHeading = (problem: Problem) => {
+  const statement = problem.statement ?? "";
+
+  if (!isCompact(problem)) {
+    return { statement, title: problem.title };
+  }
+
+  const { rest, title } = lead(statement);
+
+  return { statement: rest, title: title || problem.title };
+};
 
 /** The answer area, the result and the footer for an exercise, however it is checked. */
 export const ExerciseWorkbench = (props: WorkbenchProps) => {

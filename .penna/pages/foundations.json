@@ -1426,7 +1426,7 @@
          "id": "yh3mK",
          "type": "text",
          "name": "Atkinson Hyperlegible Ne",
-         "text": "Atkinson Hyperlegible Next · JetBrains Mono, ligatures off",
+         "text": "Atkinson Hyperlegible Next · Libron for lesson text · JetBrains Mono for code",
          "style": {
           "color": "var(--color-mute)",
           "fontSize": 13,
@@ -1618,6 +1618,91 @@
           "borderBottom": "1px solid var(--color-border)",
           "alignSelf": "stretch"
          }
+        },
+        {
+         "id": "uX7rx",
+         "type": "frame",
+         "name": "lesson-title",
+         "style": {
+          "display": "flex",
+          "alignItems": "center",
+          "padding": "24px 0px 24px 0px",
+          "borderBottom": "1px solid var(--color-border)",
+          "alignSelf": "stretch"
+         },
+         "children": [
+          {
+           "id": "sqNqw",
+           "type": "text",
+           "name": "body · 16 / 400",
+           "text": "lesson-title · 36 / 700",
+           "style": {
+            "color": "var(--color-mute)",
+            "fontSize": 12,
+            "fontFamily": "var(--font-mono)",
+            "width": 184,
+            "flexShrink": 0
+           }
+          },
+          {
+           "id": "tyhtL",
+           "type": "text",
+           "name": "Sample",
+           "text": "The output of one step is the input of the next",
+           "style": {
+            "color": "var(--color-body)",
+            "fontSize": 36,
+            "fontFamily": "Libron, Georgia, serif",
+            "lineHeight": "46px",
+            "flex": "1 1 0",
+            "minWidth": 0,
+            "fontWeight": 700,
+            "letterSpacing": "0"
+           }
+          }
+         ]
+        },
+        {
+         "id": "yLzqt",
+         "type": "frame",
+         "name": "lesson",
+         "style": {
+          "display": "flex",
+          "alignItems": "center",
+          "padding": "24px 0px 24px 0px",
+          "borderBottom": "1px solid var(--color-border)",
+          "alignSelf": "stretch"
+         },
+         "children": [
+          {
+           "id": "8rEyz",
+           "type": "text",
+           "name": "body · 16 / 400",
+           "text": "lesson · 22 / 400",
+           "style": {
+            "color": "var(--color-mute)",
+            "fontSize": 12,
+            "fontFamily": "var(--font-mono)",
+            "width": 184,
+            "flexShrink": 0
+           }
+          },
+          {
+           "id": "tiSts",
+           "type": "text",
+           "name": "Sample",
+           "text": "After a pipe, the dot means what the step before gave.",
+           "style": {
+            "color": "var(--color-body)",
+            "fontSize": 22,
+            "fontFamily": "Libron, Georgia, serif",
+            "lineHeight": "34px",
+            "flex": "1 1 0",
+            "minWidth": 0,
+            "fontWeight": 400
+           }
+          }
+         ]
         },
         {
          "id": "9qaVP",

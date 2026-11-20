@@ -3,6 +3,7 @@ import {
   Button,
   Chip,
   Count,
+  inline,
   LessonPane,
   List,
   ListRow,
@@ -20,7 +21,7 @@ import {
 import { ArrowRight, BookOpen, CircleCheck, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { ExerciseAside, ExerciseWorkbench } from "./checks";
+import { ExerciseAside, ExerciseWorkbench, taskHeading } from "./checks";
 import { DIFFICULTY, engine, formatDay, inDays } from "./course";
 import type { Finished } from "./lesson-flow";
 import type { Problem, Result, Reviews } from "./types";
@@ -354,7 +355,14 @@ export const ReviewSession = ({
   /** Open the next review, after noting how this one ended. */
   const advance = async (last: Finished | null) => {
     if (last) {
-      setDone((all) => [...all, { result: last.result, title: problem.title }]);
+      setDone((all) => [
+        ...all,
+        {
+          result: last.result,
+          // The list shows plain text, so the marks around code go.
+          title: taskHeading(problem).title.replaceAll("`", ""),
+        },
+      ]);
     }
 
     const upcoming = await nextReview(only);
@@ -375,6 +383,8 @@ export const ReviewSession = ({
       onChanged();
     }
   };
+
+  const heading = taskHeading(problem);
 
   return (
     <LessonPane>
@@ -406,9 +416,9 @@ export const ReviewSession = ({
                 <Chip muted>{DIFFICULTY[problem.difficulty]}</Chip>
               </>
             }
-            title={problem.title}
+            title={inline(heading.title)}
           >
-            <ProblemStatement text={problem.statement ?? ""} />
+            <ProblemStatement text={heading.statement} />
             <ExerciseAside problem={problem} />
             {finished && (
               <Verdict finished={finished} onOpenLesson={onOpenLesson} />
