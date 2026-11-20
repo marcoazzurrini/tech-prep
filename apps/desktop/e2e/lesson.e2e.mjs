@@ -100,7 +100,8 @@ describe("a jq lesson", () => {
   test("opens on its first part, with the later parts not reachable", async () => {
     const { page } = app;
 
-    await page.getByRole("heading", { name: "What jq Does" }).waitFor();
+    // A part is headed by its own name. The lessons column names the lesson.
+    await page.getByRole("heading", { name: "The problem" }).waitFor();
     assert.equal(await trail(page).count(), 4);
     await stop(page, 0, "current");
     assert.equal(await trail(page).nth(1).isDisabled(), true);

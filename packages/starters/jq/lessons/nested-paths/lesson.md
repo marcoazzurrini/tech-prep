@@ -1,15 +1,11 @@
 # Go Deeper with a Path
 
-Real JSON has objects inside objects. To reach a value inside, you walk down one step at a time.
-
 ## One step after another
-
-Join the steps with dots:
 
 **Input**
 
 ```json
-{"name": "Ada", "address": {"city": "Oslo", "zip": "0150"}}
+{"name": "Ada", "address": {"city": "Oslo", "zip-code": "0150"}}
 ```
 
 **Filter**
@@ -24,59 +20,106 @@ Join the steps with dots:
 "Oslo"
 ```
 
-Read it from left to right:
+```steps
+.address => {"city": "Oslo", "zip-code": "0150"}
+.address«.city» => "Oslo"
+```
 
-- `.address` takes the inner object: `{"city": "Oslo", "zip": "0150"}`.
-- `.city` then takes `city` from that inner object.
+**Rule:** A **path** joins steps with dots. Each step works on what the step before gave.
 
-A filter like this is called a **path**. It can be as long as the data is deep: `.a.b.c`.
+`.a.b.c` works the same way. A path can be as long as the data is deep.
+
+`.address["zip-code"]` gives `"0150"`. A key with a dash is a step in brackets, right after the step before.
 
 <!-- task -->
 
 ## Build a path step by step
 
-You do not have to write a long path in one go. Write the first step and look at the output. Then add the next step.
+**Input**
 
-Say you want a customer's email from an order:
+```json
+{"order": {"id": 801, "customer": {"name": "Ada", "email": "ada@example.com"}}}
+```
 
-- `.order` shows the whole order. You see that it has a `customer`.
-- `.order.customer` shows the customer. You see that it has an `email`.
-- `.order.customer.email` is the value you want.
+**Filter**
 
-The output panel is your map. Read it after every step.
+```jq
+.order.customer.email
+```
+
+**Output**
+
+```json
+"ada@example.com"
+```
+
+```steps
+.order => {"id": 801, "customer": {"name": "Ada", "email": "ada@example.com"}}
+.order«.customer» => {"name": "Ada", "email": "ada@example.com"}
+.order.customer«.email» => "ada@example.com"
+```
+
+**Rule:** Write one step, read the output, then add the next step.
+
+`.order` shows that the order has a `customer`. The output is your map.
 
 <!-- task -->
 
 ## When a step fails
 
-Two things can go wrong.
+**Input**
 
-**A key is missing.** As before, you get `null`. Every step after it gives `null` too.
+```json
+{"user": {"name": "Ada"}}
+```
+
+**Filter**
 
 ```jq
 .user.address.city
 ```
 
-On the input `{"user": {"name": "Ada"}}` this prints `null`, because the user has no `address`.
+**Output**
 
-**You go one step too far.** A string or a number has nothing inside it. Ask it for a key, and jq stops with an error:
+```json
+null
+```
+
+```steps
+.user => {"name": "Ada"}
+.user«.address» => null
+.user.address«.city» => null
+```
+
+**Rule:** A missing key gives `null`. Every step after it gives `null` too.
+
+**Common mistake:** One step too far.
+
+**Wrong**
 
 ```jq
-.user.name.first
+.user.name«.first»
 ```
+
+**Error**
 
 ```text
 jq: error: Cannot index string with string "first"
 ```
 
-Read the error like this: "the value here is a string, and I cannot take `first` from a string". To fix it, remove the last step, or look at what the step before it gives.
+**Fix**
+
+```jq
+.user.name
+```
+
+`.user.name` is the string `"Ada"`. A string or a number has nothing inside it, so jq cannot take `first` from it.
 
 <!-- task -->
 
 ## Remember
 
-- A path joins steps with dots: `.a.b.c`.
-- Each step works on what the step before gave.
+- A path joins steps with dots: `.a.b.c`. Each step works on what the step before gave.
+- A key with a dash is a step in brackets: `.a["b-c"]`.
 - Build a path one step at a time, and read the output after each step.
-- A missing key gives `null` for the rest of the path.
-- `Cannot index string with string "x"` means you went one step too far.
+- A missing key gives `null` for the rest of the path. `Cannot index string` means you went one step too far.

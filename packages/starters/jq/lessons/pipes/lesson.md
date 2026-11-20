@@ -1,10 +1,6 @@
 # Chain Steps with a Pipe
 
-So far a filter was one path. Real tasks need several steps. The pipe joins steps into a chain.
-
 ## The output of one step is the input of the next
-
-Write `|` between two filters:
 
 **Input**
 
@@ -24,24 +20,42 @@ Write `|` between two filters:
 ["ts", "go"]
 ```
 
-- `.user` runs first. It gives the inner object.
-- The pipe hands that object to the next filter.
-- `.langs` runs on the inner object, not on the original input.
+```steps
+.user => {"name": "Ada", "langs": ["ts", "go"]}
+.user «| .langs» => ["ts", "go"]
+```
 
-After a pipe, the dot means "what the step before gave me". It no longer means the original input.
+**Rule:** `a | b` runs `a`, then runs `b` on what `a` gave.
 
-For paths, the pipe and the dot do the same job: `.user | .langs` equals `.user.langs`. The pipe becomes important in the next part.
+`.user.langs` gives the same result. For paths, the dot does the job of the pipe.
+
+`.user | .user` gives `null`. After a pipe, the dot is the inner object, and it has no `user`.
+
+**Common mistake:** No single quotes around the filter.
+
+**Wrong**
+
+```sh
+jq .user | .langs data.json
+```
+
+**Error**
+
+```text
+jq: error: Could not open file |: No such file or directory
+```
+
+**Fix**
+
+```sh
+jq «'».user | .langs«'» data.json
+```
+
+The filter has spaces. Without the quotes, the terminal cuts it into pieces, and jq takes the pieces for file names.
 
 <!-- task -->
 
 ## Filters with names
-
-Not every filter starts with a dot. jq has many ready-made filters with names. Here are two:
-
-- `length` gives the size of its input: the number of items in an array, of keys in an object, or of characters in a string.
-- `keys` gives the keys of an object, as an array in alphabetical order.
-
-A named filter works on its input, like every filter. So you use a pipe to hand it the right value:
 
 **Input**
 
@@ -61,22 +75,71 @@ A named filter works on its input, like every filter. So you use a pipe to hand 
 3
 ```
 
-`.repos` takes the array. Then `length` counts its items.
+```steps
+.repos => ["api", "web", "docs"]
+.repos «| length» => 3
+```
+
+**Rule:** A filter with a name, such as `length`, works on its input. A pipe hands it the value.
+
+`length` counts the items of an array, the keys of an object, or the characters of a string.
+
+`keys` gives the keys of an object, as an array in alphabetical order.
+
+**Common mistake:** A dot before the name.
+
+**Wrong**
+
+```sh
+jq '.repos.length' data.json
+```
+
+**Error**
+
+```text
+jq: error: Cannot index array with string "length"
+```
+
+**Fix**
+
+```sh
+jq '.repos« | »length' data.json
+```
+
+`.length` asks for a key called `length`. An array has no keys.
 
 <!-- task -->
 
 ## Build a chain step by step
 
-Write one step, read the output, then add the next step. Each step should bring the value closer to what you want.
+**Input**
 
-Say you want to know how many keys the first server has:
+```json
+{"servers": [{"host": "web-1", "port": 443, "tls": true}, {"host": "db-1", "port": 5432}]}
+```
 
-- `.servers` gives the array of servers.
-- `.servers | .[0]` gives the first server.
-- `.servers | .[0] | keys` gives its keys.
-- `.servers | .[0] | keys | length` gives the number of keys.
+**Filter**
 
-You could shorten it to `.servers[0] | keys | length`. Both are right. Short steps are easier to check.
+```jq
+.servers | .[0] | keys | length
+```
+
+**Output**
+
+```json
+3
+```
+
+```steps
+.servers => [{"host": "web-1", "port": 443, "tls": true}, {"host": "db-1", "port": 5432}]
+.servers «| .[0]» => {"host": "web-1", "port": 443, "tls": true}
+.servers | .[0] «| keys» => ["host", "port", "tls"]
+.servers | .[0] | keys «| length» => 3
+```
+
+**Rule:** Write one step, read the output, then add the next step.
+
+`.servers[0] | keys | length` is a shorter way to write the same chain. Short steps are easier to check.
 
 <!-- task -->
 
@@ -85,4 +148,4 @@ You could shorten it to `.servers[0] | keys | length`. Both are right. Short ste
 - `a | b` runs `a`, then runs `b` on what `a` gave.
 - After a pipe, `.` is the output of the step before.
 - `length` counts items, keys or characters. `keys` lists the keys of an object.
-- Build a chain one step at a time, and read the output after each step.
+- A filter with spaces needs its single quotes.

@@ -1,10 +1,6 @@
 # Remove Repeats
 
-A list often holds the same value many times: the same tag, the same city, the same status code. Often you want to see each value only once.
-
 ## Each value once
-
-`unique` is a named filter. Give it an array. It gives back a new array where every value appears once.
 
 **Input**
 
@@ -24,15 +20,18 @@ A list often holds the same value many times: the same tag, the same city, the s
 ["chrome", "firefox", "safari"]
 ```
 
-`.browsers` takes the array. Then `unique` removes the repeats.
+```steps
+.browsers => ["firefox", "chrome", "firefox", "safari", "chrome"]
+.browsers «| unique» => ["chrome", "firefox", "safari"]
+```
 
-Look at the order. `unique` also sorts the array, as `sort` does. In the input `firefox` came first. In the output `chrome` comes first. The order of the input is lost.
+**Rule:** `unique` gives a new array where every value appears once.
+
+`unique` also sorts the array, as `sort` does. The order of the input is lost: `firefox` came first, and now `chrome` does.
 
 <!-- task -->
 
 ## The different values of a field
-
-With objects, the question is often about one field. Which cities do the users live in? First take the field from every object with `map`. Then remove the repeats.
 
 **Input**
 
@@ -56,16 +55,18 @@ map(.city) | unique
 ["Oslo", "Rome"]
 ```
 
-- `map(.city)` gives `["Oslo", "Rome", "Oslo"]`.
-- `unique` removes the second `"Oslo"`.
+```steps
+map(.city) => ["Oslo", "Rome", "Oslo"]
+map(.city) «| unique» => ["Oslo", "Rome"]
+```
 
-To know how many different values there are, add `length` at the end. `map(.city) | unique | length` gives `2`.
+**Rule:** For the different values of a field, take the field with `map`. Then remove the repeats.
+
+`map(.city) | unique | length` gives `2`. Add `length` to count the different values.
 
 <!-- task -->
 
 ## One object for each value
-
-Sometimes you want whole objects, but only one for each value of a field. Use `unique_by` and put the field in round brackets, as with `sort_by`.
 
 **Input**
 
@@ -92,17 +93,15 @@ unique_by(.city)
 ]
 ```
 
-Read `unique_by(.city)` as "unique by city".
+**Rule:** `unique_by(.city)` keeps whole objects: the first one it finds for each city.
 
-- For each city, jq keeps the first object it finds. Cy is dropped, because Ada already stands for Oslo.
-- The result is ordered by the field, here by city.
+`unique_by(.city)` drops Cy, because Ada already stands for Oslo. The result is ordered by the field, here by city.
 
 <!-- task -->
 
 ## Remember
 
-- `unique` gives an array where every value appears once.
-- `unique` also sorts. The order of the input is lost.
+- `unique` gives an array where every value appears once. It also sorts, so the order of the input is lost.
 - For the different values of a field: `map(.field) | unique`.
 - Add `length` to count the different values.
 - `unique_by(.field)` keeps the first object for each value of the field.

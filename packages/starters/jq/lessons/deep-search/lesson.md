@@ -1,10 +1,6 @@
 # Find a Value at Any Depth
 
-A path works when you know where a value is. Sometimes you do not know. The value can sit two levels down, or five, or in several places at once. You need a way to look everywhere.
-
 ## Two dots give every value
-
-The filter `..` gives the input, and then every value inside it, at any depth. Each value is its own output.
 
 **Input**
 
@@ -28,24 +24,27 @@ The filter `..` gives the input, and then every value inside it, at any depth. E
 7
 ```
 
-There are five outputs:
+**Filter**
 
-- First the whole input.
-- Then `"Ada"`, the value of `name`.
-- Then the array, the value of `tags`.
-- Then each item of that array: `"a"` and `7`.
+```jq
+[..] | length
+```
 
-Read `..` as "this value and everything inside it". jq walks down the document from top to bottom and goes into every object and every array.
+**Output**
 
-Square brackets collect the outputs into one array, as always. So `[..] | length` counts every value in the document. Here it gives `5`.
+```json
+5
+```
+
+**Rule:** `..` gives the input, then every value inside it, at any depth. Each value is its own output.
+
+`..` goes from top to bottom, into every object and every array. First comes the whole input, then `"Ada"`, then the array, then each item of the array.
+
+`[..]` collects the outputs into one array, so `[..] | length` counts every value in the document.
 
 <!-- task -->
 
 ## Keep one kind of value
-
-On its own, `..` gives too much. Its use is as a first step: get every value, then keep the ones you want with `select`.
-
-You know that `type` gives the kind of a value as a string. So this keeps the numbers and drops the rest:
 
 **Input**
 
@@ -66,34 +65,26 @@ You know that `type` gives the kind of a value as a string. So this keeps the nu
 12
 ```
 
-- `..` gives every value: the objects, the array, the strings and the numbers.
-- `select(type == "number")` runs once for each of them. It passes a value on only when it is a number.
+```steps
+.. => {"shop": "north", "stock": {"pens": 40, "boxes": [12, "none"]}} ;; "north" ;; {"pens": 40, "boxes": [12, "none"]} ;; 40 ;; [12, "none"] ;; 12 ;; "none"
+.. «| select(type == "number")» => 40 ;; 12
+```
 
-You did not write a path to `pens` or to `boxes`. jq found the numbers wherever they were.
+**Rule:** Use `..` as a first step: get every value, then keep the ones you want with `select`.
 
-Put square brackets around the whole filter to get one array: `[.. | select(type == "number")]` gives `[40, 12]`.
+`type` gives the kind of a value as a string, such as `"number"`, `"string"` or `"object"`. No path to `pens` or `boxes` is needed.
+
+`[.. | select(type == "number") | select(. > 20)]` gives `[40]`. More steps can follow, and square brackets around the whole filter collect the outputs.
 
 <!-- task -->
 
 ## Find a key anywhere
-
-The other common job: get the value of one key, wherever that key is.
 
 **Input**
 
 ```json
 {"id": 1, "owner": {"id": 7, "name": "Ada"}, "files": [{"id": 30}, {"name": "b.txt"}]}
 ```
-
-A first try is `.. | .id`. It stops with an error:
-
-```text
-jq: error: Cannot index number with string "id"
-```
-
-`..` also gives numbers, strings and arrays, and you cannot take a key from those. Add `?` to hide that error: `.. | .id?`. Now jq prints `1`, `7`, `30` and `null`.
-
-The `null` comes from `{"name": "b.txt"}`. It is an object, but it has no `id`. Drop the `null` with `select`:
 
 **Filter**
 
@@ -109,6 +100,37 @@ The `null` comes from `{"name": "b.txt"}`. It is an object, but it has no `id`. 
 30
 ```
 
+```steps
+.. | .id? => 1 ;; 7 ;; 30 ;; null
+.. | .id? «| select(. != null)» => 1 ;; 7 ;; 30
+```
+
+**Rule:** `.. | .id?` gives the `id` of every object, wherever it is. `select(. != null)` drops the objects with no `id`.
+
+`null` comes from `{"name": "b.txt"}`. It is an object, but it has no `id`.
+
+**Common mistake:** No `?` after the key.
+
+**Wrong**
+
+```jq
+.. | .id
+```
+
+**Error**
+
+```text
+jq: error: Cannot index number with string "id"
+```
+
+**Fix**
+
+```jq
+.. | .id«?»
+```
+
+`..` also gives numbers, strings and arrays. You cannot take a key from those. `?` hides that error.
+
 <!-- task -->
 
 ## Remember
@@ -117,4 +139,3 @@ The `null` comes from `{"name": "b.txt"}`. It is an object, but it has no `id`. 
 - Use it as a first step, then keep what you want.
 - `.. | select(type == "number")` keeps every number in the document.
 - `.. | .id? | select(. != null)` gives every `id`, wherever it is.
-- Without `?`, `.. | .id` stops with an error at the first value that is not an object.

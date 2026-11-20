@@ -1,10 +1,6 @@
 # Fill Gaps with a Default
 
-Real data has gaps. One user has a nickname, the next has none. A missing key gives `null`, and `null` is rarely what you want to print. You want to say what to use in its place.
-
 ## Say what to use when a value is missing
-
-Write `//` after a filter, then the value to use when there is nothing:
 
 **Input**
 
@@ -24,28 +20,31 @@ Write `//` after a filter, then the value to use when there is nothing:
 "none"
 ```
 
-Read `.nickname // "none"` as "take `nickname`, or else `"none"`". The value after `//` is called the **default**. Here it is written as JSON: a string in double quotes.
+```steps
+.nickname => null
+.nickname «// "none"» => "none"
+```
 
-When the user does have a nickname, jq prints the nickname. The default is not used.
+**Rule:** `a // b` gives `a`. When `a` is `null` or `false`, it gives `b`.
 
-The default is used in two cases: the left side gives `null`, or it gives `false`. A key that is missing gives `null`, so it gets the default too. Every other value is kept, also `0` and the empty string `""`.
+`"none"` is called the **default**. It is written as JSON: a string in double quotes. A missing key gives `null`, so it gets the default too.
+
+`.city // "none"` gives `"Bergen"`. Every value other than `null` and `false` is kept, also `0` and the empty string `""`.
 
 <!-- task -->
 
 ## The default can be another path
 
-The default does not have to be a fixed value. It can be any filter. Often it is a second place to look:
-
 **Input**
 
 ```json
-{"name": "Bo Lind", "nickname": null}
+{"nickname": null, "name": "Bo Lind"}
 ```
 
 **Filter**
 
 ```jq
-.nickname // .name
+.nickname // .name // "no name"
 ```
 
 **Output**
@@ -54,41 +53,27 @@ The default does not have to be a fixed value. It can be any filter. Often it is
 "Bo Lind"
 ```
 
-Read it as "take `nickname`, or else take `name`".
-
-You can write several in a row. jq goes from left to right and gives the first one that is not `null` or `false`:
-
-```jq
-.nickname // .name // "no name"
+```steps
+.nickname => null
+.nickname «// .name» => "Bo Lind"
+.nickname // .name «// "no name"» => "Bo Lind"
 ```
 
-- A user with a nickname: jq prints the nickname.
-- No nickname, but a name: jq prints the name.
-- Neither: jq prints `"no name"`.
+**Rule:** The default can be any filter, such as a second place to look. jq goes from left to right and gives the first value that is not `null` or `false`.
+
+`.nickname // .name` has one default. It reads "take `nickname`, or else take `name`".
+
+`"no name"` is used only when the nickname and the name are both `null` or missing.
 
 <!-- task -->
 
 ## A default inside a chain
-
-Some filters stop with an error when they get `null`. `keys` is one of them:
 
 **Input**
 
 ```json
 {"name": "web", "labels": null}
 ```
-
-**Filter**
-
-```jq
-.labels | keys
-```
-
-```text
-jq: error: null (null) has no keys
-```
-
-Read the error as "the value here is `null`, and `null` has no keys". The fix is to fill the gap before the pipe. An empty object is written `{}`:
 
 **Filter**
 
@@ -102,16 +87,43 @@ Read the error as "the value here is `null`, and `null` has no keys". The fix is
 []
 ```
 
-jq works out `.labels // {}` first, as one step. Then the pipe hands the result to `keys`. An empty object has no keys, so you get an empty array and no error.
+```steps
+.labels => null
+.labels «// {}» => {}
+.labels // {} «| keys» => []
+```
 
-For a missing array, the default is `[]`. For a missing number, it is often `0`.
+**Rule:** Fill the gap before the pipe. jq works out `.labels // {}` first, as one step.
+
+`{}` is an empty object. For a missing array the default is `[]`. For a missing number it is often `0`.
+
+**Common mistake:** No default before a filter that cannot take `null`.
+
+**Wrong**
+
+```jq
+.labels | keys
+```
+
+**Error**
+
+```text
+jq: error: null (null) has no keys
+```
+
+**Fix**
+
+```jq
+.labels «// {} »| keys
+```
+
+The error says that the value is `null`, and that `null` has no keys.
 
 <!-- task -->
 
 ## Remember
 
 - `a // b` gives `a`. When `a` is `null` or `false`, it gives `b`.
-- A missing key gives `null`, so it gets the default too.
-- `0` and `""` are real values. They are kept.
+- A missing key gives `null`, so it gets the default. `0` and `""` are real values, and they are kept.
 - The default can be a value, such as `"none"`, `0`, `[]` or `{}`, or another path: `.nickname // .name`.
 - Fill the gap before the pipe: `.labels // {} | keys`.

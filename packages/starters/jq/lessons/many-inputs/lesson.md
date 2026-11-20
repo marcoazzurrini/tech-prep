@@ -1,10 +1,8 @@
 # Many Inputs in One File
 
-So far an input was one JSON value. A log file is different. A program adds one line to it for each event, and each line is a whole JSON value. There is no array around them.
-
 ## The filter runs once for each value
 
-Here is `app.log`. It holds three values, one per line:
+**Input**
 
 ```json
 {"level": "info", "msg": "started"}
@@ -12,11 +10,13 @@ Here is `app.log`. It holds three values, one per line:
 {"level": "info", "msg": "stopped"}
 ```
 
-jq needs no flag to read it:
+**Command**
 
 ```sh
-jq '.level' app.log
+jq '.level' data.jsonl
 ```
+
+**Output**
 
 ```json
 "info"
@@ -24,38 +24,32 @@ jq '.level' app.log
 "info"
 ```
 
-This is what jq does:
+**Rule:** A file may hold many JSON values, one per line, with no array around them. jq runs the filter once for each value.
 
-- It reads the first value and runs the filter on it. It prints the result.
-- It reads the second value and runs the filter again.
-- It goes on until the file ends.
+`.` is one line of the file in each run. The filter never sees the other lines, and jq needs no flag to read them.
 
-So the filter runs three times here, once for each value. In each run, `.` is one line of the file. The filter never sees the other lines.
-
-You write the filter for **one** value. jq repeats it for you.
-
-In the next task nothing runs while you type. You read the input and the filter, and you type what jq will print.
+`data.jsonl` is the name of the file in the tasks of this lesson, not `data.json`. The `l` stands for "lines".
 
 <!-- task -->
 
 ## One line in, one line out
 
-Often you want a smaller log: the same lines, with only the part you care about. The result should be a file of the same kind, with one value per line.
-
-Here is `events.log`:
+**Input**
 
 ```json
 {"event": "login", "user": {"id": 7, "name": "ada"}}
 {"event": "upload", "user": {"id": 9, "name": "bo"}}
 ```
 
-Without a flag, jq spreads each output over several lines:
+**Command**
 
 ```sh
-jq '.user' events.log
+jq '.user' data.jsonl
 ```
 
-```json
+**Output**
+
+```text
 {
   "id": 7,
   "name": "ada"
@@ -66,62 +60,88 @@ jq '.user' events.log
 }
 ```
 
-Two lines went in and eight came out. Add `-c`, and each output takes one line again:
+**Command**
 
 ```sh
-jq -c '.user' events.log
+jq -c '.user' data.jsonl
 ```
 
-```json
+**Output**
+
+```text
 {"id":7,"name":"ada"}
 {"id":9,"name":"bo"}
 ```
 
-`-r` works the same way here. `jq -r '.msg' app.log` prints each message as plain text, one per line.
+**Rule:** Add `-c` to get one line out for each line in. The result is a file of the same kind.
+
+`jq -r '.event' data.jsonl` prints `login` and `upload` as plain text, one per line. `-r` works the same way here.
 
 <!-- task -->
 
 ## All the values as one array
 
-Some questions are about all the lines together. How many lines are there? Which line is the last?
-
-A filter that sees one line cannot answer. Try to count the lines of `app.log`:
-
-```sh
-jq 'length' app.log
-```
+**Input**
 
 ```json
-2
-2
-2
+{"level": "info", "msg": "started"}
+{"level": "error", "msg": "disk full"}
+{"level": "info", "msg": "stopped"}
 ```
 
-That is wrong. `length` ran three times. Each time it counted the keys of one object.
-
-The flag `-s` changes how jq reads. It first puts every value of the file into one array. Then it runs the filter **once**, on that array.
+**Command**
 
 ```sh
-jq -s 'length' app.log
+jq -s -c '.' data.jsonl
 ```
 
-```json
-3
+**Output**
+
+```text
+[{"level":"info","msg":"started"},{"level":"error","msg":"disk full"},{"level":"info","msg":"stopped"}]
 ```
 
-With `-s` the input is an ordinary array. All you know about arrays works: `.[0]`, `.[-1]`, `length` and `map`.
+**Command**
 
 ```sh
-jq -s '.[-1].msg' app.log
+jq -s '.[-1].msg' data.jsonl
 ```
+
+**Output**
 
 ```json
 "stopped"
 ```
 
-Without `-s`, that filter stops with `Cannot index object with number`. Each line is an object, not an array.
+**Rule:** `-s` puts every value of the file into one array. Then it runs the filter **once**, on that array.
 
-You can add `-c` or `-r` next to `-s`, with a space between the flags.
+`.[0]`, `.[-1]`, `length` and `map` all work with `-s`, because the input is an ordinary array. Use it for a question about all the lines together.
+
+`-c` or `-r` can sit next to `-s`, with a space between the flags.
+
+**Common mistake:** No `-s` for a question about all the lines.
+
+**Wrong**
+
+```sh
+jq 'length' data.jsonl
+```
+
+**Output**
+
+```json
+2
+2
+2
+```
+
+**Fix**
+
+```sh
+jq «-s» 'length' data.jsonl
+```
+
+Without `-s`, `length` runs three times and counts the keys of one object each time. With `-s` it prints `3`. Without `-s`, `.[-1].msg` stops with `Cannot index object with number`.
 
 <!-- task -->
 
@@ -131,4 +151,3 @@ You can add `-c` or `-r` next to `-s`, with a space between the flags.
 - jq runs the filter once for each value. In each run, `.` is one value.
 - Add `-c` to get one line out for each line in.
 - `-s` puts all the values into one array and runs the filter once on it.
-- Use `-s` when the question is about all the lines together, such as how many there are.
