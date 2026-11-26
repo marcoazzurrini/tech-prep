@@ -1,0 +1,20 @@
+{
+  "title": "Merge Settings",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function mergeSettings(defaults, saved) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return mergeSettings({ theme: \"light\", size: 14 }, { size: 18 });"],"expected":{"theme":"light","size":18,"shortcuts":{}}},
+      {"args":["return mergeSettings({ shortcuts: { save: \"s\", quit: \"q\" } }, { shortcuts: { quit: \"x\" } });"],"expected":{"shortcuts":{"save":"s","quit":"x"}}},
+      {"args":["return mergeSettings({ theme: \"dark\" }, null);"],"expected":{"theme":"dark","shortcuts":{}}},
+      {"args":["const d = { shortcuts: { save: \"s\" } }; mergeSettings(d, null).shortcuts.save = \"z\"; return d.shortcuts.save;"],"expected":"s"},
+      {"args":["const s = { shortcuts: { a: \"1\" } }; mergeSettings({}, s).shortcuts.b = \"2\"; return s;"],"expected":{"shortcuts":{"a":"1"}}},
+      {"args":["return mergeSettings({ size: 14, sound: true }, { size: 0, sound: false });"],"expected":{"size":0,"sound":false,"shortcuts":{}}},
+      {"args":["const d = { size: 1 }; mergeSettings(d, { size: 2, shortcuts: { up: \"k\" } }); return d;"],"expected":{"size":1}}
+    ]
+  }
+}

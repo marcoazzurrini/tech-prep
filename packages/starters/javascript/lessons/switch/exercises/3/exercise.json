@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function fee(plan) {\n  switch (plan) {\n    default:\n      console.log(\"plan?\");\n    case \"free\":\n    case \"trial\":\n      console.log(\"0\");\n      break;\n    case \"pro\":\n      console.log(\"12\");\n  }\n}\n\nfee(\"trial\");\nfee(\"pro\");\nfee(\"gold\");"
+    },
+    "expected": "0\n12\nplan?\n0"
+  }
+}

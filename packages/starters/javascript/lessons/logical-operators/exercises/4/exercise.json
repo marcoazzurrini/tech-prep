@@ -1,0 +1,20 @@
+{
+  "title": "Ready to Check Out",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "canCheckOut"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function canCheckOut(cart) {\n  return cart.items.length && cart.address;\n}\n"
+    },
+    "tests": [
+      {"args":[{"items":["pen"],"address":"12 Elm Street"}],"expected":true},
+      {"args":[{"items":[],"address":"12 Elm Street"}],"expected":false},
+      {"args":[{"items":["pen"],"address":""}],"expected":false},
+      {"args":[{"items":["pen","ink"],"address":null}],"expected":false},
+      {"args":[{"items":[],"address":null}],"expected":false}
+    ]
+  }
+}

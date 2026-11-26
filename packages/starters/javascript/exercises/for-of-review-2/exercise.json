@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const rows = [[\"a\", 1], [\"b\", 0], [\"c\", 3], [\"d\", 2]];\nlet out = \"\";\n\nscan: for (const [name, count] of rows) {\n  for (const step of [1, 2, 3]) {\n    if (count === 0) continue scan;\n    if (step > count) break;\n    if (name === \"d\") break scan;\n    out += name;\n  }\n\n  out += \"-\";\n}\n\nconsole.log(out);"
+    },
+    "expected": "a-ccc-"
+  }
+}

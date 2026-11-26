@@ -1,0 +1,20 @@
+{
+  "title": "Menu Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "menu"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function menu(title, dishes) {\n  var text = title + \":\";\n  var lines = [];\n\n  for (const dish of dishes) {\n    var text = \"- \" + dish;\n    lines.push(text);\n  }\n\n  return [text, ...lines].join(\" \");\n}\n"
+    },
+    "tests": [
+      {"args":["Lunch",["soup","rice"]],"expected":"Lunch: - soup - rice"},
+      {"args":["Drinks",["tea"]],"expected":"Drinks: - tea"},
+      {"args":["Closed",[]],"expected":"Closed:"},
+      {"args":["Dinner",["fish","salad","cake"]],"expected":"Dinner: - fish - salad - cake"},
+      {"args":["Snacks",["nuts","nuts"]],"expected":"Snacks: - nuts - nuts"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function readLimit() {\n  return limit;\n}\n\nfunction attempt() {\n  try {\n    return String(readLimit());\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconsole.log(attempt());\nlet limit;\nconsole.log(attempt());\nlimit = 7;\nconsole.log(attempt());"
+    },
+    "expected": "ReferenceError\nundefined\n7"
+  }
+}

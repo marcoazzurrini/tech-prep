@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const row = { count: 0, size: 4, extra: null };\n\nconsole.log((row.count ?? 5) || 9);\nconsole.log(row.count ?? (5 || 9));\nconsole.log(row.size ?? 1 + 1);\nconsole.log((row.size ?? 1) + 1);\nconsole.log(row.extra ?? 1 + 1);"
+    },
+    "expected": "9\n0\n4\n5\n2"
+  }
+}

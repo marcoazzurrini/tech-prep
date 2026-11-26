@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const greeting = \"Hello\";\n\nfunction greet(name) {\n  return `${greeting}, ${name}`;\n}\n\nfunction welcome() {\n  const greeting = \"Welcome\";\n\n  return greet(\"Ada\");\n}\n\nfunction goodbye() {\n  const greeting = \"Bye\";\n  const greet = (name) => `${greeting}, ${name}`;\n\n  return greet(\"Lin\");\n}\n\nconsole.log(welcome());\nconsole.log(goodbye());"
+    },
+    "expected": "Hello, Ada\nBye, Lin"
+  }
+}

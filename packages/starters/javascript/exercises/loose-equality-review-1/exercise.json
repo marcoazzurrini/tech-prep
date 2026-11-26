@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log([1] == true);\nconsole.log([2] == true);\nconsole.log(\"\" == [null]);\nconsole.log(null == []);\nconsole.log(false == \"false\");\nconsole.log([] != []);"
+    },
+    "expected": "true\nfalse\ntrue\nfalse\nfalse\ntrue"
+  }
+}

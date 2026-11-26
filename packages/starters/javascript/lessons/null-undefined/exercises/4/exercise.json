@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const form = { email: null, age: undefined };\n\nconsole.log(form.email === form.age);\nconsole.log(typeof form.email);\nconsole.log(typeof form.age);\nconsole.log(form.age === form.city);\nconsole.log(JSON.stringify(form));"
+    },
+    "expected": "false\nobject\nundefined\ntrue\n{\"email\":null}"
+  }
+}

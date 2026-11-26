@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const [first, , third = \"c\", ...rest] = \"ab\";\nlet x = 1;\nlet y = [2, 3];\n[x, [y]] = [y, [x]];\n\nconsole.log(first + third);\nconsole.log(rest.length);\nconsole.log(x.length + y);\n\ntry {\n  const [[inner = 0]] = [null];\n  console.log(inner);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "ac\n0\n3\nTypeError"
+  }
+}

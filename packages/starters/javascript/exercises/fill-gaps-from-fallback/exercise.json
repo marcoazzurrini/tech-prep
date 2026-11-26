@@ -1,0 +1,21 @@
+{
+  "title": "Fill the Gaps",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "fillGaps"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fillGaps(row, fallback) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[1,null,3],[9,9,9]],"expected":[1,9,3]},
+      {"args":[[0,"",null],[5,"x",false]],"expected":[0,"",false]},
+      {"args":[[],[]],"expected":[]},
+      {"args":[[false,null,null],[true,"b",0]],"expected":[false,"b",0]},
+      {"args":[[null,null],[null,7]],"expected":[null,7]},
+      {"args":[["a","b"],["x","y"]],"expected":["a","b"]}
+    ]
+  }
+}

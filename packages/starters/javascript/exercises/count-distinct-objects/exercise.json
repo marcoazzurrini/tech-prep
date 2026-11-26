@@ -1,0 +1,19 @@
+{
+  "title": "Count the Objects",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countObjects(list) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = { id: 1 }; return countObjects([a, a, a]);"],"expected":1},
+      {"args":["const a = { id: 1 }; return countObjects([a, { id: 1 }, a]);"],"expected":2},
+      {"args":["return countObjects([{}, {}, {}]);"],"expected":3},
+      {"args":["return countObjects([]);"],"expected":0},
+      {"args":["const a = [1]; const b = a; const f = () => 1; return countObjects([a, b, f, f, [1]]);"],"expected":3},
+      {"args":["const a = { n: 1 }; const b = { n: 1 }; a.n = 2; return countObjects([a, b, b, a, a]);"],"expected":2}
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Result or Fallback",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function callOr(fn, fallback) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return callOr(() => 5, 0);"],"expected":5},
+      {"args":["return callOr(function () {}, \"none\");"],"expected":"none"},
+      {"args":["return callOr(function () { return; }, \"none\");"],"expected":"none"},
+      {"args":["return callOr(() => null, \"none\");"],"expected":null},
+      {"args":["return [callOr(() => 0, 9), callOr(() => \"\", \"x\"), callOr(() => false, true)];"],"expected":[0,"",false]},
+      {"args":["let n = 0; const count = function () { n += 1; }; callOr(count, 0); return n;"],"expected":1}
+    ]
+  }
+}

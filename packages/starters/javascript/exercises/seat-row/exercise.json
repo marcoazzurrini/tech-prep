@@ -1,0 +1,19 @@
+{
+  "title": "Seat Row",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const EMPTY_ROW = [\"-\", \"-\", \"-\", \"-\", \"-\"];\n\nexport function seatRow(taken) {\n  const row = EMPTY_ROW;\n\n  for (const seat of taken) {\n    row[seat] = \"X\";\n  }\n\n  return row.join(\"\");\n}\n"
+    },
+    "tests": [
+      {"args":["return seatRow([0, 3]);"],"expected":"X--X-"},
+      {"args":["seatRow([0, 1]); return seatRow([4]);"],"expected":"----X"},
+      {"args":["return [seatRow([2]), seatRow([]), seatRow([1])];"],"expected":["--X--","-----","-X---"]},
+      {"args":["return seatRow([]);"],"expected":"-----"},
+      {"args":["return seatRow([0, 1, 2, 3, 4]);"],"expected":"XXXXX"},
+      {"args":["seatRow([0, 1, 2, 3, 4]); return seatRow([2]);"],"expected":"--X--"}
+    ]
+  }
+}

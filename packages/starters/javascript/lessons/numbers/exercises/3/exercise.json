@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const max = Number.MAX_SAFE_INTEGER;\nconst before = max - 1;\nconst after = max + 1;\n\nconsole.log(before + 1 === max);\nconsole.log(after + 1 === after);\nconsole.log(max - before);"
+    },
+    "expected": "true\ntrue\n1"
+  }
+}

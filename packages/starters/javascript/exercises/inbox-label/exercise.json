@@ -1,0 +1,20 @@
+{
+  "title": "Inbox Label",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "inboxLabel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function inboxLabel(name, count) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Ada",3],"expected":"Ada, you have 3 new messages"},
+      {"args":["Ada",1],"expected":"Ada, you have 1 new message"},
+      {"args":["Bo",0],"expected":"Bo, you have no new messages"},
+      {"args":["Kim Park",120],"expected":"Kim Park, you have 120 new messages"},
+      {"args":["Zed",2],"expected":"Zed, you have 2 new messages"}
+    ]
+  }
+}

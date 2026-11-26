@@ -1,0 +1,20 @@
+{
+  "title": "Menu Card",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "menuCard"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function menuCard(dishes, symbol) {\n  const card = { title: heading(), lines: dishes.map(line) };\n\n  const heading = () => `Menu (${symbol})`;\n  const decimals = 2;\n\n  function line(dish) {\n    return `${dish.name}: ${symbol}${dish.price.toFixed(decimals)}`;\n  }\n\n  return card;\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"Soup","price":4.5}],"£"],"expected":{"title":"Menu (£)","lines":["Soup: £4.50"]}},
+      {"args":[[],"$"],"expected":{"title":"Menu ($)","lines":[]}},
+      {"args":[[{"name":"Tea","price":2},{"name":"Cake","price":3.75}],"€"],"expected":{"title":"Menu (€)","lines":["Tea: €2.00","Cake: €3.75"]}},
+      {"args":[[{"name":"Water","price":0}],""],"expected":{"title":"Menu ()","lines":["Water: 0.00"]}},
+      {"args":[[{"name":"Stew","price":12.345},{"name":"Bread","price":1.1},{"name":"Jam","price":0.9}],"kr "],"expected":{"title":"Menu (kr )","lines":["Stew: kr 12.35","Bread: kr 1.10","Jam: kr 0.90"]}}
+    ]
+  }
+}

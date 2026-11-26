@@ -1,0 +1,21 @@
+{
+  "title": "Tidy Tag",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "tidyTag"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function tidyTag(tag) {\n  tag.trim();\n  tag.toLowerCase();\n\n  return tag;\n}\n"
+    },
+    "tests": [
+      {"args":[" News "],"expected":"news"},
+      {"args":["SPORT"],"expected":"sport"},
+      {"args":["  Web Dev"],"expected":"web dev"},
+      {"args":["art"],"expected":"art"},
+      {"args":[""],"expected":""},
+      {"args":["  "],"expected":""}
+    ]
+  }
+}

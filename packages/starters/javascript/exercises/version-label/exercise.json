@@ -1,0 +1,21 @@
+{
+  "title": "Version Label",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeVersion(major, minor) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return String(makeVersion(2, 5));"],"expected":"2.5"},
+      {"args":["return \"v\" + makeVersion(2, 5);"],"expected":"v2.5"},
+      {"args":["return makeVersion(2, 5) * 1;"],"expected":205},
+      {"args":["return makeVersion(3, 0) - makeVersion(2, 5);"],"expected":95},
+      {"args":["return makeVersion(1, 2) + makeVersion(3, 4);"],"expected":"1.23.4"},
+      {"args":["return Number(makeVersion(10, 12));"],"expected":1012},
+      {"args":["return `${makeVersion(0, 9)}-beta`;"],"expected":"0.9-beta"},
+      {"args":["return makeVersion(1, 0) + 1;"],"expected":"1.01"}
+    ]
+  }
+}

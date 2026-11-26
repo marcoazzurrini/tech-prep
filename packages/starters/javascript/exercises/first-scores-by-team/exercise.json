@@ -1,0 +1,21 @@
+{
+  "title": "First Scores",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "firstScores"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstScores(entries) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"team":"red","player":"Ada","score":0},{"team":"red","player":"Ada","score":7},{"team":"blue","player":"Bo","score":3}]],"expected":{"red":{"Ada":0},"blue":{"Bo":3}}},
+      {"args":[[]],"expected":{}},
+      {"args":[[{"team":"red","player":"Ada","score":4},{"team":"blue","player":"Ada","score":9}]],"expected":{"red":{"Ada":4},"blue":{"Ada":9}}},
+      {"args":[[{"team":"red","player":"Ada","score":5},{"team":"red","player":"Bo","score":0},{"team":"red","player":"Bo","score":2},{"team":"red","player":"Ada","score":1}]],"expected":{"red":{"Ada":5,"Bo":0}}},
+      {"args":[[{"team":"green","player":"Cy","score":12}]],"expected":{"green":{"Cy":12}}},
+      {"args":[[{"team":"a","player":"x","score":0},{"team":"b","player":"x","score":0},{"team":"a","player":"x","score":3},{"team":"b","player":"y","score":8}]],"expected":{"a":{"x":0},"b":{"x":0,"y":8}}}
+    ]
+  }
+}

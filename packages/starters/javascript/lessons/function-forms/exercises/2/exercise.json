@@ -1,0 +1,21 @@
+{
+  "title": "Parcel Cost",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shippingCost"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function shippingCost(weight) {\n  if (weight <= 0) {\n    return;\n  }\n\n  if (weight < 5) {\n    return 4;\n  }\n\n  weight * 2;\n}\n"
+    },
+    "tests": [
+      {"args":[0],"expected":0},
+      {"args":[-3],"expected":0},
+      {"args":[2],"expected":4},
+      {"args":[4.5],"expected":4},
+      {"args":[5],"expected":10},
+      {"args":[12],"expected":24}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = 2;\nlet total = 0;\n\nif (base > 1) {\n  const bonus = 3;\n\n  for (const step of [1, 2]) {\n    const extra = base + bonus;\n    total = total + extra * step;\n  }\n\n  total = total - base;\n}\n\nconsole.log(total);\nconsole.log(typeof bonus);"
+    },
+    "expected": "13\nundefined"
+  }
+}

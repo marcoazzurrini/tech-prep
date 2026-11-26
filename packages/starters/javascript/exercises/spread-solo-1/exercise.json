@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = { colour: \"red\", size: \"M\" };\nconst order = { ...base, size: \"L\", ...{ colour: \"blue\" }, ...null };\nconst sizes = [...\"SM\", ...[base.size]];\n\nconsole.log(order.colour);\nconsole.log(order.size);\nconsole.log(sizes.join(\"\"));\nconsole.log(Object.keys(order).join(\",\"));"
+    },
+    "expected": "blue\nL\nSMM\ncolour,size"
+  }
+}

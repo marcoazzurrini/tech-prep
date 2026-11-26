@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = -3 * 0;\nconst b = 3 * 0;\n\nconsole.log(a === b);\nconsole.log(Object.is(a, b));\nconsole.log(Object.is(a, -0));\nconsole.log(1 / a);"
+    },
+    "expected": "true\nfalse\ntrue\n-Infinity"
+  }
+}

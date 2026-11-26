@@ -1,0 +1,22 @@
+{
+  "title": "Receipt Total",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "receiptTotal"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function receiptTotal(lines) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[4.35,"2 for 1",1.15]],"expected":550},
+      {"args":[[0.1,0.2]],"expected":30},
+      {"args":[["closed",null]],"expected":0},
+      {"args":[[19.99,"19.99",true,5.01]],"expected":2500},
+      {"args":[[]],"expected":0},
+      {"args":[[0.29,null,0.57,"tip"]],"expected":86},
+      {"args":[[1.1,2.2,"3.3"]],"expected":330}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Role Permissions",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "permissions"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function permissions(role) {\n  const list = [];\n\n  switch (role) {\n    case \"admin\":\n      list.push(\"delete\");\n      break;\n    case \"editor\":\n      list.push(\"write\");\n      break;\n    case \"viewer\":\n      list.push(\"read\");\n      break;\n    default:\n      list.push(\"none\");\n  }\n\n  return list;\n}\n"
+    },
+    "tests": [
+      {"args":["admin"],"expected":["delete","write","read"]},
+      {"args":["editor"],"expected":["write","read"]},
+      {"args":["viewer"],"expected":["read"]},
+      {"args":["guest"],"expected":[]},
+      {"args":[""],"expected":[]},
+      {"args":["ADMIN"],"expected":[]}
+    ]
+  }
+}

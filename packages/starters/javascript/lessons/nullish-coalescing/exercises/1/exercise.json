@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const product = { stock: 0, sale: false, weight: null };\n\nconsole.log(product.stock ?? 10);\nconsole.log(product.stock || 10);\nconsole.log(product.sale ?? true);\nconsole.log(product.weight ?? \"unknown\");\nconsole.log(product.colour ?? \"plain\");"
+    },
+    "expected": "0\n10\nfalse\nunknown\nplain"
+  }
+}

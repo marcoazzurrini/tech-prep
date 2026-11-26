@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "globalThis.taxRate = 20;\n\nfunction withTax(price) {\n  return price + (price * taxRate) / 100;\n}\n\nfunction withLocalTax(price) {\n  const taxRate = 10;\n\n  return price + (price * taxRate) / 100;\n}\n\nconsole.log(withTax(50));\nconsole.log(withLocalTax(50));\nconsole.log(globalThis.isNaN === isNaN);\nconsole.log(typeof globalThis.JSON);"
+    },
+    "expected": "60\n55\ntrue\nobject"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sweets = 17n;\nconst children = 5n;\n\nconsole.log(sweets / children);\nconsole.log(sweets % children);\nconsole.log(-sweets / children);\nconsole.log((sweets / children) * children);"
+    },
+    "expected": "3n\n2n\n-3n\n15n"
+  }
+}

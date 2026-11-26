@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let report = \"start\";\n\n{\n  const step = \"load\";\n  report = report + \">\" + step;\n}\n\nif (report.length > 5) {\n  const step = \"save\";\n  report = report + \">\" + step;\n}\n\nconsole.log(report);\nconsole.log(typeof step);"
+    },
+    "expected": "start>load>save\nundefined"
+  }
+}

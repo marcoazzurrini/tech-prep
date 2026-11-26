@@ -1,0 +1,19 @@
+{
+  "title": "Send to the Back",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sendToBack(queue) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return sendToBack([\"Ada\", \"Ben\", \"Cy\"]);"],"expected":["Ben","Cy","Ada"]},
+      {"args":["return sendToBack([\"Ada\"]);"],"expected":["Ada"]},
+      {"args":["return sendToBack([]);"],"expected":[]},
+      {"args":["const queue = [1, 2, 3]; sendToBack(queue); return queue;"],"expected":[1,2,3]},
+      {"args":["const queue = [7]; return sendToBack(queue) === queue;"],"expected":false},
+      {"args":["return sendToBack([null, 0, \"\", false]);"],"expected":[0,"",false,null]}
+    ]
+  }
+}

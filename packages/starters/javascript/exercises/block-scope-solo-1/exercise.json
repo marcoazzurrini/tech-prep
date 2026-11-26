@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sizes = [2, 7];\nlet label = \"none\";\n\nfor (const size of sizes) {\n  let label = \"small\";\n\n  if (size > 5) {\n    label = \"big\";\n  }\n\n  console.log(label);\n}\n\nconsole.log(label);"
+    },
+    "expected": "small\nbig\nnone"
+  }
+}

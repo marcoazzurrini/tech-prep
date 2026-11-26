@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const level = {\n  valueOf() {\n    return 100;\n  },\n  [Symbol.toPrimitive](hint) {\n    return hint === \"number\" ? 3 : \"three\";\n  },\n};\n\nconsole.log(level * 2);\nconsole.log(level + 2);\nconsole.log(`${level}`);\nconsole.log(level + level);"
+    },
+    "expected": "6\nthree2\nthree\nthreethree"
+  }
+}

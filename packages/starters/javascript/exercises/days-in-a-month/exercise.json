@@ -1,0 +1,25 @@
+{
+  "title": "Days in a Month",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "daysInMonth"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function daysInMonth(month, leapYear) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1,false],"expected":31},
+      {"args":[2,false],"expected":28},
+      {"args":[2,true],"expected":29},
+      {"args":["4",false],"expected":30},
+      {"args":["11",true],"expected":30},
+      {"args":[12,false],"expected":31},
+      {"args":["2",true],"expected":29},
+      {"args":[13,false],"expected":0},
+      {"args":["0",false],"expected":0},
+      {"args":["feb",true],"expected":0}
+    ]
+  }
+}

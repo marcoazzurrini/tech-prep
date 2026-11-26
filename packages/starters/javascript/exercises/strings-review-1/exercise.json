@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let word = \"stone\";\nconst before = word;\n\nword.replace(\"st\", \"ph\");\nword = word.slice(1) + word[0];\n\nconsole.log(before);\nconsole.log(word);\nconsole.log(word.at(-2) + word[word.length - 1]);\nconsole.log(word[-1]);\nconsole.log(\"a\\\\nb\".length);\nconsole.log(before.toUpperCase().toLowerCase() === before);"
+    },
+    "expected": "stone\ntones\nes\nundefined\n4\ntrue"
+  }
+}

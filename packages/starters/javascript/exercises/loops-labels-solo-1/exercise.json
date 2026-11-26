@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let out = \"\";\n\nfor (let a = 1; a <= 3; a++) {\n  for (let b = 1; b <= 3; b++) {\n    if (b === a) continue;\n    if (b > a) break;\n    out += `${a}${b} `;\n  }\n}\n\nconsole.log(out.trim());\n\nlet count = 0;\n\nouter: for (let a = 0; a < 3; a++) {\n  for (let b = 0; b < 3; b++) {\n    if (b === 1) continue outer;\n    if (a === 2) break outer;\n    count++;\n  }\n}\n\nconsole.log(count);"
+    },
+    "expected": "21 31 32\n2"
+  }
+}

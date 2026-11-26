@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const user = { name: \"Kim\", age: 30 };\nconst next = `${user.age + 1}`;\n\nconsole.log(`${user.name} is ${user.age}`);\nconsole.log(typeof next);\nconsole.log(`${user.name.length}${user.age}`);\nconsole.log(`${user.email}`.length);\nconsole.log(`${user.name[0]}.`);"
+    },
+    "expected": "Kim is 30\nstring\n330\n9\nK."
+  }
+}

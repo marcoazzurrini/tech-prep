@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const odds = [1, 3];\nconst evens = [2, 4];\nconst all = [odds, ...evens, ...\"ab\"];\n\nconsole.log(all.length);\nconsole.log([...evens, ...odds].join(\"-\"));\nconsole.log(Math.max(...odds, ...evens));\nconsole.log([...odds] === odds);"
+    },
+    "expected": "5\n2-4-1-3\n4\nfalse"
+  }
+}

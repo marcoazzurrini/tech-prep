@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function load(cached) {\n  var result = result || \"empty\";\n\n  if (cached) {\n    var data = \"hit\";\n  }\n\n  return result + \":\" + (data ?? \"miss\") + \":\" + (later === undefined);\n\n  var later = 1;\n}\n\nconsole.log(load(true));\nconsole.log(load(false));"
+    },
+    "expected": "empty:hit:true\nempty:miss:true"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Shop Currency",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function currency() {\n  return shopCurrency ?? \"EUR\";\n}\n"
+    },
+    "tests": [
+      {"args":["delete globalThis.shopCurrency; return currency();"],"expected":"EUR"},
+      {"args":["globalThis.shopCurrency = \"USD\"; const got = currency(); delete globalThis.shopCurrency; return got;"],"expected":"USD"},
+      {"args":["globalThis.shopCurrency = \"GBP\"; const got = currency(); delete globalThis.shopCurrency; return got;"],"expected":"GBP"},
+      {"args":["delete globalThis.shopCurrency; return [currency(), currency()];"],"expected":["EUR","EUR"]},
+      {"args":["globalThis.shopCurrency = null; const got = currency(); delete globalThis.shopCurrency; return got;"],"expected":"EUR"}
+    ]
+  }
+}

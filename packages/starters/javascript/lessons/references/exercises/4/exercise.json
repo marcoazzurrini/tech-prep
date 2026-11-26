@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let user = { name: \"Ada\" };\nconst team = [user];\nconst admin = user;\n\nuser.name = \"Bea\";\nuser = { name: \"Cy\" };\n\nconsole.log(team[0].name);\nconsole.log(admin.name);\nconsole.log(user.name);\nconsole.log(team[0] === admin);"
+    },
+    "expected": "Bea\nBea\nCy\ntrue"
+  }
+}

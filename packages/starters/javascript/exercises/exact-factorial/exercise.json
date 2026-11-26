@@ -1,0 +1,19 @@
+{
+  "title": "Exact Factorial",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function factorial(n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return String(factorial(5));"],"expected":"120"},
+      {"args":["return String(factorial(0));"],"expected":"1"},
+      {"args":["return String(factorial(1));"],"expected":"1"},
+      {"args":["return String(factorial(25));"],"expected":"15511210043330985984000000"},
+      {"args":["return String(factorial(30));"],"expected":"265252859812191058636308480000000"},
+      {"args":["return typeof factorial(3);"],"expected":"bigint"}
+    ]
+  }
+}

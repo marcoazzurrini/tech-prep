@@ -1,0 +1,20 @@
+{
+  "title": "Grant and Revoke",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function grant(access, flag) {\n  // your code\n}\n\nexport function revoke(access, flag) {\n  // your code\n}\n\nexport function has(access, flag) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return grant(1, 4);"],"expected":5},
+      {"args":["return grant(5, 4);"],"expected":5},
+      {"args":["return revoke(7, 2);"],"expected":5},
+      {"args":["return revoke(5, 2);"],"expected":5},
+      {"args":["return [has(5, 4), has(5, 2), has(0, 1)];"],"expected":[true,false,false]},
+      {"args":["const READ = 1, WRITE = 2, DELETE = 4; return revoke(grant(READ, WRITE), READ) === WRITE;"],"expected":true},
+      {"args":["return has(revoke(grant(0, 8), 8), 8);"],"expected":false}
+    ]
+  }
+}

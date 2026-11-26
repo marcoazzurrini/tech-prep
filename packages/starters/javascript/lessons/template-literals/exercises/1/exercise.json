@@ -1,0 +1,20 @@
+{
+  "title": "Order Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "orderLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function orderLine(item) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"name":"mug","price":6,"count":3}],"expected":"3 x mug = 18"},
+      {"args":[{"name":"cap","price":12,"count":1}],"expected":"1 x cap = 12"},
+      {"args":[{"name":"pin","price":2,"count":0}],"expected":"0 x pin = 0"},
+      {"args":[{"name":"desk lamp","price":25,"count":4}],"expected":"4 x desk lamp = 100"},
+      {"args":[{"name":"pen","price":3,"count":10}],"expected":"10 x pen = 30"}
+    ]
+  }
+}

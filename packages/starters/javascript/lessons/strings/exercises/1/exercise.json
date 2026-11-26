@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const code = \"QX-417\";\n\nconsole.log(code.length);\nconsole.log(code[2]);\nconsole.log(code.at(-3));\nconsole.log(code[code.length]);\nconsole.log(code.at(0) + code.at(-1));"
+    },
+    "expected": "6\n-\n4\nundefined\nQ7"
+  }
+}

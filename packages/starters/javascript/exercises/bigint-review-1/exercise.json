@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const total = 10n;\nconst parts = 4n;\n\nconsole.log((total / parts) * parts);\nconsole.log(total % parts);\nconsole.log(typeof (total / parts));\nconsole.log(total > 9.5);\nconsole.log(total === 10);\n\ntry {\n  console.log(Math.max(total, parts));\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "8n\n2n\nbigint\ntrue\nfalse\nTypeError"
+  }
+}

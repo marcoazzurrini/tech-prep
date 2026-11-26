@@ -1,0 +1,21 @@
+{
+  "title": "First Long Word",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "firstLongWords"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstLongWords(lines) {\n  var result = [];\n\n  for (var i = 0; i < lines.length; i++) {\n    var found;\n\n    for (const word of lines[i].split(\" \")) {\n      if (word.length > 4) {\n        found = word;\n        break;\n      }\n    }\n\n    result.push(found || \"-\");\n  }\n\n  return result;\n}\n"
+    },
+    "tests": [
+      {"args":[["a quiet morning","no rain","green tea please"]],"expected":["quiet","-","green"]},
+      {"args":[["hello there","hi","ok","goodbye now"]],"expected":["hello","-","-","goodbye"]},
+      {"args":[[]],"expected":[]},
+      {"args":[["one two","three four"]],"expected":["-","three"]},
+      {"args":[["short words only","tiny"]],"expected":["short","-"]},
+      {"args":[["it is","so far"]],"expected":["-","-"]}
+    ]
+  }
+}

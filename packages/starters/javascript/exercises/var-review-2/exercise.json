@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function scan(items) {\n  let found = \"none\";\n\n  for (var i = 0; i < items.length; i++) {\n    let found = items[i];\n    var last = found;\n  }\n\n  {\n    var i = i * 10;\n    let last = \"hidden\";\n  }\n\n  return [found, last, i].join(\" \");\n}\n\nconsole.log(scan([\"a\", \"b\"]));\nconsole.log(scan([\"x\"]));"
+    },
+    "expected": "none b 20\nnone x 10"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Order Summary",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "orderSummary"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function orderSummary(order) {\n  const name = order.customer && order.customer.name;\n  const tip = order.tip || 10;\n\n  return `${name}, tip ${tip}%`;\n}\n"
+    },
+    "tests": [
+      {"args":[{"customer":{"name":"Ada"},"tip":15}],"expected":"Ada, tip 15%"},
+      {"args":[{"customer":null,"tip":0}],"expected":"Guest, tip 0%"},
+      {"args":[{"customer":{"name":""}}],"expected":"Guest, tip 10%"},
+      {"args":[{"customer":{"name":"Bo"},"tip":0}],"expected":"Bo, tip 0%"},
+      {"args":[{"customer":null}],"expected":"Guest, tip 10%"},
+      {"args":[{"customer":{"name":""},"tip":20}],"expected":"Guest, tip 20%"}
+    ]
+  }
+}

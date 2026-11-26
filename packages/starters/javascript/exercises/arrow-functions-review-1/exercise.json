@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ids = [1, 2, 3];\n\nconst a = ids.map((id) => id * 2);\nconst b = ids.map((id) => { id * 2; });\nconst c = ids.map((id) => ({ id }));\nconst d = ids.filter((id) => { id > 1; });\nconst Box = (size) => ({ size });\n\nconsole.log(a.join(\",\"));\nconsole.log(b[0]);\nconsole.log(c[2].id);\nconsole.log(d.length);\n\ntry {\n  new Box(2);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "2,4,6\nundefined\n3\n0\nTypeError"
+  }
+}

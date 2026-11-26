@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const team = [\"Ada\"];\nlet backup = team;\n\nbackup.push(\"Bo\");\nbackup = [\"Cy\"];\nbackup.push(\"Di\");\n\nconsole.log(team.join(\",\"));\nconsole.log(backup.join(\",\"));"
+    },
+    "expected": "Ada,Bo\nCy,Di"
+  }
+}

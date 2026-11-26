@@ -1,0 +1,20 @@
+{
+  "title": "Initials",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "initials"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const initials = (names) => {\n  names.map((name) => {\n    name[0].toUpperCase();\n  });\n};\n"
+    },
+    "tests": [
+      {"args":[["ada","lin"]],"expected":["A","L"]},
+      {"args":[[]],"expected":[]},
+      {"args":[["Sam"]],"expected":["S"]},
+      {"args":[["grace","alan","mary"]],"expected":["G","A","M"]},
+      {"args":[["x"]],"expected":["X"]}
+    ]
+  }
+}

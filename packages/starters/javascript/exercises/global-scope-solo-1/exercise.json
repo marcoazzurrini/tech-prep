@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "var colour = \"red\";\n\nglobalThis.colour = \"blue\";\nglobalThis.size = \"large\";\n\nfunction describe() {\n  const size = \"small\";\n\n  return `${size} ${colour}`;\n}\n\nconsole.log(describe());\nconsole.log(globalThis.colour);\nconsole.log(size);\nconsole.log(typeof globalThis.describe);"
+    },
+    "expected": "small red\nblue\nlarge\nundefined"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "List the Weights",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "listWeights"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const unit = \"kg\";\n\nfunction withUnit(amount) {\n  return `${amount} ${unit}`;\n}\n\nexport function listWeights(weights, unit) {\n  const labels = [];\n\n  for (const weight of weights) {\n    labels.push(withUnit(weight));\n  }\n\n  return labels;\n}\n"
+    },
+    "tests": [
+      {"args":[[2,5],"lb"],"expected":["2 lb","5 lb"]},
+      {"args":[[7],"kg"],"expected":["7 kg"]},
+      {"args":[[],"g"],"expected":[]},
+      {"args":[[0.5,1,1.5],"t"],"expected":["0.5 t","1 t","1.5 t"]},
+      {"args":[[12],"oz"],"expected":["12 oz"]}
+    ]
+  }
+}

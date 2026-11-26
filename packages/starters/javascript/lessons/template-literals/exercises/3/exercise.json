@@ -1,0 +1,20 @@
+{
+  "title": "Address Label",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "addressLabel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addressLabel(person) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"name":"Ada Low","street":"12 Hill Road","zip":"1050","city":"Oslo"}],"expected":"Ada Low\n12 Hill Road\n1050 Oslo"},
+      {"args":[{"name":"Bo","street":"Pier 4","zip":"9","city":"Y"}],"expected":"Bo\nPier 4\n9 Y"},
+      {"args":[{"name":"Kim Park","street":"88 Long Lane","zip":"SW1","city":"London"}],"expected":"Kim Park\n88 Long Lane\nSW1 London"},
+      {"args":[{"name":"Dr. Lee","street":"Flat 2, 7 Elm Street","zip":"75011","city":"Paris"}],"expected":"Dr. Lee\nFlat 2, 7 Elm Street\n75011 Paris"},
+      {"args":[{"name":"Zed","street":"1 A","zip":"0001","city":"New Town"}],"expected":"Zed\n1 A\n0001 New Town"}
+    ]
+  }
+}

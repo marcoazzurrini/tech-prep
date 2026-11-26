@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = { valueOf: () => 2, toString: () => \"7\" };\nconst b = { toString: () => \"3\" };\n\nconsole.log(a + b);\nconsole.log(a * b);\nconsole.log(`${a}${b}`);\nconsole.log(String([a, b]));\nconsole.log([2] * [3] + [1]);"
+    },
+    "expected": "23\n6\n73\n7,3\n61"
+  }
+}

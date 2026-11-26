@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const draft = { title: \"\", pages: 0, author: \"Ada\" };\n\nconsole.log(draft.title || \"Untitled\");\nconsole.log(draft.pages || draft.author);\nconsole.log(draft.author || \"Unknown\");\nconsole.log(draft.pages || draft.title || null);"
+    },
+    "expected": "Untitled\nAda\nAda\nnull"
+  }
+}

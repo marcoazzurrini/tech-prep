@@ -1,0 +1,21 @@
+{
+  "title": "A Badge for a User",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "badge"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function badge(user) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"name":"Ada","role":"admin"}],"expected":"Ada (admin)"},
+      {"args":[{"name":"Ben"}],"expected":"Ben (member)"},
+      {"args":[null],"expected":"Guest (member)"},
+      {"args":[{"role":"editor"}],"expected":"Guest (editor)"},
+      {"args":[{}],"expected":"Guest (member)"},
+      {"args":[{"name":"Cy","role":"member","age":40}],"expected":"Cy (member)"}
+    ]
+  }
+}

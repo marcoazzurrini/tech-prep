@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const song = { title: \"Blue\", artist: \"Mina\", seconds: 185 };\nconst { seconds, title: track, album } = song;\n\nconsole.log(track);\nconsole.log(seconds);\nconsole.log(album);\nconsole.log(typeof title);"
+    },
+    "expected": "Blue\n185\nundefined\nundefined"
+  }
+}

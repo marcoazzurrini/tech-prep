@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const route = [\"Rome\", \"Florence\", \"Bologna\", \"Milan\"];\nconst [start, , stop] = route;\nconst [, , , end, extra] = route;\n\nconsole.log(start);\nconsole.log(stop);\nconsole.log(end);\nconsole.log(extra);"
+    },
+    "expected": "Rome\nBologna\nMilan\nundefined"
+  }
+}

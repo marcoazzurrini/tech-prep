@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function area(w, h) {\n  return w * h;\n}\n\nconst perimeter = function (w, h) {\n  return 2 * (w + h);\n};\n\nconst isSquare = (w, h) => w === h;\n\nconst measure = perimeter;\n\nconsole.log(typeof area);\nconsole.log(measure(2, 3));\nconsole.log(isSquare(2, 3));\nconsole.log(typeof area(2, 3));"
+    },
+    "expected": "function\n10\nfalse\nnumber"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = {\n  valueOf() {\n    return 4;\n  },\n  toString() {\n    return \"box\";\n  },\n};\n\nconsole.log(box + 1);\nconsole.log(`${box}es`);\nconsole.log(box * box);\nconsole.log(box + \"\");\nconsole.log([3] + [4]);"
+    },
+    "expected": "5\nboxes\n16\n4\n34"
+  }
+}

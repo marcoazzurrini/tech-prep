@@ -1,0 +1,21 @@
+{
+  "title": "Cheapest Price",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "cheapest"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cheapest(prices) {\n  let best = Infinity;\n\n  for (const price of prices) {\n    if (price < best) {\n      best = price;\n    }\n  }\n\n  return best;\n}\n"
+    },
+    "tests": [
+      {"args":[[5,null,3]],"expected":3},
+      {"args":[[7,null]],"expected":7},
+      {"args":[[null,4]],"expected":4},
+      {"args":[[2,9]],"expected":2},
+      {"args":[[null,null,1]],"expected":1},
+      {"args":[[8,3,null,6]],"expected":3}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const word = \"banana\";\nlet out = \"\";\n\nfor (const [i, letter] of [...word].entries()) {\n  if (letter === \"a\") continue;\n  if (i === 4) break;\n  out += i + letter;\n}\n\nconsole.log(out);\n\nconst scores = [1, 2, 3];\n\nfor (let score of scores) {\n  score *= 10;\n}\n\nconsole.log(scores.join(\",\"));"
+    },
+    "expected": "0b2n\n1,2,3"
+  }
+}

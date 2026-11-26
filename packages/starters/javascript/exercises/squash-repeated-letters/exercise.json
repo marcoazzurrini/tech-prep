@@ -1,0 +1,23 @@
+{
+  "title": "Squash Repeats",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "squash"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function squash(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["aaabcc"],"expected":"a3bc2"},
+      {"args":["aabaa"],"expected":"a2ba2"},
+      {"args":["abc"],"expected":"abc"},
+      {"args":[""],"expected":""},
+      {"args":["zzzzzzzzzzzz"],"expected":"z12"},
+      {"args":["aAa"],"expected":"aAa"},
+      {"args":["x"],"expected":"x"},
+      {"args":["  ok!!"],"expected":" 2ok!2"}
+    ]
+  }
+}

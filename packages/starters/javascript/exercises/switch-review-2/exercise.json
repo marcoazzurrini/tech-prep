@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function pick(value) {\n  switch (true) {\n    case value:\n      return \"A\";\n    case Boolean(value):\n      return \"B\";\n    case value == null:\n      return \"C\";\n    default:\n      return \"D\";\n  }\n}\n\nconsole.log(pick(true), pick(\"0\"), pick(1));\nconsole.log(pick(undefined), pick(0), pick(NaN));"
+    },
+    "expected": "A B B\nC D D"
+  }
+}

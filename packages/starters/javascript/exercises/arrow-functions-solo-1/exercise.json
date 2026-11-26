@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const half = n => n / 2;\nconst pair = (a, b) => [a, b];\nconst shout = (word) => {\n  word.toUpperCase();\n};\nconst wrap = (value) => ({ value });\n\nconsole.log(half(9));\nconsole.log(pair(1, 2).length);\nconsole.log(shout(\"hi\"));\nconsole.log(wrap(7).value);"
+    },
+    "expected": "4.5\n2\nundefined\n7"
+  }
+}

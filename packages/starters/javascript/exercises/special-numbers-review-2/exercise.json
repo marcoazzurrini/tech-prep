@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const share = (cents, people) => cents / people;\nconst left = -4 % 2;\n\nconsole.log(share(500, 0));\nconsole.log(share(0, 0) === share(0, 0));\nconsole.log(left === 0);\nconsole.log(Object.is(left, 0));\nconsole.log(1 / left);\nconsole.log(Number.isFinite(0.1 + 0.2));"
+    },
+    "expected": "Infinity\nfalse\ntrue\nfalse\n-Infinity\ntrue"
+  }
+}

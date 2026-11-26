@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let fuel = 0;\nlet laps = 0;\n\ndo {\n  laps++;\n  fuel--;\n} while (fuel > 0);\n\nconsole.log(laps, fuel);\n\nlet credit = 5;\nlet calls = 0;\n\nwhile (credit >= 2) {\n  credit -= 2;\n  calls++;\n}\n\nconsole.log(calls, credit);"
+    },
+    "expected": "1 -1\n2 1"
+  }
+}

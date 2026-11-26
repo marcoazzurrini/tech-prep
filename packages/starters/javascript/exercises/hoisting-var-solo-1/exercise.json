@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function run() {\n  console.log(count);\n\n  count = 5;\n  console.log(count);\n\n  var count = 8;\n  console.log(count);\n}\n\nrun();\nconsole.log(typeof count);"
+    },
+    "expected": "undefined\n5\n8\nundefined"
+  }
+}

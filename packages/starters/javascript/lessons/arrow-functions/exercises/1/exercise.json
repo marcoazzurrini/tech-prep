@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const prices = [5, 12, 8];\n\nconst doubled = prices.map(price => price * 2);\nconst big = prices.filter(price => price > 6);\nconst label = (name, count) => `${name}: ${count}`;\nconst zero = () => 0;\n\nconsole.log(doubled.join(\",\"));\nconsole.log(label(\"big\", big.length));\nconsole.log(zero() + doubled[0]);"
+    },
+    "expected": "10,24,16\nbig: 2\n10"
+  }
+}

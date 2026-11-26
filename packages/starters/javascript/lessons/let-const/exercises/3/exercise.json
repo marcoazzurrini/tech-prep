@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const basket = [\"pen\"];\nlet count = basket.length;\n\nbasket.push(\"ink\");\nbasket[0] = \"pencil\";\n\nconsole.log(basket.join(\",\"));\nconsole.log(basket.length);\nconsole.log(count);"
+    },
+    "expected": "pencil,ink\n2\n1"
+  }
+}

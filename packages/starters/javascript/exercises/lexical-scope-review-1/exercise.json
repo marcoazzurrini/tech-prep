@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const mode = \"light\";\n\nfunction show() {\n  return mode;\n}\n\nfunction withDark(task) {\n  const mode = \"dark\";\n\n  return task();\n}\n\nfunction local() {\n  const mode = \"sepia\";\n\n  return withDark(() => mode);\n}\n\nconsole.log(withDark(show));\nconsole.log(local());\nconsole.log(withDark(() => mode));"
+    },
+    "expected": "light\nsepia\nlight"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function order() {\n  console.log(size);\n\n  var size = \"large\";\n  console.log(size);\n\n  var size;\n  console.log(size);\n}\n\norder();"
+    },
+    "expected": "undefined\nlarge\nlarge"
+  }
+}

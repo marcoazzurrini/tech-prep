@@ -1,0 +1,19 @@
+{
+  "title": "Settings with Defaults",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withDefaults(settings, defaults) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return withDefaults({ volume: 5 }, { volume: 10, theme: \"dark\" });"],"expected":{"volume":5,"theme":"dark"}},
+      {"args":["return withDefaults({ theme: null }, { volume: 10, theme: \"dark\" });"],"expected":{"volume":10,"theme":null}},
+      {"args":["return withDefaults({ volume: undefined }, { volume: 10 });"],"expected":{"volume":10}},
+      {"args":["return withDefaults({ volume: 0, muted: false, name: \"\" }, { volume: 10, muted: true, name: \"guest\" });"],"expected":{"volume":0,"muted":false,"name":""}},
+      {"args":["return withDefaults({}, { size: 12, font: null });"],"expected":{"size":12,"font":null}},
+      {"args":["return withDefaults({ lang: undefined, theme: null }, { lang: \"en\", theme: \"light\" });"],"expected":{"lang":"en","theme":null}}
+    ]
+  }
+}

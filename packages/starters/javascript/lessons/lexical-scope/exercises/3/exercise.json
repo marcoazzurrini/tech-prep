@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const label = \"file\";\n\nfunction outer() {\n  const label = \"outer\";\n\n  function inner(label) {\n    return label;\n  }\n\n  function reader() {\n    return label;\n  }\n\n  console.log(inner(\"argument\"));\n  console.log(inner());\n  console.log(reader());\n}\n\nouter();\nconsole.log(label);"
+    },
+    "expected": "argument\nundefined\nouter\nfile"
+  }
+}

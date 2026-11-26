@@ -1,0 +1,20 @@
+{
+  "title": "Shipping Cost",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shippingCost"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function shippingCost(zone) {\n  let cost = 0;\n\n  switch (zone) {\n    case \"local\":\n      cost = 3;\n    case \"national\":\n      cost = 7;\n    case \"abroad\":\n      cost = 15;\n  }\n\n  return cost;\n}\n"
+    },
+    "tests": [
+      {"args":["local"],"expected":3},
+      {"args":["national"],"expected":7},
+      {"args":["abroad"],"expected":15},
+      {"args":["moon"],"expected":0},
+      {"args":[""],"expected":0}
+    ]
+  }
+}

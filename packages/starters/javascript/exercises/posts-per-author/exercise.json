@@ -1,0 +1,20 @@
+{
+  "title": "Posts per Author",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "postsPerAuthor"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function postsPerAuthor(posts) {\n  const counts = {};\n\n  for (const post of posts) {\n    counts[post.author] = (counts[post.author] ?? 0) + 1;\n  }\n\n  return counts;\n}\n"
+    },
+    "tests": [
+      {"args":[[{"title":"Hi","author":{"id":7,"name":"Ada"}}]],"expected":{"7":1}},
+      {"args":[[{"title":"Hi","author":{"id":7,"name":"Ada"}},{"title":"Types","author":{"id":9,"name":"Bob"}},{"title":"Bye","author":{"id":7,"name":"Ada"}}]],"expected":{"7":2,"9":1}},
+      {"args":[[]],"expected":{}},
+      {"args":[[{"title":"One","author":{"id":4,"name":"Cy"}},{"title":"Two","author":{"id":4,"name":"Cy"}},{"title":"Three","author":{"id":4,"name":"Cy"}}]],"expected":{"4":3}},
+      {"args":[[{"title":"A","author":{"id":"ada","name":"Ada"}},{"title":"B","author":{"id":"bob","name":"Bob"}},{"title":"C","author":{"id":"ada","name":"Ada L."}}]],"expected":{"ada":2,"bob":1}}
+    ]
+  }
+}

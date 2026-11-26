@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let price;\nlet label;\n\nconsole.log(price = 8);\nconsole.log((price = price * 2) + 1);\nconsole.log(price);\nconsole.log(label = `${price} euros`);\n\nif (label = \"\") {\n  console.log(\"empty label\");\n}\n\nconsole.log(label.length);"
+    },
+    "expected": "8\n17\n16\n16 euros\n0"
+  }
+}

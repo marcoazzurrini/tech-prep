@@ -1,0 +1,18 @@
+{
+  "title": "Remember a Value",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function remember(cache, key, compute) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = {}; return [remember(c, \"a\", () => 5), c.a];"],"expected":[5,5]},
+      {"args":["const c = { a: 0 }; let n = 0; const r = remember(c, \"a\", () => { n += 1; return 9; }); return [r, n];"],"expected":[0,0]},
+      {"args":["const c = { a: null }; remember(c, \"a\", () => \"x\"); return c;"],"expected":{"a":"x"}},
+      {"args":["const c = {}; let n = 0; const f = () => (n += 1); remember(c, \"k\", f); remember(c, \"k\", f); return [c.k, n];"],"expected":[1,1]},
+      {"args":["const c = { a: \"\" }; return [remember(c, \"a\", () => \"new\"), remember(c, \"b\", () => \"new\")];"],"expected":["","new"]}
+    ]
+  }
+}

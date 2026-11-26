@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sum = 0.2 + 0.1;\nconst limit = Number.MAX_SAFE_INTEGER;\n\nconsole.log(sum === 0.3);\nconsole.log(Math.abs(sum - 0.3) < Number.EPSILON);\nconsole.log(0.25 + 0.5 === 0.75);\nconsole.log(limit + 2 === limit + 1);\nconsole.log(-7 % 2);"
+    },
+    "expected": "false\ntrue\ntrue\ntrue\n-1"
+  }
+}

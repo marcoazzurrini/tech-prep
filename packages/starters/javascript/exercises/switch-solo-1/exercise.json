@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function steps(level) {\n  let text = \"\";\n\n  switch (level) {\n    case 3:\n      text += \"c\";\n    case 2:\n      text += \"b\";\n    case 1:\n      text += \"a\";\n      break;\n    default:\n      text += \"?\";\n  }\n\n  return text;\n}\n\nconsole.log(steps(3));\nconsole.log(steps(1));\nconsole.log(steps(\"2\"));"
+    },
+    "expected": "cba\na\n?"
+  }
+}

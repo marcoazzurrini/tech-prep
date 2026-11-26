@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let a = \"red\";\nlet b = a;\nb = \"blue\";\n\nconst lamp = { on: false, colour: a };\nconst same = lamp;\nsame.on = true;\na = \"green\";\n\nconsole.log(a, b);\nconsole.log(lamp.on);\nconsole.log(lamp.colour);"
+    },
+    "expected": "green blue\ntrue\nred"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Same Size",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sameSize"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sameSize(first, second) {\n  return first === second;\n}\n"
+    },
+    "tests": [
+      {"args":[{"width":2,"height":3},{"width":2,"height":3}],"expected":true},
+      {"args":[{"width":2,"height":3},{"width":3,"height":2}],"expected":false},
+      {"args":[{"width":5,"height":5},{"width":5,"height":6}],"expected":false},
+      {"args":[{"width":0,"height":0},{"width":0,"height":0}],"expected":true},
+      {"args":[{"width":4,"height":1},{"width":7,"height":1}],"expected":false},
+      {"args":[{"width":10,"height":20},{"height":20,"width":10}],"expected":true}
+    ]
+  }
+}

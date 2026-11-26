@@ -1,0 +1,12 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const add = (a, b) => a + b;\nconst ops = { plus: add, minus: (a, b) => a - b };\nconst again = ops.plus;\n\nfunction run(op, a, b) {\n  return op(a, b);\n}\n\nconsole.log(run(again, 2, 3));\nconsole.log(run(ops.minus, 2, 3));\nconsole.log(again === add);\nconsole.log(typeof run);\nconsole.log(typeof run(add, 1, 1));"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Delivery Cost",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "deliveryCost"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const rate = 2;\n\nexport function deliveryCost(km, express) {\n  var cost = km * rate;\n\n  if (express) {\n    var rate = 3;\n    cost = km * rate;\n  }\n\n  return cost;\n}\n"
+    },
+    "tests": [
+      {"args":[10,false],"expected":20},
+      {"args":[10,true],"expected":30},
+      {"args":[0,false],"expected":0},
+      {"args":[7,false],"expected":14},
+      {"args":[1,true],"expected":3},
+      {"args":[25,false],"expected":50}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = 100;\n\nfunction quote(hours) {\n  const rate = 20;\n\n  function labour() {\n    return hours * rate;\n  }\n\n  function total() {\n    const extra = 5;\n\n    return base + labour() + extra;\n  }\n\n  console.log(labour());\n  console.log(total());\n  console.log(typeof extra);\n}\n\nquote(2);"
+    },
+    "expected": "40\n145\nundefined"
+  }
+}

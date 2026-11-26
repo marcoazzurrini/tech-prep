@@ -1,0 +1,19 @@
+{
+  "title": "Count the Missing",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countMissing(values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return countMissing([1, null, undefined, 0]);"],"expected":2},
+      {"args":["return countMissing([0, \"\", false, NaN]);"],"expected":0},
+      {"args":["return countMissing([]);"],"expected":0},
+      {"args":["return countMissing([undefined, undefined, null]);"],"expected":3},
+      {"args":["return countMissing([\"null\", \"undefined\", null]);"],"expected":1},
+      {"args":["const row = { a: 1 }; return countMissing([row.a, row.b, row.c]);"],"expected":2}
+    ]
+  }
+}

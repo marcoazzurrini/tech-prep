@@ -1,0 +1,21 @@
+{
+  "title": "Pack a Colour",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "packColour"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function packColour(red, green, blue) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[0,0,255],"expected":255},
+      {"args":[0,1,0],"expected":256},
+      {"args":[255,136,0],"expected":16746496},
+      {"args":[0,0,0],"expected":0},
+      {"args":[255,255,255],"expected":16777215},
+      {"args":[1,2,3],"expected":66051}
+    ]
+  }
+}

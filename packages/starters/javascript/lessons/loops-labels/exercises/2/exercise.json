@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let i = 1;\n\nfor (; i < 20; i *= 3) {}\n\nconsole.log(i);\n\nlet n = 10;\n\nfor (;;) {\n  n -= 4;\n  if (n < 0) break;\n}\n\nconsole.log(n);"
+    },
+    "expected": "27\n-2"
+  }
+}

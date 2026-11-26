@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const votes = [];\nconst mean = 0 / votes.length;\n\nconsole.log(mean === mean);\nconsole.log(typeof mean);\nconsole.log(Number.isNaN(\"NaN\"));\nconsole.log(isNaN(\"NaN\"));\nconsole.log(-2 / 0);\nconsole.log(Infinity - 1 === Infinity);"
+    },
+    "expected": "false\nnumber\nfalse\ntrue\n-Infinity\ntrue"
+  }
+}

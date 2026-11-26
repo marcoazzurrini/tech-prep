@@ -1,0 +1,19 @@
+{
+  "title": "The Largest Amount",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function largest(amounts) {\n  return Math.max(...amounts);\n}\n"
+    },
+    "tests": [
+      {"args":["return String(largest([3n, 10n, 7n]));"],"expected":"10"},
+      {"args":["return String(largest([3n, 10, 7n]));"],"expected":"10"},
+      {"args":["return typeof largest([2, 9n, 4]);"],"expected":"bigint"},
+      {"args":["return String(largest([9007199254740993n, 9007199254740992]));"],"expected":"9007199254740993"},
+      {"args":["return String(largest([-5n, -2, -9n]));"],"expected":"-2"},
+      {"args":["return typeof largest([8, 3n]);"],"expected":"number"}
+    ]
+  }
+}

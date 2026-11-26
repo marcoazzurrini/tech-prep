@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let level = 1;\nconst start = level;\n\nlevel = level + 2;\nlevel = level * 2;\n\nconsole.log(level);\nconsole.log(start);"
+    },
+    "expected": "6\n1"
+  }
+}

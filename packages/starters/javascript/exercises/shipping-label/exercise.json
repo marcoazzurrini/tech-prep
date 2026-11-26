@@ -1,0 +1,20 @@
+{
+  "title": "Shipping Label",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shippingLabel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function shippingLabel(order) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"customer":{"name":"Ada","address":{"city":"Turin"}}}],"expected":"Ada, Turin, Italy"},
+      {"args":[{"express":true,"customer":{"name":"Ben","address":{"city":"Oslo","country":"Norway"}}}],"expected":"Ben, Oslo, Norway (express)"},
+      {"args":[{"express":false,"customer":{"name":"Cy","address":{"city":"Lyon","country":"France"}}}],"expected":"Cy, Lyon, France"},
+      {"args":[{"express":true,"id":12,"customer":{"name":"Dee","address":{"city":"Bari","street":"Via Roma 1"}}}],"expected":"Dee, Bari, Italy (express)"},
+      {"args":[{"customer":{"name":"Eli","vip":true,"address":{"city":"Kyoto","country":"Japan"}}}],"expected":"Eli, Kyoto, Japan"}
+    ]
+  }
+}

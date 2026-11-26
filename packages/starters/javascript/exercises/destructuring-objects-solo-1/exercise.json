@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const book = { title: \"Dune\", pages: null, year: 1965 };\nconst { title: name, pages = 100, rating = 5, ...others } = book;\n\nconsole.log(name);\nconsole.log(pages);\nconsole.log(rating);\nconsole.log(Object.keys(others).join(\",\"));"
+    },
+    "expected": "Dune\nnull\n5\nyear"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let count = 0;\nlet flag = null;\n\nfunction bump() {\n  count += 1;\n  return count;\n}\n\nflag ??= bump();\nflag ??= bump();\nflag &&= bump();\nflag ||= bump();\nconsole.log(flag, count);\n\nlet a = 3;\nconst b = (a += 2) * (a -= 1);\nconsole.log(a, b);\n\nlet text = \"5\";\ntext += 5;\ntext -= 5;\nconsole.log(text, typeof text);"
+    },
+    "expected": "2 2\n4 20\n50 number"
+  }
+}

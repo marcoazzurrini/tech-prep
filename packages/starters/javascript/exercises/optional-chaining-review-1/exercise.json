@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let count = 0;\n\nfunction next() {\n  count += 1;\n  return count;\n}\n\nconst store = {\n  list: null,\n  cache: { get: (key) => key * 10 },\n};\n\nconsole.log(store.list?.[next()]);\nconsole.log(store.cache?.get(next()));\nconsole.log(store.index?.get(next()).size);\nconsole.log(count);\n\ntry {\n  console.log(store.cache?.index.size);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "undefined\n10\nundefined\n1\nTypeError"
+  }
+}

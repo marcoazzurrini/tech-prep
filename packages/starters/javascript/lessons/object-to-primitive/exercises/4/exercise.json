@@ -1,0 +1,18 @@
+{
+  "title": "Deadline",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const DAY = 86_400_000;\n\nexport function deadline(start, days) {\n  return new Date(start + days * DAY);\n}\n"
+    },
+    "tests": [
+      {"args":["return deadline(new Date(0), 1).getTime();"],"expected":86400000},
+      {"args":["return deadline(new Date(5000), 2).getTime();"],"expected":172805000},
+      {"args":["return deadline(new Date(1000), 0).getTime();"],"expected":1000},
+      {"args":["return deadline(new Date(86_400_000), 30).getTime();"],"expected":2678400000},
+      {"args":["const start = new Date(0); deadline(start, 3); return start.getTime();"],"expected":0}
+    ]
+  }
+}
