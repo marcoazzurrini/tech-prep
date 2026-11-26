@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const steps = [];\n\nfunction open() {\n  steps.push(\"open\");\n}\n\nconst close = function () {\n  steps.push(\"close\");\n  return steps.length;\n};\n\nconst last = () => steps[steps.length - 1];\n\nconsole.log(open());\nconsole.log(close());\nconsole.log(last());\nconsole.log(typeof last);"
+    },
+    "expected": "undefined\n2\nclose\nfunction"
+  }
+}

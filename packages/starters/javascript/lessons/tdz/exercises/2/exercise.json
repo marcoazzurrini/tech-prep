@@ -1,0 +1,20 @@
+{
+  "title": "Shipping Cost",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shippingCost"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function shippingCost(weight) {\n  const cost = rateFor(weight);\n  const rates = { light: 4, heavy: 9 };\n\n  function rateFor(kilos) {\n    return kilos > 10 ? rates.heavy : rates.light;\n  }\n\n  return cost;\n}\n"
+    },
+    "tests": [
+      {"args":[2],"expected":4},
+      {"args":[10],"expected":4},
+      {"args":[11],"expected":9},
+      {"args":[40],"expected":9},
+      {"args":[0],"expected":4}
+    ]
+  }
+}

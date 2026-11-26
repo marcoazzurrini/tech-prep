@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const typed = \"7\";\n\nconsole.log(typed == 7);\nconsole.log(typed === 7);\nconsole.log(typed !== 7);\nconsole.log(typed != 7);\nconsole.log(typed == \"7.0\");\nconsole.log(NaN != NaN);"
+    },
+    "expected": "true\nfalse\ntrue\nfalse\nfalse\ntrue"
+  }
+}

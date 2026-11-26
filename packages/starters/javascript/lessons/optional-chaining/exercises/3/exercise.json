@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let asked = 0;\n\nfunction nextIndex() {\n  asked += 1;\n  return 0;\n}\n\nconst shelves = { top: null, low: { books: [\"Dune\"] } };\n\nconsole.log(shelves.top?.books[nextIndex()].length);\nconsole.log(shelves.low?.books[nextIndex()].length);\nconsole.log(asked);\n\ntry {\n  console.log(shelves.low?.films.length);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "undefined\n4\n1\nTypeError"
+  }
+}

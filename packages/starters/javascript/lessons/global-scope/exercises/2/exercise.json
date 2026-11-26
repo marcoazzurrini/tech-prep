@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "var level = 1;\nconst lives = 3;\n\nfunction restart() {\n  return \"go\";\n}\n\nglobalThis.level = 9;\nglobalThis.score = 40;\n\nconsole.log(level);\nconsole.log(globalThis.lives);\nconsole.log(typeof globalThis.restart);\nconsole.log(score + level);"
+    },
+    "expected": "1\nundefined\nundefined\n41"
+  }
+}

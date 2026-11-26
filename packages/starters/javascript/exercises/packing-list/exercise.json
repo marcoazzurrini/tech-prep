@@ -1,0 +1,20 @@
+{
+  "title": "Packing List",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "packingList"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function toLine(item) {\n  return prefix + item;\n}\n\nexport function packingList(items, prefix) {\n  const lines = [];\n\n  for (const item of items) {\n    lines.push(toLine(item));\n  }\n\n  return lines;\n}\n"
+    },
+    "tests": [
+      {"args":[["tea","milk"],"- "],"expected":["- tea","- milk"]},
+      {"args":[[],"* "],"expected":[]},
+      {"args":[["stamps"],""],"expected":["stamps"]},
+      {"args":[["a","b","c"],"> "],"expected":["> a","> b","> c"]},
+      {"args":[["cup","cup"],"1 x "],"expected":["1 x cup","1 x cup"]}
+    ]
+  }
+}

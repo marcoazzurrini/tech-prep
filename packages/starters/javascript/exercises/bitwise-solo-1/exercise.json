@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const SALT = 1;\nconst SUGAR = 2;\nconst MILK = 4;\n\nlet cup = SUGAR | MILK;\nconsole.log(cup);\nconsole.log(cup & SALT);\n\ncup = cup ^ SUGAR;\nconsole.log(cup);\nconsole.log(cup << 2);\nconsole.log(~cup);"
+    },
+    "expected": "6\n0\n4\n16\n-5"
+  }
+}

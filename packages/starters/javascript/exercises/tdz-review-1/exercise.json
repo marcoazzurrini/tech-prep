@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const size = \"M\";\n\nfunction pick(label = size, size = \"L\") {\n  return label + size;\n}\n\nfunction attempt(task) {\n  try {\n    return task();\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconsole.log(attempt(() => pick()));\nconsole.log(attempt(() => pick(\"S\")));\nconsole.log(attempt(() => typeof stock));\nconst stock = 0;"
+    },
+    "expected": "ReferenceError\nSL\nReferenceError"
+  }
+}

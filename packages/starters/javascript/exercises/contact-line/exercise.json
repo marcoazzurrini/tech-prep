@@ -1,0 +1,22 @@
+{
+  "title": "Contact Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "contactLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function contactLine(person) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"phone":"555 0100","email":"ada@example.com"}],"expected":"555 0100"},
+      {"args":[{"phone":"","email":"bo@example.com"}],"expected":"bo@example.com"},
+      {"args":[{"phone":null}],"expected":"no contact"},
+      {"args":[null],"expected":"no contact"},
+      {"args":[{"email":"cy@example.com"}],"expected":"cy@example.com"},
+      {"args":[{"phone":"555 0199","email":null}],"expected":"555 0199"},
+      {"args":[{"phone":"","email":""}],"expected":"no contact"}
+    ]
+  }
+}

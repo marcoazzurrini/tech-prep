@@ -1,0 +1,20 @@
+{
+  "title": "The Owner's Email",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "ownerEmail"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function ownerEmail(project) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"owner":{"email":"ada@example.com"}}],"expected":"ada@example.com"},
+      {"args":[{"owner":null}],"expected":"nobody"},
+      {"args":[{"owner":{"name":"Bo"}}],"expected":"nobody"},
+      {"args":[{}],"expected":"nobody"},
+      {"args":[{"owner":{"name":"Cy","email":null}}],"expected":"nobody"}
+    ]
+  }
+}

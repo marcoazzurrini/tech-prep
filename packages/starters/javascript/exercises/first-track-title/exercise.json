@@ -1,0 +1,22 @@
+{
+  "title": "First Track",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "firstTrackTitle"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstTrackTitle(album) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"tracks":[{"title":"Intro"},{"title":"Rain"}]}],"expected":"INTRO"},
+      {"args":[{"tracks":[]}],"expected":null},
+      {"args":[{"name":"Demo"}],"expected":null},
+      {"args":[null],"expected":null},
+      {"args":[{"tracks":[{"length":180}]}],"expected":null},
+      {"args":[{"tracks":null}],"expected":null},
+      {"args":[{"tracks":[{"title":null},{"title":"Rain"}]}],"expected":null}
+    ]
+  }
+}

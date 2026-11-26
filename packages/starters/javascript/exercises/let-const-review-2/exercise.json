@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let title = \"draft\";\nconst first = title;\ntitle = title.toUpperCase();\n\nconst tags = [\"new\"];\nconst sameTags = tags;\nlet moreTags = tags;\n\nmoreTags = [...moreTags, title];\ntags.push(first);\n\nconsole.log(first);\nconsole.log(title);\nconsole.log(sameTags.join(\",\"));\nconsole.log(moreTags.join(\",\"));"
+    },
+    "expected": "draft\nDRAFT\nnew,draft\nnew,DRAFT"
+  }
+}

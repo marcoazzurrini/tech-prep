@@ -1,0 +1,19 @@
+{
+  "title": "Update a Task",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function updateTask(task, changes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return updateTask({ id: 1, title: \"Buy milk\", done: false }, { done: true });"],"expected":{"id":1,"title":"Buy milk","done":true}},
+      {"args":["return updateTask({ id: 1, title: \"Buy milk\" }, { id: 99, title: \"Buy tea\" });"],"expected":{"id":1,"title":"Buy tea"}},
+      {"args":["const task = { id: 2, done: false }; updateTask(task, { done: true }); return task;"],"expected":{"id":2,"done":false}},
+      {"args":["return updateTask({ id: 3, title: \"Call Ben\" }, { note: \"after lunch\" });"],"expected":{"id":3,"title":"Call Ben","note":"after lunch"}},
+      {"args":["const task = { id: 4 }; return updateTask(task, {}) === task;"],"expected":false},
+      {"args":["return updateTask({ id: 5, done: true }, {});"],"expected":{"id":5,"done":true}}
+    ]
+  }
+}

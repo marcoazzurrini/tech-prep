@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const label = \"none\";\n\nfor (const code of [1, 2]) {\n  let text = label;\n\n  switch (code) {\n    case 1: {\n      const label = \"one\";\n      text = label;\n    }\n    case 2: {\n      text += \"+\" + label;\n    }\n  }\n\n  console.log(text);\n}"
+    },
+    "expected": "one+none\nnone+none"
+  }
+}

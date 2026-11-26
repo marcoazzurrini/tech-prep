@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "var total = 0;\n\nfor (var n = 1; n <= 4; n++) {\n  var square = n * n;\n  total += square;\n}\n\nconsole.log(n);\nconsole.log(square);\nconsole.log(total);"
+    },
+    "expected": "5\n16\n30"
+  }
+}

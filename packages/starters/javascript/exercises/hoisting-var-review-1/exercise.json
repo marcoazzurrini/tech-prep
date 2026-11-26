@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "var mode = \"day\";\n\nfunction show() {\n  const before = mode;\n\n  if (before === undefined) {\n    var mode = \"night\";\n  }\n\n  return before + \"/\" + mode;\n}\n\nconsole.log(show());\nconsole.log(mode);"
+    },
+    "expected": "undefined/night\nday"
+  }
+}

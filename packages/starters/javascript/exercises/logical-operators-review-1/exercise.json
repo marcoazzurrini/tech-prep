@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let calls = 0;\n\nfunction tick(value) {\n  calls += 1;\n  return value;\n}\n\nconsole.log(tick(0) || tick(\"\") || tick(\"last\"));\nconsole.log(tick(\"a\") && tick(null) && tick(\"b\"));\nconsole.log(calls);\nconsole.log(tick(1) && tick(2) || tick(3));\nconsole.log(calls);"
+    },
+    "expected": "last\nnull\n5\n2\n7"
+  }
+}

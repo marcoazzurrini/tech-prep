@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const n = 4;\nconst list = [\"a\", \"b\"];\nconst text = `${n}\n${n * 2}`;\n\nconsole.log(`${n}${n}` === `${n + n}`);\nconsole.log(text.length);\nconsole.log(`${list.map((item) => `${item}${n}`).join(\"\")}`);\nconsole.log(typeof `${n > 3}`);\nconsole.log(`\\${n}`.length);\nconsole.log(`${list[2]}!`);"
+    },
+    "expected": "false\n3\na4b4\nstring\n4\nundefined!"
+  }
+}

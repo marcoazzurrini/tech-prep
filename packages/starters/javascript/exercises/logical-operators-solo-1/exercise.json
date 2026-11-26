@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(0 || \"\" || \"none\");\nconsole.log(\"a\" && 0 && \"b\");\nconsole.log([] && \"list\");\nconsole.log(null || undefined);\nconsole.log(\"yes\" && \"no\");"
+    },
+    "expected": "none\n0\nlist\nundefined\nno"
+  }
+}

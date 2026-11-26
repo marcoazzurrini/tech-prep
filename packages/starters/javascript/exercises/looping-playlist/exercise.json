@@ -1,0 +1,23 @@
+{
+  "title": "Looping Playlist",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "trackAt"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function trackAt(position, count) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[7,5],"expected":2},
+      {"args":[-1,5],"expected":4},
+      {"args":[5,5],"expected":0},
+      {"args":[0,3],"expected":0},
+      {"args":[-5,5],"expected":0},
+      {"args":[-13,5],"expected":2},
+      {"args":[2,1],"expected":0},
+      {"args":[-7,3],"expected":2}
+    ]
+  }
+}

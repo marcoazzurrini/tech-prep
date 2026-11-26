@@ -1,0 +1,19 @@
+{
+  "title": "Same Value",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sameValue(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [sameValue(1, 1), sameValue(1, 2), sameValue(\"a\", \"a\")];"],"expected":[true,false,true]},
+      {"args":["return [sameValue(NaN, NaN), sameValue(NaN, 1), sameValue(0 / 0, NaN)];"],"expected":[true,false,true]},
+      {"args":["return [sameValue(0, -0), sameValue(-0, 0), sameValue(-0, -0), sameValue(0, 0)];"],"expected":[false,false,true,true]},
+      {"args":["return [sameValue(null, null), sameValue(null, undefined), sameValue(1, \"1\")];"],"expected":[true,false,false]},
+      {"args":["return [sameValue(Infinity, Infinity), sameValue(Infinity, -Infinity)];"],"expected":[true,false]},
+      {"args":["return [sameValue(\"NaN\", NaN), sameValue(undefined, NaN), sameValue(\"\", 0)];"],"expected":[false,false,false]}
+    ]
+  }
+}

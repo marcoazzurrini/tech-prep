@@ -1,0 +1,20 @@
+{
+  "title": "First Answer",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstAnswer(askers) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return firstAnswer([() => {}, () => 7, () => 9]);"],"expected":7},
+      {"args":["return firstAnswer([]);"],"expected":"no answer"},
+      {"args":["return firstAnswer([function () { return; }, function () {}]);"],"expected":"no answer"},
+      {"args":["return firstAnswer([() => null, () => 1]);"],"expected":null},
+      {"args":["return firstAnswer([() => undefined, () => 0, () => 5]);"],"expected":0},
+      {"args":["let n = 0; const ask = () => { n += 1; }; firstAnswer([ask, () => \"a\", ask, ask]); return n;"],"expected":1},
+      {"args":["let n = 0; const ask = () => { n += 1; return n; }; return [firstAnswer([ask, ask]), n];"],"expected":[1,1]}
+    ]
+  }
+}

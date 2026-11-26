@@ -1,0 +1,19 @@
+{
+  "title": "Claim a Name",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function claim(name, value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const ok = claim(\"shopTheme\", \"dark\"); const got = shopTheme; delete globalThis.shopTheme; return [ok, got];"],"expected":[true,"dark"]},
+      {"args":["return [claim(\"encodeURI\", 1), typeof encodeURI];"],"expected":[false,"function"]},
+      {"args":["claim(\"tillId\", 7); const again = claim(\"tillId\", 8); const got = tillId; delete globalThis.tillId; return [again, got];"],"expected":[false,7]},
+      {"args":["claim(\"note\", \"\"); const again = claim(\"note\", \"x\"); const got = note; delete globalThis.note; return [again, got];"],"expected":[false,""]},
+      {"args":["const ok = claim(\"openTills\", 0); const got = openTills + 1; delete globalThis.openTills; return [ok, got];"],"expected":[true,1]},
+      {"args":["return [claim(\"isFinite\", null), isFinite(8)];"],"expected":[false,true]}
+    ]
+  }
+}

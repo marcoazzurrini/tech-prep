@@ -1,0 +1,21 @@
+{
+  "title": "Positions Of",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "positionsOf"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function positionsOf(list, wanted) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["a","b","a"],"a"],"expected":[0,2]},
+      {"args":[[],1],"expected":[]},
+      {"args":[[1,2,3],4],"expected":[]},
+      {"args":[[5,5,5],5],"expected":[0,1,2]},
+      {"args":[[1,"1",1],1],"expected":[0,2]},
+      {"args":[["x","y","z","y"],"y"],"expected":[1,3]}
+    ]
+  }
+}

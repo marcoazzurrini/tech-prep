@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const stock = [12, null, undefined, 7, 3];\nconst [pens = 0, inks = 0, pads = 0, ...others] = stock;\n\nconsole.log(pens);\nconsole.log(inks);\nconsole.log(pads);\nconsole.log(others.length);"
+    },
+    "expected": "12\nnull\n0\n2"
+  }
+}

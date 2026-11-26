@@ -1,0 +1,21 @@
+{
+  "title": "Longest Jump",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "longestJump"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function longestJump(jumps) {\n  let best = jumps[0];\n\n  for (const jump of jumps) {\n    if (jump > best) {\n      best = jump;\n    }\n  }\n\n  return Number(best);\n}\n"
+    },
+    "tests": [
+      {"args":[["98","102","9"]],"expected":102},
+      {"args":[["45"]],"expected":45},
+      {"args":[["100","20","3"]],"expected":100},
+      {"args":[["7","70","700"]],"expected":700},
+      {"args":[["250","1000","999"]],"expected":1000},
+      {"args":[["5","5","5"]],"expected":5}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const menu = {\n  dishes: [\"soup\", \"rice\"],\n  specials: null,\n  describe: (dish) => `today: ${dish}`,\n};\n\nconsole.log(menu.dishes?.[1]);\nconsole.log(menu.specials?.[0]);\nconsole.log(menu.describe?.(\"soup\"));\nconsole.log(menu.rate?.(\"soup\"));\nconsole.log(menu.specials?.length ?? 0);"
+    },
+    "expected": "rice\nundefined\ntoday: soup\nundefined\n0"
+  }
+}

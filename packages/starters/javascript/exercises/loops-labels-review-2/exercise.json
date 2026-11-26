@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const commands = [\"go\", \"skip\", \"go\", \"stop\", \"go\"];\nlet moves = 0;\nlet i = 0;\n\nfor (; i < commands.length; i++) {\n  switch (commands[i]) {\n    case \"skip\":\n      continue;\n    case \"stop\":\n      break;\n    default:\n      moves++;\n  }\n\n  moves += 10;\n}\n\nconsole.log(moves, i);"
+    },
+    "expected": "43 5"
+  }
+}

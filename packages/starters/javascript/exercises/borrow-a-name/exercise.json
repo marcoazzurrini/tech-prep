@@ -1,0 +1,19 @@
+{
+  "title": "Borrow a Name",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withSetting(name, value, task) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const got = withSetting(\"locale\", \"fr\", () => locale); return [got, typeof locale];"],"expected":["fr","undefined"]},
+      {"args":["globalThis.lang = \"en\"; const got = [withSetting(\"lang\", \"fr\", () => lang), lang]; delete globalThis.lang; return got;"],"expected":["fr","en"]},
+      {"args":["try { withSetting(\"depth\", 2, () => { throw new Error(\"stop\"); }); } catch (e) { return [e.message, typeof depth]; }"],"expected":["stop","undefined"]},
+      {"args":["return withSetting(\"indent\", 1, () => withSetting(\"indent\", 2, () => indent) + indent);"],"expected":3},
+      {"args":["return [withSetting(\"unit\", \"kg\", () => 5 + unit), typeof unit];"],"expected":["5kg","undefined"]},
+      {"args":["globalThis.tries = 3; try { withSetting(\"tries\", 9, () => missing()); } catch (e) { return [e.name, tries]; }"],"expected":["ReferenceError",3]}
+    ]
+  }
+}

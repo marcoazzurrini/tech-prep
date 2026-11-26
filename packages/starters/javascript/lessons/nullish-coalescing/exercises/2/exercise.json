@@ -1,0 +1,21 @@
+{
+  "title": "Which Discount",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "discountFor"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function discountFor(order, customer) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"discount":20},{"discount":5}],"expected":20},
+      {"args":[{"discount":0},{"discount":5}],"expected":0},
+      {"args":[{},{"discount":5}],"expected":5},
+      {"args":[{"discount":null},{}],"expected":0},
+      {"args":[{"discount":null},{"discount":0}],"expected":0},
+      {"args":[{},{"discount":null}],"expected":0}
+    ]
+  }
+}

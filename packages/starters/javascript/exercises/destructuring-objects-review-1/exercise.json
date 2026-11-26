@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const config = { port: 0, host: null, retry: { times: 3 } };\nconst { port = 80, host = \"local\", retry: { times, delay = 100 }, ...more } = config;\n\nconsole.log(port, host);\nconsole.log(times + delay);\nconsole.log(Object.keys(more).length);\nconsole.log(typeof retry);\n\ntry {\n  const { cache: { size } } = config;\n  console.log(size);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "0 null\n103\n0\nundefined\nTypeError"
+  }
+}

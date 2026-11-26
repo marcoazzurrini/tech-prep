@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const trip = {\n  from: { city: \"Rome\", gate: \"B4\" },\n  to: { city: \"Oslo\" },\n};\nconst { from: { gate }, to: { city, gate: arrival = \"?\" } } = trip;\n\nconsole.log(gate);\nconsole.log(city);\nconsole.log(arrival);\nconsole.log(typeof to);"
+    },
+    "expected": "B4\nOslo\n?\nundefined"
+  }
+}

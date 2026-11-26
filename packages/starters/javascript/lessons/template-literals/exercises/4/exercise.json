@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const done = 3;\nconst steps = 3;\nconst names = [\"x\", \"y\"];\n\nconsole.log(`${`${done}/${steps}`} done`);\nconsole.log(`${done === steps ? `all ${steps}` : `${steps - done} left`}`);\nconsole.log(`<${names.map((name) => `${name}${name}`).join(\"|\")}>`);\nconsole.log(`${`${`a`}b`}c`.length);"
+    },
+    "expected": "3/3 done\nall 3\n<xx|yy>\n3"
+  }
+}

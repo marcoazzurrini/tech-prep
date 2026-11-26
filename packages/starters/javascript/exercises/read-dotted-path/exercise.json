@@ -1,0 +1,25 @@
+{
+  "title": "Read a Path",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "readPath"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readPath(data, path) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"user":{"name":"Ada"}},"user.name"],"expected":"Ada"},
+      {"args":[{"user":{"name":"Ada"}},"user.age"],"expected":"missing"},
+      {"args":[{"user":{"boss":null}},"user.boss"],"expected":null},
+      {"args":[{"user":{"boss":null}},"user.boss.name"],"expected":"missing"},
+      {"args":[{"a":{"b":{"c":{"d":0}}}},"a.b.c.d"],"expected":0},
+      {"args":[{"a":{"b":{"c":{"d":0}}}},"a.x.c.d"],"expected":"missing"},
+      {"args":[{"total":12},"total"],"expected":12},
+      {"args":[{},"total.amount"],"expected":"missing"},
+      {"args":[{"shop":{"open":false,"name":""}},"shop.open"],"expected":false},
+      {"args":[{"shop":{"open":false,"name":""}},"shop.name"],"expected":""}
+    ]
+  }
+}

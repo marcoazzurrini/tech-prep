@@ -1,0 +1,19 @@
+{
+  "title": "Order from Template",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const template = { customer: \"\", items: [], paid: false };\n\nexport function startOrder(customer) {\n  const order = template;\n  order.customer = customer;\n  return order;\n}\n"
+    },
+    "tests": [
+      {"args":["const a = startOrder(\"Ada\"); const b = startOrder(\"Bo\"); return [a.customer, b.customer];"],"expected":["Ada","Bo"]},
+      {"args":["const a = startOrder(\"Ada\"); a.items.push(\"tea\"); return startOrder(\"Bo\").items;"],"expected":[]},
+      {"args":["const a = startOrder(\"Cy\"); a.paid = true; return startOrder(\"Di\").paid;"],"expected":false},
+      {"args":["const a = startOrder(\"Eve\"); return [a.customer, a.items.length, a.paid];"],"expected":["Eve",0,false]},
+      {"args":["const a = startOrder(\"Ada\"); const b = startOrder(\"Ada\"); return a === b;"],"expected":false},
+      {"args":["const a = startOrder(\"Flo\"); a.items.push(\"x\", \"y\"); return [a.items.length, startOrder(\"Gus\").items.length];"],"expected":[2,0]}
+    ]
+  }
+}

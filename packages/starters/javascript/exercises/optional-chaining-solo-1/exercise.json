@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const team = {\n  lead: { name: \"Ada\", phone: null },\n  members: [],\n};\n\nconsole.log(team.lead?.name);\nconsole.log(team.lead.phone?.length);\nconsole.log(team.members[0]?.name);\nconsole.log(team.members?.length);\nconsole.log(team.intern?.name ?? \"no intern\");"
+    },
+    "expected": "Ada\nundefined\nundefined\n0\nno intern"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function check(stock) {\n  if (stock === 0) {\n    var warning = \"sold out\";\n  }\n\n  for (var i = 0; i < stock; i++) {\n    var last = i;\n  }\n\n  return warning + \" \" + last;\n}\n\nconsole.log(check(0));\nconsole.log(check(2));"
+    },
+    "expected": "sold out undefined\nundefined 1"
+  }
+}

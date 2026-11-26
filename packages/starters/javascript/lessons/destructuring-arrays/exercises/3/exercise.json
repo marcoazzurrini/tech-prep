@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let gold = \"Ada\";\nlet silver = \"Ben\";\nlet bronze = \"Cy\";\n[gold, silver, bronze] = [bronze, gold, silver];\n\nconst grid = [[1, 2], [3, 4], [5, 6]];\nconst [[a], , [, b]] = grid;\n\nconsole.log(gold);\nconsole.log(silver);\nconsole.log(bronze);\nconsole.log(a + b);"
+    },
+    "expected": "Cy\nAda\nBen\n7"
+  }
+}

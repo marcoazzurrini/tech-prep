@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const original = { count: 1 };\nconst alias = original;\nconst twin = { count: 1 };\n\nalias.count += 1;\ntwin.count += 1;\n\nconsole.log(original.count);\nconsole.log(original === alias);\nconsole.log(original === twin);\nconsole.log(original.count === twin.count);"
+    },
+    "expected": "2\ntrue\nfalse\ntrue"
+  }
+}

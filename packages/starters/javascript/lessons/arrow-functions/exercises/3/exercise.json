@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const emptyCart = () => ({});\nconst nothing = () => {};\nconst cart = () => ({ total: 3 });\nconst broken = () => { total: 3 };\n\nconsole.log(typeof emptyCart());\nconsole.log(typeof nothing());\nconsole.log(cart().total);\nconsole.log(typeof broken());"
+    },
+    "expected": "object\nundefined\n3\nundefined"
+  }
+}

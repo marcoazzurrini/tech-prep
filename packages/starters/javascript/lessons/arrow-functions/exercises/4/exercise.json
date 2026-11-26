@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const Point = (x, y) => ({ x, y });\n\nfunction Shape() {}\n\nconst point = Point(1, 2);\n\nconsole.log(point.x + point.y);\nconsole.log(typeof new Shape());\n\ntry {\n  const other = new Point(3, 4);\n  console.log(other.x);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "3\nobject\nTypeError"
+  }
+}

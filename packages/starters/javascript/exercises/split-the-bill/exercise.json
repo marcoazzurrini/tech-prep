@@ -1,0 +1,22 @@
+{
+  "title": "Split the Bill",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "splitBill"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function splitBill(totalCents, people) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1000,3],"expected":[334,333,333]},
+      {"args":[100,4],"expected":[25,25,25,25]},
+      {"args":[2,3],"expected":[1,1,0]},
+      {"args":[0,2],"expected":[0,0]},
+      {"args":[999,1],"expected":[999]},
+      {"args":[1001,2],"expected":[501,500]},
+      {"args":[1999,7],"expected":[286,286,286,286,285,285,285]}
+    ]
+  }
+}

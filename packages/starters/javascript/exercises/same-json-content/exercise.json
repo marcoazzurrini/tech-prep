@@ -1,0 +1,32 @@
+{
+  "title": "Same Content",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sameContent"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sameContent(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"id":1,"tags":["a"]},{"tags":["a"],"id":1}],"expected":true},
+      {"args":[[1,2],[2,1]],"expected":false},
+      {"args":[{"a":null},{"a":{}}],"expected":false},
+      {"args":[[],{}],"expected":false},
+      {"args":[5,5],"expected":true},
+      {"args":["5",5],"expected":false},
+      {"args":[null,null],"expected":true},
+      {"args":[null,{}],"expected":false},
+      {"args":[{},null],"expected":false},
+      {"args":[{"a":1},{"a":1,"b":2}],"expected":false},
+      {"args":[{"a":1,"b":2},{"a":1}],"expected":false},
+      {"args":[{"a":1},{"b":1}],"expected":false},
+      {"args":[[1,2,3],[1,2]],"expected":false},
+      {"args":[{"0":1},[1]],"expected":false},
+      {"args":[{"a":{"b":{"c":[1,{"d":2}]}}},{"a":{"b":{"c":[1,{"d":2}]}}}],"expected":true},
+      {"args":[{"a":{"b":{"c":[1,{"d":2}]}}},{"a":{"b":{"c":[1,{"d":3}]}}}],"expected":false},
+      {"args":[[[],[[]]],[[],[[]]]],"expected":true}
+    ]
+  }
+}

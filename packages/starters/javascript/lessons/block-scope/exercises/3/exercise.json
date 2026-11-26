@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let name = \"outer\";\nlet count = 0;\n\n{\n  let name = \"inner\";\n  count = count + 1;\n\n  {\n    name = \"changed\";\n    count = count + 1;\n  }\n\n  console.log(name);\n}\n\nconsole.log(name);\nconsole.log(count);"
+    },
+    "expected": "changed\nouter\n2"
+  }
+}

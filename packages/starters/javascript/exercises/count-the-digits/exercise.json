@@ -1,0 +1,22 @@
+{
+  "title": "Count the Digits",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "digitCount"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function digitCount(n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[0],"expected":1},
+      {"args":[7],"expected":1},
+      {"args":[10],"expected":2},
+      {"args":[99],"expected":2},
+      {"args":[100],"expected":3},
+      {"args":[123456],"expected":6},
+      {"args":[9007199254740991],"expected":16}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Equality by Hand",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function looseEquals(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [looseEquals(\"5\", 5), looseEquals(5, \"5\"), looseEquals(\"5\", 6)];"],"expected":[true,true,false]},
+      {"args":["return [looseEquals(null, undefined), looseEquals(undefined, null), looseEquals(null, null)];"],"expected":[true,true,true]},
+      {"args":["return [looseEquals(null, 0), looseEquals(undefined, \"\"), looseEquals(false, null)];"],"expected":[false,false,false]},
+      {"args":["return [looseEquals(\"0\", false), looseEquals(true, \"1\"), looseEquals(true, \"true\")];"],"expected":[true,true,false]},
+      {"args":["return [looseEquals(\"\", 0), looseEquals(\" \", 0), looseEquals(\"a\", \"a\"), looseEquals(\"1\", \"01\")];"],"expected":[true,true,true,false]},
+      {"args":["return [looseEquals(NaN, NaN), looseEquals(0, -0), looseEquals(true, 2)];"],"expected":[false,true,false]},
+      {"args":["return [looseEquals(false, 0), looseEquals(true, true), looseEquals(\"abc\", NaN)];"],"expected":[true,true,false]}
+    ]
+  }
+}

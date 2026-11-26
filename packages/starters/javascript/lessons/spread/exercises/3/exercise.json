@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const team = { name: \"Blue\", members: [\"Ada\"], lead: { name: \"Ben\" } };\nconst clone = { ...team, lead: { ...team.lead } };\n\nclone.name = \"Red\";\nclone.members.push(\"Cy\");\nclone.lead.name = \"Dee\";\n\nconsole.log(team.name);\nconsole.log(team.members.length);\nconsole.log(team.lead.name);\nconsole.log(clone.members === team.members);"
+    },
+    "expected": "Blue\n2\nBen\ntrue"
+  }
+}

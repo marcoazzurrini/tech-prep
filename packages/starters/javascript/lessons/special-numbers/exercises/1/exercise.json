@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const user = { name: \"Kim\" };\nconst nextAge = user.age + 1;\n\nconsole.log(nextAge);\nconsole.log(typeof nextAge);\nconsole.log(nextAge * 0);\nconsole.log(Math.sqrt(-4));"
+    },
+    "expected": "NaN\nnumber\nNaN\nNaN"
+  }
+}

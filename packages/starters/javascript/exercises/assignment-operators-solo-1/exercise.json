@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let n = 5;\nconsole.log((n += 2) + n);\n\nlet name = \"\";\nname ||= \"guest\";\nname &&= name + \"!\";\nconsole.log(name);\n\nlet zero = 0;\nzero ??= 9;\nzero ||= 4;\nconsole.log(zero);\n\nlet x;\nlet y;\nx = y = 3;\nx *= y + 1;\nconsole.log(x, y);"
+    },
+    "expected": "14\nguest!\n4\n12 3"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const config = { retries: null, tags: [\"a\"] };\n\nfunction read(key, fallback) {\n  if (config[key] === undefined) {\n    return fallback;\n  }\n\n  return config[key];\n}\n\nconsole.log(read(\"retries\", 3));\nconsole.log(read(\"timeout\", 30));\nconsole.log(read(\"timeout\"));\nconsole.log(typeof read(\"retries\"));\nconsole.log(config.tags[1] === config.missing);"
+    },
+    "expected": "null\n30\nundefined\nobject\ntrue"
+  }
+}

@@ -30,10 +30,46 @@
     "concepts": ["numbers"]
   },
   {
+    "slug": "looping-playlist",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["numbers"]
+  },
+  {
+    "slug": "split-the-bill",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["numbers"]
+  },
+  {
+    "slug": "receipt-total",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["numbers", "primitive-types"]
+  },
+  {
     "slug": "special-numbers-solo-1",
     "topic": "values",
     "difficulty": "easy",
     "concepts": ["special-numbers"]
+  },
+  {
+    "slug": "sign-label",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["special-numbers"]
+  },
+  {
+    "slug": "same-value",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["special-numbers"]
+  },
+  {
+    "slug": "special-numbers-review-2",
+    "topic": "values",
+    "difficulty": "hard",
+    "concepts": ["special-numbers", "numbers"]
   },
   {
     "slug": "bigint-solo-1",
@@ -42,9 +78,45 @@
     "concepts": ["bigint"]
   },
   {
+    "slug": "exact-factorial",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["bigint"]
+  },
+  {
+    "slug": "bigint-review-1",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["bigint"]
+  },
+  {
+    "slug": "elapsed-milliseconds",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["bigint", "numbers"]
+  },
+  {
     "slug": "strings-solo-1",
     "topic": "values",
     "difficulty": "easy",
+    "concepts": ["strings"]
+  },
+  {
+    "slug": "mask-card-number",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["strings"]
+  },
+  {
+    "slug": "strings-review-1",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["strings"]
+  },
+  {
+    "slug": "squash-repeated-letters",
+    "topic": "values",
+    "difficulty": "medium",
     "concepts": ["strings"]
   },
   {
@@ -54,16 +126,70 @@
     "concepts": ["template-literals"]
   },
   {
+    "slug": "inbox-label",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["template-literals"]
+  },
+  {
+    "slug": "template-literals-review-1",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["template-literals"]
+  },
+  {
+    "slug": "order-receipt-text",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["template-literals", "strings"]
+  },
+  {
     "slug": "null-undefined-solo-1",
     "topic": "values",
     "difficulty": "easy",
     "concepts": ["null-undefined"]
   },
   {
+    "slug": "settings-with-defaults",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["null-undefined"]
+  },
+  {
+    "slug": "null-undefined-review-1",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["null-undefined"]
+  },
+  {
+    "slug": "read-dotted-path",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["null-undefined", "strings"]
+  },
+  {
     "slug": "references-solo-1",
     "topic": "values",
     "difficulty": "easy",
     "concepts": ["references"]
+  },
+  {
+    "slug": "count-distinct-objects",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["references"]
+  },
+  {
+    "slug": "references-review-1",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["references"]
+  },
+  {
+    "slug": "same-json-content",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["references", "primitive-types"]
   },
   {
     "slug": "truthy-falsy-solo-1",
@@ -192,16 +318,70 @@
     "concepts": ["object-to-primitive"]
   },
   {
+    "slug": "version-label",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["object-to-primitive"]
+  },
+  {
+    "slug": "object-to-primitive-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["object-to-primitive"]
+  },
+  {
+    "slug": "posts-per-author",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["object-to-primitive", "references", "to-string"]
+  },
+  {
     "slug": "loose-equality-solo-1",
     "topic": "conversion",
     "difficulty": "easy",
     "concepts": ["loose-equality"]
   },
   {
+    "slug": "equality-by-hand",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["loose-equality"]
+  },
+  {
+    "slug": "loose-equality-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["loose-equality"]
+  },
+  {
+    "slug": "empty-form-fields",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["loose-equality", "null-undefined"]
+  },
+  {
     "slug": "comparison-solo-1",
     "topic": "conversion",
     "difficulty": "easy",
     "concepts": ["comparison"]
+  },
+  {
+    "slug": "longest-jump",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["comparison"]
+  },
+  {
+    "slug": "comparison-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["comparison"]
+  },
+  {
+    "slug": "newer-version",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["comparison", "to-number", "strings"]
   },
   {
     "slug": "sameness-solo-1",
@@ -216,10 +396,46 @@
     "concepts": ["logical-operators"]
   },
   {
+    "slug": "contact-line",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["logical-operators"]
+  },
+  {
+    "slug": "logical-operators-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["logical-operators"]
+  },
+  {
+    "slug": "order-summary-line",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["logical-operators", "truthy-falsy", "null-undefined"]
+  },
+  {
     "slug": "nullish-coalescing-solo-1",
     "topic": "operators",
     "difficulty": "easy",
     "concepts": ["nullish-coalescing"]
+  },
+  {
+    "slug": "fill-gaps-from-fallback",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["nullish-coalescing"]
+  },
+  {
+    "slug": "nullish-coalescing-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["nullish-coalescing"]
+  },
+  {
+    "slug": "layered-settings",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["nullish-coalescing", "logical-operators"]
   },
   {
     "slug": "optional-chaining-solo-1",
@@ -228,10 +444,46 @@
     "concepts": ["optional-chaining"]
   },
   {
+    "slug": "first-track-title",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["optional-chaining"]
+  },
+  {
+    "slug": "optional-chaining-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["optional-chaining"]
+  },
+  {
+    "slug": "run-plugin-hooks",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["optional-chaining", "nullish-coalescing"]
+  },
+  {
     "slug": "assignment-operators-solo-1",
     "topic": "operators",
     "difficulty": "easy",
     "concepts": ["assignment-operators"]
+  },
+  {
+    "slug": "words-by-first-letter",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["assignment-operators"]
+  },
+  {
+    "slug": "assignment-operators-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["assignment-operators"]
+  },
+  {
+    "slug": "first-scores-by-team",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["assignment-operators", "nullish-coalescing"]
   },
   {
     "slug": "increment-decrement-solo-1",
@@ -252,10 +504,46 @@
     "concepts": ["destructuring-arrays"]
   },
   {
+    "slug": "swap-neighbours",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["destructuring-arrays"]
+  },
+  {
+    "slug": "destructuring-arrays-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["destructuring-arrays"]
+  },
+  {
+    "slug": "compare-version-numbers",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["destructuring-arrays", "to-number"]
+  },
+  {
     "slug": "destructuring-objects-solo-1",
     "topic": "operators",
     "difficulty": "easy",
     "concepts": ["destructuring-objects"]
+  },
+  {
+    "slug": "shipping-label",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["destructuring-objects"]
+  },
+  {
+    "slug": "destructuring-objects-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["destructuring-objects"]
+  },
+  {
+    "slug": "leave-out-keys",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["destructuring-objects", "references"]
   },
   {
     "slug": "spread-solo-1",
@@ -264,10 +552,46 @@
     "concepts": ["spread"]
   },
   {
+    "slug": "insert-at-position",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["spread"]
+  },
+  {
+    "slug": "spread-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["spread"]
+  },
+  {
+    "slug": "merge-settings",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["spread", "references"]
+  },
+  {
     "slug": "bitwise-solo-1",
     "topic": "operators",
     "difficulty": "easy",
     "concepts": ["bitwise"]
+  },
+  {
+    "slug": "count-the-ones",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["bitwise"]
+  },
+  {
+    "slug": "power-of-two-check",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["bitwise"]
+  },
+  {
+    "slug": "bitwise-review-2",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["bitwise", "operator-precedence", "to-number"]
   },
   {
     "slug": "switch-solo-1",
@@ -276,16 +600,70 @@
     "concepts": ["switch"]
   },
   {
+    "slug": "days-in-a-month",
+    "topic": "statements",
+    "difficulty": "easy",
+    "concepts": ["switch"]
+  },
+  {
+    "slug": "role-permissions",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["switch"]
+  },
+  {
+    "slug": "switch-review-2",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["switch", "truthy-falsy", "loose-equality"]
+  },
+  {
     "slug": "loops-labels-solo-1",
     "topic": "statements",
     "difficulty": "easy",
     "concepts": ["loops-labels"]
   },
   {
+    "slug": "count-the-digits",
+    "topic": "statements",
+    "difficulty": "easy",
+    "concepts": ["loops-labels"]
+  },
+  {
+    "slug": "seats-together",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["loops-labels"]
+  },
+  {
+    "slug": "loops-labels-review-2",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["loops-labels", "switch"]
+  },
+  {
     "slug": "for-of-solo-1",
     "topic": "statements",
     "difficulty": "easy",
     "concepts": ["for-of"]
+  },
+  {
+    "slug": "longest-letter-run",
+    "topic": "statements",
+    "difficulty": "easy",
+    "concepts": ["for-of"]
+  },
+  {
+    "slug": "first-over-budget",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["for-of"]
+  },
+  {
+    "slug": "for-of-review-2",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["for-of", "loops-labels", "destructuring-arrays"]
   },
   {
     "slug": "automatic-semicolons-solo-1",
@@ -300,10 +678,46 @@
     "concepts": ["let-const"]
   },
   {
+    "slug": "order-from-template",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["let-const"]
+  },
+  {
+    "slug": "seat-row",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["let-const"]
+  },
+  {
+    "slug": "let-const-review-2",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["let-const", "references", "spread"]
+  },
+  {
     "slug": "block-scope-solo-1",
     "topic": "scope",
     "difficulty": "easy",
     "concepts": ["block-scope"]
+  },
+  {
+    "slug": "highest-bid",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["block-scope"]
+  },
+  {
+    "slug": "block-scope-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["block-scope"]
+  },
+  {
+    "slug": "block-scope-review-2",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["block-scope", "switch"]
   },
   {
     "slug": "var-solo-1",
@@ -312,10 +726,46 @@
     "concepts": ["var"]
   },
   {
+    "slug": "first-long-word",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["var"]
+  },
+  {
+    "slug": "var-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["var"]
+  },
+  {
+    "slug": "var-review-2",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["var", "block-scope"]
+  },
+  {
     "slug": "hoisting-var-solo-1",
     "topic": "scope",
     "difficulty": "easy",
     "concepts": ["hoisting-var"]
+  },
+  {
+    "slug": "delivery-cost",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["hoisting-var"]
+  },
+  {
+    "slug": "hoisting-var-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["hoisting-var"]
+  },
+  {
+    "slug": "hoisting-var-review-2",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["hoisting-var", "logical-operators", "nullish-coalescing"]
   },
   {
     "slug": "hoisting-functions-solo-1",
@@ -330,16 +780,70 @@
     "concepts": ["tdz"]
   },
   {
+    "slug": "billable-hours",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["tdz"]
+  },
+  {
+    "slug": "tdz-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["tdz"]
+  },
+  {
+    "slug": "menu-card",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["tdz", "hoisting-functions"]
+  },
+  {
     "slug": "lexical-scope-solo-1",
     "topic": "scope",
     "difficulty": "easy",
     "concepts": ["lexical-scope"]
   },
   {
+    "slug": "packing-list",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["lexical-scope"]
+  },
+  {
+    "slug": "lexical-scope-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["lexical-scope"]
+  },
+  {
+    "slug": "lexical-scope-review-2",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["lexical-scope", "hoisting-var", "tdz"]
+  },
+  {
     "slug": "global-scope-solo-1",
     "topic": "scope",
     "difficulty": "easy",
     "concepts": ["global-scope"]
+  },
+  {
+    "slug": "claim-a-name",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["global-scope"]
+  },
+  {
+    "slug": "global-scope-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["global-scope"]
+  },
+  {
+    "slug": "borrow-a-name",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["global-scope", "lexical-scope"]
   },
   {
     "slug": "strict-mode-solo-1",
@@ -354,10 +858,46 @@
     "concepts": ["function-forms"]
   },
   {
+    "slug": "result-or-fallback",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["function-forms"]
+  },
+  {
+    "slug": "function-forms-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["function-forms"]
+  },
+  {
+    "slug": "first-answer",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["function-forms", "for-of"]
+  },
+  {
     "slug": "arrow-functions-solo-1",
     "topic": "functions",
     "difficulty": "easy",
     "concepts": ["arrow-functions"]
+  },
+  {
+    "slug": "receipt-lines",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["arrow-functions"]
+  },
+  {
+    "slug": "arrow-functions-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["arrow-functions"]
+  },
+  {
+    "slug": "stock-rows",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["arrow-functions", "nullish-coalescing"]
   },
   {
     "slug": "parameters-solo-1",

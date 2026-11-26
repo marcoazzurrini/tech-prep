@@ -1,0 +1,23 @@
+{
+  "title": "Longest Letter Run",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "longestRun"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function longestRun(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["aabbbc"],"expected":"bbb"},
+      {"args":["abc"],"expected":"a"},
+      {"args":[""],"expected":""},
+      {"args":["zzz"],"expected":"zzz"},
+      {"args":["aabb"],"expected":"aa"},
+      {"args":["abbbccccd"],"expected":"cccc"},
+      {"args":["hello  world"],"expected":"ll"},
+      {"args":["x"],"expected":"x"}
+    ]
+  }
+}

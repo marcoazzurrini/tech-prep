@@ -1,0 +1,20 @@
+{
+  "title": "Totals by Category",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "totalsByCategory"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function totalsByCategory(expenses) {\n  const totals = {};\n\n  for (const expense of expenses) {\n    totals[expense.category] += expense.amount;\n  }\n\n  return totals;\n}\n"
+    },
+    "tests": [
+      {"args":[[{"category":"food","amount":12},{"category":"rent","amount":500},{"category":"food","amount":8}]],"expected":{"food":20,"rent":500}},
+      {"args":[[{"category":"books","amount":30}]],"expected":{"books":30}},
+      {"args":[[{"category":"gift","amount":0},{"category":"gift","amount":0}]],"expected":{"gift":0}},
+      {"args":[[{"category":"a","amount":1},{"category":"b","amount":2},{"category":"a","amount":3},{"category":"b","amount":4}]],"expected":{"a":4,"b":6}},
+      {"args":[[{"category":"refund","amount":-5},{"category":"refund","amount":5},{"category":"tea","amount":2.5}]],"expected":{"refund":0,"tea":2.5}}
+    ]
+  }
+}

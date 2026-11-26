@@ -1,0 +1,20 @@
+{
+  "title": "Parse a Command",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "parseCommand"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function parseCommand(words) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["move","3","north"]],"expected":{"name":"move","args":["3","north"]}},
+      {"args":[["quit"]],"expected":{"name":"quit","args":[]}},
+      {"args":[[]],"expected":{"name":"help","args":[]}},
+      {"args":[["say","hello"]],"expected":{"name":"say","args":["hello"]}},
+      {"args":[["add","1","2","3","4"]],"expected":{"name":"add","args":["1","2","3","4"]}}
+    ]
+  }
+}

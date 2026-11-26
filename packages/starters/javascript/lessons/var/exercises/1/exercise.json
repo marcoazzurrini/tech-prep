@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function badge(points) {\n  if (points >= 100) {\n    var rank = \"gold\";\n  }\n\n  {\n    var note = \"checked\";\n  }\n\n  return rank + \" \" + note;\n}\n\nconsole.log(badge(150));\nconsole.log(typeof rank);\nconsole.log(typeof note);"
+    },
+    "expected": "gold checked\nundefined\nundefined"
+  }
+}

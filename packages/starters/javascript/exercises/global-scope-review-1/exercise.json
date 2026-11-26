@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function attempt(read) {\n  try {\n    return String(read());\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconst parseInt = (text) => text.length;\n\nconsole.log(attempt(() => stock));\nconsole.log(attempt(() => globalThis.stock));\n\nglobalThis.stock = 12;\n\nconsole.log(attempt(() => stock + 1));\nconsole.log(parseInt(\"250\"));\nconsole.log(globalThis.parseInt(\"250\"));"
+    },
+    "expected": "ReferenceError\nundefined\n13\n3\n250"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const steps = [\"a\", \"b\"];\nlet log = \"\";\nlet i = 10;\n\nfor (let i = 0; i < steps.length; i++) {\n  const step = steps[i];\n  log += step + i;\n}\n\nconsole.log(log);\nconsole.log(i);\n\ntry {\n  console.log(step);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "a0b1\n10\nReferenceError"
+  }
+}

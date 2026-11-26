@@ -1,0 +1,22 @@
+{
+  "title": "Elapsed Milliseconds",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "elapsedMs"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function elapsedMs(start, end) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["1700000000000000000","1700000000002500000"],"expected":2},
+      {"args":["1700000000000000100","1700000000001000090"],"expected":0},
+      {"args":["5","5"],"expected":0},
+      {"args":["0","86400000000000"],"expected":86400000},
+      {"args":["1700000000000000100","1700000000001000100"],"expected":1},
+      {"args":["9007199254740993","9007199255740992"],"expected":0},
+      {"args":["999999","1000000"],"expected":0}
+    ]
+  }
+}

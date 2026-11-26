@@ -1,0 +1,18 @@
+{
+  "title": "Add the Bonus",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addBonus(points, bonus) {\n  return points + bonus;\n}\n"
+    },
+    "tests": [
+      {"args":["return String(addBonus(100n, 5));"],"expected":"105"},
+      {"args":["return String(addBonus(9007199254740993n, 2));"],"expected":"9007199254740995"},
+      {"args":["return typeof addBonus(1n, 1);"],"expected":"bigint"},
+      {"args":["return String(addBonus(0n, 0));"],"expected":"0"},
+      {"args":["return String(addBonus(50n, -20));"],"expected":"30"}
+    ]
+  }
+}

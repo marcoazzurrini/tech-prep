@@ -1,0 +1,20 @@
+{
+  "title": "The Manager's Name",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "managerName"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function managerName(employee) {\n  return employee.manager.name;\n}\n"
+    },
+    "tests": [
+      {"args":[{"name":"Bo","manager":{"name":"Ada","manager":null}}],"expected":"Ada"},
+      {"args":[{"name":"Ada","manager":null}],"expected":null},
+      {"args":[{"name":"Cy","manager":{"name":"Bo","manager":{"name":"Ada","manager":null}}}],"expected":"Bo"},
+      {"args":[{"name":"Di","manager":{"name":"","manager":null}}],"expected":""},
+      {"args":[{"name":"Solo","manager":null}],"expected":null}
+    ]
+  }
+}

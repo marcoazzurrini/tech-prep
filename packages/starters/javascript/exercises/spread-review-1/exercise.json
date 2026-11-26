@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const saved = { volume: undefined, muted: true };\nconst settings = { volume: 5, ...saved, ...undefined, muted: false };\nconst rows = [[1, 2], [3]];\nconst copy = [...rows, ...rows[0]];\ncopy[0].push(9);\n\nconsole.log(settings.volume);\nconsole.log(settings.muted);\nconsole.log(rows[0].length);\nconsole.log(copy.length);\n\ntry {\n  console.log([...saved.list].length);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "undefined\nfalse\n3\n4\nTypeError"
+  }
+}

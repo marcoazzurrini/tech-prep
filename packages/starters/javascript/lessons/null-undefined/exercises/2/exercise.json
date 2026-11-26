@@ -1,0 +1,20 @@
+{
+  "title": "First Long Word",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "firstLong"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstLong(words) {\n  words.forEach((word) => {\n    if (word.length > 5) {\n      return word;\n    }\n  });\n}\n"
+    },
+    "tests": [
+      {"args":[["tea","biscuit","sandwich"]],"expected":"biscuit"},
+      {"args":[["tea","cake"]],"expected":"none"},
+      {"args":[[]],"expected":"none"},
+      {"args":[["planet"]],"expected":"planet"},
+      {"args":[["seven","eleven","twenty"]],"expected":"eleven"}
+    ]
+  }
+}

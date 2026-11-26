@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const list = [0];\n\nconsole.log(list == false);\nconsole.log(list == \"\");\nconsole.log(list == [0]);\nconsole.log(list == list);\nconsole.log({} == \"[object Object]\");"
+    },
+    "expected": "true\nfalse\nfalse\ntrue\ntrue"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const list = [1, 2];\nconst other = list;\nother.push(3);\n\nconst point = { x: 0 };\nconst path = [point, point];\npath[0].x = 5;\n\nconst run = () => \"go\";\nconst start = run;\n\nconsole.log(list.length);\nconsole.log(path[1].x);\nconsole.log(point.x);\nconsole.log(start === run);"
+    },
+    "expected": "3\n5\n5\ntrue"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Swap Neighbours",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "swapNeighbours"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function swapNeighbours(list) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[1,2,3,4]],"expected":[2,1,4,3]},
+      {"args":[["a","b","c"]],"expected":["b","a","c"]},
+      {"args":[[]],"expected":[]},
+      {"args":[[7]],"expected":[7]},
+      {"args":[[null,0,"x",false,5,6]],"expected":[0,null,false,"x",6,5]},
+      {"args":[[1,2]],"expected":[2,1]}
+    ]
+  }
+}

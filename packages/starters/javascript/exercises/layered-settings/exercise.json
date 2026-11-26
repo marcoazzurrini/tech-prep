@@ -1,0 +1,22 @@
+{
+  "title": "Layered Settings",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "resolveSetting"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function resolveSetting(key, layers) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["retries",[{"retries":0},{"retries":3}]],"expected":0},
+      {"args":["retries",[null,{},{"retries":3}]],"expected":3},
+      {"args":["debug",[{"debug":null},{"debug":false},{"debug":true}]],"expected":false},
+      {"args":["name",[]],"expected":null},
+      {"args":["title",[{"title":""},{"title":"Draft"}]],"expected":""},
+      {"args":["size",[null,{"colour":"red"},null]],"expected":null},
+      {"args":["size",[{"size":null},null,{"size":12},{"size":40}]],"expected":12}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tax = 5;\n\nfunction total(price) {\n  console.log(price + tax);\n\n  if (price > 50) {\n    try {\n      console.log(price + tax);\n    } catch (error) {\n      console.log(error.name);\n    }\n\n    const tax = 8;\n    console.log(price + tax);\n  }\n}\n\ntotal(100);"
+    },
+    "expected": "105\nReferenceError\n108"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Sign Label",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function signLabel(x) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [signLabel(5), signLabel(-5), signLabel(0)];"],"expected":["positive","negative","zero"]},
+      {"args":["return [signLabel(-0), signLabel(0 * -1)];"],"expected":["negative zero","negative zero"]},
+      {"args":["return [signLabel(NaN), signLabel(0 / 0)];"],"expected":["not a number","not a number"]},
+      {"args":["return [signLabel(Infinity), signLabel(-Infinity)];"],"expected":["positive","negative"]},
+      {"args":["return [signLabel(0.5), signLabel(-0.5), signLabel(1 - 1)];"],"expected":["positive","negative","zero"]},
+      {"args":["return signLabel(Math.sqrt(-9));"],"expected":"not a number"}
+    ]
+  }
+}

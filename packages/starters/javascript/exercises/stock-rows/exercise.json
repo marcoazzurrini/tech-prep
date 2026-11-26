@@ -1,0 +1,21 @@
+{
+  "title": "Stock Rows",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stockRows"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const isShown = (product) => {\n  !product.hidden;\n};\n\nconst leftOf = (product) => product.count || \"unknown\";\n\nexport const stockRows = (products) =>\n  products\n    .filter(isShown)\n    .map((product) => ({ name: product.name, left: leftOf(product) }));\n"
+    },
+    "tests": [
+      {"args":[[{"name":"tea","count":4}]],"expected":[{"name":"tea","left":4}]},
+      {"args":[[{"name":"jam","count":0}]],"expected":[{"name":"jam","left":0}]},
+      {"args":[[{"name":"oil","hidden":true},{"name":"salt"}]],"expected":[{"name":"salt","left":"unknown"}]},
+      {"args":[[{"name":"rice","count":null}]],"expected":[{"name":"rice","left":"unknown"}]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"name":"a","count":1,"hidden":false},{"name":"b","count":2,"hidden":true},{"name":"c","count":0}]],"expected":[{"name":"a","left":1},{"name":"c","left":0}]}
+    ]
+  }
+}

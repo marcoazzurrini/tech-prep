@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const price = function withTax(amount) {\n  return `${typeof withTax} ${amount * 2}`;\n};\n\nconsole.log(price(4));\nconsole.log(typeof price);\nconsole.log(typeof withTax);\n\ntry {\n  withTax(4);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "function 8\nfunction\nundefined\nReferenceError"
+  }
+}

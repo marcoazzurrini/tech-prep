@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function label(size = unit, unit = \"cm\") {\n  return size + unit;\n}\n\nconsole.log(label(30));\n\ntry {\n  console.log(label());\n} catch (error) {\n  console.log(error.name);\n}\n\ntry {\n  console.log(typeof width);\n} catch (error) {\n  console.log(error.name);\n}\n\nconst width = 30;\nconsole.log(typeof height);"
+    },
+    "expected": "30cm\nReferenceError\nReferenceError\nundefined"
+  }
+}

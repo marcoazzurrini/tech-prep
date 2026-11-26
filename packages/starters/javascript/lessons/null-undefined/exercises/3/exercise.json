@@ -1,0 +1,18 @@
+{
+  "title": "Price on the Menu",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function findPrice(menu, dish) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return findPrice([{ dish: \"soup\", price: 4 }, { dish: \"cake\", price: 3 }], \"cake\");"],"expected":3},
+      {"args":["return findPrice([{ dish: \"soup\", price: 4 }], \"cake\") === null;"],"expected":true},
+      {"args":["return findPrice([], \"soup\") === null;"],"expected":true},
+      {"args":["return findPrice([{ dish: \"water\", price: 0 }], \"water\");"],"expected":0},
+      {"args":["return String(findPrice([{ dish: \"tea\", price: 2 }], \"milk\"));"],"expected":"null"}
+    ]
+  }
+}

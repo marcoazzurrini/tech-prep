@@ -1,0 +1,20 @@
+{
+  "title": "Replace One Character",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "replaceAt"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function replaceAt(text, index, char) {\n  text[index] = char;\n\n  return text;\n}\n"
+    },
+    "tests": [
+      {"args":["cold",0,"b"],"expected":"bold"},
+      {"args":["pin",1,"e"],"expected":"pen"},
+      {"args":["bat",2,"g"],"expected":"bag"},
+      {"args":["a",0,"z"],"expected":"z"},
+      {"args":["level",4,"r"],"expected":"lever"}
+    ]
+  }
+}

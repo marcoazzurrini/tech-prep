@@ -1,0 +1,20 @@
+{
+  "title": "Leave Out Keys",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function leaveOut(record, keys) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return leaveOut({ id: 1, name: \"Ada\", age: 36 }, [\"age\"]);"],"expected":{"id":1,"name":"Ada"}},
+      {"args":["return leaveOut({ id: 1, name: \"Ada\" }, [\"id\", \"name\", \"email\"]);"],"expected":{}},
+      {"args":["return leaveOut({ id: 1 }, []);"],"expected":{"id":1}},
+      {"args":["const r = { id: 2, tag: \"x\" }; leaveOut(r, [\"tag\"]); return r;"],"expected":{"id":2,"tag":"x"}},
+      {"args":["const r = { id: 3 }; return leaveOut(r, []) === r;"],"expected":false},
+      {"args":["return leaveOut({ a: null, b: 0, c: \"\", d: false }, [\"b\", \"d\"]);"],"expected":{"a":null,"c":""}},
+      {"args":["return leaveOut({ list: [1, 2], total: 3 }, [\"total\", \"total\"]);"],"expected":{"list":[1,2]}}
+    ]
+  }
+}

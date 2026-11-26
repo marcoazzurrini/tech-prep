@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "var stock = 4;\n\nfunction report() {\n  var text = \"stock: \" + stock;\n\n  if (text.length === 0) {\n    var stock = 0;\n  }\n\n  return text;\n}\n\nconsole.log(report());\nconsole.log(stock);"
+    },
+    "expected": "stock: undefined\n4"
+  }
+}

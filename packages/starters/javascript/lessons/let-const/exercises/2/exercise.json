@@ -1,0 +1,22 @@
+{
+  "title": "Age Group",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "ageGroup"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function ageGroup(age) {\n  let group;\n\n  if (age < 13) {\n    group = \"child\";\n  }\n\n  if (age > 64) {\n    group = \"senior\";\n  }\n\n  return group;\n}\n"
+    },
+    "tests": [
+      {"args":[30],"expected":"adult"},
+      {"args":[8],"expected":"child"},
+      {"args":[70],"expected":"senior"},
+      {"args":[13],"expected":"adult"},
+      {"args":[64],"expected":"adult"},
+      {"args":[65],"expected":"senior"},
+      {"args":[12],"expected":"child"}
+    ]
+  }
+}

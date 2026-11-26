@@ -1,0 +1,21 @@
+{
+  "title": "Longest Streak",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "longestStreak"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function longestStreak(results) {\n  let best = 0;\n\n  for (const result of results) {\n    let streak = 0;\n\n    if (result === \"win\") {\n      streak = streak + 1;\n    } else {\n      streak = 0;\n    }\n\n    if (streak > best) {\n      best = streak;\n    }\n  }\n\n  return best;\n}\n"
+    },
+    "tests": [
+      {"args":[["win","win","loss","win"]],"expected":2},
+      {"args":[["loss","win","win","win"]],"expected":3},
+      {"args":[[]],"expected":0},
+      {"args":[["loss","loss"]],"expected":0},
+      {"args":[["win","loss","win","win","loss","win","win","win","win"]],"expected":4},
+      {"args":[["win"]],"expected":1}
+    ]
+  }
+}

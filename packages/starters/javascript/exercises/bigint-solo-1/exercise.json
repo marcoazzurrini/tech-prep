@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = 9n;\nconst b = 2n;\n\nconsole.log(a / b);\nconsole.log(typeof (a * b));\nconsole.log(a > 8.5);\nconsole.log(a === 9);\n\ntry {\n  console.log(a + 1);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "4n\nbigint\ntrue\nfalse\nTypeError"
+  }
+}

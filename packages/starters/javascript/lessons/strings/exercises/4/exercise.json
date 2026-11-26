@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const first = \"re\" + \"ad\";\nconst second = \"read\";\n\nconsole.log(first === second);\nconsole.log(first === \"Read\");\nconsole.log(\"a\\tb\".length);\nconsole.log(\"\\\\n\".length);\nconsole.log(second.slice(0, 2) + second.slice(2) === second);"
+    },
+    "expected": "true\nfalse\n3\n2\ntrue"
+  }
+}

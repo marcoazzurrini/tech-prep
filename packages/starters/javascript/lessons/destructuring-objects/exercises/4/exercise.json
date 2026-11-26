@@ -1,0 +1,19 @@
+{
+  "title": "A Public Profile",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function publicProfile(account) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return publicProfile({ id: 1, name: \"Ada\", password: \"pw\", token: \"t1\" });"],"expected":{"id":1,"name":"Ada"}},
+      {"args":["return publicProfile({ id: 2 });"],"expected":{"id":2}},
+      {"args":["const a = { id: 3, password: \"pw\" }; publicProfile(a); return a;"],"expected":{"id":3,"password":"pw"}},
+      {"args":["const a = { id: 4, token: \"t4\" }; return publicProfile(a) === a;"],"expected":false},
+      {"args":["return publicProfile({ token: \"t5\", city: \"Oslo\", password: \"pw\", age: 30 });"],"expected":{"city":"Oslo","age":30}},
+      {"args":["return publicProfile({});"],"expected":{}}
+    ]
+  }
+}

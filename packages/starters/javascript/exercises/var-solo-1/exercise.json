@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function pack(items) {\n  for (var i = 0; i < items.length; i++) {\n    var item = items[i];\n\n    if (item.length > 3) {\n      var long = item;\n    }\n  }\n\n  return i + \" \" + item + \" \" + long;\n}\n\nconsole.log(pack([\"pear\", \"fig\"]));\nconsole.log(typeof item);"
+    },
+    "expected": "2 fig pear\nundefined"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const inputs = [1, \"1\", true];\n\nfor (const input of inputs) {\n  switch (input) {\n    case 1:\n      console.log(\"number\");\n      break;\n    case \"1\":\n      console.log(\"text\");\n      break;\n    default:\n      console.log(\"other\");\n  }\n}"
+    },
+    "expected": "number\ntext\nother"
+  }
+}

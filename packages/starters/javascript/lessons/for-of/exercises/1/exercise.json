@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const codes = [\"ab\", \"c\"];\n\nfor (const code of codes) {\n  for (const letter of code) {\n    console.log(letter);\n  }\n}\n\nlet count = 0;\n\nfor (const letter of \"a b\") {\n  count++;\n}\n\nconsole.log(count);"
+    },
+    "expected": "a\nb\nc\n3"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Receipt Lines",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "receiptLines"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const lineTotal = (item) => {\n  item.price * item.qty;\n};\n\nconst toLine = (item) => { total: lineTotal(item) };\n\nexport const receiptLines = (items) => {\n  items.map(toLine);\n};\n"
+    },
+    "tests": [
+      {"args":[[{"price":2,"qty":3}]],"expected":[{"total":6}]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"price":10,"qty":1},{"price":4,"qty":5}]],"expected":[{"total":10},{"total":20}]},
+      {"args":[[{"price":7,"qty":0}]],"expected":[{"total":0}]},
+      {"args":[[{"price":1,"qty":1},{"price":2,"qty":2},{"price":3,"qty":3}]],"expected":[{"total":1},{"total":4},{"total":9}]}
+    ]
+  }
+}

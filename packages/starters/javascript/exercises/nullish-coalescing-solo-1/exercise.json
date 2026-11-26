@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const values = [0, null, false, undefined, NaN, \"null\"];\n\nfor (const value of values) {\n  console.log(value ?? \"fallback\");\n}"
+    },
+    "expected": "0\nfallback\nfalse\nfallback\nNaN\nnull"
+  }
+}

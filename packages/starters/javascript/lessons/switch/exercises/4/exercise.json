@@ -1,0 +1,21 @@
+{
+  "title": "Contact Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "contactLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function contactLine(user) {\n  switch (true) {\n    case user.phone:\n      return `call ${user.phone}`;\n    case user.email:\n      return `write to ${user.email}`;\n    default:\n      return \"no contact\";\n  }\n}\n"
+    },
+    "tests": [
+      {"args":[{"phone":"555 0101","email":"ada@example.com"}],"expected":"call 555 0101"},
+      {"args":[{"email":"ada@example.com"}],"expected":"write to ada@example.com"},
+      {"args":[{"phone":"555 0199"}],"expected":"call 555 0199"},
+      {"args":[{}],"expected":"no contact"},
+      {"args":[{"phone":"","email":"lin@example.com"}],"expected":"write to lin@example.com"},
+      {"args":[{"phone":"","email":""}],"expected":"no contact"}
+    ]
+  }
+}

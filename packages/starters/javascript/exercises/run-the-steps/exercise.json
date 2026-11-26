@@ -1,0 +1,42 @@
+{
+  "title": "Run the Steps",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "stubs": {
+      "javascript": "export function runSteps(value, steps) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {
+        "args": [
+          "return runSteps(10, [(n) => n * 2, (n) => n + 1]);"
+        ]
+      },
+      {
+        "args": [
+          "return runSteps(10, [(n) => n + 1, (n) => n * 2]);"
+        ]
+      },
+      {
+        "args": [
+          "return runSteps(\"tea\", []);"
+        ]
+      },
+      {
+        "args": [
+          "const trim = (s) => s.trim(); const up = (s) => s.toUpperCase(); return runSteps(\" hi \", [trim, up]);"
+        ]
+      },
+      {
+        "args": [
+          "return runSteps(5, [(n) => [n, n], (pair) => pair.length]);"
+        ]
+      },
+      {
+        "args": [
+          "const half = (n) => n / 2; return runSteps(80, [half, half, half]);"
+        ]
+      }
+    ]
+  }
+}

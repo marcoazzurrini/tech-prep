@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let asked = 0;\n\nfunction ask(value) {\n  asked += 1;\n  return value;\n}\n\nconsole.log(ask(0) ?? ask(1));\nconsole.log(ask(null) ?? ask(undefined) ?? ask(false));\nconsole.log((ask(\"\") ?? ask(\"a\")) || ask(\"b\"));\nconsole.log(asked);"
+    },
+    "expected": "0\nfalse\nb\n6"
+  }
+}

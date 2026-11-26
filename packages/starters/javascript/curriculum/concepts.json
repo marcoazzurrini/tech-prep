@@ -16,7 +16,8 @@
     "prereqs": ["primitive-types"],
     "encompasses": [],
     "key_idea": "Every number is a 64-bit float. Whole numbers are exact up to 2^53 - 1. Fractions such as 0.1 are not, so `0.1 + 0.2` is not `0.3`.",
-    "solo": "numbers-solo-1"
+    "guided": 4,
+    "solo": ["numbers-solo-1", "looping-playlist"]
   },
   {
     "id": "special-numbers",
@@ -30,7 +31,8 @@
       }
     ],
     "key_idea": "Bad maths gives `NaN`, not an error. `NaN` is not equal to itself, so test for it with `Number.isNaN`. Dividing by zero gives `Infinity`. `-0` exists and equals `0`.",
-    "solo": "special-numbers-solo-1"
+    "guided": 4,
+    "solo": ["special-numbers-solo-1", "sign-label"]
   },
   {
     "id": "bigint",
@@ -39,7 +41,8 @@
     "prereqs": ["numbers"],
     "encompasses": [],
     "key_idea": "A BigInt is a whole number of any size, written with an `n` at the end. It cannot mix with numbers in maths, and its division drops the fraction.",
-    "solo": "bigint-solo-1"
+    "guided": 4,
+    "solo": ["bigint-solo-1", "exact-factorial"]
   },
   {
     "id": "strings",
@@ -48,7 +51,8 @@
     "prereqs": ["primitive-types"],
     "encompasses": [],
     "key_idea": "A string is a fixed sequence of characters. You can read a character by its index, but no method changes a string: each one returns a new string.",
-    "solo": "strings-solo-1"
+    "guided": 4,
+    "solo": ["strings-solo-1", "mask-card-number"]
   },
   {
     "id": "template-literals",
@@ -57,7 +61,8 @@
     "prereqs": ["strings"],
     "encompasses": [],
     "key_idea": "Backticks make a string that can span lines and hold `${expression}`. The expression is evaluated and converted to a string.",
-    "solo": "template-literals-solo-1"
+    "guided": 4,
+    "solo": ["template-literals-solo-1", "inbox-label"]
   },
   {
     "id": "null-undefined",
@@ -66,7 +71,8 @@
     "prereqs": ["primitive-types"],
     "encompasses": [],
     "key_idea": "`undefined` is what JavaScript gives when a value is missing: an unset variable, a missing property, a function with no `return`. `null` is a value you set yourself to say \"nothing here\".",
-    "solo": "null-undefined-solo-1"
+    "guided": 4,
+    "solo": ["null-undefined-solo-1", "settings-with-defaults"]
   },
   {
     "id": "references",
@@ -75,7 +81,8 @@
     "prereqs": ["primitive-types"],
     "encompasses": [],
     "key_idea": "A primitive is copied when it is assigned. An object is not: the variable holds a reference, so two variables can point at one object. `===` on objects compares identity, not content.",
-    "solo": "references-solo-1"
+    "guided": 4,
+    "solo": ["references-solo-1", "count-distinct-objects"]
   },
   {
     "id": "truthy-falsy",
@@ -158,7 +165,8 @@
       }
     ],
     "key_idea": "To use an object as a primitive, JavaScript calls its `[Symbol.toPrimitive]` method, or else `valueOf` and `toString`. That is why `[] + []` is an empty string.",
-    "solo": "object-to-primitive-solo-1"
+    "guided": 4,
+    "solo": ["object-to-primitive-solo-1", "version-label"]
   },
   {
     "id": "loose-equality",
@@ -172,7 +180,8 @@
       }
     ],
     "key_idea": "`===` compares without converting. `==` converts first: `null` equals only `undefined`, and a string or a boolean becomes a number. Use `===`, except for `x == null`, which tests for both empty values.",
-    "solo": "loose-equality-solo-1"
+    "guided": 4,
+    "solo": ["loose-equality-solo-1", "equality-by-hand"]
   },
   {
     "id": "comparison",
@@ -186,7 +195,8 @@
       }
     ],
     "key_idea": "`<` and `>` compare two strings letter by letter, so `\"10\" < \"9\"`. Any other mix is converted to numbers, and every comparison with `NaN` is false.",
-    "solo": "comparison-solo-1"
+    "guided": 4,
+    "solo": ["comparison-solo-1", "longest-jump"]
   },
   {
     "id": "sameness",
@@ -214,7 +224,8 @@
       }
     ],
     "key_idea": "`a || b` gives `a` if it is truthy, else `b`. `a && b` gives `a` if it is falsy, else `b`. They return one of their operands, not a boolean, and skip the right side when it is not needed.",
-    "solo": "logical-operators-solo-1"
+    "guided": 4,
+    "solo": ["logical-operators-solo-1", "contact-line"]
   },
   {
     "id": "nullish-coalescing",
@@ -228,7 +239,8 @@
       }
     ],
     "key_idea": "`a ?? b` gives `b` only when `a` is `null` or `undefined`. Unlike `||`, it keeps `0`, `\"\"` and `false`.",
-    "solo": "nullish-coalescing-solo-1"
+    "guided": 3,
+    "solo": ["nullish-coalescing-solo-1", "fill-gaps-from-fallback"]
   },
   {
     "id": "optional-chaining",
@@ -237,7 +249,8 @@
     "prereqs": ["nullish-coalescing"],
     "encompasses": [],
     "key_idea": "`a?.b` gives `undefined` when `a` is `null` or `undefined`, and skips the rest of the chain. It also guards calls, `f?.()`, and indexes, `a?.[i]`.",
-    "solo": "optional-chaining-solo-1"
+    "guided": 3,
+    "solo": ["optional-chaining-solo-1", "first-track-title"]
   },
   {
     "id": "assignment-operators",
@@ -251,7 +264,8 @@
       }
     ],
     "key_idea": "An assignment gives back the value it assigned, so `a = b = 1` works from right to left. `||=`, `&&=` and `??=` assign only when the left side calls for it.",
-    "solo": "assignment-operators-solo-1"
+    "guided": 4,
+    "solo": ["assignment-operators-solo-1", "words-by-first-letter"]
   },
   {
     "id": "increment-decrement",
@@ -278,7 +292,8 @@
     "prereqs": ["null-undefined"],
     "encompasses": [],
     "key_idea": "`const [a, b] = list` takes items by position. You can skip items, give defaults for `undefined` ones and collect the rest with `...rest`.",
-    "solo": "destructuring-arrays-solo-1"
+    "guided": 4,
+    "solo": ["destructuring-arrays-solo-1", "swap-neighbours"]
   },
   {
     "id": "destructuring-objects",
@@ -292,7 +307,8 @@
       }
     ],
     "key_idea": "`const { a, b } = obj` takes properties by name. You can rename with `a: x`, give defaults and reach into nested objects. Destructuring `null` or `undefined` throws.",
-    "solo": "destructuring-objects-solo-1"
+    "guided": 4,
+    "solo": ["destructuring-objects-solo-1", "shipping-label"]
   },
   {
     "id": "spread",
@@ -306,7 +322,8 @@
       }
     ],
     "key_idea": "`...` expands an array or an object into a new one, or into the arguments of a call. The copy is one level deep, and a later property wins.",
-    "solo": "spread-solo-1"
+    "guided": 4,
+    "solo": ["spread-solo-1", "insert-at-position"]
   },
   {
     "id": "bitwise",
@@ -315,7 +332,8 @@
     "prereqs": ["numbers"],
     "encompasses": [],
     "key_idea": "Bitwise operators treat a number as a 32-bit integer. `&`, `|`, `^` and `~` work bit by bit, and `<<`, `>>` and `>>>` shift the bits.",
-    "solo": "bitwise-solo-1"
+    "guided": 4,
+    "solo": ["bitwise-solo-1", "count-the-ones"]
   },
   {
     "id": "switch",
@@ -324,7 +342,8 @@
     "prereqs": ["loose-equality"],
     "encompasses": [],
     "key_idea": "`switch` compares with `===` and runs from the matching `case` until a `break`. Without a `break` it falls through into the next case.",
-    "solo": "switch-solo-1"
+    "guided": 4,
+    "solo": ["switch-solo-1", "days-in-a-month"]
   },
   {
     "id": "loops-labels",
@@ -333,7 +352,8 @@
     "prereqs": ["increment-decrement"],
     "encompasses": [],
     "key_idea": "`break` leaves the nearest loop, and `continue` skips to its next round. A label names an outer loop, so `break outer` leaves both.",
-    "solo": "loops-labels-solo-1"
+    "guided": 4,
+    "solo": ["loops-labels-solo-1", "count-the-digits"]
   },
   {
     "id": "for-of",
@@ -342,7 +362,8 @@
     "prereqs": ["loops-labels", "strings"],
     "encompasses": [],
     "key_idea": "`for (const x of list)` visits the values of an array, a string or any other iterable. Unlike `forEach`, it can `break`, `continue` and `return`.",
-    "solo": "for-of-solo-1"
+    "guided": 3,
+    "solo": ["for-of-solo-1", "longest-letter-run"]
   },
   {
     "id": "automatic-semicolons",
@@ -365,7 +386,8 @@
       }
     ],
     "key_idea": "`let` declares a variable you can reassign. `const` cannot be reassigned, but the object it holds can still change.",
-    "solo": "let-const-solo-1"
+    "guided": 3,
+    "solo": ["let-const-solo-1", "order-from-template"]
   },
   {
     "id": "block-scope",
@@ -379,7 +401,8 @@
       }
     ],
     "key_idea": "A `let` or `const` variable lives only inside the `{ }` block where it is declared. An inner block can read outer variables, and can shadow one with its own.",
-    "solo": "block-scope-solo-1"
+    "guided": 4,
+    "solo": ["block-scope-solo-1", "highest-bid"]
   },
   {
     "id": "var",
@@ -393,7 +416,8 @@
       }
     ],
     "key_idea": "`var` ignores blocks: it belongs to the whole function, or to the whole file. It can be declared twice without an error.",
-    "solo": "var-solo-1"
+    "guided": 3,
+    "solo": ["var-solo-1", "first-long-word"]
   },
   {
     "id": "hoisting-var",
@@ -407,7 +431,8 @@
       }
     ],
     "key_idea": "A `var` declaration is moved to the top of its function, but its assignment stays where it is. Before that line the variable holds `undefined`.",
-    "solo": "hoisting-var-solo-1"
+    "guided": 3,
+    "solo": ["hoisting-var-solo-1", "delivery-cost"]
   },
   {
     "id": "hoisting-functions",
@@ -435,7 +460,8 @@
       }
     ],
     "key_idea": "`let`, `const` and `class` are hoisted too, but not initialised. Reading one before its declaration line throws a `ReferenceError`.",
-    "solo": "tdz-solo-1"
+    "guided": 4,
+    "solo": ["tdz-solo-1", "billable-hours"]
   },
   {
     "id": "lexical-scope",
@@ -449,7 +475,8 @@
       }
     ],
     "key_idea": "A function looks up a variable where the function was written, then outward, scope by scope. Where the function is called from does not matter.",
-    "solo": "lexical-scope-solo-1"
+    "guided": 3,
+    "solo": ["lexical-scope-solo-1", "packing-list"]
   },
   {
     "id": "global-scope",
@@ -458,7 +485,8 @@
     "prereqs": ["var", "lexical-scope"],
     "encompasses": [],
     "key_idea": "`globalThis` is the global object, and its properties can be read as plain names everywhere. In a module, top-level variables stay inside the module: nothing is global unless you put it on `globalThis`.",
-    "solo": "global-scope-solo-1"
+    "guided": 3,
+    "solo": ["global-scope-solo-1", "claim-a-name"]
   },
   {
     "id": "strict-mode",
@@ -476,7 +504,8 @@
     "prereqs": ["hoisting-functions"],
     "encompasses": [],
     "key_idea": "A function can be a declaration, an expression or an arrow. Each makes a value you can store, pass and call. A function with no `return` gives `undefined`.",
-    "solo": "function-forms-solo-1"
+    "guided": 3,
+    "solo": ["function-forms-solo-1", "result-or-fallback"]
   },
   {
     "id": "arrow-functions",
@@ -490,7 +519,8 @@
       }
     ],
     "key_idea": "`x => x * 2` returns its expression with no `return`. A body in `{ }` needs `return`, and an object literal needs parentheses: `() => ({ a: 1 })`.",
-    "solo": "arrow-functions-solo-1"
+    "guided": 4,
+    "solo": ["arrow-functions-solo-1", "receipt-lines"]
   },
   {
     "id": "parameters",

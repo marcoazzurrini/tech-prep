@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const price = 10;\n\nfunction read() {\n  return price;\n}\n\nfunction report() {\n  console.log(read(), price);\n\n  var price = 20;\n\n  if (price > 15) {\n    try {\n      console.log(read(), price);\n    } catch (error) {\n      console.log(read(), error.name);\n    }\n\n    let price = 30;\n    console.log(read(), price);\n  }\n\n  console.log(read(), price);\n}\n\nreport();"
+    },
+    "expected": "10 undefined\n10 ReferenceError\n10 30\n10 20"
+  }
+}

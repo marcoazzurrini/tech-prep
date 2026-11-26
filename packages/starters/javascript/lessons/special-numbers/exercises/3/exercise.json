@@ -1,0 +1,19 @@
+{
+  "title": "Keep the Finite Readings",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function keepFinite(readings) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return keepFinite([1, Infinity, 2]);"],"expected":[1,2]},
+      {"args":["return keepFinite([-Infinity, NaN, 0]);"],"expected":[0]},
+      {"args":["return keepFinite([0 / 0, 5 / 0, 5 / 2]);"],"expected":[2.5]},
+      {"args":["return keepFinite([]);"],"expected":[]},
+      {"args":["return keepFinite([1e308 * 10, -3, 1e308]);"],"expected":[-3,1e+308]},
+      {"args":["return keepFinite([4, 5, 6]);"],"expected":[4,5,6]}
+    ]
+  }
+}

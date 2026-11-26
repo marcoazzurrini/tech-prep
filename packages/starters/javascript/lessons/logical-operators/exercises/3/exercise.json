@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function check(name, result) {\n  console.log(`checking ${name}`);\n  return result;\n}\n\nconsole.log(check(\"stock\", true) && check(\"payment\", false) && check(\"address\", true));\nconsole.log(check(\"coupon\", null) || check(\"sale\", \"10% off\"));"
+    },
+    "expected": "checking stock\nchecking payment\nfalse\nchecking coupon\nchecking sale\n10% off"
+  }
+}

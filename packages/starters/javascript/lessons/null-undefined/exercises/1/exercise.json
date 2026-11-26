@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let total;\nconst book = { title: \"Emma\", pages: 474 };\nconst shelf = [book];\n\nconsole.log(total);\nconsole.log(book.author);\nconsole.log(shelf[0].pages);\nconsole.log(shelf[1]);\n\ntry {\n  console.log(shelf[1].title);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "undefined\nundefined\n474\nundefined\nTypeError"
+  }
+}

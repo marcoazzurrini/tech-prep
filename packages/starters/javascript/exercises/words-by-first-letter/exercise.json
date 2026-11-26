@@ -1,0 +1,21 @@
+{
+  "title": "Words by First Letter",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "byFirstLetter"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function byFirstLetter(words) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["apple","bee","ant"]],"expected":{"a":["apple","ant"],"b":["bee"]}},
+      {"args":[[]],"expected":{}},
+      {"args":[["tea"]],"expected":{"t":["tea"]}},
+      {"args":[["cat","cow","crab","dog"]],"expected":{"c":["cat","cow","crab"],"d":["dog"]}},
+      {"args":[["x","y","x","x"]],"expected":{"x":["x","x","x"],"y":["y"]}},
+      {"args":[["Ada","ant","Alan"]],"expected":{"A":["Ada","Alan"],"a":["ant"]}}
+    ]
+  }
+}

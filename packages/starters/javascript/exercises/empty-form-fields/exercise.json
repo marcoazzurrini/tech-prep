@@ -1,0 +1,20 @@
+{
+  "title": "Empty Form Fields",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function emptyFields(form) {\n  const names = [];\n\n  for (const [name, value] of Object.entries(form)) {\n    if (value == \"\") {\n      names.push(name);\n    }\n  }\n\n  return names;\n}\n"
+    },
+    "tests": [
+      {"args":["return emptyFields({ name: \"\", age: 0 });"],"expected":["name"]},
+      {"args":["return emptyFields({ name: \"Ada\", email: null });"],"expected":["email"]},
+      {"args":["return emptyFields({ nick: undefined, news: false, city: \"\" });"],"expected":["nick","city"]},
+      {"args":["return emptyFields({ a: \"0\", b: \" \", c: 0, d: false });"],"expected":[]},
+      {"args":["return emptyFields({ tags: [], note: \"\" });"],"expected":["note"]},
+      {"args":["return emptyFields({});"],"expected":[]},
+      {"args":["return emptyFields({ a: null, b: undefined, c: \"\" });"],"expected":["a","b","c"]}
+    ]
+  }
+}

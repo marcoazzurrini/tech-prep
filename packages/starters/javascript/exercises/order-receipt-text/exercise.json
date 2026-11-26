@@ -1,0 +1,20 @@
+{
+  "title": "Order Receipt",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "receipt"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function receipt(items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"pen","qty":2,"price":3},{"name":"ink","qty":1,"price":15}]],"expected":"2 x Pen = 6\n1 x Ink = 15\nTotal: 21"},
+      {"args":[[]],"expected":"Total: 0"},
+      {"args":[[{"name":"desk lamp","qty":1,"price":40}]],"expected":"1 x Desk lamp = 40\nTotal: 40"},
+      {"args":[[{"name":"Tape","qty":3,"price":2},{"name":"glue","qty":0,"price":5},{"name":"a4 paper","qty":10,"price":4}]],"expected":"3 x Tape = 6\n0 x Glue = 0\n10 x A4 paper = 40\nTotal: 46"},
+      {"args":[[{"name":"x","qty":7,"price":7}]],"expected":"7 x X = 49\nTotal: 49"}
+    ]
+  }
+}

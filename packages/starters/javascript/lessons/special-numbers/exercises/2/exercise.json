@@ -1,0 +1,18 @@
+{
+  "title": "Count the Broken Readings",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countBroken(readings) {\n  let count = 0;\n\n  for (const reading of readings) {\n    if (reading === NaN) {\n      count += 1;\n    }\n  }\n\n  return count;\n}\n"
+    },
+    "tests": [
+      {"args":["return countBroken([1, NaN, 3, NaN]);"],"expected":2},
+      {"args":["return countBroken([0 / 0, 5, Math.sqrt(-1)]);"],"expected":2},
+      {"args":["return countBroken([NaN, \"n/a\", undefined]);"],"expected":1},
+      {"args":["return countBroken([1, 2, 3]);"],"expected":0},
+      {"args":["return countBroken([]);"],"expected":0}
+    ]
+  }
+}

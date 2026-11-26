@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const list = [\"a\", \"b\", \"x\", \"c\"];\nlet first = 0;\n\nlist.forEach((item) => {\n  if (item === \"x\") return;\n  first++;\n});\n\nlet second = 0;\n\nfor (const item of list) {\n  if (item === \"x\") break;\n  second++;\n}\n\nconsole.log(first, second);"
+    },
+    "expected": "3 2"
+  }
+}

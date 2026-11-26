@@ -1,0 +1,19 @@
+{
+  "title": "Run the Hooks",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function runHooks(plugins, event) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return runHooks([{ hooks: { save: () => \"saved\" } }, null, { hooks: {} }, {}], \"save\");"],"expected":["saved","skipped","skipped","skipped"]},
+      {"args":["return runHooks([{ hooks: { save: () => \"\" } }, { hooks: { open: () => \"o\" } }], \"save\");"],"expected":["","skipped"]},
+      {"args":["return runHooks([], \"save\");"],"expected":[]},
+      {"args":["let n = 0; runHooks([{ hooks: { open: () => { n += 1; return \"x\"; } } }, null], \"save\"); return n;"],"expected":0},
+      {"args":["return runHooks([{ hooks: null }, { hooks: { close: () => \"bye\" } }, undefined], \"close\");"],"expected":["skipped","bye","skipped"]},
+      {"args":["return runHooks([{ hooks: { a: () => \"1\", b: () => \"2\" } }, { hooks: { b: () => \"3\" } }], \"b\");"],"expected":["2","3"]}
+    ]
+  }
+}

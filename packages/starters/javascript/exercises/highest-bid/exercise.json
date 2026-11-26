@@ -1,0 +1,21 @@
+{
+  "title": "Highest Bid",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "highestBid"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function highestBid(bids) {\n  let best = { name: \"nobody\", amount: 0 };\n\n  for (const bid of bids) {\n    if (bid.amount > best.amount) {\n      let best = bid;\n    }\n  }\n\n  return best.name;\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"Ada","amount":40},{"name":"Bo","amount":55},{"name":"Cy","amount":30}]],"expected":"Bo"},
+      {"args":[[]],"expected":"nobody"},
+      {"args":[[{"name":"Di","amount":5}]],"expected":"Di"},
+      {"args":[[{"name":"Eve","amount":20},{"name":"Flo","amount":20}]],"expected":"Eve"},
+      {"args":[[{"name":"Gus","amount":90},{"name":"Hal","amount":10}]],"expected":"Gus"},
+      {"args":[[{"name":"Ida","amount":1},{"name":"Jo","amount":2},{"name":"Kim","amount":3}]],"expected":"Kim"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function area(width, height) {\n  const result = width * height;\n}\n\nfunction pick(first, second) {\n  return second;\n}\n\nconst sizes = [2, 4];\nconst box = { lid: null };\n\nconsole.log(area(2, 3));\nconsole.log(pick(\"a\"));\nconsole.log(sizes[sizes.length]);\nconsole.log(box.lid);\nconsole.log(box.base);\nconsole.log(typeof box.lid);"
+    },
+    "expected": "undefined\nundefined\nundefined\nnull\nundefined\nobject"
+  }
+}

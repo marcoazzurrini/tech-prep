@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const stars = 9007199254740992n;\nconst more = stars + 1n;\n\nconsole.log(more);\nconsole.log(typeof more);\nconsole.log(3n * 4n);\nconsole.log(String(more - stars));"
+    },
+    "expected": "9007199254740993n\nbigint\n12n\n1"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let city = \"oslo\";\n\ncity.toUpperCase();\n\nconst first = city[0].toUpperCase();\nconst name = first + city.slice(1);\n\nconsole.log(city);\nconsole.log(name);\nconsole.log(name.at(-1) === city.at(-1));\nconsole.log(city[4]);"
+    },
+    "expected": "oslo\nOslo\ntrue\nundefined"
+  }
+}
