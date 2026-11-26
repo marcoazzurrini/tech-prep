@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { area, SIDES } from \"./shapes.js\";\n\nconsole.log(SIDES * 2);\nconsole.log(area(3, 5));",
+      "files": {
+        "shapes.js": "export const SIDES = 4;\n\nexport function area(width, height) {\n  return width * height;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "8\n15"
+  }
+}

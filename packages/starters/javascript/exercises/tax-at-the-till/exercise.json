@@ -1,0 +1,19 @@
+{
+  "title": "Tax at the Till",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeTill(taxPercent) {\n  const factor = (100 + taxPercent) / 100;\n\n  return {\n    setTax(percent) {\n      taxPercent = percent;\n    },\n    priceOf(amount) {\n      return amount * factor;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const till = makeTill(20); return till.priceOf(100);"],"expected":120},
+      {"args":["const till = makeTill(20); till.setTax(10); return till.priceOf(100);"],"expected":110},
+      {"args":["const till = makeTill(0); till.setTax(50); return [till.priceOf(10), till.priceOf(200)];"],"expected":[15,300]},
+      {"args":["const till = makeTill(10); const before = till.priceOf(100); till.setTax(25); return [before, till.priceOf(100)];"],"expected":[110,125]},
+      {"args":["const a = makeTill(10); const b = makeTill(10); a.setTax(100); return [a.priceOf(50), b.priceOf(50)];"],"expected":[100,55]},
+      {"args":["const till = makeTill(5); till.setTax(20); till.setTax(0); return till.priceOf(40);"],"expected":40}
+    ]
+  }
+}

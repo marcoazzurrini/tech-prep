@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const counter = (function () {\n  let count = 0;\n\n  return function () {\n    count += 1;\n\n    return count;\n  };\n})();\n\nconst twice = (function (fn) {\n  fn();\n\n  return fn();\n})(counter);\n\nconsole.log(twice);\nconsole.log(counter());\nconsole.log(typeof counter);\nconsole.log(typeof count);"
+    },
+    "expected": "2\n3\nfunction\nundefined"
+  }
+}

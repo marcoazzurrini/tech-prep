@@ -1,0 +1,19 @@
+{
+  "title": "Tidy Record",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function tidyRecord(record) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return tidyRecord({ name: \"Ada\", age: 0, city: \"\" });"],"expected":{"name":"Ada","age":0}},
+      {"args":["return tidyRecord({ score: NaN, done: false, note: undefined });"],"expected":{"done":false}},
+      {"args":["return tidyRecord({ a: null, b: [], c: \"0\", d: \" \" });"],"expected":{"b":[],"c":"0","d":" "}},
+      {"args":["return tidyRecord({ n: 0, f: false, t: \"NaN\" });"],"expected":{"n":0,"f":false,"t":"NaN"}},
+      {"args":["const record = { a: null, b: 1 }; tidyRecord(record); return Object.keys(record);"],"expected":["a","b"]},
+      {"args":["return tidyRecord({});"],"expected":{}}
+    ]
+  }
+}

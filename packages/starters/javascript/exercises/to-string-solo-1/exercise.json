@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const scores = [10, 20];\nconst player = { name: \"Bo\" };\n\nconsole.log(`Scores: ${scores}`);\nconsole.log(`Player: ${player}`);\nconsole.log(`Best: ${scores[5]}`);\nconsole.log(String([null]).length);\nconsole.log(String(null).length);"
+    },
+    "expected": "Scores: 10,20\nPlayer: [object Object]\nBest: undefined\n0\n4"
+  }
+}

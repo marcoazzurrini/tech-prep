@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const user = { name: \"Kim\", age: null };\n\nconsole.log(`${user.name} is ${user.age}`);\nconsole.log(`City: ${user.city}`);\nconsole.log(String(false).length);\nconsole.log(String(-0));"
+    },
+    "expected": "Kim is null\nCity: undefined\n5\n0"
+  }
+}

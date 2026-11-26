@@ -1,0 +1,22 @@
+{
+  "title": "CSV Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "csvLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function csvLine(values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["Ada",36,true]],"expected":"Ada,36,true"},
+      {"args":[["Ada",null,"London, UK"]],"expected":"Ada,,\"London, UK\""},
+      {"args":[[]],"expected":""},
+      {"args":[[null,null]],"expected":","},
+      {"args":[["a,b","c",0,false]],"expected":"\"a,b\",c,0,false"},
+      {"args":[[1.5,"x",null,"y,"]],"expected":"1.5,x,,\"y,\""},
+      {"args":[["null",null]],"expected":"null,"}
+    ]
+  }
+}

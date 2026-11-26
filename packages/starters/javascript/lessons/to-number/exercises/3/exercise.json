@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const form = { qty: \"4\", price: \" 2.5 \", code: \"A7\", note: \"\" };\n\nconsole.log(+form.qty * +form.price);\nconsole.log(+form.code);\nconsole.log(+form.note);\nconsole.log(-form.qty);\nconsole.log(typeof +form.missing);"
+    },
+    "expected": "10\nNaN\n0\n-4\nnumber"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Sum of Two Long Numbers",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "addLong"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addLong(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["999","1"],"expected":"1000"},
+      {"args":["12345678901234567890","1"],"expected":"12345678901234567891"},
+      {"args":["0","0"],"expected":"0"},
+      {"args":["5","5"],"expected":"10"},
+      {"args":["123","9877"],"expected":"10000"},
+      {"args":["99999999999999999999","99999999999999999999"],"expected":"199999999999999999998"},
+      {"args":["1","999999999999999999999999"],"expected":"1000000000000000000000000"},
+      {"args":["9007199254740993","9007199254740993"],"expected":"18014398509481986"}
+    ]
+  }
+}

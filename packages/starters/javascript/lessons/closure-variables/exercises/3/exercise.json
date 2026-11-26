@@ -1,0 +1,18 @@
+{
+  "title": "ID Maker",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeIdMaker(prefix) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const next = makeIdMaker(\"user\"); return [next(), next(), next()];"],"expected":["user-1","user-2","user-3"]},
+      {"args":["const a = makeIdMaker(\"order\"); const b = makeIdMaker(\"user\"); a(); a(); return [a(), b()];"],"expected":["order-3","user-1"]},
+      {"args":["const a = makeIdMaker(\"x\"); const b = makeIdMaker(\"x\"); a(); return [a(), b(), a()];"],"expected":["x-2","x-1","x-3"]},
+      {"args":["const next = makeIdMaker(\"\"); return next();"],"expected":"-1"},
+      {"args":["const next = makeIdMaker(\"item\"); for (let i = 0; i < 9; i++) next(); return next();"],"expected":"item-10"}
+    ]
+  }
+}

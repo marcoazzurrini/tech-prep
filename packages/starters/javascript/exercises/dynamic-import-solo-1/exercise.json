@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"one\");\n\nconst words = await import(\"./words.js\");\nconsole.log(words.default);\n\nconst { list, default: size } = await import(\"./words.js\");\nconsole.log(list === words.list, size);\n\nconsole.log(import(\"./words.js\") instanceof Promise);",
+      "files": {
+        "words.js": "console.log(\"words loaded\");\n\nexport const list = [\"a\", \"b\"];\n\nexport default list.length;\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "one\nwords loaded\n2\ntrue 2\ntrue"
+  }
+}

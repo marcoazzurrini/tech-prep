@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function createVault(code) {\n  let tries = 0;\n\n  return {\n    open(guess) {\n      tries += 1;\n      return guess === code;\n    },\n    getTries: () => tries,\n  };\n}\n\nconst vault = createVault(\"7391\");\n\nconsole.log(vault.open(\"0000\"));\nconsole.log(vault.open(\"7391\"));\nconsole.log(vault.getTries());\nconsole.log(vault.code);\nconsole.log(Object.keys(vault).join(\",\"));"
+    },
+    "expected": "false\ntrue\n2\nundefined\nopen,getTries"
+  }
+}

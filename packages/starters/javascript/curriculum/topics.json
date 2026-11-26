@@ -1,0 +1,107 @@
+[
+  {
+    "id": "values",
+    "name": "Values and Types",
+    "prereqs": []
+  },
+  {
+    "id": "conversion",
+    "name": "Type Conversion",
+    "prereqs": []
+  },
+  {
+    "id": "operators",
+    "name": "Operators and Expressions",
+    "prereqs": []
+  },
+  {
+    "id": "statements",
+    "name": "Statements",
+    "prereqs": []
+  },
+  {
+    "id": "scope",
+    "name": "Scope and Hoisting",
+    "prereqs": []
+  },
+  {
+    "id": "functions",
+    "name": "Functions and Closures",
+    "prereqs": []
+  },
+  {
+    "id": "this",
+    "name": "this",
+    "prereqs": []
+  },
+  {
+    "id": "objects",
+    "name": "Objects",
+    "prereqs": []
+  },
+  {
+    "id": "prototypes",
+    "name": "Prototypes",
+    "prereqs": []
+  },
+  {
+    "id": "classes",
+    "name": "Classes",
+    "prereqs": []
+  },
+  {
+    "id": "errors",
+    "name": "Errors",
+    "prereqs": []
+  },
+  {
+    "id": "arrays",
+    "name": "Arrays",
+    "prereqs": []
+  },
+  {
+    "id": "strings",
+    "name": "Strings and Text",
+    "prereqs": []
+  },
+  {
+    "id": "regex",
+    "name": "Regular Expressions",
+    "prereqs": []
+  },
+  {
+    "id": "collections",
+    "name": "Maps, Sets and Binary Data",
+    "prereqs": []
+  },
+  {
+    "id": "iteration",
+    "name": "Iterators and Generators",
+    "prereqs": []
+  },
+  {
+    "id": "async",
+    "name": "Asynchronous JavaScript",
+    "prereqs": []
+  },
+  {
+    "id": "modules",
+    "name": "Modules",
+    "prereqs": []
+  },
+  {
+    "id": "metaprogramming",
+    "name": "Metaprogramming",
+    "prereqs": []
+  },
+  {
+    "id": "stdlib",
+    "name": "The Standard Library",
+    "prereqs": []
+  },
+  {
+    "id": "patterns",
+    "name": "Classic Implementations",
+    "prereqs": []
+  }
+]

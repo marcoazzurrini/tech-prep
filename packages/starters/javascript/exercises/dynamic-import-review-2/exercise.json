@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const load = () => import(\"./count.js\");\n\nconst [one, two] = await Promise.all([load(), load()]);\nconsole.log(one === two);\nconsole.log(one.default(), two.default());\n\nconst { default: next } = await load();\nconsole.log(next());\n\ntry {\n  await import(\"./missing.js\");\n} catch {\n  console.log(\"no file\");\n}",
+      "files": {
+        "count.js": "let n = 0;\n\nexport default function next() {\n  n += 1;\n\n  return n;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "true\n1 2\n3\nno file"
+  }
+}

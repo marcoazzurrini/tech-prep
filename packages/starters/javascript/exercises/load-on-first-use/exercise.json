@@ -1,0 +1,19 @@
+{
+  "title": "Load on First Use",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function lazy(load) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const call = lazy(async () => ({ add: (a, b) => a + b })); return await call(\"add\", 2, 3);"],"expected":5},
+      {"args":["let n = 0; const call = lazy(async () => (n++, { id: (x) => x })); await call(\"id\", 1); await call(\"id\", 2); return n;"],"expected":1},
+      {"args":["let n = 0; const call = lazy(async () => (n++, { id: (x) => x })); return [await Promise.all([call(\"id\", 1), call(\"id\", 2)]), n];"],"expected":[[1,2],1]},
+      {"args":["let n = 0; const call = lazy(async () => (n++, { one: () => 1 })); const before = n; await call(\"one\"); return [before, n];"],"expected":[0,1]},
+      {"args":["const call = lazy(async () => ({ default: (s) => s.toUpperCase() })); return await call(\"default\", \"hi\");"],"expected":"HI"},
+      {"args":["const call = lazy(async () => ({ f: () => 1 })); return call(\"f\") instanceof Promise;"],"expected":true}
+    ]
+  }
+}

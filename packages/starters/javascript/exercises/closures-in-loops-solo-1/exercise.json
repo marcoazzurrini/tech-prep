@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const words = [\"tea\", \"milk\", \"jam\"];\nconst first = [];\nconst second = [];\n\nfor (var word of words) {\n  first.push(() => word);\n}\n\nfor (const word of words) {\n  second.push(() => word.length);\n}\n\nconsole.log(first[0]());\nconsole.log(second[0]());\nconsole.log(second[1]());\nconsole.log(word);"
+    },
+    "expected": "jam\n3\n4\njam"
+  }
+}

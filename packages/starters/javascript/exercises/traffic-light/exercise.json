@@ -1,0 +1,19 @@
+{
+  "title": "Traffic Light",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export let colour = \"red\";\nexport let changes = 0;\n\nexport function next() {\n  // your code\n}\n\nexport function reset() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["reset(); next(); return [exports.colour, exports.changes];"],"expected":["green",1]},
+      {"args":["reset(); next(); next(); return [exports.colour, exports.changes];"],"expected":["amber",2]},
+      {"args":["reset(); next(); next(); next(); return [exports.colour, exports.changes];"],"expected":["red",3]},
+      {"args":["reset(); for (let i = 0; i < 7; i += 1) next(); return [exports.colour, exports.changes];"],"expected":["green",7]},
+      {"args":["reset(); next(); reset(); return [exports.colour, exports.changes];"],"expected":["red",0]},
+      {"args":["reset(); const before = exports.colour; next(); return [before, exports.colour];"],"expected":["red","green"]}
+    ]
+  }
+}

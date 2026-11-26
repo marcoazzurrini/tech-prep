@@ -1,0 +1,19 @@
+{
+  "title": "Waiting Line",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const line = (function () {\n  // your code\n})();\n"
+    },
+    "tests": [
+      {"args":["line.reset(); return [line.join(\"ann\"), line.join(\"bo\"), line.size()];"],"expected":[1,2,2]},
+      {"args":["line.reset(); line.join(\"ann\"); line.join(\"bo\"); return [line.serve(), line.serve(), line.serve()];"],"expected":["ann","bo",null]},
+      {"args":["line.reset(); line.join(\"ann\"); line.serve(); return [line.join(\"bo\"), line.size()];"],"expected":[1,1]},
+      {"args":["line.reset(); line.join(\"ann\"); line.reset(); return [line.size(), line.serve()];"],"expected":[0,null]},
+      {"args":["line.reset(); line.join(\"a\"); line.join(\"b\"); line.join(\"c\"); line.serve(); return [line.size(), line.serve()];"],"expected":[2,"b"]},
+      {"args":["return Object.keys(line).sort();"],"expected":["join","reset","serve","size"]}
+    ]
+  }
+}

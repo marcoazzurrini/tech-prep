@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = function () {\n  return \"called\";\n}();\n\nconst b = (function () {\n  return \"also called\";\n});\n\nconst c = (() => () => \"inner\")();\n\nconsole.log(a);\nconsole.log(typeof b);\nconsole.log(typeof c);\nconsole.log(c());"
+    },
+    "expected": "called\nfunction\nfunction\ninner"
+  }
+}

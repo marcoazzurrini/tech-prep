@@ -1,0 +1,20 @@
+{
+  "title": "Only When Changed",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function whenChanged(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const seen = []; const f = whenChanged((v) => seen.push(v)); f(1); f(1); f(2); f(1); return seen;"],"expected":[1,2,1]},
+      {"args":["const f = whenChanged(() => {}); return [f(\"a\"), f(\"a\"), f(\"b\"), f(\"b\")];"],"expected":[true,false,true,false]},
+      {"args":["const f = whenChanged(() => {}); return [f(undefined), f(undefined)];"],"expected":[true,false]},
+      {"args":["const f = whenChanged(() => {}); return [f(1), f(\"1\"), f(1)];"],"expected":[true,true,true]},
+      {"args":["const f = whenChanged(() => {}); return [f(null), f(undefined), f(null), f(null)];"],"expected":[true,true,true,false]},
+      {"args":["let n = 0; const a = whenChanged(() => n++); const b = whenChanged(() => n++); a(5); b(5); a(5); b(5); return n;"],"expected":2},
+      {"args":["const seen = []; const f = whenChanged((v) => seen.push(v)); f(0); f(false); f(\"\"); return seen;"],"expected":[0,false,""]}
+    ]
+  }
+}

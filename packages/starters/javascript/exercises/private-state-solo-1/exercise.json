@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function createPlayer(name) {\n  let lives = 3;\n\n  return { name, hit: () => (lives -= 1) };\n}\n\nconst player = createPlayer(\"Zed\");\n\nplayer.lives = 99;\nplayer.name = \"Max\";\nplayer.hit();\n\nconsole.log(player.hit());\nconsole.log(player.lives);\nconsole.log(player.name);"
+    },
+    "expected": "1\n99\nMax"
+  }
+}

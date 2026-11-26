@@ -1,0 +1,21 @@
+{
+  "title": "Active Flags",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "activeFlags"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function activeFlags(flags) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"dark":true,"beta":0,"sync":"0"}],"expected":["dark","sync"]},
+      {"args":[{"ads":"","tags":[]}],"expected":["tags"]},
+      {"args":[{}],"expected":[]},
+      {"args":[{"a":null,"b":"false","c":false,"d":{}}],"expected":["b","d"]},
+      {"args":[{"zoom":-1,"grid":" ","snap":0}],"expected":["zoom","grid"]},
+      {"args":[{"on":1,"off":0}],"expected":["on"]}
+    ]
+  }
+}

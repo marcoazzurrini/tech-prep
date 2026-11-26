@@ -1,0 +1,21 @@
+{
+  "title": "Display Name",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "displayName"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function displayName(user) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"first":"Ada","last":"Lovelace"}],"expected":"Ada Lovelace"},
+      {"args":[{"first":"Mary","middle":"Ann","last":"Evans"}],"expected":"Mary Ann Evans"},
+      {"args":[{"first":"Cher","middle":null}],"expected":"Cher"},
+      {"args":[{"first":"Bo","middle":null,"last":"Li"}],"expected":"Bo Li"},
+      {"args":[{"first":"Al","last":null}],"expected":"Al"},
+      {"args":[{"first":"Zed"}],"expected":"Zed"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Count by Type",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countByType"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countByType(values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[1,"a",2,null]],"expected":{"number":2,"string":1,"null":1}},
+      {"args":[[]],"expected":{}},
+      {"args":[[[1],[2],{"a":1}]],"expected":{"array":2,"object":1}},
+      {"args":[[true,false,"x","y","z"]],"expected":{"boolean":2,"string":3}},
+      {"args":[[null,null,0]],"expected":{"null":2,"number":1}}
+    ]
+  }
+}

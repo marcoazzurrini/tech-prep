@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const jobs = [];\n\nfor (var n = 1; n <= 5; n += 2) {\n  jobs.push(() => n * 10);\n}\n\nconsole.log(jobs.length);\nconsole.log(jobs[0]());\nconsole.log(jobs[2]());"
+    },
+    "expected": "3\n70\n70"
+  }
+}

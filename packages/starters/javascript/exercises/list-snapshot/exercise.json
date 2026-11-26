@@ -1,0 +1,19 @@
+{
+  "title": "List Snapshot",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function snapshot(list) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const list = [1, 2]; const get = snapshot(list); list.push(3); return get();"],"expected":[1,2]},
+      {"args":["const get = snapshot([\"a\"]); get().push(\"b\"); return get();"],"expected":["a"]},
+      {"args":["const list = [1]; const get = snapshot(list); list.length = 0; return [get(), list];"],"expected":[[1],[]]},
+      {"args":["const get = snapshot([]); return get();"],"expected":[]},
+      {"args":["const get = snapshot([1, 2]); return get() === get();"],"expected":false},
+      {"args":["const list = [3, 1, 2]; const get = snapshot(list); get().sort(); list.reverse(); return get();"],"expected":[3,1,2]}
+    ]
+  }
+}

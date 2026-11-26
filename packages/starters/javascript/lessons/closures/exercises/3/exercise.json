@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeChecker(limit) {\n  return (n) => n > limit;\n}\n\nfunction countPassing(values, check) {\n  const limit = 1000;\n\n  return values.filter(check).length;\n}\n\nconst scores = [40, 55, 70, 90];\n\nconsole.log(countPassing(scores, makeChecker(50)));\nconsole.log(countPassing(scores, makeChecker(80)));\nconsole.log(countPassing(scores, (n) => n > scores.length));"
+    },
+    "expected": "3\n1\n4"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Duration in Seconds",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "toSeconds"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toSeconds(duration) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["1h 30m 15s"],"expected":5415},
+      {"args":["45s"],"expected":45},
+      {"args":["2h 5s"],"expected":7205},
+      {"args":[""],"expected":0},
+      {"args":["08m 09s"],"expected":489},
+      {"args":["90m"],"expected":5400},
+      {"args":["10s 2m"],"expected":130},
+      {"args":["100h"],"expected":360000}
+    ]
+  }
+}

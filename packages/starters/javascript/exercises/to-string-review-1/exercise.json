@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const point = { x: 1, y: 2 };\nconst list = [point, [null], \"x\"];\n\nconsole.log(String(list));\nconsole.log(`${[1, 2]}`.length);\nconsole.log(String([[]]) === \"\");\nconsole.log(String(2e21));\nconsole.log(`${null}${undefined}`.length);"
+    },
+    "expected": "[object Object],,x\n3\ntrue\n2e+21\n13"
+  }
+}

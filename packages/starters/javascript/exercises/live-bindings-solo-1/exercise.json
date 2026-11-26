@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { waiting, names, join } from \"./queue.js\";\n\nconst before = waiting;\nconst list = names;\n\njoin(\"Cy\");\n\nconsole.log(before, waiting);\nconsole.log(list.length, names.length);\nconsole.log(list === names);",
+      "files": {
+        "queue.js": "export let waiting = 2;\nexport const names = [\"Ada\", \"Bo\"];\n\nexport function join(name) {\n  names.push(name);\n  waiting += 1;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "2 3\n3 3\ntrue"
+  }
+}

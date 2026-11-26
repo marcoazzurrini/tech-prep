@@ -1,0 +1,18 @@
+{
+  "title": "Primitive or Not",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isPrimitive(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [isPrimitive(1), isPrimitive(\"a\"), isPrimitive(true)];"],"expected":[true,true,true]},
+      {"args":["return [isPrimitive(null), isPrimitive(undefined)];"],"expected":[true,true]},
+      {"args":["return [isPrimitive({}), isPrimitive([1, 2])];"],"expected":[false,false]},
+      {"args":["return [isPrimitive(10n), isPrimitive(Symbol(\"s\"))];"],"expected":[true,true]},
+      {"args":["return [isPrimitive(() => 1), isPrimitive(new Date(0))];"],"expected":[false,false]}
+    ]
+  }
+}

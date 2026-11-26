@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let stock = 3;\n\nconst inStock = () => stock > 0;\nconst label = () => `${stock} left`;\n\nconsole.log(label());\n\nstock = 0;\n\nconsole.log(inStock());\nconsole.log(label());\n\nstock += 7;\n\nconsole.log(label());"
+    },
+    "expected": "3 left\nfalse\n0 left\n7 left"
+  }
+}

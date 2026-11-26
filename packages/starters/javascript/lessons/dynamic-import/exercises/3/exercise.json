@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function sizeOf(name) {\n  try {\n    const box = await import(`./${name}.js`);\n\n    return box.size;\n  } catch {\n    return \"no such box\";\n  }\n}\n\nconsole.log(await sizeOf(\"small\"));\nconsole.log(await sizeOf(\"huge\"));\nconsole.log(await sizeOf(\"small\"));",
+      "files": {
+        "small.js": "console.log(\"small loaded\");\n\nexport const size = 3;\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "small loaded\n3\nno such box\n3"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(1 + 2 + \"3\" + 4 + 5);\nconsole.log(\"1\" + 2 * 3);\nconsole.log(10 + 20 + \"px\");\nconsole.log(\"px\" + 10 + 20);"
+    },
+    "expected": "3345\n16\n30px\npx1020"
+  }
+}

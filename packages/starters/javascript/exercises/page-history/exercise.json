@@ -1,0 +1,20 @@
+{
+  "title": "Page History",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const LIMIT = 3;\n\nexport default class History {\n  visit(page) {\n    // your code\n  }\n\n  current() {\n    // your code\n  }\n\n  back() {\n    // your code\n  }\n\n  size() {\n    // your code\n  }\n}\n\nexport function fromPages(pages) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const h = new exports.default(); h.visit(\"a\"); h.visit(\"b\"); return [h.current(), h.size()];"],"expected":["b",2]},
+      {"args":["const h = new exports.default(); h.visit(\"a\"); h.visit(\"b\"); return [h.back(), h.back(), h.size()];"],"expected":["a",null,0]},
+      {"args":["const h = fromPages([\"a\", \"b\", \"c\", \"d\"]); return [h.size(), h.current(), LIMIT];"],"expected":[3,"d",3]},
+      {"args":["const h = fromPages([\"a\", \"b\", \"c\", \"d\"]); h.back(); return [h.back(), h.back(), h.back()];"],"expected":["b",null,null]},
+      {"args":["const h = fromPages([]); return [h instanceof exports.default, h.current(), h.size()];"],"expected":[true,null,0]},
+      {"args":["return Object.keys(exports);"],"expected":["LIMIT","default","fromPages"]},
+      {"args":["const a = fromPages([\"x\"]); const b = fromPages([\"y\", \"z\"]); return [a.size(), b.size(), a.current()];"],"expected":[1,2,"x"]}
+    ]
+  }
+}

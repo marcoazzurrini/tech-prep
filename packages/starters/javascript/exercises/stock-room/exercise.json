@@ -1,0 +1,19 @@
+{
+  "title": "Stock Room",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createStockRoom() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const room = createStockRoom(); room.add(\"tea\", 5); return [room.take(\"tea\", 2), room.take(\"tea\", 9), room.count(\"tea\")];"],"expected":[true,false,3]},
+      {"args":["const room = createStockRoom(); return [room.count(\"jam\"), room.take(\"jam\", 1)];"],"expected":[0,false]},
+      {"args":["const room = createStockRoom(); room.add(\"tea\", 1); room.add(\"tea\", 2); return [room.count(\"tea\"), room.count(\"jam\")];"],"expected":[3,0]},
+      {"args":["const room = createStockRoom(); room.add(\"tea\", 3); return [room.take(\"tea\", 3), room.count(\"tea\"), room.take(\"tea\", 1)];"],"expected":[true,0,false]},
+      {"args":["const a = createStockRoom(); const b = createStockRoom(); a.add(\"tea\", 2); return [a.count(\"tea\"), b.count(\"tea\")];"],"expected":[2,0]},
+      {"args":["const room = createStockRoom(); room.add(\"tea\", 2); return Object.keys(room).sort();"],"expected":["add","count","take"]}
+    ]
+  }
+}

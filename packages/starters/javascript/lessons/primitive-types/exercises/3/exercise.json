@@ -1,0 +1,21 @@
+{
+  "title": "Name the Type",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "typeName"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function typeName(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[null],"expected":"null"},
+      {"args":[[1,2]],"expected":"array"},
+      {"args":[{"a":1}],"expected":"object"},
+      {"args":["hi"],"expected":"string"},
+      {"args":[7],"expected":"number"},
+      {"args":[true],"expected":"boolean"}
+    ]
+  }
+}

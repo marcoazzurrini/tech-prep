@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { votes } from \"./tally.js\";\nimport { booth } from \"./booth.js\";\n\nvotes.no += 1;\n\nconsole.log(booth);\nconsole.log(votes.yes, votes.no);",
+      "files": {
+        "tally.js": "console.log(\"tally loads\");\n\nexport const votes = { yes: 0, no: 0 };\n",
+        "booth.js": "import { votes } from \"./tally.js\";\n\nvotes.yes += 1;\n\nexport const booth = \"north\";\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "tally loads\nnorth\n1 1"
+  }
+}

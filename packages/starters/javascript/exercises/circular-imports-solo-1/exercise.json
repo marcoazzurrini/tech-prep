@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import \"./right.js\";\n\nconsole.log(\"main runs\");",
+      "files": {
+        "left.js": "import { right } from \"./right.js\";\n\nconsole.log(\"left runs\");\n\nexport function left() {\n  return \"L\";\n}\n\nconsole.log(left() + right());\n",
+        "right.js": "import { left } from \"./left.js\";\n\nconsole.log(\"right runs\");\n\nexport function right() {\n  return \"R\";\n}\n\nconsole.log(right() + left());\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "left runs\nLR\nright runs\nRL\nmain runs"
+  }
+}

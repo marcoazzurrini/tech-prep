@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const cart = [];\nconst coupon = \"0\";\nconst total = 0;\n\nconsole.log(cart ? \"A\" : \"B\");\nconsole.log(coupon ? \"C\" : \"D\");\nconsole.log(total ? \"E\" : \"F\");\nconsole.log(cart.length ? \"G\" : \"H\");"
+    },
+    "expected": "A\nC\nF\nH"
+  }
+}

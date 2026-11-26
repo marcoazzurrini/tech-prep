@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeLight() {\n  let on = false;\n  const toggle = () => {\n    on = !on;\n  };\n  const state = () => (on ? \"on\" : \"off\");\n\n  return [toggle, state, on];\n}\n\nconst [toggle, state, on] = makeLight();\n\ntoggle();\nconsole.log(state());\nconsole.log(on);\ntoggle();\ntoggle();\nconsole.log(state());"
+    },
+    "expected": "on\nfalse\non"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Volume Zero",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "volumeLabel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function volumeLabel(level) {\n  if (!level) {\n    return \"not set\";\n  }\n\n  return `volume ${level}`;\n}\n"
+    },
+    "tests": [
+      {"args":[7],"expected":"volume 7"},
+      {"args":[0],"expected":"volume 0"},
+      {"args":[null],"expected":"not set"},
+      {"args":[10],"expected":"volume 10"},
+      {"args":[1],"expected":"volume 1"}
+    ]
+  }
+}

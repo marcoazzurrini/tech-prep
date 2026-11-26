@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"open\");\n\nimport { dishes } from \"./menu.js\";\n\nconsole.log(dishes.length);\nconsole.log(\"close\");",
+      "files": {
+        "menu.js": "console.log(\"menu ready\");\n\nexport const dishes = [\"soup\", \"rice\"];\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "menu ready\nopen\n2\nclose"
+  }
+}

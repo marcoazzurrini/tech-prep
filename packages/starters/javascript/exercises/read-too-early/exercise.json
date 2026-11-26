@@ -1,0 +1,24 @@
+{
+  "title": "Read Too Early",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "tooEarly"
+    },
+    "compare": "unordered",
+    "stubs": {
+      "javascript": "export function tooEarly(imports, entry) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"main.js":["a.js"],"a.js":[]},"main.js"],"expected":[]},
+      {"args":[{"main.js":["a.js"],"a.js":["b.js"],"b.js":["a.js"]},"main.js"],"expected":[["b.js","a.js"]]},
+      {"args":[{"main.js":["a.js","b.js"],"a.js":["c.js"],"b.js":["c.js"],"c.js":[]},"main.js"],"expected":[]},
+      {"args":[{"main.js":["a.js"],"a.js":["b.js"],"b.js":["c.js"],"c.js":["a.js"]},"main.js"],"expected":[["c.js","a.js"]]},
+      {"args":[{"main.js":["a.js"],"a.js":["b.js","c.js"],"b.js":["a.js"],"c.js":["a.js"]},"main.js"],"expected":[["b.js","a.js"],["c.js","a.js"]]},
+      {"args":[{"main.js":["a.js","b.js"],"a.js":["b.js"],"b.js":["a.js"]},"main.js"],"expected":[["b.js","a.js"]]},
+      {"args":[{"main.js":["b.js","a.js"],"a.js":["b.js"],"b.js":["a.js"]},"main.js"],"expected":[["a.js","b.js"]]},
+      {"args":[{"main.js":["a.js"],"a.js":["main.js","b.js"],"b.js":["a.js","main.js"]},"main.js"],"expected":[["a.js","main.js"],["b.js","a.js"],["b.js","main.js"]]},
+      {"args":[{"a.js":["b.js"],"b.js":["c.js"],"c.js":["b.js"],"d.js":["a.js","d2.js"],"d2.js":["d.js"]},"a.js"],"expected":[["c.js","b.js"]]}
+    ]
+  }
+}

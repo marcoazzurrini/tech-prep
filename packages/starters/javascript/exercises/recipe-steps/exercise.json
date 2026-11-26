@@ -1,0 +1,18 @@
+{
+  "title": "Recipe Steps",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeSteps(names) {\n  const steps = [];\n\n  for (var i = 0; i < names.length; i++) {\n    var name = names[i];\n\n    steps.push(() => `${i + 1}. ${name}`);\n  }\n\n  return steps;\n}\n"
+    },
+    "tests": [
+      {"args":["const steps = makeSteps([\"wash\", \"chop\", \"fry\"]); return [steps[0](), steps[1](), steps[2]()];"],"expected":["1. wash","2. chop","3. fry"]},
+      {"args":["const steps = makeSteps([\"boil\"]); return steps[0]();"],"expected":"1. boil"},
+      {"args":["const steps = makeSteps([\"a\", \"b\"]); return [steps[1](), steps[0](), steps[1]()];"],"expected":["2. b","1. a","2. b"]},
+      {"args":["const steps = makeSteps([\"mix\", \"bake\", \"cool\", \"slice\"]); return [steps.length, steps[3](), steps[0]()];"],"expected":[4,"4. slice","1. mix"]},
+      {"args":["return makeSteps([]).length;"],"expected":0}
+    ]
+  }
+}

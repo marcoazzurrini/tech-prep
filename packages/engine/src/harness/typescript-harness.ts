@@ -46,6 +46,7 @@ interface CaseOutcome {
 const request = (await Bun.stdin.json()) as Request;
 
 const FRAME = /^\s+at /u;
+const CONSTANT = /^Cannot assign to .* because it is a constant/u;
 
 /** Code that Bun cannot parse, as the syntax error it is, with the line it stopped on. */
 const parseError = (cause: Error): string | null => {
@@ -57,7 +58,10 @@ const parseError = (cause: Error): string | null => {
   const { position } = cause as Error & { position?: { line?: number } | null };
   const where = position?.line ? ` (line ${position.line})` : "";
 
-  return `SyntaxError: ${cause.message}${where}`;
+  // Bun refuses to run code that assigns to a constant. In JavaScript that is a TypeError.
+  const name = CONSTANT.test(cause.message) ? "TypeError" : "SyntaxError";
+
+  return `${name}: ${cause.message}${where}`;
 };
 
 /**

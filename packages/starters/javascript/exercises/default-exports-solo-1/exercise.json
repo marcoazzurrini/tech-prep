@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import describe, { name, surname as family } from \"./user.js\";\n\nconsole.log(name);\nconsole.log(family);\nconsole.log(describe());\nconsole.log(describe.name);",
+      "files": {
+        "user.js": "const first = \"Ada\";\nconst last = \"Byron\";\n\nexport { first as name, last as surname };\n\nexport default function full() {\n  return first + \" \" + last;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "Ada\nByron\nAda Byron\nfull"
+  }
+}

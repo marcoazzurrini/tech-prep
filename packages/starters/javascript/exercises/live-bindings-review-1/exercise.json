@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import opening, { balance, account, pay } from \"./bank.js\";\n\npay(30);\n\ntry {\n  balance = 0;\n} catch (error) {\n  console.log(error.name);\n}\n\naccount.owner = \"Bo\";\n\nconsole.log(opening, balance);\nconsole.log(account.owner);",
+      "files": {
+        "bank.js": "let balance = 100;\n\nexport const account = { owner: \"Ada\" };\n\nexport function pay(amount) {\n  balance -= amount;\n}\n\nexport { balance };\nexport default balance;\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "TypeError\n100 70\nBo"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(parseInt(7.8));\nconsole.log(parseInt(0.0000008));\nconsole.log(parseInt(2e21));\nconsole.log(Math.trunc(0.0000008));\nconsole.log(parseInt(undefined));"
+    },
+    "expected": "7\n8\n2\n0\nNaN"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeScaler(factor) {\n  return (n) => n * factor;\n}\n\nconst double = makeScaler(2);\nconst triple = makeScaler(3);\n\nconsole.log(double(5));\nconsole.log(triple(5));\nconsole.log(double(triple(1)));"
+    },
+    "expected": "10\n15\n6"
+  }
+}

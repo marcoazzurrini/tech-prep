@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log([\"10\", \"10\", \"10\", \"10\"].map(parseInt).join(\",\"));\nconsole.log(parseInt(\"0x1A\"));\nconsole.log(parseInt(\"123\", 2));\nconsole.log(parseInt(0.0000005));\nconsole.log(parseFloat(\"1.2.3\"));"
+    },
+    "expected": "10,NaN,2,3\n26\n1\n5\n1.2"
+  }
+}

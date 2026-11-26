@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { value as a } from \"./slow.js\";\nimport { value as b } from \"./fast.js\";\n\nconsole.log(\"main\", a + b);\n\nconst again = await import(\"./slow.js\");\nconsole.log(again.value);",
+      "files": {
+        "slow.js": "console.log(\"slow starts\");\n\nexport const value = await new Promise((resolve) => {\n  setTimeout(() => resolve(7), 20);\n});\n\nconsole.log(\"slow ends\");\n",
+        "fast.js": "console.log(\"fast runs\");\n\nexport const value = 1;\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "slow starts\nfast runs\nslow ends\nmain 8\n7"
+  }
+}

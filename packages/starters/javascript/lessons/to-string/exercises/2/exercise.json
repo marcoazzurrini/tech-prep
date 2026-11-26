@@ -1,0 +1,20 @@
+{
+  "title": "Tag Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "tagLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function tagLine(label, tags) {\n  return `${label}: ${tags}`;\n}\n"
+    },
+    "tests": [
+      {"args":["Tags",["js","ts","css"]],"expected":"Tags: js, ts, css"},
+      {"args":["Sizes",[1,2]],"expected":"Sizes: 1, 2"},
+      {"args":["None",[]],"expected":"None: "},
+      {"args":["One",["solo"]],"expected":"One: solo"},
+      {"args":["Mixed",["a",1,true]],"expected":"Mixed: a, 1, true"}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Multipliers",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeMultipliers(count) {\n  const multipliers = [];\n\n  for (var factor = 0; factor < count; factor++) {\n    multipliers.push((n) => n * factor);\n  }\n\n  return multipliers;\n}\n"
+    },
+    "tests": [
+      {"args":["const times = makeMultipliers(3); return [times[0](5), times[1](5), times[2](5)];"],"expected":[0,5,10]},
+      {"args":["const times = makeMultipliers(4); return times[3](2);"],"expected":6},
+      {"args":["const times = makeMultipliers(5); return [times[4](1), times[2](1), times[0](1)];"],"expected":[4,2,0]},
+      {"args":["const times = makeMultipliers(2); return [times.length, times[1](7), times[1](-7)];"],"expected":[2,7,-7]},
+      {"args":["return makeMultipliers(0).length;"],"expected":0}
+    ]
+  }
+}

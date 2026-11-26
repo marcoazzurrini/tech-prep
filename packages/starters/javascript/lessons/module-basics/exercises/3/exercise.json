@@ -1,0 +1,18 @@
+{
+  "title": "Open Two Names",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const KM_PER_MILE = 1.6;\n\nfunction toKm(miles) {\n  return miles * KM_PER_MILE;\n}\n\nfunction toMiles(km) {\n  return km / KM_PER_MILE;\n}\n\n// your code\n"
+    },
+    "tests": [
+      {"args":["return Object.keys(exports);"],"expected":["toKm","toMiles"]},
+      {"args":["return toKm(5);"],"expected":8},
+      {"args":["return toMiles(16);"],"expected":10},
+      {"args":["return [toKm(0), toMiles(0)];"],"expected":[0,0]},
+      {"args":["return typeof exports.KM_PER_MILE;"],"expected":"undefined"}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Call Limit",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function limitCalls(fn, max) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const next = limitCalls(() => ++n, 2); return [next(), next(), next(), next()];"],"expected":[1,2,2,2]},
+      {"args":["const add = limitCalls((a, b) => a + b, 1); return [add(1, 2), add(5, 5)];"],"expected":[3,3]},
+      {"args":["let n = 0; const f = limitCalls(() => { n += 1; }, 3); f(); f(); f(); f(); f(); return n;"],"expected":3},
+      {"args":["let n = 0; const f = limitCalls(() => ++n, 0); return [String(f()), n];"],"expected":["undefined",0]},
+      {"args":["let n = 0; const a = limitCalls(() => ++n, 1); const b = limitCalls(() => ++n, 1); a(); a(); b(); b(); return n;"],"expected":2}
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import total, { RATE } from \"./tax.js\";\nimport again from \"./tax.js\";\n\nconsole.log(total(100));\nconsole.log(RATE);\nconsole.log(total === again);",
+      "files": {
+        "tax.js": "export const RATE = 0.5;\n\nexport default function addTax(price) {\n  return price + price * RATE;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "150\n0.5\ntrue"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Score Grades",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const MAX_SCORE = 100;\n\nconst bands = [\n  [90, \"A\"],\n  [75, \"B\"],\n  [50, \"C\"],\n  [0, \"F\"],\n];\n\nfunction grade(score) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return Object.keys(exports);"],"expected":["MAX_SCORE","grade"]},
+      {"args":["return MAX_SCORE;"],"expected":100},
+      {"args":["return [grade(92), grade(90), grade(89)];"],"expected":["A","A","B"]},
+      {"args":["return [grade(75), grade(74), grade(50), grade(49), grade(0)];"],"expected":["B","C","C","F","F"]},
+      {"args":["return [grade(100), grade(101), grade(-1)];"],"expected":["A","invalid","invalid"]},
+      {"args":["return typeof exports.bands;"],"expected":"undefined"}
+    ]
+  }
+}

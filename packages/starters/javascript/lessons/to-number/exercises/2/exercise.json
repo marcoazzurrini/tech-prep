@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const order = { qty: null, gift: true, rush: false };\n\nconsole.log(Number(order.qty));\nconsole.log(Number(order.discount));\nconsole.log(Number(order.gift));\nconsole.log(Number(order.rush));\nconsole.log(Number([order.gift]));"
+    },
+    "expected": "0\nNaN\n1\n0\nNaN"
+  }
+}
