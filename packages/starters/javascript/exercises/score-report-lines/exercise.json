@@ -1,0 +1,18 @@
+{
+  "title": "Score Report",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeBoard(title) {\n  return {\n    title,\n    scores: {},\n    add(player, points) {\n      this.scores[player] = (this.scores[player] ?? 0) + points;\n    },\n    report() {\n      function line(player) {\n        return `${this.title}: ${player} ${this.scores[player]}`;\n      }\n\n      return Object.keys(this.scores).map(line);\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const b = makeBoard(\"Cup\"); b.add(\"Ada\", 3); b.add(\"Kim\", 1); b.add(\"Ada\", 2); return b.report();"],"expected":["Cup: Ada 5","Cup: Kim 1"]},
+      {"args":["const b = makeBoard(\"Cup\"); b.add(\"Ada\", 1); b.title = \"Final\"; return b.report();"],"expected":["Final: Ada 1"]},
+      {"args":["const a = makeBoard(\"A\"); const b = makeBoard(\"B\"); a.add(\"x\", 1); b.add(\"y\", 2); return [a.report(), b.report()];"],"expected":[["A: x 1"],["B: y 2"]]},
+      {"args":["const b = makeBoard(\"Cup\"); b.add(\"Ada\", 0); return b.report();"],"expected":["Cup: Ada 0"]},
+      {"args":["return makeBoard(\"Cup\").report();"],"expected":[]}
+    ]
+  }
+}

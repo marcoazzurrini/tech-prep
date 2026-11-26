@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function climb(step) {\n  if (step === 0) {\n    console.log(\"top\");\n    return 0;\n  }\n\n  console.log(`up ${step}`);\n  const below = climb(step - 1);\n  console.log(`down ${step}`);\n\n  return below + step;\n}\n\nconsole.log(climb(2));"
+    },
+    "expected": "up 2\nup 1\ntop\ndown 1\ndown 2\n3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Tag Every Word",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createTagger(tag) {\n  return {\n    tag,\n    tagAll(words) {\n      const tagged = [];\n\n      words.forEach(function (word) {\n        tagged.push(this.tag + word);\n      });\n\n      return tagged;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["return createTagger(\"#\").tagAll([\"js\", \"css\"]);"],"expected":["#js","#css"]},
+      {"args":["return createTagger(\"re\").tagAll([\"do\", \"play\", \"run\"]);"],"expected":["redo","replay","rerun"]},
+      {"args":["return createTagger(\"x\").tagAll([]);"],"expected":[]},
+      {"args":["const tagger = createTagger(\"#\"); tagger.tag = \"@\"; return tagger.tagAll([\"ada\"]);"],"expected":["@ada"]},
+      {"args":["const a = createTagger(\"a-\"); const b = createTagger(\"b-\"); return [a.tagAll([\"1\"]), b.tagAll([\"2\"])];"],"expected":[["a-1"],["b-2"]]}
+    ]
+  }
+}

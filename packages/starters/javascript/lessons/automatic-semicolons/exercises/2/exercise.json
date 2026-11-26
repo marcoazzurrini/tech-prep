@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const rows = [[\"a\", \"b\"], [\"c\", \"d\"]]\n\nconst cell = rows\n[1][0]\nconst pick = rows[0]\n[0, 1]\n\nconst count = (parts) => parts[0].length\nconst size = count\n`hello`\n\nconsole.log(cell, pick, size)"
+    },
+    "expected": "c b 5"
+  }
+}

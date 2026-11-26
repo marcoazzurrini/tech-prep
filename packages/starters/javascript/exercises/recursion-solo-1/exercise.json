@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function mirror(n) {\n  if (n === 0) {\n    return \"|\";\n  }\n\n  return n + mirror(n - 1) + n;\n}\n\nfunction ways(steps) {\n  if (steps <= 1) {\n    return 1;\n  }\n\n  return ways(steps - 1) + ways(steps - 2);\n}\n\nconsole.log(mirror(0));\nconsole.log(mirror(3));\nconsole.log(ways(1));\nconsole.log(ways(4));"
+    },
+    "expected": "|\n321|123\n1\n5"
+  }
+}

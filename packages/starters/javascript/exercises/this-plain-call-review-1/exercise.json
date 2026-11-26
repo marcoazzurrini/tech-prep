@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const kettle = {\n  litres: 2,\n  fill() {\n    function check() {\n      return this === undefined ? \"empty\" : this.litres;\n    }\n\n    return [check(), this.litres];\n  },\n  later() {\n    return function () {\n      return this.litres;\n    };\n  },\n};\n\nconsole.log(kettle.fill().join(\",\"));\n\ntry {\n  console.log(kettle.later()());\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log((function () { return typeof this; })());"
+    },
+    "expected": "empty,2\nTypeError\nundefined"
+  }
+}

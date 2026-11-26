@@ -1,0 +1,18 @@
+{
+  "title": "Cap the Scores",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function capScores(scores, max) {\n  scores = scores.map((score) => Math.min(score, max));\n}\n"
+    },
+    "tests": [
+      {"args":["const scores = [5, 12, 9]; capScores(scores, 10); return scores;"],"expected":[5,10,9]},
+      {"args":["const scores = [50, 60]; capScores(scores, 0); return scores;"],"expected":[0,0]},
+      {"args":["const scores = [1, 2, 3]; capScores(scores, 10); return scores;"],"expected":[1,2,3]},
+      {"args":["const scores = [8, 9, 8]; const same = scores; capScores(scores, 8); return same;"],"expected":[8,8,8]},
+      {"args":["const scores = []; capScores(scores, 5); return scores;"],"expected":[]}
+    ]
+  }
+}

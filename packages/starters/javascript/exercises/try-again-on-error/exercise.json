@@ -1,0 +1,19 @@
+{
+  "title": "Try Again",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withRetries(fn, attempts) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const f = withRetries(() => { n += 1; if (n < 3) throw new Error(\"no\"); return \"done\"; }, 5); return [f(), n];"],"expected":["done",3]},
+      {"args":["let n = 0; const f = withRetries(() => { n += 1; throw new Error(\"e\" + n); }, 3); try { f(); } catch (e) { return e.message; }"],"expected":"e3"},
+      {"args":["const box = { v: 4, get: withRetries(function (k) { return this.v + k; }, 2) }; return box.get(1);"],"expected":5},
+      {"args":["let n = 0; const add = withRetries((a, b) => { n += 1; return a + b; }, 4); return [add(2, 3), n];"],"expected":[5,1]},
+      {"args":["let n = 0; const f = withRetries(() => { n += 1; if (n % 2) throw new Error(\"odd\"); return n; }, 2); return [f(), f()];"],"expected":[2,4]},
+      {"args":["let n = 0; const f = withRetries(() => { n += 1; throw new TypeError(\"t\"); }, 1); try { f(); } catch (e) { return [n, e.name]; }"],"expected":[1,"TypeError"]}
+    ]
+  }
+}

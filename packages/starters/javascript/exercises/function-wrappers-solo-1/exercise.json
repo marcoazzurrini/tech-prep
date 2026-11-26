@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function double(fn) {\n  return function (...args) {\n    return fn.apply(this, args) * 2;\n  };\n}\n\nfunction plusOne(fn) {\n  return function (...args) {\n    return fn.apply(this, args) + 1;\n  };\n}\n\nconst shelf = {\n  books: 5,\n  count(extra) {\n    return this.books + extra;\n  },\n};\n\nshelf.first = plusOne(double(shelf.count));\nshelf.second = double(plusOne(shelf.count));\n\nconsole.log(shelf.count(1));\nconsole.log(shelf.first(1));\nconsole.log(shelf.second(1));"
+    },
+    "expected": "6\n13\n14"
+  }
+}

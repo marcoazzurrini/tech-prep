@@ -1,0 +1,20 @@
+{
+  "title": "Shared Behaviours",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function perform(target, behaviours, name, ...args) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const shapes = { area() { return this.width * this.height; } }; return perform({ width: 2, height: 3 }, shapes, \"area\");"],"expected":6},
+      {"args":["const maths = { scale(by) { return this.size * by; } }; return perform({ size: 2 }, maths, \"scale\", 5);"],"expected":10},
+      {"args":["const b = { id() { return \"shared\"; } }; const t = { n: 1, id() { return \"own \" + this.n; } }; return perform(t, b, \"id\");"],"expected":"own 1"},
+      {"args":["return perform({ n: 1 }, { other() { return 1; } }, \"missing\");"],"expected":null},
+      {"args":["const b = { one() { return 1; } }; const t = { n: 1 }; perform(t, b, \"one\"); return Object.keys(t);"],"expected":["n"]},
+      {"args":["const b = { sum(x, y, z) { return this.base + x + y + z; } }; return perform({ base: 10 }, b, \"sum\", 1, 2, 3);"],"expected":16},
+      {"args":["const b = { same() { return this; } }; const t = { n: 1 }; return perform(t, b, \"same\") === t;"],"expected":true}
+    ]
+  }
+}

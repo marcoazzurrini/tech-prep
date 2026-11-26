@@ -1,0 +1,23 @@
+{
+  "title": "What Changed",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "whatChanged"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function whatChanged(before, after, fields) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"name":"Ada","age":36},{"name":"Ada","age":37,"city":"Rome"},["name","age","city"]],"expected":{"age":"changed","city":"added"}},
+      {"args":[{"phone":null},{},["phone","fax"]],"expected":{"phone":"removed"}},
+      {"args":[{"phone":null},{"phone":null},["phone"]],"expected":{}},
+      {"args":[{"stock":null},{"stock":0},["stock"]],"expected":{"stock":"changed"}},
+      {"args":[{},{"note":null,"done":false},["note","done"]],"expected":{"note":"added","done":"added"}},
+      {"args":[{"id":1},{"id":2},[]],"expected":{}},
+      {"args":[{"id":1},{"id":1},["toString","id","constructor"]],"expected":{}},
+      {"args":[{"a":1,"b":2,"c":3},{"b":2,"c":4,"d":5},["d","c","b","a"]],"expected":{"d":"added","c":"changed","a":"removed"}}
+    ]
+  }
+}

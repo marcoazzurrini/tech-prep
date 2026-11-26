@@ -1,0 +1,18 @@
+{
+  "title": "A Kitchen Timer",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeTimer(label, seconds) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = makeTimer(\"tea\", 180); return [t.label, t.seconds];"],"expected":["tea",180]},
+      {"args":["return makeTimer(\"tea\", 180).describe();"],"expected":"tea: 180s"},
+      {"args":["const t = makeTimer(\"eggs\", 300); t.seconds = 240; return t.describe();"],"expected":"eggs: 240s"},
+      {"args":["const t = makeTimer(\"rice\", 600); t.label = \"pasta\"; return t.describe();"],"expected":"pasta: 600s"},
+      {"args":["const a = makeTimer(\"a\", 1); const b = makeTimer(\"b\", 2); return [a.describe(), b.describe()];"],"expected":["a: 1s","b: 2s"]}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Restock a Product",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function restock(products, sku, amount) {\n  return products.map((product) => {\n    if (product.sku === sku) {\n      product.stock += amount;\n    }\n\n    return product;\n  });\n}\n"
+    },
+    "tests": [
+      {"args":["return restock([{ sku: \"pen\", stock: 2 }, { sku: \"ink\", stock: 0 }], \"ink\", 5);"],"expected":[{"sku":"pen","stock":2},{"sku":"ink","stock":5}]},
+      {"args":["const list = [{ sku: \"pen\", stock: 2 }]; restock(list, \"pen\", 3); return list[0].stock;"],"expected":2},
+      {"args":["const list = [{ sku: \"a\", stock: 2 }, { sku: \"b\", stock: 0 }]; return restock(list, \"b\", 1).map((p) => list.includes(p));"],"expected":[true,false]},
+      {"args":["return restock([{ sku: \"pen\", stock: 2, name: \"Pen\" }], \"cap\", 4);"],"expected":[{"sku":"pen","stock":2,"name":"Pen"}]},
+      {"args":["const list = [{ sku: \"pen\", stock: 2 }]; const out = restock(list, \"pen\", 3); return [out === list, out[0].stock];"],"expected":[false,5]}
+    ]
+  }
+}

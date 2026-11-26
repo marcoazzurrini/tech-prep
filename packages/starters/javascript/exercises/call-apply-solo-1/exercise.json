@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tea = {\n  name: \"tea\",\n  price: 3,\n  cost(count, tip) {\n    return `${this.name}: ${this.price * count + tip}`;\n  },\n};\n\nconst cake = { name: \"cake\", price: 5 };\n\nconsole.log(tea.cost.call(cake, 2, 1));\nconsole.log(tea.cost.apply(cake, [1, 0]));\nconsole.log(tea.cost.apply(tea, [2, 2]));\nconsole.log(tea.cost.call(tea, [2, 2]));"
+    },
+    "expected": "cake: 11\ncake: 5\ntea: 8\ntea: NaN"
+  }
+}

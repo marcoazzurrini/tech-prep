@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const name = \"port\";\nconst port = 8080;\n\nconst config = {\n  name,\n  [name]: port,\n  port: 3000,\n  [`${name}s`]: [port, 3000],\n  8080: \"open\",\n};\n\nconsole.log(config.name);\nconsole.log(config.port);\nconsole.log(config.ports.length);\nconsole.log(config[port]);"
+    },
+    "expected": "port\n3000\n2\nopen"
+  }
+}

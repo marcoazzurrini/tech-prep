@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const jar = {\n  label: \"honey\",\n  read() {\n    return this === undefined ? \"none\" : this.label;\n  },\n};\n\nfunction call(fn) {\n  return fn();\n}\n\nconst { read } = jar;\nconst shelf = { label: \"shelf\", read };\n\nconsole.log(read());\nconsole.log(call(jar.read));\nconsole.log(call(() => jar.read()));\nconsole.log(shelf.read());"
+    },
+    "expected": "none\nnone\nhoney\nshelf"
+  }
+}

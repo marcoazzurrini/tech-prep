@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const note = {\n  text: \"Hi\",\n  pinned: undefined,\n  tags: [undefined, \"a\"],\n  weight: Infinity,\n  at: new Date(0),\n};\n\nconst copy = JSON.parse(JSON.stringify(note));\n\nconsole.log(\"pinned\" in copy);\nconsole.log(copy.tags[0]);\nconsole.log(copy.weight);\nconsole.log(typeof copy.at);"
+    },
+    "expected": "false\nnull\nnull\nstring"
+  }
+}

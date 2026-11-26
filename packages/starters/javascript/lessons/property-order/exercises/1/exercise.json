@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const queue = {};\n\nqueue.b = \"first\";\nqueue[10] = \"second\";\nqueue.a = \"third\";\nqueue[2] = \"fourth\";\n\nconst keys = Object.keys(queue);\n\nconsole.log(keys.join(\",\"));\nconsole.log(queue[keys[0]]);"
+    },
+    "expected": "2,10,b,a\nfourth"
+  }
+}

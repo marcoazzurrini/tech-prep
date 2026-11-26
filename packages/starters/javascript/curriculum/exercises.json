@@ -390,6 +390,24 @@
     "concepts": ["sameness"]
   },
   {
+    "slug": "object-is-by-hand",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["sameness"]
+  },
+  {
+    "slug": "sameness-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["sameness"]
+  },
+  {
+    "slug": "inputs-changed",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["sameness", "references"]
+  },
+  {
     "slug": "logical-operators-solo-1",
     "topic": "operators",
     "difficulty": "easy",
@@ -492,10 +510,50 @@
     "concepts": ["increment-decrement"]
   },
   {
+    "slug": "last-two-items",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["increment-decrement"]
+  },
+  {
+    "slug": "read-flat-pairs",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["increment-decrement"]
+  },
+  {
+    "slug": "increment-decrement-review-2",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["increment-decrement", "logical-operators", "plus-operator"]
+  },
+  {
     "slug": "operator-precedence-solo-1",
     "topic": "operators",
     "difficulty": "easy",
     "concepts": ["operator-precedence"]
+  },
+  {
+    "slug": "stock-line",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["operator-precedence"]
+  },
+  {
+    "slug": "operator-precedence-review-1",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": ["operator-precedence"]
+  },
+  {
+    "slug": "delivery-fee",
+    "topic": "operators",
+    "difficulty": "medium",
+    "concepts": [
+      "operator-precedence",
+      "nullish-coalescing",
+      "logical-operators"
+    ]
   },
   {
     "slug": "destructuring-arrays-solo-1",
@@ -672,6 +730,28 @@
     "concepts": ["automatic-semicolons"]
   },
   {
+    "slug": "vowel-tally",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["automatic-semicolons"]
+  },
+  {
+    "slug": "automatic-semicolons-review-1",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": ["automatic-semicolons"]
+  },
+  {
+    "slug": "range-in-words",
+    "topic": "statements",
+    "difficulty": "medium",
+    "concepts": [
+      "automatic-semicolons",
+      "destructuring-arrays",
+      "template-literals"
+    ]
+  },
+  {
     "slug": "let-const-solo-1",
     "topic": "scope",
     "difficulty": "easy",
@@ -774,6 +854,24 @@
     "concepts": ["hoisting-functions"]
   },
   {
+    "slug": "cinema-ticket-price",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["hoisting-functions"]
+  },
+  {
+    "slug": "hoisting-functions-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["hoisting-functions"]
+  },
+  {
+    "slug": "time-sheet-lines",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["hoisting-functions", "hoisting-var"]
+  },
+  {
     "slug": "tdz-solo-1",
     "topic": "scope",
     "difficulty": "easy",
@@ -852,6 +950,24 @@
     "concepts": ["strict-mode"]
   },
   {
+    "slug": "coffee-price",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["strict-mode"]
+  },
+  {
+    "slug": "strict-mode-review-1",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["strict-mode"]
+  },
+  {
+    "slug": "change-or-copy",
+    "topic": "scope",
+    "difficulty": "medium",
+    "concepts": ["strict-mode", "references", "spread"]
+  },
+  {
     "slug": "function-forms-solo-1",
     "topic": "functions",
     "difficulty": "easy",
@@ -906,10 +1022,46 @@
     "concepts": ["parameters"]
   },
   {
+    "slug": "page-of-items",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["parameters"]
+  },
+  {
+    "slug": "parameters-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["parameters"]
+  },
+  {
+    "slug": "courier-quote",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["parameters", "destructuring-objects"]
+  },
+  {
     "slug": "rest-arguments-solo-1",
     "topic": "functions",
     "difficulty": "easy",
     "concepts": ["rest-arguments"]
+  },
+  {
+    "slug": "class-list-text",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["rest-arguments"]
+  },
+  {
+    "slug": "rest-arguments-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["rest-arguments"]
+  },
+  {
+    "slug": "fill-numbered-blanks",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["rest-arguments", "strings"]
   },
   {
     "slug": "pass-by-sharing-solo-1",
@@ -918,10 +1070,46 @@
     "concepts": ["pass-by-sharing"]
   },
   {
+    "slug": "remove-every-match",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["pass-by-sharing"]
+  },
+  {
+    "slug": "pass-by-sharing-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["pass-by-sharing"]
+  },
+  {
+    "slug": "mark-as-shipped",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["pass-by-sharing", "spread"]
+  },
+  {
     "slug": "first-class-functions-solo-1",
     "topic": "functions",
     "difficulty": "easy",
     "concepts": ["first-class-functions"]
+  },
+  {
+    "slug": "run-the-steps",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["first-class-functions"]
+  },
+  {
+    "slug": "first-class-functions-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["first-class-functions"]
+  },
+  {
+    "slug": "apply-state-updates",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["first-class-functions", "primitive-types"]
   },
   {
     "slug": "function-properties-solo-1",
@@ -930,16 +1118,70 @@
     "concepts": ["function-properties"]
   },
   {
+    "slug": "command-help-line",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["function-properties"]
+  },
+  {
+    "slug": "function-properties-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["function-properties"]
+  },
+  {
+    "slug": "ask-once-per-key",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["function-properties", "null-undefined"]
+  },
+  {
     "slug": "call-stack-solo-1",
     "topic": "functions",
     "difficulty": "easy",
     "concepts": ["call-stack"]
   },
   {
+    "slug": "deepest-point-of-a-run",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["call-stack"]
+  },
+  {
+    "slug": "call-stack-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["call-stack"]
+  },
+  {
+    "slug": "time-per-function",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["call-stack", "destructuring-arrays"]
+  },
+  {
     "slug": "recursion-solo-1",
     "topic": "functions",
     "difficulty": "easy",
     "concepts": ["recursion"]
+  },
+  {
+    "slug": "sum-nested-numbers",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["recursion"]
+  },
+  {
+    "slug": "menu-leaf-paths",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["recursion"]
+  },
+  {
+    "slug": "recursion-review-2",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["recursion", "parameters", "pass-by-sharing"]
   },
   {
     "slug": "closures-solo-1",
@@ -1068,10 +1310,46 @@
     "concepts": ["this-method-call"]
   },
   {
+    "slug": "stock-level",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["this-method-call"]
+  },
+  {
+    "slug": "this-method-call-review-1",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["this-method-call"]
+  },
+  {
+    "slug": "copy-with-changes",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["this-method-call", "spread"]
+  },
+  {
     "slug": "this-plain-call-solo-1",
     "topic": "this",
     "difficulty": "easy",
     "concepts": ["this-plain-call"]
+  },
+  {
+    "slug": "counter-stepper",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["this-plain-call"]
+  },
+  {
+    "slug": "this-plain-call-review-1",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["this-plain-call"]
+  },
+  {
+    "slug": "score-report-lines",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["this-plain-call", "closures"]
   },
   {
     "slug": "losing-this-solo-1",
@@ -1080,10 +1358,46 @@
     "concepts": ["losing-this"]
   },
   {
+    "slug": "method-handle",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["losing-this"]
+  },
+  {
+    "slug": "count-the-votes",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["losing-this"]
+  },
+  {
+    "slug": "losing-this-review-2",
+    "topic": "this",
+    "difficulty": "hard",
+    "concepts": ["losing-this", "rest-arguments"]
+  },
+  {
     "slug": "call-apply-solo-1",
     "topic": "this",
     "difficulty": "easy",
     "concepts": ["call-apply"]
+  },
+  {
+    "slug": "form-checks",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["call-apply"]
+  },
+  {
+    "slug": "shared-behaviours",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["call-apply"]
+  },
+  {
+    "slug": "invoke-on",
+    "topic": "this",
+    "difficulty": "hard",
+    "concepts": ["call-apply", "this-method-call"]
   },
   {
     "slug": "bind-solo-1",
@@ -1092,10 +1406,46 @@
     "concepts": ["bind"]
   },
   {
+    "slug": "tv-remote-buttons",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["bind"]
+  },
+  {
+    "slug": "saved-method-call",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["bind"]
+  },
+  {
+    "slug": "bind-review-2",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["bind", "function-properties"]
+  },
+  {
     "slug": "arrow-this-solo-1",
     "topic": "this",
     "difficulty": "easy",
     "concepts": ["arrow-this"]
+  },
+  {
+    "slug": "team-badges",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["arrow-this"]
+  },
+  {
+    "slug": "thermostat-controls",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["arrow-this"]
+  },
+  {
+    "slug": "arrow-this-review-2",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["arrow-this", "bind", "call-apply"]
   },
   {
     "slug": "function-wrappers-solo-1",
@@ -1104,10 +1454,46 @@
     "concepts": ["function-wrappers"]
   },
   {
+    "slug": "only-n-calls",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["function-wrappers"]
+  },
+  {
+    "slug": "try-again-on-error",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["function-wrappers"]
+  },
+  {
+    "slug": "trace-object-methods",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["function-wrappers", "closures", "rest-arguments"]
+  },
+  {
     "slug": "method-chaining-solo-1",
     "topic": "this",
     "difficulty": "easy",
     "concepts": ["method-chaining"]
+  },
+  {
+    "slug": "robot-walk",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["method-chaining"]
+  },
+  {
+    "slug": "query-text-builder",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["method-chaining"]
+  },
+  {
+    "slug": "method-chaining-review-2",
+    "topic": "this",
+    "difficulty": "medium",
+    "concepts": ["method-chaining", "call-apply", "losing-this"]
   },
   {
     "slug": "object-literals-solo-1",
@@ -1116,10 +1502,46 @@
     "concepts": ["object-literals"]
   },
   {
+    "slug": "row-to-record",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["object-literals"]
+  },
+  {
+    "slug": "object-literals-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["object-literals"]
+  },
+  {
+    "slug": "board-squares",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["object-literals", "private-state"]
+  },
+  {
     "slug": "property-access-solo-1",
     "topic": "objects",
     "difficulty": "easy",
     "concepts": ["property-access"]
+  },
+  {
+    "slug": "translate-with-fallback",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["property-access"]
+  },
+  {
+    "slug": "property-access-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-access"]
+  },
+  {
+    "slug": "follow-redirects",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-access", "loops-labels"]
   },
   {
     "slug": "property-existence-solo-1",
@@ -1128,10 +1550,46 @@
     "concepts": ["property-existence"]
   },
   {
+    "slug": "missing-columns",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["property-existence"]
+  },
+  {
+    "slug": "property-existence-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-existence"]
+  },
+  {
+    "slug": "record-field-changes",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-existence", "for-of"]
+  },
+  {
     "slug": "property-order-solo-1",
     "topic": "objects",
     "difficulty": "easy",
     "concepts": ["property-order"]
+  },
+  {
+    "slug": "latest-prices-in-order",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-order"]
+  },
+  {
+    "slug": "property-order-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-order"]
+  },
+  {
+    "slug": "line-up-the-keys",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-order", "to-number"]
   },
   {
     "slug": "object-iteration-solo-1",
@@ -1140,10 +1598,46 @@
     "concepts": ["object-iteration"]
   },
   {
+    "slug": "rename-columns",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["object-iteration"]
+  },
+  {
+    "slug": "object-iteration-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["object-iteration"]
+  },
+  {
+    "slug": "flatten-nested-settings",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["object-iteration", "recursion"]
+  },
+  {
     "slug": "shallow-copy-solo-1",
     "topic": "objects",
     "difficulty": "easy",
     "concepts": ["shallow-copy"]
+  },
+  {
+    "slug": "copy-a-playlist",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["shallow-copy"]
+  },
+  {
+    "slug": "shallow-copy-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["shallow-copy"]
+  },
+  {
+    "slug": "duplicate-table-row",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["shallow-copy", "spread"]
   },
   {
     "slug": "immutable-updates-solo-1",
@@ -1152,16 +1646,70 @@
     "concepts": ["immutable-updates"]
   },
   {
+    "slug": "set-item-count",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["immutable-updates"]
+  },
+  {
+    "slug": "todo-list-actions",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["immutable-updates"]
+  },
+  {
+    "slug": "set-in-path",
+    "topic": "objects",
+    "difficulty": "hard",
+    "concepts": ["immutable-updates", "recursion"]
+  },
+  {
     "slug": "deep-copy-solo-1",
     "topic": "objects",
     "difficulty": "easy",
     "concepts": ["deep-copy"]
   },
   {
+    "slug": "copy-a-booking",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["deep-copy"]
+  },
+  {
+    "slug": "deep-copy-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["deep-copy"]
+  },
+  {
+    "slug": "store-with-drafts",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["deep-copy", "private-state"]
+  },
+  {
     "slug": "getters-setters-solo-1",
     "topic": "objects",
     "difficulty": "easy",
     "concepts": ["getters-setters"]
+  },
+  {
+    "slug": "box-size-text",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["getters-setters"]
+  },
+  {
+    "slug": "getters-setters-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["getters-setters"]
+  },
+  {
+    "slug": "progress-tracker",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["getters-setters", "private-state"]
   },
   {
     "slug": "property-descriptors-solo-1",

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const song = { title: \"Blue\", artist: { name: \"Mina\" }, tags: [\"jazz\"] };\nconst cover = Object.assign({}, song);\n\ncover.title = \"Blue (live)\";\ncover.tags = [...cover.tags, \"live\"];\ncover.artist.name = \"Nora\";\n\nconsole.log(song.title);\nconsole.log(song.tags.length);\nconsole.log(song.artist.name);"
+    },
+    "expected": "Blue\n1\nNora"
+  }
+}

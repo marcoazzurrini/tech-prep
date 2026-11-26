@@ -1,0 +1,21 @@
+{
+  "title": "Count the Vowels",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countVowels"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countVowels(text) {\n  count = 0;\n\n  for (letter of text) {\n    if (\"aeiou\".includes(letter)) {\n      count += 1;\n    }\n  }\n\n  return count;\n}\n"
+    },
+    "tests": [
+      {"args":["banana"],"expected":3},
+      {"args":["sky"],"expected":0},
+      {"args":[""],"expected":0},
+      {"args":["queue"],"expected":4},
+      {"args":["a e i o u"],"expected":5},
+      {"args":["strict"],"expected":1}
+    ]
+  }
+}

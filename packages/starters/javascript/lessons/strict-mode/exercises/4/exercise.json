@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function run(body) {\n  try {\n    return new Function(body)();\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconsole.log(run('stock = 4; return stock;'));\nconsole.log(run('\"use strict\"; items = 4; return items;'));\nconsole.log(run('let n = 1; \"use strict\"; left = n; return left;'));\nconsole.log(run(\"class Shop { open() { doors = 2; } } new Shop().open(); return doors;\"));"
+    },
+    "expected": "4\nReferenceError\n1\nReferenceError"
+  }
+}

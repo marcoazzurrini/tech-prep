@@ -1,0 +1,21 @@
+{
+  "title": "Stock on a Shelf",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stockLevel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stockLevel(warehouse, shelf, product) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"a1":{"tea":4,"salt":0},"b2":{"rice":9}},"a1","tea"],"expected":4},
+      {"args":[{"a1":{"tea":4,"salt":0},"b2":{"rice":9}},"a1","rice"],"expected":0},
+      {"args":[{"a1":{"tea":4,"salt":0},"b2":{"rice":9}},"c3","tea"],"expected":0},
+      {"args":[{"a1":{"tea":4,"salt":0},"b2":{"rice":9}},"b2","rice"],"expected":9},
+      {"args":[{"a1":{"tea":4,"salt":0},"b2":{"rice":9}},"a1","salt"],"expected":0},
+      {"args":[{},"a1","tea"],"expected":0}
+    ]
+  }
+}

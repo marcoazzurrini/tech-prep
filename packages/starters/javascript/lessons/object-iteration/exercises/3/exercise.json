@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seats = { 2: \"Bo\", row: \"C\", 1: \"Ada\" };\n\nfor (const key in seats) {\n  console.log(key, typeof key, seats[key]);\n}"
+    },
+    "expected": "1 string Ada\n2 string Bo\nrow string C"
+  }
+}

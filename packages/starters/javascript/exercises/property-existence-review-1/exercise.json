@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const cache = { a: 1, b: undefined };\n\nfunction lookup(key) {\n  if (key in cache) {\n    return \"hit\";\n  }\n\n  cache[key] = undefined;\n  return \"miss\";\n}\n\nconsole.log(lookup(\"b\"));\nconsole.log(lookup(\"c\"));\nconsole.log(lookup(\"c\"));\nconsole.log(delete cache.a, lookup(\"a\"));\nconsole.log(lookup(\"toString\"));"
+    },
+    "expected": "hit\nmiss\nhit\ntrue miss\nhit"
+  }
+}

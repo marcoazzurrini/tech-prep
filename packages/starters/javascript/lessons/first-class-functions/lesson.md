@@ -1,6 +1,6 @@
 # Functions as Values
 
-## A function is a value
+## Store a function
 
 **Code**
 
@@ -28,7 +28,7 @@ HI
 true
 ```
 
-**Rule:** A function is a value, like a number or a string. A variable, an array and an object can all hold one.
+**Rule:** A function is a value, like a number or a string. A variable, an array and an object can all hold one. This is what **first-class** means: a function can go wherever any other value can.
 
 `twice === double` gives `true`. Both names hold the same function. Nothing was copied.
 
@@ -143,7 +143,7 @@ console.log(typeof shippingFor(true));
 function
 ```
 
-**Rule:** A function can return a function. The caller gets the function itself, and calls it when it wants to.
+**Rule:** A function can return a function. The caller gets the function itself, and calls it when it wants to. A function that takes or returns a function is a **higher-order function**.
 
 `shippingFor(true)(4)` is two calls. The first returns `byCourier`. The second calls `byCourier` with `4`.
 
@@ -153,7 +153,7 @@ function
 
 ## Remember
 
-- A function is a value. A variable, an array or an object can hold it.
+- Functions are first-class: a variable, an array or an object can hold one.
 - `fn` is the function. `fn()` is what it returns.
 - A callback is a function you pass in. The receiver calls it.
-- A function can return a function: `pick(a)(b)` is two calls.
+- A higher-order function takes a function or returns one. `pick(a)(b)` is two calls.

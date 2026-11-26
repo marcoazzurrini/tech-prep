@@ -1,0 +1,19 @@
+{
+  "title": "Set a Price",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function setPrice(prices, item, price) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return setPrice({ pen: 2 }, \"ink\", 5);"],"expected":{"pen":2,"ink":5}},
+      {"args":["return setPrice({ pen: 2, ink: 5 }, \"pen\", 3);"],"expected":{"pen":3,"ink":5}},
+      {"args":["return setPrice({ pen: 2, ink: 5 }, \"ink\", null);"],"expected":{"pen":2}},
+      {"args":["const prices = { pen: 2 }; setPrice(prices, \"ink\", 5); setPrice(prices, \"pen\", null); return prices;"],"expected":{"pen":2}},
+      {"args":["return setPrice({}, \"pen\", null);"],"expected":{}},
+      {"args":["const prices = { pen: 2 }; return [setPrice(prices, \"pen\", 2) === prices, setPrice(prices, \"cap\", null) === prices];"],"expected":[false,false]}
+    ]
+  }
+}

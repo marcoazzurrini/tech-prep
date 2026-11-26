@@ -1,0 +1,19 @@
+{
+  "title": "Thermometer",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createThermometer() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = createThermometer(); return [t.celsius, t.fahrenheit];"],"expected":[0,32]},
+      {"args":["const t = createThermometer(); t.celsius = 100; return t.fahrenheit;"],"expected":212},
+      {"args":["const t = createThermometer(); t.fahrenheit = 50; return t.celsius;"],"expected":10},
+      {"args":["const t = createThermometer(); t.fahrenheit = -40; return [t.celsius, t.fahrenheit];"],"expected":[-40,-40]},
+      {"args":["return typeof createThermometer().fahrenheit;"],"expected":"number"},
+      {"args":["const a = createThermometer(); const b = createThermometer(); a.fahrenheit = 212; return [a.celsius, b.celsius];"],"expected":[100,0]}
+    ]
+  }
+}

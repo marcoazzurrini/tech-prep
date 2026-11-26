@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const menu = { 1: \"soup\", 2: \"fish\", size: 2, next: \"size\" };\n\nconsole.log(menu[menu.next]);\nconsole.log(menu[menu.size]);\nconsole.log(menu[menu.size - 1]);\nconsole.log(menu[menu[1]]);\nconsole.log(menu.size.next);\n\ntry {\n  console.log(menu.last.next);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "2\nfish\nsoup\nundefined\nundefined\nTypeError"
+  }
+}

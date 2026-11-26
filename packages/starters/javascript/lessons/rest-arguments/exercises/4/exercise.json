@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function check(first, second = \"B\") {\n  first = \"Z\";\n\n  return `${arguments.length} ${arguments[0]} ${second}`;\n}\n\nconsole.log(check(\"A\"));\nconsole.log(check(\"A\", undefined));\nconsole.log(check());\nconsole.log(check(\"A\", \"C\", \"D\"));"
+    },
+    "expected": "1 A B\n2 A B\n0 undefined B\n3 A C"
+  }
+}

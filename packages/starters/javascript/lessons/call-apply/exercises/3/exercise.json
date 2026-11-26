@@ -1,0 +1,18 @@
+{
+  "title": "Name Tags",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function nameTags(person, others) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const ada = { name: \"Ada\", tag() { return \"#\" + this.name; } }; return nameTags(ada, [{ name: \"Bo\" }, { name: \"Cy\" }]);"],"expected":["#Bo","#Cy"]},
+      {"args":["const p = { n: 1, tag() { return this.n * 2; } }; return nameTags(p, [{ n: 5 }, { n: 7 }, p]);"],"expected":[10,14,2]},
+      {"args":["const p = { tag() { return this.id; } }; const bo = { id: 4 }; nameTags(p, [bo]); return Object.keys(bo);"],"expected":["id"]},
+      {"args":["const p = { n: 0, tag() { this.n += 1; return this.n; } }; const bo = { n: 10 }; nameTags(p, [bo, bo]); return [p.n, bo.n];"],"expected":[0,12]},
+      {"args":["const ada = { name: \"Ada\", tag() { return \"#\" + this.name; } }; return nameTags(ada, []);"],"expected":[]}
+    ]
+  }
+}

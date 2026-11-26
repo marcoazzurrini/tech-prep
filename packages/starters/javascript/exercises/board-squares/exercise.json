@@ -1,0 +1,20 @@
+{
+  "title": "Board Squares",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeBoard() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const b = makeBoard(); b.place(2, 3, \"rook\"); return [b.pieceAt(2, 3), b.pieceAt(3, 2)];"],"expected":["rook",null]},
+      {"args":["const b = makeBoard(); b.place(1, 23, \"a\"); b.place(12, 3, \"b\"); return [b.pieceAt(1, 23), b.pieceAt(12, 3)];"],"expected":["a","b"]},
+      {"args":["const b = makeBoard(); b.place(0, 0, \"king\"); b.place(0, 0, \"pawn\"); return b.pieceAt(0, 0);"],"expected":"pawn"},
+      {"args":["const b = makeBoard(); b.place(4, 4, \"queen\"); b.move(4, 4, 0, 7); return [b.pieceAt(4, 4), b.pieceAt(0, 7)];"],"expected":[null,"queen"]},
+      {"args":["const b = makeBoard(); b.place(1, 1, \"x\"); b.move(5, 5, 1, 1); return b.pieceAt(1, 1);"],"expected":"x"},
+      {"args":["const a = makeBoard(); const b = makeBoard(); a.place(0, 1, \"x\"); return [a.pieceAt(0, 1), b.pieceAt(0, 1)];"],"expected":["x",null]},
+      {"args":["const b = makeBoard(); b.place(11, 1, \"a\"); b.place(1, 11, \"b\"); b.move(11, 1, 1, 11); return b.pieceAt(1, 11);"],"expected":"a"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Ask Once",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function askOnce(fn, key) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const f = (k) => { n += 1; return k * 2; }; askOnce(f, 4); askOnce(f, 4); return [askOnce(f, 4), n];"],"expected":[8,1]},
+      {"args":["const f = (k) => k * 10; askOnce(f, 1); askOnce(f, 2); return f.answers;"],"expected":{"1":10,"2":20}},
+      {"args":["let n = 0; const f = () => { n += 1; return 0; }; askOnce(f, 7); askOnce(f, 7); return [n, f.answers];"],"expected":[1,{"7":0}]},
+      {"args":["let n = 0; const f = () => { n += 1; return null; }; askOnce(f, 1); return [askOnce(f, 1), n];"],"expected":[null,1]},
+      {"args":["const f = (k) => k; const g = (k) => -k; askOnce(f, 2); return [askOnce(g, 2), g.answers, f.answers];"],"expected":[-2,{"2":-2},{"2":2}]},
+      {"args":["const f = (k) => k; f.answers = { 5: \"kept\" }; return [askOnce(f, 5), askOnce(f, 6)];"],"expected":["kept",6]},
+      {"args":["let n = 0; const f = (k) => { n += 1; return k; }; askOnce(f, 1); askOnce(f, 2); askOnce(f, 1); return n;"],"expected":2}
+    ]
+  }
+}

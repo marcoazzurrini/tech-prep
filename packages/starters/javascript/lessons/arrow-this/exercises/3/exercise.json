@@ -1,0 +1,18 @@
+{
+  "title": "Keep the Score",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createScore() {\n  return {\n    points: 0,\n    add: (n) => {\n      this.points += n;\n\n      return this.points;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const score = createScore(); return score.add(2);"],"expected":2},
+      {"args":["const score = createScore(); score.add(2); score.add(3); return score.points;"],"expected":5},
+      {"args":["const a = createScore(); const b = createScore(); a.add(1); b.add(10); return [a.points, b.points];"],"expected":[1,10]},
+      {"args":["const score = createScore(); score.points = 40; return score.add(2);"],"expected":42},
+      {"args":["const score = createScore(); return [score.add(0), score.add(-5)];"],"expected":[0,-5]}
+    ]
+  }
+}

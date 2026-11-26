@@ -1,0 +1,18 @@
+{
+  "title": "A Value to Fall Back On",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withFallback(fn, fallback) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const parse = withFallback(JSON.parse, null); return [parse(\"[1, 2]\"), parse(\"oops\")];"],"expected":[[1,2],null]},
+      {"args":["const first = withFallback((list) => list[0].name, \"nobody\"); return [first([{ name: \"Ada\" }]), first([])];"],"expected":["Ada","nobody"]},
+      {"args":["const add = withFallback((a, b, c) => a + b + c, 0); return add(1, 2, 3);"],"expected":6},
+      {"args":["let calls = 0; const f = withFallback(() => { calls += 1; throw new Error(\"no\"); }, -1); return [f(), f(), calls];"],"expected":[-1,-1,2]},
+      {"args":["const f = withFallback(() => undefined, \"fallback\"); return f() === undefined;"],"expected":true}
+    ]
+  }
+}

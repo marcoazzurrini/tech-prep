@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = 2;\nconst b = 3;\nlet c;\n\nconsole.log(a + b * a ** b % 5);\nconsole.log(a > b === b > a);\nconsole.log(c = a < b ? a : b + 1, c);\nconsole.log(!a + !!b + \"\" + a * b);\nconsole.log(a || b && c === 0);"
+    },
+    "expected": "6\nfalse\n2 2\n16\n2"
+  }
+}

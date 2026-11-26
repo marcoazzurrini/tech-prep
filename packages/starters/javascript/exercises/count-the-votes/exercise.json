@@ -1,0 +1,21 @@
+{
+  "title": "Count the Votes",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countVotes"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countVotes(votes) {\n  const tally = {\n    counts: {},\n    add(name) {\n      this.counts[name] = (this.counts[name] ?? 0) + 1;\n    },\n    winner() {\n      let best = null;\n\n      for (const name of Object.keys(this.counts)) {\n        if (best === null || this.counts[name] > this.counts[best]) {\n          best = name;\n        }\n      }\n\n      return best;\n    },\n  };\n\n  const { winner } = tally;\n\n  votes.forEach(tally.add);\n\n  return winner();\n}\n"
+    },
+    "tests": [
+      {"args":[["tea","jam","tea"]],"expected":"tea"},
+      {"args":[["jam","tea"]],"expected":"jam"},
+      {"args":[[]],"expected":null},
+      {"args":[["a","b","b","a","c"]],"expected":"a"},
+      {"args":[["solo"]],"expected":"solo"},
+      {"args":[["x","y","y"]],"expected":"y"}
+    ]
+  }
+}

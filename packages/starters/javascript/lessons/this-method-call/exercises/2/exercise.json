@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function area() {\n  return this.width * this.height;\n}\n\nconst door = { width: 2, height: 5, area };\nconst rug = { width: 3, height: 3, size: door.area };\n\nconsole.log(door.area());\nconsole.log(rug.size());\n\ndoor.width = 10;\n\nconsole.log(door[\"area\"]());"
+    },
+    "expected": "10\n9\n50"
+  }
+}

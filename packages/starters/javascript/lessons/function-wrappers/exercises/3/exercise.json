@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tools = {\n  name: \"tools\",\n  wrap(fn) {\n    return (...args) => fn.apply(this, args);\n  },\n  wrapWell(fn) {\n    return function (...args) {\n      return fn.apply(this, args);\n    };\n  },\n};\n\nconst cat = {\n  name: \"cat\",\n  describe(mood) {\n    return `${this.name} is ${mood}`;\n  },\n};\n\ncat.nap = tools.wrap(cat.describe);\ncat.play = tools.wrapWell(cat.describe);\n\nconsole.log(cat.nap(\"sleepy\"));\nconsole.log(cat.play(\"busy\"));\nconsole.log(cat.play.call(tools, \"open\"));"
+    },
+    "expected": "tools is sleepy\ncat is busy\ntools is open"
+  }
+}

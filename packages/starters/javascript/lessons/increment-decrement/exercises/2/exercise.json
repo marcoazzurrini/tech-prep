@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seats = [\"A1\", \"A2\", \"B1\"];\nlet i = 0;\n\nconst first = seats[i++];\nconst second = seats[++i];\n\nconsole.log(first, second, i);\n\nlet n = 3;\n\nconsole.log(n-- - --n);\nconsole.log(n);"
+    },
+    "expected": "A1 B1 2\n2\n1"
+  }
+}

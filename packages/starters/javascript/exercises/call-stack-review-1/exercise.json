@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function a() {\n  console.log(\"a\");\n  return \"A\";\n}\n\nfunction b() {\n  console.log(\"b\");\n  return a() + \"B\";\n}\n\nfunction c(x, y) {\n  console.log(\"c\");\n  return x + y;\n}\n\nconsole.log(c(b(), a()));"
+    },
+    "expected": "b\na\na\nc\nABA"
+  }
+}

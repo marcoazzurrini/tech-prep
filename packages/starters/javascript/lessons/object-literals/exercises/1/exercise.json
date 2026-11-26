@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const votes = {};\n\nvotes[1] = \"a\";\nvotes[\"1\"] = \"b\";\nvotes[true] = \"c\";\n\nconsole.log(votes[1]);\nconsole.log(votes[\"true\"]);\nconsole.log(JSON.stringify(votes));"
+    },
+    "expected": "b\nc\n{\"1\":\"b\",\"true\":\"c\"}"
+  }
+}

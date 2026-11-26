@@ -1,0 +1,21 @@
+{
+  "title": "Class List",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function classList() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return classList(\"button\", \"large\");"],"expected":"button large"},
+      {"args":["return classList(\"button\", false, \"active\", null);"],"expected":"button active"},
+      {"args":["return classList();"],"expected":""},
+      {"args":["return classList(undefined, \"\", \"card\");"],"expected":"card"},
+      {"args":["const open = true; const wide = false; return classList(\"tab\", open && \"open\", wide && \"wide\");"],"expected":"tab open"},
+      {"args":["return classList(\"a\", \"b\", \"c\", \"d\", \"e\", \"f\");"],"expected":"a b c d e f"},
+      {"args":["return classList(...[\"menu\", null], \"dark\");"],"expected":"menu dark"},
+      {"args":["return classList(null, false);"],"expected":""}
+    ]
+  }
+}

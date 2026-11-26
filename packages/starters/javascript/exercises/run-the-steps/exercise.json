@@ -3,40 +3,17 @@
   "check": {
     "type": "function",
     "calls": "script",
+    "compare": "exact",
     "stubs": {
       "javascript": "export function runSteps(value, steps) {\n  // your code\n}\n"
     },
     "tests": [
-      {
-        "args": [
-          "return runSteps(10, [(n) => n * 2, (n) => n + 1]);"
-        ]
-      },
-      {
-        "args": [
-          "return runSteps(10, [(n) => n + 1, (n) => n * 2]);"
-        ]
-      },
-      {
-        "args": [
-          "return runSteps(\"tea\", []);"
-        ]
-      },
-      {
-        "args": [
-          "const trim = (s) => s.trim(); const up = (s) => s.toUpperCase(); return runSteps(\" hi \", [trim, up]);"
-        ]
-      },
-      {
-        "args": [
-          "return runSteps(5, [(n) => [n, n], (pair) => pair.length]);"
-        ]
-      },
-      {
-        "args": [
-          "const half = (n) => n / 2; return runSteps(80, [half, half, half]);"
-        ]
-      }
+      {"args":["return runSteps(10, [(n) => n * 2, (n) => n + 1]);"],"expected":21},
+      {"args":["return runSteps(10, [(n) => n + 1, (n) => n * 2]);"],"expected":22},
+      {"args":["return runSteps(\"tea\", []);"],"expected":"tea"},
+      {"args":["const trim = (s) => s.trim(); const up = (s) => s.toUpperCase(); return runSteps(\" hi \", [trim, up]);"],"expected":"HI"},
+      {"args":["return runSteps(5, [(n) => [n, n], (pair) => pair.length]);"],"expected":2},
+      {"args":["const half = (n) => n / 2; return runSteps(80, [half, half, half]);"],"expected":10}
     ]
   }
 }

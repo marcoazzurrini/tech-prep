@@ -1,0 +1,20 @@
+{
+  "title": "Inputs Changed",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function inputsChanged(before, after) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [inputsChanged([1, \"a\"], [1, \"a\"]), inputsChanged([1, \"a\"], [1, \"b\"])];"],"expected":[false,true]},
+      {"args":["return [inputsChanged([NaN], [NaN]), inputsChanged([NaN, 2], [NaN, 3])];"],"expected":[false,true]},
+      {"args":["return [inputsChanged([0], [-0]), inputsChanged([-0], [-0])];"],"expected":[true,false]},
+      {"args":["const user = { id: 1 }; return [inputsChanged([user], [user]), inputsChanged([user], [{ id: 1 }])];"],"expected":[false,true]},
+      {"args":["return [inputsChanged([], []), inputsChanged([1], [1, 2]), inputsChanged([1, 2], [1])];"],"expected":[false,true,true]},
+      {"args":["return [inputsChanged([null], [undefined]), inputsChanged([\"1\"], [1])];"],"expected":[true,true]},
+      {"args":["const cart = []; const before = [cart]; cart.push(\"tea\"); return inputsChanged(before, [cart]);"],"expected":false}
+    ]
+  }
+}

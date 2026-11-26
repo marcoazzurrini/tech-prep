@@ -1,0 +1,20 @@
+{
+  "title": "Shopping Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shoppingLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function line(quantity, unit) {\n  return `${quantity} ${unit} of ${this.name}`;\n}\n\nexport function shoppingLine(item, quantity, unit) {\n  return line(quantity, unit);\n}\n"
+    },
+    "tests": [
+      {"args":[{"name":"flour"},500,"g"],"expected":"500 g of flour"},
+      {"args":[{"name":"milk"},2,"l"],"expected":"2 l of milk"},
+      {"args":[{"name":"eggs","fresh":true},6,"boxes"],"expected":"6 boxes of eggs"},
+      {"args":[{"name":""},0,"g"],"expected":"0 g of "},
+      {"args":[{"name":"rice"},1,"kg"],"expected":"1 kg of rice"}
+    ]
+  }
+}

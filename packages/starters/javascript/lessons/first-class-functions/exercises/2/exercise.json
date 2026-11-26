@@ -3,35 +3,16 @@
   "check": {
     "type": "function",
     "calls": "script",
+    "compare": "exact",
     "stubs": {
       "javascript": "export function countWhere(items, test) {\n  // your code\n}\n"
     },
     "tests": [
-      {
-        "args": [
-          "return countWhere([3, 8, 12], (n) => n > 5);"
-        ]
-      },
-      {
-        "args": [
-          "return countWhere([\"tea\", \"\", \"milk\"], (word) => word === \"\");"
-        ]
-      },
-      {
-        "args": [
-          "return countWhere([], (n) => true);"
-        ]
-      },
-      {
-        "args": [
-          "const isEven = (n) => n % 2 === 0; return countWhere([2, 4, 6], isEven);"
-        ]
-      },
-      {
-        "args": [
-          "const seen = []; countWhere([7, 9], (n) => { seen.push(n); return false; }); return seen;"
-        ]
-      }
+      {"args":["return countWhere([3, 8, 12], (n) => n > 5);"],"expected":2},
+      {"args":["return countWhere([\"tea\", \"\", \"milk\"], (word) => word === \"\");"],"expected":1},
+      {"args":["return countWhere([], (n) => true);"],"expected":0},
+      {"args":["const isEven = (n) => n % 2 === 0; return countWhere([2, 4, 6], isEven);"],"expected":3},
+      {"args":["const seen = []; countWhere([7, 9], (n) => { seen.push(n); return false; }); return seen;"],"expected":[7,9]}
     ]
   }
 }

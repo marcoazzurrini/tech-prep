@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sizes = { \"1.5\": \"a\", \"-2\": \"b\", \"03\": \"c\", 3: \"d\", 0: \"e\" };\nconst labels = { 2.0: \"x\", \"2.0\": \"y\", 1: \"z\" };\n\nconsole.log(Object.keys(sizes).join(\" \"));\nconsole.log(Object.keys(labels).join(\" \"));"
+    },
+    "expected": "0 3 1.5 -2 03\n1 2 2.0"
+  }
+}

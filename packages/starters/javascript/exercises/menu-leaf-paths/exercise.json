@@ -1,0 +1,21 @@
+{
+  "title": "Menu Paths",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "menuPaths"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function menuPaths(menu) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"label":"File","items":[{"label":"New"},{"label":"Open"}]},{"label":"Help"}]],"expected":["File > New","File > Open","Help"]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"label":"Cut"},{"label":"Copy"}]],"expected":["Cut","Copy"]},
+      {"args":[[{"label":"Edit","items":[{"label":"Find","items":[{"label":"Replace","items":[{"label":"All"}]}]}]}]],"expected":["Edit > Find > Replace > All"]},
+      {"args":[[{"label":"Recent","items":[]},{"label":"Quit"}]],"expected":["Quit"]},
+      {"args":[[{"label":"View","items":[{"label":"Zoom","items":[{"label":"In"},{"label":"Out"}]},{"label":"Full"}]},{"label":"Help","items":[{"label":"About"}]}]],"expected":["View > Zoom > In","View > Zoom > Out","View > Full","Help > About"]}
+    ]
+  }
+}

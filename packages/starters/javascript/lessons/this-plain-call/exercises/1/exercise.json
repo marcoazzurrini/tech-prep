@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function readName() {\n  return this.name;\n}\n\nconst bike = { name: \"Kim\", readName };\n\nconsole.log(bike.readName());\n\ntry {\n  console.log(readName());\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "Kim\nTypeError"
+  }
+}

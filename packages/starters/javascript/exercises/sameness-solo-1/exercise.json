@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const values = [NaN, 0];\n\nconsole.log(values.indexOf(NaN));\nconsole.log(values.includes(-0));\nconsole.log(Object.is(values[1], -0));\nconsole.log(new Set([NaN, 0 / 0, -0, 0]).size);"
+    },
+    "expected": "-1\ntrue\nfalse\n2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(typeof start);\nconsole.log(typeof stop);\nconsole.log(start());\n\nfunction start() {\n  return \"go \" + typeof stop;\n}\n\nvar stop = () => \"halt\";\n\nconsole.log(start());"
+    },
+    "expected": "function\nundefined\ngo undefined\ngo function"
+  }
+}

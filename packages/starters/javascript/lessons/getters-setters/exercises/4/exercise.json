@@ -1,0 +1,18 @@
+{
+  "title": "Product Price",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createProduct(name, price) {\n  return {\n    name,\n    get price() {\n      return this.price;\n    },\n    set price(value) {\n      if (value < 0) {\n        throw new RangeError(\"Price is negative\");\n      }\n\n      this.price = value;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["return createProduct(\"Pen\", 3).price;"],"expected":3},
+      {"args":["const p = createProduct(\"Pen\", 3); p.price = 5; return p.price;"],"expected":5},
+      {"args":["const p = createProduct(\"Pen\", 3); try { p.price = -1; } catch (e) { return [e.name, e.message, p.price]; } return \"no error\";"],"expected":["RangeError","Price is negative",3]},
+      {"args":["const p = createProduct(\"Pen\", 3); p.price = 0; return [p.name, p.price];"],"expected":["Pen",0]},
+      {"args":["const a = createProduct(\"Pen\", 3); const b = createProduct(\"Ink\", 8); a.price = 4; return [a.price, b.price];"],"expected":[4,8]}
+    ]
+  }
+}

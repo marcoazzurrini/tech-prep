@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = { size: 1, tags: [\"a\"] };\nconst one = Object.assign(base, { size: 2 });\nconst two = Object.assign({}, base, { size: 3 });\n\ntwo.tags.push(\"b\");\none.tags = [\"z\"];\n\nconsole.log(base.size);\nconsole.log(one === base);\nconsole.log(two.tags.join(\"\"));\nconsole.log(base.tags.join(\"\"));"
+    },
+    "expected": "2\ntrue\nab\nz"
+  }
+}

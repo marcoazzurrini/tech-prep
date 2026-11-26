@@ -1,0 +1,20 @@
+{
+  "title": "Mark as Shipped",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function markShipped(orders, id) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const orders = [{ id: 7, status: \"paid\", history: [\"paid\"] }]; return markShipped(orders, 7);"],"expected":[{"id":7,"status":"shipped","history":["paid","shipped"]}]},
+      {"args":["const orders = [{ id: 7, status: \"paid\", history: [\"paid\"] }]; markShipped(orders, 7); return orders;"],"expected":[{"id":7,"status":"paid","history":["paid"]}]},
+      {"args":["const orders = [{ id: 3, status: \"paid\", history: [\"new\", \"paid\"] }]; return markShipped(orders, 3)[0].history;"],"expected":["new","paid","shipped"]},
+      {"args":["const history = [\"paid\"]; markShipped([{ id: 3, status: \"paid\", history }], 3); return history;"],"expected":["paid"]},
+      {"args":["const orders = [{ id: 1, status: \"new\", history: [] }]; const result = markShipped(orders, 5); return [result, result === orders];"],"expected":[[{"id":1,"status":"new","history":[]}],false]},
+      {"args":["const a = { id: 1, status: \"new\", history: [] }; const b = { id: 2, status: \"paid\", history: [] }; return markShipped([a, b], 2);"],"expected":[{"id":1,"status":"new","history":[]},{"id":2,"status":"shipped","history":["shipped"]}]},
+      {"args":["return markShipped([], 1);"],"expected":[]}
+    ]
+  }
+}

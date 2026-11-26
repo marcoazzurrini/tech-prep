@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tag = { name: \"new\" };\nconst post = { tags: [tag, tag], author: undefined, likes: NaN };\n\nconst a = structuredClone(post);\nconst b = JSON.parse(JSON.stringify(post));\n\nconsole.log(a.tags[0] === a.tags[1], b.tags[0] === b.tags[1]);\nconsole.log(Object.keys(a).length, Object.keys(b).length);\nconsole.log(Number.isNaN(a.likes), b.likes);\nconsole.log(a.tags[0] === tag);"
+    },
+    "expected": "true false\n3 2\ntrue null\nfalse"
+  }
+}

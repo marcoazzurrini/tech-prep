@@ -32,9 +32,9 @@ done
 
 **Rule:** The **call stack** is the pile of calls that have started and not finished. A call is pushed on top when it starts. It is popped off when it returns.
 
-`boilWater()` is pushed on top of `makeTea()`. `makeTea()` stops at that line and waits.
+`boilWater()` is pushed on top of `makeTea()`. `makeTea()` stops at that line and waits. When `boilWater()` returns, it is popped, and `makeTea()` carries on.
 
-When `boilWater()` returns, it is popped. `makeTea()` carries on from the next line.
+Each entry on the stack is a **frame**. It holds one call's arguments, its local variables and the line it stopped at.
 
 <!-- task -->
 
@@ -117,7 +117,7 @@ checkout
 
 The array `stack` copies by hand what JavaScript does for every call. `loadCart` was popped before `addTax` started, so the trace does not show it.
 
-`error.stack` is the stack trace of an error, as text. Its top line is the function that failed. Each line below is the caller of the line above.
+`error.stack` holds the stack trace of an error, as text. It names the function that threw first, then its caller, and so on down.
 
 <!-- task -->
 

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function firstOf(list) {\n  const first = list\n  [0]\n\n  return first\n}\n\nfunction lastOf(list) {\n  return\n  list[list.length - 1]\n}\n\nlet a = 1\nlet b = 2\nconst c = a\n++\nb\n\nconsole.log(firstOf([\"x\", \"y\"]))\nconsole.log(lastOf([\"x\", \"y\"]))\nconsole.log(a, b, c)"
+    },
+    "expected": "x\nundefined\n1 3 1"
+  }
+}

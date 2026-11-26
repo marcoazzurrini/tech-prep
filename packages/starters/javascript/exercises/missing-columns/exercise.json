@@ -1,0 +1,19 @@
+{
+  "title": "Missing Columns",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function missingColumns(row, columns) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return missingColumns({ name: \"Ada\", age: 0 }, [\"name\", \"age\", \"email\"]);"],"expected":["email"]},
+      {"args":["return missingColumns({ name: undefined, city: null }, [\"name\", \"city\"]);"],"expected":[]},
+      {"args":["return missingColumns({}, [\"id\", \"total\"]);"],"expected":["id","total"]},
+      {"args":["return missingColumns({ id: 1 }, []);"],"expected":[]},
+      {"args":["return missingColumns({ id: 1, note: \"\" }, [\"note\", \"valueOf\", \"id\"]);"],"expected":["valueOf"]},
+      {"args":["return missingColumns({ total: 3 }, [\"toString\", \"total\", \"constructor\"]);"],"expected":["toString","constructor"]}
+    ]
+  }
+}

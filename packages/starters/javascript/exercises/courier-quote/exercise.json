@@ -1,0 +1,24 @@
+{
+  "title": "Courier Quote",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "courierQuote"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function courierQuote(km, options = { rate: 2, minimum: 5 }) {\n  const rate = options.rate;\n  const minimum = options.minimum || 5;\n\n  return Math.max(km * rate, minimum);\n}\n"
+    },
+    "tests": [
+      {"args":[10],"expected":20},
+      {"args":[1],"expected":5},
+      {"args":[10,{"rate":3}],"expected":30},
+      {"args":[1,{"minimum":0}],"expected":2},
+      {"args":[4,{"minimum":20}],"expected":20},
+      {"args":[2,{"rate":1,"minimum":10}],"expected":10},
+      {"args":[10,{}],"expected":20},
+      {"args":[3,{"rate":0}],"expected":5},
+      {"args":[3,{"rate":0,"minimum":0}],"expected":0}
+    ]
+  }
+}

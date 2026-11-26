@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const points = 12;\nconst bonus = 3;\n\nconsole.log(points + bonus * 2 > 17 === true);\nconsole.log(typeof points === \"number\" && !bonus > 1);\nconsole.log(2 * 3 ** 2);\nconsole.log(\"Score: \" + points + bonus);"
+    },
+    "expected": "true\nfalse\n18\nScore: 123"
+  }
+}

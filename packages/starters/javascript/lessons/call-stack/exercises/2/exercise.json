@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function one() {\n  console.log(\"one\");\n  return 1;\n}\n\nfunction two() {\n  console.log(\"two\");\n  return 2;\n}\n\nfunction add(a, b) {\n  console.log(`add ${a} ${b}`);\n  return a + b;\n}\n\nconsole.log(add(one(), add(two(), one())));"
+    },
+    "expected": "one\ntwo\none\nadd 2 1\nadd 1 3\n4"
+  }
+}

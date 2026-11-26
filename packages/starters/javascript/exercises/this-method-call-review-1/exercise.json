@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function describe() {\n  return `${this.name}:${this.size}`;\n}\n\nconst box = { name: \"box\", size: 2, describe };\nconst crate = { name: \"crate\", size: 9, describe, inner: box };\n\nconsole.log(crate.inner.describe());\n\nconst alias = crate;\nalias.name = \"big\";\n\nconsole.log(crate.describe());\n\ncrate.inner = { name: \"bag\", describe: box.describe };\n\nconsole.log(crate.inner.describe());\nconsole.log(box.describe());"
+    },
+    "expected": "box:2\nbig:9\nbag:undefined\nbox:2"
+  }
+}

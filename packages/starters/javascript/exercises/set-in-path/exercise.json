@@ -1,0 +1,21 @@
+{
+  "title": "Set a Value at a Path",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function setIn(data, path, value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return setIn({ user: { name: \"Ada\", age: 36 } }, [\"user\", \"name\"], \"Ben\");"],"expected":{"user":{"name":"Ben","age":36}}},
+      {"args":["return setIn({ rows: [[1, 2], [3, 4]] }, [\"rows\", 1, 0], 9);"],"expected":{"rows":[[1,2],[9,4]]}},
+      {"args":["const d = { a: { b: 1 }, c: { d: 2 } }; const n = setIn(d, [\"a\", \"b\"], 5); return [d.a.b, n === d, n.a === d.a, n.c === d.c];"],"expected":[1,false,false,true]},
+      {"args":["const d = { list: [{ n: 1 }, { n: 2 }] }; const n = setIn(d, [\"list\", 0, \"n\"], 7); return [n.list[1] === d.list[1], d.list[0].n];"],"expected":[true,1]},
+      {"args":["return setIn({ a: 1 }, [\"b\"], 2);"],"expected":{"a":1,"b":2}},
+      {"args":["return setIn({ a: 1 }, [], \"new\");"],"expected":"new"},
+      {"args":["const list = [1, 2, 3]; const out = setIn(list, [2], 0); return [out, list, Array.isArray(out)];"],"expected":[[1,2,0],[1,2,3],true]},
+      {"args":["return setIn({ a: { b: { c: { d: 1 }, e: 2 } } }, [\"a\", \"b\", \"c\", \"d\"], [true]);"],"expected":{"a":{"b":{"c":{"d":[true]},"e":2}}}}
+    ]
+  }
+}

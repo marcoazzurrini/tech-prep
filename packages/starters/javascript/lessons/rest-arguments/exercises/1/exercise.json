@@ -1,0 +1,20 @@
+{
+  "title": "Team Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "teamLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function teamLine(captain) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Ada","Ben","Cy"],"expected":"Ada leads Ben, Cy"},
+      {"args":["Ada"],"expected":"Ada plays alone"},
+      {"args":["Lin","Max"],"expected":"Lin leads Max"},
+      {"args":["Zoe","Al","Bo","Di","Ed"],"expected":"Zoe leads Al, Bo, Di, Ed"},
+      {"args":["Kim"],"expected":"Kim plays alone"}
+    ]
+  }
+}

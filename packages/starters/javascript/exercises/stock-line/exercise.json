@@ -1,0 +1,21 @@
+{
+  "title": "Stock Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stockLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stockLine(count, reserved) {\n  return \"Left: \" + count - reserved + count - reserved > 0 ? \" (in stock)\" : \" (sold out)\";\n}\n"
+    },
+    "tests": [
+      {"args":[10,4],"expected":"Left: 6 (in stock)"},
+      {"args":[3,3],"expected":"Left: 0 (sold out)"},
+      {"args":[1,0],"expected":"Left: 1 (in stock)"},
+      {"args":[0,0],"expected":"Left: 0 (sold out)"},
+      {"args":[25,24],"expected":"Left: 1 (in stock)"},
+      {"args":[7,7],"expected":"Left: 0 (sold out)"}
+    ]
+  }
+}

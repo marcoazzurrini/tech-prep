@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function pack(item) {\n  console.log(`pack ${item}`);\n  label(item);\n\n  return `${item} ${seal()}`;\n}\n\nfunction label(item) {\n  console.log(`label ${item}`);\n}\n\nfunction seal() {\n  console.log(\"seal\");\n\n  return \"sealed\";\n}\n\nconsole.log(\"start\");\nconsole.log(pack(\"mug\"));\nconsole.log(\"end\");"
+    },
+    "expected": "start\npack mug\nlabel mug\nseal\nmug sealed\nend"
+  }
+}

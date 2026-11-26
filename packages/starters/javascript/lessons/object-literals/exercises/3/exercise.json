@@ -1,0 +1,20 @@
+{
+  "title": "A Stock Entry",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stockEntry"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stockEntry(product, count) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["tea",3],"expected":{"tea":3,"teaLow":true}},
+      {"args":["milk",12],"expected":{"milk":12,"milkLow":false}},
+      {"args":["rice",5],"expected":{"rice":5,"riceLow":false}},
+      {"args":["salt",0],"expected":{"salt":0,"saltLow":true}},
+      {"args":["7up",4],"expected":{"7up":4,"7upLow":true}}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Passing Scores",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "passed"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function passed() {\n  return arguments.filter((score) => score >= 50);\n}\n"
+    },
+    "tests": [
+      {"args":[70,30,50],"expected":[70,50]},
+      {"args":[],"expected":[]},
+      {"args":[10,20],"expected":[]},
+      {"args":[50],"expected":[50]},
+      {"args":[99,100,49,51],"expected":[99,100,51]}
+    ]
+  }
+}

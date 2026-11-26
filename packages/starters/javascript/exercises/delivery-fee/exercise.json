@@ -1,0 +1,22 @@
+{
+  "title": "Delivery Fee",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "deliveryFee"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function deliveryFee(order) {\n  const weight = order.items * order.itemWeight + order.boxWeight ?? 1;\n  const free = order.member || order.total > 50 && !order.express;\n\n  return free ? 0 : 4 + weight * 2;\n}\n"
+    },
+    "tests": [
+      {"args":[{"items":2,"itemWeight":3,"boxWeight":1,"total":20}],"expected":18},
+      {"args":[{"items":2,"itemWeight":3,"total":20}],"expected":18},
+      {"args":[{"items":1,"itemWeight":1,"boxWeight":0,"total":80}],"expected":0},
+      {"args":[{"items":1,"itemWeight":1,"boxWeight":0,"total":80,"express":true}],"expected":6},
+      {"args":[{"items":4,"itemWeight":2,"total":10,"member":true}],"expected":0},
+      {"args":[{"items":4,"itemWeight":2,"total":10,"member":true,"express":true}],"expected":22},
+      {"args":[{"items":3,"itemWeight":1,"boxWeight":0,"total":50}],"expected":10}
+    ]
+  }
+}

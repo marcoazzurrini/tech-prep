@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function area(width, height) {\n  return\n    width * height\n}\n\nconst twice = (n) => n * 2\nconst side = 4\n\nconst size = twice\n(side)\n\nconsole.log(area(2, 3))\nconsole.log(size)"
+    },
+    "expected": "undefined\n8"
+  }
+}

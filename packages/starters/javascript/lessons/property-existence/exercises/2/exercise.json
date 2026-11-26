@@ -1,0 +1,21 @@
+{
+  "title": "Words in the Dictionary",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "knownWords"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function knownWords(dictionary, words) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"cat":"an animal","sun":"a star"},["cat","dog","sun"]],"expected":["cat","sun"]},
+      {"args":[{"cat":"an animal"},["toString","cat"]],"expected":["cat"]},
+      {"args":[{"cat":"an animal"},["constructor","valueOf"]],"expected":[]},
+      {"args":[{"todo":"","later":null},["later","todo"]],"expected":["later","todo"]},
+      {"args":[{},["cat"]],"expected":[]},
+      {"args":[{"cat":"an animal"},[]],"expected":[]}
+    ]
+  }
+}

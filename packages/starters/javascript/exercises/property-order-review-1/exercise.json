@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const slots = { late: \"d\", 12: \"a\", \"7\": \"b\", \"07\": \"c\", 1.0: \"e\" };\n\nslots.late = \"f\";\nslots[-3] = \"g\";\ndelete slots[12];\nslots[12] = \"h\";\n\nlet values = \"\";\n\nfor (const key of Object.keys(slots)) {\n  values += slots[key];\n}\n\nconsole.log(Object.keys(slots).join(\" \"));\nconsole.log(values);"
+    },
+    "expected": "1 7 12 late 07 -3\nebhfcg"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Format a Price",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "formatPrice"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function formatPrice(amount, decimals) {\n  decimals = decimals || 2;\n\n  return amount.toFixed(decimals);\n}\n"
+    },
+    "tests": [
+      {"args":[3.14159],"expected":"3.14"},
+      {"args":[3.14159,0],"expected":"3"},
+      {"args":[5,1],"expected":"5.0"},
+      {"args":[2.5],"expected":"2.50"},
+      {"args":[9.99,0],"expected":"10"},
+      {"args":[0.5,3],"expected":"0.500"}
+    ]
+  }
+}

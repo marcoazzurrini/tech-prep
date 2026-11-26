@@ -1,0 +1,19 @@
+{
+  "title": "Thermostat",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createThermostat(degrees) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = createThermostat(20); const { warmer, cooler } = t.controls(); return [warmer(), warmer(), cooler(), t.degrees];"],"expected":[21,22,21,21]},
+      {"args":["const t = createThermostat(5); const c = t.controls(); c.cooler(); c.cooler(); return [t.degrees, \"degrees\" in c];"],"expected":[3,false]},
+      {"args":["const t = createThermostat(0); t.controls().warmer(); t.controls().warmer(); return t.degrees;"],"expected":2},
+      {"args":["const t = createThermostat(10); const c = t.controls(); t.degrees = 30; return c.warmer();"],"expected":31},
+      {"args":["const a = createThermostat(1); const b = createThermostat(9); a.controls().warmer(); return [a.degrees, b.degrees];"],"expected":[2,9]},
+      {"args":["const t = createThermostat(7); const { cooler } = t.controls(); return [cooler.call({ degrees: 100 }), t.degrees];"],"expected":[6,6]}
+    ]
+  }
+}

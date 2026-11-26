@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seen = new Set();\nconst inputs = [0, -0, NaN, Number(\"x\"), \"0\", 0 * -1];\n\nfor (const input of inputs) {\n  seen.add(input);\n}\n\nconsole.log(seen.size);\nconsole.log(seen.has(-0), seen.has(\"NaN\"));\nconsole.log(inputs.indexOf(NaN), inputs.indexOf(-0));\nconsole.log(Object.is(inputs[1], inputs[5]), inputs[0] === inputs[5]);"
+    },
+    "expected": "3\ntrue false\n-1 0\ntrue true"
+  }
+}

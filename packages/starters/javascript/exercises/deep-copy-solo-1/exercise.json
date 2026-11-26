@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const trip = { city: \"Rome\", days: [{ n: 1, plan: undefined }], start: new Date(0) };\n\nconst a = structuredClone(trip);\nconst b = JSON.parse(JSON.stringify(trip));\n\na.days[0].n = 2;\n\nconsole.log(trip.days[0].n);\nconsole.log(\"plan\" in a.days[0], \"plan\" in b.days[0]);\nconsole.log(typeof a.start, typeof b.start);"
+    },
+    "expected": "1\ntrue false\nobject string"
+  }
+}

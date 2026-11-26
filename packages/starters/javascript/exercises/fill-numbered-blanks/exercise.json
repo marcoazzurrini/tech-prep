@@ -1,0 +1,22 @@
+{
+  "title": "Fill the Blanks",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fillBlanks(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return fillBlanks(\"Hi {0}, you owe {1}\", \"Ada\", 20);"],"expected":"Hi Ada, you owe 20"},
+      {"args":["return fillBlanks(\"{0} and {0}\", \"tea\");"],"expected":"tea and tea"},
+      {"args":["return fillBlanks(\"{1} before {0}\", \"a\", \"b\");"],"expected":"b before a"},
+      {"args":["return fillBlanks(\"{0}, {1}, {2}\", \"x\");"],"expected":"x, {1}, {2}"},
+      {"args":["return fillBlanks(\"no blanks\", 1, 2);"],"expected":"no blanks"},
+      {"args":["return fillBlanks(\"{0}\");"],"expected":"{0}"},
+      {"args":["return fillBlanks(\"{0}|{1}|{2}\", null, 0, false);"],"expected":"null|0|false"},
+      {"args":["return fillBlanks(\"{10}{1}\", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, \"a\");"],"expected":"a1"},
+      {"args":["return fillBlanks(\"\", \"x\");"],"expected":""}
+    ]
+  }
+}

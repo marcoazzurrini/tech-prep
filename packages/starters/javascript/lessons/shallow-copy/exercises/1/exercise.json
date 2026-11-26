@@ -1,0 +1,18 @@
+{
+  "title": "Request Options",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function requestOptions(defaults, options) {\n  return Object.assign(defaults, options);\n}\n"
+    },
+    "tests": [
+      {"args":["return requestOptions({ method: \"GET\", retries: 3 }, { retries: 0 });"],"expected":{"method":"GET","retries":0}},
+      {"args":["const defaults = { method: \"GET\" }; requestOptions(defaults, { method: \"POST\" }); return defaults.method;"],"expected":"GET"},
+      {"args":["const defaults = { retries: 3 }; const out = requestOptions(defaults, { cache: true }); return [out === defaults, defaults];"],"expected":[false,{"retries":3}]},
+      {"args":["const options = { cache: true }; const out = requestOptions({ retries: 3 }, options); return [out === options, options];"],"expected":[false,{"cache":true}]},
+      {"args":["return requestOptions({ method: \"GET\" }, {});"],"expected":{"method":"GET"}}
+    ]
+  }
+}

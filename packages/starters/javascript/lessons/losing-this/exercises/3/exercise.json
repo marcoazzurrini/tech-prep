@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const gate = {\n  code: 42,\n  read() {\n    return this === undefined ? \"lost\" : this.code;\n  },\n};\n\nconst side = { code: 7, read: gate.read };\n\nconsole.log((gate.read)());\nconsole.log((gate.read || side.read)());\nconsole.log((side.code > 5 ? side.read : gate.read)());\nconsole.log(side[\"read\"]());"
+    },
+    "expected": "42\nlost\nlost\n7"
+  }
+}

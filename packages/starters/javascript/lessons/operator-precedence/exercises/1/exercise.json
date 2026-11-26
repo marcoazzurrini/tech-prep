@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const stock = 4;\nconst sold = \"1\";\n\nconsole.log(typeof stock - sold);\nconsole.log(typeof (stock - sold));\nconsole.log(-stock + 10 * 2);\nconsole.log(!stock + 1);"
+    },
+    "expected": "NaN\nnumber\n16\n1"
+  }
+}

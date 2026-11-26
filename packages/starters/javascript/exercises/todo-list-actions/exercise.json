@@ -1,0 +1,23 @@
+{
+  "title": "Todo List Actions",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function applyAction(state, action) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return applyAction({ filter: \"all\", todos: [] }, { type: \"add\", id: 1, text: \"Tea\" });"],"expected":{"filter":"all","todos":[{"id":1,"text":"Tea","done":false}]}},
+      {"args":["const s = { filter: \"all\", todos: [{ id: 1, text: \"Tea\", done: false }] }; return applyAction(s, { type: \"toggle\", id: 1 });"],"expected":{"filter":"all","todos":[{"id":1,"text":"Tea","done":true}]}},
+      {"args":["const s = { todos: [{ id: 1, done: false }] }; applyAction(s, { type: \"toggle\", id: 1 }); return s.todos[0].done;"],"expected":false},
+      {"args":["const s = { filter: \"done\", todos: [{ id: 1 }, { id: 2 }] }; return [applyAction(s, { type: \"remove\", id: 1 }), s.todos.length];"],"expected":[{"filter":"done","todos":[{"id":2}]},2]},
+      {"args":["const s = { filter: \"all\", todos: [] }; return applyAction(s, { type: \"sort\" }) === s;"],"expected":true},
+      {"args":["const s = { filter: \"all\", todos: [] }; return [applyAction(s, { type: \"filter\", value: \"done\" }), s];"],"expected":[{"filter":"done","todos":[]},{"filter":"all","todos":[]}]},
+      {"args":["const s = { filter: \"all\", todos: [] }; return applyAction(s, { type: \"filter\", value: \"done\" }).todos === s.todos;"],"expected":true},
+      {"args":["const a = { id: 1 }; const s = { todos: [a, { id: 2 }] }; return applyAction(s, { type: \"toggle\", id: 2 }).todos[0] === a;"],"expected":true},
+      {"args":["const s = { todos: [] }; applyAction(s, { type: \"add\", id: 1, text: \"Tea\" }); return s.todos.length;"],"expected":0},
+      {"args":["const a = { type: \"toggle\", id: 1 }; const s = { todos: [{ id: 1, done: true }] }; return applyAction(applyAction(s, a), a);"],"expected":{"todos":[{"id":1,"done":true}]}}
+    ]
+  }
+}

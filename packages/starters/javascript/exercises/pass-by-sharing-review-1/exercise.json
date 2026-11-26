@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function archive(list, entry) {\n  entry.done = true;\n  list.push(entry);\n  list = [];\n  entry = { done: false };\n  list.push(entry);\n\n  return list.length;\n}\n\nconst log = [];\nconst task = { done: false };\nconst size = archive(log, task);\narchive(log, task);\n\nconsole.log(size, log.length);\nconsole.log(task.done, log[0] === log[1]);"
+    },
+    "expected": "1 2\ntrue true"
+  }
+}

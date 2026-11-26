@@ -1,0 +1,23 @@
+{
+  "title": "Progress Tracker",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createProgress(total) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const p = createProgress(8); return [p.done, p.percent, p.isComplete];"],"expected":[0,0,false]},
+      {"args":["const p = createProgress(8); p.done = 2; return [p.done, p.percent, p.isComplete];"],"expected":[2,25,false]},
+      {"args":["const p = createProgress(3); p.done = 1; return p.percent;"],"expected":33},
+      {"args":["const p = createProgress(4); p.done = 4; return [p.percent, p.isComplete];"],"expected":[100,true]},
+      {"args":["const p = createProgress(4); p.done = 1; try { p.done = 5; } catch (e) { return [e.name, p.done]; } return \"no error\";"],"expected":["RangeError",1]},
+      {"args":["const p = createProgress(4); try { p.done = -1; } catch (e) { return [e.name, p.done]; } return \"no error\";"],"expected":["RangeError",0]},
+      {"args":["const p = createProgress(4); p.done = 2; try { p.percent = 99; p.isComplete = true; } catch {} return [p.percent, p.isComplete];"],"expected":[50,false]},
+      {"args":["return Object.keys(createProgress(4)).sort();"],"expected":["done","isComplete","percent"]},
+      {"args":["const a = createProgress(4); const b = createProgress(4); a.done = 3; return [a.done, b.done];"],"expected":[3,0]},
+      {"args":["const p = createProgress(4); p.done += 1; p.done += 1; return [p.done, p.percent];"],"expected":[2,50]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function outer(a, ...rest) {\n  const peek = () => arguments.length;\n  const grab = (...args) => args.length;\n  rest.push(\"extra\");\n\n  return `${peek(1)} ${grab(1)} ${rest.length} ${Array.isArray(arguments)}`;\n}\n\nfunction swap(a, b) {\n  [a, b] = [b, a];\n\n  return `${a}${b} ${arguments[0]}${arguments[1]}`;\n}\n\nconsole.log(outer(\"x\", \"y\", \"z\"));\nconsole.log(outer());\nconsole.log(swap(\"p\", \"q\"));"
+    },
+    "expected": "3 1 3 false\n0 1 1 false\nqp pq"
+  }
+}

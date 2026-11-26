@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function check(source) {\n  try {\n    new Function(`\"use strict\"; ${source}`);\n    return \"ok\";\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconsole.log(check(\"delete user.name;\"));\nconsole.log(check(\"delete user;\"));\nconsole.log(check(\"function add(a, b, a) {}\"));\nconsole.log(check(\"with (user) { name; }\"));"
+    },
+    "expected": "ok\nSyntaxError\nSyntaxError\nSyntaxError"
+  }
+}

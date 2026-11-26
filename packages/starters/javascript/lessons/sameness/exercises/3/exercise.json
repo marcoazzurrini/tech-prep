@@ -1,0 +1,19 @@
+{
+  "title": "Count the Matches",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countMatches(list, target) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return countMatches([1, 2, 1], 1);"],"expected":2},
+      {"args":["return countMatches([NaN, 4, NaN], NaN);"],"expected":2},
+      {"args":["return countMatches([0, -0, 5], 0);"],"expected":2},
+      {"args":["return countMatches([\"1\", 1], 1);"],"expected":1},
+      {"args":["return countMatches([NaN, \"NaN\", undefined], NaN);"],"expected":1},
+      {"args":["return countMatches([], NaN);"],"expected":0}
+    ]
+  }
+}

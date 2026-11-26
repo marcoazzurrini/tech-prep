@@ -1,0 +1,18 @@
+{
+  "title": "Ticket Total",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeTicket(price, quantity) {\n  return {\n    price,\n    quantity,\n    total() {\n      // your code\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["return makeTicket(5, 2).total();"],"expected":10},
+      {"args":["const ticket = makeTicket(5, 2); ticket.quantity = 4; return ticket.total();"],"expected":20},
+      {"args":["const ticket = makeTicket(3, 3); ticket.price = 10; return ticket.total();"],"expected":30},
+      {"args":["const a = makeTicket(1, 1); const b = makeTicket(2, 2); return [a.total(), b.total()];"],"expected":[1,4]},
+      {"args":["return makeTicket(7, 0).total();"],"expected":0}
+    ]
+  }
+}

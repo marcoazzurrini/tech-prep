@@ -1,0 +1,19 @@
+{
+  "title": "Only N Calls",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function limitCalls(fn, max) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const next = limitCalls((n) => n * 2, 2); return [next(1), next(5), next(9)];"],"expected":[2,10,10]},
+      {"args":["let runs = 0; const f = limitCalls(() => ++runs, 3); f(); f(); f(); f(); f(); return runs;"],"expected":3},
+      {"args":["const pot = { n: 3, take: limitCalls(function () { return (this.n -= 1); }, 2) }; return [pot.take(), pot.take(), pot.take()];"],"expected":[2,1,1]},
+      {"args":["let runs = 0; const f = limitCalls(() => ++runs, 0); return [f() === undefined, runs];"],"expected":[true,0]},
+      {"args":["const a = limitCalls((x) => x, 1); const b = limitCalls((x) => x, 1); return [a(\"a\"), b(\"b\"), a(\"c\"), b(\"d\")];"],"expected":["a","b","a","b"]},
+      {"args":["const size = limitCalls((...nums) => nums.length, 1); return [size(1, 2, 3), size()];"],"expected":[3,3]}
+    ]
+  }
+}

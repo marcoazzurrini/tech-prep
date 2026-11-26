@@ -1,0 +1,20 @@
+{
+  "title": "Table Booking",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "tableBooking"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function tableBooking(options) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"guests":4,"time":"20:30"}],"expected":"Table for 4 at 20:30"},
+      {"args":[{"guests":6}],"expected":"Table for 6 at 19:00"},
+      {"args":[{"time":"12:15"}],"expected":"Table for 2 at 12:15"},
+      {"args":[{}],"expected":"Table for 2 at 19:00"},
+      {"args":[],"expected":"Table for 2 at 19:00"}
+    ]
+  }
+}

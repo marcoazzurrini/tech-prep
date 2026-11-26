@@ -1,0 +1,18 @@
+{
+  "title": "Log the Calls",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function logCalls(fn, log) {\n  return function (...args) {\n    log.push(args);\n\n    return fn(...args);\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const log = []; const c = { total: 10, add: logCalls(function (n) { return this.total + n; }, log) }; return [c.add(5), log];"],"expected":[15,[[5]]]},
+      {"args":["const log = []; const double = logCalls((n) => n * 2, log); return [double(4), double(5), log];"],"expected":[8,10,[[4],[5]]]},
+      {"args":["const log = []; const u = { name: \"Ada\", hi: logCalls(function () { return \"hi \" + this.name; }, log) }; return [u.hi(), log];"],"expected":["hi Ada",[[]]]},
+      {"args":["const log = []; const f = logCalls(function (a, b) { return this.k + a + b; }, log); return [f.call({ k: 1 }, 2, 3), log];"],"expected":[6,[[2,3]]]},
+      {"args":["const log = []; const c = { n: 0, up: logCalls(function () { this.n += 1; }, log) }; c.up(); c.up(); return [c.n, log.length];"],"expected":[2,2]}
+    ]
+  }
+}

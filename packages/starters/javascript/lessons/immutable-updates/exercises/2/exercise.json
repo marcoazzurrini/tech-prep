@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const queue = [\"Ada\", \"Ben\", \"Cy\"];\n\nconst served = queue.filter((name) => name !== \"Ada\");\nconst joined = [...served, \"Dee\"];\nconst size = joined.push(\"Eve\");\n\nconsole.log(queue.length);\nconsole.log(served.length);\nconsole.log(size);\nconsole.log(joined.join(\" \"));"
+    },
+    "expected": "3\n2\n4\nBen Cy Dee Eve"
+  }
+}

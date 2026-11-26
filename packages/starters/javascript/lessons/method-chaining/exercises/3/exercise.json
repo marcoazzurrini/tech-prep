@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function createTimer(seconds) {\n  return {\n    seconds,\n    add(more) {\n      this.seconds += more;\n\n      return this;\n    },\n  };\n}\n\nconst egg = createTimer(60);\nconst softEgg = egg.add(120);\nconst hardEgg = softEgg.add(300);\nconst tea = createTimer(60).add(120);\n\nconsole.log(softEgg.seconds);\nconsole.log(egg === hardEgg);\nconsole.log(tea.seconds);\nconsole.log(tea === egg);"
+    },
+    "expected": "480\ntrue\n180\nfalse"
+  }
+}

@@ -3,40 +3,17 @@
   "check": {
     "type": "function",
     "calls": "script",
+    "compare": "exact",
     "stubs": {
       "javascript": "const toCelsius = (fahrenheit) => ((fahrenheit - 32) * 5) / 9;\nconst toFahrenheit = (celsius) => (celsius * 9) / 5 + 32;\n\nexport function converterTo(unit) {\n  // your code\n}\n"
     },
     "tests": [
-      {
-        "args": [
-          "return converterTo(\"C\")(212);"
-        ]
-      },
-      {
-        "args": [
-          "return converterTo(\"F\")(100);"
-        ]
-      },
-      {
-        "args": [
-          "return typeof converterTo(\"C\");"
-        ]
-      },
-      {
-        "args": [
-          "const convert = converterTo(\"F\"); return [convert(0), convert(-40)];"
-        ]
-      },
-      {
-        "args": [
-          "return converterTo(\"C\") === converterTo(\"C\");"
-        ]
-      },
-      {
-        "args": [
-          "return converterTo(\"C\")(-40);"
-        ]
-      }
+      {"args":["return converterTo(\"C\")(212);"],"expected":100},
+      {"args":["return converterTo(\"F\")(100);"],"expected":212},
+      {"args":["return typeof converterTo(\"C\");"],"expected":"function"},
+      {"args":["const convert = converterTo(\"F\"); return [convert(0), convert(-40)];"],"expected":[32,-40]},
+      {"args":["return converterTo(\"C\") === converterTo(\"C\");"],"expected":true},
+      {"args":["return converterTo(\"C\")(-40);"],"expected":-40}
     ]
   }
 }

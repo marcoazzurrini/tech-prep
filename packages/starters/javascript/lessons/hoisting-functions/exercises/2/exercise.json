@@ -1,0 +1,20 @@
+{
+  "title": "Title to Slug",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "toSlug"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toSlug(title) {\n  const parts = words(title);\n  const slug = join(parts);\n\n  const words = (text) => text.toLowerCase().split(\" \");\n\n  var join = function (list) {\n    return list.join(\"-\");\n  };\n\n  return slug;\n}\n"
+    },
+    "tests": [
+      {"args":["Hello World"],"expected":"hello-world"},
+      {"args":["Sale"],"expected":"sale"},
+      {"args":["Three Short Words"],"expected":"three-short-words"},
+      {"args":["already lower"],"expected":"already-lower"},
+      {"args":["Weekend Flash Sale Today"],"expected":"weekend-flash-sale-today"}
+    ]
+  }
+}

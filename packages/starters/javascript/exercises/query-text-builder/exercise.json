@@ -1,0 +1,20 @@
+{
+  "title": "Query Text",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createQuery(table) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return createQuery(\"pets\").toString();"],"expected":"SELECT * FROM pets"},
+      {"args":["return createQuery(\"pets\").limit(5).where(\"age > 2\").toString();"],"expected":"SELECT * FROM pets WHERE age > 2 LIMIT 5"},
+      {"args":["return createQuery(\"pets\").where(\"age > 2\").where(\"legs = 4\").orderBy(\"name\").toString();"],"expected":"SELECT * FROM pets WHERE age > 2 AND legs = 4 ORDER BY name"},
+      {"args":["return createQuery(\"pets\").orderBy(\"age\").limit(3).orderBy(\"name\").limit(0).toString();"],"expected":"SELECT * FROM pets ORDER BY name LIMIT 0"},
+      {"args":["const query = createQuery(\"toys\"); query.where(\"price < 9\"); query.limit(2); return query.toString();"],"expected":"SELECT * FROM toys WHERE price < 9 LIMIT 2"},
+      {"args":["const a = createQuery(\"a\").where(\"x = 1\"); const b = createQuery(\"b\"); return [a.toString(), b.toString()];"],"expected":["SELECT * FROM a WHERE x = 1","SELECT * FROM b"]},
+      {"args":["return String(createQuery(\"pets\").limit(1));"],"expected":"SELECT * FROM pets LIMIT 1"}
+    ]
+  }
+}

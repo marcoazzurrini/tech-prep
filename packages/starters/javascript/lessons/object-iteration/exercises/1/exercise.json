@@ -1,0 +1,21 @@
+{
+  "title": "The Priciest Dish",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "priciest"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function priciest(menu) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"soup":4,"steak":18,"cake":6}],"expected":"steak"},
+      {"args":[{}],"expected":null},
+      {"args":[{"tea":2,"coffee":3,"juice":3}],"expected":"coffee"},
+      {"args":[{"water":0}],"expected":"water"},
+      {"args":[{"rice":7,"fish":7,"soup":7}],"expected":"rice"},
+      {"args":[{"a":5,"b":4,"c":3}],"expected":"a"}
+    ]
+  }
+}

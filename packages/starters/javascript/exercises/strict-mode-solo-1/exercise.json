@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function total(prices) {\n  sum = 0;\n\n  for (const price of prices) {\n    sum += price;\n  }\n\n  return sum;\n}\n\nfunction owner() {\n  return typeof this;\n}\n\ntry {\n  console.log(total([1, 2]));\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(owner());\nconsole.log(typeof sum);"
+    },
+    "expected": "ReferenceError\nundefined\nundefined"
+  }
+}

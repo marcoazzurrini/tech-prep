@@ -1,0 +1,21 @@
+{
+  "title": "Stack Trace",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stackTrace"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stackTrace(events) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["serve","cook","return","wash"]],"expected":["wash","serve"]},
+      {"args":[["main","return"]],"expected":[]},
+      {"args":[[]],"expected":[]},
+      {"args":[["a","b","c"]],"expected":["c","b","a"]},
+      {"args":[["open","read","return","read","return","close"]],"expected":["close","open"]},
+      {"args":[["main","load","parse","return","return","draw","paint"]],"expected":["paint","draw","main"]}
+    ]
+  }
+}

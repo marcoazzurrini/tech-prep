@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(report());\nconsole.log(typeof count);\n\nfunction report() {\n  return header() + count();\n\n  function header() {\n    return \"Items: \";\n  }\n}\n\nfunction count() {\n  return 3;\n}"
+    },
+    "expected": "Items: 3\nfunction"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Change or Copy",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function applyChanges(settings, changes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = { theme: \"dark\" }; const r = applyChanges(s, { size: 12 }); return [r === s, s];"],"expected":[true,{"theme":"dark","size":12}]},
+      {"args":["const s = Object.freeze({ theme: \"dark\" }); const r = applyChanges(s, { theme: \"light\" }); return [r === s, r, s];"],"expected":[false,{"theme":"light"},{"theme":"dark"}]},
+      {"args":["const s = Object.freeze({ a: 1 }); return applyChanges(s, { b: 2, c: 3 });"],"expected":{"a":1,"b":2,"c":3}},
+      {"args":["const s = { a: 1, b: 2 }; applyChanges(s, { b: 5, c: 6 }); return s;"],"expected":{"a":1,"b":5,"c":6}},
+      {"args":["const s = { a: 1 }; return applyChanges(s, {}) === s;"],"expected":true},
+      {"args":["const s = Object.freeze({ a: 1, b: 2 }); return applyChanges(s, { a: 1 });"],"expected":{"a":1,"b":2}},
+      {"args":["const s = Object.freeze({ n: 0 }); const r = applyChanges(s, { n: 1 }); return [Object.isFrozen(s), s.n, r.n];"],"expected":[true,0,1]}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Who May Edit",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "canEdit"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function canEdit(user) {\n  return user.admin || user.owner && !user.locked;\n}\n"
+    },
+    "tests": [
+      {"args":[{"admin":true,"owner":false,"locked":false}],"expected":true},
+      {"args":[{"admin":true,"owner":false,"locked":true}],"expected":false},
+      {"args":[{"admin":false,"owner":true,"locked":false}],"expected":true},
+      {"args":[{"admin":false,"owner":true,"locked":true}],"expected":false},
+      {"args":[{"admin":false,"owner":false,"locked":false}],"expected":false},
+      {"args":[{"admin":true,"owner":true,"locked":true}],"expected":false}
+    ]
+  }
+}
