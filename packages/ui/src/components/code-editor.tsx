@@ -112,6 +112,7 @@ const MODES = new Map([
 
 /** The languages the editor colours. */
 const GRAMMARS = new Map<string, () => Extension>([
+  ["javascript", () => javascript()],
   ["python", python],
   ["typescript", () => javascript({ typescript: true })],
 ]);

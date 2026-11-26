@@ -13,14 +13,28 @@ import { ensureDataStructures } from "./runner.ts";
 const TIMEOUT_MS = 10_000;
 
 /** The languages a program can be written in. */
-export const PROGRAM_LANGUAGES = ["typescript", "python"];
+export const PROGRAM_LANGUAGES = ["typescript", "javascript", "python"];
 
 /** The language a program is in when it is not named. */
 export const DEFAULT_LANGUAGE: Language =
   process.env.TECHPREP_LANG === "python" ? "python" : "typescript";
 
-/** Run a small program on its own and capture what it prints. */
-export const execute = (source: string, language: Language) => {
+/**
+ * JavaScript runs as a module, as it does in today's projects: strict mode is on, and `this`
+ * at the top is `undefined`. Bun runs a file with no `import` or `export` as an old script,
+ * so an empty export is added.
+ */
+const asModule = (source: string): string => `${source}\nexport {};\n`;
+
+/**
+ * Run a small program on its own and capture what it prints. `files` are written beside it,
+ * by name, so the program can import them.
+ */
+export const execute = (
+  source: string,
+  language: Language,
+  files: Record<string, string> = {}
+) => {
   if (!PROGRAM_LANGUAGES.includes(language)) {
     throw new Error(
       `Code in '${language}' cannot be run. Use one of: ${PROGRAM_LANGUAGES.join(", ")}.`
@@ -32,7 +46,11 @@ export const execute = (source: string, language: Language) => {
   try {
     ensureDataStructures(dir, language);
     const file = path.join(dir, `exercise.${extension(language)}`);
-    writeFileSync(file, source);
+    writeFileSync(file, language === "javascript" ? asModule(source) : source);
+
+    for (const [name, text] of Object.entries(files)) {
+      writeFileSync(path.join(dir, path.basename(name)), text);
+    }
 
     const [cmd, args]: [string, string[]] =
       language === "python"
@@ -59,9 +77,10 @@ export const execute = (source: string, language: Language) => {
 export const outputOf = (
   source: string,
   language: Language,
-  what: string
+  what: string,
+  files: Record<string, string> = {}
 ): string => {
-  const run = execute(source, language);
+  const run = execute(source, language, files);
 
   if (run.timedOut) {
     throw new Error(`${what} does not finish. Remove the endless loop.`);

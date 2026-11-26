@@ -355,7 +355,7 @@ const runView = (run: RunResult) => ({
     actual: c.ok ? null : short(c.actual, 120),
     error: c.error?.trim().split("\n").at(-1) ?? null,
     expected: short(c.expected, 120),
-    input: short(c.args, 120),
+    input: c.shown ?? short(c.args, 120),
     ok: c.ok,
   })),
   fatal: run.fatal ?? null,

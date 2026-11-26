@@ -15,7 +15,12 @@ import { z } from "zod";
 import { extension } from "../content.ts";
 import type { Language } from "../content.ts";
 import { DEFAULT_LANGUAGE } from "../program.ts";
-import { ensureDataStructures, formatRun, runCode } from "../runner.ts";
+import {
+  ensureDataStructures,
+  formatRun,
+  runCode,
+  scriptCode,
+} from "../runner.ts";
 import type { RunResult } from "../runner.ts";
 import { unsaved } from "./types.ts";
 import type { Built, Checker } from "./types.ts";
@@ -47,8 +52,12 @@ type TestCase = z.infer<typeof Test>;
 // oxlint-disable-next-line sort-keys -- written back to the exercise's file in this order
 export const functionCheck = z.object({
   type: z.literal("function"),
-  /** What the tests call: one function, a class driven by `ops`, or an encode and decode pair. */
-  calls: z.enum(["function", "design", "roundtrip"]).optional(),
+  /**
+   * What the tests call: one function, a class driven by `ops`, an encode and decode pair,
+   * or a script. A script test holds a few lines of code as its one argument. The code uses
+   * what the learner's file exports, by name, and returns a value.
+   */
+  calls: z.enum(["function", "design", "roundtrip", "script"]).optional(),
   /** The function's name in each language. */
   function: z.record(z.string(), z.string()).optional(),
   class: z.string().optional(),
@@ -108,6 +117,13 @@ const fieldErrors = (check: FunctionCheck): string[] => {
     ) {
       errors.push(`missing function.${language}`);
     }
+  }
+
+  if (
+    check.calls === "script" &&
+    check.tests.some((t) => scriptCode(t.args) === null)
+  ) {
+    errors.push("a script test holds its code as the one string in `args`");
   }
 
   if (check.tests.length < MIN_TESTS) {

@@ -41,7 +41,7 @@ The engine schedules **concepts**, not questions, with spaced repetition (FSRS).
 - The tutor can put an extra exercise on screen when the learner asks for more practice: a worked example, predict the output, arrange the lines, or an open question.
 - Writing tasks use a light in-app editor with Vim keybindings.
 - A problem has Run, which only runs the tests, and Submit, which hands in the answer once the tests pass. The learner can give up to see a solution.
-- Default language TypeScript; Python is supported.
+- Default language TypeScript; Python and JavaScript are supported.
 - No failure state while learning. Help or giving up only delays a retry.
 
 ## Brand Commitments

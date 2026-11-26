@@ -5,6 +5,7 @@
 // - kind "function": call `function` with converted args (types in `params`).
 // - kind "design": construct `class`, then call the listed methods in order.
 // - kind "roundtrip": decode(encode(x)) must give back x.
+// - kind "script": run the case's code, which uses the file's exports by name.
 // console.log output is captured per case.
 
 import path from "node:path";
@@ -13,7 +14,7 @@ import type * as DataStructures from "./ds.ts";
 
 interface Request {
   file: string;
-  kind?: "function" | "design" | "roundtrip";
+  kind?: "function" | "design" | "roundtrip" | "script";
   function?: string;
   class?: string;
   params?: string[];
@@ -44,20 +45,45 @@ interface CaseOutcome {
 // SAFETY: runner.ts builds the request from a Problem, with these fields.
 const request = (await Bun.stdin.json()) as Request;
 
-// Keep only the learner's own stack frames, with short file names.
-const describe = (cause: unknown) =>
-  cause instanceof Error
-    ? (cause.stack ?? cause.message)
-        .split("\n")
-        .filter((line) => !line.includes("typescript-harness"))
-        .map((line) =>
-          line.replace(
-            /\(?\/[^\s()]*\/(?<location>[^/\s()]+:\d+:\d+)\)?/u,
-            "($<location>)"
-          )
-        )
-        .join("\n")
-    : String(cause);
+const FRAME = /^\s+at /u;
+
+/** Code that Bun cannot parse, as the syntax error it is, with the line it stopped on. */
+const parseError = (cause: Error): string | null => {
+  if (cause.name !== "BuildMessage") {
+    return null;
+  }
+
+  // SAFETY: Bun's BuildMessage carries where the parser stopped.
+  const { position } = cause as Error & { position?: { line?: number } | null };
+  const where = position?.line ? ` (line ${position.line})` : "";
+
+  return `SyntaxError: ${cause.message}${where}`;
+};
+
+/**
+ * An error as text: the learner's own stack frames, with short file names, then the error
+ * itself. The error comes last, as in a Python traceback, so the last line says what went wrong.
+ */
+const describe = (cause: unknown) => {
+  if (!(cause instanceof Error)) {
+    return String(cause);
+  }
+
+  const frames = (cause.stack ?? "")
+    .split("\n")
+    .filter((line) => FRAME.test(line) && !line.includes("typescript-harness"))
+    .map((line) =>
+      line.replace(
+        /\(?\/[^\s()]*\/(?<location>[^/\s()]+:\d+:\d+)\)?/u,
+        "($<location>)"
+      )
+    );
+
+  return [
+    ...frames,
+    parseError(cause) ?? `${cause.name}: ${cause.message}`,
+  ].join("\n");
+};
 
 const write = (output: { fatal: string } | { results: CaseOutcome[] }) =>
   process.stdout.write(JSON.stringify(output));
@@ -486,8 +512,56 @@ const runFunction = async (testCase: Case, conv: Converter) => {
   return conv.valueOut(request.returns ?? "json", result);
 };
 
+const IDENTIFIER = /^[A-Za-z_$][\w$]*$/u;
+
+/** True when code can use an export by its name. `default` and other reserved words cannot be. */
+const usable = (name: string): boolean => {
+  if (!IDENTIFIER.test(name) || name === "exports") {
+    return false;
+  }
+
+  try {
+    // oxlint-disable-next-line no-new, no-new-func, typescript/no-implied-eval -- only checks that the name parses as a parameter
+    new Function(name, '"use strict";');
+
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * Run the case's code and give back what it returns. The code sees everything the learner's
+ * file exports, by name, and all of it as `exports`, so `exports.default` is the default
+ * export. It runs in strict mode, as the file does.
+ */
+const runScript = (testCase: Case) => {
+  const [code] = testCase.args;
+
+  // oxlint-disable-next-line anti-slop/no-runtime-typeof -- a test's arguments are arbitrary JSON
+  if (typeof code !== "string") {
+    throw new TypeError("a script case holds its code as the one argument");
+  }
+
+  const names = Object.keys(mod).filter(usable);
+
+  // The code may await, so it runs as the body of an async function.
+  // oxlint-disable-next-line no-new-func, typescript/no-implied-eval -- a test is code, written by the course's author
+  const run = new Function(
+    "exports",
+    ...names,
+    `"use strict";\nreturn (async () => {\n${code}\n})();`
+  );
+
+  return run(mod, ...names.map((name) => mod[name]));
+};
+
 const runCase = (testCase: Case, conv: Converter) => {
   const kind = request.kind ?? "function";
+
+  if (kind === "script") {
+    return runScript(testCase);
+  }
 
   if (kind === "design") {
     return runDesign(testCase);

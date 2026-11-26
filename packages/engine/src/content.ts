@@ -253,6 +253,7 @@ export const solutionsDir = (course: Course): string => {
 export type Language = string;
 
 const EXTENSIONS = new Map([
+  ["javascript", "js"],
   ["python", "py"],
   ["typescript", "ts"],
 ]);

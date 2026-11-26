@@ -9,6 +9,7 @@ import { useAnswer } from "./use-answer";
 const SAVE_DELAY_MS = 400;
 
 const EXTENSIONS = new Map([
+  ["javascript", "js"],
   ["python", "py"],
   ["typescript", "ts"],
 ]);
