@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const label = (function (name) {\n  const shout = name.toUpperCase();\n\n  return `${shout}!`;\n})(\"tea\");\n\nconst size = (() => label.length)();\n\nconsole.log(label);\nconsole.log(size);\nconsole.log(typeof shout);"
+    },
+    "expected": "TEA!\n4\nundefined"
+  }
+}

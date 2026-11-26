@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { convert, currency } from \"./money.js\";\n\nconst rate = 2;\n\nconsole.log(convert(3));\nconsole.log(rate);\nconsole.log(currency);\nconsole.log(typeof globalThis.rate);",
+      "files": {
+        "money.js": "const rate = 10;\n\nexport const currency = \"EUR\";\n\nexport function convert(amount) {\n  return amount * rate;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "30\n2\nEUR\nundefined"
+  }
+}

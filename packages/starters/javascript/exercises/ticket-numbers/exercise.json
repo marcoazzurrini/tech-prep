@@ -1,0 +1,19 @@
+{
+  "title": "Ticket Numbers",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function nextTicket(queue) {\n  // your code\n}\n\nexport function reset() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["reset(); return [nextTicket(\"A\"), nextTicket(\"A\"), nextTicket(\"B\")];"],"expected":["A-1","A-2","B-1"]},
+      {"args":["reset(); nextTicket(\"A\"); nextTicket(\"A\"); reset(); return nextTicket(\"A\");"],"expected":"A-1"},
+      {"args":["reset(); return [nextTicket(\"vip\"), nextTicket(\"std\"), nextTicket(\"vip\"), nextTicket(\"std\")];"],"expected":["vip-1","std-1","vip-2","std-2"]},
+      {"args":["reset(); nextTicket(\"A\"); return [nextTicket(\"B\"), nextTicket(\"A\"), nextTicket(\"B\")];"],"expected":["B-1","A-2","B-2"]},
+      {"args":["reset(); return [nextTicket(\"toString\"), nextTicket(\"toString\")];"],"expected":["toString-1","toString-2"]},
+      {"args":["return Object.keys(exports);"],"expected":["nextTicket","reset"]}
+    ]
+  }
+}

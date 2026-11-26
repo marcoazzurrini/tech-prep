@@ -1,0 +1,21 @@
+{
+  "title": "Total Width",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "totalWidth"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function totalWidth(widths) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["120px","8.5px","auto"]],"expected":128.5},
+      {"args":[[]],"expected":0},
+      {"args":[["10px"]],"expected":10},
+      {"args":[["1.5px","1.5px","px3"]],"expected":3},
+      {"args":[["-4px","10px"]],"expected":6},
+      {"args":[[" 20px","0.25px",""]],"expected":20.25}
+    ]
+  }
+}

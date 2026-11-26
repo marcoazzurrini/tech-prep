@@ -1,0 +1,2362 @@
+[
+  {
+    "id": "primitive-types",
+    "name": "The Seven Primitive Types",
+    "topic": "values",
+    "prereqs": [],
+    "encompasses": [],
+    "key_idea": "JavaScript has seven primitive types: string, number, bigint, boolean, undefined, symbol and null. Everything else is an object. `typeof` names the type, with two surprises: `typeof null` is `\"object\"`, and a function gives `\"function\"`.",
+    "guided": 3,
+    "solo": ["primitive-types-solo-1", "count-by-type"]
+  },
+  {
+    "id": "numbers",
+    "name": "Numbers Are Floating Point",
+    "topic": "values",
+    "prereqs": ["primitive-types"],
+    "encompasses": [],
+    "key_idea": "Every number is a 64-bit float. Whole numbers are exact up to 2^53 - 1. Fractions such as 0.1 are not, so `0.1 + 0.2` is not `0.3`.",
+    "solo": "numbers-solo-1"
+  },
+  {
+    "id": "special-numbers",
+    "name": "NaN, Infinity and -0",
+    "topic": "values",
+    "prereqs": ["numbers"],
+    "encompasses": [
+      {
+        "id": "numbers",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "Bad maths gives `NaN`, not an error. `NaN` is not equal to itself, so test for it with `Number.isNaN`. Dividing by zero gives `Infinity`. `-0` exists and equals `0`.",
+    "solo": "special-numbers-solo-1"
+  },
+  {
+    "id": "bigint",
+    "name": "BigInt",
+    "topic": "values",
+    "prereqs": ["numbers"],
+    "encompasses": [],
+    "key_idea": "A BigInt is a whole number of any size, written with an `n` at the end. It cannot mix with numbers in maths, and its division drops the fraction.",
+    "solo": "bigint-solo-1"
+  },
+  {
+    "id": "strings",
+    "name": "Strings Are Immutable",
+    "topic": "values",
+    "prereqs": ["primitive-types"],
+    "encompasses": [],
+    "key_idea": "A string is a fixed sequence of characters. You can read a character by its index, but no method changes a string: each one returns a new string.",
+    "solo": "strings-solo-1"
+  },
+  {
+    "id": "template-literals",
+    "name": "Template Literals",
+    "topic": "values",
+    "prereqs": ["strings"],
+    "encompasses": [],
+    "key_idea": "Backticks make a string that can span lines and hold `${expression}`. The expression is evaluated and converted to a string.",
+    "solo": "template-literals-solo-1"
+  },
+  {
+    "id": "null-undefined",
+    "name": "null and undefined",
+    "topic": "values",
+    "prereqs": ["primitive-types"],
+    "encompasses": [],
+    "key_idea": "`undefined` is what JavaScript gives when a value is missing: an unset variable, a missing property, a function with no `return`. `null` is a value you set yourself to say \"nothing here\".",
+    "solo": "null-undefined-solo-1"
+  },
+  {
+    "id": "references",
+    "name": "Values and References",
+    "topic": "values",
+    "prereqs": ["primitive-types"],
+    "encompasses": [],
+    "key_idea": "A primitive is copied when it is assigned. An object is not: the variable holds a reference, so two variables can point at one object. `===` on objects compares identity, not content.",
+    "solo": "references-solo-1"
+  },
+  {
+    "id": "truthy-falsy",
+    "name": "Truthy and Falsy",
+    "topic": "conversion",
+    "prereqs": ["null-undefined", "special-numbers"],
+    "encompasses": [],
+    "key_idea": "Eight values are falsy: `false`, `0`, `-0`, `0n`, `\"\"`, `null`, `undefined` and `NaN`. Everything else is truthy, including `\"0\"`, `[]` and `{}`.",
+    "guided": 3,
+    "solo": ["truthy-falsy-solo-1", "active-flags"]
+  },
+  {
+    "id": "to-string",
+    "name": "Converting to a String",
+    "topic": "conversion",
+    "prereqs": ["template-literals", "null-undefined"],
+    "encompasses": [],
+    "key_idea": "`String(x)` and template literals convert any value to text. An array joins its items with commas, and a plain object becomes `[object Object]`.",
+    "guided": 3,
+    "solo": ["to-string-solo-1", "user-display-name"]
+  },
+  {
+    "id": "to-number",
+    "name": "Converting to a Number",
+    "topic": "conversion",
+    "prereqs": ["special-numbers", "null-undefined"],
+    "encompasses": [
+      {
+        "id": "special-numbers",
+        "w": 0.2
+      }
+    ],
+    "key_idea": "`Number(x)` and unary `+` convert a value to a number. Empty text and `null` give `0`. `undefined` and text that is not a number give `NaN`.",
+    "guided": 3,
+    "solo": ["to-number-solo-1", "sum-valid-inputs"]
+  },
+  {
+    "id": "parse-numbers",
+    "name": "parseInt and parseFloat",
+    "topic": "conversion",
+    "prereqs": ["to-number"],
+    "encompasses": [
+      {
+        "id": "to-number",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`parseInt` and `parseFloat` read a number from the start of a string and stop at the first character that does not fit. `Number` needs the whole string to be a number.",
+    "guided": 3,
+    "solo": ["parse-numbers-solo-1", "total-pixel-width"]
+  },
+  {
+    "id": "plus-operator",
+    "name": "The + Operator",
+    "topic": "conversion",
+    "prereqs": ["to-string", "to-number"],
+    "encompasses": [
+      {
+        "id": "to-number",
+        "w": 0.5
+      },
+      {
+        "id": "to-string",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`+` joins text if either side is a string. Otherwise it adds numbers. It runs left to right. The other maths operators always convert to numbers.",
+    "guided": 4,
+    "solo": ["plus-operator-solo-1", "digit-sum-of-text"]
+  },
+  {
+    "id": "object-to-primitive",
+    "name": "Objects to Primitives",
+    "topic": "conversion",
+    "prereqs": ["plus-operator", "references"],
+    "encompasses": [
+      {
+        "id": "plus-operator",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "To use an object as a primitive, JavaScript calls its `[Symbol.toPrimitive]` method, or else `valueOf` and `toString`. That is why `[] + []` is an empty string.",
+    "solo": "object-to-primitive-solo-1"
+  },
+  {
+    "id": "loose-equality",
+    "name": "== and ===",
+    "topic": "conversion",
+    "prereqs": ["to-number", "truthy-falsy"],
+    "encompasses": [
+      {
+        "id": "to-number",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`===` compares without converting. `==` converts first: `null` equals only `undefined`, and a string or a boolean becomes a number. Use `===`, except for `x == null`, which tests for both empty values.",
+    "solo": "loose-equality-solo-1"
+  },
+  {
+    "id": "comparison",
+    "name": "Comparing with < and >",
+    "topic": "conversion",
+    "prereqs": ["loose-equality"],
+    "encompasses": [
+      {
+        "id": "loose-equality",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`<` and `>` compare two strings letter by letter, so `\"10\" < \"9\"`. Any other mix is converted to numbers, and every comparison with `NaN` is false.",
+    "solo": "comparison-solo-1"
+  },
+  {
+    "id": "sameness",
+    "name": "Three Kinds of Sameness",
+    "topic": "conversion",
+    "prereqs": ["loose-equality", "special-numbers"],
+    "encompasses": [
+      {
+        "id": "special-numbers",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`===` says `NaN` differs from itself and `0` equals `-0`. `Object.is` says the opposite on both. `includes`, `Map` and `Set` use a third rule: `NaN` is the same as `NaN`, and the two zeros are the same.",
+    "solo": "sameness-solo-1"
+  },
+  {
+    "id": "logical-operators",
+    "name": "&& and || Return a Value",
+    "topic": "operators",
+    "prereqs": ["truthy-falsy"],
+    "encompasses": [
+      {
+        "id": "truthy-falsy",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "`a || b` gives `a` if it is truthy, else `b`. `a && b` gives `a` if it is falsy, else `b`. They return one of their operands, not a boolean, and skip the right side when it is not needed.",
+    "solo": "logical-operators-solo-1"
+  },
+  {
+    "id": "nullish-coalescing",
+    "name": "The ?? Operator",
+    "topic": "operators",
+    "prereqs": ["logical-operators"],
+    "encompasses": [
+      {
+        "id": "logical-operators",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`a ?? b` gives `b` only when `a` is `null` or `undefined`. Unlike `||`, it keeps `0`, `\"\"` and `false`.",
+    "solo": "nullish-coalescing-solo-1"
+  },
+  {
+    "id": "optional-chaining",
+    "name": "Optional Chaining",
+    "topic": "operators",
+    "prereqs": ["nullish-coalescing"],
+    "encompasses": [],
+    "key_idea": "`a?.b` gives `undefined` when `a` is `null` or `undefined`, and skips the rest of the chain. It also guards calls, `f?.()`, and indexes, `a?.[i]`.",
+    "solo": "optional-chaining-solo-1"
+  },
+  {
+    "id": "assignment-operators",
+    "name": "Assignment Is an Expression",
+    "topic": "operators",
+    "prereqs": ["nullish-coalescing"],
+    "encompasses": [
+      {
+        "id": "nullish-coalescing",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "An assignment gives back the value it assigned, so `a = b = 1` works from right to left. `||=`, `&&=` and `??=` assign only when the left side calls for it.",
+    "solo": "assignment-operators-solo-1"
+  },
+  {
+    "id": "increment-decrement",
+    "name": "++ Before and After",
+    "topic": "operators",
+    "prereqs": ["numbers"],
+    "encompasses": [],
+    "key_idea": "`++x` adds one and gives the new value. `x++` adds one and gives the old value.",
+    "solo": "increment-decrement-solo-1"
+  },
+  {
+    "id": "operator-precedence",
+    "name": "Precedence and Associativity",
+    "topic": "operators",
+    "prereqs": ["logical-operators", "increment-decrement"],
+    "encompasses": [],
+    "key_idea": "Precedence decides which operator binds first, and associativity decides the order among equals. `**` and assignment group from the right. `typeof` and `!` bind tighter than maths.",
+    "solo": "operator-precedence-solo-1"
+  },
+  {
+    "id": "destructuring-arrays",
+    "name": "Destructuring Arrays",
+    "topic": "operators",
+    "prereqs": ["null-undefined"],
+    "encompasses": [],
+    "key_idea": "`const [a, b] = list` takes items by position. You can skip items, give defaults for `undefined` ones and collect the rest with `...rest`.",
+    "solo": "destructuring-arrays-solo-1"
+  },
+  {
+    "id": "destructuring-objects",
+    "name": "Destructuring Objects",
+    "topic": "operators",
+    "prereqs": ["destructuring-arrays"],
+    "encompasses": [
+      {
+        "id": "destructuring-arrays",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`const { a, b } = obj` takes properties by name. You can rename with `a: x`, give defaults and reach into nested objects. Destructuring `null` or `undefined` throws.",
+    "solo": "destructuring-objects-solo-1"
+  },
+  {
+    "id": "spread",
+    "name": "Spread",
+    "topic": "operators",
+    "prereqs": ["destructuring-objects", "references"],
+    "encompasses": [
+      {
+        "id": "references",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`...` expands an array or an object into a new one, or into the arguments of a call. The copy is one level deep, and a later property wins.",
+    "solo": "spread-solo-1"
+  },
+  {
+    "id": "bitwise",
+    "name": "Bitwise Operators",
+    "topic": "operators",
+    "prereqs": ["numbers"],
+    "encompasses": [],
+    "key_idea": "Bitwise operators treat a number as a 32-bit integer. `&`, `|`, `^` and `~` work bit by bit, and `<<`, `>>` and `>>>` shift the bits.",
+    "solo": "bitwise-solo-1"
+  },
+  {
+    "id": "switch",
+    "name": "switch",
+    "topic": "statements",
+    "prereqs": ["loose-equality"],
+    "encompasses": [],
+    "key_idea": "`switch` compares with `===` and runs from the matching `case` until a `break`. Without a `break` it falls through into the next case.",
+    "solo": "switch-solo-1"
+  },
+  {
+    "id": "loops-labels",
+    "name": "Loops, break and continue",
+    "topic": "statements",
+    "prereqs": ["increment-decrement"],
+    "encompasses": [],
+    "key_idea": "`break` leaves the nearest loop, and `continue` skips to its next round. A label names an outer loop, so `break outer` leaves both.",
+    "solo": "loops-labels-solo-1"
+  },
+  {
+    "id": "for-of",
+    "name": "for...of",
+    "topic": "statements",
+    "prereqs": ["loops-labels", "strings"],
+    "encompasses": [],
+    "key_idea": "`for (const x of list)` visits the values of an array, a string or any other iterable. Unlike `forEach`, it can `break`, `continue` and `return`.",
+    "solo": "for-of-solo-1"
+  },
+  {
+    "id": "automatic-semicolons",
+    "name": "Automatic Semicolons",
+    "topic": "statements",
+    "prereqs": ["template-literals"],
+    "encompasses": [],
+    "key_idea": "JavaScript adds a missing semicolon at a line break only when the next line cannot continue the statement. `return` followed by a line break returns `undefined`, and a line that starts with `(` or `[` joins the line before it.",
+    "solo": "automatic-semicolons-solo-1"
+  },
+  {
+    "id": "let-const",
+    "name": "let and const",
+    "topic": "scope",
+    "prereqs": ["references"],
+    "encompasses": [
+      {
+        "id": "references",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`let` declares a variable you can reassign. `const` cannot be reassigned, but the object it holds can still change.",
+    "solo": "let-const-solo-1"
+  },
+  {
+    "id": "block-scope",
+    "name": "Block Scope",
+    "topic": "scope",
+    "prereqs": ["let-const"],
+    "encompasses": [
+      {
+        "id": "let-const",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A `let` or `const` variable lives only inside the `{ }` block where it is declared. An inner block can read outer variables, and can shadow one with its own.",
+    "solo": "block-scope-solo-1"
+  },
+  {
+    "id": "var",
+    "name": "var",
+    "topic": "scope",
+    "prereqs": ["block-scope"],
+    "encompasses": [
+      {
+        "id": "block-scope",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`var` ignores blocks: it belongs to the whole function, or to the whole file. It can be declared twice without an error.",
+    "solo": "var-solo-1"
+  },
+  {
+    "id": "hoisting-var",
+    "name": "Hoisting of var",
+    "topic": "scope",
+    "prereqs": ["var"],
+    "encompasses": [
+      {
+        "id": "var",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "A `var` declaration is moved to the top of its function, but its assignment stays where it is. Before that line the variable holds `undefined`.",
+    "solo": "hoisting-var-solo-1"
+  },
+  {
+    "id": "hoisting-functions",
+    "name": "Hoisting of Functions",
+    "topic": "scope",
+    "prereqs": ["hoisting-var"],
+    "encompasses": [
+      {
+        "id": "hoisting-var",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "A function declaration is hoisted with its body, so you can call it above the line where it is written. A function expression follows the rules of its variable.",
+    "solo": "hoisting-functions-solo-1"
+  },
+  {
+    "id": "tdz",
+    "name": "The Temporal Dead Zone",
+    "topic": "scope",
+    "prereqs": ["hoisting-var"],
+    "encompasses": [
+      {
+        "id": "hoisting-var",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`let`, `const` and `class` are hoisted too, but not initialised. Reading one before its declaration line throws a `ReferenceError`.",
+    "solo": "tdz-solo-1"
+  },
+  {
+    "id": "lexical-scope",
+    "name": "Lexical Scope",
+    "topic": "scope",
+    "prereqs": ["block-scope"],
+    "encompasses": [
+      {
+        "id": "block-scope",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A function looks up a variable where the function was written, then outward, scope by scope. Where the function is called from does not matter.",
+    "solo": "lexical-scope-solo-1"
+  },
+  {
+    "id": "global-scope",
+    "name": "The Global Object",
+    "topic": "scope",
+    "prereqs": ["var", "lexical-scope"],
+    "encompasses": [],
+    "key_idea": "`globalThis` is the global object, and its properties can be read as plain names everywhere. In a module, top-level variables stay inside the module: nothing is global unless you put it on `globalThis`.",
+    "solo": "global-scope-solo-1"
+  },
+  {
+    "id": "strict-mode",
+    "name": "Strict Mode",
+    "topic": "scope",
+    "prereqs": ["global-scope"],
+    "encompasses": [],
+    "key_idea": "Strict mode turns silent mistakes into errors, such as assigning to a name that was never declared. Modules and classes are always strict.",
+    "solo": "strict-mode-solo-1"
+  },
+  {
+    "id": "function-forms",
+    "name": "Three Ways to Write a Function",
+    "topic": "functions",
+    "prereqs": ["hoisting-functions"],
+    "encompasses": [],
+    "key_idea": "A function can be a declaration, an expression or an arrow. Each makes a value you can store, pass and call. A function with no `return` gives `undefined`.",
+    "solo": "function-forms-solo-1"
+  },
+  {
+    "id": "arrow-functions",
+    "name": "Arrow Functions",
+    "topic": "functions",
+    "prereqs": ["function-forms"],
+    "encompasses": [
+      {
+        "id": "function-forms",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`x => x * 2` returns its expression with no `return`. A body in `{ }` needs `return`, and an object literal needs parentheses: `() => ({ a: 1 })`.",
+    "solo": "arrow-functions-solo-1"
+  },
+  {
+    "id": "parameters",
+    "name": "Parameters and Defaults",
+    "topic": "functions",
+    "prereqs": ["function-forms", "null-undefined"],
+    "encompasses": [],
+    "key_idea": "A missing argument is `undefined`, and extra ones are ignored. A default value is used only for `undefined`, and it is evaluated again at each call.",
+    "solo": "parameters-solo-1"
+  },
+  {
+    "id": "rest-arguments",
+    "name": "Rest Parameters and arguments",
+    "topic": "functions",
+    "prereqs": ["parameters", "spread"],
+    "encompasses": [
+      {
+        "id": "parameters",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`...args` collects the remaining arguments in a real array. The older `arguments` object holds all of them, is not an array and does not exist in arrow functions.",
+    "solo": "rest-arguments-solo-1"
+  },
+  {
+    "id": "pass-by-sharing",
+    "name": "Arguments Are Shared, Not Copied",
+    "topic": "functions",
+    "prereqs": ["parameters", "references"],
+    "encompasses": [
+      {
+        "id": "references",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "A function gets the same object the caller has. Changing that object inside the function shows outside. Reassigning the parameter does not.",
+    "solo": "pass-by-sharing-solo-1"
+  },
+  {
+    "id": "first-class-functions",
+    "name": "Functions as Values",
+    "topic": "functions",
+    "prereqs": ["arrow-functions"],
+    "encompasses": [],
+    "key_idea": "A function is a value. You can pass it to another function as a callback, return it from a function, and store it in a variable or an object.",
+    "solo": "first-class-functions-solo-1"
+  },
+  {
+    "id": "function-properties",
+    "name": "Functions Are Objects",
+    "topic": "functions",
+    "prereqs": ["first-class-functions"],
+    "encompasses": [],
+    "key_idea": "A function is an object with properties. `name` is its name, `length` counts the parameters before the first default or rest, and you can add properties of your own.",
+    "solo": "function-properties-solo-1"
+  },
+  {
+    "id": "call-stack",
+    "name": "The Call Stack",
+    "topic": "functions",
+    "prereqs": ["function-forms"],
+    "encompasses": [],
+    "key_idea": "Each call is pushed on the call stack and popped when it returns. JavaScript runs one call at a time: the one on top.",
+    "solo": "call-stack-solo-1"
+  },
+  {
+    "id": "recursion",
+    "name": "Recursion",
+    "topic": "functions",
+    "prereqs": ["call-stack"],
+    "encompasses": [
+      {
+        "id": "call-stack",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A recursive function calls itself on a smaller input until it reaches a base case. Each call waits on the stack, so recursion with no base case overflows it.",
+    "solo": "recursion-solo-1"
+  },
+  {
+    "id": "closures",
+    "name": "Closures",
+    "topic": "functions",
+    "prereqs": ["lexical-scope", "first-class-functions"],
+    "encompasses": [
+      {
+        "id": "first-class-functions",
+        "w": 0.5
+      },
+      {
+        "id": "lexical-scope",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "A function keeps access to the variables of the scope where it was created, even after that scope has finished. The function together with those variables is a closure.",
+    "guided": 3,
+    "solo": ["closures-solo-1", "running-average"]
+  },
+  {
+    "id": "closure-variables",
+    "name": "Closures Hold Variables, Not Values",
+    "topic": "functions",
+    "prereqs": ["closures"],
+    "encompasses": [
+      {
+        "id": "closures",
+        "w": 1
+      }
+    ],
+    "key_idea": "A closure sees the variable itself, not a copy of its value. It reads the latest value, and two closures from the same scope share the variable.",
+    "guided": 3,
+    "solo": ["closure-variables-solo-1", "tax-at-the-till"]
+  },
+  {
+    "id": "closures-in-loops",
+    "name": "Closures in Loops",
+    "topic": "functions",
+    "prereqs": ["closure-variables", "var"],
+    "encompasses": [
+      {
+        "id": "closure-variables",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "With `let`, each round of a `for` loop gets its own variable, so each closure keeps its own value. With `var`, all the closures share one variable and see its last value.",
+    "guided": 3,
+    "solo": ["closures-in-loops-solo-1", "recipe-steps"]
+  },
+  {
+    "id": "private-state",
+    "name": "Private State with Closures",
+    "topic": "functions",
+    "prereqs": ["closure-variables"],
+    "encompasses": [
+      {
+        "id": "closure-variables",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "Variables inside a function cannot be reached from outside. A function that returns other functions gives them private state, and each call makes a new, separate copy.",
+    "guided": 4,
+    "solo": ["private-state-solo-1", "stock-room"]
+  },
+  {
+    "id": "iife",
+    "name": "Immediately Invoked Functions",
+    "topic": "functions",
+    "prereqs": ["private-state"],
+    "encompasses": [
+      {
+        "id": "private-state",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`(function () { ... })()` defines a function and calls it at once. It gives code a private scope, which is how modules were built before `import`.",
+    "guided": 4,
+    "solo": ["iife-solo-1", "waiting-line"]
+  },
+  {
+    "id": "this-method-call",
+    "name": "this in a Method Call",
+    "topic": "this",
+    "prereqs": ["first-class-functions"],
+    "encompasses": [],
+    "key_idea": "In `obj.method()`, `this` is the object before the dot. `this` is set at each call, not when the function is written.",
+    "solo": "this-method-call-solo-1"
+  },
+  {
+    "id": "this-plain-call",
+    "name": "this in a Plain Call",
+    "topic": "this",
+    "prereqs": ["this-method-call", "strict-mode"],
+    "encompasses": [
+      {
+        "id": "this-method-call",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A function called without an object gets `undefined` as `this` in strict mode. In old non-strict code it gets the global object.",
+    "solo": "this-plain-call-solo-1"
+  },
+  {
+    "id": "losing-this",
+    "name": "Losing this",
+    "topic": "this",
+    "prereqs": ["this-plain-call"],
+    "encompasses": [
+      {
+        "id": "this-plain-call",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "A method taken off its object is a plain function. Passing `obj.method` as a callback loses `this`. Wrap the call in an arrow function to keep it.",
+    "solo": "losing-this-solo-1"
+  },
+  {
+    "id": "call-apply",
+    "name": "call and apply",
+    "topic": "this",
+    "prereqs": ["losing-this", "rest-arguments"],
+    "encompasses": [
+      {
+        "id": "losing-this",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`fn.call(obj, a, b)` calls `fn` with `this` set to `obj`. `fn.apply(obj, [a, b])` does the same with the arguments in an array.",
+    "solo": "call-apply-solo-1"
+  },
+  {
+    "id": "bind",
+    "name": "bind",
+    "topic": "this",
+    "prereqs": ["call-apply"],
+    "encompasses": [
+      {
+        "id": "call-apply",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`fn.bind(obj)` returns a new function whose `this` is always `obj`. It can fix leading arguments too. A bound function cannot be bound again to another object.",
+    "solo": "bind-solo-1"
+  },
+  {
+    "id": "arrow-this",
+    "name": "this in Arrow Functions",
+    "topic": "this",
+    "prereqs": ["bind", "closures"],
+    "encompasses": [
+      {
+        "id": "closures",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "An arrow function has no `this` of its own. It uses the `this` of the code around it, and `call`, `apply` and `bind` cannot change it.",
+    "solo": "arrow-this-solo-1"
+  },
+  {
+    "id": "function-wrappers",
+    "name": "Wrapping Functions",
+    "topic": "this",
+    "prereqs": ["arrow-this", "call-apply"],
+    "encompasses": [
+      {
+        "id": "call-apply",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A wrapper takes a function and returns a new one that adds behaviour. To stay invisible, it passes `this` and every argument on with `fn.apply(this, args)`.",
+    "solo": "function-wrappers-solo-1"
+  },
+  {
+    "id": "method-chaining",
+    "name": "Method Chaining",
+    "topic": "this",
+    "prereqs": ["this-method-call"],
+    "encompasses": [
+      {
+        "id": "this-method-call",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A method that ends with `return this` gives back its object, so calls can be chained: `calc.add(2).multiply(3)`.",
+    "solo": "method-chaining-solo-1"
+  },
+  {
+    "id": "object-literals",
+    "name": "Object Literals",
+    "topic": "objects",
+    "prereqs": ["references"],
+    "encompasses": [],
+    "key_idea": "An object maps keys to values. A key is a string or a symbol, and a number key becomes a string. Shorthand, computed keys `[expr]` and method syntax shorten a literal.",
+    "solo": "object-literals-solo-1"
+  },
+  {
+    "id": "property-access",
+    "name": "Reading Properties",
+    "topic": "objects",
+    "prereqs": ["object-literals", "optional-chaining"],
+    "encompasses": [],
+    "key_idea": "`obj.key` reads a fixed name, and `obj[expr]` reads a computed one. A missing property gives `undefined`, but reading a property of `undefined` throws a `TypeError`.",
+    "solo": "property-access-solo-1"
+  },
+  {
+    "id": "property-existence",
+    "name": "Does a Property Exist?",
+    "topic": "objects",
+    "prereqs": ["property-access"],
+    "encompasses": [
+      {
+        "id": "property-access",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`\"key\" in obj` and `Object.hasOwn(obj, \"key\")` test for a key, even when its value is `undefined`. `delete obj.key` removes the property.",
+    "solo": "property-existence-solo-1"
+  },
+  {
+    "id": "property-order",
+    "name": "Property Order",
+    "topic": "objects",
+    "prereqs": ["property-existence"],
+    "encompasses": [],
+    "key_idea": "Keys that look like whole numbers come first, in rising order. Then come the other string keys in the order they were added, then symbols.",
+    "solo": "property-order-solo-1"
+  },
+  {
+    "id": "object-iteration",
+    "name": "Looping over an Object",
+    "topic": "objects",
+    "prereqs": ["property-order", "destructuring-arrays"],
+    "encompasses": [
+      {
+        "id": "property-order",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`Object.keys`, `Object.values` and `Object.entries` give an object's own keys, values and pairs as arrays. `Object.fromEntries` builds an object back from pairs.",
+    "solo": "object-iteration-solo-1"
+  },
+  {
+    "id": "shallow-copy",
+    "name": "Shallow Copies",
+    "topic": "objects",
+    "prereqs": ["spread", "object-literals"],
+    "encompasses": [
+      {
+        "id": "spread",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`{ ...obj }` and `Object.assign` copy one level. Nested objects are not copied: the copy and the original share them.",
+    "solo": "shallow-copy-solo-1"
+  },
+  {
+    "id": "immutable-updates",
+    "name": "Updating without Mutating",
+    "topic": "objects",
+    "prereqs": ["shallow-copy"],
+    "encompasses": [
+      {
+        "id": "shallow-copy",
+        "w": 1
+      }
+    ],
+    "key_idea": "To change nested data without mutating it, copy every level on the path to the change and reuse the rest.",
+    "solo": "immutable-updates-solo-1"
+  },
+  {
+    "id": "deep-copy",
+    "name": "Deep Copies",
+    "topic": "objects",
+    "prereqs": ["shallow-copy"],
+    "encompasses": [
+      {
+        "id": "shallow-copy",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`structuredClone` copies a value at every level and handles dates, maps, sets and cycles. It cannot copy functions. A JSON round trip loses more.",
+    "solo": "deep-copy-solo-1"
+  },
+  {
+    "id": "getters-setters",
+    "name": "Getters and Setters",
+    "topic": "objects",
+    "prereqs": ["this-method-call", "object-literals"],
+    "encompasses": [],
+    "key_idea": "`get name()` runs a function when the property is read, and `set name(v)` runs one when it is assigned. From outside they look like a plain property.",
+    "solo": "getters-setters-solo-1"
+  },
+  {
+    "id": "property-descriptors",
+    "name": "Property Descriptors",
+    "topic": "objects",
+    "prereqs": ["getters-setters"],
+    "encompasses": [],
+    "key_idea": "Each property has three flags: `writable`, `enumerable` and `configurable`. `Object.defineProperty` sets them, and a flag you leave out is `false`.",
+    "solo": "property-descriptors-solo-1"
+  },
+  {
+    "id": "freeze-seal",
+    "name": "Freezing Objects",
+    "topic": "objects",
+    "prereqs": ["property-descriptors", "strict-mode"],
+    "encompasses": [
+      {
+        "id": "property-descriptors",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`Object.freeze` stops every change to an object's own properties. `Object.seal` only stops adding and removing them. Both are shallow: nested objects stay open.",
+    "solo": "freeze-seal-solo-1"
+  },
+  {
+    "id": "symbols",
+    "name": "Symbols",
+    "topic": "objects",
+    "prereqs": ["object-literals", "property-descriptors"],
+    "encompasses": [],
+    "key_idea": "A symbol is a unique value, made to be used as a property key. Symbol keys never clash with other keys, and `Object.keys`, `for...in` and JSON skip them.",
+    "solo": "symbols-solo-1"
+  },
+  {
+    "id": "json",
+    "name": "JSON",
+    "topic": "objects",
+    "prereqs": ["object-iteration", "to-string"],
+    "encompasses": [],
+    "key_idea": "`JSON.stringify` turns a value into text. It drops `undefined`, functions and symbols, and turns `NaN` into `null`. `JSON.parse` reads the text back. A replacer, a reviver and `toJSON` customise them.",
+    "solo": "json-solo-1"
+  },
+  {
+    "id": "garbage-collection",
+    "name": "Garbage Collection",
+    "topic": "objects",
+    "prereqs": ["references", "closures"],
+    "encompasses": [],
+    "key_idea": "An object stays in memory while it can be reached from a root: a global, a variable of a running function, or a closure. When nothing reaches it, it is collected.",
+    "solo": "garbage-collection-solo-1"
+  },
+  {
+    "id": "prototype-chain",
+    "name": "The Prototype Chain",
+    "topic": "prototypes",
+    "prereqs": ["property-access", "object-literals"],
+    "encompasses": [],
+    "key_idea": "Every object has a hidden link to another object, its prototype. Reading a missing property looks in the prototype, then in its prototype, up to `null`.",
+    "solo": "prototype-chain-solo-1"
+  },
+  {
+    "id": "shadowing",
+    "name": "Writing Does Not Climb the Chain",
+    "topic": "prototypes",
+    "prereqs": ["prototype-chain", "this-method-call"],
+    "encompasses": [
+      {
+        "id": "prototype-chain",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "Assigning a property creates it on the object itself and never changes the prototype. In an inherited method, `this` is still the object the call started on.",
+    "solo": "shadowing-solo-1"
+  },
+  {
+    "id": "own-vs-inherited",
+    "name": "Own and Inherited Properties",
+    "topic": "prototypes",
+    "prereqs": ["shadowing", "object-iteration", "property-existence"],
+    "encompasses": [
+      {
+        "id": "property-existence",
+        "w": 0.5
+      },
+      {
+        "id": "shadowing",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`Object.keys` and `Object.hasOwn` see only own properties. `in` and `for...in` also see inherited ones.",
+    "solo": "own-vs-inherited-solo-1"
+  },
+  {
+    "id": "constructor-functions",
+    "name": "Constructor Functions and new",
+    "topic": "prototypes",
+    "prereqs": ["prototype-chain", "this-plain-call"],
+    "encompasses": [
+      {
+        "id": "prototype-chain",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`new F()` makes an object, links it to `F.prototype`, runs `F` with `this` set to it, and returns it. If `F` returns an object, that object is returned instead.",
+    "solo": "constructor-functions-solo-1"
+  },
+  {
+    "id": "function-prototype",
+    "name": "The prototype Property",
+    "topic": "prototypes",
+    "prereqs": ["constructor-functions"],
+    "encompasses": [
+      {
+        "id": "constructor-functions",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "Every function has a `prototype` object. Objects made with `new F()` get it as their prototype, so methods put on it are shared by all of them. Its `constructor` points back at `F`.",
+    "solo": "function-prototype-solo-1"
+  },
+  {
+    "id": "instanceof",
+    "name": "instanceof",
+    "topic": "prototypes",
+    "prereqs": ["function-prototype"],
+    "encompasses": [
+      {
+        "id": "function-prototype",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`obj instanceof F` is true when `F.prototype` is somewhere on the prototype chain of `obj`. It does not look at which function made the object.",
+    "solo": "instanceof-solo-1"
+  },
+  {
+    "id": "native-prototypes",
+    "name": "Built-in Prototypes",
+    "topic": "prototypes",
+    "prereqs": ["function-prototype", "strings"],
+    "encompasses": [
+      {
+        "id": "function-prototype",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "Array methods live on `Array.prototype`, and every chain ends at `Object.prototype`. A primitive gets a temporary wrapper object for each method call, which is why `\"a\".toUpperCase()` works.",
+    "solo": "native-prototypes-solo-1"
+  },
+  {
+    "id": "null-prototype",
+    "name": "Objects without a Prototype",
+    "topic": "prototypes",
+    "prereqs": ["own-vs-inherited"],
+    "encompasses": [],
+    "key_idea": "`Object.create(null)` makes an object with no prototype, so it holds only the keys you add. `Object.setPrototypeOf` changes an object's prototype.",
+    "solo": "null-prototype-solo-1"
+  },
+  {
+    "id": "prototypal-inheritance",
+    "name": "Inheritance before class",
+    "topic": "prototypes",
+    "prereqs": ["instanceof"],
+    "encompasses": [
+      {
+        "id": "instanceof",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "To make `Child` extend `Parent` without `class`, link `Child.prototype` to `Parent.prototype` with `Object.create`, and call `Parent.call(this)` in the child constructor.",
+    "solo": "prototypal-inheritance-solo-1"
+  },
+  {
+    "id": "this-binding-order",
+    "name": "The Four Rules of this",
+    "topic": "prototypes",
+    "prereqs": ["constructor-functions", "arrow-this"],
+    "encompasses": [
+      {
+        "id": "arrow-this",
+        "w": 0.4
+      },
+      {
+        "id": "constructor-functions",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`this` comes from how a function is called: with `new`, with `call`, `apply` or `bind`, as a method, or plainly. `new` beats `bind`, and `bind` beats a method call.",
+    "solo": "this-binding-order-solo-1"
+  },
+  {
+    "id": "type-detection",
+    "name": "Detecting a Type",
+    "topic": "prototypes",
+    "prereqs": ["instanceof", "native-prototypes"],
+    "encompasses": [
+      {
+        "id": "instanceof",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`typeof` tells primitives apart. `Array.isArray` finds arrays, `instanceof` checks the prototype chain, and `Object.prototype.toString.call(x)` names any built-in type.",
+    "solo": "type-detection-solo-1"
+  },
+  {
+    "id": "class-basics",
+    "name": "Classes",
+    "topic": "classes",
+    "prereqs": ["function-prototype", "tdz"],
+    "encompasses": [
+      {
+        "id": "function-prototype",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A class is a constructor function with a clearer syntax: its methods go on `prototype`. It must be called with `new`, is not hoisted and always runs in strict mode.",
+    "solo": "class-basics-solo-1"
+  },
+  {
+    "id": "class-fields",
+    "name": "Class Fields",
+    "topic": "classes",
+    "prereqs": ["class-basics", "arrow-this"],
+    "encompasses": [
+      {
+        "id": "class-basics",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "A field such as `count = 0` creates an own property on each instance before the constructor body runs. A field that holds an arrow function keeps `this` bound to the instance.",
+    "solo": "class-fields-solo-1"
+  },
+  {
+    "id": "static-members",
+    "name": "Static Members",
+    "topic": "classes",
+    "prereqs": ["class-basics"],
+    "encompasses": [
+      {
+        "id": "class-basics",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "A `static` method or field belongs to the class itself, not to its instances. Inside a static method, `this` is the class.",
+    "solo": "static-members-solo-1"
+  },
+  {
+    "id": "private-members",
+    "name": "Private Members",
+    "topic": "classes",
+    "prereqs": ["class-fields"],
+    "encompasses": [
+      {
+        "id": "class-fields",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A name that starts with `#` is private: only code inside the class body can use it. `#x in obj` tests whether an object has it.",
+    "solo": "private-members-solo-1"
+  },
+  {
+    "id": "class-accessors",
+    "name": "Getters and Setters in Classes",
+    "topic": "classes",
+    "prereqs": ["class-basics", "getters-setters"],
+    "encompasses": [
+      {
+        "id": "getters-setters",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`get` and `set` in a class define an accessor on the prototype. Every instance shares it, and it is not an own property.",
+    "solo": "class-accessors-solo-1"
+  },
+  {
+    "id": "extends",
+    "name": "extends",
+    "topic": "classes",
+    "prereqs": ["class-basics", "instanceof"],
+    "encompasses": [
+      {
+        "id": "class-basics",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`class B extends A` links `B.prototype` to `A.prototype`, so instances inherit methods. It also links `B` to `A`, so static members are inherited too.",
+    "solo": "extends-solo-1"
+  },
+  {
+    "id": "super",
+    "name": "super",
+    "topic": "classes",
+    "prereqs": ["extends"],
+    "encompasses": [
+      {
+        "id": "extends",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "A derived constructor must call `super()` before it uses `this`. `super.method()` calls the parent's version of a method.",
+    "solo": "super-solo-1"
+  },
+  {
+    "id": "method-overriding",
+    "name": "Overriding Methods",
+    "topic": "classes",
+    "prereqs": ["super", "class-fields"],
+    "encompasses": [
+      {
+        "id": "super",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "A method in a subclass replaces the parent's method of the same name, even when the parent's own code calls it. The parent's constructor runs before the child's fields exist.",
+    "solo": "method-overriding-solo-1"
+  },
+  {
+    "id": "extending-builtins",
+    "name": "Extending Built-ins",
+    "topic": "classes",
+    "prereqs": ["super"],
+    "encompasses": [
+      {
+        "id": "super",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A class can extend `Array`, `Map` or `Error`. Methods such as `map` and `filter` then return instances of the subclass.",
+    "solo": "extending-builtins-solo-1"
+  },
+  {
+    "id": "mixins",
+    "name": "Mixins",
+    "topic": "classes",
+    "prereqs": ["extends"],
+    "encompasses": [
+      {
+        "id": "extends",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "A class can extend only one class. A mixin adds methods from another source: copy them onto the prototype, or write a function that takes a class and returns a subclass.",
+    "solo": "mixins-solo-1"
+  },
+  {
+    "id": "try-catch",
+    "name": "throw, try and catch",
+    "topic": "errors",
+    "prereqs": ["call-stack"],
+    "encompasses": [],
+    "key_idea": "`throw` stops the running code and climbs the call stack until a `catch` takes the error. Code after the `throw`, in every function on the way up, does not run.",
+    "solo": "try-catch-solo-1"
+  },
+  {
+    "id": "finally",
+    "name": "finally",
+    "topic": "errors",
+    "prereqs": ["try-catch"],
+    "encompasses": [
+      {
+        "id": "try-catch",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A `finally` block runs whether the `try` finished, threw or returned. A `return` inside `finally` replaces the result of the `try`.",
+    "solo": "finally-solo-1"
+  },
+  {
+    "id": "error-types",
+    "name": "Built-in Errors",
+    "topic": "errors",
+    "prereqs": ["try-catch", "tdz"],
+    "encompasses": [
+      {
+        "id": "try-catch",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "An error object has a `name`, a `message` and a `stack`. JavaScript throws a `TypeError` for a wrong kind of value, a `ReferenceError` for an unknown name and a `RangeError` for a value out of range.",
+    "solo": "error-types-solo-1"
+  },
+  {
+    "id": "custom-errors",
+    "name": "Custom Errors",
+    "topic": "errors",
+    "prereqs": ["error-types", "extends"],
+    "encompasses": [
+      {
+        "id": "error-types",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "Extend `Error` to make your own error class, and test for it with `instanceof`. Pass `{ cause }` to keep the original error when you wrap one.",
+    "solo": "custom-errors-solo-1"
+  },
+  {
+    "id": "using-declarations",
+    "name": "using and Symbol.dispose",
+    "topic": "errors",
+    "prereqs": ["finally", "symbols"],
+    "encompasses": [],
+    "key_idea": "`using x = resource` calls `resource[Symbol.dispose]()` when the block ends, even if it throws. Several resources are disposed in reverse order.",
+    "solo": "using-declarations-solo-1"
+  },
+  {
+    "id": "array-basics",
+    "name": "Arrays and length",
+    "topic": "arrays",
+    "prereqs": ["object-literals"],
+    "encompasses": [],
+    "key_idea": "An array is an object with numbered keys and a `length`. `length` is the highest index plus one, and setting it cuts or extends the array. `at(-1)` reads from the end.",
+    "solo": "array-basics-solo-1"
+  },
+  {
+    "id": "sparse-arrays",
+    "name": "Holes in Arrays",
+    "topic": "arrays",
+    "prereqs": ["array-basics", "property-existence"],
+    "encompasses": [
+      {
+        "id": "array-basics",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "An array can have holes: indexes with no property at all. A hole reads as `undefined`, but `forEach` and `map` skip it. `Array(3)` makes three holes.",
+    "solo": "sparse-arrays-solo-1"
+  },
+  {
+    "id": "mutating-methods",
+    "name": "Methods That Change the Array",
+    "topic": "arrays",
+    "prereqs": ["array-basics"],
+    "encompasses": [
+      {
+        "id": "array-basics",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`push`, `pop`, `shift`, `unshift`, `splice`, `reverse`, `sort` and `fill` change the array itself. Know what each returns: `push` gives the new length, and `splice` gives the removed items.",
+    "solo": "mutating-methods-solo-1"
+  },
+  {
+    "id": "copying-methods",
+    "name": "Methods That Return a New Array",
+    "topic": "arrays",
+    "prereqs": ["mutating-methods", "shallow-copy"],
+    "encompasses": [
+      {
+        "id": "mutating-methods",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`slice`, `concat`, `toSorted`, `toReversed`, `toSpliced` and `with` leave the array as it is and return a new one.",
+    "solo": "copying-methods-solo-1"
+  },
+  {
+    "id": "map-filter",
+    "name": "map and filter",
+    "topic": "arrays",
+    "prereqs": ["copying-methods", "first-class-functions"],
+    "encompasses": [],
+    "key_idea": "`map` returns a new array with the callback's result for each item. `filter` keeps the items whose callback returns a truthy value. The callback gets the item, its index and the array.",
+    "solo": "map-filter-solo-1"
+  },
+  {
+    "id": "reduce",
+    "name": "reduce",
+    "topic": "arrays",
+    "prereqs": ["map-filter"],
+    "encompasses": [
+      {
+        "id": "map-filter",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`reduce` folds an array into one value. The callback gets the value so far and the next item, and returns the new value. Always pass a start value.",
+    "solo": "reduce-solo-1"
+  },
+  {
+    "id": "searching",
+    "name": "Searching an Array",
+    "topic": "arrays",
+    "prereqs": ["map-filter", "sameness"],
+    "encompasses": [
+      {
+        "id": "sameness",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`find` and `findIndex` search with a callback. `includes` and `indexOf` search for a value, and only `includes` finds `NaN`. `some` and `every` answer yes or no.",
+    "solo": "searching-solo-1"
+  },
+  {
+    "id": "sort",
+    "name": "Sorting",
+    "topic": "arrays",
+    "prereqs": ["mutating-methods", "comparison"],
+    "encompasses": [
+      {
+        "id": "comparison",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`sort` changes the array and, with no argument, compares the items as strings. Pass `(a, b) => a - b` for numbers: a negative result puts `a` first.",
+    "solo": "sort-solo-1"
+  },
+  {
+    "id": "flat-flatmap",
+    "name": "flat and flatMap",
+    "topic": "arrays",
+    "prereqs": ["map-filter"],
+    "encompasses": [
+      {
+        "id": "map-filter",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`flat(depth)` removes levels of nesting. `flatMap` maps each item to an array and flattens the result by one level.",
+    "solo": "flat-flatmap-solo-1"
+  },
+  {
+    "id": "array-creation",
+    "name": "Creating Arrays",
+    "topic": "arrays",
+    "prereqs": ["sparse-arrays", "map-filter"],
+    "encompasses": [
+      {
+        "id": "sparse-arrays",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`Array.from({ length: n }, fn)` builds an array from a function. `Array(n).fill(x)` puts the same `x` in every slot, so an object there is shared.",
+    "solo": "array-creation-solo-1"
+  },
+  {
+    "id": "array-likes",
+    "name": "Array-likes",
+    "topic": "arrays",
+    "prereqs": ["array-creation", "call-apply"],
+    "encompasses": [
+      {
+        "id": "array-creation",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "An array-like has a `length` and numbered keys but no array methods. `Array.from` turns it into a real array.",
+    "solo": "array-likes-solo-1"
+  },
+  {
+    "id": "grouping",
+    "name": "Grouping and Counting",
+    "topic": "arrays",
+    "prereqs": ["reduce", "object-iteration"],
+    "encompasses": [
+      {
+        "id": "reduce",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`Object.groupBy(items, fn)` sorts items into arrays by the key that `fn` returns. Counting works the same way, with `reduce` or a `Map`.",
+    "solo": "grouping-solo-1"
+  },
+  {
+    "id": "string-methods",
+    "name": "String Methods",
+    "topic": "strings",
+    "prereqs": ["strings", "copying-methods"],
+    "encompasses": [
+      {
+        "id": "strings",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`slice`, `indexOf`, `includes`, `split`, `replaceAll`, `padStart` and `trim` cover most text work. Each returns a new value and leaves the string as it is.",
+    "solo": "string-methods-solo-1"
+  },
+  {
+    "id": "string-comparison",
+    "name": "Comparing and Sorting Text",
+    "topic": "strings",
+    "prereqs": ["string-methods", "sort"],
+    "encompasses": [
+      {
+        "id": "sort",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`<` compares strings by character code, so every capital letter sorts before every small one. `localeCompare` and `Intl.Collator` sort text the way people expect.",
+    "solo": "string-comparison-solo-1"
+  },
+  {
+    "id": "unicode",
+    "name": "Unicode",
+    "topic": "strings",
+    "prereqs": ["string-methods", "for-of"],
+    "encompasses": [],
+    "key_idea": "A string is a sequence of 16-bit units, and some characters take two. `length` counts units, while `for...of` and spread walk whole characters.",
+    "solo": "unicode-solo-1"
+  },
+  {
+    "id": "tagged-templates",
+    "name": "Tagged Templates",
+    "topic": "strings",
+    "prereqs": ["template-literals", "rest-arguments"],
+    "encompasses": [],
+    "key_idea": "A tag is a function placed before a template literal. It receives the fixed strings and the values separately, and returns whatever it likes.",
+    "solo": "tagged-templates-solo-1"
+  },
+  {
+    "id": "regex-basics",
+    "name": "Patterns and Flags",
+    "topic": "regex",
+    "prereqs": ["string-methods"],
+    "encompasses": [],
+    "key_idea": "`/pattern/flags` makes a regular expression, and `test` says whether a string matches it. The flag `i` ignores case and `g` finds every match. Escape a special character with a backslash.",
+    "solo": "regex-basics-solo-1"
+  },
+  {
+    "id": "character-classes",
+    "name": "Character Classes and Anchors",
+    "topic": "regex",
+    "prereqs": ["regex-basics"],
+    "encompasses": [
+      {
+        "id": "regex-basics",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`\\d`, `\\w` and `\\s` match a digit, a word character and a space. `[abc]` matches one character of a set, and `[^abc]` one outside it. `^`, `$` and `\\b` match a position, not a character.",
+    "solo": "character-classes-solo-1"
+  },
+  {
+    "id": "quantifiers",
+    "name": "Quantifiers",
+    "topic": "regex",
+    "prereqs": ["character-classes"],
+    "encompasses": [
+      {
+        "id": "character-classes",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`*`, `+`, `?` and `{n,m}` say how many times to match. They are greedy and take as much as they can. Add `?` to make one lazy.",
+    "solo": "quantifiers-solo-1"
+  },
+  {
+    "id": "groups",
+    "name": "Groups",
+    "topic": "regex",
+    "prereqs": ["quantifiers"],
+    "encompasses": [
+      {
+        "id": "quantifiers",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "Parentheses group part of a pattern and capture what it matched. `(?<name>...)` names the capture, `(?:...)` groups without capturing, and `\\1` matches the same text again.",
+    "solo": "groups-solo-1"
+  },
+  {
+    "id": "regex-methods",
+    "name": "Using a Regex on a String",
+    "topic": "regex",
+    "prereqs": ["groups", "map-filter"],
+    "encompasses": [
+      {
+        "id": "groups",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`match` gives the first match with its groups, or every match when the regex has `g`. `matchAll` gives every match with groups. `replace` can use `$1` or a function.",
+    "solo": "regex-methods-solo-1"
+  },
+  {
+    "id": "regex-state",
+    "name": "lastIndex and the g Flag",
+    "topic": "regex",
+    "prereqs": ["regex-methods"],
+    "encompasses": [],
+    "key_idea": "A regex with `g` or `y` remembers where its last match ended, in `lastIndex`. Calling `test` or `exec` again carries on from there, so the same call can give a different answer.",
+    "solo": "regex-state-solo-1"
+  },
+  {
+    "id": "lookaround",
+    "name": "Lookahead and Lookbehind",
+    "topic": "regex",
+    "prereqs": ["groups"],
+    "encompasses": [],
+    "key_idea": "`(?=...)` and `(?<=...)` test what comes after or before a position without making it part of the match. `(?!...)` and `(?<!...)` test that it does not.",
+    "solo": "lookaround-solo-1"
+  },
+  {
+    "id": "regex-unicode",
+    "name": "Regex and Unicode",
+    "topic": "regex",
+    "prereqs": ["character-classes", "unicode"],
+    "encompasses": [
+      {
+        "id": "unicode",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "With the `u` or `v` flag a regex works on whole characters, and `\\p{...}` matches by Unicode property, such as `\\p{L}` for any letter.",
+    "solo": "regex-unicode-solo-1"
+  },
+  {
+    "id": "map",
+    "name": "Map",
+    "topic": "collections",
+    "prereqs": ["object-iteration", "sameness", "for-of"],
+    "encompasses": [],
+    "key_idea": "A `Map` holds key and value pairs. Its keys can be any value, objects included. It keeps insertion order and knows its `size`.",
+    "solo": "map-solo-1"
+  },
+  {
+    "id": "set",
+    "name": "Set",
+    "topic": "collections",
+    "prereqs": ["map"],
+    "encompasses": [
+      {
+        "id": "map",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "A `Set` holds each value once. Adding a value it already holds does nothing. `[...new Set(list)]` removes duplicates.",
+    "solo": "set-solo-1"
+  },
+  {
+    "id": "set-operations",
+    "name": "Set Operations",
+    "topic": "collections",
+    "prereqs": ["set"],
+    "encompasses": [
+      {
+        "id": "set",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`union`, `intersection`, `difference` and `symmetricDifference` combine two sets into a new one. `isSubsetOf` and `isSupersetOf` compare them.",
+    "solo": "set-operations-solo-1"
+  },
+  {
+    "id": "weakmap-weakset",
+    "name": "WeakMap and WeakSet",
+    "topic": "collections",
+    "prereqs": ["map", "garbage-collection"],
+    "encompasses": [],
+    "key_idea": "A `WeakMap` takes only objects as keys and does not keep them alive. When a key is collected, its entry goes too. It cannot be looped over and has no `size`.",
+    "solo": "weakmap-weakset-solo-1"
+  },
+  {
+    "id": "memory-leaks",
+    "name": "Memory Leaks",
+    "topic": "collections",
+    "prereqs": ["weakmap-weakset", "closures"],
+    "encompasses": [],
+    "key_idea": "A leak is memory that is still reachable but never used again. The usual causes are a cache that only grows, a timer that is never cleared and a closure that holds a large value.",
+    "solo": "memory-leaks-solo-1"
+  },
+  {
+    "id": "typed-arrays",
+    "name": "Typed Arrays",
+    "topic": "collections",
+    "prereqs": ["array-basics", "bitwise"],
+    "encompasses": [],
+    "key_idea": "An `ArrayBuffer` is a block of raw bytes. A typed array such as `Uint8Array` is a view on it with a fixed length and one number type. A value that does not fit wraps around.",
+    "solo": "typed-arrays-solo-1"
+  },
+  {
+    "id": "iteration-protocol",
+    "name": "The Iteration Protocol",
+    "topic": "iteration",
+    "prereqs": ["for-of", "symbols", "spread"],
+    "encompasses": [],
+    "key_idea": "An iterable has a `[Symbol.iterator]()` method that returns an iterator. An iterator has a `next()` method that returns `{ value, done }`. `for...of`, spread and destructuring all use this.",
+    "solo": "iteration-protocol-solo-1"
+  },
+  {
+    "id": "custom-iterables",
+    "name": "Making an Object Iterable",
+    "topic": "iteration",
+    "prereqs": ["iteration-protocol", "class-basics"],
+    "encompasses": [
+      {
+        "id": "iteration-protocol",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "Give an object a `[Symbol.iterator]()` method and it works with `for...of` and spread. Each call should return a new iterator, so the object can be looped over twice.",
+    "solo": "custom-iterables-solo-1"
+  },
+  {
+    "id": "generators",
+    "name": "Generators",
+    "topic": "iteration",
+    "prereqs": ["custom-iterables"],
+    "encompasses": [
+      {
+        "id": "custom-iterables",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "A `function*` returns a generator, which is both an iterator and an iterable. Its body runs only when `next()` is called, and pauses at each `yield`.",
+    "solo": "generators-solo-1"
+  },
+  {
+    "id": "generator-control",
+    "name": "Talking to a Generator",
+    "topic": "iteration",
+    "prereqs": ["generators", "try-catch"],
+    "encompasses": [
+      {
+        "id": "generators",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`next(value)` sends a value in: it becomes the result of the paused `yield`. `return()` and `throw()` end the generator early, and `yield*` hands over to another iterable.",
+    "solo": "generator-control-solo-1"
+  },
+  {
+    "id": "lazy-sequences",
+    "name": "Lazy Sequences",
+    "topic": "iteration",
+    "prereqs": ["generators", "map-filter"],
+    "encompasses": [
+      {
+        "id": "generators",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A generator makes values only when asked, so it can describe an endless sequence. Iterator helpers such as `map`, `filter` and `take` are lazy too.",
+    "solo": "lazy-sequences-solo-1"
+  },
+  {
+    "id": "event-loop",
+    "name": "The Event Loop",
+    "topic": "async",
+    "prereqs": ["call-stack", "first-class-functions"],
+    "encompasses": [],
+    "key_idea": "JavaScript runs one thing at a time. Code runs until the call stack is empty. Only then does the event loop take the next waiting task and run it.",
+    "solo": "event-loop-solo-1"
+  },
+  {
+    "id": "timers",
+    "name": "Timers",
+    "topic": "async",
+    "prereqs": ["event-loop"],
+    "encompasses": [
+      {
+        "id": "event-loop",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`setTimeout(fn, ms)` queues `fn` as a task after at least `ms` milliseconds. It returns an id that `clearTimeout` cancels. `setInterval` repeats until it is cleared.",
+    "solo": "timers-solo-1"
+  },
+  {
+    "id": "async-callbacks",
+    "name": "Asynchronous Callbacks",
+    "topic": "async",
+    "prereqs": ["timers", "try-catch"],
+    "encompasses": [],
+    "key_idea": "An asynchronous function takes a callback and calls it later, by convention with the error first. A `try` around the call cannot catch an error thrown in the callback, because the `try` has finished by then.",
+    "solo": "async-callbacks-solo-1"
+  },
+  {
+    "id": "promise-basics",
+    "name": "Promises",
+    "topic": "async",
+    "prereqs": ["async-callbacks"],
+    "encompasses": [],
+    "key_idea": "A promise stands for a result that comes later. It starts pending, and settles once: fulfilled with a value or rejected with a reason. The function given to `new Promise` runs at once.",
+    "solo": "promise-basics-solo-1"
+  },
+  {
+    "id": "promise-then",
+    "name": "then",
+    "topic": "async",
+    "prereqs": ["promise-basics"],
+    "encompasses": [
+      {
+        "id": "promise-basics",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`then` registers a callback for the value and returns a new promise. The callback always runs later, after the current code has finished, even if the promise is already settled.",
+    "solo": "promise-then-solo-1"
+  },
+  {
+    "id": "promise-chaining",
+    "name": "Chaining Promises",
+    "topic": "async",
+    "prereqs": ["promise-then"],
+    "encompasses": [
+      {
+        "id": "promise-then",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "What a `then` callback returns becomes the value of the next `then`. If it returns a promise, the chain waits for it. Forgetting the `return` breaks the chain.",
+    "solo": "promise-chaining-solo-1"
+  },
+  {
+    "id": "promise-errors",
+    "name": "Errors in Promises",
+    "topic": "async",
+    "prereqs": ["promise-chaining", "try-catch"],
+    "encompasses": [
+      {
+        "id": "promise-chaining",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A rejection skips every `then` until it reaches a `catch`. A `throw` in a callback rejects the next promise. After a `catch` that returns, the chain carries on as fulfilled.",
+    "solo": "promise-errors-solo-1"
+  },
+  {
+    "id": "microtasks",
+    "name": "Microtasks",
+    "topic": "async",
+    "prereqs": ["promise-then", "timers"],
+    "encompasses": [
+      {
+        "id": "promise-then",
+        "w": 0.4
+      },
+      {
+        "id": "timers",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "Promise callbacks wait in the microtask queue. When the current code ends, every microtask runs before the next task, so a `then` callback runs before a `setTimeout` of 0.",
+    "solo": "microtasks-solo-1"
+  },
+  {
+    "id": "promise-static",
+    "name": "Promise.resolve and Friends",
+    "topic": "async",
+    "prereqs": ["promise-chaining"],
+    "encompasses": [],
+    "key_idea": "`Promise.resolve(x)` gives a promise fulfilled with `x`, and follows `x` if it is a promise or a thenable. `Promise.reject` gives a rejected one. `Promise.withResolvers` hands out the promise with its `resolve` and `reject`.",
+    "solo": "promise-static-solo-1"
+  },
+  {
+    "id": "promise-all",
+    "name": "Promise.all and allSettled",
+    "topic": "async",
+    "prereqs": ["promise-static", "promise-errors"],
+    "encompasses": [
+      {
+        "id": "promise-errors",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`Promise.all` waits for every promise and gives the values in the order of the input. It rejects as soon as one rejects. `Promise.allSettled` waits for all of them and never rejects.",
+    "solo": "promise-all-solo-1"
+  },
+  {
+    "id": "promise-race-any",
+    "name": "Promise.race and any",
+    "topic": "async",
+    "prereqs": ["promise-all"],
+    "encompasses": [
+      {
+        "id": "promise-all",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`Promise.race` settles like the first promise to settle. `Promise.any` fulfils with the first one to fulfil, and rejects with an `AggregateError` only when all reject.",
+    "solo": "promise-race-any-solo-1"
+  },
+  {
+    "id": "async-functions",
+    "name": "async Functions",
+    "topic": "async",
+    "prereqs": ["promise-errors"],
+    "encompasses": [
+      {
+        "id": "promise-errors",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "An `async` function always returns a promise. What it returns becomes the fulfilled value, and what it throws becomes the rejection.",
+    "solo": "async-functions-solo-1"
+  },
+  {
+    "id": "await",
+    "name": "await",
+    "topic": "async",
+    "prereqs": ["async-functions", "microtasks"],
+    "encompasses": [
+      {
+        "id": "async-functions",
+        "w": 0.8
+      },
+      {
+        "id": "microtasks",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`await` pauses its function until the promise settles, then gives the value. The rest of the program keeps running. The code after an `await` always runs later, as a microtask.",
+    "solo": "await-solo-1"
+  },
+  {
+    "id": "async-errors",
+    "name": "Errors with await",
+    "topic": "async",
+    "prereqs": ["await"],
+    "encompasses": [
+      {
+        "id": "await",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`await` throws when its promise rejects, so `try` and `catch` work. A promise that is returned without `await` settles after the `try` block has ended, so its rejection is not caught.",
+    "solo": "async-errors-solo-1"
+  },
+  {
+    "id": "sequential-parallel",
+    "name": "One after Another, or Together",
+    "topic": "async",
+    "prereqs": ["await", "promise-all"],
+    "encompasses": [
+      {
+        "id": "await",
+        "w": 0.5
+      },
+      {
+        "id": "promise-all",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "`await` inside a loop runs the work one after another. To run it together, start every promise first and then `await Promise.all`. `forEach` does not wait for an `async` callback.",
+    "solo": "sequential-parallel-solo-1"
+  },
+  {
+    "id": "promisify",
+    "name": "From Callbacks to Promises",
+    "topic": "async",
+    "prereqs": ["promise-basics", "rest-arguments"],
+    "encompasses": [
+      {
+        "id": "promise-basics",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "To turn a callback function into a promise function, return a `new Promise` and call `resolve` or `reject` inside the callback.",
+    "solo": "promisify-solo-1"
+  },
+  {
+    "id": "async-iteration",
+    "name": "Asynchronous Iteration",
+    "topic": "async",
+    "prereqs": ["await", "generators"],
+    "encompasses": [
+      {
+        "id": "await",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`for await...of` loops over values that arrive later. An `async function*` can `await` and `yield`, and each `next()` returns a promise.",
+    "solo": "async-iteration-solo-1"
+  },
+  {
+    "id": "execution-order",
+    "name": "What Runs When",
+    "topic": "async",
+    "prereqs": ["await", "microtasks"],
+    "encompasses": [
+      {
+        "id": "await",
+        "w": 0.6
+      },
+      {
+        "id": "microtasks",
+        "w": 1
+      }
+    ],
+    "key_idea": "To find the order of output, run all the synchronous code first, then every microtask, then one task, then the microtasks again.",
+    "solo": "execution-order-solo-1"
+  },
+  {
+    "id": "module-basics",
+    "name": "Modules",
+    "topic": "modules",
+    "prereqs": ["global-scope", "strict-mode"],
+    "encompasses": [],
+    "key_idea": "Each file is a module with its own scope. `export` makes a name available, and `import { name }` brings it into another file. Nothing else leaks out.",
+    "guided": 3,
+    "solo": ["module-basics-solo-1", "score-grades"]
+  },
+  {
+    "id": "default-exports",
+    "name": "Default Exports and Renaming",
+    "topic": "modules",
+    "prereqs": ["module-basics"],
+    "encompasses": [
+      {
+        "id": "module-basics",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A module can have one `default` export, which the importer names freely. Named exports can be renamed with `as`, imported together with `* as ns`, and passed on with `export ... from`.",
+    "guided": 4,
+    "solo": ["default-exports-solo-1", "duration-format"]
+  },
+  {
+    "id": "live-bindings",
+    "name": "Imports Are Live",
+    "topic": "modules",
+    "prereqs": ["module-basics", "closure-variables"],
+    "encompasses": [
+      {
+        "id": "module-basics",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "An import is not a copy. It is a read-only view of the exporter's variable, so it shows the latest value. Only the exporting module can assign to it.",
+    "guided": 3,
+    "solo": ["live-bindings-solo-1", "traffic-light"]
+  },
+  {
+    "id": "module-evaluation",
+    "name": "A Module Runs Once",
+    "topic": "modules",
+    "prereqs": ["default-exports"],
+    "encompasses": [
+      {
+        "id": "default-exports",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "A module's code runs once, the first time it is imported, and every importer shares the result. Imports are hoisted: all the imported modules run before the importing file's own code.",
+    "guided": 3,
+    "solo": ["module-evaluation-solo-1", "module-evaluation-solo-2"]
+  },
+  {
+    "id": "dynamic-import",
+    "name": "import() and Top-level await",
+    "topic": "modules",
+    "prereqs": ["module-evaluation", "await"],
+    "encompasses": [
+      {
+        "id": "module-evaluation",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`import(path)` loads a module when the line runs and returns a promise of its exports. A module can use `await` at the top level, and its importers wait for it.",
+    "guided": 3,
+    "solo": ["dynamic-import-solo-1", "load-on-first-use"]
+  },
+  {
+    "id": "circular-imports",
+    "name": "Circular Imports",
+    "topic": "modules",
+    "prereqs": ["module-evaluation", "tdz", "hoisting-functions"],
+    "encompasses": [
+      {
+        "id": "module-evaluation",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "When two modules import each other, one of them runs first and sees the other's exports before they are initialised. A hoisted function works there, and a `const` throws.",
+    "guided": 3,
+    "solo": ["circular-imports-solo-1", "circular-imports-solo-2"]
+  },
+  {
+    "id": "well-known-symbols",
+    "name": "Well-known Symbols",
+    "topic": "metaprogramming",
+    "prereqs": [
+      "symbols",
+      "object-to-primitive",
+      "instanceof",
+      "iteration-protocol"
+    ],
+    "encompasses": [],
+    "key_idea": "Well-known symbols are hooks into the language. `Symbol.iterator` drives `for...of`, `Symbol.toPrimitive` drives conversion, `Symbol.hasInstance` drives `instanceof`, and `Symbol.toStringTag` names the object.",
+    "solo": "well-known-symbols-solo-1"
+  },
+  {
+    "id": "enumeration-rules",
+    "name": "Which Keys Does It See?",
+    "topic": "metaprogramming",
+    "prereqs": ["own-vs-inherited", "property-descriptors", "symbols"],
+    "encompasses": [
+      {
+        "id": "own-vs-inherited",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "Each way of listing keys has its own rule. `Object.keys`, spread and JSON see own enumerable string keys. `for...in` adds inherited ones. `Reflect.ownKeys` sees every own key.",
+    "solo": "enumeration-rules-solo-1"
+  },
+  {
+    "id": "reflect",
+    "name": "Reflect",
+    "topic": "metaprogramming",
+    "prereqs": ["enumeration-rules", "call-apply", "constructor-functions"],
+    "encompasses": [],
+    "key_idea": "`Reflect` holds the basic object operations as functions: `get`, `set`, `has`, `ownKeys`, `apply` and `construct`. They return a result where the operator would throw or fail silently.",
+    "solo": "reflect-solo-1"
+  },
+  {
+    "id": "proxy-basics",
+    "name": "Proxy",
+    "topic": "metaprogramming",
+    "prereqs": ["reflect", "getters-setters"],
+    "encompasses": [
+      {
+        "id": "reflect",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A `Proxy` wraps an object and runs your handler on each operation. A `get` trap sees every read and a `set` trap every write. Forward to `Reflect` to keep the normal behaviour.",
+    "solo": "proxy-basics-solo-1"
+  },
+  {
+    "id": "proxy-traps",
+    "name": "More Proxy Traps",
+    "topic": "metaprogramming",
+    "prereqs": ["proxy-basics"],
+    "encompasses": [
+      {
+        "id": "proxy-basics",
+        "w": 0.7
+      }
+    ],
+    "key_idea": "`has` handles `in`, `deleteProperty` handles `delete`, `ownKeys` handles key listing, and `apply` and `construct` handle calls. A trap may not lie about a property the target has locked.",
+    "solo": "proxy-traps-solo-1"
+  },
+  {
+    "id": "dynamic-code",
+    "name": "eval and new Function",
+    "topic": "metaprogramming",
+    "prereqs": ["global-scope", "lexical-scope"],
+    "encompasses": [],
+    "key_idea": "`eval` runs a string as code in the current scope. `new Function` builds a function from strings that sees only the global scope. Both are slow and unsafe with outside input.",
+    "solo": "dynamic-code-solo-1"
+  },
+  {
+    "id": "math",
+    "name": "Math",
+    "topic": "stdlib",
+    "prereqs": ["special-numbers"],
+    "encompasses": [],
+    "key_idea": "`Math.floor`, `Math.ceil`, `Math.round` and `Math.trunc` differ on negative numbers and on halves. `Math.max()` of nothing is `-Infinity`.",
+    "solo": "math-solo-1"
+  },
+  {
+    "id": "number-methods",
+    "name": "Formatting and Checking Numbers",
+    "topic": "stdlib",
+    "prereqs": ["math", "to-string"],
+    "encompasses": [],
+    "key_idea": "`toFixed` rounds a number and returns a string. `Number.isInteger` and `Number.isSafeInteger` check a number without converting it.",
+    "solo": "number-methods-solo-1"
+  },
+  {
+    "id": "dates",
+    "name": "Date",
+    "topic": "stdlib",
+    "prereqs": ["to-number", "number-methods"],
+    "encompasses": [],
+    "key_idea": "A `Date` holds one number: the milliseconds since the start of 1970, in UTC. Months count from 0. A value out of range rolls over, so day 0 is the last day of the month before.",
+    "solo": "dates-solo-1"
+  },
+  {
+    "id": "temporal",
+    "name": "Temporal",
+    "topic": "stdlib",
+    "prereqs": ["dates"],
+    "encompasses": [],
+    "key_idea": "`Temporal` replaces `Date`. Its objects never change, months count from 1, and a date, a time, an exact instant and a time zone are separate types.",
+    "solo": "temporal-solo-1"
+  },
+  {
+    "id": "intl",
+    "name": "Intl",
+    "topic": "stdlib",
+    "prereqs": ["dates", "string-comparison"],
+    "encompasses": [],
+    "key_idea": "`Intl` formats numbers, dates and lists for a locale. `Intl.NumberFormat` writes currency and percent, and `Intl.PluralRules` picks the right plural form.",
+    "solo": "intl-solo-1"
+  },
+  {
+    "id": "memoization",
+    "name": "Memoize",
+    "topic": "patterns",
+    "prereqs": ["function-wrappers", "map"],
+    "encompasses": [
+      {
+        "id": "function-wrappers",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A memoized function keeps each result in a cache, keyed by its arguments. A second call with the same arguments returns the cached result without running the function.",
+    "solo": "memoization-solo-1"
+  },
+  {
+    "id": "currying",
+    "name": "Curry and Partial Application",
+    "topic": "patterns",
+    "prereqs": ["function-wrappers", "function-properties", "bind"],
+    "encompasses": [
+      {
+        "id": "function-wrappers",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "A curried function takes its arguments one group at a time and runs when it has `fn.length` of them. Partial application fixes some arguments now and takes the rest later.",
+    "solo": "currying-solo-1"
+  },
+  {
+    "id": "composition",
+    "name": "compose and pipe",
+    "topic": "patterns",
+    "prereqs": ["reduce", "first-class-functions"],
+    "encompasses": [
+      {
+        "id": "reduce",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`pipe(f, g)` returns a function that runs `f`, then `g` on its result. `compose` runs them from right to left. Both are one `reduce` over the list of functions.",
+    "solo": "composition-solo-1"
+  },
+  {
+    "id": "debounce",
+    "name": "Debounce",
+    "topic": "patterns",
+    "prereqs": ["timers", "function-wrappers"],
+    "encompasses": [
+      {
+        "id": "function-wrappers",
+        "w": 0.5
+      },
+      {
+        "id": "timers",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A debounced function waits until the calls stop. Each call cancels the timer of the call before and starts a new one, so only the last call runs.",
+    "solo": "debounce-solo-1"
+  },
+  {
+    "id": "throttle",
+    "name": "Throttle",
+    "topic": "patterns",
+    "prereqs": ["debounce"],
+    "encompasses": [
+      {
+        "id": "debounce",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A throttled function runs at most once per interval. The first call runs at once, and calls during the wait are dropped or saved for the end.",
+    "solo": "throttle-solo-1"
+  },
+  {
+    "id": "deep-clone",
+    "name": "Deep Clone",
+    "topic": "patterns",
+    "prereqs": ["recursion", "deep-copy", "type-detection", "weakmap-weakset"],
+    "encompasses": [
+      {
+        "id": "recursion",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "To clone deeply, copy primitives as they are and recurse into arrays and objects. Keep a `WeakMap` from each original to its copy, so a cycle ends instead of looping forever.",
+    "solo": "deep-clone-solo-1"
+  },
+  {
+    "id": "deep-equal",
+    "name": "Deep Equal",
+    "topic": "patterns",
+    "prereqs": ["deep-clone", "sameness"],
+    "encompasses": [
+      {
+        "id": "deep-clone",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "Two values are deeply equal when they are the same primitive, or have the same kind, the same keys and deeply equal values under each key.",
+    "solo": "deep-equal-solo-1"
+  },
+  {
+    "id": "event-emitter",
+    "name": "Event Emitter",
+    "topic": "patterns",
+    "prereqs": ["map", "class-basics"],
+    "encompasses": [],
+    "key_idea": "An emitter keeps a list of listeners for each event name. `on` adds one, `off` removes it, and `emit` calls each listener with the arguments.",
+    "solo": "event-emitter-solo-1"
+  },
+  {
+    "id": "array-polyfills",
+    "name": "Writing map, filter and reduce",
+    "topic": "patterns",
+    "prereqs": ["native-prototypes", "reduce", "sparse-arrays"],
+    "encompasses": [
+      {
+        "id": "reduce",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A polyfill of an array method loops over the indexes, skips the holes and calls the callback with the item, the index and the array.",
+    "solo": "array-polyfills-solo-1"
+  },
+  {
+    "id": "call-bind-polyfills",
+    "name": "Writing call, apply and bind",
+    "topic": "patterns",
+    "prereqs": ["bind", "symbols", "constructor-functions"],
+    "encompasses": [
+      {
+        "id": "bind",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "To call a function with a chosen `this`, store it on the object under a temporary key and call it as a method. `bind` returns a function that does this with saved arguments.",
+    "solo": "call-bind-polyfills-solo-1"
+  },
+  {
+    "id": "new-instanceof-polyfills",
+    "name": "Writing new and instanceof",
+    "topic": "patterns",
+    "prereqs": ["constructor-functions", "instanceof", "null-prototype"],
+    "encompasses": [
+      {
+        "id": "constructor-functions",
+        "w": 0.8
+      },
+      {
+        "id": "instanceof",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "`new` is three steps: create an object from `F.prototype`, call `F` on it, and return the object unless `F` returned one. `instanceof` walks the prototype chain looking for `F.prototype`.",
+    "solo": "new-instanceof-polyfills-solo-1"
+  },
+  {
+    "id": "promise-combinators",
+    "name": "Writing Promise.all",
+    "topic": "patterns",
+    "prereqs": ["promise-race-any"],
+    "encompasses": [
+      {
+        "id": "promise-race-any",
+        "w": 0.8
+      }
+    ],
+    "key_idea": "`Promise.all` returns a new promise, stores each result at its own index, counts the results and resolves when the count is complete. It rejects on the first rejection.",
+    "solo": "promise-combinators-solo-1"
+  },
+  {
+    "id": "promise-utilities",
+    "name": "Timeout and Retry",
+    "topic": "patterns",
+    "prereqs": ["promise-race-any", "promisify", "async-errors"],
+    "encompasses": [
+      {
+        "id": "async-errors",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "A timeout races the work against a timer that rejects. A retry calls the work again in a loop after each failure, and gives up after a set number of tries.",
+    "solo": "promise-utilities-solo-1"
+  },
+  {
+    "id": "concurrency-limit",
+    "name": "Limiting Concurrency",
+    "topic": "patterns",
+    "prereqs": ["sequential-parallel"],
+    "encompasses": [
+      {
+        "id": "sequential-parallel",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "To run many tasks with at most `n` at once, start `n` workers. Each worker takes the next task from a shared index until none are left.",
+    "solo": "concurrency-limit-solo-1"
+  },
+  {
+    "id": "implement-promise",
+    "name": "Writing a Promise",
+    "topic": "patterns",
+    "prereqs": ["microtasks", "promise-errors", "class-basics"],
+    "encompasses": [
+      {
+        "id": "promise-errors",
+        "w": 0.6
+      }
+    ],
+    "key_idea": "A promise holds a state, a value and a list of waiting callbacks. `then` returns a new promise and queues its callback as a microtask. Resolving with a thenable follows it.",
+    "solo": "implement-promise-solo-1"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function keep(n) {\n  return () => n * 10;\n}\n\nconst kept = [];\nconst shared = [];\n\nfor (var i = 1; i <= 2; i++) {\n  kept.push(keep(i));\n  shared.push(() => i * 10);\n}\n\nconsole.log(kept[0]());\nconsole.log(kept[1]());\nconsole.log(shared[0]());\nconsole.log(shared[1]());"
+    },
+    "expected": "10\n20\n30\n30"
+  }
+}

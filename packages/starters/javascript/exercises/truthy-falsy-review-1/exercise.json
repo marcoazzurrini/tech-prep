@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fruits = [\"apple\", \"pear\"];\n\nconsole.log(fruits.indexOf(\"apple\") ? \"found\" : \"missing\");\nconsole.log(fruits.indexOf(\"kiwi\") ? \"found\" : \"missing\");\n\nlet left = 3;\nlet rounds = 0;\n\nwhile (left) {\n  left -= 1;\n  rounds += 1;\n}\n\nconsole.log(rounds);\nconsole.log(!!\"false\" === !!\" \");"
+    },
+    "expected": "missing\nfound\n3\ntrue"
+  }
+}

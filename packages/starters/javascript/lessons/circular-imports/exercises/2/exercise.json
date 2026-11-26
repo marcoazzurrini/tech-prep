@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import \"./price.js\";\n\nconsole.log(\"done\");",
+      "files": {
+        "price.js": "import { label } from \"./label.js\";\n\nexport function price(amount) {\n  return amount * 2;\n}\n\nconsole.log(label(5));\n",
+        "label.js": "import { price } from \"./price.js\";\n\nconsole.log(price(10));\n\nexport function label(amount) {\n  return \"cost \" + price(amount);\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "20\ncost 10\ndone"
+  }
+}

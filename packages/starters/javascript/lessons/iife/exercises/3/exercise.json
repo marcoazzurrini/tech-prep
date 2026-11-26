@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const greeters = [];\n\nfor (var name of [\"Ada\", \"Lin\"]) {\n  (function (who) {\n    greeters.push(() => `${who} and ${name}`);\n  })(name);\n}\n\nconsole.log(greeters[0]());\nconsole.log(greeters[1]());"
+    },
+    "expected": "Ada and Lin\nLin and Lin"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tag = function (x) {\n  return () => typeof x\n}\n\n(function () {\n  console.log(\"set up\")\n})()\n\nconsole.log(tag)\nconsole.log(typeof tag)"
+    },
+    "expected": "function\nstring"
+  }
+}

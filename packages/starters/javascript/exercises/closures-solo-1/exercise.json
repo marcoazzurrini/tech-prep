@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeBudget(money) {\n  return (cost) => {\n    if (cost > money) {\n      return \"no\";\n    }\n\n    money -= cost;\n\n    return money;\n  };\n}\n\nconst spend = makeBudget(20);\n\nconsole.log(spend(5));\nconsole.log(spend(30));\nconsole.log(spend(15));\nconsole.log(spend(1));"
+    },
+    "expected": "15\nno\n0\nno"
+  }
+}

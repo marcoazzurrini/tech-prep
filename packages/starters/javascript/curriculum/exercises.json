@@ -1,0 +1,1430 @@
+[
+  {
+    "slug": "primitive-types-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["primitive-types"]
+  },
+  {
+    "slug": "count-by-type",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["primitive-types"]
+  },
+  {
+    "slug": "primitive-types-review-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["primitive-types"]
+  },
+  {
+    "slug": "is-primitive",
+    "topic": "values",
+    "difficulty": "medium",
+    "concepts": ["primitive-types"]
+  },
+  {
+    "slug": "numbers-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["numbers"]
+  },
+  {
+    "slug": "special-numbers-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["special-numbers"]
+  },
+  {
+    "slug": "bigint-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["bigint"]
+  },
+  {
+    "slug": "strings-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["strings"]
+  },
+  {
+    "slug": "template-literals-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["template-literals"]
+  },
+  {
+    "slug": "null-undefined-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["null-undefined"]
+  },
+  {
+    "slug": "references-solo-1",
+    "topic": "values",
+    "difficulty": "easy",
+    "concepts": ["references"]
+  },
+  {
+    "slug": "truthy-falsy-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["truthy-falsy"]
+  },
+  {
+    "slug": "active-flags",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["truthy-falsy"]
+  },
+  {
+    "slug": "truthy-falsy-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["truthy-falsy"]
+  },
+  {
+    "slug": "tidy-record",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["truthy-falsy", "special-numbers", "null-undefined"]
+  },
+  {
+    "slug": "to-string-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["to-string"]
+  },
+  {
+    "slug": "user-display-name",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["to-string"]
+  },
+  {
+    "slug": "to-string-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["to-string"]
+  },
+  {
+    "slug": "csv-line",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["to-string", "strings"]
+  },
+  {
+    "slug": "to-number-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["to-number"]
+  },
+  {
+    "slug": "sum-valid-inputs",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["to-number"]
+  },
+  {
+    "slug": "to-number-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["to-number"]
+  },
+  {
+    "slug": "price-in-cents",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["to-number", "numbers", "special-numbers"]
+  },
+  {
+    "slug": "parse-numbers-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["parse-numbers"]
+  },
+  {
+    "slug": "total-pixel-width",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["parse-numbers"]
+  },
+  {
+    "slug": "parse-numbers-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["parse-numbers"]
+  },
+  {
+    "slug": "duration-to-seconds",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["parse-numbers", "strings"]
+  },
+  {
+    "slug": "plus-operator-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["plus-operator"]
+  },
+  {
+    "slug": "digit-sum-of-text",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["plus-operator"]
+  },
+  {
+    "slug": "plus-operator-review-1",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["plus-operator"]
+  },
+  {
+    "slug": "long-number-sum",
+    "topic": "conversion",
+    "difficulty": "medium",
+    "concepts": ["plus-operator", "strings", "numbers"]
+  },
+  {
+    "slug": "object-to-primitive-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["object-to-primitive"]
+  },
+  {
+    "slug": "loose-equality-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["loose-equality"]
+  },
+  {
+    "slug": "comparison-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["comparison"]
+  },
+  {
+    "slug": "sameness-solo-1",
+    "topic": "conversion",
+    "difficulty": "easy",
+    "concepts": ["sameness"]
+  },
+  {
+    "slug": "logical-operators-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["logical-operators"]
+  },
+  {
+    "slug": "nullish-coalescing-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["nullish-coalescing"]
+  },
+  {
+    "slug": "optional-chaining-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["optional-chaining"]
+  },
+  {
+    "slug": "assignment-operators-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["assignment-operators"]
+  },
+  {
+    "slug": "increment-decrement-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["increment-decrement"]
+  },
+  {
+    "slug": "operator-precedence-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["operator-precedence"]
+  },
+  {
+    "slug": "destructuring-arrays-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["destructuring-arrays"]
+  },
+  {
+    "slug": "destructuring-objects-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["destructuring-objects"]
+  },
+  {
+    "slug": "spread-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["spread"]
+  },
+  {
+    "slug": "bitwise-solo-1",
+    "topic": "operators",
+    "difficulty": "easy",
+    "concepts": ["bitwise"]
+  },
+  {
+    "slug": "switch-solo-1",
+    "topic": "statements",
+    "difficulty": "easy",
+    "concepts": ["switch"]
+  },
+  {
+    "slug": "loops-labels-solo-1",
+    "topic": "statements",
+    "difficulty": "easy",
+    "concepts": ["loops-labels"]
+  },
+  {
+    "slug": "for-of-solo-1",
+    "topic": "statements",
+    "difficulty": "easy",
+    "concepts": ["for-of"]
+  },
+  {
+    "slug": "automatic-semicolons-solo-1",
+    "topic": "statements",
+    "difficulty": "easy",
+    "concepts": ["automatic-semicolons"]
+  },
+  {
+    "slug": "let-const-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["let-const"]
+  },
+  {
+    "slug": "block-scope-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["block-scope"]
+  },
+  {
+    "slug": "var-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["var"]
+  },
+  {
+    "slug": "hoisting-var-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["hoisting-var"]
+  },
+  {
+    "slug": "hoisting-functions-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["hoisting-functions"]
+  },
+  {
+    "slug": "tdz-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["tdz"]
+  },
+  {
+    "slug": "lexical-scope-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["lexical-scope"]
+  },
+  {
+    "slug": "global-scope-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["global-scope"]
+  },
+  {
+    "slug": "strict-mode-solo-1",
+    "topic": "scope",
+    "difficulty": "easy",
+    "concepts": ["strict-mode"]
+  },
+  {
+    "slug": "function-forms-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["function-forms"]
+  },
+  {
+    "slug": "arrow-functions-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["arrow-functions"]
+  },
+  {
+    "slug": "parameters-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["parameters"]
+  },
+  {
+    "slug": "rest-arguments-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["rest-arguments"]
+  },
+  {
+    "slug": "pass-by-sharing-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["pass-by-sharing"]
+  },
+  {
+    "slug": "first-class-functions-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["first-class-functions"]
+  },
+  {
+    "slug": "function-properties-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["function-properties"]
+  },
+  {
+    "slug": "call-stack-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["call-stack"]
+  },
+  {
+    "slug": "recursion-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["recursion"]
+  },
+  {
+    "slug": "closures-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["closures"]
+  },
+  {
+    "slug": "running-average",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["closures"]
+  },
+  {
+    "slug": "only-when-changed",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["closures"]
+  },
+  {
+    "slug": "closures-review-2",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["closures", "lexical-scope"]
+  },
+  {
+    "slug": "closure-variables-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["closure-variables"]
+  },
+  {
+    "slug": "tax-at-the-till",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["closure-variables"]
+  },
+  {
+    "slug": "closure-variables-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["closure-variables"]
+  },
+  {
+    "slug": "list-snapshot",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["closure-variables", "references"]
+  },
+  {
+    "slug": "closures-in-loops-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["closures-in-loops"]
+  },
+  {
+    "slug": "recipe-steps",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["closures-in-loops"]
+  },
+  {
+    "slug": "sums-for-later",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["closures-in-loops"]
+  },
+  {
+    "slug": "closures-in-loops-review-2",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["closures-in-loops", "var", "closure-variables"]
+  },
+  {
+    "slug": "private-state-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["private-state"]
+  },
+  {
+    "slug": "stock-room",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["private-state"]
+  },
+  {
+    "slug": "undo-history",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["private-state"]
+  },
+  {
+    "slug": "spy-on-calls",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["private-state", "rest-arguments", "function-properties"]
+  },
+  {
+    "slug": "iife-solo-1",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["iife"]
+  },
+  {
+    "slug": "waiting-line",
+    "topic": "functions",
+    "difficulty": "easy",
+    "concepts": ["iife"]
+  },
+  {
+    "slug": "iife-review-1",
+    "topic": "functions",
+    "difficulty": "medium",
+    "concepts": ["iife"]
+  },
+  {
+    "slug": "iife-review-2",
+    "topic": "functions",
+    "difficulty": "hard",
+    "concepts": ["iife", "automatic-semicolons"]
+  },
+  {
+    "slug": "this-method-call-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["this-method-call"]
+  },
+  {
+    "slug": "this-plain-call-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["this-plain-call"]
+  },
+  {
+    "slug": "losing-this-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["losing-this"]
+  },
+  {
+    "slug": "call-apply-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["call-apply"]
+  },
+  {
+    "slug": "bind-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["bind"]
+  },
+  {
+    "slug": "arrow-this-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["arrow-this"]
+  },
+  {
+    "slug": "function-wrappers-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["function-wrappers"]
+  },
+  {
+    "slug": "method-chaining-solo-1",
+    "topic": "this",
+    "difficulty": "easy",
+    "concepts": ["method-chaining"]
+  },
+  {
+    "slug": "object-literals-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["object-literals"]
+  },
+  {
+    "slug": "property-access-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["property-access"]
+  },
+  {
+    "slug": "property-existence-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["property-existence"]
+  },
+  {
+    "slug": "property-order-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["property-order"]
+  },
+  {
+    "slug": "object-iteration-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["object-iteration"]
+  },
+  {
+    "slug": "shallow-copy-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["shallow-copy"]
+  },
+  {
+    "slug": "immutable-updates-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["immutable-updates"]
+  },
+  {
+    "slug": "deep-copy-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["deep-copy"]
+  },
+  {
+    "slug": "getters-setters-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["getters-setters"]
+  },
+  {
+    "slug": "property-descriptors-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["property-descriptors"]
+  },
+  {
+    "slug": "freeze-seal-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["freeze-seal"]
+  },
+  {
+    "slug": "symbols-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["symbols"]
+  },
+  {
+    "slug": "json-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["json"]
+  },
+  {
+    "slug": "garbage-collection-solo-1",
+    "topic": "objects",
+    "difficulty": "easy",
+    "concepts": ["garbage-collection"]
+  },
+  {
+    "slug": "prototype-chain-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["prototype-chain"]
+  },
+  {
+    "slug": "shadowing-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["shadowing"]
+  },
+  {
+    "slug": "own-vs-inherited-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["own-vs-inherited"]
+  },
+  {
+    "slug": "constructor-functions-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["constructor-functions"]
+  },
+  {
+    "slug": "function-prototype-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["function-prototype"]
+  },
+  {
+    "slug": "instanceof-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["instanceof"]
+  },
+  {
+    "slug": "native-prototypes-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["native-prototypes"]
+  },
+  {
+    "slug": "null-prototype-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["null-prototype"]
+  },
+  {
+    "slug": "prototypal-inheritance-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["prototypal-inheritance"]
+  },
+  {
+    "slug": "this-binding-order-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["this-binding-order"]
+  },
+  {
+    "slug": "type-detection-solo-1",
+    "topic": "prototypes",
+    "difficulty": "easy",
+    "concepts": ["type-detection"]
+  },
+  {
+    "slug": "class-basics-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["class-basics"]
+  },
+  {
+    "slug": "class-fields-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["class-fields"]
+  },
+  {
+    "slug": "static-members-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["static-members"]
+  },
+  {
+    "slug": "private-members-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["private-members"]
+  },
+  {
+    "slug": "class-accessors-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["class-accessors"]
+  },
+  {
+    "slug": "extends-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["extends"]
+  },
+  {
+    "slug": "super-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["super"]
+  },
+  {
+    "slug": "method-overriding-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["method-overriding"]
+  },
+  {
+    "slug": "extending-builtins-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["extending-builtins"]
+  },
+  {
+    "slug": "mixins-solo-1",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["mixins"]
+  },
+  {
+    "slug": "try-catch-solo-1",
+    "topic": "errors",
+    "difficulty": "easy",
+    "concepts": ["try-catch"]
+  },
+  {
+    "slug": "finally-solo-1",
+    "topic": "errors",
+    "difficulty": "easy",
+    "concepts": ["finally"]
+  },
+  {
+    "slug": "error-types-solo-1",
+    "topic": "errors",
+    "difficulty": "easy",
+    "concepts": ["error-types"]
+  },
+  {
+    "slug": "custom-errors-solo-1",
+    "topic": "errors",
+    "difficulty": "easy",
+    "concepts": ["custom-errors"]
+  },
+  {
+    "slug": "using-declarations-solo-1",
+    "topic": "errors",
+    "difficulty": "easy",
+    "concepts": ["using-declarations"]
+  },
+  {
+    "slug": "array-basics-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["array-basics"]
+  },
+  {
+    "slug": "sparse-arrays-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["sparse-arrays"]
+  },
+  {
+    "slug": "mutating-methods-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["mutating-methods"]
+  },
+  {
+    "slug": "copying-methods-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["copying-methods"]
+  },
+  {
+    "slug": "map-filter-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["map-filter"]
+  },
+  {
+    "slug": "reduce-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["reduce"]
+  },
+  {
+    "slug": "searching-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["searching"]
+  },
+  {
+    "slug": "sort-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["sort"]
+  },
+  {
+    "slug": "flat-flatmap-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["flat-flatmap"]
+  },
+  {
+    "slug": "array-creation-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["array-creation"]
+  },
+  {
+    "slug": "array-likes-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["array-likes"]
+  },
+  {
+    "slug": "grouping-solo-1",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["grouping"]
+  },
+  {
+    "slug": "string-methods-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["string-methods"]
+  },
+  {
+    "slug": "string-comparison-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["string-comparison"]
+  },
+  {
+    "slug": "unicode-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["unicode"]
+  },
+  {
+    "slug": "tagged-templates-solo-1",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["tagged-templates"]
+  },
+  {
+    "slug": "regex-basics-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["regex-basics"]
+  },
+  {
+    "slug": "character-classes-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["character-classes"]
+  },
+  {
+    "slug": "quantifiers-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["quantifiers"]
+  },
+  {
+    "slug": "groups-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["groups"]
+  },
+  {
+    "slug": "regex-methods-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["regex-methods"]
+  },
+  {
+    "slug": "regex-state-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["regex-state"]
+  },
+  {
+    "slug": "lookaround-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["lookaround"]
+  },
+  {
+    "slug": "regex-unicode-solo-1",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["regex-unicode"]
+  },
+  {
+    "slug": "map-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["map"]
+  },
+  {
+    "slug": "set-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["set"]
+  },
+  {
+    "slug": "set-operations-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["set-operations"]
+  },
+  {
+    "slug": "weakmap-weakset-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["weakmap-weakset"]
+  },
+  {
+    "slug": "memory-leaks-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["memory-leaks"]
+  },
+  {
+    "slug": "typed-arrays-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["typed-arrays"]
+  },
+  {
+    "slug": "iteration-protocol-solo-1",
+    "topic": "iteration",
+    "difficulty": "easy",
+    "concepts": ["iteration-protocol"]
+  },
+  {
+    "slug": "custom-iterables-solo-1",
+    "topic": "iteration",
+    "difficulty": "easy",
+    "concepts": ["custom-iterables"]
+  },
+  {
+    "slug": "generators-solo-1",
+    "topic": "iteration",
+    "difficulty": "easy",
+    "concepts": ["generators"]
+  },
+  {
+    "slug": "generator-control-solo-1",
+    "topic": "iteration",
+    "difficulty": "easy",
+    "concepts": ["generator-control"]
+  },
+  {
+    "slug": "lazy-sequences-solo-1",
+    "topic": "iteration",
+    "difficulty": "easy",
+    "concepts": ["lazy-sequences"]
+  },
+  {
+    "slug": "event-loop-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["event-loop"]
+  },
+  {
+    "slug": "timers-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["timers"]
+  },
+  {
+    "slug": "async-callbacks-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["async-callbacks"]
+  },
+  {
+    "slug": "promise-basics-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promise-basics"]
+  },
+  {
+    "slug": "promise-then-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promise-then"]
+  },
+  {
+    "slug": "promise-chaining-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promise-chaining"]
+  },
+  {
+    "slug": "promise-errors-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promise-errors"]
+  },
+  {
+    "slug": "microtasks-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["microtasks"]
+  },
+  {
+    "slug": "promise-static-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promise-static"]
+  },
+  {
+    "slug": "promise-all-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promise-all"]
+  },
+  {
+    "slug": "promise-race-any-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promise-race-any"]
+  },
+  {
+    "slug": "async-functions-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["async-functions"]
+  },
+  {
+    "slug": "await-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["await"]
+  },
+  {
+    "slug": "async-errors-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["async-errors"]
+  },
+  {
+    "slug": "sequential-parallel-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["sequential-parallel"]
+  },
+  {
+    "slug": "promisify-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["promisify"]
+  },
+  {
+    "slug": "async-iteration-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["async-iteration"]
+  },
+  {
+    "slug": "execution-order-solo-1",
+    "topic": "async",
+    "difficulty": "easy",
+    "concepts": ["execution-order"]
+  },
+  {
+    "slug": "module-basics-solo-1",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["module-basics"]
+  },
+  {
+    "slug": "score-grades",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["module-basics"]
+  },
+  {
+    "slug": "module-basics-review-1",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["module-basics"]
+  },
+  {
+    "slug": "ticket-numbers",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["module-basics", "private-state"]
+  },
+  {
+    "slug": "default-exports-solo-1",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["default-exports"]
+  },
+  {
+    "slug": "duration-format",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["default-exports"]
+  },
+  {
+    "slug": "default-exports-review-1",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["default-exports"]
+  },
+  {
+    "slug": "page-history",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["default-exports", "class-basics"]
+  },
+  {
+    "slug": "live-bindings-solo-1",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["live-bindings"]
+  },
+  {
+    "slug": "traffic-light",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["live-bindings"]
+  },
+  {
+    "slug": "live-bindings-review-1",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["live-bindings"]
+  },
+  {
+    "slug": "live-bindings-review-2",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["live-bindings", "promise-then"]
+  },
+  {
+    "slug": "module-evaluation-solo-1",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["module-evaluation"]
+  },
+  {
+    "slug": "module-evaluation-solo-2",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["module-evaluation"]
+  },
+  {
+    "slug": "module-evaluation-review-1",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["module-evaluation"]
+  },
+  {
+    "slug": "load-order",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["module-evaluation", "recursion"]
+  },
+  {
+    "slug": "dynamic-import-solo-1",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["dynamic-import"]
+  },
+  {
+    "slug": "load-on-first-use",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["dynamic-import"]
+  },
+  {
+    "slug": "dynamic-import-review-1",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["dynamic-import"]
+  },
+  {
+    "slug": "dynamic-import-review-2",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["dynamic-import", "promise-all"]
+  },
+  {
+    "slug": "circular-imports-solo-1",
+    "topic": "modules",
+    "difficulty": "easy",
+    "concepts": ["circular-imports"]
+  },
+  {
+    "slug": "circular-imports-solo-2",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["circular-imports"]
+  },
+  {
+    "slug": "circular-imports-review-1",
+    "topic": "modules",
+    "difficulty": "medium",
+    "concepts": ["circular-imports"]
+  },
+  {
+    "slug": "read-too-early",
+    "topic": "modules",
+    "difficulty": "hard",
+    "concepts": ["circular-imports", "recursion"]
+  },
+  {
+    "slug": "well-known-symbols-solo-1",
+    "topic": "metaprogramming",
+    "difficulty": "easy",
+    "concepts": ["well-known-symbols"]
+  },
+  {
+    "slug": "enumeration-rules-solo-1",
+    "topic": "metaprogramming",
+    "difficulty": "easy",
+    "concepts": ["enumeration-rules"]
+  },
+  {
+    "slug": "reflect-solo-1",
+    "topic": "metaprogramming",
+    "difficulty": "easy",
+    "concepts": ["reflect"]
+  },
+  {
+    "slug": "proxy-basics-solo-1",
+    "topic": "metaprogramming",
+    "difficulty": "easy",
+    "concepts": ["proxy-basics"]
+  },
+  {
+    "slug": "proxy-traps-solo-1",
+    "topic": "metaprogramming",
+    "difficulty": "easy",
+    "concepts": ["proxy-traps"]
+  },
+  {
+    "slug": "dynamic-code-solo-1",
+    "topic": "metaprogramming",
+    "difficulty": "easy",
+    "concepts": ["dynamic-code"]
+  },
+  {
+    "slug": "math-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["math"]
+  },
+  {
+    "slug": "number-methods-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["number-methods"]
+  },
+  {
+    "slug": "dates-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["dates"]
+  },
+  {
+    "slug": "temporal-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["temporal"]
+  },
+  {
+    "slug": "intl-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["intl"]
+  },
+  {
+    "slug": "memoization-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["memoization"]
+  },
+  {
+    "slug": "currying-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["currying"]
+  },
+  {
+    "slug": "composition-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["composition"]
+  },
+  {
+    "slug": "debounce-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["debounce"]
+  },
+  {
+    "slug": "throttle-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["throttle"]
+  },
+  {
+    "slug": "deep-clone-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["deep-clone"]
+  },
+  {
+    "slug": "deep-equal-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["deep-equal"]
+  },
+  {
+    "slug": "event-emitter-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["event-emitter"]
+  },
+  {
+    "slug": "array-polyfills-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["array-polyfills"]
+  },
+  {
+    "slug": "call-bind-polyfills-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["call-bind-polyfills"]
+  },
+  {
+    "slug": "new-instanceof-polyfills-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["new-instanceof-polyfills"]
+  },
+  {
+    "slug": "promise-combinators-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["promise-combinators"]
+  },
+  {
+    "slug": "promise-utilities-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["promise-utilities"]
+  },
+  {
+    "slug": "concurrency-limit-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["concurrency-limit"]
+  },
+  {
+    "slug": "implement-promise-solo-1",
+    "topic": "patterns",
+    "difficulty": "easy",
+    "concepts": ["implement-promise"]
+  }
+]

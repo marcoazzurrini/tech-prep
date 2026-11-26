@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import * as lib from \"./index.js\";\n\nconsole.log(Object.keys(lib).join(\",\"));\nconsole.log(lib.plus === lib.add);\nconsole.log(lib.multiply(3, 4));\nconsole.log(typeof lib.default);",
+      "files": {
+        "math.js": "export const add = (a, b) => a + b;\n\nexport default (a, b) => a * b;\n",
+        "index.js": "export * from \"./math.js\";\nexport { default as multiply } from \"./math.js\";\nexport { add as plus } from \"./math.js\";\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "add,multiply,plus\ntrue\n12\nundefined"
+  }
+}

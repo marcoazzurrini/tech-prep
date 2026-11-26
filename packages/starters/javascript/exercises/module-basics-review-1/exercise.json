@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { write } from \"./log.js\";\n\nconst prefix = \"[main]\";\nlet lines = 10;\n\nconsole.log(write(\"start\"));\nlines += 1;\nconsole.log(write(\"end\"));\nconsole.log(prefix, lines);\nconsole.log(typeof globalThis.lines);",
+      "files": {
+        "log.js": "const prefix = \"[log]\";\nlet lines = 0;\n\nexport function write(text) {\n  lines += 1;\n  return prefix + \" \" + lines + \": \" + text;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "[log] 1: start\n[log] 2: end\n[main] 11\nundefined"
+  }
+}

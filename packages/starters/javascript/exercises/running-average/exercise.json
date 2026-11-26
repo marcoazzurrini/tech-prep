@@ -1,0 +1,19 @@
+{
+  "title": "Running Average",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeAverager() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const average = makeAverager(); return [average(10), average(20), average(30)];"],"expected":[10,15,20]},
+      {"args":["const average = makeAverager(); average(1); average(2); return average(6);"],"expected":3},
+      {"args":["const average = makeAverager(); return average(-4);"],"expected":-4},
+      {"args":["const average = makeAverager(); return [average(0), average(0), average(3)];"],"expected":[0,0,1]},
+      {"args":["const average = makeAverager(); average(1); return average(2);"],"expected":1.5},
+      {"args":["const a = makeAverager(); const b = makeAverager(); a(100); return [a(0), b(8)];"],"expected":[50,8]}
+    ]
+  }
+}

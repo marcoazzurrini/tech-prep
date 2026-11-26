@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { nextId } from \"./ids.js\";\nimport { user } from \"./user.js\";\n\nconsole.log(user.id);\nconsole.log(nextId());\nconsole.log(nextId());",
+      "files": {
+        "ids.js": "let last = 0;\n\nexport function nextId() {\n  last += 1;\n\n  return last;\n}\n",
+        "user.js": "import { nextId } from \"./ids.js\";\n\nexport const user = { id: nextId(), name: \"Ada\" };\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "1\n2\n3"
+  }
+}

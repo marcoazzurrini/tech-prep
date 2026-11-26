@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeWallet(coins) {\n  const spend = (n) => {\n    coins -= n;\n  };\n\n  return [spend, () => coins];\n}\n\nlet pocket = 10;\nconst [spend, left] = makeWallet(pocket);\n\npocket = 50;\nspend(3);\n\nconst [, leftB] = makeWallet(pocket);\n\nspend(1);\nconsole.log(left());\nconsole.log(pocket);\nconsole.log(leftB());"
+    },
+    "expected": "6\n50\n50"
+  }
+}

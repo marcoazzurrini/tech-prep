@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function label(value) {\n  return value ? \"yes\" : \"no\";\n}\n\nconsole.log(label(\"NaN\"));\nconsole.log(label([0]));\nconsole.log(label({ ok: false }));\nconsole.log(label(-0.5));\nconsole.log(label([].length));"
+    },
+    "expected": "yes\nyes\nyes\nyes\nno"
+  }
+}

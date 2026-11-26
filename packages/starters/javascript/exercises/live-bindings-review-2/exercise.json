@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { status, done } from \"./job.js\";\n\nconst seen = status;\n\ndone.then(() => {\n  console.log(seen);\n  console.log(status);\n});\n\nconsole.log(status);",
+      "files": {
+        "job.js": "export let status = \"queued\";\n\nexport const done = Promise.resolve().then(() => {\n  status = \"finished\";\n});\n\nstatus = \"running\";\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "running\nrunning\nfinished"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Two Public Names",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function sumPrices(prices) {\n  return prices.reduce((sum, price) => sum + price, 0);\n}\n\nfunction countOver(prices, limit) {\n  return prices.filter((price) => price > limit).length;\n}\n\n// your code\n"
+    },
+    "tests": [
+      {"args":["return Object.keys(exports);"],"expected":["countAbove","total"]},
+      {"args":["return total([2, 3]);"],"expected":5},
+      {"args":["return countAbove([1, 5, 9], 4);"],"expected":2},
+      {"args":["return [total([]), countAbove([], 0)];"],"expected":[0,0]},
+      {"args":["return [total.name, countAbove.name];"],"expected":["sumPrices","countOver"]}
+    ]
+  }
+}

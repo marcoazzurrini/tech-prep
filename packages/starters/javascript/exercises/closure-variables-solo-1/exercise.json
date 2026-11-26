@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let level = 1;\n\nconst describe = () => `level ${level}`;\nconst levelUp = () => {\n  level += 1;\n};\n\nlevelUp();\nlevelUp();\n\nconst saved = level;\nconst text = describe();\n\nlevelUp();\n\nconsole.log(describe());\nconsole.log(saved);\nconsole.log(text);"
+    },
+    "expected": "level 4\n3\nlevel 3"
+  }
+}

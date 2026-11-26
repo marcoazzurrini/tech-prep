@@ -1,0 +1,21 @@
+{
+  "title": "Digit Sum",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "digitSum"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function digitSum(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["4096"],"expected":19},
+      {"args":[""],"expected":0},
+      {"args":["7"],"expected":7},
+      {"args":["999"],"expected":27},
+      {"args":["1000000"],"expected":1},
+      {"args":["0123456789"],"expected":45}
+    ]
+  }
+}

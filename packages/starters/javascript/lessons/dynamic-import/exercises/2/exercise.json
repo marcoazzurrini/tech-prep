@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { toEuros } from \"./rates.js\";\n\nconsole.log(\"main\");\nconsole.log(toEuros(10));",
+      "files": {
+        "rates.js": "console.log(\"loading rates\");\n\nconst rate = await Promise.resolve(1.5);\n\nexport const toEuros = (amount) => amount * rate;\n\nconsole.log(\"rates ready\");\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "loading rates\nrates ready\nmain\n15"
+  }
+}

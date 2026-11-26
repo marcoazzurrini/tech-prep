@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import \"./menu.js\";\nimport { count } from \"./kitchen.js\";\n\nconsole.log(\"main:\", count());",
+      "files": {
+        "menu.js": "import { ready } from \"./kitchen.js\";\n\nexport const dishes = [\"soup\"];\n\nconsole.log(\"menu:\", ready);\n",
+        "kitchen.js": "import { dishes } from \"./menu.js\";\n\nlet seen;\n\ntry {\n  seen = dishes.length;\n} catch (error) {\n  seen = error.name;\n}\n\nconsole.log(\"kitchen:\", seen);\n\nexport const ready = true;\nexport const count = () => dishes.length;\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "kitchen: ReferenceError\nmenu: true\nmain: 1"
+  }
+}

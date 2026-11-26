@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"main 1\");\n\nimport \"./tea.js\";\n\nconsole.log(\"main 2\");\n\nimport \"./cup.js\";\n\nconsole.log(\"main 3\");",
+      "files": {
+        "tea.js": "import \"./cup.js\";\n\nconsole.log(\"tea\");\n",
+        "cup.js": "console.log(\"cup\");\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "cup\ntea\nmain 1\nmain 2\nmain 3"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Undo History",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createHistory(initial) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const h = createHistory(\"a\"); h.set(\"ab\"); h.set(\"abc\"); h.undo(); return h.get();"],"expected":"ab"},
+      {"args":["const h = createHistory(1); return [h.undo(), h.redo(), h.get()];"],"expected":[false,false,1]},
+      {"args":["const h = createHistory(1); h.set(2); h.undo(); return [h.redo(), h.get(), h.redo()];"],"expected":[true,2,false]},
+      {"args":["const h = createHistory(1); h.set(2); h.set(3); h.undo(); h.undo(); return [h.get(), h.undo()];"],"expected":[1,false]},
+      {"args":["const h = createHistory(1); h.set(2); h.undo(); h.set(9); return [h.redo(), h.get(), h.undo(), h.get()];"],"expected":[false,9,true,1]},
+      {"args":["const h = createHistory(0); h.set(1); h.set(2); h.undo(); h.undo(); h.redo(); h.redo(); return h.get();"],"expected":2},
+      {"args":["const a = createHistory(\"x\"); const b = createHistory(\"y\"); a.set(\"z\"); return [a.get(), b.get(), b.undo()];"],"expected":["z","y",false]}
+    ]
+  }
+}

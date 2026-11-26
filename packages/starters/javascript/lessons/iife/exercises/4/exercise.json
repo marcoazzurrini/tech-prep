@@ -1,0 +1,18 @@
+{
+  "title": "Vote Tally",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const tally = (function () {\n  // your code\n})();\n"
+    },
+    "tests": [
+      {"args":["tally.reset(); tally.add(\"ann\"); tally.add(\"ann\"); tally.add(\"bo\"); return [tally.votes(\"ann\"), tally.votes(\"bo\")];"],"expected":[2,1]},
+      {"args":["tally.reset(); return tally.votes(\"ann\");"],"expected":0},
+      {"args":["tally.reset(); tally.add(\"ann\"); tally.reset(); return tally.votes(\"ann\");"],"expected":0},
+      {"args":["tally.reset(); for (let i = 0; i < 5; i++) tally.add(\"cy\"); return [tally.votes(\"cy\"), tally.votes(\"CY\")];"],"expected":[5,0]},
+      {"args":["return Object.keys(tally).sort();"],"expected":["add","reset","votes"]}
+    ]
+  }
+}

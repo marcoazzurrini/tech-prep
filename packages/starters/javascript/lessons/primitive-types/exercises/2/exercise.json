@@ -1,0 +1,21 @@
+{
+  "title": "A Real Object",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "isObject"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isObject(value) {\n  return typeof value === \"object\";\n}\n"
+    },
+    "tests": [
+      {"args":[{"name":"Ada"}],"expected":true},
+      {"args":[null],"expected":false},
+      {"args":[[1,2]],"expected":true},
+      {"args":["text"],"expected":false},
+      {"args":[42],"expected":false},
+      {"args":[{}],"expected":true}
+    ]
+  }
+}

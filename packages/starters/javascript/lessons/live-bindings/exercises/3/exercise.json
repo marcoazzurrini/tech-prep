@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import start, { level, levelUp } from \"./level.js\";\nimport * as game from \"./level.js\";\n\nlevelUp();\nlevelUp();\n\nconsole.log(start);\nconsole.log(level);\nconsole.log(game.default, game.level);",
+      "files": {
+        "level.js": "let level = 1;\n\nexport function levelUp() {\n  level += 1;\n}\n\nexport { level };\nexport default level;\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "1\n3\n1 3"
+  }
+}

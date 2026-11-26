@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { badge } from \"./player.js\";\n\nconst score = 99;\n\nconsole.log(badge());\nconsole.log(score);\nconsole.log(typeof nickname);",
+      "files": {
+        "player.js": "const nickname = \"Ada\";\nconst score = 40;\n\nexport function badge() {\n  return nickname + \" has \" + score;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "Ada has 40\n99\nundefined"
+  }
+}

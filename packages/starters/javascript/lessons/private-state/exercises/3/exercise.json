@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function createStack() {\n  const items = [];\n\n  return {\n    push: (item) => items.push(item),\n    pop: () => items.pop(),\n  };\n}\n\nconst a = createStack();\nconst b = createStack();\n\na.push(\"x\");\nconsole.log(a.push(\"y\"));\nconsole.log(b.push(\"z\"));\nconsole.log(a.pop());\nconsole.log(b.pop());\nconsole.log(typeof b.pop());"
+    },
+    "expected": "2\n1\ny\nz\nundefined"
+  }
+}

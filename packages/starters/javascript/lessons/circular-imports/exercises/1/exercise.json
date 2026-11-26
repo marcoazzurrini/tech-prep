@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"main\");\n\nimport \"./ping.js\";\nimport \"./pong.js\";",
+      "files": {
+        "ping.js": "import \"./pong.js\";\n\nconsole.log(\"ping\");\n",
+        "pong.js": "import \"./ping.js\";\n\nconsole.log(\"pong\");\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "pong\nping\nmain"
+  }
+}

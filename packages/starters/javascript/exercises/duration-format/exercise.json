@@ -1,0 +1,19 @@
+{
+  "title": "Duration Format",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function formatDuration(seconds) {\n  // your code\n}\n\nfunction parseDuration(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return Object.keys(exports);"],"expected":["default","parseDuration","toSeconds"]},
+      {"args":["return [exports.default(65), exports.default(600), exports.default(7)];"],"expected":["1:05","10:00","0:07"]},
+      {"args":["return [parseDuration(\"1:05\"), parseDuration(\"10:00\"), parseDuration(\"0:07\")];"],"expected":[65,600,7]},
+      {"args":["return toSeconds === parseDuration;"],"expected":true},
+      {"args":["return toSeconds(exports.default(3599));"],"expected":3599},
+      {"args":["return exports.default(0);"],"expected":"0:00"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const rate = 2;\n\nfunction makePricer(rate) {\n  return (price) => price * rate;\n}\n\nfunction quote(pricer) {\n  const rate = 100;\n\n  return pricer(5);\n}\n\nconst plain = (price) => price * rate;\n\nconsole.log(quote(makePricer(3)));\nconsole.log(quote(plain));\nconsole.log(quote((price) => price + rate));"
+    },
+    "expected": "15\n10\n7"
+  }
+}

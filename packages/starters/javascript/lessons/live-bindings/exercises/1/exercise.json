@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { left, sell } from \"./stock.js\";\n\nconst before = left;\n\nsell();\nsell();\n\nconsole.log(before);\nconsole.log(left);",
+      "files": {
+        "stock.js": "export let left = 3;\n\nexport function sell() {\n  left -= 1;\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "3\n1"
+  }
+}

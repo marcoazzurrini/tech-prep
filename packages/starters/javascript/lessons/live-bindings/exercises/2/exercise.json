@@ -1,0 +1,18 @@
+{
+  "title": "The Score Stays at Zero",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const state = { score: 0 };\n\nexport let score = state.score;\n\nexport function addPoints(points) {\n  state.score += points;\n}\n\nexport function reset() {\n  state.score = 0;\n}\n"
+    },
+    "tests": [
+      {"args":["reset(); addPoints(5); addPoints(2); return exports.score;"],"expected":7},
+      {"args":["reset(); return exports.score;"],"expected":0},
+      {"args":["reset(); addPoints(3); reset(); addPoints(1); return exports.score;"],"expected":1},
+      {"args":["reset(); addPoints(10); addPoints(-4); return exports.score;"],"expected":6},
+      {"args":["reset(); const before = exports.score; addPoints(8); return [before, exports.score];"],"expected":[0,8]}
+    ]
+  }
+}

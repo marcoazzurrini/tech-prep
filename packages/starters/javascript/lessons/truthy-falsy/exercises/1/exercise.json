@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const readings = [0, 4, NaN, -0, 12, null, 0n, 1n];\nlet used = 0;\n\nfor (const reading of readings) {\n  if (reading) {\n    used += 1;\n  }\n}\n\nconsole.log(used);"
+    },
+    "expected": "3"
+  }
+}

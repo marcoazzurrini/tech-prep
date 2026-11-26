@@ -1,0 +1,18 @@
+{
+  "title": "Running Total",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeAccumulator(start) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const add = makeAccumulator(10); return [add(5), add(1), add(0)];"],"expected":[15,16,16]},
+      {"args":["const add = makeAccumulator(0); add(2); add(2); return add(-4);"],"expected":0},
+      {"args":["const add = makeAccumulator(100); return add(0);"],"expected":100},
+      {"args":["const add = makeAccumulator(-5); return [add(5), add(5)];"],"expected":[0,5]},
+      {"args":["const a = makeAccumulator(1); const b = makeAccumulator(50); a(1); return [a(1), b(1)];"],"expected":[3,51]}
+    ]
+  }
+}

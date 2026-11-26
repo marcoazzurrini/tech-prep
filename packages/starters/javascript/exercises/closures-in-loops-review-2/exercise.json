@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fns = [];\n\nfor (var i = 0; i < 2; i++) {\n  fns.push(() => i);\n}\n\nfor (let j = 0; j < 2; j++) {\n  fns.push(() => i + j);\n}\n\nconsole.log(fns[0]());\nconsole.log(fns[3]());\n\ni = 10;\n\nconsole.log(fns[1]());\nconsole.log(fns[2]());"
+    },
+    "expected": "2\n3\n10\n10"
+  }
+}

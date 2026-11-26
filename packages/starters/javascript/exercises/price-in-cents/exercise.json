@@ -1,0 +1,26 @@
+{
+  "title": "Price in Cents",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "toCents"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toCents(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["19.99"],"expected":1999},
+      {"args":[" 3 "],"expected":300},
+      {"args":["three"],"expected":null},
+      {"args":[""],"expected":null},
+      {"args":["-1"],"expected":null},
+      {"args":["Infinity"],"expected":null},
+      {"args":["0.07"],"expected":7},
+      {"args":["0"],"expected":0},
+      {"args":["1e999"],"expected":null},
+      {"args":["4.35"],"expected":435},
+      {"args":["  "],"expected":null}
+    ]
+  }
+}

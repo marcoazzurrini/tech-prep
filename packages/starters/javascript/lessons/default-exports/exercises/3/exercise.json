@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import * as palette from \"./palette.js\";\n\nconsole.log(Object.keys(palette).join(\",\"));\nconsole.log(palette.default);\nconsole.log(palette.blue);",
+      "files": {
+        "palette.js": "export const red = \"#f00\";\nexport const blue = \"#00f\";\n\nexport default \"basic\";\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "blue,default,red\nbasic\n#00f"
+  }
+}

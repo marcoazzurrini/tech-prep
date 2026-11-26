@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import * as all from \"./index.js\";\n\nconsole.log(Object.keys(all).join(\",\"));\nconsole.log(typeof all.default);\nconsole.log(all.hammer + all.drill);",
+      "files": {
+        "tools.js": "export const hammer = 1;\nexport const saw = 2;\n\nexport default \"toolbox\";\n",
+        "index.js": "export * from \"./tools.js\";\n\nexport const drill = 3;\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "drill,hammer,saw\nundefined\n4"
+  }
+}

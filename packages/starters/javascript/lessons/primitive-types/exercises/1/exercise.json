@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(typeof 3.5);\nconsole.log(typeof \"3.5\");\nconsole.log(typeof false);"
+    },
+    "expected": "number\nstring\nboolean"
+  }
+}

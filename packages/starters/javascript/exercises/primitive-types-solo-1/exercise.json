@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const values = [null, [], \"\", 0n];\n\nfor (const value of values) {\n  console.log(typeof value);\n}"
+    },
+    "expected": "object\nobject\nstring\nbigint"
+  }
+}

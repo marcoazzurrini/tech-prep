@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { items } from \"./store.js\";\n\nconsole.log(\"main\", items.length);\n\nimport \"./seed.js\";\n\nitems.push(\"pad\");\nconsole.log(items.join(\",\"));",
+      "files": {
+        "store.js": "console.log(\"store\");\n\nexport const items = [];\n",
+        "seed.js": "import { items } from \"./store.js\";\n\nconsole.log(\"seed\");\nitems.push(\"pen\", \"ink\");\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "store\nseed\nmain 2\npen,ink,pad"
+  }
+}

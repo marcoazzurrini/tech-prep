@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const row = { qty: \"3\", price: \" 2.50 \", discount: \"\", gift: true };\n\nconsole.log(Number(row.qty) * Number(row.price));\nconsole.log(Number(row.discount));\nconsole.log(Number(row.tax));\nconsole.log(+row.gift);\nconsole.log(Number([row.qty]));\nconsole.log(Number(\"1 000\"));"
+    },
+    "expected": "7.5\n0\nNaN\n1\n3\nNaN"
+  }
+}

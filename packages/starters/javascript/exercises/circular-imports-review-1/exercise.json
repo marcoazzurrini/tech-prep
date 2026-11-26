@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { family } from \"./parent.js\";\n\nconsole.log(\"main\", family());",
+      "files": {
+        "parent.js": "import { child } from \"./child.js\";\n\nexport const parent = \"P\";\nexport const family = () => parent + child;\n\nconsole.log(\"parent\", family());\n",
+        "child.js": "import { parent, family } from \"./parent.js\";\n\nexport const child = \"C\";\n\ntry {\n  console.log(\"child\", parent);\n} catch (error) {\n  console.log(\"child\", error.name);\n}\n\ntry {\n  console.log(\"family\", family());\n} catch (error) {\n  console.log(\"family\", error.name);\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "child ReferenceError\nfamily ReferenceError\nparent PC\nmain PC"
+  }
+}

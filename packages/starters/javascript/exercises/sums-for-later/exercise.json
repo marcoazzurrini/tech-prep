@@ -1,0 +1,19 @@
+{
+  "title": "Sums for Later",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function lazySums(numbers) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const sums = lazySums([4, 1, 5]); return [sums[0](), sums[1](), sums[2]()];"],"expected":[4,5,10]},
+      {"args":["const sums = lazySums([4, 1, 5]); return [sums[2](), sums[0](), sums[0]()];"],"expected":[10,4,4]},
+      {"args":["const sums = lazySums([-2, 2, -3]); return [sums[1](), sums[2]()];"],"expected":[0,-3]},
+      {"args":["const sums = lazySums([1, 1, 1, 1]); return [sums.length, sums[3](), sums[1]()];"],"expected":[4,4,2]},
+      {"args":["const sums = lazySums([7]); return [sums[0](), typeof sums[0]];"],"expected":[7,"function"]},
+      {"args":["return lazySums([]).length;"],"expected":0}
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Volume Knob",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createVolume() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const volume = createVolume(); return volume.level();"],"expected":5},
+      {"args":["const volume = createVolume(); volume.up(); volume.up(); volume.down(); return volume.level();"],"expected":6},
+      {"args":["const volume = createVolume(); for (let i = 0; i < 20; i++) volume.up(); return volume.level();"],"expected":10},
+      {"args":["const volume = createVolume(); for (let i = 0; i < 20; i++) volume.down(); volume.up(); return volume.level();"],"expected":1},
+      {"args":["const a = createVolume(); const b = createVolume(); a.up(); b.down(); return [a.level(), b.level()];"],"expected":[6,4]},
+      {"args":["return Object.keys(createVolume()).sort();"],"expected":["down","level","up"]}
+    ]
+  }
+}

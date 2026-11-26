@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const result = (function (a, b) {\n  const sum = a + b;\n\n  return sum * 2;\n})(3, 4);\n\nconst next = (() => {\n  let n = 0;\n\n  return () => ++n;\n})();\n\nnext();\n\nconsole.log(result);\nconsole.log(typeof sum);\nconsole.log(next());\nconsole.log(typeof n);"
+    },
+    "expected": "14\nundefined\n2\nundefined"
+  }
+}

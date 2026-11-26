@@ -1,0 +1,17 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"start\");\n\nimport(\"./tips.js\").then((tips) => {\n  console.log(tips.count);\n  console.log(tips.default());\n});\n\nconsole.log(\"end\");",
+      "files": {
+        "tips.js": "console.log(\"tips loaded\");\n\nexport const count = 1;\n\nexport default function tip() {\n  return \"save often\";\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "start\nend\ntips loaded\n1\nsave often"
+  }
+}

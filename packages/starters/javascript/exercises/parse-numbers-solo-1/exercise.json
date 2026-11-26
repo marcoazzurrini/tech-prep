@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(parseInt(\"3 apples\"));\nconsole.log(parseFloat(\"2.50 EUR\"));\nconsole.log(parseInt(\"  \"));\nconsole.log(Number(\"  \"));\nconsole.log(parseInt(\"5e1\"));\nconsole.log(parseFloat(\"5e1\"));"
+    },
+    "expected": "3\n2.5\nNaN\n0\n5\n50"
+  }
+}

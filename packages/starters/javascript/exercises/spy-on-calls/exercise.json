@@ -1,0 +1,19 @@
+{
+  "title": "Spy",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function spy(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const add = spy((a, b) => a + b); return [add(1, 2), add(5, 5), add.count(), add.calls()];"],"expected":[3,10,2,[[1,2],[5,5]]]},
+      {"args":["const f = spy(() => \"hi\"); return [f.count(), f.calls()];"],"expected":[0,[]]},
+      {"args":["const f = spy(() => {}); f(); f(\"a\"); f(1, 2, 3); return f.calls();"],"expected":[[],["a"],[1,2,3]]},
+      {"args":["const f = spy((x) => x * 2); f(4); f.calls().push(\"fake\"); return [f.count(), f.calls()];"],"expected":[1,[[4]]]},
+      {"args":["const f = spy((...xs) => xs.length); return [f(), f(7, 8), f.count()];"],"expected":[0,2,2]},
+      {"args":["const a = spy(() => 1); const b = spy(() => 2); a(); a(); b(); return [a.count(), b.count()];"],"expected":[2,1]}
+    ]
+  }
+}

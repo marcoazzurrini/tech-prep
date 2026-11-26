@@ -1,0 +1,18 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "import { describe } from \"./shapes.js\";\n\nconsole.log(describe());",
+      "files": {
+        "shapes.js": "import \"./report.js\";\n\nexport var sides = 4;\nexport const name = \"square\";\n\nexport function describe() {\n  return name + \" \" + sides;\n}\n",
+        "report.js": "import { sides, describe } from \"./shapes.js\";\n\nconsole.log(sides);\n\ntry {\n  console.log(describe());\n} catch (error) {\n  console.log(error.name);\n}\n"
+      },
+      "main_file": "main.js"
+    },
+    "expected": "undefined\nReferenceError\nsquare 4"
+  }
+}

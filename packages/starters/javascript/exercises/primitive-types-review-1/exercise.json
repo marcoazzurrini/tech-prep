@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(typeof typeof 1);\nconsole.log(typeof Symbol(\"id\"));\nconsole.log(typeof (() => 1));\nconsole.log(typeof neverDeclared);"
+    },
+    "expected": "string\nsymbol\nfunction\nundefined"
+  }
+}

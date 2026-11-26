@@ -1,0 +1,21 @@
+{
+  "title": "Hex Colour to RGB",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "hexToRgb"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function hexToRgb(colour) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["#ff8800"],"expected":[255,136,0]},
+      {"args":["#000000"],"expected":[0,0,0]},
+      {"args":["#FFFFFF"],"expected":[255,255,255]},
+      {"args":["#1a2b3c"],"expected":[26,43,60]},
+      {"args":["#0a0b0c"],"expected":[10,11,12]},
+      {"args":["#C0ffee"],"expected":[192,255,238]}
+    ]
+  }
+}
