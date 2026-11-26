@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(20 - 8 - 2);\nconsole.log(2 ** 2 ** 3);\nconsole.log(64 / 4 / 2 * 3);\n\nconst speed = 80;\n\nconsole.log(speed > 100 ? \"fast\" : speed > 50 ? \"steady\" : \"slow\");"
+    },
+    "expected": "10\n256\n24\nsteady"
+  }
+}

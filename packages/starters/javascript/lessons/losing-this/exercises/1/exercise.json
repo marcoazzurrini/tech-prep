@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const phone = {\n  owner: \"Kim\",\n  ring() {\n    return `${this.owner} gets a call`;\n  },\n};\n\nconst ring = phone.ring;\nconst tablet = { owner: \"Sam\", ring };\n\nconsole.log(phone.ring());\n\ntry {\n  console.log(ring());\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(tablet.ring());"
+    },
+    "expected": "Kim gets a call\nTypeError\nSam gets a call"
+  }
+}

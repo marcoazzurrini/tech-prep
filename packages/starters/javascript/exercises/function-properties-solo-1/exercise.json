@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function order(item, qty = 1, ...notes) {\n  order.total += qty;\n\n  return notes.length;\n}\n\norder.total = 0;\n\nconst again = order;\n\nagain(\"tea\", 3);\nagain(\"jam\");\n\nconsole.log(again.name);\nconsole.log(again.length);\nconsole.log(order.total);\nconsole.log(again(\"rice\", 2, \"fragile\", \"gift\"));\nconsole.log(typeof again.total);"
+    },
+    "expected": "order\n1\n4\n2\nnumber"
+  }
+}

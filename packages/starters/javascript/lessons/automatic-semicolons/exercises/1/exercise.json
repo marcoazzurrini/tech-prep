@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const half = (n) => n / 2\nconst tax = 8\n\nconst a = half\n(tax)\nconst b = tax\n+ 2\nconst c = tax\n- half(tax)\n\nconsole.log(a, b, c)"
+    },
+    "expected": "4 10 4"
+  }
+}

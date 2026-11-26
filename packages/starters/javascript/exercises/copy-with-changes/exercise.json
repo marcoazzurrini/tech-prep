@@ -1,0 +1,19 @@
+{
+  "title": "Copy With Changes",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function copyWith(changes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const point = { x: 1, y: 2, copyWith }; const moved = point.copyWith({ y: 9 }); return [moved.x, moved.y, point.y];"],"expected":[1,9,2]},
+      {"args":["const start = { n: 1, copyWith }; const end = start.copyWith({ n: 2 }).copyWith({ m: 3 }); return [end.n, end.m, start.n];"],"expected":[2,3,1]},
+      {"args":["const user = { name: \"Ada\", copyWith }; return user.copyWith({}) === user;"],"expected":false},
+      {"args":["const a = { id: 1, copyWith }; const b = { id: 2, copyWith }; return [a.copyWith({ ok: true }).id, b.copyWith({ ok: true }).id];"],"expected":[1,2]},
+      {"args":["const user = { name: \"Ada\", copyWith }; const copy = user.copyWith({ age: 36 }); return Object.keys(copy).sort();"],"expected":["age","copyWith","name"]},
+      {"args":["const cart = { total: 5, copyWith }; cart.copyWith({ total: 0 }); return cart.total;"],"expected":5}
+    ]
+  }
+}

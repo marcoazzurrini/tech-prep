@@ -1,0 +1,19 @@
+{
+  "title": "Form Checks",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function runChecks(checks, form, limits) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function long(min) { return this.name.length >= min ? null : \"short\"; } return runChecks([long], { name: \"Al\" }, [3]);"],"expected":["short"]},
+      {"args":["function long(min) { return this.name.length >= min ? null : \"short\"; } return runChecks([long, long], { name: \"Alma\" }, [3]);"],"expected":[]},
+      {"args":["function fits(min, max) { return this.age > max ? \"too old\" : null; } return runChecks([fits], { age: 70 }, [18, 65]);"],"expected":["too old"]},
+      {"args":["const check = function () { return null; }; const form = { a: 1 }; runChecks([check], form, []); return Object.keys(form);"],"expected":["a"]},
+      {"args":["const seen = []; const form = {}; runChecks([function (a) { seen.push(this === form, a); return null; }], form, [7]); return seen;"],"expected":[true,7]},
+      {"args":["return runChecks([], { a: 1 }, [1]);"],"expected":[]}
+    ]
+  }
+}

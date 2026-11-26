@@ -1,0 +1,20 @@
+{
+  "title": "A Serve Report",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "serveReport"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function serveReport(stats) {\n  return `${stats.first-serve}% in, ${stats.double-faults} double faults`;\n}\n"
+    },
+    "tests": [
+      {"args":[{"first-serve":61,"double-faults":3}],"expected":"61% in, 3 double faults"},
+      {"args":[{"first-serve":70,"double-faults":0}],"expected":"70% in, 0 double faults"},
+      {"args":[{"double-faults":12,"first-serve":48}],"expected":"48% in, 12 double faults"},
+      {"args":[{"first-serve":100,"double-faults":2,"aces":9}],"expected":"100% in, 2 double faults"},
+      {"args":[{"first-serve":55.5,"double-faults":7}],"expected":"55.5% in, 7 double faults"}
+    ]
+  }
+}

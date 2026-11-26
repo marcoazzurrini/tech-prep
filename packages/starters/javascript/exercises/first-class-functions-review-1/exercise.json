@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const greet = () => \"hello\";\nconst tools = { hello: greet, shout: (make) => make().toUpperCase() };\n\nfunction handBack(fn) {\n  return fn;\n}\n\nconsole.log(typeof handBack(greet));\nconsole.log(handBack(greet)());\nconsole.log(tools.shout(greet));\nconsole.log(typeof tools.shout(greet));\nconsole.log(handBack(handBack)(greet) === tools.hello);"
+    },
+    "expected": "function\nhello\nHELLO\nstring\ntrue"
+  }
+}

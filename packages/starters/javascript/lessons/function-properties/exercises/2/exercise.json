@@ -1,0 +1,20 @@
+{
+  "title": "Enough Arguments",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function callWhenReady(fn, args) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return callWhenReady((a, b) => a + b, [2, 3]);"],"expected":5},
+      {"args":["return callWhenReady((a, b) => a + b, [2]);"],"expected":"missing 1"},
+      {"args":["return callWhenReady(() => \"ok\", []);"],"expected":"ok"},
+      {"args":["return callWhenReady((a, b, c) => a + b + c, []);"],"expected":"missing 3"},
+      {"args":["return callWhenReady((price, tax = 0.5) => price + tax, [2]);"],"expected":2.5},
+      {"args":["return callWhenReady((...words) => words.join(\" \"), [\"a\", \"b\"]);"],"expected":"a b"},
+      {"args":["return callWhenReady((n) => n * 2, [4, 9]);"],"expected":8}
+    ]
+  }
+}

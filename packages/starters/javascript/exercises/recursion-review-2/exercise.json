@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function collect(list, found = []) {\n  for (const item of list) {\n    if (Array.isArray(item)) {\n      collect(item);\n    } else {\n      found.push(item);\n    }\n  }\n\n  return found;\n}\n\nconsole.log(collect([\"a\", [\"b\", [\"c\"]], \"d\"]).join(\"\"));\nconsole.log(collect([\"x\", \"y\"]).join(\"\"));\nconsole.log(collect([[\"z\"]]).length);"
+    },
+    "expected": "ad\nxy\n0"
+  }
+}

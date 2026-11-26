@@ -1,0 +1,19 @@
+{
+  "title": "Remote Control",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createTv() {\n  return {\n    volume: 5,\n    volumeUp() {\n      this.volume += 1;\n\n      return this.volume;\n    },\n    setVolume(level) {\n      this.volume = level;\n\n      return this.volume;\n    },\n  };\n}\n\nexport function createRemote(tv) {\n  return {\n    louder: tv.volumeUp,\n    mute: tv.setVolume,\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const tv = createTv(); const remote = createRemote(tv); remote.louder(); remote.louder(); return tv.volume;"],"expected":7},
+      {"args":["const tv = createTv(); const remote = createRemote(tv); return [remote.louder(), remote.mute(), tv.volume];"],"expected":[6,0,0]},
+      {"args":["const tv = createTv(); const { louder, mute } = createRemote(tv); mute(); louder(); return tv.volume;"],"expected":1},
+      {"args":["const tv = createTv(); const remote = createRemote(tv); remote.mute(9); return [tv.volume, \"volume\" in remote];"],"expected":[0,false]},
+      {"args":["const a = createTv(); const b = createTv(); createRemote(a).louder(); createRemote(b).mute(); return [a.volume, b.volume];"],"expected":[6,0]},
+      {"args":["const tv = createTv(); const remote = createRemote(tv); tv.volume = 20; return [remote.louder(), remote.louder()];"],"expected":[21,22]}
+    ]
+  }
+}

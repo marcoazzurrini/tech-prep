@@ -1,0 +1,18 @@
+{
+  "title": "A Reader for a Book",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function describer(book) {\n  return book.describe;\n}\n"
+    },
+    "tests": [
+      {"args":["const read = describer({ title: \"Dune\", describe() { return \"Book: \" + this.title; } }); return read();"],"expected":"Book: Dune"},
+      {"args":["const b = { pages: 90, describe(unit) { return this.pages + \" \" + unit; } }; const read = describer(b); return read(\"pages\");"],"expected":"90 pages"},
+      {"args":["const b = { n: 1, describe() { return this.n; } }; const read = describer(b); b.n = 5; return read();"],"expected":5},
+      {"args":["const b = { t: \"Emma\", describe() { return this.t; } }; const o = { t: \"other\", read: describer(b) }; return o.read();"],"expected":"Emma"},
+      {"args":["const b = { t: \"Ulysses\", describe() { return this.t; } }; return describer(b).call({ t: \"other\" });"],"expected":"Ulysses"}
+    ]
+  }
+}

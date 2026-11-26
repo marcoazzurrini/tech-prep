@@ -1,0 +1,23 @@
+{
+  "title": "Line Up the Keys",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "listedKeys"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function listedKeys(keys) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["b","10","a","2"]],"expected":["2","10","b","a"]},
+      {"args":[["x","y"]],"expected":["x","y"]},
+      {"args":[["1.5","-1","01","1"]],"expected":["1","1.5","-1","01"]},
+      {"args":[["10","9","8"]],"expected":["8","9","10"]},
+      {"args":[[]],"expected":[]},
+      {"args":[["x","0","-0","00"]],"expected":["0","x","-0","00"]},
+      {"args":[["3 ","three","+3","3"]],"expected":["3","3 ","three","+3"]},
+      {"args":[["1e3","1000","999","0x10"]],"expected":["999","1000","1e3","0x10"]}
+    ]
+  }
+}

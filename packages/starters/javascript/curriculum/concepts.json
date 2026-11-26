@@ -210,7 +210,8 @@
       }
     ],
     "key_idea": "`===` says `NaN` differs from itself and `0` equals `-0`. `Object.is` says the opposite on both. `includes`, `Map` and `Set` use a third rule: `NaN` is the same as `NaN`, and the two zeros are the same.",
-    "solo": "sameness-solo-1"
+    "guided": 3,
+    "solo": ["sameness-solo-1", "object-is-by-hand"]
   },
   {
     "id": "logical-operators",
@@ -274,7 +275,8 @@
     "prereqs": ["numbers"],
     "encompasses": [],
     "key_idea": "`++x` adds one and gives the new value. `x++` adds one and gives the old value.",
-    "solo": "increment-decrement-solo-1"
+    "guided": 3,
+    "solo": ["increment-decrement-solo-1", "last-two-items"]
   },
   {
     "id": "operator-precedence",
@@ -283,7 +285,8 @@
     "prereqs": ["logical-operators", "increment-decrement"],
     "encompasses": [],
     "key_idea": "Precedence decides which operator binds first, and associativity decides the order among equals. `**` and assignment group from the right. `typeof` and `!` bind tighter than maths.",
-    "solo": "operator-precedence-solo-1"
+    "guided": 4,
+    "solo": ["operator-precedence-solo-1", "stock-line"]
   },
   {
     "id": "destructuring-arrays",
@@ -372,7 +375,8 @@
     "prereqs": ["template-literals"],
     "encompasses": [],
     "key_idea": "JavaScript adds a missing semicolon at a line break only when the next line cannot continue the statement. `return` followed by a line break returns `undefined`, and a line that starts with `(` or `[` joins the line before it.",
-    "solo": "automatic-semicolons-solo-1"
+    "guided": 4,
+    "solo": ["automatic-semicolons-solo-1", "vowel-tally"]
   },
   {
     "id": "let-const",
@@ -446,7 +450,8 @@
       }
     ],
     "key_idea": "A function declaration is hoisted with its body, so you can call it above the line where it is written. A function expression follows the rules of its variable.",
-    "solo": "hoisting-functions-solo-1"
+    "guided": 4,
+    "solo": ["hoisting-functions-solo-1", "cinema-ticket-price"]
   },
   {
     "id": "tdz",
@@ -495,7 +500,8 @@
     "prereqs": ["global-scope"],
     "encompasses": [],
     "key_idea": "Strict mode turns silent mistakes into errors, such as assigning to a name that was never declared. Modules and classes are always strict.",
-    "solo": "strict-mode-solo-1"
+    "guided": 4,
+    "solo": ["strict-mode-solo-1", "coffee-price"]
   },
   {
     "id": "function-forms",
@@ -529,7 +535,8 @@
     "prereqs": ["function-forms", "null-undefined"],
     "encompasses": [],
     "key_idea": "A missing argument is `undefined`, and extra ones are ignored. A default value is used only for `undefined`, and it is evaluated again at each call.",
-    "solo": "parameters-solo-1"
+    "guided": 4,
+    "solo": ["parameters-solo-1", "page-of-items"]
   },
   {
     "id": "rest-arguments",
@@ -543,7 +550,8 @@
       }
     ],
     "key_idea": "`...args` collects the remaining arguments in a real array. The older `arguments` object holds all of them, is not an array and does not exist in arrow functions.",
-    "solo": "rest-arguments-solo-1"
+    "guided": 4,
+    "solo": ["rest-arguments-solo-1", "class-list-text"]
   },
   {
     "id": "pass-by-sharing",
@@ -557,7 +565,8 @@
       }
     ],
     "key_idea": "A function gets the same object the caller has. Changing that object inside the function shows outside. Reassigning the parameter does not.",
-    "solo": "pass-by-sharing-solo-1"
+    "guided": 3,
+    "solo": ["pass-by-sharing-solo-1", "remove-every-match"]
   },
   {
     "id": "first-class-functions",
@@ -566,7 +575,8 @@
     "prereqs": ["arrow-functions"],
     "encompasses": [],
     "key_idea": "A function is a value. You can pass it to another function as a callback, return it from a function, and store it in a variable or an object.",
-    "solo": "first-class-functions-solo-1"
+    "guided": 3,
+    "solo": ["first-class-functions-solo-1", "run-the-steps"]
   },
   {
     "id": "function-properties",
@@ -575,7 +585,8 @@
     "prereqs": ["first-class-functions"],
     "encompasses": [],
     "key_idea": "A function is an object with properties. `name` is its name, `length` counts the parameters before the first default or rest, and you can add properties of your own.",
-    "solo": "function-properties-solo-1"
+    "guided": 3,
+    "solo": ["function-properties-solo-1", "command-help-line"]
   },
   {
     "id": "call-stack",
@@ -584,7 +595,8 @@
     "prereqs": ["function-forms"],
     "encompasses": [],
     "key_idea": "Each call is pushed on the call stack and popped when it returns. JavaScript runs one call at a time: the one on top.",
-    "solo": "call-stack-solo-1"
+    "guided": 3,
+    "solo": ["call-stack-solo-1", "deepest-point-of-a-run"]
   },
   {
     "id": "recursion",
@@ -598,7 +610,8 @@
       }
     ],
     "key_idea": "A recursive function calls itself on a smaller input until it reaches a base case. Each call waits on the stack, so recursion with no base case overflows it.",
-    "solo": "recursion-solo-1"
+    "guided": 4,
+    "solo": ["recursion-solo-1", "sum-nested-numbers"]
   },
   {
     "id": "closures",
@@ -686,7 +699,8 @@
     "prereqs": ["first-class-functions"],
     "encompasses": [],
     "key_idea": "In `obj.method()`, `this` is the object before the dot. `this` is set at each call, not when the function is written.",
-    "solo": "this-method-call-solo-1"
+    "guided": 3,
+    "solo": ["this-method-call-solo-1", "stock-level"]
   },
   {
     "id": "this-plain-call",
@@ -700,7 +714,8 @@
       }
     ],
     "key_idea": "A function called without an object gets `undefined` as `this` in strict mode. In old non-strict code it gets the global object.",
-    "solo": "this-plain-call-solo-1"
+    "guided": 3,
+    "solo": ["this-plain-call-solo-1", "counter-stepper"]
   },
   {
     "id": "losing-this",
@@ -714,7 +729,8 @@
       }
     ],
     "key_idea": "A method taken off its object is a plain function. Passing `obj.method` as a callback loses `this`. Wrap the call in an arrow function to keep it.",
-    "solo": "losing-this-solo-1"
+    "guided": 3,
+    "solo": ["losing-this-solo-1", "method-handle"]
   },
   {
     "id": "call-apply",
@@ -728,7 +744,8 @@
       }
     ],
     "key_idea": "`fn.call(obj, a, b)` calls `fn` with `this` set to `obj`. `fn.apply(obj, [a, b])` does the same with the arguments in an array.",
-    "solo": "call-apply-solo-1"
+    "guided": 4,
+    "solo": ["call-apply-solo-1", "form-checks"]
   },
   {
     "id": "bind",
@@ -742,7 +759,8 @@
       }
     ],
     "key_idea": "`fn.bind(obj)` returns a new function whose `this` is always `obj`. It can fix leading arguments too. A bound function cannot be bound again to another object.",
-    "solo": "bind-solo-1"
+    "guided": 3,
+    "solo": ["bind-solo-1", "tv-remote-buttons"]
   },
   {
     "id": "arrow-this",
@@ -756,7 +774,8 @@
       }
     ],
     "key_idea": "An arrow function has no `this` of its own. It uses the `this` of the code around it, and `call`, `apply` and `bind` cannot change it.",
-    "solo": "arrow-this-solo-1"
+    "guided": 3,
+    "solo": ["arrow-this-solo-1", "team-badges"]
   },
   {
     "id": "function-wrappers",
@@ -770,7 +789,8 @@
       }
     ],
     "key_idea": "A wrapper takes a function and returns a new one that adds behaviour. To stay invisible, it passes `this` and every argument on with `fn.apply(this, args)`.",
-    "solo": "function-wrappers-solo-1"
+    "guided": 3,
+    "solo": ["function-wrappers-solo-1", "only-n-calls"]
   },
   {
     "id": "method-chaining",
@@ -784,7 +804,8 @@
       }
     ],
     "key_idea": "A method that ends with `return this` gives back its object, so calls can be chained: `calc.add(2).multiply(3)`.",
-    "solo": "method-chaining-solo-1"
+    "guided": 3,
+    "solo": ["method-chaining-solo-1", "robot-walk"]
   },
   {
     "id": "object-literals",
@@ -793,7 +814,8 @@
     "prereqs": ["references"],
     "encompasses": [],
     "key_idea": "An object maps keys to values. A key is a string or a symbol, and a number key becomes a string. Shorthand, computed keys `[expr]` and method syntax shorten a literal.",
-    "solo": "object-literals-solo-1"
+    "guided": 3,
+    "solo": ["object-literals-solo-1", "row-to-record"]
   },
   {
     "id": "property-access",
@@ -802,7 +824,8 @@
     "prereqs": ["object-literals", "optional-chaining"],
     "encompasses": [],
     "key_idea": "`obj.key` reads a fixed name, and `obj[expr]` reads a computed one. A missing property gives `undefined`, but reading a property of `undefined` throws a `TypeError`.",
-    "solo": "property-access-solo-1"
+    "guided": 3,
+    "solo": ["property-access-solo-1", "translate-with-fallback"]
   },
   {
     "id": "property-existence",
@@ -816,7 +839,8 @@
       }
     ],
     "key_idea": "`\"key\" in obj` and `Object.hasOwn(obj, \"key\")` test for a key, even when its value is `undefined`. `delete obj.key` removes the property.",
-    "solo": "property-existence-solo-1"
+    "guided": 3,
+    "solo": ["property-existence-solo-1", "missing-columns"]
   },
   {
     "id": "property-order",
@@ -825,7 +849,8 @@
     "prereqs": ["property-existence"],
     "encompasses": [],
     "key_idea": "Keys that look like whole numbers come first, in rising order. Then come the other string keys in the order they were added, then symbols.",
-    "solo": "property-order-solo-1"
+    "guided": 3,
+    "solo": ["property-order-solo-1", "latest-prices-in-order"]
   },
   {
     "id": "object-iteration",
@@ -839,7 +864,8 @@
       }
     ],
     "key_idea": "`Object.keys`, `Object.values` and `Object.entries` give an object's own keys, values and pairs as arrays. `Object.fromEntries` builds an object back from pairs.",
-    "solo": "object-iteration-solo-1"
+    "guided": 3,
+    "solo": ["object-iteration-solo-1", "rename-columns"]
   },
   {
     "id": "shallow-copy",
@@ -853,7 +879,8 @@
       }
     ],
     "key_idea": "`{ ...obj }` and `Object.assign` copy one level. Nested objects are not copied: the copy and the original share them.",
-    "solo": "shallow-copy-solo-1"
+    "guided": 3,
+    "solo": ["shallow-copy-solo-1", "copy-a-playlist"]
   },
   {
     "id": "immutable-updates",
@@ -867,7 +894,8 @@
       }
     ],
     "key_idea": "To change nested data without mutating it, copy every level on the path to the change and reuse the rest.",
-    "solo": "immutable-updates-solo-1"
+    "guided": 4,
+    "solo": ["immutable-updates-solo-1", "set-item-count"]
   },
   {
     "id": "deep-copy",
@@ -881,7 +909,8 @@
       }
     ],
     "key_idea": "`structuredClone` copies a value at every level and handles dates, maps, sets and cycles. It cannot copy functions. A JSON round trip loses more.",
-    "solo": "deep-copy-solo-1"
+    "guided": 4,
+    "solo": ["deep-copy-solo-1", "copy-a-booking"]
   },
   {
     "id": "getters-setters",
@@ -890,7 +919,8 @@
     "prereqs": ["this-method-call", "object-literals"],
     "encompasses": [],
     "key_idea": "`get name()` runs a function when the property is read, and `set name(v)` runs one when it is assigned. From outside they look like a plain property.",
-    "solo": "getters-setters-solo-1"
+    "guided": 4,
+    "solo": ["getters-setters-solo-1", "box-size-text"]
   },
   {
     "id": "property-descriptors",

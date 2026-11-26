@@ -1,0 +1,21 @@
+{
+  "title": "Read the Pairs",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "readPairs"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readPairs(flat) {\n  const result = {};\n  let i = 0;\n\n  while (i < flat.length) {\n    const key = flat[++i];\n    const value = flat[++i];\n\n    result[key] = value;\n  }\n\n  return result;\n}\n"
+    },
+    "tests": [
+      {"args":[["name","Ada","age",36]],"expected":{"name":"Ada","age":36}},
+      {"args":[["id",7]],"expected":{"id":7}},
+      {"args":[[]],"expected":{}},
+      {"args":[["a",1,"b",2,"c",3]],"expected":{"a":1,"b":2,"c":3}},
+      {"args":[["on",true,"off",false]],"expected":{"on":true,"off":false}},
+      {"args":[["x","y","y","x"]],"expected":{"x":"y","y":"x"}}
+    ]
+  }
+}

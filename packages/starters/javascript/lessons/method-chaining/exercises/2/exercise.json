@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const order = {\n  lines: [],\n  add(name) {\n    this.lines.push(name);\n\n    return this;\n  },\n  count() {\n    return this.lines.length;\n  },\n};\n\nconsole.log(order.add(\"tea\").count());\nconsole.log(order.add(\"cake\").add(\"jam\").count());\n\ntry {\n  order.count().add(\"milk\");\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "1\n3\nTypeError"
+  }
+}

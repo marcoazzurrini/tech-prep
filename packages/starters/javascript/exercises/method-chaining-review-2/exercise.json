@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const counter = {\n  count: 0,\n  up() {\n    this.count += 1;\n\n    return this;\n  },\n};\n\nconst other = { count: 10, up: counter.up };\nconst step = counter.up().up();\nconst jump = counter.up.call(other).up();\nconst up = counter.up;\n\nconsole.log(step === counter);\nconsole.log(counter.count);\nconsole.log(jump === other);\nconsole.log(other.count);\n\ntry {\n  up().up();\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "true\n2\ntrue\n12\nTypeError"
+  }
+}

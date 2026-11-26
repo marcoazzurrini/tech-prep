@@ -166,7 +166,7 @@ try {
 RangeError
 ```
 
-**Rule:** Every unfinished call takes room on the call stack, and the room is limited. A recursion that never reaches its base case fills the stack, and JavaScript throws a `RangeError`.
+**Rule:** Every unfinished call takes room on the call stack, and the room is limited. A recursion that never reaches its base case fills the stack. That is a **stack overflow**, and JavaScript throws a `RangeError`.
 
 The limit depends on the engine. A correct recursion can reach it too, on very deep data. A loop cannot.
 
@@ -214,5 +214,5 @@ console.log(addUpTo(-2));
 
 - A recursive function needs a base case, and every call must move towards it.
 - Calls wait on the stack. Results come back up, and each call must `return` its own.
-- For nested data, handle one item, then recurse into the items inside it.
-- Too many unfinished calls throw a `RangeError`.
+- For nested data, handle one item, then call the function on each item inside it.
+- Too many unfinished calls overflow the stack: a `RangeError`.

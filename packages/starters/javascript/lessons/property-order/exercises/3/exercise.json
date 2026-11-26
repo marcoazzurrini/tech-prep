@@ -1,0 +1,18 @@
+{
+  "title": "Most Recent Last",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function touch(visits, page) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return Object.keys(touch({ home: 2, blog: 5, shop: 1 }, \"home\")).join(\",\");"],"expected":"blog,shop,home"},
+      {"args":["return touch({ home: 2, blog: 5 }, \"home\").home;"],"expected":3},
+      {"args":["return JSON.stringify(touch({ home: 2 }, \"faq\"));"],"expected":"{\"home\":2,\"faq\":1}"},
+      {"args":["const v = { a: 1, b: 1 }; return touch(v, \"a\") === v;"],"expected":true},
+      {"args":["return JSON.stringify(touch(touch({ a: 1, b: 1, c: 1 }, \"b\"), \"a\"));"],"expected":"{\"c\":1,\"b\":2,\"a\":2}"}
+    ]
+  }
+}

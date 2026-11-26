@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const point = Object.freeze({ x: 1 });\nconst plain = { x: 1 };\nconst label = \"total\";\n\nfunction attempt(write) {\n  try {\n    write();\n    return \"ok\";\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconsole.log(attempt(() => { point.x = 10; }));\nconsole.log(attempt(() => { plain.x = 10; }));\nconsole.log(attempt(() => { label.unit = \"kg\"; }));\nconsole.log(point.x + plain.x);"
+    },
+    "expected": "TypeError\nok\nTypeError\n11"
+  }
+}

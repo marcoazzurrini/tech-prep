@@ -1,0 +1,22 @@
+{
+  "title": "Row to Record",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "rowToRecord"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function rowToRecord(headers, cells) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["name","age"],["Ada",36]],"expected":{"name":"Ada","age":36}},
+      {"args":[["id","city"],[7]],"expected":{"id":7,"city":null}},
+      {"args":[[2024,2025],[10,20]],"expected":{"2024":10,"2025":20}},
+      {"args":[[],[]],"expected":{}},
+      {"args":[["tag","size","tag"],["old",3,"new"]],"expected":{"tag":"new","size":3}},
+      {"args":[["a"],[1,2,3]],"expected":{"a":1}},
+      {"args":[["ok","count","note"],[false,0,""]],"expected":{"ok":false,"count":0,"note":""}}
+    ]
+  }
+}

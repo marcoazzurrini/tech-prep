@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const scores = { ada: 3, bo: 5 };\nconst pairs = Object.entries(scores);\n\nconsole.log(pairs.length, pairs[1][0]);\n\nconst flipped = Object.fromEntries(pairs.map(([name, score]) => [score, name]));\n\nconsole.log(Object.keys(flipped).join(\",\"));\nconsole.log(flipped[5]);\nconsole.log(typeof Object.keys(flipped)[0]);"
+    },
+    "expected": "2 bo\n3,5\nbo\nstring"
+  }
+}

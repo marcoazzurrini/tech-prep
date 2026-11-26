@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function pick() {\n  const first = () => arguments[0];\n  const size = (...args) => args.length;\n\n  return `${first(\"x\", \"y\")} ${size(\"x\", \"y\")} ${arguments.length}`;\n}\n\nconsole.log(pick(\"a\", \"b\", \"c\"));\nconsole.log(pick());"
+    },
+    "expected": "a 2 3\nundefined 2 0"
+  }
+}

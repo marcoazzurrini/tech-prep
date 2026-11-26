@@ -1,0 +1,18 @@
+{
+  "title": "Count a Use",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function recordUse(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const save = () => {}; return [recordUse(save), recordUse(save)];"],"expected":[1,2]},
+      {"args":["const save = () => {}; recordUse(save); recordUse(save); recordUse(save); return save.uses;"],"expected":3},
+      {"args":["const a = () => {}; const b = () => {}; recordUse(a); recordUse(a); recordUse(b); return [a.uses, b.uses];"],"expected":[2,1]},
+      {"args":["const load = () => {}; load.uses = 10; return recordUse(load);"],"expected":11},
+      {"args":["const seven = () => 7; recordUse(seven); return [seven(), seven.uses];"],"expected":[7,1]}
+    ]
+  }
+}

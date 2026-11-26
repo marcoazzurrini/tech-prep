@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function size() {\n  return this === undefined ? \"none\" : this.length;\n}\n\nconst box = {\n  length: 9,\n  size,\n  measure(fn) {\n    return [fn(), arguments[0](), this.size()];\n  },\n};\n\nconsole.log(box.measure(size, \"a\", \"b\").join(\" \"));\n\nconst list = [size, size];\n\nconsole.log(list[0]());\n\nconst { measure } = box;\n\ntry {\n  console.log(measure(size).join(\" \"));\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "none 3 9\n2\nTypeError"
+  }
+}

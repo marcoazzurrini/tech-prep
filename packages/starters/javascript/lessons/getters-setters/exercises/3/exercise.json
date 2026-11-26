@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const player = {\n  points: 120,\n  get level() {\n    return Math.floor(this.points / 100);\n  },\n  set bonus(amount) {\n    this.points += amount;\n  },\n};\n\nplayer.bonus = 90;\n\ntry {\n  player.level = 9;\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(player.bonus);\nconsole.log(player.level);"
+    },
+    "expected": "TypeError\nundefined\n2"
+  }
+}

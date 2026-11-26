@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function scan() {\n  const seen = [typeof first, typeof second, typeof third];\n\n  var first = () => 1;\n  function second() {}\n  {\n    function third() {}\n  }\n\n  return seen.join(\" \");\n}\n\nfunction pick() {\n  var choose = () => \"arrow\";\n  function choose() {\n    return \"declaration\";\n  }\n\n  return choose();\n}\n\nconsole.log(scan());\nconsole.log(pick());"
+    },
+    "expected": "undefined function undefined\narrow"
+  }
+}

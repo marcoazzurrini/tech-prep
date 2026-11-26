@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function shipping(express) {\n  if (express) {\n    function cost() {\n      return 9;\n    }\n  }\n\n  return typeof cost;\n}\n\nfunction pack(fragile) {\n  if (fragile) {\n    return wrap();\n\n    function wrap() {\n      return \"bubble wrap\";\n    }\n  }\n\n  return \"paper\";\n}\n\nconsole.log(shipping(true));\nconsole.log(pack(true));\nconsole.log(pack(false));"
+    },
+    "expected": "undefined\nbubble wrap\npaper"
+  }
+}

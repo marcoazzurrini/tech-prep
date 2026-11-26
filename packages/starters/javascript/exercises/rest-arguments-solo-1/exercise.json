@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function tally(first, ...others) {\n  return `${first}|${others.length}|${arguments.length}`;\n}\n\nconsole.log(tally(\"a\", \"b\", \"c\"));\nconsole.log(tally(\"a\"));\nconsole.log(tally());\nconsole.log(tally(...[\"x\", \"y\"], \"z\"));\nconsole.log(tally([\"x\", \"y\"], \"z\"));"
+    },
+    "expected": "a|2|3\na|0|1\nundefined|0|0\nx|2|3\nx,y|1|2"
+  }
+}

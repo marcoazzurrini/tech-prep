@@ -1,0 +1,19 @@
+{
+  "title": "Help Line",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function helpLine(command) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function add(a, b) {} add.help = \"Adds two numbers\"; return helpLine(add);"],"expected":"add(2): Adds two numbers"},
+      {"args":["const ping = () => \"pong\"; return helpLine(ping);"],"expected":"ping(0)"},
+      {"args":["return helpLine(() => {});"],"expected":"anonymous(0)"},
+      {"args":["return helpLine(function (file, mode = \"r\") {});"],"expected":"anonymous(1)"},
+      {"args":["const copy = function (from, to, ...flags) {}; copy.help = \"Copies a file\"; return helpLine(copy);"],"expected":"copy(2): Copies a file"},
+      {"args":["const tools = { zip: (path) => path }; return helpLine(tools.zip);"],"expected":"zip(1)"}
+    ]
+  }
+}

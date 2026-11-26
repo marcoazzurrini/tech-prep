@@ -1,0 +1,20 @@
+{
+  "title": "Full Name",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "fullName"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fullName(user) {\n  return\n    user.first + \" \" + user.last\n}\n"
+    },
+    "tests": [
+      {"args":[{"first":"Ada","last":"Lovelace"}],"expected":"Ada Lovelace"},
+      {"args":[{"first":"Alan","last":"Turing"}],"expected":"Alan Turing"},
+      {"args":[{"first":"","last":"Hopper"}],"expected":" Hopper"},
+      {"args":[{"first":"Bo","last":""}],"expected":"Bo "},
+      {"args":[{"first":"Mary Ann","last":"Evans"}],"expected":"Mary Ann Evans"}
+    ]
+  }
+}

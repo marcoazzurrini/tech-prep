@@ -1,0 +1,19 @@
+{
+  "title": "Clone a Widget",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cloneWidget(widget) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const w = cloneWidget({ label: \"Save\", size: { w: 2 }, onClick: () => \"hi\" }); return [w.label, w.size, w.onClick()];"],"expected":["Save",{"w":2},"hi"]},
+      {"args":["const size = { w: 2 }; return cloneWidget({ size, draw() {} }).size === size;"],"expected":false},
+      {"args":["const draw = () => 1; return cloneWidget({ draw }).draw === draw;"],"expected":true},
+      {"args":["const w = { tags: [[\"a\"]], run() {} }; cloneWidget(w).tags[0].push(\"b\"); return w.tags;"],"expected":[["a"]]},
+      {"args":["return cloneWidget({});"],"expected":{}},
+      {"args":["const w = { n: 1 }; return [cloneWidget(w) === w, cloneWidget(w)];"],"expected":[false,{"n":1}]}
+    ]
+  }
+}

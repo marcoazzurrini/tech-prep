@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const user = { name: \"Ada\", nickname: undefined };\n\ndelete user.name;\nuser.age = undefined;\n\nconsole.log(\"name\" in user);\nconsole.log(\"nickname\" in user);\nconsole.log(\"age\" in user);\nconsole.log(delete user.missing);\nconsole.log(\"valueOf\" in user, Object.hasOwn(user, \"valueOf\"));"
+    },
+    "expected": "false\ntrue\ntrue\ntrue\ntrue false"
+  }
+}

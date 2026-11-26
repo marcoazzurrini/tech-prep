@@ -1,0 +1,21 @@
+{
+  "title": "Page of Items",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function pageOf(items, size, page) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return pageOf([\"a\", \"b\", \"c\", \"d\", \"e\"], 2, 2);"],"expected":["c","d"]},
+      {"args":["return pageOf([\"a\", \"b\", \"c\", \"d\", \"e\"], 2);"],"expected":["a","b"]},
+      {"args":["return pageOf([\"a\", \"b\", \"c\"]);"],"expected":["a","b","c"]},
+      {"args":["return pageOf([\"a\", \"b\", \"c\", \"d\", \"e\"], 2, 3);"],"expected":["e"]},
+      {"args":["return pageOf([\"a\", \"b\", \"c\"], undefined, 1);"],"expected":["a","b","c"]},
+      {"args":["return pageOf([\"a\", \"b\", \"c\"], undefined, 2);"],"expected":[]},
+      {"args":["return pageOf([\"a\", \"b\"], 5, 2);"],"expected":[]},
+      {"args":["return pageOf([], 4);"],"expected":[]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const order = {\n  price: 20,\n  quantity: 2,\n  get total() {\n    return this.price * this.quantity;\n  },\n};\n\nconst before = order.total;\norder.quantity = 3;\nconst snapshot = { ...order };\norder.price = 10;\n\nconsole.log(before);\nconsole.log(order.total);\nconsole.log(snapshot.total);"
+    },
+    "expected": "40\n30\n60"
+  }
+}

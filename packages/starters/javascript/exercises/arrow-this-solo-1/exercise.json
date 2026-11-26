@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const kitchen = {\n  name: \"kitchen\",\n  cook() {\n    const taste = () => this.name;\n\n    function serve() {\n      return this === undefined;\n    }\n\n    console.log(taste());\n    console.log(serve());\n  },\n};\n\nconst garden = { name: \"garden\", cook: kitchen.cook };\n\nkitchen.cook();\ngarden.cook();"
+    },
+    "expected": "kitchen\ntrue\ngarden\ntrue"
+  }
+}

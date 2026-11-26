@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const lamp = {\n  name: \"lamp\",\n  describe(state) {\n    return `${this.name} is ${state}`;\n  },\n};\n\nconst radio = { name: \"radio\" };\n\nconst lampIs = lamp.describe.bind(lamp);\nconst radioOn = lamp.describe.bind(radio, \"on\");\n\nconsole.log(lampIs(\"off\"));\nconsole.log(radioOn());\nconsole.log(radioOn(\"off\"));"
+    },
+    "expected": "lamp is off\nradio is on\nradio is on"
+  }
+}

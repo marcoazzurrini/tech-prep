@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const team = {\n  name: \"Blue\",\n  size: 4,\n  lead: {\n    name: \"Kim\",\n    describe() {\n      return `${this.name} leads ${this.size}`;\n    },\n  },\n  describe() {\n    return `${this.name} has ${this.size}`;\n  },\n};\n\nconsole.log(team.describe());\nconsole.log(team.lead.describe());"
+    },
+    "expected": "Blue has 4\nKim leads undefined"
+  }
+}

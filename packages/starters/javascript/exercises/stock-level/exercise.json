@@ -1,0 +1,18 @@
+{
+  "title": "Stock Level",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function restock(amount) {\n  // your code\n}\n\nexport function isLow() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const tea = { stock: 2, minimum: 5, restock, isLow }; return tea.isLow();"],"expected":true},
+      {"args":["const tea = { stock: 2, minimum: 5, restock, isLow }; return [tea.restock(4), tea.stock, tea.isLow()];"],"expected":[6,6,false]},
+      {"args":["const a = { stock: 1, restock }; const b = { stock: 9, restock }; a.restock(1); return [a.stock, b.stock];"],"expected":[2,9]},
+      {"args":["const jam = { stock: 5, minimum: 5, isLow }; return jam.isLow();"],"expected":false},
+      {"args":["const jam = { stock: 0, minimum: 3, add: restock, low: isLow }; jam.add(2); return [jam.stock, jam.low()];"],"expected":[2,true]}
+    ]
+  }
+}

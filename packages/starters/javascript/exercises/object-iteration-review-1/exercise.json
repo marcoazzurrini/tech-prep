@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const basket = { pears: 2, 7: \"seven\", apples: 0 };\n\nconsole.log(Object.keys(basket)[0]);\nconsole.log(Object.entries(basket)[1].join(\"=\"));\n\nconst merged = Object.fromEntries([[\"a\", 1], [\"b\", 2], [\"a\", 3]]);\n\nconsole.log(JSON.stringify(merged));\n\nlet sum = 0;\n\nfor (const i in [10, 20]) {\n  sum += i;\n}\n\nconsole.log(sum);"
+    },
+    "expected": "7\npears=2\n{\"a\":3,\"b\":2}\n001"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Set an Item Count",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function setCount(cart, sku, count) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return setCount({ coupon: \"A1\", items: [{ sku: \"pen\", count: 1, gift: true }] }, \"pen\", 3);"],"expected":{"coupon":"A1","items":[{"sku":"pen","count":3,"gift":true}]}},
+      {"args":["return setCount({ items: [{ sku: \"pen\", count: 1 }] }, \"ink\", 2);"],"expected":{"items":[{"sku":"pen","count":1},{"sku":"ink","count":2}]}},
+      {"args":["return setCount({ items: [{ sku: \"pen\", count: 1 }, { sku: \"ink\", count: 2 }] }, \"pen\", 0);"],"expected":{"items":[{"sku":"ink","count":2}]}},
+      {"args":["const cart = { items: [{ sku: \"pen\", count: 1 }] }; setCount(cart, \"pen\", 5); setCount(cart, \"pen\", 0); return cart;"],"expected":{"items":[{"sku":"pen","count":1}]}},
+      {"args":["const a = { sku: \"a\", count: 1 }; const out = setCount({ items: [a, { sku: \"b\", count: 2 }] }, \"b\", 9); return out.items[0] === a;"],"expected":true},
+      {"args":["return setCount({ items: [] }, \"pen\", 0);"],"expected":{"items":[]}},
+      {"args":["const cart = { items: [] }; const out = setCount(cart, \"pen\", 1); return [out === cart, out.items === cart.items];"],"expected":[false,false]},
+      {"args":["const cart = { items: [] }; setCount(cart, \"pen\", 1); return cart.items.length;"],"expected":0}
+    ]
+  }
+}

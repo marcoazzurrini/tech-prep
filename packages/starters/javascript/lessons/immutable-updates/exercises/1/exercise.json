@@ -1,0 +1,18 @@
+{
+  "title": "Level Up",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function levelUp(save) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return levelUp({ player: { name: \"Ada\", level: 3, stats: { hp: 5, xp: 40 } }, inventory: [\"key\"] });"],"expected":{"player":{"name":"Ada","level":4,"stats":{"hp":5,"xp":0}},"inventory":["key"]}},
+      {"args":["const save = { player: { level: 1, stats: { xp: 9 } } }; levelUp(save); return save;"],"expected":{"player":{"level":1,"stats":{"xp":9}}}},
+      {"args":["const s = { player: { level: 1, stats: { xp: 9 } } }; const n = levelUp(s); return [n === s, n.player === s.player];"],"expected":[false,false]},
+      {"args":["const save = { player: { level: 1, stats: { xp: 9 } }, inventory: [\"key\"] }; return levelUp(save).inventory === save.inventory;"],"expected":true},
+      {"args":["return levelUp({ player: { level: 9, stats: { hp: 2, xp: 70, mana: 7 }, pet: \"owl\" }, inventory: [], slot: 2 });"],"expected":{"player":{"level":10,"stats":{"hp":2,"xp":0,"mana":7},"pet":"owl"},"inventory":[],"slot":2}}
+    ]
+  }
+}

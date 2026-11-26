@@ -1,0 +1,21 @@
+{
+  "title": "Coffee Price",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "coffeePrice"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const PRICES = Object.freeze({ small: 2, large: 3 });\n\nexport function coffeePrice(size, extraShot) {\n  if (extraShot) {\n    PRICES[size] += 1;\n  }\n\n  price = PRICES[size];\n\n  return price;\n}\n"
+    },
+    "tests": [
+      {"args":["small",false],"expected":2},
+      {"args":["large",false],"expected":3},
+      {"args":["small",true],"expected":3},
+      {"args":["small",true],"expected":3},
+      {"args":["small",false],"expected":2},
+      {"args":["large",true],"expected":4}
+    ]
+  }
+}

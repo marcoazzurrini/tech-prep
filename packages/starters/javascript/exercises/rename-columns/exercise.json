@@ -1,0 +1,21 @@
+{
+  "title": "Rename Columns",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "renameColumns"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function renameColumns(row, names) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"fname":"Ada","age":36},{"fname":"firstName"}],"expected":{"firstName":"Ada","age":36}},
+      {"args":[{"a":1,"b":2},{"a":"b","b":"a"}],"expected":{"b":1,"a":2}},
+      {"args":[{"id":7},{}],"expected":{"id":7}},
+      {"args":[{},{"id":"key"}],"expected":{}},
+      {"args":[{"id":7,"qty":0,"note":null},{"qty":"quantity","missing":"other"}],"expected":{"id":7,"quantity":0,"note":null}},
+      {"args":[{"x":1,"y":2,"z":3},{"x":"left","y":"top"}],"expected":{"left":1,"top":2,"z":3}}
+    ]
+  }
+}

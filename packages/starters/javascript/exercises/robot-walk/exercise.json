@@ -1,0 +1,19 @@
+{
+  "title": "Robot Walk",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createRobot() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return createRobot().east(2).north(3).west(1).position();"],"expected":[1,3]},
+      {"args":["return createRobot().position();"],"expected":[0,0]},
+      {"args":["return createRobot().south(4).south(1).east(7).position();"],"expected":[7,-5]},
+      {"args":["const robot = createRobot(); robot.north(2); robot.east(1).east(1); return robot.position();"],"expected":[2,2]},
+      {"args":["const a = createRobot(); const b = createRobot(); a.east(5); b.west(5); return [a.position(), b.position()];"],"expected":[[5,0],[-5,0]]},
+      {"args":["return createRobot().north(3).south(3).west(2).east(2).position();"],"expected":[0,0]}
+    ]
+  }
+}

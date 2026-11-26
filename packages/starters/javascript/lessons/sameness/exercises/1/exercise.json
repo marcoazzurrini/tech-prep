@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const weight = Number(\"12 kg\");\nconst balance = -1 * 0;\n\nconsole.log(weight === NaN);\nconsole.log(Object.is(weight, NaN));\nconsole.log(balance === 0);\nconsole.log(Object.is(balance, 0));"
+    },
+    "expected": "false\ntrue\ntrue\nfalse"
+  }
+}

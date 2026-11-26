@@ -1,0 +1,22 @@
+{
+  "title": "Cinema Ticket Price",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "ticketPrice"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function ticketPrice(age, day) {\n  const base = isWeekend(day) ? 12 : 10;\n\n  if (age < 12) {\n    function discount(price) {\n      return price / 2;\n    }\n  } else if (age >= 65) {\n    function discount(price) {\n      return price - 3;\n    }\n  } else {\n    function discount(price) {\n      return price;\n    }\n  }\n\n  const isWeekend = (name) => name === \"sat\" || name === \"sun\";\n\n  return discount(base);\n}\n"
+    },
+    "tests": [
+      {"args":[30,"mon"],"expected":10},
+      {"args":[8,"sat"],"expected":6},
+      {"args":[70,"sun"],"expected":9},
+      {"args":[11,"tue"],"expected":5},
+      {"args":[65,"fri"],"expected":7},
+      {"args":[12,"sat"],"expected":12},
+      {"args":[64,"sun"],"expected":12}
+    ]
+  }
+}

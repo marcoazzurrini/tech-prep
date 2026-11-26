@@ -1,0 +1,21 @@
+{
+  "title": "Latest Prices in Order",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "latestPrices"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function latestPrices(updates) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[[30,5],[4,9],[30,6]]],"expected":[[30,6],[4,9]]},
+      {"args":[[]],"expected":[]},
+      {"args":[[[7,1]]],"expected":[[7,1]]},
+      {"args":[[[12,3],[5,3],[100,8],[5,2],[12,4],[1,0]]],"expected":[[12,4],[5,2],[100,8],[1,0]]},
+      {"args":[[[2,10],[1,20],[0,30]]],"expected":[[2,10],[1,20],[0,30]]},
+      {"args":[[[9,4],[9,5],[9,6]]],"expected":[[9,6]]}
+    ]
+  }
+}

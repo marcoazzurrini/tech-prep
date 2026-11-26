@@ -1,0 +1,18 @@
+{
+  "title": "Drain the Tank",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function repeat(times, action) {\n  for (let i = 0; i < times; i += 1) {\n    action();\n  }\n}\n\nexport function drain(tank, times) {\n  repeat(times, tank.open);\n\n  return tank.litres;\n}\n"
+    },
+    "tests": [
+      {"args":["const tank = { litres: 10, open() { this.litres -= 2; } }; return drain(tank, 3);"],"expected":4},
+      {"args":["const tank = { litres: 9, open() { this.litres -= 1; } }; drain(tank, 2); return drain(tank, 2);"],"expected":5},
+      {"args":["const seen = []; const tank = { litres: 0, open() { seen.push(this === tank); } }; drain(tank, 2); return seen;"],"expected":[true,true]},
+      {"args":["const tank = { litres: 8, open() { this.litres /= 2; } }; drain(tank, 3); return tank.litres;"],"expected":1},
+      {"args":["const tank = { litres: 5, open() { this.litres -= 1; } }; return drain(tank, 0);"],"expected":5}
+    ]
+  }
+}

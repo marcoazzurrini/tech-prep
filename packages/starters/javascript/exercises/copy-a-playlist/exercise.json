@@ -1,0 +1,19 @@
+{
+  "title": "Copy a Playlist",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function copyPlaylist(playlist) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return copyPlaylist({ name: \"Road trip\", songs: [{ title: \"Low\", plays: 2 }] });"],"expected":{"name":"Road trip (copy)","songs":[{"title":"Low","plays":2}]}},
+      {"args":["const mine = { name: \"Gym\", songs: [] }; copyPlaylist(mine).songs.push({ title: \"Go\" }); return mine.songs.length;"],"expected":0},
+      {"args":["const song = { title: \"Low\" }; const mine = { name: \"A\", songs: [song] }; return copyPlaylist(mine).songs[0] === song;"],"expected":true},
+      {"args":["const mine = { name: \"A\", songs: [] }; const yours = copyPlaylist(mine); return [yours === mine, mine.name, yours.name];"],"expected":[false,"A","A (copy)"]},
+      {"args":["return copyPlaylist({ name: \"Mix\", owner: \"Ada\", songs: [] });"],"expected":{"name":"Mix (copy)","owner":"Ada","songs":[]}},
+      {"args":["const mine = { name: \"A\", songs: [{ plays: 1 }] }; copyPlaylist(mine).songs[0].plays += 1; return mine.songs[0].plays;"],"expected":2}
+    ]
+  }
+}

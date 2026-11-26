@@ -1,0 +1,18 @@
+{
+  "title": "Stepper",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeCounter(step) {\n  return {\n    step,\n    count: 0,\n    stepper() {\n      return function () {\n        this.count += this.step;\n\n        return this.count;\n      };\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const counter = makeCounter(2); const next = counter.stepper(); return [next(), next(), counter.count];"],"expected":[2,4,4]},
+      {"args":["const counter = makeCounter(1); const next = counter.stepper(); counter.step = 10; return next();"],"expected":10},
+      {"args":["const a = makeCounter(1); const b = makeCounter(5); a.stepper()(); b.stepper()(); return [a.count, b.count];"],"expected":[1,5]},
+      {"args":["const counter = makeCounter(3); counter.count = 100; return counter.stepper()();"],"expected":103},
+      {"args":["const counter = makeCounter(2); const one = counter.stepper(); const two = counter.stepper(); one(); return two();"],"expected":4}
+    ]
+  }
+}

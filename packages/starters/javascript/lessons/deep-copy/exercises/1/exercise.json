@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const recipe = { name: \"Soup\", steps: [{ text: \"Boil\", minutes: 10 }] };\nconst mine = structuredClone(recipe);\nconst yours = { ...recipe };\n\nmine.steps[0].minutes = 20;\nyours.steps.push({ text: \"Serve\", minutes: 1 });\n\nconsole.log(recipe.steps[0].minutes);\nconsole.log(recipe.steps.length);\nconsole.log(mine.steps.length);"
+    },
+    "expected": "10\n2\n1"
+  }
+}

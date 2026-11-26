@@ -1,0 +1,21 @@
+{
+  "title": "Store with Drafts",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createStore(initial) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = createStore({ n: 1 }); s.update((d) => { d.n += 1; }); return s.read();"],"expected":{"n":2}},
+      {"args":["const init = { tags: [\"a\"] }; const s = createStore(init); init.tags.push(\"b\"); return s.read().tags;"],"expected":["a"]},
+      {"args":["const s = createStore({ user: { name: \"Ada\" } }); s.read().user.name = \"Ben\"; return s.read().user.name;"],"expected":"Ada"},
+      {"args":["const s = createStore({ a: [1] }); try { s.update((d) => { d.a.push(2); throw new Error(\"no\"); }); } catch {} return s.read().a;"],"expected":[1]},
+      {"args":["const s = createStore({}); try { s.update(() => { throw new Error(\"stop\"); }); } catch (e) { return e.message; } return \"none\";"],"expected":"stop"},
+      {"args":["const s = createStore({ at: new Date(5) }); s.update((d) => { d.at.setTime(9); }); return s.read().at.getTime();"],"expected":9},
+      {"args":["const s = createStore({ a: { b: 1 } }); const old = s.read(); s.update((d) => { d.a.b = 2; }); return [old.a.b, s.read().a.b];"],"expected":[1,2]},
+      {"args":["const s = createStore({ n: 1 }); return s.read() === s.read();"],"expected":false}
+    ]
+  }
+}

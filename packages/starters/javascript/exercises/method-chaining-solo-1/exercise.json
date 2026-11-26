@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tank = {\n  litres: 10,\n  fill(amount) {\n    this.litres += amount;\n\n    return this;\n  },\n  double() {\n    this.litres *= 2;\n\n    return this;\n  },\n  read() {\n    return this.litres;\n  },\n};\n\nconsole.log(tank.fill(5).double().read());\nconsole.log(tank.double().fill(5).read());\nconsole.log(tank.fill(tank.read()).read());\nconsole.log(tank.double() === tank);"
+    },
+    "expected": "30\n65\n130\ntrue"
+  }
+}

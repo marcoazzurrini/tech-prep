@@ -1,0 +1,21 @@
+{
+  "title": "Time Sheet",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "timeSheet"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function format(hours) {\n  return `${hours.toFixed(1)}h`;\n}\n\nexport function timeSheet(entries, whole) {\n  const lines = [];\n\n  for (const entry of entries) {\n    lines.push(`${entry.task}: ${format(entry.hours)}`);\n  }\n\n  if (whole) {\n    var format = (hours) => `${Math.round(hours)}h`;\n  }\n\n  return lines;\n}\n"
+    },
+    "tests": [
+      {"args":[[{"task":"Design","hours":2.5}],false],"expected":["Design: 2.5h"]},
+      {"args":[[{"task":"Design","hours":2.5}],true],"expected":["Design: 3h"]},
+      {"args":[[],false],"expected":[]},
+      {"args":[[{"task":"Review","hours":4},{"task":"Email","hours":1.2}],false],"expected":["Review: 4.0h","Email: 1.2h"]},
+      {"args":[[{"task":"Review","hours":4},{"task":"Email","hours":1.2}],true],"expected":["Review: 4h","Email: 1h"]},
+      {"args":[[{"task":"Break","hours":0}],true],"expected":["Break: 0h"]}
+    ]
+  }
+}

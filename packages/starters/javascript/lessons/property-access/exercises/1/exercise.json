@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const key = \"colour\";\nconst paint = { colour: \"red\", key: \"blue\" };\n\nconsole.log(paint.key);\nconsole.log(paint[key]);\nconsole.log(paint[\"key\"]);\nconsole.log(paint.red);"
+    },
+    "expected": "blue\nred\nblue\nundefined"
+  }
+}

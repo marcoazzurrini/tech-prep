@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const shelf = {\n  books: [\"Emma\", \"Dune\"],\n  count() {\n    let found = 0;\n\n    this.books.forEach(function () {\n      if (this === undefined) {\n        found += 1;\n      }\n    });\n\n    return found;\n  },\n  reader() {\n    return function () {\n      return typeof this;\n    };\n  },\n};\n\nconsole.log(shelf.count());\nconsole.log(shelf.reader()());"
+    },
+    "expected": "2\nundefined"
+  }
+}

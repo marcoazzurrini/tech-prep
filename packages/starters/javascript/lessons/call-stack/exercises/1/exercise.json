@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function wrap() {\n  console.log(\"wrap in\");\n  tape();\n  console.log(\"wrap out\");\n}\n\nfunction tape() {\n  console.log(\"tape\");\n}\n\nfunction ship() {\n  console.log(\"ship in\");\n  wrap();\n  tape();\n  console.log(\"ship out\");\n}\n\nship();"
+    },
+    "expected": "ship in\nwrap in\ntape\nwrap out\ntape\nship out"
+  }
+}

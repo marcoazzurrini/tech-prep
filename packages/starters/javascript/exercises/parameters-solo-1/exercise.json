@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function total(price, qty = 1, delivery = 5) {\n  return price * qty + delivery;\n}\n\nconsole.log(total(10));\nconsole.log(total(10, 0));\nconsole.log(total(10, null));\nconsole.log(total(10, undefined, 2));\nconsole.log(total(10, 3, 0, 99));"
+    },
+    "expected": "15\n5\n5\n12\n30"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Remove a Guest",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function removeGuest(guests, name) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const g = { ada: 4, bo: 2 }; return [removeGuest(g, \"ada\"), \"ada\" in g, \"bo\" in g];"],"expected":[true,false,true]},
+      {"args":["const g = { ada: 4 }; return [removeGuest(g, \"kai\"), \"ada\" in g];"],"expected":[false,true]},
+      {"args":["const g = { ada: undefined }; return [removeGuest(g, \"ada\"), \"ada\" in g];"],"expected":[true,false]},
+      {"args":["const g = { ada: 0 }; return [removeGuest(g, \"ada\"), removeGuest(g, \"ada\")];"],"expected":[true,false]},
+      {"args":["const g = { ada: null, bo: 1 }; removeGuest(g, \"ada\"); return JSON.stringify(g);"],"expected":"{\"bo\":1}"}
+    ]
+  }
+}

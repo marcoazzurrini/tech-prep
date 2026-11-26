@@ -1,0 +1,19 @@
+{
+  "title": "Copy a Booking",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function copyBooking(booking) {\n  return JSON.parse(JSON.stringify(booking));\n}\n"
+    },
+    "tests": [
+      {"args":["const c = copyBooking({ guest: \"Ada\", from: new Date(5000) }); return [c.guest, c.from.getTime()];"],"expected":["Ada",5000]},
+      {"args":["const b = { rooms: [{ beds: 2 }] }; copyBooking(b).rooms[0].beds = 3; return b.rooms[0].beds;"],"expected":2},
+      {"args":["const c = copyBooking({ guest: \"Ada\", note: undefined }); return [\"note\" in c, Object.keys(c)];"],"expected":[true,["guest","note"]]},
+      {"args":["const b = { from: new Date(5) }; copyBooking(b).from.setTime(9); return b.from.getTime();"],"expected":5},
+      {"args":["const b = { nights: [new Date(0), new Date(1)] }; return copyBooking(b).nights.map((d) => d.getTime());"],"expected":[0,1]},
+      {"args":["const b = { guest: \"Ada\", rooms: [] }; const c = copyBooking(b); return [c === b, c.rooms === b.rooms, c];"],"expected":[false,false,{"guest":"Ada","rooms":[]}]}
+    ]
+  }
+}

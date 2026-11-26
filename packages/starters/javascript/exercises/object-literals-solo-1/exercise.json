@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const id = 7;\nconst size = \"L\";\nconst item = { id, [size]: 1, size: 2, 7: \"seven\" };\n\nconsole.log(item.id);\nconsole.log(item.L);\nconsole.log(item.size);\nconsole.log(item[id]);\nconsole.log(item[\"7\"]);"
+    },
+    "expected": "7\n1\n2\nseven\nseven"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const cat = {\n  name: \"Tom\",\n  speak() {\n    return `${this.name} says ${this.sound}`;\n  },\n};\n\nconst dog = { name: \"Rex\", sound: \"woof\", speak: cat.speak };\n\nconsole.log(cat.speak());\nconsole.log(dog.speak());\n\ncat.sound = \"meow\";\ndog.name = \"Max\";\n\nconsole.log(cat.speak());\nconsole.log(dog.speak());"
+    },
+    "expected": "Tom says undefined\nRex says woof\nTom says meow\nMax says woof"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Team Badges",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createTeam(name) {\n  return {\n    name,\n    members: [],\n    join: (person) => {\n      this.members.push(person);\n    },\n    badges() {\n      return this.members.map(function (person) {\n        return `${person} (${this.name})`;\n      });\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const team = createTeam(\"Blue\"); team.join(\"Ana\"); team.join(\"Leo\"); return team.members;"],"expected":["Ana","Leo"]},
+      {"args":["const team = createTeam(\"Blue\"); team.join(\"Ana\"); team.join(\"Leo\"); return team.badges();"],"expected":["Ana (Blue)","Leo (Blue)"]},
+      {"args":["return createTeam(\"Red\").badges();"],"expected":[]},
+      {"args":["const team = createTeam(\"Red\"); team.join(\"Kim\"); team.name = \"Gold\"; return team.badges();"],"expected":["Kim (Gold)"]},
+      {"args":["const a = createTeam(\"A\"); const b = createTeam(\"B\"); a.join(\"x\"); b.join(\"y\"); return [a.badges(), b.badges()];"],"expected":[["x (A)"],["y (B)"]]},
+      {"args":["const team = createTeam(\"Sea\"); team.members = [\"Bo\"]; return team.badges();"],"expected":["Bo (Sea)"]}
+    ]
+  }
+}

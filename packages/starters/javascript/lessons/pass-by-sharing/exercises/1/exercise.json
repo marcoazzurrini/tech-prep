@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function addBonus(scores, bonus) {\n  scores.push(bonus);\n  bonus = 0;\n}\n\nconst points = [10, 20];\nlet extra = 5;\n\naddBonus(points, extra);\n\nconsole.log(points.length);\nconsole.log(extra);\nconsole.log(points[2]);"
+    },
+    "expected": "3\n5\n5"
+  }
+}

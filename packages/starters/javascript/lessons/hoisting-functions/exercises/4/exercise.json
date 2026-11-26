@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function menu() {\n  console.log(typeof dish);\n  var dish = \"soup\";\n  console.log(typeof dish);\n\n  function dish() {}\n}\n\nfunction order() {\n  var drink;\n  console.log(drink());\n\n  function drink() {\n    return \"tea\";\n  }\n\n  function drink() {\n    return \"coffee\";\n  }\n}\n\nmenu();\norder();"
+    },
+    "expected": "function\nstring\ncoffee"
+  }
+}

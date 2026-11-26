@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let tries = 0;\n\nconst first = tries++ || ++tries;\nconst second = tries++ && tries++;\n\nconsole.log(first, second, tries);\n\nlet code = \"7\";\nconst label = code++ + code + \"\";\n\nconsole.log(label, typeof code);"
+    },
+    "expected": "2 3 4\n15 number"
+  }
+}

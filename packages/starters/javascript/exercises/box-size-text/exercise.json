@@ -1,0 +1,19 @@
+{
+  "title": "Box Size",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createBox(width, height) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const b = createBox(3, 4); return [b.width, b.height, b.area, b.size];"],"expected":[3,4,12,"3x4"]},
+      {"args":["const b = createBox(3, 4); b.size = \"10x2\"; return [b.width, b.height, b.area, b.size];"],"expected":[10,2,20,"10x2"]},
+      {"args":["const b = createBox(3, 4); b.width = 5; return [b.area, b.size];"],"expected":[20,"5x4"]},
+      {"args":["const b = createBox(3, 4); try { b.area = 99; } catch {} return b.area;"],"expected":12},
+      {"args":["const b = createBox(1, 1); b.size = \"7x8\"; return [typeof b.width, b.width + b.height];"],"expected":["number",15]},
+      {"args":["const a = createBox(1, 2); const b = createBox(3, 4); a.size = \"5x5\"; return [a.area, b.area];"],"expected":[25,12]}
+    ]
+  }
+}

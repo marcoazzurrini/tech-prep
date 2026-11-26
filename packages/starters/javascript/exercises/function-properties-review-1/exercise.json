@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const handlers = [function () {}, function onSave(event, done = null) {}];\nconst run = handlers[1];\n\nrun.retries = 3;\n\nfunction count() {\n  count.calls = (count.calls ?? 0) + 1;\n}\n\ncount();\ncount();\n\nconsole.log(handlers[0].name.length);\nconsole.log(run.name, run.length);\nconsole.log(handlers[1].retries);\nconsole.log(count.calls, count.length);\nconsole.log(typeof run, typeof run.retries);"
+    },
+    "expected": "0\nonSave 1\n3\n2 0\nfunction number"
+  }
+}

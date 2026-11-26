@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function total() {\n  return this.price * this.count;\n}\n\nconst tea = { price: 3, count: 2 };\nconst cake = { price: 5, count: 4, total: total.bind(tea) };\nconst again = cake.total.bind(cake);\n\nconsole.log(cake.total());\nconsole.log(total.call(cake));\nconsole.log(again());\nconsole.log(cake.total.call(cake));"
+    },
+    "expected": "6\n20\n6\n6"
+  }
+}

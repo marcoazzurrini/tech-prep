@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const answers = { q1: \"yes\", q2: undefined, q3: null, q4: 0 };\n\nconsole.log(\"q2\" in answers);\nconsole.log(\"q5\" in answers);\nconsole.log(answers.q2 === answers.q5);\nconsole.log(\"q4\" in answers, Boolean(answers.q4));"
+    },
+    "expected": "true\nfalse\ntrue\ntrue false"
+  }
+}

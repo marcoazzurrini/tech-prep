@@ -7,6 +7,7 @@
       "run": "code",
       "language": "javascript",
       "code": "const upper = (text) => text.toUpperCase();\nconst exclaim = (text) => `${text}!`;\n\nconst edits = [exclaim, upper];\nconst tools = { loud: upper };\nconst first = edits[0];\n\nconsole.log(first(\"hey\"));\nconsole.log(tools.loud(\"hey\"));\nconsole.log(edits[1] === tools.loud);"
-    }
+    },
+    "expected": "hey!\nHEY\ntrue"
   }
 }

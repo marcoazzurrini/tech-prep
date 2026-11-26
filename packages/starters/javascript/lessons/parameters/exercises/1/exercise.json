@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function describe(name, role, team) {\n  return `${name}/${role}/${team}`;\n}\n\nconsole.log(describe(\"Ada\", \"dev\"));\nconsole.log(describe(\"Ben\", \"ops\", \"core\", \"lead\"));\nconsole.log(describe());"
+    },
+    "expected": "Ada/dev/undefined\nBen/ops/core\nundefined/undefined/undefined"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function show() {\n  return this === null ? \"null\" : typeof this;\n}\n\nconst lamp = { show };\n\nconsole.log(lamp.show());\nconsole.log(lamp.show.call(3));\nconsole.log(show.call(null));\nconsole.log(show.apply(undefined, [1, 2]));"
+    },
+    "expected": "object\nnumber\nnull\nundefined"
+  }
+}

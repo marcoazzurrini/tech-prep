@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function who() {\n  return this === undefined ? \"nobody\" : this.name;\n}\n\nconst robot = {\n  name: \"Bolt\",\n  who,\n  ask() {\n    return who();\n  },\n  askSelf() {\n    return this.who();\n  },\n};\n\nconsole.log(who());\nconsole.log(robot.who());\nconsole.log(robot.ask());\nconsole.log(robot.askSelf());"
+    },
+    "expected": "nobody\nBolt\nnobody\nBolt"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const shelf = { b: 1, 2: \"x\", a: 2, 1: \"y\" };\n\nshelf.c = 3;\nshelf[0] = \"z\";\nshelf.a = 9;\ndelete shelf.b;\nshelf.b = 4;\n\nconsole.log(Object.keys(shelf).join(\" \"));"
+    },
+    "expected": "0 1 2 a c b"
+  }
+}

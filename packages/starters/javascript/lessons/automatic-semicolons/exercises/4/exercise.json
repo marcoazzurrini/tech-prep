@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let wins = 2\nlet losses = 7\n\nwins\n++\nlosses\n--\nwins\n\nconsole.log(wins, losses)"
+    },
+    "expected": "1 8"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Apply the Updates",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function applyUpdates(start, updates) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return applyUpdates(5, [(v) => v + 1, (v) => v * 2]);"],"expected":12},
+      {"args":["return applyUpdates(5, [(v) => v + 1, 0, (v) => v + 10]);"],"expected":10},
+      {"args":["return applyUpdates(\"off\", []);"],"expected":"off"},
+      {"args":["return applyUpdates(1, [null, (v) => v === null]);"],"expected":true},
+      {"args":["const double = (v) => v * 2; return applyUpdates(3, [double, double, 100, double]);"],"expected":200},
+      {"args":["return applyUpdates([1], [(list) => [...list, 2], (list) => list.length]);"],"expected":2},
+      {"args":["const seen = []; applyUpdates(\"a\", [\"b\", (v) => { seen.push(v); return \"c\"; }]); return seen;"],"expected":["b"]}
+    ]
+  }
+}

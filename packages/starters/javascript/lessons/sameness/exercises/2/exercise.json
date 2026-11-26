@@ -1,0 +1,18 @@
+{
+  "title": "Count the Different Values",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countDifferent(values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return countDifferent([3, 3, 5]);"],"expected":2},
+      {"args":["return countDifferent([NaN, NaN, 1]);"],"expected":2},
+      {"args":["return countDifferent([0, -0, 0]);"],"expected":1},
+      {"args":["return countDifferent([]);"],"expected":0},
+      {"args":["return countDifferent([\"1\", 1, NaN, 0 / 0]);"],"expected":3}
+    ]
+  }
+}

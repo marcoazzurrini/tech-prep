@@ -1,0 +1,19 @@
+{
+  "title": "Saved Call",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function savedCall(obj, methodName, ...args) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = { n: 10, add(a, b) { return this.n + a + b; } }; return savedCall(c, \"add\", 1)(2);"],"expected":13},
+      {"args":["const c = { n: 10, add(a, b) { return this.n + a + b; } }; const f = savedCall(c, \"add\", 1, 2); return [f(), f(99)];"],"expected":[13,13]},
+      {"args":["const u = { name: \"Ada\", hi() { return \"hi \" + this.name; } }; const hi = savedCall(u, \"hi\"); return hi.call({ name: \"Bob\" });"],"expected":"hi Ada"},
+      {"args":["const log = { lines: [], add(tag, text) { this.lines.push(tag + text); } }; savedCall(log, \"add\", \"i:\")(\"up\"); return log.lines;"],"expected":["i:up"]},
+      {"args":["const c = { n: 0, inc(by) { return (this.n += by); } }; const o = { n: 9, go: savedCall(c, \"inc\", 5) }; return [o.go(), o.n];"],"expected":[5,9]},
+      {"args":["const m = { join(...parts) { return parts.join(\"-\"); } }; return savedCall(m, \"join\", \"a\", \"b\")(\"c\", \"d\");"],"expected":"a-b-c-d"}
+    ]
+  }
+}

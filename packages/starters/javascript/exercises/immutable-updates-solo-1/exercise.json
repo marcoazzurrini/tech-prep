@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const board = {\n  title: \"Sprint\",\n  columns: { todo: [\"a\", \"b\"], done: [\"c\"] },\n};\n\nconst next = {\n  ...board,\n  columns: { ...board.columns, done: [...board.columns.done, \"b\"] },\n};\n\nconsole.log(board.columns.done.length);\nconsole.log(next.columns === board.columns);\nconsole.log(next.columns.todo === board.columns.todo);\nconsole.log(next.columns.done.join(\"\"));"
+    },
+    "expected": "1\nfalse\ntrue\ncb"
+  }
+}

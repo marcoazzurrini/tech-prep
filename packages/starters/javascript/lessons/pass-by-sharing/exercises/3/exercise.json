@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function restock(shelf) {\n  shelf.push(\"tea\");\n  shelf = [\"milk\"];\n  shelf.push(\"jam\");\n\n  return shelf;\n}\n\nconst shop = [\"rice\"];\nconst result = restock(shop);\n\nconsole.log(shop.join(\",\"));\nconsole.log(result.join(\",\"));"
+    },
+    "expected": "rice,tea\nmilk,jam"
+  }
+}

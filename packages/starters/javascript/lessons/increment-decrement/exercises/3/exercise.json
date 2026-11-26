@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let width = \"10\";\nlet height = \"10\";\n\nwidth++;\nheight += 1;\n\nconsole.log(width);\nconsole.log(height);\n\nlet depth = null;\nlet ready = true;\n\ndepth--;\nready++;\n\nconsole.log(depth, ready);"
+    },
+    "expected": "11\n101\n-1 2"
+  }
+}

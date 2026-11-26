@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const room = { name: \"Lab\" };\nconst desk = { room, drawers: [1, 2] };\nroom.desks = [desk, desk];\n\nconst copy = structuredClone(room);\n\nconsole.log(copy.desks[0] === copy.desks[1]);\nconsole.log(copy.desks[0].room === copy);\nconsole.log(copy.desks[0] === desk);\nconsole.log(copy.desks[0].drawers === desk.drawers);"
+    },
+    "expected": "true\ntrue\nfalse\nfalse"
+  }
+}

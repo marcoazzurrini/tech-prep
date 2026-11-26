@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function rename(team, name) {\n  team.name = name;\n  name = \"ignored\";\n}\n\nfunction relocate(team) {\n  team = { name: team.name, city: \"Rome\" };\n\n  return team;\n}\n\nconst crew = { name: \"Red\", city: \"Oslo\" };\nconst label = \"Blue\";\nrename(crew, label);\nconst moved = relocate(crew);\n\nconsole.log(crew.name, label);\nconsole.log(crew.city, moved.city);\nconsole.log(moved.name);"
+    },
+    "expected": "Blue Blue\nOslo Rome\nBlue"
+  }
+}

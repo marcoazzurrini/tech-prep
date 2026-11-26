@@ -1,0 +1,23 @@
+{
+  "title": "Time per Function",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "ownTimes"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function ownTimes(records) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[[0,"start","main"],[2,"start","load"],[5,"end"],[9,"end"]]],"expected":{"main":6,"load":3}},
+      {"args":[[]],"expected":{}},
+      {"args":[[[3,"start","main"],[10,"end"]]],"expected":{"main":7}},
+      {"args":[[[0,"start","main"],[1,"start","log"],[2,"end"],[4,"start","log"],[7,"end"],[8,"end"]]],"expected":{"main":4,"log":4}},
+      {"args":[[[0,"start","a"],[1,"start","b"],[2,"start","c"],[5,"end"],[6,"end"],[10,"end"]]],"expected":{"a":5,"b":2,"c":3}},
+      {"args":[[[0,"start","a"],[2,"end"],[5,"start","b"],[6,"end"]]],"expected":{"a":2,"b":1}},
+      {"args":[[[0,"start","main"],[4,"start","noop"],[4,"end"],[4,"end"]]],"expected":{"main":4,"noop":0}},
+      {"args":[[[0,"start","walk"],[1,"start","walk"],[3,"end"],[4,"end"]]],"expected":{"walk":4}}
+    ]
+  }
+}

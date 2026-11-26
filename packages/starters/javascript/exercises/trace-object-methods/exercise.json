@@ -1,0 +1,19 @@
+{
+  "title": "Method Log",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function trace(obj, names) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = { n: 1, inc(by) { return (this.n += by); } }; const log = trace(c, [\"inc\"]); return [c.inc(2), c.inc(3), log];"],"expected":[3,6,["inc(2)","inc(3)"]]},
+      {"args":["const m = { add(a, b) {}, neg(a) {} }; const log = trace(m, [\"add\", \"neg\"]); m.neg(5); m.add(1, 2); m.neg(); return log;"],"expected":["neg(5)","add(1, 2)","neg()"]},
+      {"args":["const m = { a() { return \"a\"; }, b() { return \"b\"; } }; const log = trace(m, [\"a\"]); return [m.a(), m.b(), log];"],"expected":["a","b",["a()"]]},
+      {"args":["const u = { name: \"Ada\", hi() { return \"hi \" + this.name; } }; trace(u, [\"hi\"]); const hi = u.hi; return hi.call({ name: \"Bo\" });"],"expected":"hi Bo"},
+      {"args":["const m = { f() { return 1; } }; const first = trace(m, [\"f\"]); const second = trace(m, [\"f\"]); m.f(); return [first, second];"],"expected":[["f()"],["f()"]]},
+      {"args":["const m = { n: 0, up() { this.n += 1; } }; const log = trace(m, []); m.up(); return [m.n, log];"],"expected":[1,[]]}
+    ]
+  }
+}

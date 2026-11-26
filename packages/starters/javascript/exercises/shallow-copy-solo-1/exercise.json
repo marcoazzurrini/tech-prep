@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const grid = [[1, 2], [3, 4]];\nconst copy = [...grid];\n\ncopy[0].push(9);\ncopy[1] = [0];\ncopy.push([5]);\n\nconsole.log(grid.length);\nconsole.log(grid[0].length);\nconsole.log(grid[1].join(\",\"));"
+    },
+    "expected": "2\n3\n3,4"
+  }
+}

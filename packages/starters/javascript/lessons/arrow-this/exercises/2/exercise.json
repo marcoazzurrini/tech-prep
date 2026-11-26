@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const alarm = {\n  time: \"7:00\",\n  getRing() {\n    return () => `ring at ${this.time}`;\n  },\n};\n\nconst late = { time: \"9:30\" };\nconst ring = alarm.getRing();\nconst lateRing = alarm.getRing.call(late);\n\nlate.ring = ring;\n\nconsole.log(late.ring());\nconsole.log(ring.call(late));\nconsole.log(lateRing());"
+    },
+    "expected": "ring at 7:00\nring at 7:00\nring at 9:30"
+  }
+}

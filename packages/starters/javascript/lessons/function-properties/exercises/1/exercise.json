@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeTask() {\n  return () => \"done\";\n}\n\nconst first = makeTask;\nconst second = makeTask();\nconst jobs = { run: function () {} };\nconst pick = function choose() {};\n\nconsole.log(first.name);\nconsole.log(second.name === \"\");\nconsole.log(jobs.run.name);\nconsole.log(pick.name);"
+    },
+    "expected": "makeTask\ntrue\nrun\nchoose"
+  }
+}

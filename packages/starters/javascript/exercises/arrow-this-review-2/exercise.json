@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeReaders() {\n  return {\n    arrow: () => this.id,\n    regular() {\n      return this.id;\n    },\n  };\n}\n\nconst a = { id: \"a\" };\nconst b = { id: \"b\" };\n\nconst readers = makeReaders.call(a);\nreaders.id = \"readers\";\n\nconsole.log(readers.arrow());\nconsole.log(readers.regular());\nconsole.log(readers.arrow.call(b));\nconsole.log(readers.regular.bind(b)());\nconsole.log(makeReaders.bind(b)().arrow.call(a));"
+    },
+    "expected": "a\nreaders\na\nb\nb"
+  }
+}

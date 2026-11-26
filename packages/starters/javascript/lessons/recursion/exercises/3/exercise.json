@@ -1,0 +1,20 @@
+{
+  "title": "Count the Comments",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countComments"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countComments(comment) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"text":"Nice","replies":[]}],"expected":1},
+      {"args":[{"text":"Nice","replies":[{"text":"Thanks","replies":[]},{"text":"Agreed","replies":[]}]}],"expected":3},
+      {"args":[{"text":"One","replies":[{"text":"Two","replies":[{"text":"Three","replies":[{"text":"Four","replies":[]}]}]}]}],"expected":4},
+      {"args":[{"text":"Top","replies":[{"text":"A","replies":[{"text":"A1","replies":[]},{"text":"A2","replies":[]}]},{"text":"B","replies":[]},{"text":"C","replies":[{"text":"C1","replies":[]}]}]}],"expected":7},
+      {"args":[{"text":"Top","replies":[{"text":"A","replies":[]},{"text":"B","replies":[{"text":"B1","replies":[{"text":"B2","replies":[]},{"text":"B3","replies":[]}]}]}]}],"expected":6}
+    ]
+  }
+}

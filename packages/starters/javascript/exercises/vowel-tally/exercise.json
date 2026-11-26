@@ -1,0 +1,21 @@
+{
+  "title": "Count the Vowels",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countVowels"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countVowels(text) {\n  let count = 0\n  const lower = text.toLowerCase()\n  [\"a\", \"e\", \"i\", \"o\", \"u\"].forEach((vowel) => {\n    count += lower.split(vowel).length - 1\n  })\n\n  return count\n}\n"
+    },
+    "tests": [
+      {"args":["Banana"],"expected":3},
+      {"args":[""],"expected":0},
+      {"args":["rhythm"],"expected":0},
+      {"args":["AEIOU aeiou"],"expected":10},
+      {"args":["Queue up"],"expected":5},
+      {"args":["sky and sea"],"expected":3}
+    ]
+  }
+}

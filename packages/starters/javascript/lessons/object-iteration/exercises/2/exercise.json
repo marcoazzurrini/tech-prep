@@ -1,0 +1,20 @@
+{
+  "title": "Lower-Case Headers",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "lowerCaseKeys"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function lowerCaseKeys(headers) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"Content-Type":"text/html","ETag":"abc"}],"expected":{"content-type":"text/html","etag":"abc"}},
+      {"args":[{}],"expected":{}},
+      {"args":[{"accept":"*/*"}],"expected":{"accept":"*/*"}},
+      {"args":[{"HOST":"Example.COM","X-Retry":3}],"expected":{"host":"Example.COM","x-retry":3}},
+      {"args":[{"Vary":"A","VARY":"B"}],"expected":{"vary":"B"}}
+    ]
+  }
+}

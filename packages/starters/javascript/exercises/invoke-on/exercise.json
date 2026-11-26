@@ -1,0 +1,19 @@
+{
+  "title": "Invoke On",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function invokeOn(target, fn, ...args) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function area() { return this.width * this.height; } return invokeOn({ width: 2, height: 3 }, area);"],"expected":6},
+      {"args":["function add(a, b) { return this.base + a + b; } return invokeOn({ base: 10 }, add, 1, 2);"],"expected":13},
+      {"args":["const t = { n: 1 }; return invokeOn(t, function () { return this === t; });"],"expected":true},
+      {"args":["const t = { n: 1 }; invokeOn(t, function () { return this.n; }); return Object.keys(t);"],"expected":["n"]},
+      {"args":["const t = { count: 0 }; invokeOn(t, function (by) { this.count += by; }, 5); return t.count;"],"expected":5},
+      {"args":["const a = { n: 1, get() { return this.n; } }; return invokeOn({ n: 2 }, a.get);"],"expected":2}
+    ]
+  }
+}

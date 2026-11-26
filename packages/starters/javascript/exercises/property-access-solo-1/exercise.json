@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const plan = { tier: \"pro\" };\nconst limits = { free: 5, pro: 50, tier: 1 };\n\nconsole.log(limits[plan.tier]);\nconsole.log(limits.tier);\nconsole.log(limits[\"plan.tier\"]);\nconsole.log(limits.plan?.tier);\n\ntry {\n  console.log(limits.plan.tier);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "50\n1\nundefined\nundefined\nTypeError"
+  }
+}

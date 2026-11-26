@@ -1,0 +1,22 @@
+{
+  "title": "Translate with Fallback",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "translate"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function translate(dictionary, language, key) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"en":{"hello":"Hello","bye":"Bye","cart":""},"fr":{"hello":"Bonjour","cart":"Panier"}},"fr","hello"],"expected":"Bonjour"},
+      {"args":[{"en":{"hello":"Hello","bye":"Bye","cart":""},"fr":{"hello":"Bonjour","cart":"Panier"}},"fr","bye"],"expected":"Bye"},
+      {"args":[{"en":{"hello":"Hello","bye":"Bye","cart":""},"fr":{"hello":"Bonjour","cart":"Panier"}},"fr","thanks"],"expected":"thanks"},
+      {"args":[{"en":{"hello":"Hello","bye":"Bye","cart":""},"fr":{"hello":"Bonjour","cart":"Panier"}},"de","hello"],"expected":"Hello"},
+      {"args":[{"en":{"hello":"Hello","bye":"Bye","cart":""},"fr":{"hello":"Bonjour","cart":"Panier"}},"en","cart"],"expected":""},
+      {"args":[{"fr":{"hello":"Bonjour"}},"fr","bye"],"expected":"bye"},
+      {"args":[{},"en","hello"],"expected":"hello"}
+    ]
+  }
+}

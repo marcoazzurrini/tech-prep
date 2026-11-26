@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const limits = Object.freeze({ max: 3 });\n\nfunction raise() {\n  limits.max += 1;\n\n  return limits.max;\n}\n\nfunction owner() {\n  return typeof this;\n}\n\nfunction loose() {\n  return new Function(\"level = 2; return typeof this;\")();\n}\n\ntry {\n  console.log(raise());\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(owner());\nconsole.log(loose());\nconsole.log(level + limits.max);"
+    },
+    "expected": "TypeError\nundefined\nobject\n5"
+  }
+}

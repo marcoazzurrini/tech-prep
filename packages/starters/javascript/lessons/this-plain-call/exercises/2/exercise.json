@@ -1,0 +1,18 @@
+{
+  "title": "Parcel Label",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeParcel(weight, pricePerKilo) {\n  return {\n    weight,\n    pricePerKilo,\n    label() {\n      function price() {\n        return this.weight * this.pricePerKilo;\n      }\n\n      return `${this.weight} kg, ${price()} euros`;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["return makeParcel(2, 5).label();"],"expected":"2 kg, 10 euros"},
+      {"args":["const parcel = makeParcel(2, 5); parcel.weight = 3; return parcel.label();"],"expected":"3 kg, 15 euros"},
+      {"args":["const parcel = makeParcel(4, 1); parcel.pricePerKilo = 10; return parcel.label();"],"expected":"4 kg, 40 euros"},
+      {"args":["const a = makeParcel(1, 4); const b = makeParcel(2, 4); return [a.label(), b.label()];"],"expected":["1 kg, 4 euros","2 kg, 8 euros"]},
+      {"args":["return makeParcel(0, 9).label();"],"expected":"0 kg, 0 euros"}
+    ]
+  }
+}

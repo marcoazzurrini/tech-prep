@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const run = { name: \"Run\", done: false };\nconst tasks = [run, { name: \"Read\", done: false }];\n\nconst today = tasks.slice();\ntoday.pop();\ntoday[0].done = true;\n\nconsole.log(tasks.length);\nconsole.log(run.done);\nconsole.log(Array.from(tasks)[1] === tasks[1]);"
+    },
+    "expected": "2\ntrue\ntrue"
+  }
+}

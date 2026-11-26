@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const log = [];\n\nfunction mark(name, value) {\n  log.push(name);\n  return value;\n}\n\nconst result = mark(\"a\", 2) + mark(\"b\", 3) * mark(\"c\", 4) ** mark(\"d\", 2);\nconst pass = mark(\"e\", 0) && mark(\"f\", 1) || mark(\"g\", 5);\n\nconsole.log(log.join(\"\"));\nconsole.log(result, pass);"
+    },
+    "expected": "abcdeg\n50 5"
+  }
+}

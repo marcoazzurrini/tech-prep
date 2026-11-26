@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function add(item, list = [], limit = list.length + 2) {\n  list.push(item);\n\n  return `${list.join(\"\")}/${limit}`;\n}\n\nconsole.log(add(\"a\"));\nconsole.log(add(\"b\"));\nconsole.log(add(\"c\", [\"x\", \"y\"]));\nconsole.log(add(\"d\", [\"x\"], null));\nconsole.log(add(\"e\", undefined, 0));"
+    },
+    "expected": "a/2\nb/2\nxyc/4\nxd/null\ne/0"
+  }
+}

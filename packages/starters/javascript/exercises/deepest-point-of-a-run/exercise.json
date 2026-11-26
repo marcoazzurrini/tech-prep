@@ -1,0 +1,21 @@
+{
+  "title": "Deepest Point",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "deepestPoint"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function deepestPoint(events) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["main","load","return","save","return","return"]],"expected":2},
+      {"args":[["main","load","parse","return"]],"expected":3},
+      {"args":[[]],"expected":0},
+      {"args":[["tick","return","tick","return","tick","return"]],"expected":1},
+      {"args":[["a","b","return","c","d","e","return","return","return","return"]],"expected":4},
+      {"args":[["main"]],"expected":1}
+    ]
+  }
+}

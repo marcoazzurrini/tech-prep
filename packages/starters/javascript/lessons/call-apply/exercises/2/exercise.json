@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function join(a, b) {\n  return `${a}${this.sep}${b}`;\n}\n\nconst dash = { sep: \"-\" };\nconst pair = [\"x\", \"y\"];\n\nconsole.log(join.apply(dash, pair));\nconsole.log(join.call(dash, pair));\nconsole.log(join.call(dash, ...pair));\nconsole.log(Math.min.apply(null, [4, 2, 8]));"
+    },
+    "expected": "x-y\nx,y-undefined\nx-y\n2"
+  }
+}

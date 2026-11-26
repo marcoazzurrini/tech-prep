@@ -1,0 +1,20 @@
+{
+  "title": "Number the Lines",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "numberLines"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function numberLines(lines) {\n  const result = [];\n  let n = 0;\n\n  for (const line of lines) {\n    result.push(`${n++}. ${line}`);\n  }\n\n  return result;\n}\n"
+    },
+    "tests": [
+      {"args":[["tea","milk"]],"expected":["1. tea","2. milk"]},
+      {"args":[["only"]],"expected":["1. only"]},
+      {"args":[[]],"expected":[]},
+      {"args":[["a","b","c","d"]],"expected":["1. a","2. b","3. c","4. d"]},
+      {"args":[["","x"]],"expected":["1. ","2. x"]}
+    ]
+  }
+}

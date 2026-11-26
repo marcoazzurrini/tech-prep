@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function ticket(event, row, seat) {\n  return `${event} ${row}${seat}`;\n}\n\nconst concert = ticket.bind(null, \"Concert\");\nconst rowB = concert.bind(null, \"B\");\n\nconsole.log(concert(\"A\", 7));\nconsole.log(rowB(12));\nconsole.log(rowB(12, 13));\nconsole.log(rowB.length);"
+    },
+    "expected": "Concert A7\nConcert B12\nConcert B12\n1"
+  }
+}

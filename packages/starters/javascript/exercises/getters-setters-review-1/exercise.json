@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const log = {\n  lines: [],\n  get last() {\n    return this.lines[this.lines.length - 1];\n  },\n  set last(text) {\n    this.lines.push(text);\n    return \"saved\";\n  },\n};\n\nconst result = (log.last = \"a\");\nlog.last += \"b\";\nconst copy = { ...log };\nlog.last = \"c\";\n\nconsole.log(result);\nconsole.log(log.lines.join(\",\"));\nconsole.log(copy.last);\nconsole.log(copy.lines.length);"
+    },
+    "expected": "a\na,ab,c\nab\n3"
+  }
+}

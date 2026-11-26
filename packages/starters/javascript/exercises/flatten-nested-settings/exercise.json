@@ -1,0 +1,21 @@
+{
+  "title": "Flatten Nested Settings",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "flattenSettings"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function flattenSettings(settings) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"theme":"dark","editor":{"tabs":2,"font":{"size":14}}}],"expected":{"theme":"dark","editor.tabs":2,"editor.font.size":14}},
+      {"args":[{}],"expected":{}},
+      {"args":[{"a":1,"b":"two","c":false}],"expected":{"a":1,"b":"two","c":false}},
+      {"args":[{"user":{"name":null,"tags":{}},"debug":true}],"expected":{"user.name":null,"debug":true}},
+      {"args":[{"a":{"b":{"c":{"d":0}}}}],"expected":{"a.b.c.d":0}},
+      {"args":[{"list":{"0":"a","1":"b"},"size":{"w":3,"h":4}}],"expected":{"list.0":"a","list.1":"b","size.w":3,"size.h":4}}
+    ]
+  }
+}

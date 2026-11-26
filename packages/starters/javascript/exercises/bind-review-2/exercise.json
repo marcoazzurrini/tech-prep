@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function area(width, height, unit = \"cm\") {\n  return `${width * height} ${unit}`;\n}\n\nconst wide = area.bind(null, 10);\nconst square = wide.bind(null, 10);\n\nconsole.log(area.length);\nconsole.log(wide.length);\nconsole.log(square.length);\nconsole.log(square());\nconsole.log(wide(2, \"m\"));"
+    },
+    "expected": "2\n1\n0\n100 cm\n20 m"
+  }
+}

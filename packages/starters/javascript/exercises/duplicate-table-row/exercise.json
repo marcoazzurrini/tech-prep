@@ -1,0 +1,19 @@
+{
+  "title": "Duplicate a Row",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function duplicateRow(rows, index) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return duplicateRow([{ label: \"Rent\", cells: [900] }, { label: \"Food\", cells: [300] }], 0);"],"expected":[{"label":"Rent","cells":[900]},{"label":"Rent","cells":[900]},{"label":"Food","cells":[300]}]},
+      {"args":["const rows = [{ label: \"A\", cells: [1] }]; const out = duplicateRow(rows, 0); out[1].label = \"B\"; return out[0].label;"],"expected":"A"},
+      {"args":["const rows = [{ label: \"A\", cells: [1] }]; const out = duplicateRow(rows, 0); out[1].cells.push(2); return out[0].cells;"],"expected":[1]},
+      {"args":["const rows = [{ label: \"A\", cells: [] }, { label: \"B\", cells: [] }]; return duplicateRow(rows, 1).map((r) => rows.indexOf(r));"],"expected":[0,1,-1]},
+      {"args":["const rows = [{ label: \"A\", cells: [1] }, { label: \"B\", cells: [2] }]; duplicateRow(rows, 0); return rows;"],"expected":[{"label":"A","cells":[1]},{"label":"B","cells":[2]}]},
+      {"args":["const rows = [\"A\", \"B\", \"C\"].map((label) => ({ label, cells: [] })); return duplicateRow(rows, 1).map((r) => r.label);"],"expected":["A","B","B","C"]}
+    ]
+  }
+}

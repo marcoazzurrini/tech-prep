@@ -1,0 +1,23 @@
+{
+  "title": "Final Address",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "finalPath"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function finalPath(redirects, path) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"/old":"/new","/new":"/home"},"/old"],"expected":"/home"},
+      {"args":[{"/old":"/new"},"/about"],"expected":"/about"},
+      {"args":[{"/a":"/b","/b":"/a"},"/a"],"expected":null},
+      {"args":[{},"/"],"expected":"/"},
+      {"args":[{"/loop":"/loop"},"/loop"],"expected":null},
+      {"args":[{"/1":"/2","/2":"/3","/3":"/4","/x":"/1"},"/x"],"expected":"/4"},
+      {"args":[{"/in":"/a","/a":"/b","/b":"/a"},"/in"],"expected":null},
+      {"args":[{"/a":"/b","/b":"/a"},"/c"],"expected":"/c"}
+    ]
+  }
+}

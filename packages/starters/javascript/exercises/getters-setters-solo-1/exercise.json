@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const counter = {\n  reads: 0,\n  get next() {\n    this.reads += 1;\n    return this.reads * 10;\n  },\n};\n\nconst a = counter.next;\nconst b = counter.next;\n\nconsole.log(a, b);\nconsole.log(counter.reads);\nconsole.log(counter.next + counter.next);"
+    },
+    "expected": "10 20\n2\n70"
+  }
+}

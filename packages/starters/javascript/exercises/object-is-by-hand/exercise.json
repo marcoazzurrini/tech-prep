@@ -1,0 +1,19 @@
+{
+  "title": "Object.is by Hand",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function is(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [is(1, 1), is(\"a\", \"a\"), is(1, \"1\")];"],"expected":[true,true,false]},
+      {"args":["return [is(NaN, NaN), is(NaN, 0)];"],"expected":[true,false]},
+      {"args":["return [is(0, -0), is(-0, 0)];"],"expected":[false,false]},
+      {"args":["return [is(-0, -0), is(0, 0)];"],"expected":[true,true]},
+      {"args":["const cart = {}; return [is(cart, cart), is({}, {}), is(null, undefined)];"],"expected":[true,false,false]},
+      {"args":["return [is(-0, 0 * -1), is(0 / 0, Number(\"x\")), is(-0, NaN)];"],"expected":[true,true,false]}
+    ]
+  }
+}
