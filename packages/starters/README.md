@@ -1,6 +1,6 @@
 # Starters
 
-The courses that ship with the app. `dsa/` teaches data structures and algorithms concept by concept, with the NeetCode 150 problems as exercises. `jq/` teaches the jq command-line tool.
+The courses that ship with the app. `dsa/` teaches data structures and algorithms concept by concept, with the NeetCode 150 problems as exercises. `javascript/` teaches the JavaScript language in depth, for senior interviews and daily work. `jq/` teaches the jq command-line tool.
 
 Every course is written the same way. Nothing in the app is written for one course.
 
