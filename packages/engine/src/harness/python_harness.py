@@ -5,6 +5,7 @@ The request carries the problem's call shape:
 - kind "function": call `function` with converted args (types in `params`).
 - kind "design": construct `class`, then call the listed methods in order.
 - kind "roundtrip": decode(encode(x)) must give back x.
+- kind "script": run the case's code, which uses the file's names.
 The learner's own print() output is captured per case.
 """
 
@@ -217,8 +218,19 @@ def lookup(module, name):
     return fn
 
 
+def run_script(module, code):
+    """Run the case's code as a function body and give back what it returns."""
+    scope = {name: value for name, value in vars(module).items() if not name.startswith("__")}
+    body = "\n".join("    " + line for line in code.splitlines())
+    exec(f"def __script__():\n{body}\n", scope)
+    return scope["__script__"]()
+
+
 def run_case(request, module, conv, case):
     kind = request.get("kind", "function")
+    if kind == "script":
+        return run_script(module, case["args"][0])
+
     if kind == "design":
         cls = getattr(module, request["class"])
         ops, args = case["ops"], case["args"]

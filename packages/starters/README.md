@@ -71,9 +71,33 @@ The `check` names its checker in `type`. One course can mix them.
 }
 ```
 
-- `stubs` holds the starting code for each language the exercise can be solved in. Put a `reference.py` or `reference.ts` beside it for each one.
+- `stubs` holds the starting code for each language the exercise can be solved in: `python`, `typescript` or `javascript`. Put a `reference.py`, `reference.ts` or `reference.js` beside it for each one.
 - Leave `expected` out of new tests. The build fills it in from the reference.
 - Copy a similar exercise for a class (`"calls": "design"`), linked lists or trees.
+
+A test's arguments are JSON, so a test cannot pass a function. For that, set `"calls": "script"`. Each test then holds a few lines of code as its one argument:
+
+```json
+{
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "stubs": {
+      "javascript": "export function once(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {
+        "args": [
+          "const add = once((a, b) => a + b); return [add(1, 2), add(5, 5)];"
+        ]
+      }
+    ]
+  }
+}
+```
+
+- The code uses what the learner's file exports, by name, and returns a JSON value. `exports.default` is the default export. The code may use `await`.
+- The learner reads the code when its test fails, so keep it to one short line.
 
 ### `command`: the learner types a whole command
 
@@ -118,6 +142,27 @@ The `check` names its checker in `type`. One course can mix them.
 ```
 
 Nothing runs while the learner types. The build runs the source and writes the answer in `expected`. Leave `show_command` out to ask a question about the input alone.
+
+The source can also be a small program. The learner types what it prints:
+
+```json
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = [1, 2];\nconsole.log(a.length);"
+    }
+  }
+}
+```
+
+- `compare` is `"loose"` to compare the answer as a person reads it: spacing, case and quote style do not matter.
+- JavaScript runs as a module, so strict mode is on.
+- `files` holds the files the code imports, by name. They are shown beside the code. Name the code's own file with `main_file`.
 
 The checkers `arrange`, `answer` and `read` are for the tutor's extra exercises. A course cannot hold them yet.
 

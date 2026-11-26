@@ -85,6 +85,9 @@ const content = await import("../src/content.ts");
 const practice = await import("../src/practice.ts");
 const scheduler = await import("../src/scheduler.ts");
 const runner = await import("../src/runner.ts");
+const program = await import("../src/program.ts");
+const { functionCheck } = await import("../src/checks/function.ts");
+const { valueCheck, valueChecker } = await import("../src/checks/value.ts");
 const extras = await import("../src/extras.ts");
 const command = await import("../src/checks/command.ts");
 const exercises = await import("../src/exercises.ts");
@@ -487,6 +490,158 @@ describe("runner", () => {
 
     const naiveRun = exercises.runTests(course, trie, "typescript", naive);
     expect(naiveRun.passed).toBe(naiveRun.total);
+  });
+});
+
+describe("javascript", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "tech-prep-javascript-"));
+
+  const write = (name: string, source: string) => {
+    const file = path.join(dir, name);
+    writeFileSync(file, source);
+
+    return file;
+  };
+
+  const firstTest =
+    "const add = once((a, b) => a + b); return [add(1, 2), add(5, 5)];";
+
+  /** A check whose tests are code: each one uses what the file exports and returns a value. */
+  const once = functionCheck.parse({
+    calls: "script",
+    stubs: { javascript: "export function once(fn) {}\n" },
+    tests: [
+      {
+        args: [firstTest],
+        expected: [3, 3],
+      },
+      {
+        args: ["let n = 0; const f = once(() => ++n); f(); f(); return n;"],
+        expected: 1,
+      },
+      {
+        args: [
+          "await new Promise((r) => setTimeout(r, 1)); return typeof this;",
+        ],
+        expected: "undefined",
+      },
+    ],
+    type: "function",
+  });
+
+  test("a script test runs code on the file's exports", () => {
+    const good = write(
+      "once.js",
+      "export function once(fn) {\n  let done = false;\n  let value;\n  return (...args) => {\n    if (!done) {\n      done = true;\n      value = fn(...args);\n    }\n    return value;\n  };\n}\n"
+    );
+
+    const run = runner.runCode(once, "javascript", good);
+    expect(run.passed).toBe(run.total);
+
+    const bad = runner.runCode(
+      once,
+      "javascript",
+      write("bad.js", "export const once = (fn) => (...args) => fn(...args);\n")
+    );
+
+    expect(bad.passed).toBe(1);
+    // The learner reads the test's code, not a list of arguments.
+    expect(bad.cases[0]?.shown).toBe(firstTest);
+    expect(runner.formatRun(bad)).toContain("input:    const add = once(");
+  });
+
+  test("an error ends on what went wrong, and a syntax error names its line", () => {
+    const thrown = runner.runCode(
+      once,
+      "javascript",
+      write("null.js", "export const once = (fn) => fn.missing.value;\n")
+    );
+
+    expect(thrown.cases[0]?.error?.trim().split("\n").at(-1)).toStartWith(
+      "TypeError: "
+    );
+    expect(
+      runner.runCode(
+        once,
+        "javascript",
+        write("syntax.js", "export function once(fn) {\n  return fn +;\n}\n")
+      ).fatal
+    ).toBe("SyntaxError: Unexpected ; (line 2)");
+  });
+
+  test("a script test works in python too", () => {
+    const check = functionCheck.parse({
+      calls: "script",
+      stubs: { python: "def double(n):\n    pass\n" },
+      tests: [
+        { args: ["total = double(2) + double(3)\nreturn total"], expected: 10 },
+      ],
+      type: "function",
+    });
+
+    const run = runner.runCode(
+      check,
+      "python",
+      write("double.py", "def double(n):\n    return n * 2\n")
+    );
+
+    expect(run.passed).toBe(1);
+  });
+
+  test("a script test reaches the default export through `exports`", () => {
+    const check = functionCheck.parse({
+      calls: "script",
+      stubs: { javascript: "export default function greet() {}\n" },
+      tests: [
+        { args: ["return [exports.default(), answer];"], expected: ["hi", 42] },
+      ],
+      type: "function",
+    });
+
+    const run = runner.runCode(
+      check,
+      "javascript",
+      write(
+        "default.js",
+        "export default function greet() {\n  return 'hi';\n}\nexport const answer = 42;\n"
+      )
+    );
+
+    expect(run.passed).toBe(1);
+  });
+
+  test("a value exercise shows the files its code imports, and runs with them", () => {
+    const check = valueCheck.parse({
+      compare: "loose",
+      source: {
+        code: 'import { count, add } from "./counter.js";\nadd();\nconsole.log(count);',
+        files: {
+          "counter.js":
+            "export let count = 0;\nexport function add() {\n  count += 1;\n}\n",
+        },
+        language: "javascript",
+        main_file: "main.js",
+        run: "code",
+      },
+      type: "value",
+    });
+
+    const built = valueChecker.build(check, { concepts: [], dir: null });
+
+    expect(built.errors).toEqual([]);
+    expect(built.check.expected).toBe("1");
+    expect(valueChecker.view(check)).toMatchObject({
+      shown: [{ label: "main.js" }, { label: "counter.js" }],
+    });
+  });
+
+  test("a javascript program runs as a module, in strict mode", () => {
+    const run = program.execute(
+      "try {\n  leak = 1;\n} catch (error) {\n  console.log(error.name);\n}\nconsole.log(await Promise.resolve(2));",
+      "javascript"
+    );
+
+    expect(run.stdout).toBe("ReferenceError\n2");
   });
 });
 

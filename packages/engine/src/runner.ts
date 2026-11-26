@@ -3,7 +3,6 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import type { CompareMode, FunctionCheck } from "./checks/function.ts";
-import { extension } from "./content.ts";
 import type { Language } from "./content.ts";
 
 const TIMEOUT_MS = 10_000;
@@ -13,6 +12,8 @@ export interface CaseResult {
   index: number;
   ok: boolean;
   args: unknown[];
+  /** The input as the learner reads it, when it is not a list of arguments: a test's code. */
+  shown?: string;
   expected: unknown;
   actual?: unknown;
   error?: string;
@@ -41,9 +42,12 @@ const command = (language: Language): [string, string[]] => {
   ];
 };
 
-/** Solutions import ListNode/TreeNode/GraphNode from a `ds` module next to them. */
+/**
+ * Solutions import ListNode/TreeNode/GraphNode from a `ds` module next to them. JavaScript
+ * imports the TypeScript one: Bun runs both.
+ */
 export const ensureDataStructures = (dir: string, language: Language): void => {
-  const name = `ds.${extension(language)}`;
+  const name = language === "python" ? "ds.py" : "ds.ts";
   const source = readFileSync(path.join(HARNESS_DIR, name), "utf-8");
   const target = path.join(dir, name);
 
@@ -92,6 +96,15 @@ export const equal = (
     JSON.stringify(canonical(actual, mode)) ===
     JSON.stringify(canonical(expected, mode))
   );
+};
+
+/** The code of a script test: the one string in its arguments. Null when it holds anything else. */
+// oxlint-disable-next-line anti-slop/no-unknown-parameters -- a test's arguments are arbitrary JSON
+export const scriptCode = (args: unknown[]): string | null => {
+  const [code] = args;
+
+  // oxlint-disable-next-line anti-slop/no-runtime-typeof -- a test's arguments are arbitrary JSON
+  return args.length === 1 && typeof code === "string" ? code : null;
 };
 
 /** Call the solution in `file` on every test of a function check. */
@@ -178,7 +191,7 @@ export const runCode = (
     const actual = "actual" in r ? r.actual : null;
     const ok = !r.error && equal(actual, test.expected, check.compare);
 
-    return {
+    const result: CaseResult = {
       args: test.args,
       expected: test.expected,
       index,
@@ -186,6 +199,14 @@ export const runCode = (
       ...r,
       actual,
     };
+
+    const code = check.calls === "script" ? scriptCode(test.args) : null;
+
+    if (code !== null) {
+      result.shown = code;
+    }
+
+    return result;
   });
 
   return { cases, passed: cases.filter((c) => c.ok).length, total };
@@ -218,7 +239,7 @@ export const formatRun = (run: RunResult, maxFailures = 3): string => {
   for (const c of failures.slice(0, maxFailures)) {
     lines.push(
       `\n✗ case ${c.index + 1}`,
-      `  input:    ${short(c.args)}`,
+      `  input:    ${c.shown ?? short(c.args)}`,
       `  expected: ${short(c.expected)}`
     );
 

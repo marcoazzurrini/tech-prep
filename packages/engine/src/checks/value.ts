@@ -33,6 +33,10 @@ const CodeSource = z.object({
   run: z.literal("code"),
   language: z.string(),
   code: z.string(),
+  /** Files the code imports, by name. They are shown beside the code, which is `main_file`. */
+  files: z.record(z.string(), z.string()).optional(),
+  /** What the code's own file is called on screen when it imports others, such as "main.js". */
+  main_file: z.string().optional(),
 });
 
 // oxlint-disable-next-line sort-keys -- written back to the exercise's file in this order
@@ -100,7 +104,12 @@ const build = (check: ValueCheck): Built<ValueCheck> => {
       return {
         check: {
           ...check,
-          expected: outputOf(source.code.trim(), source.language, "The code"),
+          expected: outputOf(
+            source.code.trim(),
+            source.language,
+            "The code",
+            source.files
+          ),
         },
         errors: [],
       };
@@ -125,7 +134,14 @@ const build = (check: ValueCheck): Built<ValueCheck> => {
 
 const shown = ({ source }: ValueCheck): Shown[] => {
   if (source.run === "code") {
-    return [{ label: "Code", text: source.code }];
+    // Code that imports other files is shown as a file among them, each under its name.
+    return [
+      { label: source.main_file ?? "Code", text: source.code },
+      ...Object.entries(source.files ?? {}).map(([name, text]) => ({
+        label: name,
+        text,
+      })),
+    ];
   }
 
   return [
@@ -163,6 +179,7 @@ export const valueChecker: Checker<ValueCheck> = {
       : {
           answer_is: answerIs,
           code: source.code,
+          files: source.files,
           wanted_output: check.expected,
         };
   },
