@@ -108,7 +108,12 @@ describe("courses", () => {
   const course = dsa;
 
   test("the app's own courses come first, then the ones beside it", () => {
-    expect(content.courses().map((c) => c.id)).toEqual(["dsa", "jq", "mini"]);
+    expect(content.courses().map((c) => c.id)).toEqual([
+      "dsa",
+      "javascript",
+      "jq",
+      "mini",
+    ]);
     // With no choice saved yet, the first course is the open one.
     expect(content.savedCourse().id).toBe("dsa");
   });
@@ -1162,6 +1167,48 @@ const run = (text: string) =>
   command.runCommand({ file: "data.json", program: "jq" }, text, {
     input: { id: 7 },
   });
+
+describe("javascript course", () => {
+  const course = content.courseById("javascript");
+
+  test("the curriculum is sound, and every lesson that is started is complete", () => {
+    expect(content.validateCurriculum(course)).toEqual([]);
+
+    const written = content
+      .concepts(course)
+      .filter((c) => content.lessonText(course, c.id) !== null);
+
+    expect(written.map((c) => c.id).slice(0, 3)).toEqual([
+      "primitive-types",
+      "numbers",
+      "special-numbers",
+    ]);
+    expect(
+      written.filter((c) => !exercises.hasLesson(course, c.id)).map((c) => c.id)
+    ).toEqual([]);
+
+    for (const c of written) {
+      const parts = lessons.lessonParts(course, c.id);
+
+      expect(parts.map((p) => p.task)).toEqual(
+        content.guidedSlugs(course, c.id)
+      );
+      expect(parts.filter((p) => p.text.includes("<!--"))).toEqual([]);
+      expect(parts.at(-1)?.text).toContain("## Remember");
+    }
+  });
+
+  test("code is written in JavaScript, and output is typed as text", () => {
+    const languages = new Set(
+      content
+        .problemIndex(course)
+        .filter((p) => exercises.isAuthored(course, p.slug))
+        .map((p) => exercises.problemLanguage(course, p.slug))
+    );
+
+    expect([...languages].toSorted()).toEqual(["javascript", "text"]);
+  });
+});
 
 describe("jq course", () => {
   const course = content.courseById("jq");

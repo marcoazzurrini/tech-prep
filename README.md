@@ -1,6 +1,6 @@
 # tech-prep
 
-A desktop study app that follows learning science. Each subject is a course of chapters and lessons. A lesson teaches one concept, then you solve a problem alone, and spaced reviews bring each concept back later. An AI tutor sits in a pane beside the lesson and helps when you ask. The app comes with two courses: DSA (data structures and algorithms), which uses the NeetCode 150 problems as exercises, and the `jq` command-line tool.
+A desktop study app that follows learning science. Each subject is a course of chapters and lessons. A lesson teaches one concept, then you solve a problem alone, and spaced reviews bring each concept back later. An AI tutor sits in a pane beside the lesson and helps when you ask. The app comes with three courses: DSA (data structures and algorithms), which uses the NeetCode 150 problems as exercises, the JavaScript language, and the `jq` command-line tool.
 
 - [PRODUCT.md](PRODUCT.md): what the app is for and how it should behave.
 - [docs/learning-model.md](docs/learning-model.md): the learning model.
