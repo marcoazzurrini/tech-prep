@@ -555,6 +555,35 @@ describe("javascript", () => {
     expect(runner.formatRun(bad)).toContain("input:    const add = once(");
   });
 
+  test("a rejection nothing handles fails its own test, and the others still run", () => {
+    const check = functionCheck.parse({
+      calls: "script",
+      stubs: { javascript: "export const load = (ok) => {};\n" },
+      tests: [
+        { args: ["load(false); return 1;"], expected: 1 },
+        {
+          args: [
+            "const log = [1]; setTimeout(() => log.push(2), 0); return log;",
+          ],
+          expected: [1],
+        },
+      ],
+      type: "function",
+    });
+
+    const file = write(
+      "load.js",
+      'export const load = (ok) => (ok ? Promise.resolve(1) : Promise.reject(new Error("offline")));\n'
+    );
+
+    const run = runner.runCode(check, "javascript", file);
+
+    expect(run.cases[0]?.error).toContain("nothing handled it");
+    expect(run.cases[0]?.error).toContain("offline");
+    // What a test returns is kept as it was when the test ended.
+    expect(run.cases[1]?.ok).toBe(true);
+  });
+
   test("an error ends on what went wrong, and a syntax error names its line", () => {
     const thrown = runner.runCode(
       once,
@@ -1593,7 +1622,10 @@ describe("bridge", () => {
     ]);
 
     expect(course).toMatchObject({ id: 1, result: { subject: {} } });
-    expect(reviews).toMatchObject({ id: 2, result: { tracks: [{}, {}, {}] } });
+    expect(reviews).toMatchObject({
+      id: 2,
+      result: { tracks: [{}, {}, {}, {}] },
+    });
     expect(problem).toMatchObject({
       id: 3,
       result: { check: { type: "function" }, slug: "two-sum" },
