@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconst task = (name, ms) => async () => {\n  await sleep(ms);\n  console.log(\"end \" + name);\n  return name;\n};\n\nasync function runLimited(tasks, limit) {\n  const results = [];\n  let next = 0;\n  const worker = async () => {\n    while (next < tasks.length) {\n      const i = next++;\n      results[i] = await tasks[i]();\n    }\n  };\n  await Promise.all(Array.from({ length: limit }, worker));\n  return results;\n}\n\nrunLimited([task(\"a\", 50), task(\"b\", 20), task(\"c\", 5)], 2).then((names) => console.log(names.join(\",\")));"
+    },
+    "expected": "end b\nend c\nend a\na,b,c"
+  }
+}

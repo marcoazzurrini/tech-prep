@@ -2313,7 +2313,8 @@
       }
     ],
     "key_idea": "A memoized function keeps each result in a cache, keyed by its arguments. A second call with the same arguments returns the cached result without running the function.",
-    "solo": "memoization-solo-1"
+    "guided": 4,
+    "solo": ["memoization-solo-1", "results-by-identity"]
   },
   {
     "id": "currying",
@@ -2327,7 +2328,8 @@
       }
     ],
     "key_idea": "A curried function takes its arguments one group at a time and runs when it has `fn.length` of them. Partial application fixes some arguments now and takes the rest later.",
-    "solo": "currying-solo-1"
+    "guided": 4,
+    "solo": ["currying-solo-1", "fill-in-the-gaps"]
   },
   {
     "id": "composition",
@@ -2341,7 +2343,8 @@
       }
     ],
     "key_idea": "`pipe(f, g)` returns a function that runs `f`, then `g` on its result. `compose` runs them from right to left. Both are one `reduce` over the list of functions.",
-    "solo": "composition-solo-1"
+    "guided": 3,
+    "solo": ["composition-solo-1", "stop-at-missing-value"]
   },
   {
     "id": "debounce",
@@ -2359,7 +2362,8 @@
       }
     ],
     "key_idea": "A debounced function waits until the calls stop. Each call cancels the timer of the call before and starts a new one, so only the last call runs.",
-    "solo": "debounce-solo-1"
+    "guided": 4,
+    "solo": ["debounce-solo-1", "run-pending-now"]
   },
   {
     "id": "throttle",
@@ -2373,7 +2377,8 @@
       }
     ],
     "key_idea": "A throttled function runs at most once per interval. The first call runs at once, and calls during the wait are dropped or saved for the end.",
-    "solo": "throttle-solo-1"
+    "guided": 3,
+    "solo": ["throttle-solo-1", "leading-trailing-options"]
   },
   {
     "id": "deep-clone",
@@ -2387,7 +2392,8 @@
       }
     ],
     "key_idea": "To clone deeply, copy primitives as they are and recurse into arrays and objects. Keep a `WeakMap` from each original to its copy, so a cycle ends instead of looping forever.",
-    "solo": "deep-clone-solo-1"
+    "guided": 4,
+    "solo": ["deep-clone-solo-1", "full-copy-by-hand"]
   },
   {
     "id": "deep-equal",
@@ -2401,7 +2407,8 @@
       }
     ],
     "key_idea": "Two values are deeply equal when they are the same primitive, or have the same kind, the same keys and deeply equal values under each key.",
-    "solo": "deep-equal-solo-1"
+    "guided": 3,
+    "solo": ["deep-equal-solo-1", "compare-nested-values"]
   },
   {
     "id": "event-emitter",
@@ -2410,7 +2417,8 @@
     "prereqs": ["map", "class-basics"],
     "encompasses": [],
     "key_idea": "An emitter keeps a list of listeners for each event name. `on` adds one, `off` removes it, and `emit` calls each listener with the arguments.",
-    "solo": "event-emitter-solo-1"
+    "guided": 4,
+    "solo": ["event-emitter-solo-1", "message-bus"]
   },
   {
     "id": "array-polyfills",
@@ -2424,7 +2432,8 @@
       }
     ],
     "key_idea": "A polyfill of an array method loops over the indexes, skips the holes and calls the callback with the item, the index and the array.",
-    "solo": "array-polyfills-solo-1"
+    "guided": 4,
+    "solo": ["array-polyfills-solo-1", "reduce-right-by-hand"]
   },
   {
     "id": "call-bind-polyfills",
@@ -2438,7 +2447,8 @@
       }
     ],
     "key_idea": "To call a function with a chosen `this`, store it on the object under a temporary key and call it as a method. `bind` returns a function that does this with saved arguments.",
-    "solo": "call-bind-polyfills-solo-1"
+    "guided": 4,
+    "solo": ["call-bind-polyfills-solo-1", "borrowed-this-trio"]
   },
   {
     "id": "new-instanceof-polyfills",
@@ -2456,7 +2466,8 @@
       }
     ],
     "key_idea": "`new` is three steps: create an object from `F.prototype`, call `F` on it, and return the object unless `F` returned one. `instanceof` walks the prototype chain looking for `F.prototype`.",
-    "solo": "new-instanceof-polyfills-solo-1"
+    "guided": 3,
+    "solo": ["new-instanceof-polyfills-solo-1", "my-new-operator"]
   },
   {
     "id": "promise-combinators",
@@ -2470,7 +2481,8 @@
       }
     ],
     "key_idea": "`Promise.all` returns a new promise, stores each result at its own index, counts the results and resolves when the count is complete. It rejects on the first rejection.",
-    "solo": "promise-combinators-solo-1"
+    "guided": 4,
+    "solo": ["promise-combinators-solo-1", "my-promise-all"]
   },
   {
     "id": "promise-utilities",
@@ -2484,7 +2496,8 @@
       }
     ],
     "key_idea": "A timeout races the work against a timer that rejects. A retry calls the work again in a loop after each failure, and gives up after a set number of tries.",
-    "solo": "promise-utilities-solo-1"
+    "guided": 4,
+    "solo": ["promise-utilities-solo-1", "retry-with-delay"]
   },
   {
     "id": "concurrency-limit",
@@ -2498,7 +2511,8 @@
       }
     ],
     "key_idea": "To run many tasks with at most `n` at once, start `n` workers. Each worker takes the next task from a shared index until none are left.",
-    "solo": "concurrency-limit-solo-1"
+    "guided": 3,
+    "solo": ["concurrency-limit-solo-1", "map-with-limit"]
   },
   {
     "id": "implement-promise",
@@ -2512,6 +2526,7 @@
       }
     ],
     "key_idea": "A promise holds a state, a value and a list of waiting callbacks. `then` returns a new promise and queues its callback as a microtask. Resolving with a thenable follows it.",
-    "solo": "implement-promise-solo-1"
+    "guided": 4,
+    "solo": ["implement-promise-solo-1", "promise-from-scratch"]
   }
 ]

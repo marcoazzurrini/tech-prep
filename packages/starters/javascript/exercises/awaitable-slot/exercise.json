@@ -1,0 +1,23 @@
+{
+  "title": "Awaitable Slot",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: wait(ms) fulfils after ms. wait() lets every queued callback run first.\nexport const wait = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport class Slot {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = new Slot(); setTimeout(() => s.fill(3), 5); return await s.then((n) => n * 2);"],"expected":6},
+      {"args":["const s = new Slot(); s.fill(1); s.fill(2); s.fail(new Error(\"x\")); return await s;"],"expected":1},
+      {"args":["const s = new Slot(); s.fail(new Error(\"empty\")); return await s.then(null, (e) => e.message);"],"expected":"empty"},
+      {"args":["const s = new Slot(); s.fail(new Error(\"gone\")); try { await s; return \"no error\"; } catch (e) { return e.message; }"],"expected":"gone"},
+      {"args":["const s = new Slot(); s.fill(2); return await s.then((n) => n * 10).then((n) => n + 1);"],"expected":21},
+      {"args":["const s = new Slot(); s.fill(1); return await s.then(() => { throw new Error(\"bad\"); }).then(null, (e) => e.message);"],"expected":"bad"},
+      {"args":["const log = []; const s = new Slot(); s.fill(\"x\"); s.then((v) => log.push(v)); log.push(\"sync\"); await wait(); return log;"],"expected":["sync","x"]},
+      {"args":["const s = new Slot(); s.fill(\"kept\"); return await s.then(null, () => \"no\").then((v) => v);"],"expected":"kept"},
+      {"args":["const s = new Slot(), t = new Slot(); s.fill(1); setTimeout(() => t.fill(2), 5); return await s.then(() => t);"],"expected":2},
+      {"args":["const s = new Slot(); const t = s.then(); return t instanceof Slot && t !== s;"],"expected":true}
+    ]
+  }
+}

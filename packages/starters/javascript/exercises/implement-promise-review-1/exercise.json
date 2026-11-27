@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Box {\n  constructor(value) {\n    this.value = value;\n  }\n\n  then(onFulfilled) {\n    console.log(\"then called\");\n    onFulfilled(this.value);\n  }\n}\n\nasync function main() {\n  console.log(\"before\");\n  const value = await new Box(5);\n  console.log(\"got \" + value);\n}\n\nmain();\nPromise.resolve().then(() => console.log(\"microtask\"));\nconsole.log(\"sync end\");"
+    },
+    "expected": "before\nsync end\nthen called\nmicrotask\ngot 5"
+  }
+}

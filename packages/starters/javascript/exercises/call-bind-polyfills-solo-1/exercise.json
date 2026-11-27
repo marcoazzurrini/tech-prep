@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "Function.prototype.myCall = function (thisArg, ...args) {\n  const key = Symbol(\"fn\");\n  thisArg[key] = this;\n  const result = thisArg[key](...args);\n  delete thisArg[key];\n  return result;\n};\n\nfunction inspect(extra) {\n  return `${Object.keys(this).length} ${Reflect.ownKeys(this).length} ${extra}`;\n}\n\nconst cart = { items: 2, total: 9 };\n\nconsole.log(inspect.myCall(cart, \"during\"));\nconsole.log(Reflect.ownKeys(cart).length);"
+    },
+    "expected": "2 3 during\n2"
+  }
+}

@@ -4154,10 +4154,46 @@
     "concepts": ["memoization"]
   },
   {
+    "slug": "results-by-identity",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["memoization"]
+  },
+  {
+    "slug": "pay-per-lookup",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["memoization"]
+  },
+  {
+    "slug": "memoization-review-2",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["memoization", "recursion"]
+  },
+  {
     "slug": "currying-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["currying"]
+  },
+  {
+    "slug": "fill-in-the-gaps",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["currying"]
+  },
+  {
+    "slug": "arguments-in-stages",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["currying"]
+  },
+  {
+    "slug": "currying-review-2",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["currying", "bind", "function-properties"]
   },
   {
     "slug": "composition-solo-1",
@@ -4166,10 +4202,46 @@
     "concepts": ["composition"]
   },
   {
+    "slug": "stop-at-missing-value",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["composition"]
+  },
+  {
+    "slug": "composition-review-1",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["composition"]
+  },
+  {
+    "slug": "request-layers",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["composition", "function-wrappers"]
+  },
+  {
     "slug": "debounce-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["debounce"]
+  },
+  {
+    "slug": "run-pending-now",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["debounce"]
+  },
+  {
+    "slug": "draft-autosave",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["debounce"]
+  },
+  {
+    "slug": "search-suggestions",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["debounce", "promise-basics"]
   },
   {
     "slug": "throttle-solo-1",
@@ -4178,10 +4250,46 @@
     "concepts": ["throttle"]
   },
   {
+    "slug": "leading-trailing-options",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["throttle"]
+  },
+  {
+    "slug": "progress-reports",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["throttle"]
+  },
+  {
+    "slug": "spam-guard",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["throttle", "map"]
+  },
+  {
     "slug": "deep-clone-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["deep-clone"]
+  },
+  {
+    "slug": "full-copy-by-hand",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["deep-clone"]
+  },
+  {
+    "slug": "undo-snapshot",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["deep-clone"]
+  },
+  {
+    "slug": "copy-scene-tree",
+    "topic": "patterns",
+    "difficulty": "hard",
+    "concepts": ["deep-clone", "class-basics", "symbols"]
   },
   {
     "slug": "deep-equal-solo-1",
@@ -4190,10 +4298,46 @@
     "concepts": ["deep-equal"]
   },
   {
+    "slug": "compare-nested-values",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["deep-equal"]
+  },
+  {
+    "slug": "form-has-changed",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["deep-equal"]
+  },
+  {
+    "slug": "same-store-state",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["deep-equal", "map", "set"]
+  },
+  {
     "slug": "event-emitter-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["event-emitter"]
+  },
+  {
+    "slug": "message-bus",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["event-emitter"]
+  },
+  {
+    "slug": "store-subscriptions",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["event-emitter"]
+  },
+  {
+    "slug": "plugin-hooks",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["event-emitter", "try-catch"]
   },
   {
     "slug": "array-polyfills-solo-1",
@@ -4202,10 +4346,46 @@
     "concepts": ["array-polyfills"]
   },
   {
+    "slug": "reduce-right-by-hand",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["array-polyfills"]
+  },
+  {
+    "slug": "flatten-to-depth",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["array-polyfills"]
+  },
+  {
+    "slug": "all-or-any-check",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["array-polyfills", "sparse-arrays", "call-apply"]
+  },
+  {
     "slug": "call-bind-polyfills-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["call-bind-polyfills"]
+  },
+  {
+    "slug": "borrowed-this-trio",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["call-bind-polyfills"]
+  },
+  {
+    "slug": "run-as-method",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["call-bind-polyfills"]
+  },
+  {
+    "slug": "preset-constructor",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["call-bind-polyfills", "constructor-functions", "instanceof"]
   },
   {
     "slug": "new-instanceof-polyfills-solo-1",
@@ -4214,10 +4394,46 @@
     "concepts": ["new-instanceof-polyfills"]
   },
   {
+    "slug": "my-new-operator",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["new-instanceof-polyfills"]
+  },
+  {
+    "slug": "nearest-class",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["new-instanceof-polyfills"]
+  },
+  {
+    "slug": "revive-saved-objects",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["new-instanceof-polyfills", "json"]
+  },
+  {
     "slug": "promise-combinators-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["promise-combinators"]
+  },
+  {
+    "slug": "my-promise-all",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["promise-combinators"]
+  },
+  {
+    "slug": "first-replies",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["promise-combinators"]
+  },
+  {
+    "slug": "resolve-nested-promises",
+    "topic": "patterns",
+    "difficulty": "hard",
+    "concepts": ["promise-combinators", "recursion"]
   },
   {
     "slug": "promise-utilities-solo-1",
@@ -4226,15 +4442,69 @@
     "concepts": ["promise-utilities"]
   },
   {
+    "slug": "retry-with-delay",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["promise-utilities"]
+  },
+  {
+    "slug": "patient-loader",
+    "topic": "patterns",
+    "difficulty": "hard",
+    "concepts": ["promise-utilities"]
+  },
+  {
+    "slug": "send-until-delivered",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["promise-utilities", "promisify"]
+  },
+  {
     "slug": "concurrency-limit-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["concurrency-limit"]
   },
   {
+    "slug": "map-with-limit",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["concurrency-limit"]
+  },
+  {
+    "slug": "shared-printers",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["concurrency-limit"]
+  },
+  {
+    "slug": "load-each-id-once",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["concurrency-limit", "map"]
+  },
+  {
     "slug": "implement-promise-solo-1",
     "topic": "patterns",
     "difficulty": "easy",
     "concepts": ["implement-promise"]
+  },
+  {
+    "slug": "promise-from-scratch",
+    "topic": "patterns",
+    "difficulty": "hard",
+    "concepts": ["implement-promise"]
+  },
+  {
+    "slug": "awaitable-slot",
+    "topic": "patterns",
+    "difficulty": "hard",
+    "concepts": ["implement-promise"]
+  },
+  {
+    "slug": "implement-promise-review-1",
+    "topic": "patterns",
+    "difficulty": "medium",
+    "concepts": ["implement-promise", "execution-order"]
   }
 ]

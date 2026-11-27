@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function curry(fn) {\n  return function curried(...args) {\n    if (args.length >= fn.length) return fn(...args);\n    return (...more) => curried(...args, ...more);\n  };\n}\n\nconst fee = curry((base, rate, extra = 0) => base * rate + extra);\n\nconsole.log(fee(10)(2));\nconsole.log(fee(10, 2, 5));\nconsole.log(fee(10)(2, 5));\nconsole.log(typeof fee(10));"
+    },
+    "expected": "20\n25\n25\nfunction"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function remember(fn) {\n  const saved = new Map();\n  return (n) => {\n    if (!saved.has(n)) saved.set(n, fn(n));\n    return saved.get(n);\n  };\n}\n\nlet calls = 0;\nfunction paths(n) {\n  calls += 1;\n  return n <= 2 ? n : paths(n - 1) + paths(n - 2);\n}\n\nconst fastPaths = remember(paths);\nconsole.log(fastPaths(6));\nconsole.log(calls);\nconsole.log(fastPaths(6));\nconsole.log(calls);"
+    },
+    "expected": "13\n15\n13\n15"
+  }
+}

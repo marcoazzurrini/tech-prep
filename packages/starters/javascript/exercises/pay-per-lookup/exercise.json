@@ -1,0 +1,19 @@
+{
+  "title": "Pay per Lookup",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fewerLookups(lookup) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const d = fewerLookups((a, b) => { n++; return a + \"-\" + b; }); return [d(\"York\", \"Leeds\"), d(\"York\", \"Leeds\"), n];"],"expected":["York-Leeds","York-Leeds",1]},
+      {"args":["let n = 0; const d = fewerLookups(() => { n++; return 1; }); d(\"York\", \"Leeds\"); d(\"Leeds\", \"York\"); return n;"],"expected":2},
+      {"args":["let n = 0; const d = fewerLookups(() => { n++; return 0; }); d(\"Hull\", \"Hull\"); d(\"Hull\", \"Hull\"); return n;"],"expected":1},
+      {"args":["let n = 0; const d = fewerLookups((a, b) => { n++; return a + b; }); return [d(\"a,b\", \"c\"), d(\"a\", \"b,c\"), n];"],"expected":["a,bc","ab,c",2]},
+      {"args":["let n = 0; const d = fewerLookups((a, b) => { n++; return a + b; }); return [d(\"ab\", \"c\"), d(\"a\", \"bc\"), n];"],"expected":["abc","abc",2]},
+      {"args":["let n = 0; const d1 = fewerLookups(() => ++n); const d2 = fewerLookups(() => ++n); return [d1(\"A\", \"B\"), d2(\"A\", \"B\")];"],"expected":[1,2]}
+    ]
+  }
+}

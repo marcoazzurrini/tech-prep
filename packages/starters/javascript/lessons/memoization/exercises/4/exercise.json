@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function memoize(fn) {\n  const cache = new Map();\n  return (n) => {\n    if (!cache.has(n)) cache.set(n, fn(n));\n    return cache.get(n);\n  };\n}\n\nlet discount = 10;\nconst seen = [];\nconst price = memoize((amount) => {\n  seen.push(amount);\n  return amount - discount;\n});\n\nconsole.log(price(50));\ndiscount = 20;\nconsole.log(price(50));\nconsole.log(price(60));\nconsole.log(seen.join(\",\"));"
+    },
+    "expected": "40\n40\n40\n50,60"
+  }
+}

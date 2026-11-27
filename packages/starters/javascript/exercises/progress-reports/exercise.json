@@ -1,0 +1,18 @@
+{
+  "title": "Progress Reports",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function steadyReports(show, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; const r = steadyReports((p) => s.push(p), 15); r(10); r(20); r(30); await wait(50); return s;"],"expected":[10,30]},
+      {"args":["const s = []; const r = steadyReports((p) => s.push(p), 15); r(10); await wait(50); return s;"],"expected":[10]},
+      {"args":["const s = []; const r = steadyReports((p) => s.push(p), 15); r(10); r(20); const now = [...s]; await wait(50); return [now, s];"],"expected":[[10],[10,20]]},
+      {"args":["const s = []; const r = steadyReports((p) => s.push(p), 20); r(10); await wait(40); r(50); await wait(40); return s;"],"expected":[10,50]},
+      {"args":["const s = []; const r = steadyReports((p) => s.push(p), 15); r(0); r(0); await wait(50); return s;"],"expected":[0,0]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function gather(fn) {\n  return function next(...args) {\n    if (args.length >= fn.length) return fn(...args);\n    return (...more) => next(...args, ...more);\n  };\n}\n\nfunction order(table, dish, drink) {\n  return `${table}: ${dish} + ${drink}`;\n}\n\nconst atFive = order.bind(null, 5);\nconsole.log(atFive.length);\nconsole.log(gather(atFive)(\"soup\")(\"tea\"));\n\nconst early = gather((table, dish = \"bread\", drink) => `${table}: ${dish}`);\nconsole.log(early(3));"
+    },
+    "expected": "2\n5: soup + tea\n3: bread"
+  }
+}

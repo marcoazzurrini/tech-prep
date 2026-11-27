@@ -1,0 +1,19 @@
+{
+  "title": "Search Suggestions",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\n// For the tests: what promise gives, or \"too slow\" if it takes more than 50 ms.\nexport const within = (promise) => {\n  let timer;\n  const late = new Promise((resolve) => {\n    timer = setTimeout(resolve, 50, \"too slow\");\n  });\n\n  return Promise.race([promise, late]).finally(() => clearTimeout(timer));\n};\n\nexport function suggest(search, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const ask = suggest((t) => t + \"?\", 20); return await within(Promise.all([ask(\"c\"), ask(\"ca\")]));"],"expected":["ca?","ca?"]},
+      {"args":["const ask = suggest((t) => t + \"!\", 20); return await within(ask(\"hi\"));"],"expected":"hi!"},
+      {"args":["const ask = suggest((t) => t, 20); const a = await within(ask(\"x\")); const b = await within(ask(\"y\")); return [a, b];"],"expected":["x","y"]},
+      {"args":["let n = 0; const ask = suggest(() => ++n, 20); await within(Promise.all([ask(1), ask(2), ask(3)])); return n;"],"expected":1},
+      {"args":["const p = suggest((t) => t, 30)(\"a\"); const a = await Promise.race([p, wait(5).then(() => 0)]); return [a, await within(p)];"],"expected":[0,"a"]},
+      {"args":["const ask = suggest(async (t) => t.toUpperCase(), 20); return await within(ask(\"ok\"));"],"expected":"OK"}
+    ]
+  }
+}

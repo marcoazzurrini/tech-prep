@@ -1,0 +1,18 @@
+{
+  "title": "A Time Limit with a Warning",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that fulfils with value after ms, and one that rejects.\nexport const later = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport const failLater = (ms, message) => {\n  const promise = new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\n  promise.catch(() => {}); // so it is never reported as unhandled\n  return promise;\n};\n\n\nexport function limitTime(promise, ms, onExpire) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; const v = await limitTime(later(5, \"data\"), 30, () => s.push(\"expired\")); await later(55); return [v, s];"],"expected":["data",[]]},
+      {"args":["return await limitTime(later(50, \"data\"), 20, () => {}).catch((e) => e.message);"],"expected":"timed out"},
+      {"args":["const s = []; await limitTime(later(50), 20, () => s.push(\"expired\")).catch(() => s.push(\"caught\")); return s;"],"expected":["expired","caught"]},
+      {"args":["const s = []; const p = limitTime(failLater(5, \"bad\"), 30, () => s.push(\"x\")); await p.catch(() => {}); await later(55); return s;"],"expected":[]},
+      {"args":["return await limitTime(Promise.resolve(0), 20, () => {});"],"expected":0}
+    ]
+  }
+}

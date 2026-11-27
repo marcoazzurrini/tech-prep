@@ -1,0 +1,24 @@
+{
+  "title": "Follow, Catch and Finally",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: wait(ms) fulfils after ms. wait() lets every queued callback run first.\nexport const wait = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport class MyPromise {\n  constructor(executor) {\n    this.state = \"pending\";\n    this.value = undefined;\n    this.callbacks = [];\n\n    const settle = (state, value) => {\n      if (this.state !== \"pending\") {\n        return;\n      }\n      this.state = state;\n      this.value = value;\n      this.callbacks.forEach((callback) => queueMicrotask(callback));\n      this.callbacks = [];\n    };\n\n    const resolve = (value) => settle(\"fulfilled\", value);\n    const reject = (reason) => settle(\"rejected\", reason);\n\n    try {\n      executor(resolve, reject);\n    } catch (error) {\n      reject(error);\n    }\n  }\n\n  then(onFulfilled, onRejected) {\n    return new MyPromise((resolve, reject) => {\n      const handle = () => {\n        const fulfilled = this.state === \"fulfilled\";\n        const callback = fulfilled ? onFulfilled : onRejected;\n        if (typeof callback !== \"function\") {\n          if (fulfilled) {\n            resolve(this.value);\n          } else {\n            reject(this.value);\n          }\n          return;\n        }\n        try {\n          resolve(callback(this.value));\n        } catch (error) {\n          reject(error);\n        }\n      };\n\n      if (this.state === \"pending\") {\n        this.callbacks.push(handle);\n      } else {\n        queueMicrotask(handle);\n      }\n    });\n  }\n\n  catch(onRejected) {\n    // your code\n  }\n\n  finally(onFinally) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const p = new MyPromise((resolve) => resolve(Promise.resolve(\"native\"))); await wait(); return [p.state, p.value];"],"expected":["fulfilled","native"]},
+      {"args":["const p = new MyPromise((r) => r(1)).then((n) => new MyPromise((r) => setTimeout(r, 5, n + 1))); await wait(20); return p.value;"],"expected":2},
+      {"args":["const p = new MyPromise((resolve) => resolve({ then(ok) { ok(\"from then\"); } })); await wait(); return p.value;"],"expected":"from then"},
+      {"args":["const p = new MyPromise((resolve) => resolve({ then(ok, no) { no(\"refused\"); } })); await wait(); return [p.state, p.value];"],"expected":["rejected","refused"]},
+      {"args":["const p = new MyPromise((res) => res({ then() { throw new Error(\"bad then\"); } })); await wait(); return p.value.message;"],"expected":"bad then"},
+      {"args":["const p = new MyPromise((res, rej) => { res({ then: (ok) => setTimeout(ok, 5, 1) }); rej(2); }); await wait(20); return p.value;"],"expected":1},
+      {"args":["const p = new MyPromise((res) => setTimeout(() => res(p), 0)); await wait(10); return [p.state, p.value instanceof TypeError];"],"expected":["rejected",true]},
+      {"args":["const p = new MyPromise((res, rej) => rej(\"no\")).catch((r) => \"handled \" + r); await wait(); return p.value;"],"expected":"handled no"},
+      {"args":["const s = []; const p = new MyPromise((res) => res(7)).finally((...a) => s.push(a.length)); await wait(); return [s, p.value];"],"expected":[[0],7]},
+      {"args":["const p = new MyPromise((res, rej) => rej(\"no\")).finally(() => {}); await wait(); return [p.state, p.value];"],"expected":["rejected","no"]},
+      {"args":["const p = new MyPromise((res) => res(1)).finally(() => { throw new Error(\"oops\"); }); await wait(); return p.value.message;"],"expected":"oops"}
+    ]
+  }
+}

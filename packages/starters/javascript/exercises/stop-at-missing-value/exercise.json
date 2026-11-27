@@ -1,0 +1,20 @@
+{
+  "title": "Stop at a Missing Value",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function safePipe(...fns) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const city = safePipe((u) => u.address, (a) => a.city); return city({ address: { city: \"Leeds\" } });"],"expected":"Leeds"},
+      {"args":["const city = safePipe((u) => u.address, (a) => a.city); return city({});"],"expected":null},
+      {"args":["let n = 0; const f = safePipe(() => null, () => n++); f(1); return n;"],"expected":0},
+      {"args":["return safePipe()(5);"],"expected":5},
+      {"args":["return safePipe((x) => x * 2)(undefined);"],"expected":null},
+      {"args":["return safePipe((n) => n - 1, (n) => n * 10)(1);"],"expected":0},
+      {"args":["return safePipe((s) => s.trim(), (s) => s.length)(\"  \");"],"expected":0}
+    ]
+  }
+}

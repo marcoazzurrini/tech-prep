@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function debounce(fn, ms) {\n  let timer;\n  return (x) => {\n    if (timer === undefined) fn(x);\n    clearTimeout(timer);\n    timer = setTimeout(() => (timer = undefined), ms);\n  };\n}\n\nconst tap = debounce((n) => console.log(\"tap \" + n), 40);\n\ntap(1);\nsetTimeout(() => tap(2), 20);\nsetTimeout(() => tap(3), 40);\nsetTimeout(() => tap(4), 100);"
+    },
+    "expected": "tap 1\ntap 4"
+  }
+}

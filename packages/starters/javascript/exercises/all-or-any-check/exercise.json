@@ -1,0 +1,22 @@
+{
+  "title": "All or Any",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "Array.prototype.myEvery = function (test, thisArg) {\n  // your code\n};\n\nArray.prototype.mySome = function (test, thisArg) {\n  // your code\n};\n"
+    },
+    "tests": [
+      {"args":["return [[2, 4, 6].myEvery((n) => n % 2 === 0), [2, 3].myEvery((n) => n % 2 === 0)];"],"expected":[true,false]},
+      {"args":["return [[1, 3, 4].mySome((n) => n % 2 === 0), [1, 3].mySome((n) => n % 2 === 0)];"],"expected":[true,false]},
+      {"args":["return [[].myEvery(() => false), [].mySome(() => true)];"],"expected":[true,false]},
+      {"args":["let calls = 0; [1, 2, 3, 4].myEvery((n) => { calls++; return n < 2; }); return calls;"],"expected":2},
+      {"args":["let calls = 0; [1, 2, 3, 4].mySome((n) => { calls++; return n === 2; }); return calls;"],"expected":2},
+      {"args":["const limit = { max: 5 }; return [3, 4].myEvery(function (n) { return n <= this.max; }, limit);"],"expected":true},
+      {"args":["return [[1, , 3].myEvery((n) => n !== undefined), [, ,].mySome(() => true)];"],"expected":[true,false]},
+      {"args":["const seen = []; [\"a\", \"b\"].mySome((item, i, list) => { seen.push(i, list.length); }); return seen;"],"expected":[0,2,1,2]},
+      {"args":["return [[0, \"x\"].mySome((v) => v), [\"\", null].mySome((v) => v), [1, \"a\"].myEvery((v) => v)];"],"expected":[true,false,true]}
+    ]
+  }
+}

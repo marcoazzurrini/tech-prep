@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function myInstanceof(obj, Ctor) {\n  if (obj === null || (typeof obj !== \"object\" && typeof obj !== \"function\")) return false;\n  for (let p = Object.getPrototypeOf(obj); p !== null; p = Object.getPrototypeOf(p)) {\n    if (p === Ctor.prototype) return true;\n  }\n  return false;\n}\n\nfunction Fruit() {}\nfunction Apple() {}\nApple.prototype = Object.create(Fruit.prototype);\n\nconsole.log(myInstanceof(new Apple(), Fruit));\nconsole.log(myInstanceof(Apple.prototype, Apple));\nconsole.log(myInstanceof(Apple, Function));\nconsole.log(myInstanceof(\"apple\", Object));"
+    },
+    "expected": "true\nfalse\ntrue\nfalse"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Fix compose",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const compose = (...fns) => (value) => fns.reduce((result, fn) => fn(result), value);\n"
+    },
+    "tests": [
+      {"args":["return compose((n) => n * 2, (n) => n + 10)(5);"],"expected":30},
+      {"args":["return compose((s) => s + \"!\", (s) => s.toUpperCase())(\"hi\");"],"expected":"HI!"},
+      {"args":["return compose()(7);"],"expected":7},
+      {"args":["return compose((n) => n - 1)(1);"],"expected":0},
+      {"args":["const log = []; compose(() => log.push(\"a\"), () => log.push(\"b\"), () => log.push(\"c\"))(0); return log;"],"expected":["c","b","a"]}
+    ]
+  }
+}

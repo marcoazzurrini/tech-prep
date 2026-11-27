@@ -1,0 +1,21 @@
+{
+  "title": "Same Store State",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sameState(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return sameState({ cart: new Map([[\"pen\", { qty: 2 }]]) }, { cart: new Map([[\"pen\", { qty: 2 }]]) });"],"expected":true},
+      {"args":["return sameState(new Map([[\"pen\", { qty: 2 }]]), new Map([[\"pen\", { qty: 3 }]]));"],"expected":false},
+      {"args":["return [sameState(new Set([\"a\", \"b\"]), new Set([\"b\", \"a\"])), sameState(new Set([\"a\"]), new Set([\"b\"]))];"],"expected":[true,false]},
+      {"args":["return [sameState(new Map(), {}), sameState(new Set(), []), sameState(new Map(), new Set())];"],"expected":[false,false,false]},
+      {"args":["return [sameState(new Map([[1, \"a\"]]), new Map([[1, \"a\"], [2, \"b\"]])), sameState(new Set([1]), new Set([1, 2]))];"],"expected":[false,false]},
+      {"args":["return sameState(new Map([[\"a\", undefined]]), new Map([[\"b\", undefined]]));"],"expected":false},
+      {"args":["return [sameState({ tags: new Set([NaN]) }, { tags: new Set([NaN]) }), sameState({ a: [1] }, { a: { 0: 1 } })];"],"expected":[true,false]},
+      {"args":["return [sameState({ x: 1, y: [2] }, { y: [2], x: 1 }), sameState(null, null), sameState(\"1\", 1)];"],"expected":[true,true,false]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fail = (ms, text) => new Promise((resolve, reject) => setTimeout(reject, ms, new Error(text)));\n\nfunction firstOk(list) {\n  return new Promise((resolve, reject) => {\n    const errors = [];\n    let failed = 0;\n    if (list.length === 0) reject(new AggregateError(errors, \"empty\"));\n    list.forEach((item, i) => {\n      Promise.resolve(item).then(resolve, (error) => {\n        errors[i] = error.message;\n        failed += 1;\n        if (failed === list.length) reject(new AggregateError(errors, \"all failed\"));\n      });\n    });\n  });\n}\n\nfirstOk([]).catch((error) => console.log(error.name + \" \" + error.errors.length));\nfirstOk([fail(40, \"x\"), \"cached\"]).then((value) => console.log(value));\nfirstOk([fail(40, \"late\"), fail(10, \"early\")]).catch((error) => console.log(error.errors.join(\",\")));"
+    },
+    "expected": "AggregateError 0\ncached\nlate,early"
+  }
+}

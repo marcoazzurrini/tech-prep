@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function debounce(fn, ms) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), ms);\n  };\n}\n\nconst log = debounce((word) => console.log(word), 30);\n\nlog(\"a\");\nsetTimeout(() => log(\"b\"), 10);\nsetTimeout(() => log(\"c\"), 60);\nsetTimeout(() => log(\"d\"), 70);\nconsole.log(\"set\");"
+    },
+    "expected": "set\nb\nd"
+  }
+}

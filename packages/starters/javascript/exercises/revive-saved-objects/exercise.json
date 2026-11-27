@@ -1,0 +1,19 @@
+{
+  "title": "Revive Saved Objects",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function revive(text, classes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["class Point { sum() { return this.x + this.y; } } return revive('{\"type\":\"Point\",\"data\":{\"x\":1,\"y\":2}}', { Point }).sum();"],"expected":3},
+      {"args":["class Point {} const p = revive('{\"type\":\"Point\",\"data\":{\"x\":1}}', { Point }); return [p instanceof Point, Object.hasOwn(p, \"x\")];"],"expected":[true,true]},
+      {"args":["let made = 0; class Point { constructor() { made++; } } revive('[{\"type\":\"Point\",\"data\":{}}]', { Point }); return made;"],"expected":0},
+      {"args":["return revive('[1, \"a\", {\"b\": null}]', {});"],"expected":[1,"a",{"b":null}]},
+      {"args":["class Tag { label() { return \"#\" + this.name; } } return revive('[{\"type\":\"Tag\",\"data\":{\"name\":\"js\"}}, 5]', { Tag })[0].label();"],"expected":"#js"},
+      {"args":["class P { half() { return this.x / 2; } } return revive('{\"type\":\"P\",\"data\":{\"p\":{\"type\":\"P\",\"data\":{\"x\":4}}}}', { P }).p.half();"],"expected":2}
+    ]
+  }
+}

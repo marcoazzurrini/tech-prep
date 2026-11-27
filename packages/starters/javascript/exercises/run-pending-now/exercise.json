@@ -1,0 +1,20 @@
+{
+  "title": "Debounce with Flush",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function debounce(fn, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const f = debounce((x) => x * 2, 20); f(4); return [f.flush(), f.flush()];"],"expected":[8,8]},
+      {"args":["const s = []; const f = debounce((x) => s.push(x), 20); f(1); f.flush(); await wait(45); return s;"],"expected":[1]},
+      {"args":["const f = debounce((x) => x + 1, 20); const a = f(1); await wait(45); const b = f(5); await wait(45); return [a === undefined, b];"],"expected":[true,2]},
+      {"args":["const s = []; const f = debounce((x) => s.push(x), 20); f(1); f.cancel(); await wait(45); return [s, f.flush() === undefined];"],"expected":[[],true]},
+      {"args":["const o = { k: 3, f: debounce(function (x) { return this.k * x; }, 20) }; o.f(2); return o.f.flush();"],"expected":6},
+      {"args":["const s = []; const f = debounce((x) => s.push(x), 20); f(1); f(2); await wait(45); return s;"],"expected":[2]},
+      {"args":["const f = debounce((x) => x, 20); f(\"a\"); f(\"b\"); return f.flush();"],"expected":"b"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Retry with Delay",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a task that rejects with \"down\" until ms have passed, then fulfils with \"up\".\nexport const upAfter = (ms) => {\n  let up = false;\n  setTimeout(() => {\n    up = true;\n  }, ms);\n  return async () => {\n    if (!up) {\n      throw new Error(\"down\");\n    }\n    return \"up\";\n  };\n};\n\n\nexport async function retry(fn, times, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await retry(async (n) => \"ok on \" + n, 3, 10);"],"expected":"ok on 1"},
+      {"args":["let n = 0; return await retry(async () => { if (++n < 3) throw new Error(\"x\"); return n; }, 3, 5);"],"expected":3},
+      {"args":["return await retry(async (n) => { throw new Error(\"fail \" + n); }, 3, 5).catch((e) => e.message);"],"expected":"fail 3"},
+      {"args":["return await retry(upAfter(20), 2, 45);"],"expected":"up"},
+      {"args":["return await retry(upAfter(40), 2, 10).catch((e) => e.message);"],"expected":"down"},
+      {"args":["const s = []; setTimeout(() => s.push(30), 30); await retry(() => { throw 1; }, 1, 50).catch(() => s.push(\"end\")); return [...s];"],"expected":["end"]},
+      {"args":["return await retry((n) => { if (n < 2) throw new Error(\"x\"); return \"plain value \" + n; }, 2, 5);"],"expected":"plain value 2"}
+    ]
+  }
+}

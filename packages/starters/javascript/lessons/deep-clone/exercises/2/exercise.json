@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function clone(value) {\n  if (value === null || typeof value !== \"object\") return value;\n  if (value instanceof Date) return new Date(value.getTime());\n  if (Array.isArray(value)) return value.map(clone);\n\n  const copy = {};\n  for (const key of Object.keys(value)) copy[key] = clone(value[key]);\n  return copy;\n}\n\nconst order = { placed: new Date(5), codes: new Set([\"A1\"]) };\nconst copy = clone(order);\n\nconsole.log(copy.placed.getTime());\nconsole.log(copy.codes instanceof Set);\nconsole.log(typeof copy.codes.has);\nconsole.log(JSON.stringify(copy.codes));"
+    },
+    "expected": "5\nfalse\nundefined\n{}"
+  }
+}

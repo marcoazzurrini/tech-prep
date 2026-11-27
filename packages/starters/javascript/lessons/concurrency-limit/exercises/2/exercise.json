@@ -1,0 +1,18 @@
+{
+  "title": "Stop After a Failure",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests. tracker() gives a log and two ways to make a task:\n// t.job(name, ms) logs \"start name\", waits ms, logs \"end name\" and fulfils with name.\n// t.fail(name, ms) logs \"start name\", waits ms, logs \"fail name\" and rejects.\n// wait(ms, value) fulfils with value after ms.\nexport const wait = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport function tracker() {\n  const log = [];\n  const job = (name, ms) => async () => {\n    log.push(\"start \" + name);\n    await wait(ms);\n    log.push(\"end \" + name);\n    return name;\n  };\n  const fail = (name, ms) => async () => {\n    log.push(\"start \" + name);\n    await wait(ms);\n    log.push(\"fail \" + name);\n    throw new Error(name + \" failed\");\n  };\n  return { log, job, fail };\n}\n\n\nexport async function runLimited(tasks, limit) {\n  const results = [];\n  let next = 0;\n\n  async function worker() {\n    while (next < tasks.length) {\n      const i = next;\n      next += 1;\n      results[i] = await tasks[i]();\n    }\n  }\n\n  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, () => worker()));\n  return results;\n}\n"
+    },
+    "tests": [
+      {"args":["const t = tracker(); return [await runLimited([t.job(\"a\", 30), t.job(\"b\", 5), t.job(\"c\", 5)], 2), t.log];"],"expected":[["a","b","c"],["start a","start b","end b","start c","end c","end a"]]},
+      {"args":["const t = tracker(); return await runLimited([t.job(\"a\", 30), t.fail(\"b\", 5)], 2).catch((e) => e.message);"],"expected":"b failed"},
+      {"args":["const t = tracker(); await runLimited([t.job(\"a\", 30), t.fail(\"b\", 5), t.job(\"c\", 5)], 2).catch(() => wait(50)); return t.log;"],"expected":["start a","start b","fail b","end a"]},
+      {"args":["const t = tracker(); await runLimited([t.fail(\"a\", 5), t.job(\"b\", 5)], 1).catch(() => wait(30)); return t.log;"],"expected":["start a","fail a"]},
+      {"args":["return await runLimited([], 3);"],"expected":[]}
+    ]
+  }
+}

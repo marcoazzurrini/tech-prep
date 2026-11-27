@@ -1,0 +1,23 @@
+{
+  "title": "Full Copy by Hand",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function deepClone(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const user = { name: \"Ada\", tags: [\"a\", { b: 1 }] }; const c = deepClone(user); c.tags[1].b = 2; return [user.tags[1].b, c];"],"expected":[1,{"name":"Ada","tags":["a",{"b":2}]}]},
+      {"args":["const fn = () => 1; return [deepClone(5), deepClone(null), deepClone(\"x\"), deepClone(fn) === fn];"],"expected":[5,null,"x",true]},
+      {"args":["const d = new Date(7); const c = deepClone({ d }).d; return [c instanceof Date, c.getTime(), c !== d];"],"expected":[true,7,true]},
+      {"args":["const k = { id: 1 }; const m = new Map([[k, { n: 1 }]]); const c = deepClone(m); return [c.get(k).n, c.get(k) !== m.get(k)];"],"expected":[1,true]},
+      {"args":["const item = { n: 1 }; const c = deepClone(new Set([item])); const [first] = c; return [c instanceof Set, first !== item];"],"expected":[true,true]},
+      {"args":["class Cart { total() { return 3; } } const c = deepClone({ cart: new Cart() }); return [c.cart instanceof Cart, c.cart.total()];"],"expected":[true,3]},
+      {"args":["const id = Symbol(\"id\"); const c = deepClone({ [id]: [1, 2] }); return c[id];"],"expected":[1,2]},
+      {"args":["const node = { id: 1 }; node.self = node; const c = deepClone(node); return [c.self === c, c !== node];"],"expected":[true,true]},
+      {"args":["const ada = { name: \"Ada\" }; const c = deepClone({ lead: ada, list: [ada] }); return [c.lead === c.list[0], c.lead !== ada];"],"expected":[true,true]},
+      {"args":["const m = new Map(); m.set(\"me\", m); const c = deepClone(m); return [c.get(\"me\") === c, c !== m];"],"expected":[true,true]}
+    ]
+  }
+}

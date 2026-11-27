@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Badge(name) {\n  this.text = this.format(name);\n}\n\nBadge.prototype.format = function (name) {\n  return \"[\" + name + \"]\";\n};\n\nfunction build(Ctor, ...args) {\n  const obj = {};\n  try {\n    Ctor.apply(obj, args);\n  } catch (error) {\n    console.log(error.name);\n  }\n  Object.setPrototypeOf(obj, Ctor.prototype);\n  return obj;\n}\n\nconst badge = build(Badge, \"Ada\");\nconsole.log(badge.text);\nconsole.log(badge instanceof Badge);\nconsole.log(typeof badge.format);"
+    },
+    "expected": "TypeError\nundefined\ntrue\nfunction"
+  }
+}

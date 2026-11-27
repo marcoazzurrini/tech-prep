@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const pipe = (...fns) => (value) => fns.reduce((result, fn) => fn(result), value);\n\nconst double = (n) => n * 2;\nconst addOne = (n) => n + 1;\nconst square = (n) => n * n;\n\nconsole.log(pipe(double, addOne)(5));\nconsole.log(pipe(addOne, double)(5));\nconsole.log(pipe(square, double, addOne)(3));\nconsole.log(pipe()(4));"
+    },
+    "expected": "11\n12\n19\n4"
+  }
+}

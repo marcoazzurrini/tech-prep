@@ -1,0 +1,22 @@
+{
+  "title": "My Promise All",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that fulfils with value after ms, and one that rejects.\nexport const later = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport const failLater = (ms, message) => {\n  const promise = new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\n  promise.catch(() => {}); // so it is never reported as unhandled\n  return promise;\n};\n\n\nexport function promiseAll(list) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await promiseAll([later(30, \"a\"), later(5, \"b\"), \"c\"]);"],"expected":["a","b","c"]},
+      {"args":["return await Promise.race([promiseAll([]), later(30, \"still pending\")]);"],"expected":[]},
+      {"args":["return await promiseAll([later(30, \"a\"), failLater(5, \"card declined\")]).catch((e) => e.message);"],"expected":"card declined"},
+      {"args":["return await Promise.race([promiseAll([later(50), failLater(5, \"x\")]).catch(() => \"failed\"), later(30, \"waited\")]);"],"expected":"failed"},
+      {"args":["return await promiseAll([failLater(30, \"late\"), failLater(5, \"early\")]).catch((e) => e.message);"],"expected":"early"},
+      {"args":["return await promiseAll(new Set([1, later(5, 2)]));"],"expected":[1,2]},
+      {"args":["return await promiseAll([{ then(resolve) { resolve(\"from a thenable\"); } }]);"],"expected":["from a thenable"]},
+      {"args":["return await promiseAll([later(5, 0), later(30, false), null]);"],"expected":[0,false,null]},
+      {"args":["return await promiseAll(5).catch((e) => e.name);"],"expected":"TypeError"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function clone(value, seen = new WeakMap()) {\n  if (value === null || typeof value !== \"object\") return value;\n  if (seen.has(value)) return seen.get(value);\n\n  const copy = Array.isArray(value) ? [] : {};\n  seen.set(value, copy);\n  for (const key of Object.keys(value)) copy[key] = clone(value[key], seen);\n  return copy;\n}\n\nconst tags = [\"new\"];\nconst post = { tags, meta: { tags }, when: new Date(0), show() {} };\nconst copy = clone(post);\n\nconsole.log(copy.meta.tags === copy.tags, copy.tags === tags);\nconsole.log(copy.show === post.show);\nconsole.log(copy.when instanceof Date, JSON.stringify(copy.when));"
+    },
+    "expected": "true false\ntrue\nfalse {}"
+  }
+}

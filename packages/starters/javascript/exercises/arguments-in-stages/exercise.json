@@ -1,0 +1,19 @@
+{
+  "title": "Arguments in Stages",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function inStages(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const add = inStages((a, b, c) => a + b + c); return [add(1)(2)(3), add(1, 2)(3), add(1)(2, 3), add(1, 2, 3)];"],"expected":[6,6,6,6]},
+      {"args":["const add = inStages((a, b, c) => a + b + c); const one = add(1); return [one(2)(3), one(10, 20)];"],"expected":[6,31]},
+      {"args":["const f = inStages(function (a, b) { return arguments.length; }); return f(1)(2, 3);"],"expected":3},
+      {"args":["return inStages(() => \"ran\")();"],"expected":"ran"},
+      {"args":["return typeof inStages((a, b) => a)(1);"],"expected":"function"},
+      {"args":["const f = inStages((a, b) => a + b); return f()(1)()(2);"],"expected":3}
+    ]
+  }
+}

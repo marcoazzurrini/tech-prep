@@ -1,0 +1,20 @@
+{
+  "title": "Patient Loader",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that fulfils with value after ms, and one that rejects.\nexport const later = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport const failLater = (ms, message) => {\n  const promise = new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\n  promise.catch(() => {}); // so it is never reported as unhandled\n  return promise;\n};\n\n\nexport async function loadPatiently(load, tries, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; return await loadPatiently(() => later(++n === 1 ? 50 : 5, \"data \" + n), 2, 25);"],"expected":"data 2"},
+      {"args":["return await loadPatiently(() => later(50, \"x\"), 2, 20).catch((e) => e.message);"],"expected":"too slow"},
+      {"args":["return await loadPatiently(async () => { throw new Error(\"offline\"); }, 3, 20).catch((e) => e.message);"],"expected":"offline"},
+      {"args":["let n = 0; return await loadPatiently(async () => { if (++n < 3) throw new Error(\"x\"); return n; }, 3, 20);"],"expected":3},
+      {"args":["return await loadPatiently(() => later(5, \"quick\"), 1, 30);"],"expected":"quick"},
+      {"args":["let n = 0; await loadPatiently(() => { n++; return later(50); }, 2, 10).catch(() => {}); return n;"],"expected":2},
+      {"args":["let n = 0; return await loadPatiently(() => (++n === 1 ? failLater(5, \"x\") : later(50, \"y\")), 2, 20).catch((e) => e.message);"],"expected":"too slow"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Preset Arguments",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function preset(fn, context, ...presets) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function Field(type, name) { this.type = type; this.name = name; } const T = preset(Field, null, \"text\"); return new T(\"email\");"],"expected":{"type":"text","name":"email"}},
+      {"args":["function Field(type) { this.type = type; } const T = preset(Field, {}, \"text\"); return new T() instanceof Field;"],"expected":true},
+      {"args":["const ctx = {}; function Field(type) { this.type = type; } new (preset(Field, ctx, \"text\"))(); return ctx;"],"expected":{}},
+      {"args":["function label(a, b) { return `${this.prefix}${a}-${b}`; } return preset(label, { prefix: \"#\" }, 1)(2);"],"expected":"#1-2"},
+      {"args":["function list(...items) { return [this.id, ...items]; } return preset(list, { id: 0 }, \"a\", \"b\")(\"c\");"],"expected":[0,"a","b","c"]},
+      {"args":["function f() { return this.id; } const g = preset(f, { id: 1 }); return [g(), g.call({ id: 2 })];"],"expected":[1,1]},
+      {"args":["class Tag { constructor(a, b) { this.text = a + b; } } const T = preset(Tag, null, \"#\"); return new T(\"x\").text;"],"expected":"#x"}
+    ]
+  }
+}

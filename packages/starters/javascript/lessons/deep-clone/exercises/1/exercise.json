@@ -1,0 +1,19 @@
+{
+  "title": "Arrays Stay Arrays",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cloneData(value) {\n  if (value === null || typeof value !== \"object\") {\n    return value;\n  }\n\n  const copy = {};\n  for (const key of Object.keys(value)) {\n    copy[key] = cloneData(value[key]);\n  }\n  return copy;\n}\n"
+    },
+    "tests": [
+      {"args":["const copy = cloneData({ tags: [\"new\", \"sale\"] }); return [Array.isArray(copy.tags), copy];"],"expected":[true,{"tags":["new","sale"]}]},
+      {"args":["const copy = cloneData([1, [2, 3]]); return [Array.isArray(copy), Array.isArray(copy[1]), copy];"],"expected":[true,true,[1,[2,3]]]},
+      {"args":["const list = [{ qty: 1 }]; const copy = cloneData(list); copy[0].qty = 9; return [list[0].qty, copy.length];"],"expected":[1,1]},
+      {"args":["const shop = { aisles: [[\"tea\"], [\"jam\"]] }; const copy = cloneData(shop); return copy.aisles[1] !== shop.aisles[1];"],"expected":true},
+      {"args":["return [cloneData(null), cloneData(\"tea\"), cloneData(4)];"],"expected":[null,"tea",4]},
+      {"args":["const copy = cloneData({ a: { b: [] } }); return [Array.isArray(copy.a.b), copy.a.b.length];"],"expected":[true,0]}
+    ]
+  }
+}

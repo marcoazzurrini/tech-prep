@@ -1,0 +1,17 @@
+{
+  "title": "Pass It All On",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function debounce(fn, ms) {\n  let timer;\n\n  return () => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(), ms);\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; const f = debounce((a, b) => s.push(a + b), 20); f(1, 2); f(3, 4); await wait(45); return s;"],"expected":[7]},
+      {"args":["const s = []; const o = { n: 5, f: debounce(function () { s.push(this?.n ?? \"none\"); }, 20) }; o.f(); await wait(45); return s;"],"expected":[5]},
+      {"args":["const s = []; const f = debounce((x) => s.push(x ?? \"none\"), 20); f(\"a\"); f(\"b\"); await wait(45); return s;"],"expected":["b"]},
+      {"args":["const s = []; const f = debounce((...xs) => s.push(xs.length), 20); f(1, 2, 3); await wait(45); return s;"],"expected":[3]}
+    ]
+  }
+}

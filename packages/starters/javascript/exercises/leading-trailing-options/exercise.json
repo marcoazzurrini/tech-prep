@@ -1,0 +1,20 @@
+{
+  "title": "Throttle with Options",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function throttle(fn, ms, options) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15); f(1); f(2); f(3); await wait(50); return s;"],"expected":[1,3]},
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15, { leading: false }); f(1); f(2); await wait(50); return s;"],"expected":[2]},
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15, { trailing: false }); f(1); f(2); f(3); await wait(50); return s;"],"expected":[1]},
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15, { leading: false, trailing: false }); f(1); f(2); await wait(50); return s;"],"expected":[]},
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15, { leading: false }); f(1); const n = s.length; await wait(50); return n;"],"expected":0},
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 10, { trailing: false }); f(1); await wait(30); f(2); await wait(30); return s;"],"expected":[1,2]},
+      {"args":["const s = []; const o = { n: 2, f: throttle(function (x) { s.push(this.n * x); }, 15) }; o.f(1); o.f(5); await wait(50); return s;"],"expected":[2,10]}
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Three Ways to Set this",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "Function.prototype.myCall = function (thisArg, ...args) {\n  // your code\n};\n\nFunction.prototype.myApply = function (thisArg, args) {\n  // your code\n};\n\nFunction.prototype.myBind = function (thisArg, ...early) {\n  // your code\n};\n"
+    },
+    "tests": [
+      {"args":["return (function (n) { return this.base + n; }).myCall({ base: 10 }, 5);"],"expected":15},
+      {"args":["const box = { fn: \"keep\" }; (function () {}).myCall(box); return [Reflect.ownKeys(box), box.fn];"],"expected":[["fn"],"keep"]},
+      {"args":["return (function (a, b) { return this.base + a + b; }).myApply({ base: 1 }, [2, 3]);"],"expected":6},
+      {"args":["const f = function (...all) { return all.length; }; return [f.myApply({}), f.myApply({}, null), f.myApply({}, [1])];"],"expected":[0,0,1]},
+      {"args":["const o = { k: 1 }; (function () {}).myApply(o, [1]); return Reflect.ownKeys(o);"],"expected":["k"]},
+      {"args":["return (function (a, b) { return [this.id, a, b]; }).myBind({ id: 7 }, \"x\")(\"y\");"],"expected":[7,"x","y"]},
+      {"args":["const f = (function () { return this.id; }).myBind({ id: 1 }); const other = { id: 2, f }; return other.f();"],"expected":1},
+      {"args":["function Cup(size) { this.size = size; } const c = new (Cup.myBind({ size: 0 }, \"L\"))(); return [c.size, c instanceof Cup];"],"expected":["L",true]},
+      {"args":["const ctx = {}; function Cup(size) { this.size = size; } new (Cup.myBind(ctx, \"S\"))(); return ctx;"],"expected":{}}
+    ]
+  }
+}

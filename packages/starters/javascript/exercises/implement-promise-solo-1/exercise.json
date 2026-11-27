@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Eager {\n  constructor(executor) {\n    this.callbacks = [];\n    executor((value) => {\n      this.value = value;\n      this.done = true;\n      this.callbacks.forEach((callback) => callback(value));\n    });\n  }\n\n  then(callback) {\n    if (this.done) callback(this.value);\n    else this.callbacks.push(callback);\n  }\n}\n\nnew Eager((resolve) => setTimeout(resolve, 10, \"eager, later\")).then((v) => console.log(v));\nnew Eager((resolve) => resolve(\"eager, now\")).then((v) => console.log(v));\nnew Promise((resolve) => resolve(\"built-in\")).then((v) => console.log(v));\nconsole.log(\"sync\");"
+    },
+    "expected": "eager, now\nsync\nbuilt-in\neager, later"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Send Until Delivered",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function deliver(send, message, tries) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const send = (m, cb) => cb(++n < 3 ? new Error(\"busy\") : null, m + \" sent\"); return await deliver(send, \"hi\", 3);"],"expected":"hi sent"},
+      {"args":["const send = (m, cb) => cb(new Error(\"no signal\")); return await deliver(send, \"hi\", 2).catch((e) => e.message);"],"expected":"no signal"},
+      {"args":["let n = 0; const send = (m, cb) => { n++; cb(new Error(\"x\")); }; await deliver(send, \"hi\", 4).catch(() => {}); return n;"],"expected":4},
+      {"args":["const send = (m, cb) => setTimeout(cb, 5, null, \"ok: \" + m); return await deliver(send, \"tea\", 1);"],"expected":"ok: tea"},
+      {"args":["const send = (m, cb) => { cb(null, \"first\"); cb(new Error(\"late\")); }; return await deliver(send, \"x\", 2);"],"expected":"first"},
+      {"args":["let n = 0; const send = (m, cb) => { if (++n < 2) throw new Error(\"crash\"); cb(null, \"ok\"); }; return await deliver(send, \"x\", 2);"],"expected":"ok"},
+      {"args":["const s = []; const send = (m, cb) => cb(s.push(m) < 2 ? new Error(\"x\") : null, \"ok\"); await deliver(send, \"hey\", 3); return s;"],"expected":["hey","hey"]}
+    ]
+  }
+}

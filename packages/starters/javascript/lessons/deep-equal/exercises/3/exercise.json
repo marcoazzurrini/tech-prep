@@ -1,0 +1,20 @@
+{
+  "title": "Matching Sensor Logs",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sameReadings(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return sameReadings({ temp: [NaN, 4] }, { temp: [NaN, 4] });"],"expected":true},
+      {"args":["return [sameReadings([0], [-0]), sameReadings(-0, 0)];"],"expected":[true,true]},
+      {"args":["return [sameReadings([1], { 0: 1 }), sameReadings({}, [])];"],"expected":[false,false]},
+      {"args":["return [sameReadings(NaN, \"NaN\"), sameReadings(NaN, undefined)];"],"expected":[false,false]},
+      {"args":["return sameReadings({ a: { b: [1, 2] } }, { a: { b: [1, 2, 3] } });"],"expected":false},
+      {"args":["return [sameReadings({ a: 1, b: 2 }, { b: 2, a: 1 }), sameReadings({ a: null }, { a: {} })];"],"expected":[true,false]},
+      {"args":["return [sameReadings({ x: undefined }, { y: undefined }), sameReadings(\"4\", 4)];"],"expected":[false,false]}
+    ]
+  }
+}

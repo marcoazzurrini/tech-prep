@@ -1,0 +1,18 @@
+{
+  "title": "Cancel and Pending",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function debounce(fn, ms) {\n  let timer;\n\n  function debounced(...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), ms);\n  }\n\n  // add cancel and pending\n\n  return debounced;\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; const f = debounce((x) => s.push(x), 20); f(1); f.cancel(); await wait(45); return s;"],"expected":[]},
+      {"args":["const s = []; const f = debounce((x) => s.push(x), 20); f(1); f.cancel(); f(2); await wait(45); return s;"],"expected":[2]},
+      {"args":["const f = debounce(() => {}, 20); const a = f.pending(); f(); const b = f.pending(); await wait(45); return [a, b, f.pending()];"],"expected":[false,true,false]},
+      {"args":["const f = debounce(() => {}, 20); f(); f.cancel(); const after = f.pending(); await wait(45); return after;"],"expected":false},
+      {"args":["const f = debounce(() => {}, 20); f.cancel(); return typeof f.pending();"],"expected":"boolean"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const napA = (ms) => new Promise((resolve) => setTimeout(resolve, ms, \"A\"));\nconst napB = (ms) => new Promise((resolve) => setTimeout(() => resolve, ms));\nconst napC = (ms) => new Promise((resolve) => setTimeout(resolve(\"C\"), ms));\n\nsetTimeout(() => console.log(\"timer\"), 20);\nnapA(40).then((value) => console.log(value));\nnapB(10).then(() => console.log(\"B\"));\nnapC(40).then((value) => console.log(value));"
+    },
+    "expected": "C\ntimer\nA"
+  }
+}

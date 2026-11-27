@@ -1,0 +1,19 @@
+{
+  "title": "Your Own flat",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "Array.prototype.myFlat = function (depth) {\n  // your code\n};\n"
+    },
+    "tests": [
+      {"args":["return [1, [2, [3, [4]]]].myFlat();"],"expected":[1,2,[3,[4]]]},
+      {"args":["return [1, [2, [3, [4]]]].myFlat(2);"],"expected":[1,2,3,[4]]},
+      {"args":["return [[1], [2]].myFlat(0);"],"expected":[[1],[2]]},
+      {"args":["return [[\"a\"], [[\"b\"]], [[[\"c\"]]]].myFlat(Infinity);"],"expected":["a","b","c"]},
+      {"args":["const list = [[1, 2], 3]; const flatList = list.myFlat(); return [flatList, list];"],"expected":[[1,2,3],[[1,2],3]]},
+      {"args":["return [[].myFlat(), [[], [[]]].myFlat(), [\"x\", { y: [1] }].myFlat()];"],"expected":[[],[[]],["x",{"y":[1]}]]}
+    ]
+  }
+}

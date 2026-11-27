@@ -1,0 +1,22 @@
+{
+  "title": "Matching Orders",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sameOrder"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sameOrder(a, b) {\n  if (Object.is(a, b)) {\n    return true;\n  }\n  if (typeof a !== \"object\" || typeof b !== \"object\" || a === null || b === null) {\n    return false;\n  }\n\n  const keys = Object.keys(a);\n  if (keys.length !== Object.keys(b).length) {\n    return false;\n  }\n  return keys.every((key) => Object.hasOwn(b, key) && a[key] === b[key]);\n}\n"
+    },
+    "tests": [
+      {"args":[{"id":1,"ship":{"city":"Oslo"}},{"id":1,"ship":{"city":"Oslo"}}],"expected":true},
+      {"args":[{"id":1},{"id":2}],"expected":false},
+      {"args":[{"id":1},{"id":1,"gift":true}],"expected":false},
+      {"args":[{"a":{"b":{"c":3}}},{"a":{"b":{"c":3}}}],"expected":true},
+      {"args":[{"a":{"b":{"c":3}}},{"a":{"b":{"c":4}}}],"expected":false},
+      {"args":[{"ship":{"city":"Oslo"}},{"ship":{"town":"Oslo"}}],"expected":false},
+      {"args":[{"ship":null},{"ship":{}}],"expected":false}
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Rooms That Loop",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cloneGraph(value, seen = new WeakMap()) {\n  if (value === null || typeof value !== \"object\") {\n    return value;\n  }\n  if (seen.has(value)) {\n    return seen.get(value);\n  }\n\n  const copy = Array.isArray(value) ? [] : {};\n  seen.set(value, copy);\n\n  for (const key of Object.keys(value)) {\n    copy[key] = cloneGraph(value[key]);\n  }\n  return copy;\n}\n"
+    },
+    "tests": [
+      {"args":["const room = { name: \"Lobby\" }; room.exit = room; const copy = cloneGraph(room); return [copy.exit === copy, copy === room];"],"expected":[true,false]},
+      {"args":["const a = { id: \"A\" }; const b = { id: \"B\", next: a }; a.next = b; const c = cloneGraph(a); return [c.next.next === c, c.next.id];"],"expected":[true,"B"]},
+      {"args":["const hall = { name: \"Hall\" }; const map = { rooms: [hall, hall] }; const c = cloneGraph(map); return c.rooms[0] === c.rooms[1];"],"expected":true},
+      {"args":["const list = [1]; list.push(list); const c = cloneGraph(list); return [c[1] === c, c !== list, Array.isArray(c)];"],"expected":[true,true,true]},
+      {"args":["const hall = { name: \"Hall\" }; const c = cloneGraph({ a: hall, b: { c: hall } }); return [c.a === c.b.c, c.a !== hall];"],"expected":[true,true]},
+      {"args":["return [cloneGraph(7), cloneGraph(null), cloneGraph({ x: [1, 2] })];"],"expected":[7,null,{"x":[1,2]}]}
+    ]
+  }
+}

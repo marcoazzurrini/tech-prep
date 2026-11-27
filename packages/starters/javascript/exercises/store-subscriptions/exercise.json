@@ -1,0 +1,20 @@
+{
+  "title": "Store Subscriptions",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createStore(initial) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = createStore({ n: 0 }), log = []; s.subscribe((a, b) => log.push(b.n, a.n)); s.setState({ n: 1 }); return log;"],"expected":[0,1]},
+      {"args":["const s = createStore({ a: 1, b: 2 }); s.setState({ b: 3 }); s.setState({ c: 4 }); return s.getState();"],"expected":{"a":1,"b":3,"c":4}},
+      {"args":["const s = createStore({}); let n = 0; const stop = s.subscribe(() => n++); s.setState({}); stop(); s.setState({}); return n;"],"expected":1},
+      {"args":["const s = createStore({}), log = []; s.subscribe(() => log.push(1)); s.subscribe(() => log.push(2)); s.setState({}); return log;"],"expected":[1,2]},
+      {"args":["const s = createStore({}); let n = 0; const stop = s.subscribe(() => stop()); s.subscribe(() => n++); s.setState({}); return n;"],"expected":1},
+      {"args":["let n = 0; const s = createStore({}), x = s.subscribe(() => n++); s.subscribe(() => n++); x(); x(); s.setState({}); return n;"],"expected":1},
+      {"args":["const start = { n: 0 }; const s = createStore(start); s.setState({ n: 5 }); return [start.n, s.getState().n];"],"expected":[0,5]}
+    ]
+  }
+}

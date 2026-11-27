@@ -1,0 +1,19 @@
+{
+  "title": "Curry with an Arity",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function curry(fn, arity) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const add = curry((a, b, c) => a + b + c); return [add(1)(2)(3), add(1, 2)(3), add(1, 2, 3)];"],"expected":[6,6,6]},
+      {"args":["const join = curry((...parts) => parts.join(\"-\"), 3); return join(\"a\")(\"b\", \"c\");"],"expected":"a-b-c"},
+      {"args":["const add = curry((a, b) => a + b); const plus5 = add(5); return [plus5(1), plus5(2)];"],"expected":[6,7]},
+      {"args":["const tag = curry((a, b = \"!\") => a + b, 2); return tag(\"hi\")(\"?\");"],"expected":"hi?"},
+      {"args":["const count = curry((...xs) => xs.length, 2); return count(1, 2, 3);"],"expected":3},
+      {"args":["return typeof curry((a, b) => a + b)(1);"],"expected":"function"}
+    ]
+  }
+}
