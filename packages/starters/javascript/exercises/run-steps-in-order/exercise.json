@@ -1,0 +1,19 @@
+{
+  "title": "Run Steps in Order",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a step that waits ms, logs its name, then calls next.\nexport const step = (log, name, ms) => (next) =>\n  setTimeout(() => {\n    log.push(name);\n    next();\n  }, ms);\n\n// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function runInOrder(steps, done) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; runInOrder([step(s, \"a\", 30), step(s, \"b\", 0)], () => s.push(\"end\")); await wait(60); return s;"],"expected":["a","b","end"]},
+      {"args":["const s = []; runInOrder([step(s, \"a\", 0), step(s, \"b\", 0), step(s, \"c\", 0)], () => s.push(\"end\")); await wait(40); return s;"],"expected":["a","b","c","end"]},
+      {"args":["const s = []; runInOrder([step(s, \"a\", 10)], () => s.push(\"end\")); return s;"],"expected":["a","end"]},
+      {"args":["const s = []; runInOrder([], () => s.push(\"end\")); return s;"],"expected":["end"]},
+      {"args":["const s = []; runInOrder([(next) => next(), (next) => next()], () => s.push(\"end\")); return s;"],"expected":["end"]},
+      {"args":["let ends = 0; runInOrder([step([], \"a\", 0), step([], \"b\", 0)], () => ends++); await wait(30); return ends;"],"expected":1}
+    ]
+  }
+}

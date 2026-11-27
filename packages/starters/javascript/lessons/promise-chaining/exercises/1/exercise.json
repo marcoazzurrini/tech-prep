@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const score = new Promise((resolve) => resolve(4));\nconst bonus = score.then((n) => n + 6);\n\nscore.then((n) => n * 100);\n\nbonus\n  .then((n) => n * 2)\n  .then((n) => console.log(n));\n\nconsole.log(bonus === score);"
+    },
+    "expected": "false\n20"
+  }
+}

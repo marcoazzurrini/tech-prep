@@ -1,0 +1,19 @@
+{
+  "title": "Step Runner",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function run(task) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return run(function* () { const a = yield () => 2; const b = yield () => a * 5; return b + 1; });"],"expected":11},
+      {"args":["return run(function* () { return \"none\"; });"],"expected":"none"},
+      {"args":["const seen = []; run(function* () { seen.push(yield () => \"a\"); seen.push(yield () => \"b\"); }); return seen;"],"expected":["a","b"]},
+      {"args":["return run(function* () { try { yield () => { throw new Error(\"x\"); }; } catch (e) { return \"caught \" + e.message; } });"],"expected":"caught x"},
+      {"args":["try { run(function* () { yield () => { throw new Error(\"boom\"); }; }); } catch (e) { return e.message; }"],"expected":"boom"},
+      {"args":["return run(function* () { let n = 0; try { yield () => { throw new Error(); }; } catch { n = 1; } return n + (yield () => 4); });"],"expected":5}
+    ]
+  }
+}

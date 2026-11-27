@@ -1,0 +1,20 @@
+{
+  "title": "Checkout Total",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "checkout"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function later(value, ms) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nfunction addFee(total) {\n  return later(total + 3, 10);\n}\n\nexport function checkout(prices) {\n  return later(prices, 10)\n    .then((list) => {\n      list.reduce((sum, price) => sum + price, 0);\n    })\n    .then((sum) => {\n      addFee(sum);\n    });\n}\n"
+    },
+    "tests": [
+      {"args":[[10,20]],"expected":33},
+      {"args":[[]],"expected":3},
+      {"args":[[5]],"expected":8},
+      {"args":[[1,2,3,4]],"expected":13},
+      {"args":[[100,0.5]],"expected":103.5}
+    ]
+  }
+}

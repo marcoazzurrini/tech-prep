@@ -3182,10 +3182,46 @@
     "concepts": ["iteration-protocol"]
   },
   {
+    "slug": "read-until-marker",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["iteration-protocol"]
+  },
+  {
+    "slug": "iteration-protocol-review-1",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["iteration-protocol"]
+  },
+  {
+    "slug": "pair-keys-with-values",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["iteration-protocol", "map"]
+  },
+  {
     "slug": "custom-iterables-solo-1",
     "topic": "iteration",
     "difficulty": "easy",
     "concepts": ["custom-iterables"]
+  },
+  {
+    "slug": "step-range",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["custom-iterables"]
+  },
+  {
+    "slug": "custom-iterables-review-1",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["custom-iterables"]
+  },
+  {
+    "slug": "tag-index-pairs",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["custom-iterables", "map"]
   },
   {
     "slug": "generators-solo-1",
@@ -3194,10 +3230,46 @@
     "concepts": ["generators"]
   },
   {
+    "slug": "flatten-nested-lists",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["generators"]
+  },
+  {
+    "slug": "generators-review-1",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["generators"]
+  },
+  {
+    "slug": "sorted-tree-order",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["generators", "recursion"]
+  },
+  {
     "slug": "generator-control-solo-1",
     "topic": "iteration",
     "difficulty": "easy",
     "concepts": ["generator-control"]
+  },
+  {
+    "slug": "batch-collector",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["generator-control"]
+  },
+  {
+    "slug": "generator-control-review-1",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["generator-control"]
+  },
+  {
+    "slug": "step-runner",
+    "topic": "iteration",
+    "difficulty": "hard",
+    "concepts": ["generator-control", "try-catch", "first-class-functions"]
   },
   {
     "slug": "lazy-sequences-solo-1",
@@ -3206,10 +3278,46 @@
     "concepts": ["lazy-sequences"]
   },
   {
+    "slug": "chunk-a-stream",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["lazy-sequences"]
+  },
+  {
+    "slug": "lazy-sequences-review-1",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["lazy-sequences"]
+  },
+  {
+    "slug": "paged-feed",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["lazy-sequences", "first-class-functions"]
+  },
+  {
     "slug": "event-loop-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["event-loop"]
+  },
+  {
+    "slug": "run-in-slices",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["event-loop"]
+  },
+  {
+    "slug": "event-loop-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["event-loop"]
+  },
+  {
+    "slug": "batch-log-messages",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["event-loop", "closures"]
   },
   {
     "slug": "timers-solo-1",
@@ -3218,10 +3326,46 @@
     "concepts": ["timers"]
   },
   {
+    "slug": "countdown-with-stop",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["timers"]
+  },
+  {
+    "slug": "when-ready",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["timers"]
+  },
+  {
+    "slug": "timers-review-2",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["timers", "closures-in-loops"]
+  },
+  {
     "slug": "async-callbacks-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["async-callbacks"]
+  },
+  {
+    "slug": "run-steps-in-order",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-callbacks"]
+  },
+  {
+    "slug": "retry-flaky-loader",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-callbacks"]
+  },
+  {
+    "slug": "async-callbacks-review-2",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-callbacks", "try-catch"]
   },
   {
     "slug": "promise-basics-solo-1",
@@ -3230,10 +3374,46 @@
     "concepts": ["promise-basics"]
   },
   {
+    "slug": "first-message-or-timeout",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-basics"]
+  },
+  {
+    "slug": "cancellable-timer",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-basics"]
+  },
+  {
+    "slug": "promise-basics-review-2",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-basics", "try-catch"]
+  },
+  {
     "slug": "promise-then-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["promise-then"]
+  },
+  {
+    "slug": "track-loading-state",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-then"]
+  },
+  {
+    "slug": "promise-then-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-then"]
+  },
+  {
+    "slug": "error-first-adapter",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-then", "async-callbacks"]
   },
   {
     "slug": "promise-chaining-solo-1",
@@ -3242,10 +3422,46 @@
     "concepts": ["promise-chaining"]
   },
   {
+    "slug": "apply-steps-in-order",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-chaining"]
+  },
+  {
+    "slug": "promise-chaining-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-chaining"]
+  },
+  {
+    "slug": "jobs-take-turns",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-chaining", "closures"]
+  },
+  {
     "slug": "promise-errors-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["promise-errors"]
+  },
+  {
+    "slug": "first-source-that-answers",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-errors"]
+  },
+  {
+    "slug": "promise-errors-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-errors"]
+  },
+  {
+    "slug": "place-order-outcomes",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-errors", "custom-errors"]
   },
   {
     "slug": "microtasks-solo-1",
@@ -3254,10 +3470,46 @@
     "concepts": ["microtasks"]
   },
   {
+    "slug": "mailbox-delivery",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["microtasks"]
+  },
+  {
+    "slug": "microtasks-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["microtasks"]
+  },
+  {
+    "slug": "batch-calls-together",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["microtasks", "closures"]
+  },
+  {
     "slug": "promise-static-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["promise-static"]
+  },
+  {
+    "slug": "wait-for-guests",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-static"]
+  },
+  {
+    "slug": "promise-static-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-static"]
+  },
+  {
+    "slug": "inbox-that-waits",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-static", "closures"]
   },
   {
     "slug": "promise-all-solo-1",
@@ -3266,10 +3518,46 @@
     "concepts": ["promise-all"]
   },
   {
+    "slug": "all-with-fallback",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-all"]
+  },
+  {
+    "slug": "promise-all-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-all"]
+  },
+  {
+    "slug": "resolve-every-field",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-all", "object-iteration"]
+  },
+  {
     "slug": "promise-race-any-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["promise-race-any"]
+  },
+  {
+    "slug": "first-to-succeed",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-race-any"]
+  },
+  {
+    "slug": "promise-race-any-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-race-any"]
+  },
+  {
+    "slug": "all-before-deadline",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promise-race-any", "promise-all"]
   },
   {
     "slug": "async-functions-solo-1",
@@ -3278,16 +3566,70 @@
     "concepts": ["async-functions"]
   },
   {
+    "slug": "never-throw-on-call",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-functions"]
+  },
+  {
+    "slug": "async-functions-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-functions"]
+  },
+  {
+    "slug": "keep-paid-orders",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-functions", "map-filter", "promise-all"]
+  },
+  {
     "slug": "await-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["await"]
   },
   {
+    "slug": "follow-the-route",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["await"]
+  },
+  {
+    "slug": "await-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["await"]
+  },
+  {
+    "slug": "total-parcel-weight",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["await", "reduce"]
+  },
+  {
     "slug": "async-errors-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["async-errors"]
+  },
+  {
+    "slug": "load-with-backup",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-errors"]
+  },
+  {
+    "slug": "async-errors-review-1",
+    "topic": "async",
+    "difficulty": "hard",
+    "concepts": ["async-errors"]
+  },
+  {
+    "slug": "save-draft-safely",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-errors", "custom-errors"]
   },
   {
     "slug": "sequential-parallel-solo-1",

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const week = {\n  days: [\"Mon\", \"Tue\", \"Wed\"],\n  [Symbol.iterator]() {\n    const days = this.days;\n    let i = 0;\n    return {\n      next: () => (i < days.length ? { value: days[i++], done: false } : { value: undefined, done: true }),\n    };\n  },\n};\n\nconst [first] = week;\nweek.days.push(\"Thu\");\nconsole.log(first);\nconsole.log([...week].join(\",\"));\nconsole.log([...week].length);"
+    },
+    "expected": "Mon\nMon,Tue,Wed,Thu\n4"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Unread Messages",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Inbox {\n  constructor(messages) {\n    this.messages = messages;\n  }\n\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await new Inbox([{ read: false }, { read: true }]).unread();"],"expected":1},
+      {"args":["return new Inbox([]).unread() instanceof Promise;"],"expected":true},
+      {"args":["return await new Inbox([]).unread();"],"expected":0},
+      {"args":["const inbox = new Inbox([{ read: false }]); inbox.messages.push({ read: false }); return await inbox.unread();"],"expected":2},
+      {"args":["return await new Inbox(null).unread().catch((e) => e.name);"],"expected":"TypeError"}
+    ]
+  }
+}

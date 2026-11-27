@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* order() {\n  console.log(\"A\");\n  yield 1;\n  console.log(\"B\");\n  yield 2;\n}\n\nconst run = order();\nconsole.log(\"C\");\nconst first = run.next().value;\nconsole.log(first);\nrun.next();"
+    },
+    "expected": "C\nA\n1\nB"
+  }
+}

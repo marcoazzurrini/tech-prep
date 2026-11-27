@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function divideLater(a, b, callback) {\n  setTimeout(() => {\n    if (b === 0) {\n      callback(new Error(\"divide by zero\"));\n    }\n    callback(null, a / b);\n  }, 0);\n}\n\ndivideLater(6, 0, (error, result) => {\n  if (error) {\n    console.log(\"error: \" + error.message);\n    return;\n  }\n  console.log(\"result: \" + result);\n});"
+    },
+    "expected": "error: divide by zero\nresult: Infinity"
+  }
+}

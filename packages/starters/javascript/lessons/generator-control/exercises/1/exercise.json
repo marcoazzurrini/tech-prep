@@ -1,0 +1,18 @@
+{
+  "title": "Running Average",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function* averager() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const g = averager(); g.next(); return [g.next(10).value, g.next(20).value];"],"expected":[10,15]},
+      {"args":["const g = averager(); return g.next().value;"],"expected":null},
+      {"args":["const g = averager(); g.next(); g.next(1); g.next(2); return g.next(6).value;"],"expected":3},
+      {"args":["const g = averager(); g.next(); return [g.next(-4).value, g.next(4).value];"],"expected":[-4,0]},
+      {"args":["const g = averager(); g.next(); g.next(3); return g.next(3).done;"],"expected":false}
+    ]
+  }
+}

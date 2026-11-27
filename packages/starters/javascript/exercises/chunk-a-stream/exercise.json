@@ -1,0 +1,19 @@
+{
+  "title": "Chunk a Stream",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function chunk(source, size) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...chunk([1, 2, 3, 4, 5], 2)];"],"expected":[[1,2],[3,4],[5]]},
+      {"args":["return [...chunk(\"abcdef\", 3)].map((group) => group.join(\"\"));"],"expected":["abc","def"]},
+      {"args":["return [[...chunk([], 2)], [...chunk([1, 2], 5)]];"],"expected":[[],[[1,2]]]},
+      {"args":["function* nat() { let n = 1; while (true) yield n++; } const it = chunk(nat(), 3); it.next(); return it.next().value;"],"expected":[4,5,6]},
+      {"args":["let made = 0; function* nat() { while (true) yield ++made; } chunk(nat(), 2).next(); return made;"],"expected":2},
+      {"args":["let made = 0; function* nat() { while (true) yield ++made; } chunk(nat(), 2); return made;"],"expected":0}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function label(n) {\n  const value = await n;\n  console.log(\"got \" + value);\n}\n\nsetTimeout(() => console.log(\"timer\"), 0);\nlabel(1);\nlabel(2);\nconsole.log(\"sync\");"
+    },
+    "expected": "sync\ngot 1\ngot 2\ntimer"
+  }
+}

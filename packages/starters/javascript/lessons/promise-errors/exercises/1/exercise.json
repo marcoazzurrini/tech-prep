@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = new Promise((resolve) => resolve(3));\n\nbox\n  .then((n) => {\n    console.log(\"first \" + n);\n    throw new Error(\"broken at \" + n);\n  })\n  .then((n) => console.log(\"second \" + n))\n  .then((n) => console.log(\"third \" + n))\n  .catch((error) => console.log(error.message));"
+    },
+    "expected": "first 3\nbroken at 3"
+  }
+}

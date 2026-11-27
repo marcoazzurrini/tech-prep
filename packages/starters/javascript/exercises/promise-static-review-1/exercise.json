@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const { promise, resolve, reject } = Promise.withResolvers();\nconst same = Promise.resolve(promise);\n\nsame.then(\n  (value) => console.log(\"value: \" + value),\n  (error) => console.log(\"error: \" + error.message)\n);\n\nconsole.log(same === promise);\n\nsetTimeout(() => {\n  resolve({ then: (ok) => ok(\"boxed\") });\n  reject(new Error(\"too late\"));\n}, 10);"
+    },
+    "expected": "true\nvalue: boxed"
+  }
+}

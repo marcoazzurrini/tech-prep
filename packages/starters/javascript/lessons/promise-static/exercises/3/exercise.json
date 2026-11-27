@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const reason = Promise.resolve(\"late\");\n\nPromise.reject(reason)\n  .catch((error) => {\n    console.log(error === reason);\n    return error;\n  })\n  .then((value) => console.log(value));"
+    },
+    "expected": "true\nlate"
+  }
+}

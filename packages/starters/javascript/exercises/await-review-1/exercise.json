@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function first() {\n  console.log(\"a1\");\n  await null;\n  console.log(\"a2\");\n  await null;\n  console.log(\"a3\");\n}\n\nasync function second() {\n  console.log(\"b1\");\n  await null;\n  console.log(\"b2\");\n}\n\nfirst();\nsecond();\nconsole.log(\"main\");"
+    },
+    "expected": "a1\nb1\nmain\na2\nb2\na3"
+  }
+}

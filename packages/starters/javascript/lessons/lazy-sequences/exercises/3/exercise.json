@@ -1,0 +1,20 @@
+{
+  "title": "Squares Above a Limit",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "firstSquaresOver"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstSquaresOver(limit, count) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[10,3],"expected":[16,25,36]},
+      {"args":[0,2],"expected":[1,4]},
+      {"args":[100,1],"expected":[121]},
+      {"args":[50,0],"expected":[]},
+      {"args":[-5,2],"expected":[1,4]}
+    ]
+  }
+}

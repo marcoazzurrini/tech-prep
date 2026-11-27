@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* echo() {\n  const a = yield \"first\";\n  const b = yield a + \"!\";\n  return b;\n}\n\nconst e = echo();\nconsole.log(e.next(\"x\").value);\nconsole.log(e.next(\"y\").value);\nconsole.log(e.next(\"z\").value);\nconsole.log(e.next(\"w\").value);"
+    },
+    "expected": "first\ny!\nz\nundefined"
+  }
+}

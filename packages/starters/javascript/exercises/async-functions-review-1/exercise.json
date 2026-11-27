@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function load(ok) {\n  console.log(\"load \" + ok);\n  if (!ok) {\n    throw new Error(\"bad\");\n  }\n  return Promise.resolve(\"good\");\n}\n\nload(false).catch((error) => console.log(\"caught \" + error.message));\nload(true).then((value) => console.log(\"got \" + value));\nconsole.log(\"sync done\");"
+    },
+    "expected": "load false\nload true\nsync done\ncaught bad\ngot good"
+  }
+}

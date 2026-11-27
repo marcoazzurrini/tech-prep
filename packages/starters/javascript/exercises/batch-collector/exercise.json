@@ -1,0 +1,19 @@
+{
+  "title": "Batch Collector",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function* batcher(size, onFlush) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const out = []; const b = batcher(2, (x) => out.push(x)); b.next(); [1, 2, 3].forEach((x) => b.next(x)); b.return(); return out;"],"expected":[[1,2],[3]]},
+      {"args":["const out = []; const b = batcher(3, (x) => out.push(x)); b.next(); b.next(1); b.next(2); return out;"],"expected":[]},
+      {"args":["const out = []; const b = batcher(1, (x) => out.push(x)); b.next(); b.next(7); b.return(); return out;"],"expected":[[7]]},
+      {"args":["const out = []; const b = batcher(2, (x) => out.push(x)); b.next(); b.return(); return out;"],"expected":[]},
+      {"args":["const out = []; const b = batcher(2, (x) => out.push(x)); b.next(); [1, 2, 3, 4].forEach((x) => b.next(x)); return out;"],"expected":[[1,2],[3,4]]},
+      {"args":["const b = batcher(2, () => {}); b.next(); b.next(1); return b.return(\"x\");"],"expected":{"value":"x","done":true}}
+    ]
+  }
+}

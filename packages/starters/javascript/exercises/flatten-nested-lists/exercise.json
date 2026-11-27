@@ -1,0 +1,19 @@
+{
+  "title": "Flatten Nested Lists",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function* flatten(items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...flatten([1, [2, [3, [4]]], 5])];"],"expected":[1,2,3,4,5]},
+      {"args":["return [...flatten([[], [[]], 7])];"],"expected":[7]},
+      {"args":["return [...flatten([\"ab\", [\"c\"]])];"],"expected":["ab","c"]},
+      {"args":["const it = flatten([1, [2, 3]]); return [it.next().value, it.next().value];"],"expected":[1,2]},
+      {"args":["return [...flatten([null, [undefined, [0]]])].map(String);"],"expected":["null","undefined","0"]},
+      {"args":["return [...flatten([])];"],"expected":[]}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Word Tally",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function* tally() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = tally(); t.next(); return [t.next(\"a\").value, t.next(\"b\").value];"],"expected":[1,2]},
+      {"args":["const t = tally(); return t.next().value;"],"expected":0},
+      {"args":["const t = tally(); t.next(); t.next(\"a\"); t.next(\"b\"); return t.throw(new Error(\"reset\")).value;"],"expected":0},
+      {"args":["const t = tally(); t.next(); t.next(\"a\"); t.throw(new Error(\"reset\")); return t.next(\"c\").value;"],"expected":1},
+      {"args":["const t = tally(); t.next(); t.throw(new Error(\"reset\")); return t.next().done;"],"expected":false}
+    ]
+  }
+}

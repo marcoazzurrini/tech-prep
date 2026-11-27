@@ -1,0 +1,19 @@
+{
+  "title": "Error-First Adapter",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: promises that settle after ms, and a pause.\nexport const fulfilled = (value, ms = 0) => new Promise((resolve) => setTimeout(resolve, ms, value));\nexport const rejected = (message, ms = 0) =>\n  new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function toCallback(promise, callback) {\n  // your code\n  promise.catch(() => {});\n}\n"
+    },
+    "tests": [
+      {"args":["let got; toCallback(fulfilled(5), (error, value) => (got = [error, value])); await wait(20); return got;"],"expected":[null,5]},
+      {"args":["let got; toCallback(rejected(\"no tea\"), (error) => (got = error.message)); await wait(20); return got;"],"expected":"no tea"},
+      {"args":["let got; toCallback(rejected(\"no tea\"), (...args) => (got = args.length)); await wait(20); return got;"],"expected":1},
+      {"args":["let calls = 0; toCallback(fulfilled(1), () => calls++); await wait(20); return calls;"],"expected":1},
+      {"args":["let calls = 0; toCallback(new Promise((resolve) => resolve(1)), () => calls++); return calls;"],"expected":0},
+      {"args":["let got; toCallback(fulfilled(\"late\", 30), (error, value) => (got = value)); await wait(60); return got;"],"expected":"late"}
+    ]
+  }
+}

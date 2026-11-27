@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fail = (message) => Promise.reject(new Error(message));\n\nasync function run() {\n  try {\n    await fail(\"first\");\n    console.log(\"never\");\n  } catch (error) {\n    console.log(\"caught \" + error.message);\n  } finally {\n    console.log(\"cleanup\");\n  }\n  return \"end\";\n}\n\nrun().then((value) => console.log(value));"
+    },
+    "expected": "caught first\ncleanup\nend"
+  }
+}

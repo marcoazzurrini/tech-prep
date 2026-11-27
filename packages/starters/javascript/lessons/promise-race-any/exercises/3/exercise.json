@@ -1,0 +1,18 @@
+{
+  "title": "First Available",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstAvailable(promises) {\n  return Promise.race(promises);\n}\n"
+    },
+    "tests": [
+      {"args":["return await firstAvailable([Promise.reject(new Error(\"a\")), Promise.resolve(\"b\")]);"],"expected":"b"},
+      {"args":["const slow = new Promise((resolve) => setTimeout(resolve, 30, \"slow\")); return await firstAvailable([slow, \"fast\"]);"],"expected":"fast"},
+      {"args":["const late = new Promise((r) => setTimeout(r, 30, \"late\")); return firstAvailable([Promise.reject(Error(\"no\")), late]);"],"expected":"late"},
+      {"args":["return await firstAvailable([Promise.reject(new Error(\"x\")), Promise.reject(new Error(\"y\")), Promise.resolve(\"z\")]);"],"expected":"z"},
+      {"args":["return await firstAvailable([Promise.resolve(0), Promise.resolve(1)]);"],"expected":0}
+    ]
+  }
+}

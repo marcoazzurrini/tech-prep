@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* tickets() {\n  yield \"A1\";\n  yield \"A2\";\n  return \"closed\";\n}\n\nconst t = tickets();\nconsole.log(t.next().value);\nconsole.log([...t].join(\",\"));\nconsole.log(t.next().value);\nconsole.log([...tickets(), ...tickets()].length);"
+    },
+    "expected": "A1\nA2\nundefined\n4"
+  }
+}

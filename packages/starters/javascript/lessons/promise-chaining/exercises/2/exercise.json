@@ -1,0 +1,20 @@
+{
+  "title": "City of a User",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "cityOf"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const users = {\n  1: { name: \"Ada\", cityId: 10 },\n  2: { name: \"Bo\", cityId: 20 },\n  3: { name: \"Cy\", cityId: 30 },\n  4: { name: \"Di\", cityId: 10 },\n  5: { name: \"Ed\", cityId: 20 },\n};\n\nconst cities = { 10: \"Lyon\", 20: \"Oslo\", 30: \"Porto\" };\n\nfunction later(value, ms) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nexport function findUser(id) {\n  return later(users[id], 10);\n}\n\nexport function findCity(cityId) {\n  return later(cities[cityId], 10);\n}\n\nexport function cityOf(userId) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1],"expected":"Lyon"},
+      {"args":[2],"expected":"Oslo"},
+      {"args":[3],"expected":"Porto"},
+      {"args":[4],"expected":"Lyon"},
+      {"args":[5],"expected":"Oslo"}
+    ]
+  }
+}

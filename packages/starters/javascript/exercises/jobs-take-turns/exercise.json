@@ -1,0 +1,18 @@
+{
+  "title": "Jobs Take Turns",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function wait(ms, value) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nexport function takeTurns() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const run = takeTurns(); return run(() => wait(10, \"a\"));"],"expected":"a"},
+      {"args":["const run = takeTurns(), log = []; run(() => wait(40).then(() => log.push(\"a\"))); await run(() => log.push(\"b\")); return log;"],"expected":["a","b"]},
+      {"args":["const run = takeTurns(), a = run(() => wait(30, 1)), b = run(() => wait(0, 2)); return a.then((x) => b.then((y) => [x, y]));"],"expected":[1,2]},
+      {"args":["const log = []; takeTurns()(() => wait(40).then(() => log.push(1))); await takeTurns()(() => log.push(2)); return log;"],"expected":[2]},
+      {"args":["const run = takeTurns(); await run(() => wait(10, 1)); return run(() => wait(10, 2));"],"expected":2}
+    ]
+  }
+}

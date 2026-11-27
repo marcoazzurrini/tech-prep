@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let message = \"start\";\n\nsetTimeout(() => {\n  message += \" > timer\";\n  console.log(message);\n}, 0);\n\nfunction slowStep() {\n  for (let i = 0; i < 2_000_000; i++) {}\n  message += \" > slow\";\n}\n\nslowStep();\nconsole.log(message);\nmessage += \" > end\";"
+    },
+    "expected": "start > slow\nstart > slow > end > timer"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Pair Keys with Values",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function zipToMap(keys, values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...zipToMap([\"a\", \"b\"], [1, 2])];"],"expected":[["a",1],["b",2]]},
+      {"args":["return [...zipToMap(\"xyz\", new Set([7, 8]))];"],"expected":[["x",7],["y",8]]},
+      {"args":["return [...zipToMap(new Set([\"k\"]), \"abc\")];"],"expected":[["k","a"]]},
+      {"args":["return zipToMap([], [1]).size;"],"expected":0},
+      {"args":["const m = new Map([[\"a\", 1], [\"b\", 2]]); return [...zipToMap(m.values(), m.keys())];"],"expected":[[1,"a"],[2,"b"]]},
+      {"args":["return [...zipToMap([\"a\", \"a\"], [1, 2])];"],"expected":[["a",2]]}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Load with Backup",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function loadWithBackup(primary, backup) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await loadWithBackup(async () => \"main\", async () => \"spare\");"],"expected":"main"},
+      {"args":["return await loadWithBackup(async () => { throw new Error(\"down\"); }, async () => \"spare\");"],"expected":"spare"},
+      {"args":["let calls = 0; await loadWithBackup(async () => 1, async () => calls++); return calls;"],"expected":0},
+      {"args":["const no = (m) => () => Promise.reject(Error(m)); return loadWithBackup(no(\"a\"), no(\"b\")).catch((e) => e.message);"],"expected":"both failed"},
+      {"args":["const no = (m) => () => Promise.reject(Error(m)); return loadWithBackup(no(\"a\"), no(\"b\")).catch((e) => e.cause.message);"],"expected":"b"},
+      {"args":["return await loadWithBackup(() => { throw new Error(\"sync\"); }, async () => \"spare\");"],"expected":"spare"},
+      {"args":["const slow = () => new Promise((r) => setTimeout(r, 20, \"late\")); return await loadWithBackup(slow, async () => \"spare\");"],"expected":"late"}
+    ]
+  }
+}

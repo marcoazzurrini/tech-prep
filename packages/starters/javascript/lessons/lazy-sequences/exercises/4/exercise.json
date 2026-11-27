@@ -1,0 +1,18 @@
+{
+  "title": "First Words in Capitals",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstWords(source, n) {\n  return source.take(n).map((word) => word.toUpperCase()).toArray();\n}\n"
+    },
+    "tests": [
+      {"args":["return firstWords([\"tea\", \"jam\"], 1);"],"expected":["TEA"]},
+      {"args":["return firstWords(new Set([\"a\", \"b\", \"c\"]), 2);"],"expected":["A","B"]},
+      {"args":["return firstWords({ next: () => ({ value: \"hi\", done: false }) }, 2);"],"expected":["HI","HI"]},
+      {"args":["return firstWords([\"a\"].values(), 3);"],"expected":["A"]},
+      {"args":["return firstWords([], 2);"],"expected":[]}
+    ]
+  }
+}

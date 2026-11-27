@@ -1,0 +1,18 @@
+{
+  "title": "Read an Order",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readOrder(text) {\n  const order = JSON.parse(text);\n  return Promise.resolve(order.items.length);\n}\n"
+    },
+    "tests": [
+      {"args":["return await readOrder('{\"items\":[1,2]}');"],"expected":2},
+      {"args":["let p; try { p = readOrder(\"{bad\"); } catch { return \"the call threw\"; } return p.catch((e) => e.name);"],"expected":"SyntaxError"},
+      {"args":["try { readOrder(\"null\").catch(() => {}); return \"no throw\"; } catch { return \"the call threw\"; }"],"expected":"no throw"},
+      {"args":["return readOrder('{\"items\":[]}') instanceof Promise;"],"expected":true},
+      {"args":["return await readOrder(\"{bad\").catch((e) => e instanceof SyntaxError);"],"expected":true}
+    ]
+  }
+}

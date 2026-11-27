@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms, value) =>\n  new Promise((resolve) => {\n    setTimeout(() => {\n      console.log(\"done \" + value);\n      resolve(value);\n    }, ms);\n  });\n\nPromise.all([delay(40, \"north\"), Promise.reject(new Error(\"road closed\")), delay(10, \"south\")])\n  .then((routes) => console.log(routes.join(\",\")))\n  .catch((error) => console.log(\"caught \" + error.message));"
+    },
+    "expected": "caught road closed\ndone south\ndone north"
+  }
+}

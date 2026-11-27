@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function loadCart(callback) {\n  callback([\"tea\"]);\n  setTimeout(() => callback([\"tea\", \"cake\"]), 0);\n}\n\nlet total = 0;\n\nloadCart((items) => {\n  total += items.length;\n  console.log(\"total \" + total);\n});\n\nconsole.log(\"after loadCart\");"
+    },
+    "expected": "total 1\nafter loadCart\ntotal 3"
+  }
+}

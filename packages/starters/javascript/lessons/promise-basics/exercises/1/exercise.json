@@ -1,0 +1,18 @@
+{
+  "title": "Check the Age",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function checkAge(age) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await checkAge(20);"],"expected":"welcome"},
+      {"args":["try { await checkAge(12); return \"fulfilled\"; } catch (error) { return error.message; }"],"expected":"too young"},
+      {"args":["return checkAge(30) instanceof Promise;"],"expected":true},
+      {"args":["return await checkAge(18);"],"expected":"welcome"},
+      {"args":["try { await checkAge(17); return \"fulfilled\"; } catch (error) { return error instanceof Error; }"],"expected":true}
+    ]
+  }
+}

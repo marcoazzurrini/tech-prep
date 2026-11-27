@@ -1,0 +1,18 @@
+{
+  "title": "Names and Total",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function report(prices) {\n  const pairs = prices.entries();\n  const names = [...pairs].map(([name]) => name);\n  const total = [...pairs].reduce((sum, [, price]) => sum + price, 0);\n\n  return `${names.join(\",\")}: ${total}`;\n}\n"
+    },
+    "tests": [
+      {"args":["return report(new Map([[\"tea\", 3], [\"cake\", 5]]));"],"expected":"tea,cake: 8"},
+      {"args":["return report(new Map([[\"pen\", 2]]));"],"expected":"pen: 2"},
+      {"args":["return report(new Map([[\"a\", 1], [\"b\", 1], [\"c\", 1]]));"],"expected":"a,b,c: 3"},
+      {"args":["return report(new Map());"],"expected":": 0"},
+      {"args":["const prices = new Map([[\"ink\", 4]]); report(prices); return report(prices);"],"expected":"ink: 4"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let count = 0;\n\nfunction addLater() {\n  setTimeout(() => {\n    count++;\n    console.log(\"timer: \" + count);\n  }, 0);\n  count += 10;\n}\n\naddLater();\nconsole.log(\"now: \" + count);"
+    },
+    "expected": "now: 10\ntimer: 11"
+  }
+}

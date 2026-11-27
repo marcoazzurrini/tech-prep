@@ -1,0 +1,18 @@
+{
+  "title": "Save a Draft",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class ConflictError extends Error {\n  constructor(message) {\n    super(message);\n    this.name = \"ConflictError\";\n  }\n}\n\nexport async function saveDraft(store, draft) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const store = { save: async (d) => d.title + \" saved\" }; return await saveDraft(store, { title: \"Notes\" });"],"expected":"Notes saved"},
+      {"args":["const store = { save: async () => { throw new ConflictError(\"v2\"); } }; return [await saveDraft(store, {}), store.saving];"],"expected":["conflict",false]},
+      {"args":["const store = { save: async () => { throw new TypeError(\"bad\"); } }; return saveDraft(store, {}).catch((e) => e.name);"],"expected":"TypeError"},
+      {"args":["const store = { save: async () => { throw TypeError(\"bad\"); } }; await saveDraft(store, {}).catch(() => {}); return store.saving;"],"expected":false},
+      {"args":["const store = { save: async () => store.saving }; return await saveDraft(store, {});"],"expected":true}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function risky(callback) {\n  setTimeout(() => {\n    try {\n      callback();\n    } catch (error) {\n      console.log(\"risky caught: \" + error.message);\n    }\n  }, 0);\n}\n\ntry {\n  risky(() => {\n    throw new Error(\"boom\");\n  });\n  console.log(\"outer done\");\n} catch {\n  console.log(\"outer caught\");\n}\n\nconsole.log(\"end\");"
+    },
+    "expected": "outer done\nend\nrisky caught: boom"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* rounds() {\n  yield 1;\n  yield 2;\n  return 3;\n}\n\nconst game = rounds();\nconsole.log(game.next().value);\nfor (const round of game) console.log(round);\nconsole.log(game.next().value);\nconsole.log([...rounds()].join(\"+\"));"
+    },
+    "expected": "1\n2\nundefined\n1+2"
+  }
+}

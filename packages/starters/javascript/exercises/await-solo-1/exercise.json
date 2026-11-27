@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function order() {\n  console.log(\"A\");\n  const letter = await \"B\";\n  console.log(letter);\n  return \"D\";\n}\n\norder().then((value) => console.log(value));\nconsole.log(\"C\");"
+    },
+    "expected": "A\nC\nB\nD"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Apply Steps in Order",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function wait(ms, value) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nexport function applyInOrder(start, steps) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return applyInOrder(2, [(n) => n + 1, (n) => n * 10]);"],"expected":30},
+      {"args":["return applyInOrder(1, [(n) => wait(20, n + 1), (n) => wait(5, n * 3)]);"],"expected":6},
+      {"args":["return applyInOrder(\"plain\", []);"],"expected":"plain"},
+      {"args":["return applyInOrder([1], [(a) => [...a, 2], (a) => wait(10, [...a, 3]), (a) => [...a, 4]]);"],"expected":[1,2,3,4]},
+      {"args":["const log = [], s = (ms) => () => wait(ms).then(() => log.push(ms)); await applyInOrder(0, [s(30), s(0)]); return log;"],"expected":[30,0]},
+      {"args":["let calls = 0; const p = applyInOrder(0, [() => calls++, () => calls++]); const before = calls; await p; return [before, calls];"],"expected":[0,2]}
+    ]
+  }
+}

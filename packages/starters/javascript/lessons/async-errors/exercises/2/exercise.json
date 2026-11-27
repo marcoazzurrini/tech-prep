@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fail = (ms, message) =>\n  new Promise((resolve, reject) => setTimeout(() => reject(new Error(message)), ms));\n\nasync function first() {\n  try {\n    return fail(10, \"first broke\");\n  } catch {\n    return \"first caught it\";\n  }\n}\n\nasync function second() {\n  try {\n    return await fail(30, \"second broke\");\n  } catch {\n    return \"second caught it\";\n  }\n}\n\nfirst().then(\n  (value) => console.log(value),\n  (error) => console.log(\"rejected: \" + error.message)\n);\nsecond().then((value) => console.log(value));"
+    },
+    "expected": "rejected: first broke\nsecond caught it"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Result as Text",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toText(promise) {\n  return promise.then((value) => \"ok: \" + value);\n}\n"
+    },
+    "tests": [
+      {"args":["return await toText(new Promise((resolve) => resolve(5)));"],"expected":"ok: 5"},
+      {"args":["return await toText(new Promise((resolve, reject) => reject(new Error(\"late\"))));"],"expected":"error: late"},
+      {"args":["return toText(new Promise((resolve) => resolve(1))) instanceof Promise;"],"expected":true},
+      {"args":["return await toText(new Promise((resolve) => setTimeout(resolve, 10, \"tea\")));"],"expected":"ok: tea"},
+      {"args":["return await toText(new Promise((resolve, reject) => setTimeout(reject, 10, new Error(\"lost\"))));"],"expected":"error: lost"}
+    ]
+  }
+}

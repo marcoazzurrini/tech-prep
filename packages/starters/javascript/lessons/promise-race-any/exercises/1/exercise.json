@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms, value) =>\n  new Promise((resolve) => setTimeout(() => resolve(value), ms));\n\nconst fail = (ms, message) =>\n  new Promise((resolve, reject) => setTimeout(() => reject(new Error(message)), ms));\n\nPromise.race([fail(50, \"late error\"), delay(10, \"early value\")])\n  .then((value) => console.log(\"first: \" + value))\n  .catch((error) => console.log(\"first: \" + error.message));\n\nPromise.race([delay(50, \"late value\"), fail(30, \"early error\")])\n  .then((value) => console.log(\"second: \" + value))\n  .catch((error) => console.log(\"second: \" + error.message));"
+    },
+    "expected": "first: early value\nsecond: early error"
+  }
+}

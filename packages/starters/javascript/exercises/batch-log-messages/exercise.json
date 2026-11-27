@@ -1,0 +1,18 @@
+{
+  "title": "Batch Log Messages",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function batch(send) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const sent = []; const log = batch((list) => sent.push(list)); log(\"a\"); log(\"b\"); return sent.length;"],"expected":0},
+      {"args":["const s = [], log = batch((l) => s.push(l)); log(1); log(2); log(3); await new Promise((r) => setTimeout(r, 30)); return s;"],"expected":[[1,2,3]]},
+      {"args":["const s = [], log = batch((l) => s.push(l)); log(1); setTimeout(log, 30, 2); await new Promise((r) => setTimeout(r, 60)); return s"],"expected":[[1],[2]]},
+      {"args":["const s = []; batch((l) => s.push(l)); await new Promise((r) => setTimeout(r, 20)); return s;"],"expected":[]},
+      {"args":["const s = [], log = batch((l) => s.push(l)); setTimeout(() => log(1), 0); await new Promise((r) => setTimeout(r, 30)); return s;"],"expected":[[1]]}
+    ]
+  }
+}

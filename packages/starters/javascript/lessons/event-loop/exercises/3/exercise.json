@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "setTimeout(() => {\n  console.log(\"tea\");\n  setTimeout(() => console.log(\"cake\"), 0);\n\n  for (let sip = 1; sip <= 2; sip++) {\n    console.log(\"sip \" + sip);\n  }\n}, 0);\n\nsetTimeout(() => console.log(\"bill\"), 30);"
+    },
+    "expected": "tea\nsip 1\nsip 2\ncake\nbill"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function readConfig(name, callback) {\n  if (name === \"\") {\n    throw new Error(\"no name\");\n  }\n  setTimeout(() => callback(null, name + \".json\"), 0);\n}\n\nfor (const name of [\"app\", \"\"]) {\n  try {\n    readConfig(name, (error, file) => console.log(\"read \" + file));\n    console.log(\"asked for \" + name);\n  } catch (error) {\n    console.log(\"caught \" + error.message);\n  }\n}"
+    },
+    "expected": "asked for app\ncaught no name\nread app.json"
+  }
+}

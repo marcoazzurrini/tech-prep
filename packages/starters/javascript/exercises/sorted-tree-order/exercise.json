@@ -1,0 +1,18 @@
+{
+  "title": "Sorted Tree",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class SortedTree {\n  constructor() {\n    this.root = null;\n  }\n\n  add(value) {\n    const node = { value, left: null, right: null };\n\n    if (this.root === null) {\n      this.root = node;\n      return this;\n    }\n\n    let current = this.root;\n\n    while (true) {\n      const side = value < current.value ? \"left\" : \"right\";\n\n      if (current[side] === null) {\n        current[side] = node;\n        return this;\n      }\n\n      current = current[side];\n    }\n  }\n\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...new SortedTree().add(5).add(2).add(8).add(1)];"],"expected":[1,2,5,8]},
+      {"args":["return [...new SortedTree()];"],"expected":[]},
+      {"args":["const t = new SortedTree().add(3).add(3).add(1); return [[...t], [...t]];"],"expected":[[1,3,3],[1,3,3]]},
+      {"args":["const [smallest] = new SortedTree().add(9).add(4).add(6); return smallest;"],"expected":4},
+      {"args":["const t = new SortedTree(); [7, 3, 9, 1, 5, 8].forEach((n) => t.add(n)); return [...t];"],"expected":[1,3,5,7,8,9]}
+    ]
+  }
+}

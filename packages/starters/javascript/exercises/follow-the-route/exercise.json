@@ -1,0 +1,20 @@
+{
+  "title": "Follow the Route",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "route"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const links = { A: \"B\", B: \"C\", C: null, X: \"Y\", Y: null };\n\nconst nextStop = (stop) =>\n  new Promise((resolve) => setTimeout(() => resolve(links[stop] ?? null), 5));\n\nexport async function route(start) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["A"],"expected":["A","B","C"]},
+      {"args":["X"],"expected":["X","Y"]},
+      {"args":["C"],"expected":["C"]},
+      {"args":["B"],"expected":["B","C"]},
+      {"args":["Q"],"expected":["Q"]}
+    ]
+  }
+}

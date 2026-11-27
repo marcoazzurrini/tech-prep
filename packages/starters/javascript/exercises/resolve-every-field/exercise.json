@@ -1,0 +1,19 @@
+{
+  "title": "Resolve Every Field",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function resolveFields(record) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await resolveFields({ name: Promise.resolve(\"Ada\"), age: 36 });"],"expected":{"name":"Ada","age":36}},
+      {"args":["return await resolveFields({});"],"expected":{}},
+      {"args":["const bad = Promise.reject(new Error(\"no\")); bad.catch(() => {}); return await resolveFields({ a: bad }).catch((e) => e.message);"],"expected":"no"},
+      {"args":["const slow = new Promise((resolve) => setTimeout(resolve, 30, \"s\")); return await resolveFields({ first: slow, second: \"f\" });"],"expected":{"first":"s","second":"f"}},
+      {"args":["const r = resolveFields({ x: 1 }); return [r instanceof Promise, await r];"],"expected":[true,{"x":1}]},
+      {"args":["return Object.keys(await resolveFields({ b: Promise.resolve(1), a: 2, c: Promise.resolve(3) }));"],"expected":["b","a","c"]}
+    ]
+  }
+}

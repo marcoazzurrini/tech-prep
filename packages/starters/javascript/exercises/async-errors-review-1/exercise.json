@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fail = (ms, message) =>\n  new Promise((resolve, reject) => setTimeout(() => reject(new Error(message)), ms));\n\nasync function a() {\n  try {\n    return fail(10, \"a\");\n  } catch {\n    return \"a caught\";\n  } finally {\n    console.log(\"a finally\");\n  }\n}\n\nasync function b() {\n  try {\n    return await fail(30, \"b\");\n  } catch {\n    return \"b caught\";\n  } finally {\n    console.log(\"b finally\");\n  }\n}\n\na().then(\n  (value) => console.log(value),\n  () => console.log(\"a rejected\")\n);\nb().then((value) => console.log(value));"
+    },
+    "expected": "a finally\na rejected\nb finally\nb caught"
+  }
+}
