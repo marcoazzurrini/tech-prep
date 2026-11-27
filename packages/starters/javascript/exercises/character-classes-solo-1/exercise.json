@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const text = \"id_7 is-on\\tline\";\n\nconsole.log(text.match(/\\W/g).length);\nconsole.log(text.replace(/[^a-z]/g, \"\"));\nconsole.log(/^\\w\\w\\w\\w$/.test(\"id_7\"));\nconsole.log(/\\bon\\b/.test(text));\nconsole.log(/^line/.test(text));"
+    },
+    "expected": "3\nidisonline\ntrue\ntrue\nfalse"
+  }
+}

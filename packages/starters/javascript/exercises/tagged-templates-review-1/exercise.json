@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function joinRaw(strings, ...values) {\n  return strings.raw.join(\"|\") + \" \" + values.length;\n}\n\nconst seen = [];\n\nfunction keep(strings) {\n  seen.push(strings);\n}\n\nconsole.log(joinRaw`x\\ny${1}`);\nconsole.log(joinRaw`${\"a\"}${\"b\"}`);\nfor (let i = 0; i < 2; i++) keep`same`;\nconsole.log(seen[0] === seen[1]);"
+    },
+    "expected": "x\\ny| 1\n|| 2\ntrue"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Check a Password",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "checkPassword"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function checkPassword(password) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["correcthorse1!"],"expected":true},
+      {"args":["Short1!"],"expected":false},
+      {"args":["NOLOWERCASE1!"],"expected":false},
+      {"args":["nodigits!!!!"],"expected":false},
+      {"args":["nosymbol1234"],"expected":false},
+      {"args":["a1!aaaaaaa"],"expected":true},
+      {"args":["!!!!1111aa"],"expected":true},
+      {"args":[""],"expected":false}
+    ]
+  }
+}

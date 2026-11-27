@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const scores = \"Ann:90 Bob:7 Cy:85\";\n\nconsole.log(scores.match(/(?<=:)\\d+/g).join(\",\"));\nconsole.log(scores.match(/[A-Z][a-z]+(?=:\\d{2}\\b)/g).join(\",\"));\nconsole.log(scores.replace(/(?<=:)(?=\\d)/g, \"#\"));\nconsole.log(scores.match(/(?<![A-Z])[a-z]+/g).join(\",\"));"
+    },
+    "expected": "90,7,85\nAnn,Cy\nAnn:#90 Bob:#7 Cy:#85\nn,b"
+  }
+}

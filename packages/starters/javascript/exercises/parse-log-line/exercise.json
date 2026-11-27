@@ -1,0 +1,22 @@
+{
+  "title": "Parse a Log Line",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "parseLogLine"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function parseLogLine(line) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["[ERROR] 2025-03-14 Disk full"],"expected":{"level":"ERROR","date":"2025-03-14","message":"Disk full"}},
+      {"args":["[INFO] 2025-01-02 Started"],"expected":{"level":"INFO","date":"2025-01-02","message":"Started"}},
+      {"args":["[DEBUG] 2025-01-02 Loop"],"expected":null},
+      {"args":["[WARN] 2025-1-02 Low memory"],"expected":null},
+      {"args":["[WARN] 2025-01-02 "],"expected":null},
+      {"args":["ERROR 2025-03-14 Disk full"],"expected":null},
+      {"args":["[WARN] 2025-12-31 Disk at 91%"],"expected":{"level":"WARN","date":"2025-12-31","message":"Disk at 91%"}}
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Format Thousands",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "formatThousands"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function formatThousands(n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1234567.5],"expected":"1,234,567.5"},
+      {"args":[-9876543],"expected":"-9,876,543"},
+      {"args":[999],"expected":"999"},
+      {"args":[1000],"expected":"1,000"},
+      {"args":[0.25],"expected":"0.25"},
+      {"args":[100000],"expected":"100,000"},
+      {"args":[-1000.75],"expected":"-1,000.75"},
+      {"args":[0],"expected":"0"}
+    ]
+  }
+}

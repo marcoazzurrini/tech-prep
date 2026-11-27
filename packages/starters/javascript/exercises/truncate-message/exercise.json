@@ -1,0 +1,23 @@
+{
+  "title": "Shorten a Message",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "truncateMessage"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function truncateMessage(text, max) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Hello world",5],"expected":"Hello…"},
+      {"args":["Hi 👍🏽 there",4],"expected":"Hi 👍🏽…"},
+      {"args":["🇮🇹🇫🇷🇩🇪",2],"expected":"🇮🇹🇫🇷…"},
+      {"args":["short",10],"expected":"short"},
+      {"args":["👨‍👩‍👧 family",1],"expected":"👨‍👩‍👧…"},
+      {"args":["𝒳𝒴𝒵",2],"expected":"𝒳𝒴…"},
+      {"args":["exact",5],"expected":"exact"},
+      {"args":["",3],"expected":""}
+    ]
+  }
+}

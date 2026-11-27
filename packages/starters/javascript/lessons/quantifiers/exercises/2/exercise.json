@@ -1,0 +1,22 @@
+{
+  "title": "PIN Check",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "isPin"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isPin(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["1234"],"expected":true},
+      {"args":["123456"],"expected":true},
+      {"args":["123"],"expected":false},
+      {"args":["1234567"],"expected":false},
+      {"args":["12a4"],"expected":false},
+      {"args":[""],"expected":false},
+      {"args":["00000"],"expected":true}
+    ]
+  }
+}

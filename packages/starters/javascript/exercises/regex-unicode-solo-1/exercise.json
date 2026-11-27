@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const word = \"naïve 🐍\";\n\nconsole.log(word.match(/\\w+/g).join(\",\"));\nconsole.log(word.match(/\\p{L}+/gu).join(\",\"));\nconsole.log(word.match(/./gu).length);\nconsole.log(/\\p{L}/.test(\"p{L}\"));"
+    },
+    "expected": "na,ve\nnaïve\n7\ntrue"
+  }
+}

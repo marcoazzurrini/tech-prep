@@ -1,0 +1,20 @@
+{
+  "title": "Read an Image Header",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "readHeader"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readHeader(bytes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[128,2,224,1,255,255,255,255]],"expected":{"width":640,"height":480,"x":-1}},
+      {"args":[[1,0,1,0,0,0,0,0]],"expected":{"width":1,"height":1,"x":0}},
+      {"args":[[0,1,0,0,16,0,0,0]],"expected":{"width":256,"height":0,"x":16}},
+      {"args":[[255,255,2,0,0,0,0,128]],"expected":{"width":65535,"height":2,"x":-2147483648}},
+      {"args":[[10,0,20,0,44,1,0,0]],"expected":{"width":10,"height":20,"x":300}}
+    ]
+  }
+}

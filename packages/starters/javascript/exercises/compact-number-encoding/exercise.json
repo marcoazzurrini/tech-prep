@@ -1,0 +1,20 @@
+{
+  "title": "Compact Number Encoding",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function encodeVarints(numbers) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return Array.from(encodeVarints([1, 300]));"],"expected":[1,172,2]},
+      {"args":["return Array.from(encodeVarints([]));"],"expected":[]},
+      {"args":["return Array.from(encodeVarints([127, 128]));"],"expected":[127,128,1]},
+      {"args":["return Array.from(encodeVarints([0, 16384]));"],"expected":[0,128,128,1]},
+      {"args":["return Array.from(encodeVarints([4294967295]));"],"expected":[255,255,255,255,15]},
+      {"args":["return Array.from(encodeVarints([5, 1000, 70000]));"],"expected":[5,232,7,240,162,4]},
+      {"args":["return Array.from(encodeVarints([2, 0, 1]));"],"expected":[2,0,1]}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Shorten Text",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shorten"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function shorten(text, max) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["I love 🍕 a lot",8],"expected":"I love 🍕…"},
+      {"args":["hi",5],"expected":"hi"},
+      {"args":["🍕🍕🍕",2],"expected":"🍕🍕…"},
+      {"args":["abc",3],"expected":"abc"},
+      {"args":["",0],"expected":""},
+      {"args":["abc",0],"expected":"…"}
+    ]
+  }
+}

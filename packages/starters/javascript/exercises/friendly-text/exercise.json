@@ -1,0 +1,19 @@
+{
+  "title": "Friendly Text",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function text(strings, ...values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return text`Hi ${\"Ada\"}!`;"],"expected":"Hi Ada!"},
+      {"args":["const nick = undefined; return text`Nick: ${nick}`;"],"expected":"Nick: -"},
+      {"args":["return text`Tags: ${[\"js\", \"css\"]}`;"],"expected":"Tags: js, css"},
+      {"args":["return text`${null} and ${0}`;"],"expected":"- and 0"},
+      {"args":["return text`Empty: ${[]}.`;"],"expected":"Empty: ."},
+      {"args":["return text`${3} items`;"],"expected":"3 items"}
+    ]
+  }
+}

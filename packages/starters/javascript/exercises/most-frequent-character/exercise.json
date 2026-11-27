@@ -1,0 +1,23 @@
+{
+  "title": "Most Frequent Character",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "mostFrequent"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function mostFrequent(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["banana"],"expected":"a"},
+      {"args":["🍕 a 🍕 b"],"expected":"🍕"},
+      {"args":["abba"],"expected":"a"},
+      {"args":[""],"expected":""},
+      {"args":["   "],"expected":""},
+      {"args":["xy🍕🍕yx"],"expected":"x"},
+      {"args":["aAa"],"expected":"a"},
+      {"args":["abb a"],"expected":"a"}
+    ]
+  }
+}

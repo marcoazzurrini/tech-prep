@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const s = \"art, part, art.\";\n\nconsole.log(s.match(/\\bart\\b/g).length);\nconsole.log(/\\bpart\\b/.test(s));\nconsole.log(/\\bar/.test(\"part\"));"
+    },
+    "expected": "2\ntrue\nfalse"
+  }
+}

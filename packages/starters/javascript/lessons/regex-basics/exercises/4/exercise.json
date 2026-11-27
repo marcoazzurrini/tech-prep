@@ -1,0 +1,21 @@
+{
+  "title": "Contains the Term",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "containsTerm"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function containsTerm(text, term) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["I write C++","c++"],"expected":true},
+      {"args":["Version 1.0","1.0"],"expected":true},
+      {"args":["Version 100","1.0"],"expected":false},
+      {"args":["App (Beta)","(beta)"],"expected":true},
+      {"args":["abc","x"],"expected":false},
+      {"args":["Cost: $5","$5"],"expected":true}
+    ]
+  }
+}

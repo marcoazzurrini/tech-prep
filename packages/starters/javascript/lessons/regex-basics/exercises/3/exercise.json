@@ -1,0 +1,21 @@
+{
+  "title": "Dots to Underscores",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "dotsToUnderscores"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function dotsToUnderscores(version) {\n  return version.replace(/./g, \"_\");\n}\n"
+    },
+    "tests": [
+      {"args":["1.2.3"],"expected":"1_2_3"},
+      {"args":["v10.0"],"expected":"v10_0"},
+      {"args":["2024"],"expected":"2024"},
+      {"args":["a..b"],"expected":"a__b"},
+      {"args":[""],"expected":""},
+      {"args":["."],"expected":"_"}
+    ]
+  }
+}

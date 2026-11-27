@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const parcels = \"10kg 25kg 3lb 40kg\";\n\nconsole.log(parcels.match(/\\d+(?=kg)/g).join(\",\"));\nconsole.log(parcels.match(/\\d+(?!kg)/g).join(\",\"));\nconsole.log(parcels.match(/\\d+(?![\\dk])/g).join(\",\"));"
+    },
+    "expected": "10,25,40\n1,2,3,4\n3"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const data = Uint8Array.from([1, 2, 3, 4, 5]);\nconst view = data.subarray(1, 4);\nconst copy = data.slice(1, 4);\n\nview[0] = 20;\ncopy[1] = 30;\ndata[3] = 40;\n\nconsole.log(view.join(\",\"));\nconsole.log(copy.join(\",\"));\nconsole.log(data.join(\",\"));\nconsole.log(view.buffer === data.buffer, copy.buffer === data.buffer);"
+    },
+    "expected": "20,3,40\n2,30,4\n1,20,3,40,5\ntrue false"
+  }
+}

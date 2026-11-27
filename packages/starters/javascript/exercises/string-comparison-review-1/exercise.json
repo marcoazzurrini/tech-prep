@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const codes = [\"b10\", \"B2\", \"a1\", \"b2\"];\nconst natural = (x, y) => x.localeCompare(y, \"en\", { numeric: true });\n\nconsole.log(codes.toSorted().join(\" \"));\nconsole.log(codes.toSorted(natural).join(\" \"));\nconsole.log(\"á\" > \"z\");\nconsole.log(\"résumé\".localeCompare(\"resume\", \"en\", { sensitivity: \"accent\" }) === 0);"
+    },
+    "expected": "B2 a1 b10 b2\na1 b2 B2 b10\ntrue\nfalse"
+  }
+}

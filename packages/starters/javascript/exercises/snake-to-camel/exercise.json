@@ -1,0 +1,21 @@
+{
+  "title": "Snake Case to Camel Case",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "snakeToCamel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function snakeToCamel(name) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["user_first_name"],"expected":"userFirstName"},
+      {"args":["id"],"expected":"id"},
+      {"args":[""],"expected":""},
+      {"args":["order_id_2"],"expected":"orderId2"},
+      {"args":["a_b_c"],"expected":"aBC"},
+      {"args":["total_price"],"expected":"totalPrice"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const handlers = new Set();\nconst log = (m) => m;\n\nhandlers.add(log);\nhandlers.add((m) => m);\nhandlers.add(log);\nhandlers.delete((m) => m);\nconsole.log(handlers.size);\n\nhandlers.delete(log);\nconsole.log(handlers.size);\n\nconst cache = new Map([[\"a\", 1], [\"b\", 2], [\"c\", 3]]);\nconst [oldest] = cache.keys();\ncache.delete(oldest);\ncache.set(\"a\", 4);\nconsole.log([...cache.keys()].join(\",\"));"
+    },
+    "expected": "2\n1\nb,c,a"
+  }
+}

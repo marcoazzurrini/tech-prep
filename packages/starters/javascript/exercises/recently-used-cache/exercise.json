@@ -1,0 +1,20 @@
+{
+  "title": "Recently Used Cache",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createLruCache(limit) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = createLruCache(2); c.set(\"a\", 1); c.set(\"b\", 2); c.get(\"a\"); c.set(\"c\", 3); return [c.get(\"a\"), c.get(\"b\"), c.get(\"c\")];"],"expected":[1,null,3]},
+      {"args":["const c = createLruCache(2); c.set(\"a\", 1); c.set(\"b\", 2); c.set(\"c\", 3); return [c.get(\"a\"), c.size()];"],"expected":[null,2]},
+      {"args":["const c = createLruCache(2); c.set(\"a\", 1); c.set(\"b\", 2); c.set(\"a\", 9); c.set(\"c\", 3); return [c.get(\"a\"), c.get(\"b\")];"],"expected":[9,null]},
+      {"args":["const c = createLruCache(1); c.set(\"x\", 1); c.set(\"y\", 2); return [c.get(\"x\"), c.get(\"y\"), c.size()];"],"expected":[null,2,1]},
+      {"args":["const c = createLruCache(3); for (let i = 0; i < 100; i++) c.set(i, i * 2); return [c.size(), c.get(99), c.get(96)];"],"expected":[3,198,null]},
+      {"args":["const c = createLruCache(2); c.set(\"a\", 0); c.set(\"b\", false); c.get(\"a\"); c.set(\"c\", 1); return [c.get(\"a\"), c.get(\"b\")];"],"expected":[0,null]},
+      {"args":["const c = createLruCache(2); c.set(\"a\", 1); c.get(\"zz\"); c.set(\"b\", 2); return [c.size(), c.get(\"zz\")];"],"expected":[2,null]}
+    ]
+  }
+}

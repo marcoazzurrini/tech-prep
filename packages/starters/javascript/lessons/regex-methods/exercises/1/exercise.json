@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const shelf = \"Book A12, Book B7, DVD C3\";\n\nconst one = shelf.match(/book ([a-z])(\\d+)/i);\nconsole.log(one[1], one[2], one.index);\n\nconsole.log(shelf.match(/book ([a-z])(\\d+)/gi).length);\nconsole.log(shelf.match(/CD/i));"
+    },
+    "expected": "A 12 0\n2\nnull"
+  }
+}

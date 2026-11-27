@@ -1,0 +1,20 @@
+{
+  "title": "Quoted Phrases",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "quotedPhrases"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function quotedPhrases(text) {\n  return (text.match(/\".*\"/g) ?? []).map((quote) => quote.slice(1, -1));\n}\n"
+    },
+    "tests": [
+      {"args":["say \"hi\" and \"bye\""],"expected":["hi","bye"]},
+      {"args":["no quotes"],"expected":[]},
+      {"args":["\"one\""],"expected":["one"]},
+      {"args":["\"\" and \"x\""],"expected":["","x"]},
+      {"args":["\"a b\" \"c\""],"expected":["a b","c"]}
+    ]
+  }
+}

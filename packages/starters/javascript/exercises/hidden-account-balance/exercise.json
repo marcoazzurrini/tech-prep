@@ -1,0 +1,19 @@
+{
+  "title": "Hidden Account Balance",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Account {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = new Account(); a.deposit(50); a.deposit(20); return a.balance();"],"expected":70},
+      {"args":["const a = new Account(); return [a.balance(), Object.getOwnPropertyNames(a).length, JSON.stringify(a)];"],"expected":[0,0,"{}"]},
+      {"args":["const a = new Account(), b = new Account(); a.deposit(5); return [a.balance(), b.balance()];"],"expected":[5,0]},
+      {"args":["const a = new Account(); a.deposit(30); a.withdraw(10); return [a.balance(), Object.keys(a)];"],"expected":[20,[]]},
+      {"args":["const a = new Account(); a.deposit(10); try { a.withdraw(11); } catch (e) { return [e.name, a.balance()]; } return \"no error\";"],"expected":["RangeError",10]},
+      {"args":["const a = Object.freeze(new Account()); a.deposit(7); return a.balance();"],"expected":7}
+    ]
+  }
+}

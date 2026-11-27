@@ -1,0 +1,21 @@
+{
+  "title": "One-Shot Listeners",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createChannel() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const ch = createChannel(); const got = []; ch.once((v) => got.push(v)); ch.emit(1); ch.emit(2); return [got, ch.size()];"],"expected":[[1],0]},
+      {"args":["const ch = createChannel(); const off = ch.once(() => {}); off(); return ch.size();"],"expected":0},
+      {"args":["const ch = createChannel(); const got = []; const off = ch.once((v) => got.push(v)); off(); ch.emit(5); return got;"],"expected":[]},
+      {"args":["const ch = createChannel(), got = []; ch.on((v) => got.push(v)); ch.once((v) => got.push(-v)); ch.emit(1); ch.emit(2); return got;"],"expected":[1,-1,2]},
+      {"args":["const ch = createChannel(); const f = () => {}; ch.once(f); ch.once(f); ch.emit(0); return ch.size();"],"expected":0},
+      {"args":["const ch = createChannel(); let n = 0; ch.once(() => { n++; ch.emit(0); }); ch.emit(0); return n;"],"expected":1},
+      {"args":["const ch = createChannel(); const off = ch.on(() => {}); off(); off(); return ch.size();"],"expected":0},
+      {"args":["const ch = createChannel(); const got = []; ch.on((v) => got.push(v)); ch.emit(1); ch.emit(2); return [got, ch.size()];"],"expected":[[1,2],1]}
+    ]
+  }
+}

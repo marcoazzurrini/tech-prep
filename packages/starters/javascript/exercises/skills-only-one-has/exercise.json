@@ -1,0 +1,20 @@
+{
+  "title": "Skills Only One Has",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "uniqueSkills"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function uniqueSkills(people) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"Ada":["js","sql","go"],"Bo":["js","css"],"Cy":["go","rust"]}],"expected":{"Ada":["sql"],"Bo":["css"],"Cy":["rust"]}},
+      {"args":[{}],"expected":{}},
+      {"args":[{"Solo":["a","b"]}],"expected":{"Solo":["a","b"]}},
+      {"args":[{"A":["x"],"B":["x"]}],"expected":{"A":[],"B":[]}},
+      {"args":[{"A":["p","q"],"B":[],"C":["q","r","p"]}],"expected":{"A":[],"B":[],"C":["r"]}}
+    ]
+  }
+}

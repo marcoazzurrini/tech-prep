@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const o = /o/g;\nconst text = \"foo boo\";\n\nconsole.log(o.test(text), o.lastIndex);\nconsole.log(o.test(text), o.lastIndex);\n\no.lastIndex = 10;\nconsole.log(o.test(text), o.lastIndex);\n\nconst sticky = /o/y;\nconsole.log(sticky.test(text), sticky.lastIndex);"
+    },
+    "expected": "true 2\ntrue 3\nfalse 0\nfalse 0"
+  }
+}

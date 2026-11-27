@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const words = [\"éclair\", \"Eagle\", \"dog\", \"egg\"];\n\nconsole.log(words.toSorted().join(\",\"));\nconsole.log(words.toSorted((a, b) => a.localeCompare(b, \"en\")).join(\",\"));\nconsole.log(Math.sign(\"b\".localeCompare(\"a\", \"en\")));\nconsole.log(\"B\" < \"a\");"
+    },
+    "expected": "Eagle,dog,egg,éclair\ndog,Eagle,éclair,egg\n1\ntrue"
+  }
+}

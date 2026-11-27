@@ -1,0 +1,21 @@
+{
+  "title": "Rooms Never Booked",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "freeRooms"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function freeRooms(rooms, bookings) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[101,102,103,104],[[101],[103,101],[]]],"expected":[102,104]},
+      {"args":[[1,2],[]],"expected":[1,2]},
+      {"args":[[1,2],[[1,2]]],"expected":[]},
+      {"args":[[],[[5]]],"expected":[]},
+      {"args":[[7,3,5],[[9],[5]]],"expected":[3,7]},
+      {"args":[[10,20,30],[[30,30],[10]]],"expected":[20]}
+    ]
+  }
+}

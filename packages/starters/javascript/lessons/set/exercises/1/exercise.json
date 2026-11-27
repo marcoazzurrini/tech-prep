@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const codes = new Set([5, \"5\", 5, NaN]);\ncodes.add(NaN).add(-0).add(0);\n\nconsole.log(codes.size);\nconsole.log(codes.has(Number(\"5\")));\nconsole.log(codes.delete(\"5\"));\nconsole.log(codes.delete(\"5\"));\nconsole.log(new Set(\"noon\").size);"
+    },
+    "expected": "4\ntrue\ntrue\nfalse\n2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const s = \"aaa bb c\";\n\nconsole.log(s.match(/\\w+/g).length);\nconsole.log(/^a{2}$/.test(\"aaa\"));\nconsole.log(s.match(/\\w+?/)[0]);\nconsole.log(s.match(/a.*b/)[0]);\nconsole.log(s.match(/a.*?b/)[0]);"
+    },
+    "expected": "3\nfalse\na\naaa bb\naaa b"
+  }
+}

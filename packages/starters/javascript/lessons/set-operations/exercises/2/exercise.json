@@ -1,0 +1,22 @@
+{
+  "title": "Check Access",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "checkAccess"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function checkAccess(required, granted) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["read","write"],["read","write","admin"]],"expected":"full"},
+      {"args":[["read","write"],["admin"]],"expected":"none"},
+      {"args":[["read","write"],["write"]],"expected":"partial"},
+      {"args":[[],["read"]],"expected":"full"},
+      {"args":[[],[]],"expected":"full"},
+      {"args":[["read"],[]],"expected":"none"},
+      {"args":[["a","b"],["b","a"]],"expected":"full"}
+    ]
+  }
+}

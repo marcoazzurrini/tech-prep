@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const code = \"A1 b_2 c-3\";\n\nconsole.log(code.match(/\\d/g).join(\"\"));\nconsole.log(code.match(/\\W/g).length);\nconsole.log(/c.3/.test(code));"
+    },
+    "expected": "123\n3\ntrue"
+  }
+}

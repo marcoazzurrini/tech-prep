@@ -1,0 +1,20 @@
+{
+  "title": "Contains Text",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "containsText"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function containsText(text, part) {\n  return text.includes(part);\n}\n"
+    },
+    "tests": [
+      {"args":["café au lait","café"],"expected":true},
+      {"args":["café au lait","café"],"expected":true},
+      {"args":["menu","nu"],"expected":true},
+      {"args":["Zoë","e"],"expected":false},
+      {"args":["tea","coffee"],"expected":false}
+    ]
+  }
+}

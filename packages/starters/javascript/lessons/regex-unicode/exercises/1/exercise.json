@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const menu = \"x🍔y🍟\";\n\nconsole.log(menu.length, menu.match(/./g).length, menu.match(/./gu).length);\nconsole.log(/^..$/.test(\"🍔\"), /^..$/u.test(\"🍔\"));\nconsole.log(\"🍔\".replace(/[🍔🍟]/g, \"-\"));"
+    },
+    "expected": "6 6 4\ntrue false\n--"
+  }
+}

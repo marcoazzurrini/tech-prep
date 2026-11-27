@@ -1,0 +1,22 @@
+{
+  "title": "Number Plate",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "isPlate"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isPlate(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["AB12"],"expected":true},
+      {"args":["ab12"],"expected":false},
+      {"args":["AB123"],"expected":false},
+      {"args":["XAB12"],"expected":false},
+      {"args":["A1B2"],"expected":false},
+      {"args":["ZZ99"],"expected":true},
+      {"args":[""],"expected":false}
+    ]
+  }
+}

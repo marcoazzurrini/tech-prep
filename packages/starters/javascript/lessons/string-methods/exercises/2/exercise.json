@@ -1,0 +1,20 @@
+{
+  "title": "Find a Mention",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "mentions"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function mentions(text, name) {\n  if (text.indexOf(\"@\" + name)) {\n    return true;\n  }\n\n  return false;\n}\n"
+    },
+    "tests": [
+      {"args":["@ada see this","ada"],"expected":true},
+      {"args":["thanks @ada","ada"],"expected":true},
+      {"args":["hello all","ada"],"expected":false},
+      {"args":["@bob hi","ada"],"expected":false},
+      {"args":["@ada","ada"],"expected":true}
+    ]
+  }
+}

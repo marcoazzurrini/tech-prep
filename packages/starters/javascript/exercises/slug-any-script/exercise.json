@@ -1,0 +1,23 @@
+{
+  "title": "Title to Slug",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "titleToSlug"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function titleToSlug(title) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Crème Brûlée: 2 Ways!"],"expected":"crème-brûlée-2-ways"},
+      {"args":["  Hello,   World "],"expected":"hello-world"},
+      {"args":["Привет мир"],"expected":"привет-мир"},
+      {"args":["東京 2020"],"expected":"東京-2020"},
+      {"args":["!!!"],"expected":""},
+      {"args":["C'est la vie"],"expected":"c-est-la-vie"},
+      {"args":["Rock & Roll 🎸"],"expected":"rock-roll"},
+      {"args":["𠀋 and 𠀌"],"expected":"𠀋-and-𠀌"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const v = \"v2.15.3\".match(/v(\\d+)\\.(\\d+)\\.(\\d+)/);\n\nconsole.log(v[2]);\nconsole.log(v[1] + v[3]);\nconsole.log(\"abab\".match(/(ab)+/)[1]);"
+    },
+    "expected": "15\n23\nab"
+  }
+}

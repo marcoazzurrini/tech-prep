@@ -1,0 +1,20 @@
+{
+  "title": "Unique Tags",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "uniqueTags"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function uniqueTags(tags) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["JS","café","js","Cafe","api"]],"expected":["api","café","JS"]},
+      {"args":[[]],"expected":[]},
+      {"args":[["Node","node","NODE"]],"expected":["Node"]},
+      {"args":[["résumé","Resume","report"]],"expected":["report","résumé"]},
+      {"args":[["b","a","B","Ä"]],"expected":["a","b"]}
+    ]
+  }
+}

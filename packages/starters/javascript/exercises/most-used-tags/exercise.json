@@ -1,0 +1,21 @@
+{
+  "title": "Most Used Tags",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "topTags"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function topTags(posts, n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"tags":["js","css"]},{"tags":["css"]},{"tags":["html","js","css"]}],2],"expected":["css","js"]},
+      {"args":[[],3],"expected":[]},
+      {"args":[[{"tags":["b","a"]},{"tags":["a","b"]}],1],"expected":["b"]},
+      {"args":[[{"tags":["10","2"]},{"tags":["2","10"]},{"tags":["7"]}],3],"expected":["10","2","7"]},
+      {"args":[[{"tags":["constructor"]},{"tags":["toString","constructor"]}],5],"expected":["constructor","toString"]},
+      {"args":[[{"tags":[]},{"tags":["x"]}],0],"expected":[]}
+    ]
+  }
+}

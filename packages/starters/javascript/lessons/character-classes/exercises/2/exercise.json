@@ -1,0 +1,21 @@
+{
+  "title": "Strip Punctuation",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stripPunctuation"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stripPunctuation(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Hello, world!"],"expected":"Hello world"},
+      {"args":["It's 5 o'clock."],"expected":"Its 5 oclock"},
+      {"args":[""],"expected":""},
+      {"args":["a-b_c"],"expected":"abc"},
+      {"args":["OK"],"expected":"OK"},
+      {"args":["tab\there"],"expected":"tabhere"}
+    ]
+  }
+}

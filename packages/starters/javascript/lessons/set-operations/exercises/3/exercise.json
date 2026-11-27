@@ -1,0 +1,21 @@
+{
+  "title": "Changed Tags",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "changedTags"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function changedTags(before, after) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["js","css"],["css","html"]],"expected":{"added":["html"],"removed":["js"]}},
+      {"args":[[],["a","b"]],"expected":{"added":["a","b"],"removed":[]}},
+      {"args":[["a","b"],[]],"expected":{"added":[],"removed":["a","b"]}},
+      {"args":[["x","y"],["y","x"]],"expected":{"added":[],"removed":[]}},
+      {"args":[["old","keep","gone"],["new","keep","fresh"]],"expected":{"added":["new","fresh"],"removed":["old","gone"]}},
+      {"args":[[],[]],"expected":{"added":[],"removed":[]}}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Loops Back on Itself",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function hasCycle(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = {}; a.self = a; return hasCycle(a);"],"expected":true},
+      {"args":["const shared = { n: 1 }; return hasCycle({ x: shared, y: [shared, shared] });"],"expected":false},
+      {"args":["return hasCycle({ a: { b: { c: [1, 2, { d: null }] } } });"],"expected":false},
+      {"args":["const list = [1]; list.push({ back: list }); return hasCycle(list);"],"expected":true},
+      {"args":["return [hasCycle(5), hasCycle(null), hasCycle(\"text\")];"],"expected":[false,false,false]},
+      {"args":["const a = {}, b = { a }; a.b = b; return hasCycle({ start: a });"],"expected":true},
+      {"args":["const leaf = {}; const l = { leaf }, r = { leaf }; return hasCycle({ l, r, again: l });"],"expected":false}
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Split an Identifier",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "identifierWords"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function identifierWords(name) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["parseHTTPResponse"],"expected":["parse","HTTP","Response"]},
+      {"args":["userId"],"expected":["user","Id"]},
+      {"args":["XMLParser"],"expected":["XML","Parser"]},
+      {"args":["simple"],"expected":["simple"]},
+      {"args":["getURL"],"expected":["get","URL"]},
+      {"args":["IOError"],"expected":["IO","Error"]},
+      {"args":["aB"],"expected":["a","B"]},
+      {"args":["Total"],"expected":["Total"]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const m = \"id: A-42\".match(/(\\w)-(\\d+)/);\n\nconsole.log(m[1] + m[2]);\nconsole.log(\"2025-03-14\".replace(/(\\d+)-(\\d+)-(\\d+)/, \"$3/$2\"));\nconsole.log(\"ab\".match(/(a)|(b)/)[2]);\nconsole.log(/^(\\d)\\1$/.test(\"77\"));\nconsole.log(\"cat\".match(/(?:c)(a)/)[1]);"
+    },
+    "expected": "A42\n14/03\nundefined\ntrue\na"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Separators in Text",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "addSeparators"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addSeparators(text) {\n  return text.replace(/\\B(?=(\\d{3})+$)/g, \",\");\n}\n"
+    },
+    "tests": [
+      {"args":["1234567"],"expected":"1,234,567"},
+      {"args":["Pop: 8000000 people"],"expected":"Pop: 8,000,000 people"},
+      {"args":["12000 cars, 950 bikes"],"expected":"12,000 cars, 950 bikes"},
+      {"args":["no numbers"],"expected":"no numbers"},
+      {"args":["Room 101"],"expected":"Room 101"},
+      {"args":["1000"],"expected":"1,000"}
+    ]
+  }
+}

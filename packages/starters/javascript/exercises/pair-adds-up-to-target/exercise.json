@@ -1,0 +1,23 @@
+{
+  "title": "Pair Adds Up to Target",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "findPair"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function findPair(numbers, target) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[2,7,11,15],9],"expected":[0,1]},
+      {"args":[[3,3],6],"expected":[0,1]},
+      {"args":[[1,2,3],7],"expected":null},
+      {"args":[[],0],"expected":null},
+      {"args":[[5,1,5,4],9],"expected":[0,3]},
+      {"args":[[4,2,6,2],4],"expected":[1,3]},
+      {"args":[[4,1],8],"expected":null},
+      {"args":[[-1,0,1],0],"expected":[0,2]}
+    ]
+  }
+}

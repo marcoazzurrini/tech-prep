@@ -1,0 +1,21 @@
+{
+  "title": "Title to Slug",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "titleToSlug"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function titleToSlug(title) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Hello, World!"],"expected":"hello-world"},
+      {"args":["  Top 10 Tips -- for 2026  "],"expected":"top-10-tips-for-2026"},
+      {"args":["!!!"],"expected":""},
+      {"args":["snake_case_title"],"expected":"snake-case-title"},
+      {"args":["Already-a-slug"],"expected":"already-a-slug"},
+      {"args":["ONE"],"expected":"one"}
+    ]
+  }
+}

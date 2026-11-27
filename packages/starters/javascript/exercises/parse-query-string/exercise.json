@@ -1,0 +1,21 @@
+{
+  "title": "Parse a Query String",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "parseQuery"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function parseQuery(query) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["?page=2&sort=name"],"expected":{"page":"2","sort":"name"}},
+      {"args":["page=2"],"expected":{"page":"2"}},
+      {"args":[""],"expected":{}},
+      {"args":["?"],"expected":{}},
+      {"args":["?token=a=b=c&debug"],"expected":{"token":"a=b=c","debug":""}},
+      {"args":["a=1&&b=2&a=3"],"expected":{"a":"3","b":"2"}}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const scores = new Uint8Array(3);\nscores[1] = 42;\nscores[3] = 99;\n\nconst copy = Uint8Array.from([7, 8]);\n\nconsole.log(scores.length, scores.buffer.byteLength);\nconsole.log(scores.join(\",\"));\nconsole.log(copy.map((n) => n * 2).join(\",\"));\nconsole.log(typeof scores.pop);"
+    },
+    "expected": "3 3\n0,42,0\n14,16\nundefined"
+  }
+}

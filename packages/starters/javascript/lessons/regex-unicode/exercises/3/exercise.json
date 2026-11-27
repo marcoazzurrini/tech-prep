@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sign = \"#1 🎂 *\";\n\nconsole.log(sign.match(/\\p{Emoji}/gu).length);\nconsole.log(sign.match(/\\p{Extended_Pictographic}/gu).length);\nconsole.log(/^\\p{Extended_Pictographic}$/u.test(\"👍🏽\"));"
+    },
+    "expected": "4\n1\nfalse"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = new Set([1, 2, 3, 4]);\nconst b = new Set([4, 2, 8]);\n\nconsole.log([...a.symmetricDifference(b)].join(\",\"));\nconsole.log([...a.intersection(b)].join(\",\"));\nconsole.log(new Set().isDisjointFrom(new Set()));\nconsole.log(b.isSupersetOf(new Set([2, 2, 4])));\nconsole.log(a.union(b).size, a.size);"
+    },
+    "expected": "1,3,8\n4,2\ntrue\ntrue\n5 4"
+  }
+}

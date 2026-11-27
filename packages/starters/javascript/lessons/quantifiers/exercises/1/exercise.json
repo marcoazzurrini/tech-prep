@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const s = \"x10 y200 z\";\n\nconsole.log(s.match(/\\d+/g).join(\",\"));\nconsole.log(/go?al/.test(\"gal\"));\nconsole.log(s.match(/y0*/)[0]);"
+    },
+    "expected": "10,200\ntrue\ny"
+  }
+}

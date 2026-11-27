@@ -1,0 +1,22 @@
+{
+  "title": "Doubled Word",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "hasDoubledWord"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function hasDoubledWord(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["This is is fine"],"expected":true},
+      {"args":["The the end"],"expected":true},
+      {"args":["the then"],"expected":false},
+      {"args":["no repeats here"],"expected":false},
+      {"args":[""],"expected":false},
+      {"args":["a  a"],"expected":true},
+      {"args":["is island"],"expected":false}
+    ]
+  }
+}

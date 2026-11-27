@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const cache = new Map();\n\nfunction remember(key) {\n  if (cache.has(key)) {\n    return \"hit\";\n  }\n  if (cache.size === 2) {\n    const [oldest] = cache.keys();\n    cache.delete(oldest);\n  }\n  cache.set(key, true);\n  return \"miss\";\n}\n\nconsole.log([\"a\", \"b\", \"a\", \"c\", \"a\", \"b\"].map(remember).join(\",\"));\nconsole.log([...cache.keys()].join(\",\"));"
+    },
+    "expected": "miss,miss,hit,miss,miss,miss\na,b"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Celsius to Fahrenheit",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "toFahrenheit"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toFahrenheit(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["It was 20C, then -5C."],"expected":"It was 68F, then 23F."},
+      {"args":["Body: 37C"],"expected":"Body: 99F"},
+      {"args":["No data"],"expected":"No data"},
+      {"args":["0C"],"expected":"32F"},
+      {"args":["100C and 100C"],"expected":"212F and 212F"},
+      {"args":["Room 12 is -40C"],"expected":"Room 12 is -40F"}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Format a Phone Number",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "formatPhone"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function formatPhone(digits) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["4155550123"],"expected":"(415) 555-0123"},
+      {"args":["0201234567"],"expected":"(020) 123-4567"},
+      {"args":["12345"],"expected":"12345"},
+      {"args":["415555012a"],"expected":"415555012a"},
+      {"args":["41555501234"],"expected":"41555501234"},
+      {"args":[""],"expected":""}
+    ]
+  }
+}

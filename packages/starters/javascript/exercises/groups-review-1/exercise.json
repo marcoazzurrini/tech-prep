@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"aaa\".replace(/(a)+/, \"[$1]\"));\nconsole.log(/^(ha)+$/.test(\"hahah\"));\nconsole.log(\"10 kg\".match(/\\d+ (k|kg)/)[1]);\nconsole.log(/([\"'])x\\1/.test(`\"x'`));"
+    },
+    "expected": "[a]\nfalse\nk\nfalse"
+  }
+}

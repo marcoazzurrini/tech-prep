@@ -1537,7 +1537,8 @@
       }
     ],
     "key_idea": "`slice`, `indexOf`, `includes`, `split`, `replaceAll`, `padStart` and `trim` cover most text work. Each returns a new value and leaves the string as it is.",
-    "solo": "string-methods-solo-1"
+    "guided": 4,
+    "solo": ["string-methods-solo-1", "snake-to-camel"]
   },
   {
     "id": "string-comparison",
@@ -1551,7 +1552,8 @@
       }
     ],
     "key_idea": "`<` compares strings by character code, so every capital letter sorts before every small one. `localeCompare` and `Intl.Collator` sort text the way people expect.",
-    "solo": "string-comparison-solo-1"
+    "guided": 3,
+    "solo": ["string-comparison-solo-1", "sort-contacts"]
   },
   {
     "id": "unicode",
@@ -1560,7 +1562,8 @@
     "prereqs": ["string-methods", "for-of"],
     "encompasses": [],
     "key_idea": "A string is a sequence of 16-bit units, and some characters take two. `length` counts units, while `for...of` and spread walk whole characters.",
-    "solo": "unicode-solo-1"
+    "guided": 4,
+    "solo": ["unicode-solo-1", "shorten-text"]
   },
   {
     "id": "tagged-templates",
@@ -1569,7 +1572,8 @@
     "prereqs": ["template-literals", "rest-arguments"],
     "encompasses": [],
     "key_idea": "A tag is a function placed before a template literal. It receives the fixed strings and the values separately, and returns whatever it likes.",
-    "solo": "tagged-templates-solo-1"
+    "guided": 4,
+    "solo": ["tagged-templates-solo-1", "friendly-text"]
   },
   {
     "id": "regex-basics",
@@ -1578,7 +1582,8 @@
     "prereqs": ["string-methods"],
     "encompasses": [],
     "key_idea": "`/pattern/flags` makes a regular expression, and `test` says whether a string matches it. The flag `i` ignores case and `g` finds every match. Escape a special character with a backslash.",
-    "solo": "regex-basics-solo-1"
+    "guided": 4,
+    "solo": ["regex-basics-solo-1", "tally-keywords"]
   },
   {
     "id": "character-classes",
@@ -1592,7 +1597,8 @@
       }
     ],
     "key_idea": "`\\d`, `\\w` and `\\s` match a digit, a word character and a space. `[abc]` matches one character of a set, and `[^abc]` one outside it. `^`, `$` and `\\b` match a position, not a character.",
-    "solo": "character-classes-solo-1"
+    "guided": 4,
+    "solo": ["character-classes-solo-1", "count-whole-word"]
   },
   {
     "id": "quantifiers",
@@ -1606,7 +1612,8 @@
       }
     ],
     "key_idea": "`*`, `+`, `?` and `{n,m}` say how many times to match. They are greedy and take as much as they can. Add `?` to make one lazy.",
-    "solo": "quantifiers-solo-1"
+    "guided": 4,
+    "solo": ["quantifiers-solo-1", "find-long-words"]
   },
   {
     "id": "groups",
@@ -1620,7 +1627,8 @@
       }
     ],
     "key_idea": "Parentheses group part of a pattern and capture what it matched. `(?<name>...)` names the capture, `(?:...)` groups without capturing, and `\\1` matches the same text again.",
-    "solo": "groups-solo-1"
+    "guided": 4,
+    "solo": ["groups-solo-1", "parse-log-line"]
   },
   {
     "id": "regex-methods",
@@ -1634,7 +1642,8 @@
       }
     ],
     "key_idea": "`match` gives the first match with its groups, or every match when the regex has `g`. `matchAll` gives every match with groups. `replace` can use `$1` or a function.",
-    "solo": "regex-methods-solo-1"
+    "guided": 4,
+    "solo": ["regex-methods-solo-1", "fill-placeholders"]
   },
   {
     "id": "regex-state",
@@ -1643,7 +1652,8 @@
     "prereqs": ["regex-methods"],
     "encompasses": [],
     "key_idea": "A regex with `g` or `y` remembers where its last match ended, in `lastIndex`. Calling `test` or `exec` again carries on from there, so the same call can give a different answer.",
-    "solo": "regex-state-solo-1"
+    "guided": 3,
+    "solo": ["regex-state-solo-1", "split-shell-words"]
   },
   {
     "id": "lookaround",
@@ -1652,7 +1662,8 @@
     "prereqs": ["groups"],
     "encompasses": [],
     "key_idea": "`(?=...)` and `(?<=...)` test what comes after or before a position without making it part of the match. `(?!...)` and `(?<!...)` test that it does not.",
-    "solo": "lookaround-solo-1"
+    "guided": 4,
+    "solo": ["lookaround-solo-1", "format-amount-with-commas"]
   },
   {
     "id": "regex-unicode",
@@ -1666,7 +1677,8 @@
       }
     ],
     "key_idea": "With the `u` or `v` flag a regex works on whole characters, and `\\p{...}` matches by Unicode property, such as `\\p{L}` for any letter.",
-    "solo": "regex-unicode-solo-1"
+    "guided": 4,
+    "solo": ["regex-unicode-solo-1", "slug-any-script"]
   },
   {
     "id": "map",
@@ -1675,7 +1687,8 @@
     "prereqs": ["object-iteration", "sameness", "for-of"],
     "encompasses": [],
     "key_idea": "A `Map` holds key and value pairs. Its keys can be any value, objects included. It keeps insertion order and knows its `size`.",
-    "solo": "map-solo-1"
+    "guided": 4,
+    "solo": ["map-solo-1", "pair-adds-up-to-target"]
   },
   {
     "id": "set",
@@ -1689,7 +1702,8 @@
       }
     ],
     "key_idea": "A `Set` holds each value once. Adding a value it already holds does nothing. `[...new Set(list)]` removes duplicates.",
-    "solo": "set-solo-1"
+    "guided": 3,
+    "solo": ["set-solo-1", "longest-stretch-without-repeats"]
   },
   {
     "id": "set-operations",
@@ -1703,7 +1717,8 @@
       }
     ],
     "key_idea": "`union`, `intersection`, `difference` and `symmetricDifference` combine two sets into a new one. `isSubsetOf` and `isSupersetOf` compare them.",
-    "solo": "set-operations-solo-1"
+    "guided": 3,
+    "solo": ["set-operations-solo-1", "free-in-every-calendar"]
   },
   {
     "id": "weakmap-weakset",
@@ -1712,7 +1727,8 @@
     "prereqs": ["map", "garbage-collection"],
     "encompasses": [],
     "key_idea": "A `WeakMap` takes only objects as keys and does not keep them alive. When a key is collected, its entry goes too. It cannot be looped over and has no `size`.",
-    "solo": "weakmap-weakset-solo-1"
+    "guided": 3,
+    "solo": ["weakmap-weakset-solo-1", "hidden-account-balance"]
   },
   {
     "id": "memory-leaks",
@@ -1721,7 +1737,8 @@
     "prereqs": ["weakmap-weakset", "closures"],
     "encompasses": [],
     "key_idea": "A leak is memory that is still reachable but never used again. The usual causes are a cache that only grows, a timer that is never cleared and a closure that holds a large value.",
-    "solo": "memory-leaks-solo-1"
+    "guided": 3,
+    "solo": ["memory-leaks-solo-1", "recently-used-cache"]
   },
   {
     "id": "typed-arrays",
@@ -1730,7 +1747,8 @@
     "prereqs": ["array-basics", "bitwise"],
     "encompasses": [],
     "key_idea": "An `ArrayBuffer` is a block of raw bytes. A typed array such as `Uint8Array` is a view on it with a fixed length and one number type. A value that does not fit wraps around.",
-    "solo": "typed-arrays-solo-1"
+    "guided": 4,
+    "solo": ["typed-arrays-solo-1", "read-image-header"]
   },
   {
     "id": "iteration-protocol",

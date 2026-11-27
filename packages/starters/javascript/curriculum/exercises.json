@@ -2750,10 +2750,46 @@
     "concepts": ["string-methods"]
   },
   {
+    "slug": "snake-to-camel",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["string-methods"]
+  },
+  {
+    "slug": "format-thousands",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["string-methods"]
+  },
+  {
+    "slug": "parse-query-string",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["string-methods", "destructuring-arrays"]
+  },
+  {
     "slug": "string-comparison-solo-1",
     "topic": "strings",
     "difficulty": "easy",
     "concepts": ["string-comparison"]
+  },
+  {
+    "slug": "sort-contacts",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["string-comparison"]
+  },
+  {
+    "slug": "string-comparison-review-1",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["string-comparison"]
+  },
+  {
+    "slug": "unique-tags",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["string-comparison", "searching"]
   },
   {
     "slug": "unicode-solo-1",
@@ -2762,10 +2798,46 @@
     "concepts": ["unicode"]
   },
   {
+    "slug": "shorten-text",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["unicode"]
+  },
+  {
+    "slug": "unicode-review-1",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["unicode"]
+  },
+  {
+    "slug": "most-frequent-character",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["unicode", "grouping"]
+  },
+  {
     "slug": "tagged-templates-solo-1",
     "topic": "strings",
     "difficulty": "easy",
     "concepts": ["tagged-templates"]
+  },
+  {
+    "slug": "friendly-text",
+    "topic": "strings",
+    "difficulty": "easy",
+    "concepts": ["tagged-templates"]
+  },
+  {
+    "slug": "tagged-templates-review-1",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["tagged-templates"]
+  },
+  {
+    "slug": "safe-html",
+    "topic": "strings",
+    "difficulty": "medium",
+    "concepts": ["tagged-templates", "string-methods"]
   },
   {
     "slug": "regex-basics-solo-1",
@@ -2774,10 +2846,46 @@
     "concepts": ["regex-basics"]
   },
   {
+    "slug": "tally-keywords",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["regex-basics"]
+  },
+  {
+    "slug": "regex-basics-review-1",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-basics"]
+  },
+  {
+    "slug": "highlight-term",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-basics", "string-methods"]
+  },
+  {
     "slug": "character-classes-solo-1",
     "topic": "regex",
     "difficulty": "easy",
     "concepts": ["character-classes"]
+  },
+  {
+    "slug": "count-whole-word",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["character-classes"]
+  },
+  {
+    "slug": "character-classes-review-1",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["character-classes"]
+  },
+  {
+    "slug": "title-to-slug",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["character-classes", "string-methods", "map-filter"]
   },
   {
     "slug": "quantifiers-solo-1",
@@ -2786,10 +2894,46 @@
     "concepts": ["quantifiers"]
   },
   {
+    "slug": "find-long-words",
+    "topic": "regex",
+    "difficulty": "easy",
+    "concepts": ["quantifiers"]
+  },
+  {
+    "slug": "quantifiers-review-1",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["quantifiers"]
+  },
+  {
+    "slug": "strip-markup",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["quantifiers", "character-classes", "string-methods"]
+  },
+  {
     "slug": "groups-solo-1",
     "topic": "regex",
     "difficulty": "easy",
     "concepts": ["groups"]
+  },
+  {
+    "slug": "parse-log-line",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["groups"]
+  },
+  {
+    "slug": "groups-review-1",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["groups"]
+  },
+  {
+    "slug": "split-web-address",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["groups", "nullish-coalescing", "to-number"]
   },
   {
     "slug": "regex-methods-solo-1",
@@ -2798,10 +2942,46 @@
     "concepts": ["regex-methods"]
   },
   {
+    "slug": "fill-placeholders",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-methods"]
+  },
+  {
+    "slug": "dates-to-iso",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-methods"]
+  },
+  {
+    "slug": "snake-to-camel-keys",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-methods", "object-iteration", "recursion"]
+  },
+  {
     "slug": "regex-state-solo-1",
     "topic": "regex",
     "difficulty": "easy",
     "concepts": ["regex-state"]
+  },
+  {
+    "slug": "split-shell-words",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-state"]
+  },
+  {
+    "slug": "regex-state-review-1",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-state"]
+  },
+  {
+    "slug": "blocked-word-filter",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-state", "closures"]
   },
   {
     "slug": "lookaround-solo-1",
@@ -2810,10 +2990,46 @@
     "concepts": ["lookaround"]
   },
   {
+    "slug": "format-amount-with-commas",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["lookaround"]
+  },
+  {
+    "slug": "split-camel-case-words",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["lookaround"]
+  },
+  {
+    "slug": "mask-cards-in-text",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["lookaround", "regex-methods"]
+  },
+  {
     "slug": "regex-unicode-solo-1",
     "topic": "regex",
     "difficulty": "easy",
     "concepts": ["regex-unicode"]
+  },
+  {
+    "slug": "slug-any-script",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-unicode"]
+  },
+  {
+    "slug": "regex-unicode-review-1",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-unicode"]
+  },
+  {
+    "slug": "truncate-message",
+    "topic": "regex",
+    "difficulty": "medium",
+    "concepts": ["regex-unicode", "unicode"]
   },
   {
     "slug": "map-solo-1",
@@ -2822,10 +3038,46 @@
     "concepts": ["map"]
   },
   {
+    "slug": "pair-adds-up-to-target",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["map"]
+  },
+  {
+    "slug": "map-review-1",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["map"]
+  },
+  {
+    "slug": "most-used-tags",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["map", "sort"]
+  },
+  {
     "slug": "set-solo-1",
     "topic": "collections",
     "difficulty": "easy",
     "concepts": ["set"]
+  },
+  {
+    "slug": "longest-stretch-without-repeats",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["set"]
+  },
+  {
+    "slug": "set-review-1",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["set"]
+  },
+  {
+    "slug": "first-spelling-of-each-word",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["set", "string-methods"]
   },
   {
     "slug": "set-operations-solo-1",
@@ -2834,10 +3086,46 @@
     "concepts": ["set-operations"]
   },
   {
+    "slug": "free-in-every-calendar",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["set-operations"]
+  },
+  {
+    "slug": "rooms-never-booked",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["set-operations"]
+  },
+  {
+    "slug": "skills-only-one-has",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["set-operations", "object-iteration"]
+  },
+  {
     "slug": "weakmap-weakset-solo-1",
     "topic": "collections",
     "difficulty": "easy",
     "concepts": ["weakmap-weakset"]
+  },
+  {
+    "slug": "hidden-account-balance",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["weakmap-weakset"]
+  },
+  {
+    "slug": "weakmap-weakset-review-1",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["weakmap-weakset"]
+  },
+  {
+    "slug": "loops-back-on-itself",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["weakmap-weakset", "recursion"]
   },
   {
     "slug": "memory-leaks-solo-1",
@@ -2846,10 +3134,46 @@
     "concepts": ["memory-leaks"]
   },
   {
+    "slug": "recently-used-cache",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["memory-leaks"]
+  },
+  {
+    "slug": "price-watchers",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["memory-leaks"]
+  },
+  {
+    "slug": "one-shot-listeners",
+    "topic": "collections",
+    "difficulty": "hard",
+    "concepts": ["memory-leaks", "closures"]
+  },
+  {
     "slug": "typed-arrays-solo-1",
     "topic": "collections",
     "difficulty": "easy",
     "concepts": ["typed-arrays"]
+  },
+  {
+    "slug": "read-image-header",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["typed-arrays"]
+  },
+  {
+    "slug": "typed-arrays-review-1",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["typed-arrays"]
+  },
+  {
+    "slug": "compact-number-encoding",
+    "topic": "collections",
+    "difficulty": "hard",
+    "concepts": ["typed-arrays", "bitwise"]
   },
   {
     "slug": "iteration-protocol-solo-1",

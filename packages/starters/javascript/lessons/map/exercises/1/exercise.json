@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = { id: 1 };\nconst prices = new Map();\n\nprices.set(a, 10);\nprices.set({ id: 1 }, 20);\nprices.set(\"1\", 30).set(1, 40);\n\nconsole.log(prices.size);\nconsole.log(prices.get(a));\nconsole.log(prices.get({ id: 1 }));\nconsole.log(prices.get(1));"
+    },
+    "expected": "4\n10\nundefined\n40"
+  }
+}

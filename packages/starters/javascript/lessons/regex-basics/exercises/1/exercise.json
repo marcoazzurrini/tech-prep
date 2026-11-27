@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const title = \"Learn JavaScript\";\n\nconsole.log(/script/.test(title));\nconsole.log(/script/i.test(title));\nconsole.log(title.replace(/a/, \"4\"));"
+    },
+    "expected": "false\ntrue\nLe4rn JavaScript"
+  }
+}

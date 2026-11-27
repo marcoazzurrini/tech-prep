@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const expr = \"8*3+1\";\nconst parts = expr.split(/([*+])/);\n\nconsole.log(parts.length);\nconsole.log(parts[1], parts[3]);\nconsole.log(expr.search(/\\+/));\nconsole.log(\"a1b2c\".split(/\\d/).join(\",\"));"
+    },
+    "expected": "5\n* +\n3\na,b,c"
+  }
+}

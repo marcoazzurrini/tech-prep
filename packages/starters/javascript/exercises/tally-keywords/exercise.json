@@ -1,0 +1,21 @@
+{
+  "title": "Tally Keywords",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "tallyKeywords"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function tallyKeywords(text, keywords) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Tea, TEA and coffee",["tea","coffee","milk"]],"expected":{"tea":2,"coffee":1,"milk":0}},
+      {"args":["I like C++ and c++ likes me",["c++"]],"expected":{"c++":2}},
+      {"args":["v1.0 and v100",["v1.0"]],"expected":{"v1.0":1}},
+      {"args":["",["a"]],"expected":{"a":0}},
+      {"args":["anything",[]],"expected":{}},
+      {"args":["(beta) and (BETA)",["(beta)","beta"]],"expected":{"(beta)":2,"beta":2}}
+    ]
+  }
+}

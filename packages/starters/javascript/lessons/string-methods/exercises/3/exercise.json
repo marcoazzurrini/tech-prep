@@ -1,0 +1,20 @@
+{
+  "title": "Count the Words",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "wordCount"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function wordCount(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["buy milk today"],"expected":3},
+      {"args":["  two   words "],"expected":2},
+      {"args":[""],"expected":0},
+      {"args":["   "],"expected":0},
+      {"args":["one"],"expected":1}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Read the Hashtags",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "readHashtags"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readHashtags(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Loving #summer and #sea"],"expected":["summer","sea"]},
+      {"args":["no tags here"],"expected":[]},
+      {"args":["#a#b"],"expected":["a","b"]},
+      {"args":["Item #1 is out"],"expected":["1"]},
+      {"args":["## heading"],"expected":[]},
+      {"args":["#first_day back"],"expected":["first_day"]}
+    ]
+  }
+}

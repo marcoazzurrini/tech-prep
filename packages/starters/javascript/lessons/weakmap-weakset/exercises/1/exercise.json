@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const labels = new WeakMap();\nconst box = {};\nconst tag = Symbol(\"tag\");\n\nlabels.set(box, \"fragile\").set(tag, \"red\");\nconsole.log(labels.get(box), labels.get(tag));\nconsole.log(labels.has({}));\n\ntry {\n  labels.set(7, \"seven\");\n} catch (error) {\n  console.log(error.name);\n}\nconsole.log(typeof labels.size);"
+    },
+    "expected": "fragile red\nfalse\nTypeError\nundefined"
+  }
+}

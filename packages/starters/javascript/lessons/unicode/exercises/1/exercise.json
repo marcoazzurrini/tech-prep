@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tea = \"tea🍵\";\n\nconsole.log(tea.length);\nconsole.log(tea.codePointAt(3) === tea.charCodeAt(3));\nconsole.log(\"🍵\".codePointAt(0) > 65535);\nconsole.log(String.fromCodePoint(116, 101, 97));"
+    },
+    "expected": "5\nfalse\ntrue\ntea"
+  }
+}

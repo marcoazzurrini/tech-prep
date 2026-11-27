@@ -1,0 +1,20 @@
+{
+  "title": "Mask a Card Number",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "maskCard"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function maskCard(number) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["4111222233334444"],"expected":"************4444"},
+      {"args":["12345"],"expected":"*2345"},
+      {"args":["1234"],"expected":"1234"},
+      {"args":["987"],"expected":"987"},
+      {"args":["0000111122"],"expected":"******1122"}
+    ]
+  }
+}

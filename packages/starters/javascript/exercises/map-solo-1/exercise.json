@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ages = new Map([[\"Ada\", 36], [\"Bo\", 7]]);\nages.set(NaN, 0);\n\nages.forEach((first, second) => {\n  console.log(first);\n});\n\nconsole.log(JSON.stringify(ages));\nconsole.log(ages.has(Number(\"x\")));"
+    },
+    "expected": "36\n7\n0\n{}\ntrue"
+  }
+}

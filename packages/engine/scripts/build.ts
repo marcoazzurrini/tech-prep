@@ -56,7 +56,8 @@ const format = (definition: Definition): string => {
     .map((test) => `      ${JSON.stringify(test)}`)
     .join(",\n");
 
-  return `${head.replace(`"${MARK}"`, `[\n${lines}\n    ]`)}\n`;
+  // A function replacement, so a `$` in a test is kept as written.
+  return `${head.replace(`"${MARK}"`, () => `[\n${lines}\n    ]`)}\n`;
 };
 
 /** Build one exercise. Returns what is wrong with it. */

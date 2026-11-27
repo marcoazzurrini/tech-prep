@@ -1,0 +1,20 @@
+{
+  "title": "Safe HTML",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function html(strings, ...values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return html`<p>${\"Tom & Jerry\"}</p>`;"],"expected":"<p>Tom &amp; Jerry</p>"},
+      {"args":["return html`<b>${\"<script>\"}</b>`;"],"expected":"<b>&lt;script&gt;</b>"},
+      {"args":["return html`<i title=\"${'Say \"hi\"'}\">${\"it's\"}</i>`;"],"expected":"<i title=\"Say &quot;hi&quot;\">it&#39;s</i>"},
+      {"args":["return html`<p>${\"&lt;\"}</p>`;"],"expected":"<p>&amp;lt;</p>"},
+      {"args":["return html`<p>${[\"a<\", \">b\"]}</p>`;"],"expected":"<p>a&lt;&gt;b</p>"},
+      {"args":["return html`<p>${null}${undefined}${0}</p>`;"],"expected":"<p>0</p>"},
+      {"args":["return html`plain <b>text</b>`;"],"expected":"plain <b>text</b>"}
+    ]
+  }
+}
