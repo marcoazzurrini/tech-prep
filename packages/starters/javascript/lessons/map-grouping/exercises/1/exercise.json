@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ratings = [5, \"5\", 4, 5, \"4\"];\nconst groups = Map.groupBy(ratings, (r) => r);\n\nconsole.log(groups.size);\nconsole.log(groups.get(5).length);\nconsole.log(groups.get(\"4\").length);\nconsole.log(Object.keys(Object.groupBy(ratings, (r) => r)).length);"
+    },
+    "expected": "4\n2\n1\n2"
+  }
+}

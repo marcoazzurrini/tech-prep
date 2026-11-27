@@ -1,0 +1,21 @@
+{
+  "title": "Monthly Payment Totals",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "monthlyTotals"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function monthlyTotals(payments, zone) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"at":"2024-03-31T23:30:00Z","amount":20},{"at":"2024-03-15T10:00:00Z","amount":5}],"Europe/Berlin"],"expected":[{"month":"2024-03","total":5},{"month":"2024-04","total":20}]},
+      {"args":[[{"at":"2024-03-31T23:30:00Z","amount":20},{"at":"2024-03-15T10:00:00Z","amount":5}],"UTC"],"expected":[{"month":"2024-03","total":25}]},
+      {"args":[[],"Asia/Tokyo"],"expected":[]},
+      {"args":[[{"at":"2025-01-01T05:00:00Z","amount":7},{"at":"2024-11-20T18:00:00Z","amount":3},{"at":"2024-12-02T09:00:00Z","amount":10}],"America/Los_Angeles"],"expected":[{"month":"2024-11","total":3},{"month":"2024-12","total":17}]},
+      {"args":[[{"at":"2024-06-30T23:00:00-05:00","amount":12},{"at":"2024-07-15T00:00:00Z","amount":8}],"Asia/Tokyo"],"expected":[{"month":"2024-07","total":20}]},
+      {"args":[[{"at":"2025-02-01T00:00:00Z","amount":1},{"at":"2024-02-29T12:00:00Z","amount":2},{"at":"2025-02-10T00:00:00Z","amount":4}],"Europe/London"],"expected":[{"month":"2024-02","total":2},{"month":"2025-02","total":5}]}
+    ]
+  }
+}

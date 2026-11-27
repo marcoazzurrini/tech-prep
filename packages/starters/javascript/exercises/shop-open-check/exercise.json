@@ -1,0 +1,23 @@
+{
+  "title": "Shop Open Check",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "isShopOpen"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isShopOpen(moment, shop) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["2024-07-15T07:30:00Z",{"location":"Europe/Rome","opens":"09:00","closes":"18:30"}],"expected":true},
+      {"args":["2024-01-15T07:30:00Z",{"location":"Europe/Rome","opens":"09:00","closes":"18:30"}],"expected":false},
+      {"args":["2024-01-15T17:30:00Z",{"location":"Europe/Rome","opens":"09:00","closes":"18:30"}],"expected":false},
+      {"args":["2024-01-15T17:29:00Z",{"location":"Europe/Rome","opens":"09:00","closes":"18:30"}],"expected":true},
+      {"args":["2024-07-14T23:30:00-04:00",{"location":"Asia/Tokyo","opens":"10:00","closes":"20:00"}],"expected":true},
+      {"args":["2024-03-10T12:30:00Z",{"location":"America/New_York","opens":"08:00","closes":"12:00"}],"expected":true},
+      {"args":["2024-03-10T08:00:00+05:30",{"location":"Asia/Kolkata","opens":"09:00","closes":"17:00"}],"expected":false},
+      {"args":["2024-07-14T22:30:00Z",{"location":"Europe/Rome","opens":"00:00","closes":"06:00"}],"expected":true}
+    ]
+  }
+}

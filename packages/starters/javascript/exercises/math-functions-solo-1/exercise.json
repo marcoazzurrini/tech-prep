@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const toDegrees = (radians) => radians * 180 / Math.PI;\n\nconsole.log(2 ** -3);\nconsole.log(Math.log10(0.001));\nconsole.log(Math.log2(1 / 8));\nconsole.log(Math.sqrt(-9) + Math.cbrt(-27));\nconsole.log(toDegrees(Math.atan2(0, -1)));"
+    },
+    "expected": "0.125\n-3\n-3\nNaN\n180"
+  }
+}

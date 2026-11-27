@@ -1,0 +1,18 @@
+{
+  "title": "Price Each Item Once",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function priceAll(items, lookup) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const p = priceAll([\"tea\", \"cake\", \"tea\"], (i) => { n++; return i.length; }); return [p, n];"],"expected":[[3,4,3],2]},
+      {"args":["let n = 0; const p = priceAll([], (i) => { n++; return 1; }); return [p, n];"],"expected":[[],0]},
+      {"args":["let n = 0; const p = priceAll([\"jam\", \"jam\", \"jam\"], (i) => { n++; return 2; }); return [p, n];"],"expected":[[2,2,2],1]},
+      {"args":["const seen = []; priceAll([\"b\", \"a\", \"b\", \"c\"], (i) => { seen.push(i); return 0; }); return seen;"],"expected":["b","a","c"]},
+      {"args":["let n = 0; const p = priceAll([\"a\", \"b\", \"a\"], (i) => { n++; return i === \"a\" ? 0 : 5; }); return [p, n];"],"expected":[[0,5,0],2]}
+    ]
+  }
+}

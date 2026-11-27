@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const words = new Set([\"sun\", \"moon\", \"sky\"]);\n\nconst longest = words.values().reduce((best, w) => (w.length > best.length ? w : best));\nconsole.log(longest);\n\nconst it = words.values();\nconsole.log(it.forEach((w) => w.toUpperCase()));\nconsole.log(it.next().done);\n\nconsole.log([].values().reduce((a, b) => a + b, \"none\"));"
+    },
+    "expected": "moon\nundefined\ntrue\nnone"
+  }
+}

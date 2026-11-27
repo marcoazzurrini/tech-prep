@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const stock = new Map([[\"pens\", 0]]);\n\nconsole.log(stock.getOrInsert(\"pens\", 10));\nconsole.log(stock.getOrInsert(\"ink\", 5));\nconsole.log(stock.getOrInsertComputed(\"cups\", (k) => k.length));\nconsole.log(stock.getOrInsertComputed(\"ink\", (k) => k.length));\nconsole.log([...stock.keys()].join(\",\"));"
+    },
+    "expected": "0\n5\n4\n5\npens,ink,cups"
+  }
+}

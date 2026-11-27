@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const first = Temporal.ZonedDateTime.from(\"2024-10-27T02:30[Europe/Berlin]\");\nconst second = Temporal.ZonedDateTime.from(\"2024-10-27T02:30[Europe/Berlin]\", { disambiguation: \"later\" });\nconst utc = second.withTimeZone(\"UTC\");\n\nconsole.log(first.offset);\nconsole.log(second.offset);\nconsole.log(first.until(second).toString());\nconsole.log(first.hoursInDay);\nconsole.log(utc.toString());\nconsole.log(second.equals(utc), Temporal.ZonedDateTime.compare(second, utc));"
+    },
+    "expected": "+02:00\n+01:00\nPT1H\n25\n2024-10-27T01:30:00+00:00[UTC]\nfalse 0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const show = (make) => {\n  try {\n    make();\n    console.log(\"ok\");\n  } catch (error) {\n    console.log(error.name);\n  }\n};\n\nshow(() => new WeakRef([1, 2]));\nshow(() => new WeakRef(Symbol(\"tag\")));\nshow(() => new WeakRef(Symbol.for(\"tag\")));\nshow(() => new WeakRef(null));\nshow(() => new WeakRef(() => {}));"
+    },
+    "expected": "ok\nok\nTypeError\nTypeError\nok"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Cache Large Reports",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createCache(load, makeRef = (value) => new WeakRef(value)) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const c = createCache((k) => ({ k, n: ++n })); return [c.get(\"a\").n, c.get(\"a\").n];"],"expected":[1,1]},
+      {"args":["let n = 0; const c = createCache((k) => ({ k, n: ++n })); return [c.get(\"a\").n, c.get(\"b\").n, c.get(\"a\").n];"],"expected":[1,2,1]},
+      {"args":["const c = createCache((k) => ({ k })); return c.get(7) === c.get(7);"],"expected":true},
+      {"args":["let n = 0; const c = createCache(() => ({ n: ++n }), () => ({ deref: () => undefined })); return [c.get(\"a\").n, c.get(\"a\").n];"],"expected":[1,2]},
+      {"args":["const made = []; const c = createCache((k) => ({ k }), (v) => (made.push(v.k), new WeakRef(v))); c.get(1); c.get(1); return made;"],"expected":[1]},
+      {"args":["const keys = []; const c = createCache((k) => (keys.push(k), { k })); c.get(\"q1\"); c.get(\"q2\"); c.get(\"q1\"); return keys;"],"expected":["q1","q2"]}
+    ]
+  }
+}

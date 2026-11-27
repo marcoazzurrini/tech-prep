@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* queue() {\n  yield \"Ada\";\n  yield \"Bo\";\n  yield \"Cy\";\n}\n\nconst line = queue();\nconsole.log(line.find((name) => name === \"Bo\"));\nconsole.log(line.next().done);\n\nconst names = [\"Ada\", \"Bo\", \"Cy\"].values();\nconsole.log(names.find((name) => name === \"Bo\"));\nconsole.log(names.next().value);"
+    },
+    "expected": "Bo\ntrue\nBo\nCy"
+  }
+}

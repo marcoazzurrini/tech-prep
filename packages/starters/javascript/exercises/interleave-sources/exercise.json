@@ -1,0 +1,19 @@
+{
+  "title": "Interleave Sources",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function interleave(...sources) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return interleave([1, 2, 3], [\"a\"], [true, false]).toArray();"],"expected":[1,"a",true,2,false,3]},
+      {"args":["return interleave([\"x\"], []).toArray();"],"expected":["x"]},
+      {"args":["return interleave([1, 2]).toArray();"],"expected":[1,2]},
+      {"args":["return interleave().toArray();"],"expected":[]},
+      {"args":["return interleave(new Set([null, 0]), [undefined].values(), [false]).toArray().map(String);"],"expected":["null","undefined","false","0"]},
+      {"args":["function* nat() { let n = 0; while (true) yield n++; } return interleave(nat(), [\"x\", \"y\"]).take(5).toArray();"],"expected":[0,"x",1,"y",2]}
+    ]
+  }
+}

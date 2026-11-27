@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const log = [];\nconst registry = new FinalizationRegistry((held) => log.push(held));\nconst token = {};\n\nregistry.register({ id: 1 }, \"first\", token);\nregistry.register({ id: 2 }, \"second\", token);\n\nconsole.log(registry.unregister(token));\nconsole.log(registry.unregister(token));\nconsole.log(log.length);\n\ntry {\n  const cart = { id: 3 };\n  registry.register(cart, cart);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "true\nfalse\n0\nTypeError"
+  }
+}

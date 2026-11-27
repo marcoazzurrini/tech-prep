@@ -1,0 +1,23 @@
+{
+  "title": "Round Up to a Power of Two",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "roundUpToPowerOfTwo"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function roundUpToPowerOfTwo(n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1],"expected":1},
+      {"args":[2],"expected":2},
+      {"args":[3],"expected":4},
+      {"args":[1000],"expected":1024},
+      {"args":[1024],"expected":1024},
+      {"args":[1025],"expected":2048},
+      {"args":[1073741825],"expected":2147483648},
+      {"args":[2147483648],"expected":2147483648}
+    ]
+  }
+}

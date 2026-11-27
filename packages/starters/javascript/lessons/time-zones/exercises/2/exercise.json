@@ -1,0 +1,20 @@
+{
+  "title": "Server Time",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "parseServerTime"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function parseServerTime(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["1970-01-01 00:00"],"expected":0},
+      {"args":["2024-05-01 09:30"],"expected":1714555800000},
+      {"args":["2024-03-31 02:30"],"expected":1711852200000},
+      {"args":["2024-12-31 23:59"],"expected":1735689540000},
+      {"args":["2000-02-29 12:00"],"expected":951825600000}
+    ]
+  }
+}

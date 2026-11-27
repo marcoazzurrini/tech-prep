@@ -1,0 +1,18 @@
+{
+  "title": "Who Likes What",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function whoLikes(likes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...whoLikes({ ada: [\"tea\", \"jam\"], bo: [\"jam\"] })];"],"expected":[["tea",["ada"]],["jam",["ada","bo"]]]},
+      {"args":["return [...whoLikes({})];"],"expected":[]},
+      {"args":["return [...whoLikes({ cy: [], di: [\"cake\"] })];"],"expected":[["cake",["di"]]]},
+      {"args":["return [...whoLikes({ ada: [\"tea\"], bo: [\"tea\"], cy: [\"tea\"] })];"],"expected":[["tea",["ada","bo","cy"]]]},
+      {"args":["return [...whoLikes({ bo: [\"jam\", \"tea\"], ada: [\"tea\", \"scone\"] })];"],"expected":[["jam",["bo"]],["tea",["bo","ada"]],["scone",["ada"]]]}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Forget Only the Dead",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function forgetIfGone(cache, key) {\n  return cache.delete(key);\n}\n"
+    },
+    "tests": [
+      {"args":["const c = new Map([[\"a\", { deref: () => undefined }]]); return [forgetIfGone(c, \"a\"), c.size];"],"expected":[true,0]},
+      {"args":["const v = {}; const c = new Map([[\"a\", new WeakRef(v)]]); return [forgetIfGone(c, \"a\"), c.size];"],"expected":[false,1]},
+      {"args":["const c = new Map(); return [forgetIfGone(c, \"z\"), c.size];"],"expected":[false,0]},
+      {"args":["const c = new Map([[\"a\", { deref: () => ({}) }], [\"b\", { deref: () => undefined }]]); forgetIfGone(c, \"b\"); return [...c.keys()];"],"expected":["a"]},
+      {"args":["const c = new Map([[\"a\", { deref: () => ({}) }]]); return [forgetIfGone(c, \"a\"), [...c.keys()]];"],"expected":[false,["a"]]}
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "UTC Offset Label",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "offsetLabel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function offsetLabel(minutes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[-120],"expected":"UTC+02:00"},
+      {"args":[300],"expected":"UTC-05:00"},
+      {"args":[0],"expected":"UTC+00:00"},
+      {"args":[-330],"expected":"UTC+05:30"},
+      {"args":[210],"expected":"UTC-03:30"},
+      {"args":[-345],"expected":"UTC+05:45"},
+      {"args":[-840],"expected":"UTC+14:00"},
+      {"args":[600],"expected":"UTC-10:00"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const alarm = new Date(2024, 0, 31, 22, 0);\nalarm.setHours(alarm.getHours() + 3);\nconsole.log(alarm.getMonth(), alarm.getDate(), alarm.getHours());\n\nconst stamp = alarm.setMinutes(15);\nconsole.log(typeof stamp);\nconsole.log(stamp === alarm.getTime());"
+    },
+    "expected": "1 1 1\nnumber\ntrue"
+  }
+}

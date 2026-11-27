@@ -1,0 +1,22 @@
+{
+  "title": "Years to Reach a Goal",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "yearsToReach"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function yearsToReach(start, goal, ratePercent) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1000,2000,7],"expected":11},
+      {"args":[100,150,10],"expected":5},
+      {"args":[1,1000000,100],"expected":20},
+      {"args":[250,1000,100],"expected":2},
+      {"args":[500,500,3],"expected":0},
+      {"args":[800,500,5],"expected":0},
+      {"args":[5000,6000,2.5],"expected":8}
+    ]
+  }
+}

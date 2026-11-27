@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const red = { colour: \"red\" };\nconst items = [{ tag: red }, { tag: { colour: \"red\" } }, { tag: red }];\nconst groups = Map.groupBy(items, (item) => item.tag);\nconsole.log(groups.size, groups.get(red).length);\n\nlet made = 0;\nconst make = () => {\n  made += 1;\n  return [];\n};\nconst lists = new Map();\nlists.getOrInsert(\"a\", make()).push(1);\nlists.getOrInsertComputed(\"a\", make).push(2);\nlists.getOrInsertComputed(\"b\", make);\nconsole.log(made, lists.get(\"a\").length, lists.size);"
+    },
+    "expected": "2 2\n2 2 2"
+  }
+}

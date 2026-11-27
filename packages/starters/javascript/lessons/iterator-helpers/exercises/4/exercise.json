@@ -1,0 +1,20 @@
+{
+  "title": "Number Every Name",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "numberAll"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function numberAll(...lists) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["Ada","Bo"],["Cy"]],"expected":["1. Ada","2. Bo","3. Cy"]},
+      {"args":[[],["Dee"]],"expected":["1. Dee"]},
+      {"args":[["Eve"]],"expected":["1. Eve"]},
+      {"args":[["Al","Bea"],[],["Cid","Dot"]],"expected":["1. Al","2. Bea","3. Cid","4. Dot"]},
+      {"args":[],"expected":[]}
+    ]
+  }
+}

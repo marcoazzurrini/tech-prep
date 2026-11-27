@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ref = new WeakRef({ city: \"Oslo\" });\nconst a = ref.deref();\nconst b = ref.deref();\n\nconsole.log(a === b);\nconsole.log(typeof ref.deref());\nconsole.log(new WeakRef(a).deref() === a);\nconsole.log(ref.deref()?.city ?? \"gone\");"
+    },
+    "expected": "true\nobject\ntrue\nOslo"
+  }
+}

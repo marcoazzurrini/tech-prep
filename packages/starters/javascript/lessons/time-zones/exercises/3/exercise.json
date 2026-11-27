@@ -1,0 +1,19 @@
+{
+  "title": "Same Time Next Week",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function nextWeek(date) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const d = nextWeek(new Date(2024, 2, 28, 9, 30)); return [d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()];"],"expected":[3,4,9,30]},
+      {"args":["const d = nextWeek(new Date(2024, 2, 7, 18, 0)); return [d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()];"],"expected":[2,14,18,0]},
+      {"args":["const d = nextWeek(new Date(2024, 9, 25, 8, 15)); return [d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()];"],"expected":[10,1,8,15]},
+      {"args":["const d = nextWeek(new Date(2024, 3, 5, 12, 0)); return [d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()];"],"expected":[3,12,12,0]},
+      {"args":["const d = nextWeek(new Date(2024, 11, 28, 10, 0)); return [d.getFullYear(), d.getMonth(), d.getDate()];"],"expected":[2025,0,4]},
+      {"args":["const start = new Date(2024, 9, 26, 9, 30); const d = nextWeek(start); return [start.getDate(), d !== start];"],"expected":[26,true]}
+    ]
+  }
+}
