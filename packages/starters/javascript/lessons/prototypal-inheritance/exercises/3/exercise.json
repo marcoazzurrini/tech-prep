@@ -1,0 +1,18 @@
+{
+  "title": "Shape and Circle",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Shape(colour) {\n  // your code\n}\n\nexport function Circle(colour, radius) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = new Shape(\"blue\"); return [s.colour, s.label()];"],"expected":["blue","shape:blue"]},
+      {"args":["const c = new Circle(\"red\", 5); return [c.colour, c.radius, c.label()];"],"expected":["red",5,"shape:red:5"]},
+      {"args":["const c = new Circle(\"green\", 2); return [c instanceof Circle, c instanceof Shape, c.constructor === Circle];"],"expected":[true,true,true]},
+      {"args":["const c = new Circle(\"red\", 3); return [Object.hasOwn(c, \"colour\"), Object.hasOwn(c, \"radius\")];"],"expected":[true,true]},
+      {"args":["return [Object.hasOwn(Shape.prototype, \"label\"), Object.hasOwn(Circle.prototype, \"label\")];"],"expected":[true,true]}
+    ]
+  }
+}

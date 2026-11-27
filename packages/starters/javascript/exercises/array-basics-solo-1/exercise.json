@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tasks = [\"plan\", \"build\", \"test\", \"ship\"];\ntasks.owner = \"team\";\ntasks.length = 2;\nconsole.log(tasks.length);\nconsole.log(tasks.at(-1));\nconsole.log(tasks.owner);"
+    },
+    "expected": "2\nbuild\nteam"
+  }
+}

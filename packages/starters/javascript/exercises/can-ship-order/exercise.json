@@ -1,0 +1,20 @@
+{
+  "title": "Can Ship Order",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "canShipOrder"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function canShipOrder(warehouse, orderLines) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"sku":"A","qty":5},{"sku":"B","qty":2}],[{"sku":"A","needed":3},{"sku":"B","needed":2}]],"expected":true},
+      {"args":[[{"sku":"A","qty":1}],[{"sku":"A","needed":3}]],"expected":false},
+      {"args":[[{"sku":"A","qty":5}],[]],"expected":false},
+      {"args":[[{"sku":"A","qty":5}],[{"sku":"B","needed":1}]],"expected":false},
+      {"args":[[{"sku":"A","qty":0}],[{"sku":"A","needed":0}]],"expected":true}
+    ]
+  }
+}

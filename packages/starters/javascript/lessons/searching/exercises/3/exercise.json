@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let checks = 0;\nconst ok = (n) => {\n  checks++;\n  return n > 0;\n};\n\nconsole.log([3, -1, 5].every(ok));\nconsole.log(checks);\nconsole.log([].every(ok));\nconsole.log([].some(ok));"
+    },
+    "expected": "false\n2\ntrue\nfalse"
+  }
+}

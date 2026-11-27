@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const p1 = { tag: \"v1\" };\nconst p2 = { tag: \"v2\" };\nconst item = Object.create(p1);\nconsole.log(item.tag);\nObject.setPrototypeOf(item, p2);\nconsole.log(item.tag);\nObject.setPrototypeOf(item, null);\nconsole.log(item.tag);\ntry {\n  Object.setPrototypeOf(p1, Object.create(p1));\n} catch (err) {\n  console.log(err.name);\n}"
+    },
+    "expected": "v1\nv2\nundefined\nTypeError"
+  }
+}

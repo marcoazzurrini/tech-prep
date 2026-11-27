@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = {\n  a: 1,\n  b: undefined,\n  c: NaN,\n  d: [undefined, 2],\n  toJSON() { return { a: this.a, c: this.c, d: this.d }; },\n};\nconst text = JSON.stringify(box);\nconsole.log(text);\nconst keys = [];\nconst out = JSON.parse(text, (k, v) => {\n  if (k) keys.push(k);\n  return v === null ? 0 : v;\n});\nconsole.log(keys.join(\",\"));\nconsole.log(out.c, out.d[0]);"
+    },
+    "expected": "{\"a\":1,\"c\":null,\"d\":[null,2]}\na,c,0,1,d\n0 0"
+  }
+}

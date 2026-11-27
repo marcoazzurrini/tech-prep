@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const bare = Object.create(null);\nconsole.log(typeof null, typeof bare);\nconsole.log(bare instanceof Object);\nconsole.log(Array.isArray([]), Array.isArray(\"abc\"));\nconsole.log(new Date(0) instanceof Date, new Date(0) instanceof Object);"
+    },
+    "expected": "object object\nfalse\ntrue false\ntrue true"
+  }
+}

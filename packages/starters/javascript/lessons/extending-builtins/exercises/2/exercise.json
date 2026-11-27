@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class PlainResultList extends Array {\n  static get [Symbol.species]() {\n    return Array;\n  }\n}\n\nconst a = PlainResultList.from([1, 2, 3, 4]);\nconst evens = a.filter((n) => n % 2 === 0);\n\nconsole.log(a instanceof PlainResultList);\nconsole.log(evens instanceof PlainResultList);\nconsole.log(evens.join(\",\"));"
+    },
+    "expected": "true\nfalse\n2,4"
+  }
+}

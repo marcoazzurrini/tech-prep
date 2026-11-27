@@ -1,0 +1,21 @@
+{
+  "title": "Lock Listed Keys",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function lockKeys(obj, keys) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const o = lockKeys({ a: 1, b: 2 }, [\"a\"]); o.b = 5; try { o.a = 9; } catch (e) { return [e.name, o.a, o.b]; } return \"no error\";"],"expected":["TypeError",1,5]},
+      {"args":["const o = lockKeys({ a: 1 }, [\"a\"]); try { delete o.a; } catch (e) { return [e.name, o.a]; } return \"deleted\";"],"expected":["TypeError",1]},
+      {"args":["const o = lockKeys({ a: 1 }, [\"a\", \"zz\"]); return [\"zz\" in o, Object.keys(o)];"],"expected":[false,["a"]]},
+      {"args":["return Object.keys(lockKeys({ a: 1, b: 2, c: 3 }, [\"c\", \"a\"]));"],"expected":["a","b","c"]},
+      {"args":["const o = { a: 1 }; return lockKeys(o, []) === o;"],"expected":true},
+      {"args":["return JSON.stringify(lockKeys({ a: 1, b: [2] }, [\"a\", \"b\"]));"],"expected":"{\"a\":1,\"b\":[2]}"},
+      {"args":["const o = lockKeys({ a: 1, b: 2 }, [\"b\"]); delete o.a; return Object.keys(o);"],"expected":["b"]},
+      {"args":["const o = Object.defineProperty({}, \"h\", { value: 1, writable: true }); lockKeys(o, [\"h\"]); return [Object.keys(o).length, o.h];"],"expected":[0,1]}
+    ]
+  }
+}

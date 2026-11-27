@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const vis = Symbol(\"vis\");\nconst hid = Symbol(\"hid\");\nconst item = { name: \"pen\", [vis]: 1 };\nObject.defineProperty(item, hid, { value: 2, enumerable: false });\nconst copy = { ...item };\nconsole.log(JSON.stringify(item));\nconsole.log(copy[vis]);\nconsole.log(copy[hid]);\nconsole.log(Object.getOwnPropertySymbols(item).length);"
+    },
+    "expected": "{\"name\":\"pen\"}\n1\nundefined\n2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Box(val) {\n  this.val = val;\n  this.read = () => this.val;\n}\nconst base = { val: 0 };\nconst Make = Box.bind(base);\nconst b = new Make(42);\nconst other = { val: 99, read: b.read };\nconsole.log(b.val);\nconsole.log(base.val);\nconsole.log(other.read());\nconsole.log(b.read.call(other));"
+    },
+    "expected": "42\n0\n42\n42"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Class Family Line",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function parentNames(Class) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["class A {} class B extends A {} return parentNames(B);"],"expected":["A"]},
+      {"args":["class A {} class B extends A {} class C extends B {} return parentNames(C);"],"expected":["B","A"]},
+      {"args":["class A {} return parentNames(A);"],"expected":[]},
+      {"args":["class Stack extends Array {} return parentNames(Stack);"],"expected":["Array"]},
+      {"args":["class E extends Error {} class F extends E {} return parentNames(F);"],"expected":["E","Error"]},
+      {"args":["function Old() {} class New extends Old {} return parentNames(New);"],"expected":["Old"]},
+      {"args":["return [parentNames(Map), parentNames(RangeError)];"],"expected":[[],["Error"]]}
+    ]
+  }
+}

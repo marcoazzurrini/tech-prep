@@ -1,0 +1,19 @@
+{
+  "title": "Safe Snapshot",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function safeSnapshot(data) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const src = { user: { name: \"Ada\" } }; const s = safeSnapshot(src); src.user.name = \"Ben\"; return s.user.name;"],"expected":"Ada"},
+      {"args":["const s = safeSnapshot({ user: { name: \"Ada\" } }); try { s.user.name = \"X\"; } catch (e) { return e.name; } return \"ok\";"],"expected":"TypeError"},
+      {"args":["const s = safeSnapshot({ list: [1, 2] }); try { s.list.push(3); } catch (e) { return e.name; } return \"ok\";"],"expected":"TypeError"},
+      {"args":["const s = safeSnapshot({ a: 1 }); try { delete s.a; } catch (e) { return e.name; } return \"ok\";"],"expected":"TypeError"},
+      {"args":["const src = { a: 1 }; const s = safeSnapshot(src); src.b = 2; return [\"b\" in s, s.a];"],"expected":[false,1]},
+      {"args":["return [safeSnapshot(7), safeSnapshot(null), safeSnapshot(\"hi\")];"],"expected":[7,null,"hi"]}
+    ]
+  }
+}

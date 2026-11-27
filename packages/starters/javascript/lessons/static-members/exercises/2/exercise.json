@@ -1,0 +1,18 @@
+{
+  "title": "Tag Factory",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Tag {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = Tag.fromText(\"  news  \"); return [t instanceof Tag, t.name, t.label()];"],"expected":[true,"news","TAG:news"]},
+      {"args":["const t = new Tag(\"js\"); return [t.name, t.label()];"],"expected":["js","TAG:js"]},
+      {"args":["return [Tag.prefix, new Tag(\"a\").prefix === undefined];"],"expected":["TAG",true]},
+      {"args":["const prev = Tag.prefix; Tag.prefix = \"DEV\"; const out = Tag.fromText(\"api\").label(); Tag.prefix = prev; return out;"],"expected":"DEV:api"},
+      {"args":["return [Object.hasOwn(Tag, \"fromText\"), Object.hasOwn(Tag.prototype, \"fromText\")];"],"expected":[true,false]}
+    ]
+  }
+}

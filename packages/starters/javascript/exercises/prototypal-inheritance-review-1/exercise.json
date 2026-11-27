@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Plan(cost) {\n  this.cost = cost;\n}\nPlan.prototype.price = function () {\n  return this.cost;\n};\nfunction TeamPlan(cost, seats) {\n  Plan.call(this, cost);\n  this.seats = seats;\n}\nTeamPlan.prototype = Object.create(Plan.prototype);\nTeamPlan.prototype.price = function () {\n  return Plan.prototype.price.call(this) * this.seats;\n};\nconst p = new Plan(10);\nconst t = new TeamPlan(10, 4);\nconsole.log(p.price(), t.price());\nconsole.log(t instanceof Plan);\nconsole.log(t.constructor === Plan);\nconsole.log(Object.hasOwn(t, \"cost\"));"
+    },
+    "expected": "10 40\ntrue\ntrue\ntrue"
+  }
+}

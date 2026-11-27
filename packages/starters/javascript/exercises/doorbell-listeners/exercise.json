@@ -1,0 +1,79 @@
+{
+  "title": "Doorbell",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Doorbell {\n  // your code\n}\n"
+    },
+    "tests": [
+      {
+        "args": [
+          "const b = new Doorbell(); const log = []; b.onRing((w) => log.push(w)); b.ring(\"Ada\"); b.ring(\"Leo\"); return log;"
+        ],
+        "expected": [
+          "Ada",
+          "Leo"
+        ]
+      },
+      {
+        "args": [
+          "const b = new Doorbell(); const log = []; b.onRing((w) => log.push(w)); const { ring } = b; ring(\"Ada\"); return log;"
+        ],
+        "expected": [
+          "Ada"
+        ]
+      },
+      {
+        "args": [
+          "const bell = new Doorbell(); bell.onRing(() => {}); bell.onRing(() => {}); return [bell.ring(\"Ada\"), new Doorbell().ring(\"Leo\")];"
+        ],
+        "expected": [
+          2,
+          0
+        ]
+      },
+      {
+        "args": [
+          "const b = new Doorbell(), log = []; const off = b.onRing((w) => log.push(w)); b.ring(\"a\"); off(); b.ring(\"b\"); return log;"
+        ],
+        "expected": [
+          "a"
+        ]
+      },
+      {
+        "args": [
+          "const a = new Doorbell(); const b = new Doorbell(); const log = []; a.onRing((w) => log.push(w)); b.ring(\"Ada\"); return log;"
+        ],
+        "expected": []
+      },
+      {
+        "args": [
+          "const b = new Doorbell(); const log = []; b.onRing((w) => log.push(w)); [\"Ada\", \"Leo\"].forEach(b.ring); return log;"
+        ],
+        "expected": [
+          "Ada",
+          "Leo"
+        ]
+      },
+      {
+        "args": [
+          "const b = new Doorbell(), l = []; const off = b.onRing(() => l.push(1)); b.onRing(() => l.push(2)); off(); b.ring(\"\"); return l;"
+        ],
+        "expected": [
+          2
+        ]
+      },
+      {
+        "args": [
+          "const b = new Doorbell(), l = []; b.onRing((w) => l.push(`1${w}`)); b.onRing((w) => l.push(`2${w}`)); b.ring(\"a\"); return l;"
+        ],
+        "expected": [
+          "1a",
+          "2a"
+        ]
+      }
+    ]
+  }
+}

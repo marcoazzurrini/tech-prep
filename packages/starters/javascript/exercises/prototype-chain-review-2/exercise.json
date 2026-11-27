@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let theme = { colour: \"blue\" };\nconst button = Object.create(theme);\nconst link = Object.create(button);\n\ntheme.colour = \"red\";\ntheme = { colour: \"green\" };\ntheme.size = \"large\";\n\nconsole.log(button.colour);\nconsole.log(link.colour, link.size);\nconsole.log(Object.getPrototypeOf(button) === theme);\nconsole.log(Object.getPrototypeOf(link) === button);"
+    },
+    "expected": "red\nred undefined\nfalse\ntrue"
+  }
+}

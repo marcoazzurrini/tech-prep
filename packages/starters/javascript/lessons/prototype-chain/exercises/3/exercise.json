@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const rates = { vat: 20 };\nconst invoice = Object.create(rates);\nconst receipt = Object.create(rates);\nconst saved = { ...rates };\n\nrates.vat = 22;\nrates.tip = 10;\n\nconsole.log(invoice.vat, receipt.tip);\nconsole.log(saved.vat, saved.tip);\n\nObject.setPrototypeOf(receipt, { vat: 5 });\n\nconsole.log(receipt.vat, receipt.tip);\nconsole.log(invoice.vat);"
+    },
+    "expected": "22 10\n20 undefined\n5 undefined\n22"
+  }
+}

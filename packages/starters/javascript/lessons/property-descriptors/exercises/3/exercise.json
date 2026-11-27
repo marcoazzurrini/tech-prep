@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const note = { text: \"Call Ben\" };\n\nObject.defineProperty(note, \"draft\", { value: true, writable: true });\nObject.defineProperty(note, \"text\", { enumerable: false });\nnote.pinned = false;\n\nconsole.log(Object.keys(note).join(\",\"));\nconsole.log(note.draft, \"text\" in note);\nconsole.log(JSON.stringify(note));\nconsole.log(Object.getOwnPropertyNames(note).length);"
+    },
+    "expected": "pinned\ntrue true\n{\"pinned\":false}\n3"
+  }
+}

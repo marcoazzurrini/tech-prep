@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Box {\n  size = 1;\n  constructor() {\n    console.log(this.size);\n    console.log(this.kind());\n  }\n  kind() {\n    return \"box\";\n  }\n}\n\nclass Crate extends Box {\n  size = 10;\n  kind() {\n    return \"crate\";\n  }\n}\n\nconst c = new Crate();\nconsole.log(c.size);"
+    },
+    "expected": "1\ncrate\n10"
+  }
+}

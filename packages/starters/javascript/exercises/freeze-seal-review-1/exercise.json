@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let rate = 2;\nconst meter = { get total() { return rate * 10; }, log: [1] };\nObject.freeze(meter);\n\nrate = 5;\nmeter.log.push(2);\n\nconsole.log(meter.total);\nconsole.log(meter.log.join(\",\"));\nconsole.log(Object.isFrozen(meter), Object.isFrozen(meter.log));"
+    },
+    "expected": "50\n1,2\ntrue false"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Logger {\n  static tag() {\n    return this.name;\n  }\n  format(msg) {\n    return `${this.prefix}:${msg}`;\n  }\n}\n\nclass AppLogger extends Logger {\n  static tag() {\n    return super.tag().toUpperCase();\n  }\n  constructor(prefix) {\n    super();\n    this.prefix = prefix;\n  }\n  format(msg) {\n    return `[${super.format(msg)}]`;\n  }\n}\n\nconst app = new AppLogger(\"api\");\nconsole.log(AppLogger.tag());\nconsole.log(app.format(\"ok\"));\nconsole.log(app.format.call({ prefix: \"db\", format: () => \"x\" }, \"up\"));"
+    },
+    "expected": "APPLOGGER\n[api:ok]\n[db:up]"
+  }
+}

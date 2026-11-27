@@ -1,0 +1,88 @@
+{
+  "title": "Message Inbox",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Inbox {\n  // your code\n}\n"
+    },
+    "tests": [
+      {
+        "args": [
+          "const inbox = new Inbox(); return [inbox.messages, inbox.unread, Object.keys(inbox).sort()];"
+        ],
+        "expected": [
+          [],
+          0,
+          [
+            "messages",
+            "receive",
+            "unread"
+          ]
+        ]
+      },
+      {
+        "args": [
+          "const inbox = new Inbox(); const { receive } = inbox; return [receive(\"Hello\"), receive(\"Lunch?\"), inbox.messages];"
+        ],
+        "expected": [
+          1,
+          2,
+          [
+            "Hello",
+            "Lunch?"
+          ]
+        ]
+      },
+      {
+        "args": [
+          "const inbox = new Inbox(); [\"a\", \"b\", \"c\"].forEach((text) => inbox.receive(text)); return [inbox.markAllRead(), inbox.unread];"
+        ],
+        "expected": [
+          3,
+          0
+        ]
+      },
+      {
+        "args": [
+          "const box = new Inbox(); box.receive(\"a\"); box.markAllRead(); box.receive(\"b\"); return [box.markAllRead(), box.messages];"
+        ],
+        "expected": [
+          1,
+          [
+            "a",
+            "b"
+          ]
+        ]
+      },
+      {
+        "args": [
+          "const a = new Inbox(); const b = new Inbox(); const { receive } = a; receive(\"x\"); return [a.messages.length, b.messages.length];"
+        ],
+        "expected": [
+          1,
+          0
+        ]
+      },
+      {
+        "args": [
+          "const a = new Inbox(); const b = new Inbox(); return [a.markAllRead === b.markAllRead, a.receive === b.receive];"
+        ],
+        "expected": [
+          true,
+          false
+        ]
+      },
+      {
+        "args": [
+          "const inbox = new Inbox(); return [inbox.receive.call({ messages: [], unread: 9 }, \"x\"), new Inbox().markAllRead()];"
+        ],
+        "expected": [
+          1,
+          0
+        ]
+      }
+    ]
+  }
+}

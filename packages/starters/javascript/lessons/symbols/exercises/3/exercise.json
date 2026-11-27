@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = Symbol.for(\"env\");\nconst b = Symbol(\"env\");\nconst c = Symbol.for(\"env\");\nconsole.log(a === c);\nconsole.log(a === b);\nconsole.log(Symbol.keyFor(a));\nconsole.log(Symbol.keyFor(b));"
+    },
+    "expected": "true\nfalse\nenv\nundefined"
+  }
+}

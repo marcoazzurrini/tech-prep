@@ -1,0 +1,18 @@
+{
+  "title": "Scoped Metadata",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createStore() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = createStore(); const o = { a: 1 }; s.setMeta(o, 'v'); return [s.getMeta(o), Object.keys(o)];"],"expected":["v",["a"]]},
+      {"args":["const a = createStore(), b = createStore(), o = {}; a.setMeta(o, 1); b.setMeta(o, 2); return [a.getMeta(o), b.getMeta(o)];"],"expected":[1,2]},
+      {"args":["const s = createStore(); const o = { x: 1 }; s.setMeta(o, 'tag'); const c = { ...o }; return [JSON.stringify(o), s.getMeta(c)];"],"expected":["{\"x\":1}","tag"]},
+      {"args":["const s = createStore(); return String(s.getMeta({ a: 1 }));"],"expected":"undefined"},
+      {"args":["const s = createStore(); const o = {}; s.setMeta(o, 1); s.setMeta(o, 9); return [s.getMeta(o), Object.keys(o).length];"],"expected":[9,0]}
+    ]
+  }
+}

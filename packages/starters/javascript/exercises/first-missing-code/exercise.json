@@ -1,0 +1,19 @@
+{
+  "title": "First Missing Code",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstMissingCode(allowed, codes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return firstMissingCode([1, 2, 3], [2, 4, 1]);"],"expected":4},
+      {"args":["return firstMissingCode([1, 2], [2, 1]);"],"expected":null},
+      {"args":["return firstMissingCode([NaN, 1], [NaN, 2]);"],"expected":2},
+      {"args":["return Number.isNaN(firstMissingCode([1, 2], [2, NaN, 3]));"],"expected":true},
+      {"args":["return firstMissingCode([0, 1], [0, 1, 2]);"],"expected":2},
+      {"args":["return firstMissingCode([1], []);"],"expected":null}
+    ]
+  }
+}

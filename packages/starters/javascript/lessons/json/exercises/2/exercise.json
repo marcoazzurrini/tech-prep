@@ -1,0 +1,20 @@
+{
+  "title": "Redact Keys",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "redactKeys"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function redactKeys(obj, hiddenKeys) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"user":"Ada","pin":1234},["pin"]],"expected":"{\"user\":\"Ada\"}"},
+      {"args":[{"a":1,"nested":{"pin":9,"ok":true}},["pin"]],"expected":"{\"a\":1,\"nested\":{\"ok\":true}}"},
+      {"args":[{"x":1,"y":2,"z":3},["x","z"]],"expected":"{\"y\":2}"},
+      {"args":[{"a":1,"b":2},[]],"expected":"{\"a\":1,\"b\":2}"},
+      {"args":[{"list":[{"id":1,"secret":"a"},{"id":2,"secret":"b"}]},["secret"]],"expected":"{\"list\":[{\"id\":1},{\"id\":2}]}"}
+    ]
+  }
+}

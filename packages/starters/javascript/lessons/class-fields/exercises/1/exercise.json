@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Player {\n  score = 0;\n  badges = [];\n}\n\nPlayer.prototype.team = [];\n\nconst ana = new Player();\nconst leo = new Player();\n\nana.score += 5;\nana.badges.push(\"gold\");\nana.team.push(\"Ana\");\n\nconsole.log(leo.score);\nconsole.log(leo.badges.length);\nconsole.log(leo.team.length);\nconsole.log(Object.keys(leo).join(\",\"));"
+    },
+    "expected": "0\n0\n1\nscore,badges"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Highest First",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function highestFirst(scores) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = [10, 40, 20]; return [highestFirst(a), a];"],"expected":[[40,20,10],[10,40,20]]},
+      {"args":["return highestFirst([-5, 0, 5]);"],"expected":[5,0,-5]},
+      {"args":["return highestFirst([100, 9, 25, 2]);"],"expected":[100,25,9,2]},
+      {"args":["return highestFirst([]);"],"expected":[]},
+      {"args":["return highestFirst([7]);"],"expected":[7]}
+    ]
+  }
+}

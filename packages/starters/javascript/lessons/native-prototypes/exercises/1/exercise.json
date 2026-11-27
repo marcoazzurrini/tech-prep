@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function greet() {\n  return \"hi\";\n}\n\nconst tags = [\"new\", \"sale\"];\n\nconsole.log(Object.hasOwn(greet, \"bind\"));\nconsole.log(greet.bind === Function.prototype.bind);\nconsole.log(Object.hasOwn(tags, \"includes\"));\nconsole.log(tags.includes === Array.prototype.includes);\nconsole.log(typeof tags.from, typeof Array.from);"
+    },
+    "expected": "false\ntrue\nfalse\ntrue\nundefined function"
+  }
+}

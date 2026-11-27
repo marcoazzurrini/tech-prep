@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const user = {\n  name: \"Ada\",\n  meta: { role: \"admin\" },\n  badge: { code: \"A1\", toJSON() { return this.code; } },\n};\nconsole.log(JSON.stringify(user, [\"name\", \"meta\"]));\nconsole.log(JSON.stringify(user.badge));\ntry {\n  JSON.stringify({ id: 5n });\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "{\"name\":\"Ada\",\"meta\":{}}\n\"A1\"\nTypeError"
+  }
+}

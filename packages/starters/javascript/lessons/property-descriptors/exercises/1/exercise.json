@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const song = {\n  title: \"Blue\",\n  get label() {\n    return this.title.toUpperCase();\n  },\n};\n\nconst title = Object.getOwnPropertyDescriptor(song, \"title\");\nconst label = Object.getOwnPropertyDescriptor(song, \"label\");\n\nconsole.log(title.value, title.writable);\nconsole.log(\"value\" in label, typeof label.get);\nconsole.log(label.enumerable);\nconsole.log(Object.getOwnPropertyDescriptor(song, \"artist\"));"
+    },
+    "expected": "Blue true\nfalse function\ntrue\nundefined"
+  }
+}

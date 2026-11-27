@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const prices = [5, 10];\nprices.currency = \"EUR\";\nprices[-1] = 20;\nconsole.log(prices.length);\nconsole.log(prices[\"0\"]);\nconsole.log(prices.currency);"
+    },
+    "expected": "2\n5\nEUR"
+  }
+}

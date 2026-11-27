@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const nums = [10, 5, 20, 7];\nconst byHalf = Object.groupBy(nums, (_, i) => (i < 2 ? \"first\" : \"second\"));\nconst byBig = Object.groupBy(nums, (n) => n >= 10);\n\nconsole.log(byHalf.first.join(\", \"));\nconsole.log(byBig.true.length, byBig.false.length);\nconsole.log(Object.keys(byBig).join(\", \"));"
+    },
+    "expected": "10, 5\n2 2\ntrue, false"
+  }
+}

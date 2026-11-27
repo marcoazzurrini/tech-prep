@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class NamedList extends Array {\n  static get [Symbol.species]() {\n    return Array;\n  }\n  constructor(name, ...items) {\n    super();\n    this.name = name;\n    this.push(...items);\n  }\n}\n\nconst list = new NamedList(\"nums\", 4, 8, 12);\nconst part = list.slice(1);\n\nconsole.log(list.name);\nconsole.log(part instanceof NamedList);\nconsole.log(Array.isArray(part));\nconsole.log(part.join(\",\"));"
+    },
+    "expected": "nums\nfalse\ntrue\n8,12"
+  }
+}

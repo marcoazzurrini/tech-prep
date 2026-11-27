@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const nums = [100, 9, 20];\nconst copy = nums.sort();\n\nconsole.log(nums.join(\",\"));\nconsole.log(copy === nums);"
+    },
+    "expected": "100,20,9\ntrue"
+  }
+}

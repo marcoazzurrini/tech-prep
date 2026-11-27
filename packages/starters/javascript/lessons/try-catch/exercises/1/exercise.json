@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function pour(cups) {\n  console.log(\"pour\");\n\n  if (cups > 2) {\n    throw new Error(\"pot is empty\");\n  }\n\n  console.log(\"poured\");\n}\n\nfunction serve(cups) {\n  pour(cups);\n  console.log(\"served\");\n}\n\ntry {\n  serve(1);\n  serve(3);\n  serve(1);\n} catch (error) {\n  console.log(error.message);\n}\n\nconsole.log(\"done\");"
+    },
+    "expected": "pour\npoured\nserved\npour\npot is empty\ndone"
+  }
+}

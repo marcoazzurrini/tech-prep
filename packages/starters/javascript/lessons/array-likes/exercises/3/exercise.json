@@ -1,0 +1,18 @@
+{
+  "title": "Append All",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function appendAll(target, items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const o = { 0: 'a', length: 1 }; const n = appendAll(o, ['b', 'c']); return [n, o.length, o[0], o[1], o[2]];"],"expected":[3,3,"a","b","c"]},
+      {"args":["const o = { length: 0 }; const n = appendAll(o, [10, 20]); return [n, o.length, o[0], o[1]];"],"expected":[2,2,10,20]},
+      {"args":["const o = { 0: 'x', length: 1 }; const n = appendAll(o, []); return [n, o.length, o[0]];"],"expected":[1,1,"x"]},
+      {"args":["const o = {}; const n = appendAll(o, ['first']); return [n, o.length, o[0]];"],"expected":[1,1,"first"]},
+      {"args":["const o = { 0: 1, 1: 2, length: 2 }; appendAll(o, [3]); return [o.length, o[2], Array.isArray(o)];"],"expected":[3,3,false]}
+    ]
+  }
+}

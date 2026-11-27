@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = { speed: 1 };\nconst fast = Object.create(base);\nconst racer = Object.create(fast);\n\nfast.gear = 2;\nbase.gear = 20;\nbase.fuel = 30;\n\nconsole.log(racer.speed, racer.gear, racer.fuel);\n\nObject.setPrototypeOf(racer, base);\n\nconsole.log(racer.speed, racer.gear, racer.fuel);\nconsole.log(fast.gear, fast.fuel);\nconsole.log(Object.getPrototypeOf(Object.getPrototypeOf(base)));"
+    },
+    "expected": "1 2 30\n1 20 30\n2 30\nnull"
+  }
+}

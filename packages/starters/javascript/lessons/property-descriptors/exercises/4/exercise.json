@@ -1,0 +1,18 @@
+{
+  "title": "A Real Constant",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addConstant(target, name, value) {\n  Object.defineProperty(target, name, {\n    value,\n    writable: false,\n    enumerable: true,\n    configurable: true,\n  });\n\n  return target;\n}\n"
+    },
+    "tests": [
+      {"args":["const m = addConstant({}, \"PI\", 3.14); try { delete m.PI; } catch (e) { return [e.name, m.PI]; } return \"deleted\";"],"expected":["TypeError",3.14]},
+      {"args":["const m = addConstant({}, \"E\", 2.7); try { Object.defineProperty(m, \"E\", { value: 3 }); } catch (e) { return e.name; } return m.E;"],"expected":"TypeError"},
+      {"args":["const m = addConstant({}, \"TAU\", 6.28); try { m.TAU = 1; } catch (e) { return [e.name, m.TAU]; } return \"assigned\";"],"expected":["TypeError",6.28]},
+      {"args":["return Object.keys(addConstant({ a: 1 }, \"B\", 2));"],"expected":["a","B"]},
+      {"args":["return Object.getOwnPropertyDescriptor(addConstant({}, \"K\", 1), \"K\").configurable;"],"expected":false}
+    ]
+  }
+}

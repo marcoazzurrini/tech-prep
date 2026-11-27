@@ -1,0 +1,21 @@
+{
+  "title": "Seat Chart",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "makeSeatChart"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeSeatChart(rows, cols, taken) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[2,3,[[0,1],[1,2]]],"expected":[["open","taken","open"],["open","open","taken"]]},
+      {"args":[2,2,[[5,0],[-1,1]]],"expected":[["open","open"],["open","open"]]},
+      {"args":[0,3,[[0,0]]],"expected":[]},
+      {"args":[3,0,[[0,0]]],"expected":[[],[],[]]},
+      {"args":[2,2,[[0,0],[0,0],[1,1]]],"expected":[["taken","open"],["open","taken"]]},
+      {"args":[1,4,[]],"expected":[["open","open","open","open"]]}
+    ]
+  }
+}

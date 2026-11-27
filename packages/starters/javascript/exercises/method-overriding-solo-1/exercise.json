@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Worker {\n  role = \"general\";\n  constructor() {\n    this.intro = this.describe();\n  }\n  describe() {\n    return `worker:${this.role}`;\n  }\n}\n\nclass Builder extends Worker {\n  role = \"builder\";\n  describe() {\n    return `builder:${this.role}`;\n  }\n}\n\nconst b = new Builder();\nconsole.log(b.intro);\nconsole.log(b.describe());\nconsole.log(b.role);"
+    },
+    "expected": "builder:general\nbuilder:builder\nbuilder"
+  }
+}

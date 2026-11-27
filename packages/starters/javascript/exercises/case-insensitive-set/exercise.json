@@ -1,0 +1,18 @@
+{
+  "title": "Case-Insensitive Set",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class CaseInsensitiveSet extends Set {\n  add(value) {\n    // your code\n  }\n\n  has(value) {\n    // your code\n  }\n\n  delete(value) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const s = new CaseInsensitiveSet(['JS', 'js', 'TS']); return [s.size, s.has('ts'), s.has('Js')];"],"expected":[2,true,true]},
+      {"args":["const s = new CaseInsensitiveSet(); const r = s.add('Hi'); return [r === s, s.has('HI'), [...s]];"],"expected":[true,true,["hi"]]},
+      {"args":["const s = new CaseInsensitiveSet(['One', 'Two']); return [s.delete('ONE'), s.delete('ONE'), s.size];"],"expected":[true,false,1]},
+      {"args":["const s = new CaseInsensitiveSet([1, 'A', 'a', true]); return [s.size, s.has(1), s.has(true), s.has('A')];"],"expected":[3,true,true,true]},
+      {"args":["const s = new CaseInsensitiveSet(['x']); return [s instanceof Set, s instanceof CaseInsensitiveSet];"],"expected":[true,true]}
+    ]
+  }
+}

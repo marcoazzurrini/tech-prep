@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Ticket {\n  static sold = 0;\n\n  static sell() {\n    this.sold += 1;\n  }\n}\n\nclass VipTicket extends Ticket {}\nclass GroupTicket extends Ticket {}\n\nTicket.sell();\nVipTicket.sell();\nVipTicket.sell();\nTicket.sell();\n\nconsole.log(Ticket.sold);\nconsole.log(VipTicket.sold);\nconsole.log(GroupTicket.sold);\nconsole.log(Object.hasOwn(GroupTicket, \"sold\"));"
+    },
+    "expected": "2\n3\n2\nfalse"
+  }
+}

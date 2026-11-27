@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = { 0: 10, 1: 20, length: 2 };\nconst n = Array.prototype.push.call(box, 30, 40);\nconst top = Array.prototype.pop.call(box);\nconst copy = Array.from(box);\n\nconsole.log(n, top);\nconsole.log(box.length, 3 in box);\nconsole.log(copy.join(\", \"));"
+    },
+    "expected": "4 40\n3 false\n10, 20, 30"
+  }
+}

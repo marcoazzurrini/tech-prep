@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Metric {\n  static scale = 10;\n\n  static double(n) {\n    return n * 2;\n  }\n}\n\nconst m = new Metric();\nconsole.log(Metric.scale);\nconsole.log(m.scale);\nconsole.log(Object.hasOwn(Metric, \"double\"));\nconsole.log(Object.keys(Metric));"
+    },
+    "expected": "10\nundefined\ntrue\n[ \"scale\" ]"
+  }
+}

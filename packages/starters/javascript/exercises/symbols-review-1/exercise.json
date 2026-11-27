@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const k1 = Symbol.for(\"tag\");\nconst k2 = Symbol(\"tag\");\nconst box = { label: \"A\", [k1]: 10, [k2]: 20 };\nconsole.log(box[Symbol.for(\"tag\")]);\nconsole.log(box[Symbol(\"tag\")]);\nconsole.log(Object.keys(box).join(\",\"));\nconsole.log(Object.getOwnPropertySymbols(box).length);"
+    },
+    "expected": "10\nundefined\nlabel\n2"
+  }
+}

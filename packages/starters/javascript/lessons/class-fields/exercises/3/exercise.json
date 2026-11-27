@@ -1,0 +1,18 @@
+{
+  "title": "Scoreboard",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Scoreboard {\n  points = 0;\n\n  award(amount) {\n    this.points += amount;\n\n    return this.points;\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const board = new Scoreboard(); [5, 10].forEach(board.award); return board.points;"],"expected":15},
+      {"args":["const board = new Scoreboard(); const { award } = board; return [award(2), award(3), board.points];"],"expected":[2,5,5]},
+      {"args":["const board = new Scoreboard(); return [board.award(4), board.points];"],"expected":[4,4]},
+      {"args":["const a = new Scoreboard(); const b = new Scoreboard(); const award = a.award; award(1); return [a.points, b.points];"],"expected":[1,0]},
+      {"args":["const board = new Scoreboard(); return [board.award.call({ points: 100 }, 1), board.points];"],"expected":[1,1]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let count = 0;\n\nfunction add(n) {\n  if (n > 2) {\n    throw n;\n  }\n\n  count += n;\n}\n\ntry {\n  add(1);\n  add(3);\n  add(2);\n} catch (count) {\n  count += 10;\n  console.log(count);\n}\n\nconsole.log(count);"
+    },
+    "expected": "13\n1"
+  }
+}

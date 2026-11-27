@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const log = [\"boot\"];\nlog[3] = \"ready\";\nlog[-1] = \"fail\";\nconsole.log(log.length);\nconsole.log(log.at(-1));\nconsole.log(log[-1]);\nlog.length = 1;\nconsole.log(log.at(-1));"
+    },
+    "expected": "4\nready\nfail\nboot"
+  }
+}

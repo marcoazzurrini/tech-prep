@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = [40, 5, 100];\nconst b = [2, undefined, 1];\nconst c = [\n  { k: \"x\", n: 1 },\n  { k: \"y\", n: 1 },\n];\n\nconsole.log(a.toSorted().join(\",\"));\nconsole.log(a.toSorted((x, y) => x - y).join(\",\"));\nconsole.log(b.toSorted((x, y) => y - x).map(String).join(\",\"));\nconsole.log(c.toSorted((x, y) => x.n - y.n).map((i) => i.k).join(\",\"));"
+    },
+    "expected": "100,40,5\n5,40,100\n2,1,undefined\nx,y"
+  }
+}

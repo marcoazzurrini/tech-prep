@@ -1,0 +1,21 @@
+{
+  "title": "Menu Item Kinds",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Item {\n  // your code\n}\n\nexport class Drink {\n  // your code\n}\n\nexport class Dish {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const i = new Item(\"jam\", 2); return [i.name, i.price, i.line()];"],"expected":["jam",2,"jam: 2"]},
+      {"args":["const t = Drink.parse(\"tea:3\"); return [t.line(), t.refill(), t.price];"],"expected":["tea: 3","More tea",3]},
+      {"args":["return Dish.parse(\"pie:8\").half();"],"expected":4},
+      {"args":["const t = Drink.parse(\"tea:3\"); return [t instanceof Drink, t instanceof Item, t instanceof Dish];"],"expected":[true,true,false]},
+      {"args":["const i = Item.parse(\"jam:2\"); return [i instanceof Item, i instanceof Drink, i.price];"],"expected":[true,false,2]},
+      {"args":["return [Object.hasOwn(Drink, \"parse\"), Object.hasOwn(Dish.prototype, \"line\")];"],"expected":[false,false]},
+      {"args":["return [Object.getPrototypeOf(Dish) === Item, \"half\" in new Drink(\"tea\", 3)];"],"expected":[true,false]},
+      {"args":["return new Dish(\"soup\", 5).line();"],"expected":"soup: 5"}
+    ]
+  }
+}

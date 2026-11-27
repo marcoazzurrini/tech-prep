@@ -1,0 +1,20 @@
+{
+  "title": "Sum by Category",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sumByCategory"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sumByCategory(items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"category":"food","amount":12},{"category":"books","amount":8},{"category":"food","amount":5}]],"expected":{"food":17,"books":8}},
+      {"args":[[]],"expected":{}},
+      {"args":[[{"category":"rent","amount":0},{"category":"rent","amount":50}]],"expected":{"rent":50}},
+      {"args":[[{"category":"refund","amount":-10},{"category":"refund","amount":25}]],"expected":{"refund":15}},
+      {"args":[[{"category":"toString","amount":4},{"category":"toString","amount":6}]],"expected":{"toString":10}}
+    ]
+  }
+}

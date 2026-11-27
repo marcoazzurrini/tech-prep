@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const logs = [\"warn\", \"err\", \"warn\", \"info\", \"err\"];\nconst buckets = Object.groupBy(logs, (x) => x);\nconst totals = Object.fromEntries(\n  Object.entries(buckets).map(([k, list]) => [k, list.length]),\n);\n\nconsole.log(totals.warn, totals.err, totals.info);\nconsole.log(Object.getPrototypeOf(buckets));\nconsole.log(Object.getPrototypeOf(totals) === Object.prototype);"
+    },
+    "expected": "2 2 1\nnull\ntrue"
+  }
+}

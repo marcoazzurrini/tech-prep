@@ -1,0 +1,19 @@
+{
+  "title": "Thrown Text",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function thrownText(task) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return thrownText(() => { throw new Error(\"no stock\"); });"],"expected":"no stock"},
+      {"args":["return thrownText(() => { throw \"plain text\"; });"],"expected":"plain text"},
+      {"args":["return thrownText(() => { throw 404; });"],"expected":"404"},
+      {"args":["return thrownText(() => 5);"],"expected":"no error"},
+      {"args":["return thrownText(() => { throw null; });"],"expected":"null"},
+      {"args":["return thrownText(() => { throw new TypeError(\"not a list\"); });"],"expected":"not a list"}
+    ]
+  }
+}

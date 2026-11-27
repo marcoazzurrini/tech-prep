@@ -1,0 +1,20 @@
+{
+  "title": "Collect Team Skills",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "collectTeamSkills"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function collectTeamSkills(teams) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"active":true,"members":[{"name":"Ada","skills":["js","sql"]},{"name":"Bo","skills":null}]}]],"expected":["js","sql"]},
+      {"args":[[{"active":false,"members":[{"name":"Cy","skills":["go"]}]}]],"expected":[]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"active":true,"members":[{"name":"A","skills":["a"]}]},{"active":false,"members":[{"name":"B","skills":["b"]}]},{"active":true,"members":[{"name":"C"},{"name":"D","skills":["c","d"]}]}]],"expected":["a","c","d"]},
+      {"args":[[{"active":true,"members":[]}]],"expected":[]}
+    ]
+  }
+}

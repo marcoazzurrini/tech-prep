@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function parseQty(text) {\n  const qty = Number(text);\n\n  if (Number.isNaN(qty)) {\n    throw new Error(\"bad quantity\");\n  }\n\n  return qty;\n}\n\nlet total = 0;\n\nfor (const text of [\"2\", \"x\", \"5\"]) {\n  try {\n    total += parseQty(text);\n    console.log(\"added \" + text);\n  } catch (error) {\n    console.log(error.message);\n  }\n}\n\nconsole.log(total);"
+    },
+    "expected": "added 2\nbad quantity\nadded 5\n7"
+  }
+}

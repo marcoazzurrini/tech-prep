@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = Array(2);\nconst b = Array.of(2);\nconst c = Array(\"2\");\n\nconsole.log(a.length, 0 in a);\nconsole.log(b.length, 0 in b);\nconsole.log(b[0]);\nconsole.log(c.length, typeof c[0]);"
+    },
+    "expected": "2 false\n1 true\n2\n1 string"
+  }
+}

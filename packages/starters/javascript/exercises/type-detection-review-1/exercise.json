@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tagged = { [Symbol.toStringTag]: \"Date\" };\nconst toTag = (v) => Object.prototype.toString.call(v);\nconsole.log(toTag(tagged));\nconsole.log(tagged instanceof Date);\nconsole.log(toTag(null), toTag(undefined));\nconsole.log(Array.isArray([1]), typeof null);"
+    },
+    "expected": "[object Date]\nfalse\n[object Null] [object Undefined]\ntrue object"
+  }
+}

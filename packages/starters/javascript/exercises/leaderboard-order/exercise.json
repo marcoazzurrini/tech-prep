@@ -1,0 +1,18 @@
+{
+  "title": "Leaderboard Order",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function leaderboardOrder(entries) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = [{name:\"Ada\",points:10,bonus:null}, {name:\"Bo\",points:5,bonus:5}]; return [leaderboardOrder(a), a[0].name];"],"expected":[["Bo","Ada"],"Ada"]},
+      {"args":["return leaderboardOrder([{ name: \"Cy\", points: 20, bonus: 0 }, { name: \"Jo\", points: 20 }]);"],"expected":["Cy","Jo"]},
+      {"args":["return leaderboardOrder([{ name: \"Ada\", points: 5, bonus: -2 }, { name: \"Li\", points: 10, bonus: undefined }]);"],"expected":["Li","Ada"]},
+      {"args":["return leaderboardOrder([{ name: \"Zoe\", points: 100, bonus: 0 }, { name: \"Al\", points: 9, bonus: 0 }]);"],"expected":["Zoe","Al"]},
+      {"args":["return leaderboardOrder([]);"],"expected":[]}
+    ]
+  }
+}

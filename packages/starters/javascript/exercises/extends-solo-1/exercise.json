@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Animal {\n  static kingdom = \"animals\";\n\n  speak() {\n    return \"...\";\n  }\n}\n\nclass Cat extends Animal {}\n\nconst cat = new Cat();\n\nconsole.log(cat.speak());\nconsole.log(Object.hasOwn(Cat.prototype, \"speak\"));\nconsole.log(\"speak\" in cat);\nconsole.log(Cat.kingdom);\nconsole.log(cat.kingdom);"
+    },
+    "expected": "...\nfalse\ntrue\nanimals\nundefined"
+  }
+}

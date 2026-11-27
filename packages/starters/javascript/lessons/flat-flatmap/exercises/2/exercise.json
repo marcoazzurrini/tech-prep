@@ -1,0 +1,20 @@
+{
+  "title": "Expand Tags",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "expandTags"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function expandTags(posts) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"title":"news","tags":["js","web"]},{"title":"note","tags":[]}]],"expected":["news:js","news:web"]},
+      {"args":[[{"title":"a","tags":["x"]},{"title":"b","tags":["y","z"]}]],"expected":["a:x","b:y","b:z"]},
+      {"args":[[{"title":"empty","tags":[]}]],"expected":[]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"title":"doc","tags":["v1","v2","v3"]}]],"expected":["doc:v1","doc:v2","doc:v3"]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const steps = [];\n\nclass Config {\n  static a = (steps.push(\"a\"), 2);\n  static {\n    steps.push(\"block\");\n    this.b = this.a + 3;\n  }\n}\n\nsteps.push(\"done\");\nconsole.log(Config.a);\nconsole.log(Config.b);\nconsole.log(steps.join(\",\"));"
+    },
+    "expected": "2\n5\na,block,done"
+  }
+}

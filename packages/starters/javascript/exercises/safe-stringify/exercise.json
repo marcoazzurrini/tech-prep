@@ -1,0 +1,18 @@
+{
+  "title": "Safe Stringify",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function safeStringify(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const o = { name: 'Ada', id: 10n }; return safeStringify(o);"],"expected":"{\"name\":\"Ada\",\"id\":\"10\"}"},
+      {"args":["const a = { name: 'root' }; a.self = a; return safeStringify(a);"],"expected":"{\"name\":\"root\",\"self\":\"[Circular]\"}"},
+      {"args":["const a = { id: 1 }; const b = { id: 2, a }; a.b = b; return safeStringify(a);"],"expected":"{\"id\":1,\"b\":{\"id\":2,\"a\":\"[Circular]\"}}"},
+      {"args":["return safeStringify([1n, 2, 3n]);"],"expected":"[\"1\",2,\"3\"]"},
+      {"args":["return safeStringify({ ok: true, count: 0, list: [1, 2] });"],"expected":"{\"ok\":true,\"count\":0,\"list\":[1,2]}"}
+    ]
+  }
+}

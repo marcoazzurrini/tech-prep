@@ -1,0 +1,18 @@
+{
+  "title": "Make a Grid",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeGrid(rows, cols, value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return makeGrid(2, 3, 0);"],"expected":[[0,0,0],[0,0,0]]},
+      {"args":["const g = makeGrid(2, 2, 0); g[0][0] = 9; return [g[0][0], g[1][0]];"],"expected":[9,0]},
+      {"args":["return makeGrid(0, 3, 1);"],"expected":[]},
+      {"args":["return makeGrid(3, 0, \"a\");"],"expected":[[],[],[]]},
+      {"args":["return makeGrid(1, 4, \"x\");"],"expected":[["x","x","x","x"]]}
+    ]
+  }
+}

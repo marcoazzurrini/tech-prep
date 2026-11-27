@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = {};\nconst b = { __proto__: null };\na[\"__proto__\"] = 42;\nb[\"__proto__\"] = 42;\nconsole.log(a[\"__proto__\"] === 42);\nconsole.log(b[\"__proto__\"] === 42);\nconsole.log(\"constructor\" in a);\nconsole.log(\"constructor\" in b);"
+    },
+    "expected": "false\ntrue\ntrue\nfalse"
+  }
+}

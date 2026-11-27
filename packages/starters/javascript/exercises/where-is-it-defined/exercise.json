@@ -1,0 +1,20 @@
+{
+  "title": "Where Is It Defined?",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function whereIsItDefined(obj, key) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const o = { a: 1 }; return whereIsItDefined(o, \"a\") === o;"],"expected":true},
+      {"args":["const b = { a: 1 }; const o = Object.create(b); o.a = undefined; return whereIsItDefined(o, \"a\") === o;"],"expected":true},
+      {"args":["return [whereIsItDefined([1], \"push\") === Array.prototype, whereIsItDefined([1], \"toString\") === Array.prototype];"],"expected":[true,true]},
+      {"args":["return whereIsItDefined([1, 2], \"hasOwnProperty\") === Object.prototype;"],"expected":true},
+      {"args":["return whereIsItDefined(() => 1, \"bind\") === Function.prototype;"],"expected":true},
+      {"args":["function Dog() {} Dog.prototype.bark = () => 1; return whereIsItDefined(new Dog(), \"bark\") === Dog.prototype;"],"expected":true},
+      {"args":["return [whereIsItDefined({}, \"nope\"), whereIsItDefined(Object.prototype, \"toString\") === Object.prototype];"],"expected":[null,true]}
+    ]
+  }
+}

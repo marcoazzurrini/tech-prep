@@ -1,0 +1,19 @@
+{
+  "title": "RGB Colour",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Colour {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = Colour.fromHex(\"#ff8000\"); return [c instanceof Colour, c.r, c.g, c.b, c.toHex()];"],"expected":[true,255,128,0,"#ff8000"]},
+      {"args":["const c = Colour.fromHex(\"#050a0f\"); return [c.r, c.g, c.b, c.toHex()];"],"expected":[5,10,15,"#050a0f"]},
+      {"args":["return [Colour.BLACK.toHex(), Colour.WHITE.toHex(), Colour.BLACK instanceof Colour];"],"expected":["#000000","#ffffff",true]},
+      {"args":["const m = Colour.mix(Colour.BLACK, Colour.WHITE); return [m instanceof Colour, m.r, m.g, m.b, m.toHex()];"],"expected":[true,128,128,128,"#808080"]},
+      {"args":["const m = Colour.mix(new Colour(10, 20, 30), new Colour(20, 40, 60)); return [m.r, m.g, m.b];"],"expected":[15,30,45]},
+      {"args":["const c = new Colour(1, 2, 3); return [c.BLACK === undefined, typeof c.fromHex, typeof c.mix];"],"expected":[true,"undefined","undefined"]}
+    ]
+  }
+}

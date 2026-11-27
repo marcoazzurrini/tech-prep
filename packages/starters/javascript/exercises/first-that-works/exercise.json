@@ -1,0 +1,20 @@
+{
+  "title": "First That Works",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstThatWorks(tasks) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return firstThatWorks([() => 1, () => 2]);"],"expected":1},
+      {"args":["return firstThatWorks([() => { throw new Error(\"a\"); }, () => \"b\"]);"],"expected":"b"},
+      {"args":["try { firstThatWorks([() => { throw new Error(\"a\"); }, () => { throw new Error(\"b\"); }]); } catch (e) { return e.message; }"],"expected":"b"},
+      {"args":["let calls = 0; firstThatWorks([() => 1, () => { calls += 1; }]); return calls;"],"expected":0},
+      {"args":["try { firstThatWorks([]); } catch (e) { return e.message; }"],"expected":"no tasks"},
+      {"args":["return firstThatWorks([() => { throw \"text\"; }, () => null, () => 3]);"],"expected":null},
+      {"args":["try { firstThatWorks([() => { throw 404; }]); } catch (e) { return e; }"],"expected":404}
+    ]
+  }
+}

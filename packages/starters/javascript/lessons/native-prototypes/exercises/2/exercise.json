@@ -1,0 +1,19 @@
+{
+  "title": "Length of the Chain",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function chainLength(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return chainLength({});"],"expected":1},
+      {"args":["return chainLength([1, 2]);"],"expected":2},
+      {"args":["return chainLength(() => 1);"],"expected":2},
+      {"args":["return chainLength(Object.prototype);"],"expected":0},
+      {"args":["return chainLength(new Date(0));"],"expected":2},
+      {"args":["return chainLength(Object.create([1, 2]));"],"expected":3}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Device {\n  constructor(name) {\n    console.log(\"parent:\" + name);\n    this.name = name;\n  }\n}\n\nclass Phone extends Device {\n  constructor(name) {\n    console.log(\"before\");\n    super(name);\n    console.log(\"after:\" + this.name);\n  }\n}\n\nnew Phone(\"pixel\");"
+    },
+    "expected": "before\nparent:pixel\nafter:pixel"
+  }
+}

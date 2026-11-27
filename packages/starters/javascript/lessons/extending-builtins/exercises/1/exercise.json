@@ -1,0 +1,18 @@
+{
+  "title": "Number List",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class NumberList extends Array {\n  sum() {\n    // your code\n  }\n\n  average() {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const n = NumberList.from([2, 4, 6]); return [n.sum(), n.average()];"],"expected":[12,4]},
+      {"args":["const n = new NumberList(); return [n.sum(), n.average()];"],"expected":[0,0]},
+      {"args":["const big = NumberList.from([1, 5, 9]).filter((x) => x >= 5); return [big instanceof NumberList, big.sum()];"],"expected":[true,14]},
+      {"args":["const d = NumberList.from([3, 7]).map((x) => x * 2); return [Array.isArray(d), d instanceof NumberList, d.average()];"],"expected":[true,true,10]},
+      {"args":["const n = new NumberList(10, 20); return [n.length, n.sum()];"],"expected":[2,30]}
+    ]
+  }
+}

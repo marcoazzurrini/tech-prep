@@ -1,0 +1,18 @@
+{
+  "title": "Fallback Bind",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fallbackBind(fn, fallback) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const f = fallbackBind(function () { return this.x; }, { x: 1 }); return f();"],"expected":1},
+      {"args":["const f = fallbackBind(function () { return this.x; }, { x: 1 }); return ({ x: 9, f }).f();"],"expected":9},
+      {"args":["const f = fallbackBind(function () { return this.x; }, { x: 1 }); return f.call({ x: 5 });"],"expected":5},
+      {"args":["const f = fallbackBind(function (a, b) { return this.k + a + b; }, { k: 10 }); return [f(1, 2), f.apply({ k: 20 }, [3, 4])];"],"expected":[13,27]},
+      {"args":["const f = fallbackBind(function () { return this.x; }, { x: 7 }); return f.call(undefined);"],"expected":7}
+    ]
+  }
+}

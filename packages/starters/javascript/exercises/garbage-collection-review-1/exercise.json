@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeInspector(target) {\n  const snapshot = target.status;\n  return () => [snapshot, target.status];\n}\nlet job = { status: \"open\" };\nconst inspect = makeInspector(job);\njob.status = \"done\";\njob = null;\nconst [before, after] = inspect();\nconsole.log(before);\nconsole.log(after);\nconsole.log(job);"
+    },
+    "expected": "open\ndone\nnull"
+  }
+}

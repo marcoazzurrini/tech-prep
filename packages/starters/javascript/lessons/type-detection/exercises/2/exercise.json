@@ -1,0 +1,18 @@
+{
+  "title": "Get Type Tag",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function getTypeTag(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [getTypeTag(null), getTypeTag(undefined)];"],"expected":["null","undefined"]},
+      {"args":["return [getTypeTag([1, 2]), getTypeTag(new Date()), getTypeTag(/a/)];"],"expected":["array","date","regexp"]},
+      {"args":["return [getTypeTag(new Map()), getTypeTag(new Set())];"],"expected":["map","set"]},
+      {"args":["return [getTypeTag(42), getTypeTag(\"hi\"), getTypeTag(true)];"],"expected":["number","string","boolean"]},
+      {"args":["return getTypeTag({ [Symbol.toStringTag]: \"Cart\" });"],"expected":"cart"}
+    ]
+  }
+}

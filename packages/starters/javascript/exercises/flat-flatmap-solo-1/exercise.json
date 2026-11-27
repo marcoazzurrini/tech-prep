@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = [1, [2, 3], [[4]]];\n\nconsole.log(JSON.stringify(a.flat()));\nconsole.log(JSON.stringify([1, 2, 3].flatMap((n) => (n === 2 ? [] : [n, n]))));\nconsole.log(JSON.stringify([1, 2].flatMap((n) => [[n]])));\nconsole.log(JSON.stringify([1, 2].flatMap((n) => n * 10)));"
+    },
+    "expected": "[1,2,3,[4]]\n[1,1,3,3]\n[[1],[2]]\n[10,20]"
+  }
+}

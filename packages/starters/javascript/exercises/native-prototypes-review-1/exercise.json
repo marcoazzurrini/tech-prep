@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const word = \"cup\";\n\ntry {\n  word.tag = \"hot\";\n  console.log(word.tag);\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(new String(\"cup\") === word);\nconsole.log(Boolean(new Number(0)));\nconsole.log(Object.getPrototypeOf(Object) === Function.prototype);\nconsole.log(Object.getPrototypeOf(Object.prototype));"
+    },
+    "expected": "TypeError\nfalse\ntrue\ntrue\nnull"
+  }
+}

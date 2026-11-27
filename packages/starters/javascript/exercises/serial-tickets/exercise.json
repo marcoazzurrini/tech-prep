@@ -1,0 +1,19 @@
+{
+  "title": "Serial Tickets",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Ticket {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Ticket.reset(); const a = new Ticket(\"Ada\"); const b = new Ticket(\"Leo\"); return [a.id, b.id, Ticket.issued()];"],"expected":[1,2,2]},
+      {"args":["Ticket.reset(); const list = Ticket.fromBatch([\"Ada\", \"Leo\"]); return list.map((t) => [t.id, t.holder]);"],"expected":[[1,"Ada"],[2,"Leo"]]},
+      {"args":["Ticket.reset(); const t = new Ticket(\"Ada\"); const { cancel } = t; cancel(); return [t.cancelled, Ticket.issued()];"],"expected":[true,1]},
+      {"args":["Ticket.reset(); const list = Ticket.fromBatch([\"A\", \"B\"]); const f = list[0].cancel; f(); return list.map((t) => t.cancelled);"],"expected":[true,false]},
+      {"args":["Ticket.reset(); new Ticket(\"Ada\"); Ticket.reset(); const b = new Ticket(\"Leo\"); return [b.id, Ticket.issued()];"],"expected":[1,1]},
+      {"args":["Ticket.reset(); const t = new Ticket(\"Ada\"); return [typeof t.issued, typeof t.fromBatch, t instanceof Ticket];"],"expected":["undefined","undefined",true]}
+    ]
+  }
+}

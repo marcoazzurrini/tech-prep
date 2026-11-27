@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sparse = [, \"ok\"];\nconst items = [{ id: 1 }, { id: 2 }];\n\nconsole.log(sparse.indexOf(undefined));\nconsole.log(sparse.includes(undefined));\nconsole.log(sparse.findIndex((x) => x === undefined));\nconsole.log(Boolean(items.findIndex((x) => x.id === 1)));\nconsole.log(Boolean(items.findIndex((x) => x.id === 9)));"
+    },
+    "expected": "-1\ntrue\n0\nfalse\ntrue"
+  }
+}

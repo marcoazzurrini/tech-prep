@@ -1,0 +1,12 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function pickFirst(items) {\n  for (const item of items) {\n    try {\n      if (item > 5) {\n        return item * 2;\n      }\n    } finally {\n      console.log(\"checked\", item);\n    }\n  }\n  return 0;\n}\n\nconsole.log(\"found\", pickFirst([3, 8, 12]));"
+    }
+  }
+}

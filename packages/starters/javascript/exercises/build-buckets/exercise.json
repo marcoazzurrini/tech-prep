@@ -1,0 +1,20 @@
+{
+  "title": "Build Buckets",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "buildBuckets"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function buildBuckets(count, items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[3,[{"bucket":1,"name":"a"},{"bucket":0,"name":"b"},{"bucket":1,"name":"c"}]],"expected":[["b"],["a","c"],[]]},
+      {"args":[2,[{"bucket":5,"name":"x"}]],"expected":[[],[]]},
+      {"args":[0,[{"bucket":0,"name":"x"}]],"expected":[]},
+      {"args":[3,[]],"expected":[[],[],[]]},
+      {"args":[2,[{"bucket":-1,"name":"low"},{"bucket":0,"name":"ok"},{"bucket":2,"name":"high"}]],"expected":[["ok"],[]]}
+    ]
+  }
+}

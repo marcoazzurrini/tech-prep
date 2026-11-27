@@ -1,0 +1,20 @@
+{
+  "title": "Positive Pairs",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "positivePairs"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function positivePairs(nums) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[3,-1,0,5]],"expected":[3,6,5,10]},
+      {"args":[[-2,0]],"expected":[]},
+      {"args":[[]],"expected":[]},
+      {"args":[[1,2,3]],"expected":[1,2,2,4,3,6]},
+      {"args":[[0.5,-0.5,10]],"expected":[0.5,1,10,20]}
+    ]
+  }
+}

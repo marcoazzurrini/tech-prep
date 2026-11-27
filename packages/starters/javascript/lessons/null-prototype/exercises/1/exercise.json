@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = Object.create(null);\nbox.id = 7;\nconsole.log(Object.getPrototypeOf(box));\nconsole.log(\"valueOf\" in box);\nconsole.log(Object.hasOwn(box, \"id\"));\ntry {\n  box.toString();\n} catch (err) {\n  console.log(err.name);\n}"
+    },
+    "expected": "null\nfalse\ntrue\nTypeError"
+  }
+}

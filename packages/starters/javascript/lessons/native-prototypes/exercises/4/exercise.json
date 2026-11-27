@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const nums = [10, 20];\n\nif (!Array.prototype.join) {\n  Array.prototype.join = () => \"mine\";\n}\nArray.prototype.sum = function () {\n  return this[0] + this[1];\n};\n\nconsole.log(nums.join(\"-\"));\nconsole.log(nums.sum());\nconsole.log(Object.keys(nums).join(\",\"));\nconst seen = [];\nfor (const key in nums) seen.push(key);\nconsole.log(seen.join(\",\"));"
+    },
+    "expected": "10-20\n30\n0,1\n0,1,sum"
+  }
+}

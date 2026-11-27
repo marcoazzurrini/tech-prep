@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = { unit: \"kg\", limit: 20 };\nconst parcel = Object.create(base);\nconst letter = Object.create(base);\nparcel.weight = 3;\n\nconsole.log(parcel.weight, parcel.unit);\nconsole.log(letter.weight, letter.limit);\nconsole.log(Object.getPrototypeOf(letter) === Object.getPrototypeOf(parcel));\nconsole.log(letter.prototype);"
+    },
+    "expected": "3 kg\nundefined 20\ntrue\nundefined"
+  }
+}

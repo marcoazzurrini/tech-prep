@@ -1,0 +1,20 @@
+{
+  "title": "Count Words",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countWords"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countWords(words) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["a","b","a"]],"expected":{"a":2,"b":1}},
+      {"args":[["toString","toString","constructor"]],"expected":{"toString":2,"constructor":1}},
+      {"args":[[]],"expected":{}},
+      {"args":[["one"]],"expected":{"one":1}},
+      {"args":[["valueOf","hasOwnProperty","valueOf"]],"expected":{"valueOf":2,"hasOwnProperty":1}}
+    ]
+  }
+}

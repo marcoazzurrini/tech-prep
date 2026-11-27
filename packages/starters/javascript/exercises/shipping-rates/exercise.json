@@ -1,0 +1,18 @@
+{
+  "title": "Shipping Rates",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Shipment {\n  constructor(weight) {\n    // your code\n  }\n\n  baseFee() {\n    // your code\n  }\n\n  ratePerKg() {\n    // your code\n  }\n\n  cost() {\n    // your code\n  }\n}\n\nexport class ExpressShipment extends Shipment {\n  // your code\n}\n\nexport class FreeBaseShipment extends Shipment {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return new Shipment(3).cost();"],"expected":17},
+      {"args":["return new ExpressShipment(3).cost();"],"expected":39},
+      {"args":["return new FreeBaseShipment(3).cost();"],"expected":12},
+      {"args":["return [new Shipment(0).cost(), new ExpressShipment(0).cost(), new FreeBaseShipment(0).cost()];"],"expected":[5,12,0]},
+      {"args":["return [Object.hasOwn(ExpressShipment.prototype, 'cost'), Object.hasOwn(FreeBaseShipment.prototype, 'cost')];"],"expected":[false,false]}
+    ]
+  }
+}

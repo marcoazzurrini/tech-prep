@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Tag(prefix, name) {\n  this.full = prefix + \":\" + name;\n}\nconst holder = { full: \"old\", Tag };\nconst BoundTag = Tag.bind(holder, \"v1\");\nconst t1 = new BoundTag(\"ok\");\nconst t2 = new holder.Tag(\"v2\", \"go\");\nconsole.log(t1.full);\nconsole.log(t2.full);\nconsole.log(holder.full);\nconsole.log(t1 instanceof Tag);"
+    },
+    "expected": "v1:ok\nv2:go\nold\ntrue"
+  }
+}

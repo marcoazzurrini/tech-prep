@@ -1,0 +1,20 @@
+{
+  "title": "Read Ends",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "readEnds"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readEnds(items, offset = 1) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["a","b","c","d"]],"expected":{"fromStart":"a","fromEnd":"d"}},
+      {"args":[["a","b","c","d"],2],"expected":{"fromStart":"b","fromEnd":"c"}},
+      {"args":[[10],1],"expected":{"fromStart":10,"fromEnd":10}},
+      {"args":[[10,20],5],"expected":{"fromStart":null,"fromEnd":null}},
+      {"args":[[],1],"expected":{"fromStart":null,"fromEnd":null}}
+    ]
+  }
+}

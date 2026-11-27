@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function id() {\n  return this ? this.tag : \"none\";\n}\nconst a = { tag: \"A\", id };\nconst b = { tag: \"B\", id: id.bind(a) };\nconsole.log(id());\nconsole.log(a.id());\nconsole.log(a.id.call({ tag: \"C\" }));\nconsole.log(b.id());"
+    },
+    "expected": "none\nA\nC\nA"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Parser {\n  parse() {\n    return \"base\";\n  }\n}\n\nclass JsonParser extends Parser {\n  parse = () => \"json\";\n}\n\nclass StrictJsonParser extends JsonParser {\n  parse() {\n    return \"strict\";\n  }\n  fallback() {\n    return super.parse();\n  }\n}\n\nconst p = new StrictJsonParser();\nconsole.log(p.parse());\nconsole.log(p.fallback());"
+    },
+    "expected": "json\nbase"
+  }
+}

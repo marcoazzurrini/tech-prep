@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Invoice {\n  total = this.net + this.tax;\n  net = 100;\n  tax = this.net * 0.2;\n  gross = this.net + this.tax;\n\n  constructor(net) {\n    this.net = net;\n  }\n}\n\nconst invoice = new Invoice(50);\n\nconsole.log(invoice.total);\nconsole.log(invoice.tax);\nconsole.log(invoice.gross);\nconsole.log(invoice.net);"
+    },
+    "expected": "NaN\n20\n120\n50"
+  }
+}

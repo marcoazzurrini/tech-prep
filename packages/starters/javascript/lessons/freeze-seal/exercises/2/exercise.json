@@ -1,0 +1,19 @@
+{
+  "title": "Check Lock Level",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function lockLevel(obj) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return lockLevel({ a: 1 });"],"expected":"open"},
+      {"args":["return lockLevel(Object.preventExtensions({ a: 1 }));"],"expected":"fixed"},
+      {"args":["return lockLevel(Object.seal({ a: 1 }));"],"expected":"sealed"},
+      {"args":["return lockLevel(Object.freeze({ a: 1 }));"],"expected":"frozen"},
+      {"args":["return lockLevel(Object.preventExtensions({}));"],"expected":"frozen"},
+      {"args":["return lockLevel(Object.seal({}));"],"expected":"frozen"}
+    ]
+  }
+}

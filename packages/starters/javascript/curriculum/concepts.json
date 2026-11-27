@@ -929,7 +929,8 @@
     "prereqs": ["getters-setters"],
     "encompasses": [],
     "key_idea": "Each property has three flags: `writable`, `enumerable` and `configurable`. `Object.defineProperty` sets them, and a flag you leave out is `false`.",
-    "solo": "property-descriptors-solo-1"
+    "guided": 4,
+    "solo": ["property-descriptors-solo-1", "lock-listed-keys"]
   },
   {
     "id": "freeze-seal",
@@ -943,7 +944,8 @@
       }
     ],
     "key_idea": "`Object.freeze` stops every change to an object's own properties. `Object.seal` only stops adding and removing them. Both are shallow: nested objects stay open.",
-    "solo": "freeze-seal-solo-1"
+    "guided": 3,
+    "solo": ["freeze-seal-solo-1", "deep-freeze"]
   },
   {
     "id": "symbols",
@@ -952,7 +954,8 @@
     "prereqs": ["object-literals", "property-descriptors"],
     "encompasses": [],
     "key_idea": "A symbol is a unique value, made to be used as a property key. Symbol keys never clash with other keys, and `Object.keys`, `for...in` and JSON skip them.",
-    "solo": "symbols-solo-1"
+    "guided": 3,
+    "solo": ["symbols-solo-1", "scoped-meta"]
   },
   {
     "id": "json",
@@ -961,7 +964,8 @@
     "prereqs": ["object-iteration", "to-string"],
     "encompasses": [],
     "key_idea": "`JSON.stringify` turns a value into text. It drops `undefined`, functions and symbols, and turns `NaN` into `null`. `JSON.parse` reads the text back. A replacer, a reviver and `toJSON` customise them.",
-    "solo": "json-solo-1"
+    "guided": 4,
+    "solo": ["json-solo-1", "safe-stringify"]
   },
   {
     "id": "garbage-collection",
@@ -970,7 +974,8 @@
     "prereqs": ["references", "closures"],
     "encompasses": [],
     "key_idea": "An object stays in memory while it can be reached from a root: a global, a variable of a running function, or a closure. When nothing reaches it, it is collected.",
-    "solo": "garbage-collection-solo-1"
+    "guided": 3,
+    "solo": ["garbage-collection-solo-1", "sweep-nodes"]
   },
   {
     "id": "prototype-chain",
@@ -979,7 +984,8 @@
     "prereqs": ["property-access", "object-literals"],
     "encompasses": [],
     "key_idea": "Every object has a hidden link to another object, its prototype. Reading a missing property looks in the prototype, then in its prototype, up to `null`.",
-    "solo": "prototype-chain-solo-1"
+    "guided": 3,
+    "solo": ["prototype-chain-solo-1", "steps-to-the-key"]
   },
   {
     "id": "shadowing",
@@ -1067,7 +1073,8 @@
       }
     ],
     "key_idea": "Array methods live on `Array.prototype`, and every chain ends at `Object.prototype`. A primitive gets a temporary wrapper object for each method call, which is why `\"a\".toUpperCase()` works.",
-    "solo": "native-prototypes-solo-1"
+    "guided": 4,
+    "solo": ["native-prototypes-solo-1", "map-from-scratch"]
   },
   {
     "id": "null-prototype",
@@ -1076,7 +1083,8 @@
     "prereqs": ["own-vs-inherited"],
     "encompasses": [],
     "key_idea": "`Object.create(null)` makes an object with no prototype, so it holds only the keys you add. `Object.setPrototypeOf` changes an object's prototype.",
-    "solo": "null-prototype-solo-1"
+    "guided": 3,
+    "solo": ["null-prototype-solo-1", "safe-word-counter"]
   },
   {
     "id": "prototypal-inheritance",
@@ -1090,7 +1098,8 @@
       }
     ],
     "key_idea": "To make `Child` extend `Parent` without `class`, link `Child.prototype` to `Parent.prototype` with `Object.create`, and call `Parent.call(this)` in the child constructor.",
-    "solo": "prototypal-inheritance-solo-1"
+    "guided": 3,
+    "solo": ["prototypal-inheritance-solo-1", "employee-hierarchy"]
   },
   {
     "id": "this-binding-order",
@@ -1108,7 +1117,8 @@
       }
     ],
     "key_idea": "`this` comes from how a function is called: with `new`, with `call`, `apply` or `bind`, as a method, or plainly. `new` beats `bind`, and `bind` beats a method call.",
-    "solo": "this-binding-order-solo-1"
+    "guided": 3,
+    "solo": ["this-binding-order-solo-1", "fallback-bind"]
   },
   {
     "id": "type-detection",
@@ -1122,7 +1132,8 @@
       }
     ],
     "key_idea": "`typeof` tells primitives apart. `Array.isArray` finds arrays, `instanceof` checks the prototype chain, and `Object.prototype.toString.call(x)` names any built-in type.",
-    "solo": "type-detection-solo-1"
+    "guided": 3,
+    "solo": ["type-detection-solo-1", "describe-value"]
   },
   {
     "id": "class-basics",
@@ -1136,7 +1147,8 @@
       }
     ],
     "key_idea": "A class is a constructor function with a clearer syntax: its methods go on `prototype`. It must be called with `new`, is not hoisted and always runs in strict mode.",
-    "solo": "class-basics-solo-1"
+    "guided": 4,
+    "solo": ["class-basics-solo-1", "coin-wallet"]
   },
   {
     "id": "class-fields",
@@ -1150,7 +1162,8 @@
       }
     ],
     "key_idea": "A field such as `count = 0` creates an own property on each instance before the constructor body runs. A field that holds an arrow function keeps `this` bound to the instance.",
-    "solo": "class-fields-solo-1"
+    "guided": 3,
+    "solo": ["class-fields-solo-1", "message-inbox"]
   },
   {
     "id": "static-members",
@@ -1164,7 +1177,8 @@
       }
     ],
     "key_idea": "A `static` method or field belongs to the class itself, not to its instances. Inside a static method, `this` is the class.",
-    "solo": "static-members-solo-1"
+    "guided": 3,
+    "solo": ["static-members-solo-1", "rgb-colour"]
   },
   {
     "id": "private-members",
@@ -1206,7 +1220,8 @@
       }
     ],
     "key_idea": "`class B extends A` links `B.prototype` to `A.prototype`, so instances inherit methods. It also links `B` to `A`, so static members are inherited too.",
-    "solo": "extends-solo-1"
+    "guided": 3,
+    "solo": ["extends-solo-1", "menu-item-kinds"]
   },
   {
     "id": "super",
@@ -1220,7 +1235,8 @@
       }
     ],
     "key_idea": "A derived constructor must call `super()` before it uses `this`. `super.method()` calls the parent's version of a method.",
-    "solo": "super-solo-1"
+    "guided": 3,
+    "solo": ["super-solo-1", "logged-counter"]
   },
   {
     "id": "method-overriding",
@@ -1234,7 +1250,8 @@
       }
     ],
     "key_idea": "A method in a subclass replaces the parent's method of the same name, even when the parent's own code calls it. The parent's constructor runs before the child's fields exist.",
-    "solo": "method-overriding-solo-1"
+    "guided": 3,
+    "solo": ["method-overriding-solo-1", "shipping-rates"]
   },
   {
     "id": "extending-builtins",
@@ -1248,7 +1265,8 @@
       }
     ],
     "key_idea": "A class can extend `Array`, `Map` or `Error`. Methods such as `map` and `filter` then return instances of the subclass.",
-    "solo": "extending-builtins-solo-1"
+    "guided": 3,
+    "solo": ["extending-builtins-solo-1", "case-insensitive-set"]
   },
   {
     "id": "mixins",
@@ -1271,7 +1289,8 @@
     "prereqs": ["call-stack"],
     "encompasses": [],
     "key_idea": "`throw` stops the running code and climbs the call stack until a `catch` takes the error. Code after the `throw`, in every function on the way up, does not run.",
-    "solo": "try-catch-solo-1"
+    "guided": 4,
+    "solo": ["try-catch-solo-1", "first-that-works"]
   },
   {
     "id": "finally",
@@ -1331,7 +1350,8 @@
     "prereqs": ["object-literals"],
     "encompasses": [],
     "key_idea": "An array is an object with numbered keys and a `length`. `length` is the highest index plus one, and setting it cuts or extends the array. `at(-1)` reads from the end.",
-    "solo": "array-basics-solo-1"
+    "guided": 3,
+    "solo": ["array-basics-solo-1", "trim-and-peek"]
   },
   {
     "id": "sparse-arrays",
@@ -1410,7 +1430,8 @@
       }
     ],
     "key_idea": "`find` and `findIndex` search with a callback. `includes` and `indexOf` search for a value, and only `includes` finds `NaN`. `some` and `every` answer yes or no.",
-    "solo": "searching-solo-1"
+    "guided": 4,
+    "solo": ["searching-solo-1", "first-missing-code"]
   },
   {
     "id": "sort",
@@ -1424,7 +1445,8 @@
       }
     ],
     "key_idea": "`sort` changes the array and, with no argument, compares the items as strings. Pass `(a, b) => a - b` for numbers: a negative result puts `a` first.",
-    "solo": "sort-solo-1"
+    "guided": 3,
+    "solo": ["sort-solo-1", "tasks-by-deadline"]
   },
   {
     "id": "flat-flatmap",
@@ -1438,7 +1460,8 @@
       }
     ],
     "key_idea": "`flat(depth)` removes levels of nesting. `flatMap` maps each item to an array and flattens the result by one level.",
-    "solo": "flat-flatmap-solo-1"
+    "guided": 2,
+    "solo": ["flat-flatmap-solo-1", "positive-pairs"]
   },
   {
     "id": "array-creation",
@@ -1452,7 +1475,8 @@
       }
     ],
     "key_idea": "`Array.from({ length: n }, fn)` builds an array from a function. `Array(n).fill(x)` puts the same `x` in every slot, so an object there is shared.",
-    "solo": "array-creation-solo-1"
+    "guided": 3,
+    "solo": ["array-creation-solo-1", "build-buckets"]
   },
   {
     "id": "array-likes",
@@ -1466,7 +1490,8 @@
       }
     ],
     "key_idea": "An array-like has a `length` and numbered keys but no array methods. `Array.from` turns it into a real array.",
-    "solo": "array-likes-solo-1"
+    "guided": 3,
+    "solo": ["array-likes-solo-1", "join-records"]
   },
   {
     "id": "grouping",
@@ -1480,7 +1505,8 @@
       }
     ],
     "key_idea": "`Object.groupBy(items, fn)` sorts items into arrays by the key that `fn` returns. Counting works the same way, with `reduce` or a `Map`.",
-    "solo": "grouping-solo-1"
+    "guided": 3,
+    "solo": ["grouping-solo-1", "names-by-role"]
   },
   {
     "id": "string-methods",

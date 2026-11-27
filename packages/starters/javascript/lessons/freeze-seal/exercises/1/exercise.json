@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const prices = [10, 20];\nconst out = Object.freeze(prices);\n\nconsole.log(out === prices);\n\ntry {\n  prices.push(30);\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(prices.length);\nconsole.log(Object.isFrozen(\"ok\"));"
+    },
+    "expected": "true\nTypeError\n2\ntrue"
+  }
+}

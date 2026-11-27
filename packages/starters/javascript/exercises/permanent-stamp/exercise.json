@@ -1,0 +1,19 @@
+{
+  "title": "Permanent Stamp",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stamp(obj, code) {\n  // your code\n}\n\nexport function readStamp(obj) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const o = { id: 1 }; const ok = stamp(o, 'A1'); return [ok, readStamp(o), Object.keys(o)];"],"expected":[true,"A1",["id"]]},
+      {"args":["const o = { id: 1 }; stamp(o, 'A1'); const ok2 = stamp(o, 'B2'); return [ok2, readStamp(o)];"],"expected":[false,"A1"]},
+      {"args":["const o = { id: 1 }; stamp(o, 'A1'); return [JSON.stringify(o), String(readStamp({ ...o }))];"],"expected":["{\"id\":1}","undefined"]},
+      {"args":["const o = {}; stamp(o, 'X'); const [k] = Object.getOwnPropertySymbols(o); try { o[k] = 'Y'; return 0; } catch { return 1; }"],"expected":1},
+      {"args":["const o = {}; stamp(o, 'X'); const [k] = Object.getOwnPropertySymbols(o); try { delete o[k]; return 0; } catch { return 1; }"],"expected":1},
+      {"args":["return String(readStamp({ a: 1 }));"],"expected":"undefined"}
+    ]
+  }
+}

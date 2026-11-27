@@ -1,0 +1,18 @@
+{
+  "title": "VIP Ticket",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Ticket {\n  constructor(event, price) {\n    // your code\n  }\n\n  static prefix() {\n    // your code\n  }\n\n  summary() {\n    // your code\n  }\n}\n\nexport class VipTicket extends Ticket {\n  constructor(event, price, lounge) {\n    // your code\n  }\n\n  static prefix() {\n    // your code\n  }\n\n  summary() {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["return new Ticket('Rock', 50).summary();"],"expected":"Rock: $50"},
+      {"args":["return Ticket.prefix();"],"expected":"TICKET"},
+      {"args":["return new VipTicket('Jazz', 80, 'Gold').summary();"],"expected":"Jazz: $80 [VIP: Gold]"},
+      {"args":["return VipTicket.prefix();"],"expected":"TICKET-VIP"},
+      {"args":["const v = new VipTicket('Opera', 120, 'Sky'); return [v instanceof Ticket, v.event, v.price, v.lounge];"],"expected":[true,"Opera",120,"Sky"]}
+    ]
+  }
+}

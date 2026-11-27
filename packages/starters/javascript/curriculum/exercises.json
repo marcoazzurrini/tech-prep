@@ -1718,10 +1718,46 @@
     "concepts": ["property-descriptors"]
   },
   {
+    "slug": "lock-listed-keys",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-descriptors"]
+  },
+  {
+    "slug": "property-descriptors-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-descriptors"]
+  },
+  {
+    "slug": "faithful-copy",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["property-descriptors", "getters-setters"]
+  },
+  {
     "slug": "freeze-seal-solo-1",
     "topic": "objects",
     "difficulty": "easy",
     "concepts": ["freeze-seal"]
+  },
+  {
+    "slug": "deep-freeze",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["freeze-seal"]
+  },
+  {
+    "slug": "freeze-seal-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["freeze-seal"]
+  },
+  {
+    "slug": "safe-snapshot",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["freeze-seal", "deep-copy"]
   },
   {
     "slug": "symbols-solo-1",
@@ -1730,10 +1766,46 @@
     "concepts": ["symbols"]
   },
   {
+    "slug": "scoped-meta",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["symbols"]
+  },
+  {
+    "slug": "symbols-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["symbols"]
+  },
+  {
+    "slug": "permanent-stamp",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["symbols", "property-descriptors"]
+  },
+  {
     "slug": "json-solo-1",
     "topic": "objects",
     "difficulty": "easy",
     "concepts": ["json"]
+  },
+  {
+    "slug": "safe-stringify",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["json"]
+  },
+  {
+    "slug": "json-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["json"]
+  },
+  {
+    "slug": "decode-and-filter",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["json", "object-iteration"]
   },
   {
     "slug": "garbage-collection-solo-1",
@@ -1742,10 +1814,46 @@
     "concepts": ["garbage-collection"]
   },
   {
+    "slug": "sweep-nodes",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["garbage-collection"]
+  },
+  {
+    "slug": "garbage-collection-review-1",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["garbage-collection"]
+  },
+  {
+    "slug": "bounded-cache",
+    "topic": "objects",
+    "difficulty": "medium",
+    "concepts": ["garbage-collection", "closures"]
+  },
+  {
     "slug": "prototype-chain-solo-1",
     "topic": "prototypes",
     "difficulty": "easy",
     "concepts": ["prototype-chain"]
+  },
+  {
+    "slug": "steps-to-the-key",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["prototype-chain"]
+  },
+  {
+    "slug": "prototype-chain-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["prototype-chain"]
+  },
+  {
+    "slug": "prototype-chain-review-2",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["prototype-chain", "references"]
   },
   {
     "slug": "shadowing-solo-1",
@@ -1784,10 +1892,46 @@
     "concepts": ["native-prototypes"]
   },
   {
+    "slug": "map-from-scratch",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["native-prototypes"]
+  },
+  {
+    "slug": "native-prototypes-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["native-prototypes"]
+  },
+  {
+    "slug": "where-is-it-defined",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["native-prototypes", "own-vs-inherited", "function-prototype"]
+  },
+  {
     "slug": "null-prototype-solo-1",
     "topic": "prototypes",
     "difficulty": "easy",
     "concepts": ["null-prototype"]
+  },
+  {
+    "slug": "safe-word-counter",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["null-prototype"]
+  },
+  {
+    "slug": "null-prototype-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["null-prototype"]
+  },
+  {
+    "slug": "merge-tables",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["null-prototype", "own-vs-inherited", "object-iteration"]
   },
   {
     "slug": "prototypal-inheritance-solo-1",
@@ -1796,10 +1940,46 @@
     "concepts": ["prototypal-inheritance"]
   },
   {
+    "slug": "employee-hierarchy",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["prototypal-inheritance"]
+  },
+  {
+    "slug": "prototypal-inheritance-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["prototypal-inheritance"]
+  },
+  {
+    "slug": "layered-logger",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["prototypal-inheritance", "instanceof", "method-chaining"]
+  },
+  {
     "slug": "this-binding-order-solo-1",
     "topic": "prototypes",
     "difficulty": "easy",
     "concepts": ["this-binding-order"]
+  },
+  {
+    "slug": "fallback-bind",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["this-binding-order"]
+  },
+  {
+    "slug": "this-binding-order-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["this-binding-order"]
+  },
+  {
+    "slug": "preset-caller",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["this-binding-order", "bind", "constructor-functions"]
   },
   {
     "slug": "type-detection-solo-1",
@@ -1808,10 +1988,46 @@
     "concepts": ["type-detection"]
   },
   {
+    "slug": "describe-value",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["type-detection"]
+  },
+  {
+    "slug": "type-detection-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["type-detection"]
+  },
+  {
+    "slug": "count-plain-objects",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["type-detection", "null-prototype", "recursion"]
+  },
+  {
     "slug": "class-basics-solo-1",
     "topic": "classes",
     "difficulty": "easy",
     "concepts": ["class-basics"]
+  },
+  {
+    "slug": "coin-wallet",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["class-basics"]
+  },
+  {
+    "slug": "class-basics-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-basics"]
+  },
+  {
+    "slug": "event-log",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-basics", "method-chaining"]
   },
   {
     "slug": "class-fields-solo-1",
@@ -1820,10 +2036,46 @@
     "concepts": ["class-fields"]
   },
   {
+    "slug": "message-inbox",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-fields"]
+  },
+  {
+    "slug": "class-fields-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-fields"]
+  },
+  {
+    "slug": "doorbell-listeners",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-fields", "losing-this", "closures"]
+  },
+  {
     "slug": "static-members-solo-1",
     "topic": "classes",
     "difficulty": "easy",
     "concepts": ["static-members"]
+  },
+  {
+    "slug": "rgb-colour",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["static-members"]
+  },
+  {
+    "slug": "static-members-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["static-members"]
+  },
+  {
+    "slug": "serial-tickets",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["static-members", "class-fields"]
   },
   {
     "slug": "private-members-solo-1",
@@ -1844,10 +2096,46 @@
     "concepts": ["extends"]
   },
   {
+    "slug": "menu-item-kinds",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["extends"]
+  },
+  {
+    "slug": "class-family-line",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["extends"]
+  },
+  {
+    "slug": "extends-review-2",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["extends", "static-members", "shadowing"]
+  },
+  {
     "slug": "super-solo-1",
     "topic": "classes",
     "difficulty": "easy",
     "concepts": ["super"]
+  },
+  {
+    "slug": "logged-counter",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["super"]
+  },
+  {
+    "slug": "super-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["super"]
+  },
+  {
+    "slug": "discount-order-chain",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["super", "class-accessors", "static-members"]
   },
   {
     "slug": "method-overriding-solo-1",
@@ -1856,10 +2144,46 @@
     "concepts": ["method-overriding"]
   },
   {
+    "slug": "shipping-rates",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["method-overriding"]
+  },
+  {
+    "slug": "method-overriding-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["method-overriding"]
+  },
+  {
+    "slug": "pipeline-stages",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["method-overriding", "private-members", "class-accessors"]
+  },
+  {
     "slug": "extending-builtins-solo-1",
     "topic": "classes",
     "difficulty": "easy",
     "concepts": ["extending-builtins"]
+  },
+  {
+    "slug": "case-insensitive-set",
+    "topic": "classes",
+    "difficulty": "easy",
+    "concepts": ["extending-builtins"]
+  },
+  {
+    "slug": "extending-builtins-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["extending-builtins"]
+  },
+  {
+    "slug": "tagged-list-collection",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["extending-builtins", "symbols", "super"]
   },
   {
     "slug": "mixins-solo-1",
@@ -1872,6 +2196,24 @@
     "topic": "errors",
     "difficulty": "easy",
     "concepts": ["try-catch"]
+  },
+  {
+    "slug": "first-that-works",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["try-catch"]
+  },
+  {
+    "slug": "try-catch-review-1",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["try-catch"]
+  },
+  {
+    "slug": "report-dont-crash",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["try-catch", "function-wrappers"]
   },
   {
     "slug": "finally-solo-1",
@@ -1902,6 +2244,24 @@
     "topic": "arrays",
     "difficulty": "easy",
     "concepts": ["array-basics"]
+  },
+  {
+    "slug": "trim-and-peek",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["array-basics"]
+  },
+  {
+    "slug": "array-basics-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["array-basics"]
+  },
+  {
+    "slug": "read-ends",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["array-basics", "parameters"]
   },
   {
     "slug": "sparse-arrays-solo-1",
@@ -1940,10 +2300,46 @@
     "concepts": ["searching"]
   },
   {
+    "slug": "first-missing-code",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["searching"]
+  },
+  {
+    "slug": "searching-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["searching"]
+  },
+  {
+    "slug": "can-ship-order",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["searching", "optional-chaining"]
+  },
+  {
     "slug": "sort-solo-1",
     "topic": "arrays",
     "difficulty": "easy",
     "concepts": ["sort"]
+  },
+  {
+    "slug": "tasks-by-deadline",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["sort"]
+  },
+  {
+    "slug": "sort-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["sort"]
+  },
+  {
+    "slug": "leaderboard-order",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["sort", "nullish-coalescing"]
   },
   {
     "slug": "flat-flatmap-solo-1",
@@ -1952,10 +2348,46 @@
     "concepts": ["flat-flatmap"]
   },
   {
+    "slug": "positive-pairs",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["flat-flatmap"]
+  },
+  {
+    "slug": "flat-flatmap-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["flat-flatmap"]
+  },
+  {
+    "slug": "collect-team-skills",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["flat-flatmap", "nullish-coalescing"]
+  },
+  {
     "slug": "array-creation-solo-1",
     "topic": "arrays",
     "difficulty": "easy",
     "concepts": ["array-creation"]
+  },
+  {
+    "slug": "build-buckets",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["array-creation"]
+  },
+  {
+    "slug": "array-creation-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["array-creation"]
+  },
+  {
+    "slug": "seat-chart",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["array-creation", "destructuring-arrays"]
   },
   {
     "slug": "array-likes-solo-1",
@@ -1964,10 +2396,46 @@
     "concepts": ["array-likes"]
   },
   {
+    "slug": "join-records",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["array-likes"]
+  },
+  {
+    "slug": "array-likes-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["array-likes"]
+  },
+  {
+    "slug": "normalize-batch",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["array-likes", "nullish-coalescing"]
+  },
+  {
     "slug": "grouping-solo-1",
     "topic": "arrays",
     "difficulty": "easy",
     "concepts": ["grouping"]
+  },
+  {
+    "slug": "names-by-role",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["grouping"]
+  },
+  {
+    "slug": "grouping-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["grouping"]
+  },
+  {
+    "slug": "highest-score-by-team",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["grouping", "nullish-coalescing"]
   },
   {
     "slug": "string-methods-solo-1",

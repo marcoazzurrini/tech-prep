@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = Array(3).fill({ count: 0 });\na[0].count = 2;\n\nconst b = Array.from({ length: 3 }, () => ({ count: 0 }));\nb[0].count = 2;\n\nconst c = Array.of(3);\n\nconsole.log(a.map((x) => x.count).join(\", \"));\nconsole.log(b.map((x) => x.count).join(\", \"));\nconsole.log(c.length, c[0]);"
+    },
+    "expected": "2, 2, 2\n2, 0, 0\n1 3"
+  }
+}

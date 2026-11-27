@@ -1,0 +1,21 @@
+{
+  "title": "Step Range",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stepRange"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stepRange(start, count, step) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[5,4,3],"expected":[5,8,11,14]},
+      {"args":[10,3,-2],"expected":[10,8,6]},
+      {"args":[1,0,5],"expected":[]},
+      {"args":[0,5,1],"expected":[0,1,2,3,4]},
+      {"args":[-4,3,2],"expected":[-4,-2,0]},
+      {"args":[7,1,10],"expected":[7]}
+    ]
+  }
+}

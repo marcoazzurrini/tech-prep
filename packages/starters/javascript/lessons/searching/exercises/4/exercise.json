@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = { id: 1 };\nconst list = [NaN, box, 5, 5];\n\nconsole.log(list.indexOf(NaN));\nconsole.log(list.includes(NaN));\nconsole.log(list.includes(box));\nconsole.log(list.includes({ id: 1 }));\nconsole.log(list.lastIndexOf(5));"
+    },
+    "expected": "-1\ntrue\ntrue\nfalse\n3"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let a = { score: 10 };\nconst list = [a];\nlet b = a;\na = null;\nb.score = 25;\nb = null;\nconsole.log(a);\nconsole.log(list[0].score);\nconsole.log(list.length);"
+    },
+    "expected": "null\n25\n1"
+  }
+}

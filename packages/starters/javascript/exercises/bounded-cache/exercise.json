@@ -1,0 +1,18 @@
+{
+  "title": "Bounded Cache",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createBoundedCache(limit) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = createBoundedCache(2); c.set('a', 1); c.set('b', 2); c.set('c', 3); return [c.get('a') ?? null, c.get('c'), c.size()];"],"expected":[null,3,2]},
+      {"args":["const c = createBoundedCache(2); c.set('a', 1); c.set('b', 2); c.set('a', 9); return [c.get('a'), c.get('b'), c.size()];"],"expected":[9,2,2]},
+      {"args":["const c = createBoundedCache(3); c.set('x', 1); c.set('y', 2); c.clear(); return [c.size(), c.get('x') ?? null];"],"expected":[0,null]},
+      {"args":["const c = createBoundedCache(1); c.set('k1', 'v1'); c.set('k2', 'v2'); return [c.size(), c.get('k1') ?? null, c.get('k2')];"],"expected":[1,null,"v2"]},
+      {"args":["const c = createBoundedCache(2); return [c.size(), String(c.get('missing'))];"],"expected":[0,"undefined"]}
+    ]
+  }
+}

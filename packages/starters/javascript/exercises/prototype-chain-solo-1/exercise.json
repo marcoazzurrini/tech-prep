@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const vehicle = { wheels: 4, fuel: \"petrol\" };\nconst taxi = Object.create(vehicle);\ntaxi.fuel = \"electric\";\nconst cab = Object.create(taxi);\ncab.driver = \"Kim\";\n\nconsole.log(cab.driver, cab.fuel, cab.wheels);\nconsole.log(cab.plate);\nconsole.log(Object.getPrototypeOf(cab) === vehicle);\nconsole.log(Object.getPrototypeOf(Object.getPrototypeOf(cab)) === vehicle);"
+    },
+    "expected": "Kim electric 4\nundefined\nfalse\ntrue"
+  }
+}
