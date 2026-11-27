@@ -172,6 +172,28 @@ describe("a jq lesson", () => {
     // The last part was right, so the lesson goes on to the tasks solved alone.
     await stop(page, 3, "current");
   });
+
+  test("the last task solved alone opens the next lesson by itself", async () => {
+    const { page } = app;
+
+    await type(page, "jq '.status' data.json");
+    await page.getByText("Matches").waitFor();
+    await page.getByRole("button", { name: "Submit" }).click();
+    await page.getByText("Task 1 was right.").waitFor();
+
+    await type(page, '{"ok": true, "count": 2}');
+    await page.getByRole("button", { name: "Submit" }).click();
+
+    // The next lesson is on screen, and its footer says what happened to the one before.
+    await page
+      .getByText("What jq Does is learned. Its first review is tomorrow.")
+      .waitFor();
+    await stop(page, 0, "current");
+    assert.equal(
+      await page.getByRole("button", { name: "Next lesson" }).count(),
+      0
+    );
+  });
 });
 
 describe("an extra exercise from the tutor", () => {

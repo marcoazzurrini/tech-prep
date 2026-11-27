@@ -18,6 +18,16 @@ type View =
   /** A review session in progress. */
   | { kind: "review"; planned: number; track?: string };
 
+/** The lesson that opened by itself, and what its footer says about the one just learned. */
+interface Arrival {
+  id: string;
+  note: string;
+}
+
+/** The arrival note, when it belongs to the lesson on screen. */
+const introFor = (arrival: Arrival | null, id: string): string | undefined =>
+  arrival?.id === id ? arrival.note : undefined;
+
 export const App = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -27,6 +37,8 @@ export const App = () => {
   /** The current chapter, when the learner closed it. */
   const [closed, setClosed] = useState<Set<string>>(new Set());
   const [tutorOpen, setTutorOpen] = useState(false);
+
+  const [arrival, setArrival] = useState<Arrival | null>(null);
 
   const refresh = useCallback(() => {
     const load = async () => {
@@ -112,7 +124,8 @@ export const App = () => {
   );
 
   const select = useCallback(
-    (id: string) => {
+    (id: string, note?: string) => {
+      setArrival(note ? { id, note } : null);
       go({ id, kind: "lesson" });
     },
     [go]
@@ -205,6 +218,7 @@ export const App = () => {
       <LessonScreen
         id={view.id}
         key={view.id}
+        intro={introFor(arrival, view.id)}
         next={course.next_lesson ?? after?.id ?? null}
         tutorOpen={tutorOpen}
         onChanged={refresh}

@@ -10,7 +10,7 @@ import { conceptRow, lastExplicitReview } from "./db.ts";
 import type { Result } from "./db.ts";
 import { propagate } from "./fire.ts";
 import type { ConceptResult } from "./grading.ts";
-import { explicitReview } from "./memory.ts";
+import { awaitsFirstRecall, cardOf, explicitReview, isDue } from "./memory.ts";
 import type { Source } from "./memory.ts";
 import {
   completeLesson,
@@ -55,6 +55,19 @@ const reviewedRecently = (
   );
 };
 
+/** A concept still fresh from its lesson: its first recall is not due, so nothing is evidence yet. */
+const learnedToday = (
+  course: Course,
+  conceptId: string,
+  now: Date
+): boolean => {
+  const card = cardOf(course, conceptId);
+
+  return Boolean(
+    card && awaitsFirstRecall(card) && !isDue(course, conceptId, now)
+  );
+};
+
 /** A concept not passed yet: practice here is teaching, so it never touches the schedule. */
 const applyLearning = (
   course: Course,
@@ -70,9 +83,9 @@ const applyLearning = (
   }
 
   if (input.fromProblem) {
-    pass(course, r.concept, input.source, input.now);
+    pass(course, r.concept, input.now);
 
-    return "passed: solved without help, reviews start now";
+    return "passed: solved without help, the first review is tomorrow";
   }
 
   // Knowing a concept implies its prerequisites, so a right answer skips their lessons too.
@@ -101,6 +114,13 @@ export const applyResults = (course: Course, input: ApplyInput) => {
 
     if (!isPassed(course, r.concept)) {
       return { ...base, effect: applyLearning(course, r, input) };
+    }
+
+    if (learnedToday(course, r.concept, input.now)) {
+      return {
+        ...base,
+        effect: "learned today: this one was practice only",
+      };
     }
 
     if (reviewedRecently(course, r.concept, input.now)) {

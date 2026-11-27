@@ -48,7 +48,13 @@ const ended = (
   outcome: Finished["result"]["outcome"],
   movesOn: boolean
 ): Finished => ({
-  result: { concepts: [], mode: "guided", moves_on: movesOn, outcome },
+  result: {
+    concepts: [],
+    mode: "guided",
+    moves_on: movesOn,
+    next_lesson: null,
+    outcome,
+  },
   solution: null,
 });
 

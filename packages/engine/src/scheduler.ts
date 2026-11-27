@@ -1,7 +1,7 @@
 // Concept stages, lessons, and choosing the next lesson and the next review.
 // See docs/learning-model.md, "Phases" and "Choosing the next task".
 
-import { createEmptyCard, Rating } from "ts-fsrs";
+import { Rating } from "ts-fsrs";
 
 import {
   concept,
@@ -15,8 +15,14 @@ import { attemptsFor, conceptRow, saveConceptRow } from "./db.ts";
 import type { AttemptRow, Stage } from "./db.ts";
 import { hasLesson, isAuthored } from "./exercises.ts";
 import { problemCredit } from "./fire.ts";
-import { cardOf, explicitReview, isDue, retrievability } from "./memory.ts";
-import type { Source } from "./memory.ts";
+import {
+  awaitsFirstRecall,
+  cardOf,
+  isDue,
+  retrievability,
+  scheduleFirstRecall,
+  startOfDay,
+} from "./memory.ts";
 
 const DAY_MS = 86_400_000;
 
@@ -54,21 +60,22 @@ export const displayStage = (course: Course, id: string): DisplayStage => {
     : "locked";
 };
 
-/** First independent success: the concept starts its FSRS schedule and its dependents may unlock. */
+/**
+ * First independent success: the concept is learned and its dependents may unlock. It gets no
+ * FSRS rating yet. Its first recall is due the next day.
+ */
 export const pass = (
   course: Course,
   conceptId: string,
-  source: Source,
   now = new Date()
 ): void => {
   saveConceptRow(course, {
     ...conceptRow(course, conceptId),
-    card: JSON.stringify(createEmptyCard(now)),
     fail_count: 0,
     passed_at: now.toISOString(),
     stage: "passed",
   });
-  explicitReview(course, conceptId, source, Rating.Good, now);
+  scheduleFirstRecall(course, conceptId, now);
 };
 
 /** Mark a concept as taught: its lesson's first step is done, and its solo problem comes next. */
@@ -250,6 +257,8 @@ export const nextLesson = (course: Course, now = new Date()): string | null =>
 interface DueConcept {
   id: string;
   weight: number;
+  /** A first recall. Only a problem tagged with the concept can give it its first rating. */
+  first: boolean;
 }
 
 const dueConcepts = (course: Course, now: Date): DueConcept[] =>
@@ -262,9 +271,11 @@ const dueConcepts = (course: Course, now: Date): DueConcept[] =>
         throw new Error(`Concept '${c.id}' is due but has no card.`);
       }
 
-      const overdueDays = (now.getTime() - card.due.getTime()) / DAY_MS;
+      const overdueDays =
+        (now.getTime() - startOfDay(card.due).getTime()) / DAY_MS;
 
       return {
+        first: awaitsFirstRecall(card),
         id: c.id,
         weight: 1 + overdueDays / Math.max(1, card.scheduled_days),
       };
@@ -280,7 +291,9 @@ const coverage = (course: Course, p: ProblemInfo, due: DueConcept[]) => {
   const covers: string[] = [];
 
   for (const d of due) {
-    const credit = Math.min(1, problemCredit(course, p.concepts, d.id));
+    const credit = d.first
+      ? Number(p.concepts.includes(d.id))
+      : Math.min(1, problemCredit(course, p.concepts, d.id));
 
     if (credit > 0) {
       score += credit * d.weight;
@@ -391,6 +404,8 @@ export const conceptStatus = (
   const c = concept(course, id);
   const card = cardOf(course, id);
   const scheduled = isPassed(course, id) && card;
+  // A concept with no recall yet has a due day and no memory figures.
+  const rated = scheduled && !awaitsFirstRecall(card);
 
   return {
     due: scheduled ? card.due.toISOString() : null,
@@ -398,8 +413,8 @@ export const conceptStatus = (
     lapses: card?.lapses ?? 0,
     name: c.name,
     reps: card?.reps ?? 0,
-    retrievability: scheduled ? round(retrievability(card, now)) : null,
-    stability_days: scheduled ? round(card.stability) : null,
+    retrievability: rated ? round(retrievability(card, now)) : null,
+    stability_days: rated ? round(card.stability) : null,
     stage: displayStage(course, id),
     topic: c.topic,
   };

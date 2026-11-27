@@ -236,8 +236,8 @@ const SoloWork = ({
   );
 
   if (lesson.attempt?.slug === lesson.solo.slug || finished) {
-    // A task solved alone moves on to the next one by itself. What stays finished is the
-    // last task, or one that needed help.
+    // A task solved alone moves on by itself: to the next task, or to the next lesson after
+    // the last one. What stays finished is a task that needed help, or the course's last task.
     const footer = finished && {
       actions: nextButton,
       note: soloNote(lesson, finished),
@@ -417,9 +417,12 @@ interface LessonScreenProps {
   tutorOpen: boolean;
   onToggleTutor: () => void;
   onOpenTutor: () => void;
+  /** What the footer says on arrival, when the lesson before this one was just learned. */
+  intro?: string;
   /** Called when the learner's progress changed, so the lessons column reloads. */
   onChanged: () => void;
-  onSelect: (lesson: string) => void;
+  /** Open another lesson. `note` is what its footer says on arrival. */
+  onSelect: (lesson: string, note?: string) => void;
 }
 
 /**
@@ -430,6 +433,7 @@ interface LessonScreenProps {
 export const LessonScreen = ({
   id,
   next,
+  intro,
   tutorOpen,
   onToggleTutor,
   onOpenTutor,
@@ -437,7 +441,8 @@ export const LessonScreen = ({
   onSelect,
 }: LessonScreenProps) => {
   const [flow, send] = useReducer(reduce, start);
-  const { finished, lesson, note, peeking, request } = flow;
+  const { finished, lesson, peeking, request } = flow;
+  const note = flow.note || intro;
 
   // The engine starts the lesson's next task when there is one to start. A finished lesson
   // is only shown, unless the learner asks to practise it again.
@@ -470,6 +475,16 @@ export const LessonScreen = ({
   };
 
   const finish = (result: Finished) => {
+    const { next_lesson: nextLesson } = result.result;
+
+    // The answer that makes a lesson learned opens the next lesson by itself.
+    if (nextLesson) {
+      onChanged();
+      onSelect(nextLesson, soloNote(lesson, result));
+
+      return;
+    }
+
     send({ finished: result, type: "finished" });
     onChanged();
   };
