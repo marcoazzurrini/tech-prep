@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);\nconst compose = (...fns) => (x) => fns.reduceRight((v, f) => f(v), x);\n\nconst wrap = (mark) => (text) => mark + text + mark;\nconst shout = (text) => text.toUpperCase() + \"!\";\n\nconsole.log(pipe(wrap(\"*\"), shout)(\"hi\"));\nconsole.log(compose(wrap(\"*\"), shout)(\"hi\"));\nconsole.log(compose(pipe(shout, shout), wrap(\"_\"))(\"ok\"));"
+    },
+    "expected": "*HI*!\n*HI!*\n_OK_!!"
+  }
+}

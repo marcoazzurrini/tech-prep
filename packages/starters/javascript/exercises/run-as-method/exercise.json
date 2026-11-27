@@ -1,0 +1,20 @@
+{
+  "title": "Run as a Method",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function runAs(target, fn, ...args) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return runAs({ name: \"Ada\" }, function (greeting) { return `${greeting}, ${this.name}`; }, \"Hi\");"],"expected":"Hi, Ada"},
+      {"args":["return runAs({ a: 1, b: 2 }, function () { return Object.keys(this); });"],"expected":["a","b"]},
+      {"args":["const o = { fn: 1, method: 2, run: 3 }; runAs(o, function () {}); return o;"],"expected":{"fn":1,"method":2,"run":3}},
+      {"args":["const o = { n: 1 }; try { runAs(o, function () { throw Error(\"no\"); }); } catch {} return Reflect.ownKeys(o).length;"],"expected":1},
+      {"args":["try { runAs({}, function () { throw new Error(\"boom\"); }); return \"no error\"; } catch (e) { return e.message; }"],"expected":"boom"},
+      {"args":["const o = { n: 1 }; runAs(o, function (x) { this.n += x; }, 4); return [o, Object.getOwnPropertySymbols(o).length];"],"expected":[{"n":5},0]},
+      {"args":["return runAs({ x: 2 }, function (a, b) { return this.x * a * b; }, 3, 4);"],"expected":24}
+    ]
+  }
+}

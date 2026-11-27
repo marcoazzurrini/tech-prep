@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function deepEqual(a, b) {\n  if (Object.is(a, b)) return true;\n  if (typeof a !== \"object\" || typeof b !== \"object\" || a === null || b === null) return false;\n\n  const keys = Object.keys(a);\n  if (keys.length !== Object.keys(b).length) return false;\n  return keys.every((key) => Object.hasOwn(b, key) && deepEqual(a[key], b[key]));\n}\n\nconsole.log(deepEqual([5, 6], { 0: 5, 1: 6 }));\nconsole.log(deepEqual([\"x\"], { 0: \"x\", length: 1 }));\nconsole.log(deepEqual({ a: [] }, { a: {} }));\nconsole.log(deepEqual({ a: undefined }, { b: undefined }));"
+    },
+    "expected": "true\nfalse\ntrue\nfalse"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function partial(fn, ...fixed) {\n  return (...rest) => fn(...fixed, ...rest);\n}\n\nconst greet = (greeting, name, mark) => greeting + \" \" + name + mark;\n\nconst hello = partial(greet, \"Hello\");\nconst hiAda = greet.bind(null, \"Hi\", \"Ada\");\n\nconsole.log(hello(\"Bo\", \"!\"));\nconsole.log(hello(\"Bo\"));\nconsole.log(hiAda(\"?\"));\nconsole.log(hiAda.length);\nconsole.log(hello.length);"
+    },
+    "expected": "Hello Bo!\nHello Boundefined\nHi Ada?\n1\n0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Settle Once",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: wait(ms) fulfils after ms. wait() lets every queued callback run first.\nexport const wait = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport class MyPromise {\n  constructor(executor) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const p = new MyPromise((resolve) => resolve(5)); return [p.state, p.value];"],"expected":["fulfilled",5]},
+      {"args":["const p = new MyPromise((resolve, reject) => reject(\"no stock\")); return [p.state, p.value];"],"expected":["rejected","no stock"]},
+      {"args":["const p = new MyPromise(() => {}); return [p.state, p.value === undefined];"],"expected":["pending",true]},
+      {"args":["const p = new MyPromise((resolve, reject) => { resolve(1); reject(\"x\"); resolve(2); }); return [p.state, p.value];"],"expected":["fulfilled",1]},
+      {"args":["const p = new MyPromise(() => { throw new Error(\"broken\"); }); return [p.state, p.value.message];"],"expected":["rejected","broken"]},
+      {"args":["const p = new MyPromise((resolve) => { resolve(\"first\"); throw new Error(\"ignored\"); }); return [p.state, p.value];"],"expected":["fulfilled","first"]},
+      {"args":["let ran = false; new MyPromise(() => { ran = true; }); return ran;"],"expected":true},
+      {"args":["const p = new MyPromise((res) => setTimeout(res, 5, \"late\")); const before = p.state; await wait(20); return [before, p.state];"],"expected":["pending","fulfilled"]}
+    ]
+  }
+}

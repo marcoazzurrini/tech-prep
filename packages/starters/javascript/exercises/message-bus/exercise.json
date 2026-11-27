@@ -1,0 +1,22 @@
+{
+  "title": "Message Bus",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Emitter {\n  on(name, listener) {\n    // your code\n  }\n\n  off(name, listener) {\n    // your code\n  }\n\n  once(name, listener) {\n    // your code\n  }\n\n  emit(name, ...args) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const b = new Emitter(); let n = 0; const stop = b.on(\"s\", (x) => (n += x)); b.emit(\"s\", 1); stop(); b.emit(\"s\", 10); return n;"],"expected":1},
+      {"args":["const b = new Emitter(); b.on(\"save\", () => {}); return [b.emit(\"save\"), b.emit(\"load\")];"],"expected":[true,false]},
+      {"args":["const b = new Emitter(); const stop = b.on(\"save\", () => {}); stop(); return b.emit(\"save\");"],"expected":false},
+      {"args":["const b = new Emitter(), log = []; b.once(\"go\", (x, y) => log.push(x + y)); b.emit(\"go\", 1, 2); b.emit(\"go\", 3, 4); return log;"],"expected":[3]},
+      {"args":["const b = new Emitter(); let n = 0; const stop = b.once(\"go\", () => n++); stop(); b.emit(\"go\"); return n;"],"expected":0},
+      {"args":["const b = new Emitter(); const f = () => {}; b.on(\"a\", f); b.off(\"a\", () => {}); b.off(\"b\", f); return b.emit(\"a\");"],"expected":true},
+      {"args":["const b = new Emitter(), log = []; b.once(\"t\", () => log.push(1)); b.on(\"t\", () => log.push(2)); b.emit(\"t\"); return log;"],"expected":[1,2]},
+      {"args":["const b = new Emitter(), log = []; b.on(\"t\", () => b.on(\"t\", () => log.push(\"new\"))); b.emit(\"t\"); return log;"],"expected":[]},
+      {"args":["const b = new Emitter(); let n = 0; const g = () => n++; b.on(\"t\", () => b.off(\"t\", g)); b.on(\"t\", g); b.emit(\"t\"); return n;"],"expected":1}
+    ]
+  }
+}

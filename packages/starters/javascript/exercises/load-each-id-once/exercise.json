@@ -1,0 +1,19 @@
+{
+  "title": "Load Each Id Once",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests. tracker() gives a log and two ways to make a task:\n// t.job(name, ms) logs \"start name\", waits ms, logs \"end name\" and fulfils with name.\n// t.fail(name, ms) logs \"start name\", waits ms, logs \"fail name\" and rejects.\n// wait(ms, value) fulfils with value after ms.\nexport const wait = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport function tracker() {\n  const log = [];\n  const job = (name, ms) => async () => {\n    log.push(\"start \" + name);\n    await wait(ms);\n    log.push(\"end \" + name);\n    return name;\n  };\n  const fail = (name, ms) => async () => {\n    log.push(\"start \" + name);\n    await wait(ms);\n    log.push(\"fail \" + name);\n    throw new Error(name + \" failed\");\n  };\n  return { log, job, fail };\n}\n\n\nexport async function loadAll(ids, load, limit) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const load = async (id) => { n++; return id * 2; }; return [await loadAll([1, 2, 1, 3, 2], load, 2), n];"],"expected":[[2,4,2,6,4],3]},
+      {"args":["return await loadAll([], async (id) => id, 2);"],"expected":[]},
+      {"args":["let n = 0; return [await loadAll([\"x\", \"x\", \"x\"], async (id) => id + ++n, 3), n];"],"expected":[["x1","x1","x1"],1]},
+      {"args":["const t = tracker(); await loadAll([\"a\", \"b\", \"a\", \"c\"], (id) => t.job(id, id === \"a\" ? 30 : 5)(), 2); return t.log;"],"expected":["start a","start b","end b","start c","end c","end a"]},
+      {"args":["const t = tracker(); await loadAll([\"a\", \"b\", \"c\"], (id) => t.job(id, 5)(), 1); return t.log;"],"expected":["start a","end a","start b","end b","start c","end c"]},
+      {"args":["return await loadAll([1, 2], async (id) => { throw new Error(\"no record \" + id); }, 1).catch((e) => e.message);"],"expected":"no record 1"}
+    ]
+  }
+}

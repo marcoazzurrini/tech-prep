@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function throttle(fn, ms) {\n  let waiting = false;\n  let last = null;\n  const run = (x) => {\n    fn(x);\n    waiting = true;\n    setTimeout(() => {\n      waiting = false;\n      if (last !== null) {\n        const next = last;\n        last = null;\n        run(next);\n      }\n    }, ms);\n  };\n  return (x) => (waiting ? (last = x) : run(x));\n}\n\nconst t = throttle((x) => console.log(x), 40);\nt(\"a\");\nt(\"b\");\nt(\"c\");\nsetTimeout(() => t(\"d\"), 60);"
+    },
+    "expected": "a\nc\nd"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Add a Trailing Call",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function throttle(fn, ms) {\n  let waiting = false;\n\n  function throttled(...args) {\n    if (waiting) {\n      return;\n    }\n\n    fn.apply(this, args);\n    waiting = true;\n    setTimeout(() => {\n      waiting = false;\n    }, ms);\n  }\n\n  return throttled;\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15); f(1); f(2); f(3); await wait(50); return s;"],"expected":[1,3]},
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15); f(1); await wait(50); return s;"],"expected":[1]},
+      {"args":["const s = []; const f = throttle((x) => s.push(x), 15); f(1); f(2); const now = [...s]; await wait(50); return [now, s];"],"expected":[[1],[1,2]]},
+      {"args":["const s = []; const o = { n: 3, f: throttle(function (x) { s.push(this.n * x); }, 15) }; o.f(1); o.f(2); await wait(50); return s;"],"expected":[3,6]}
+    ]
+  }
+}

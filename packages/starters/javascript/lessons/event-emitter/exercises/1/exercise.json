@@ -1,0 +1,19 @@
+{
+  "title": "A Radio with Channels",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Radio {\n  on(channel, listener) {\n    // your code\n  }\n\n  emit(channel, ...args) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const r = new Radio(); const heard = []; r.on(\"news\", (t) => heard.push(t)); return [r.emit(\"news\", \"Rain\"), heard];"],"expected":[1,["Rain"]]},
+      {"args":["const r = new Radio(); return [r.emit(\"sport\"), r.emit(\"news\", 1)];"],"expected":[0,0]},
+      {"args":["const r = new Radio(); const log = []; r.on(\"a\", (x, y) => log.push(x + y)); r.emit(\"a\", 2, 3); r.emit(\"a\", 4, 5); return log;"],"expected":[5,9]},
+      {"args":["const r = new Radio(); const log = []; r.on(\"a\", () => log.push(1)); r.on(\"a\", () => log.push(2)); return [r.emit(\"a\"), log];"],"expected":[2,[1,2]]},
+      {"args":["const r = new Radio(); const log = []; r.on(\"a\", () => log.push(\"a\")); r.on(\"b\", () => log.push(\"b\")); r.emit(\"b\"); return log;"],"expected":["b"]},
+      {"args":["const r = new Radio(), s = new Radio(); const log = []; r.on(\"a\", () => log.push(\"r\")); s.emit(\"a\"); return [log, r.emit(\"a\")];"],"expected":[["r"],1]}
+    ]
+  }
+}

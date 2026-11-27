@@ -1,0 +1,20 @@
+{
+  "title": "First Replies",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that fulfils with value after ms, and one that rejects.\nexport const later = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport const failLater = (ms, message) => {\n  const promise = new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\n  promise.catch(() => {}); // so it is never reported as unhandled\n  return promise;\n};\n\n\nexport function firstReplies(requests, n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await firstReplies([later(60, \"a\"), later(5, \"b\"), later(30, \"c\")], 2);"],"expected":["b","c"]},
+      {"args":["return await firstReplies([failLater(5, \"x\"), later(30, \"c\"), \"now\"], 2);"],"expected":["now","c"]},
+      {"args":["return await firstReplies([later(5, \"a\"), later(30, \"b\")], 1);"],"expected":["a"]},
+      {"args":["return await firstReplies([failLater(5, \"x\"), failLater(30, \"y\"), \"ok\"], 2).catch((e) => [e.name, e.errors.length]);"],"expected":["AggregateError",2]},
+      {"args":["return await Promise.race([firstReplies([failLater(5, \"x\"), later(50, 1)], 2).catch(() => \"gave up\"), later(30, \"waited\")]);"],"expected":"gave up"},
+      {"args":["return await firstReplies([\"a\", \"b\", \"c\"], 3);"],"expected":["a","b","c"]},
+      {"args":["const r = await firstReplies([later(5, \"a\"), later(30, \"b\"), later(60, \"c\")], 1); await later(60); return r;"],"expected":["a"]}
+    ]
+  }
+}

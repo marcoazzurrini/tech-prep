@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Emitter {\n  listeners = [];\n  on(listener) {\n    this.listeners.push(listener);\n  }\n  emit() {\n    for (const listener of [...this.listeners]) listener();\n  }\n}\n\nconst bus = new Emitter();\nbus.on(() => {\n  console.log(\"A\");\n  bus.on(() => console.log(\"C\"));\n});\nbus.on(() => console.log(\"B\"));\n\nbus.emit();\nbus.emit();"
+    },
+    "expected": "A\nB\nA\nB\nC"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const chain = (...steps) => (start) =>\n  steps.reduceRight((value, step) => step(value), start);\n\nconst half = (n) => n / 2;\nconst minus = (k) => (n) => n - k;\n\nconsole.log(chain(half, minus(4))(20));\nconsole.log(chain(minus(4), half)(20));\nconsole.log(chain(chain(half, half), minus(2))(10));\nconsole.log(chain()(3));"
+    },
+    "expected": "8\n6\n2\n3"
+  }
+}

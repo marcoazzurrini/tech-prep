@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function retry(fn, times) {\n  for (let attempt = 1; attempt <= times; attempt++) {\n    try {\n      return fn(attempt);\n    } catch (error) {\n      console.log(\"caught \" + error.message);\n    }\n  }\n}\n\nconst plain = (n) => {\n  if (n < 2) throw new Error(\"plain \" + n);\n  return \"plain ok\";\n};\nconst later = async (n) => {\n  if (n < 2) throw new Error(\"async \" + n);\n  return \"async ok\";\n};\n\nretry(plain, 3).then((value) => console.log(value));\nretry(later, 3).catch((error) => console.log(\"escaped: \" + error.message));"
+    },
+    "expected": "caught plain 1\nplain ok\nescaped: async 1"
+  }
+}

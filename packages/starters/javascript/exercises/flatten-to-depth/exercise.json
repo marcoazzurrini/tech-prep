@@ -1,0 +1,21 @@
+{
+  "title": "Flatten a Task List",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function flatten(list, depth) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return flatten([\"shop\", [\"milk\", [\"oat\", \"soy\"]]]);"],"expected":["shop","milk",["oat","soy"]]},
+      {"args":["return flatten([\"shop\", [\"milk\", [\"oat\", \"soy\"]]], 2);"],"expected":["shop","milk","oat","soy"]},
+      {"args":["return [flatten([\"a\", , \"b\"]), flatten([[\"a\", , \"b\"]]).length];"],"expected":[["a","b"],2]},
+      {"args":["return flatten([[1], [[2]], [[[3]]]], Infinity);"],"expected":[1,2,3]},
+      {"args":["return [flatten([[1], [2]], 0), flatten([])];"],"expected":[[[1],[2]],[]]},
+      {"args":["const inner = [2]; const list = [1, inner]; const flat = flatten(list); return [flat, list.length, inner.length];"],"expected":[[1,2],2,1]},
+      {"args":["return flatten([{ tasks: [1] }, [[], \"x\"]]);"],"expected":[{"tasks":[1]},[],"x"]},
+      {"args":["return flatten([[undefined, null]]).length;"],"expected":2}
+    ]
+  }
+}

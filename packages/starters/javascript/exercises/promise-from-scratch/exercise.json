@@ -1,0 +1,24 @@
+{
+  "title": "Promise from Scratch",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: wait(ms) fulfils after ms. wait() lets every queued callback run first.\nexport const wait = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport class MyPromise {\n  constructor(executor) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["return await new MyPromise((resolve) => resolve(2)).then((n) => n * 10);"],"expected":20},
+      {"args":["return await MyPromise.reject(\"no\").catch((reason) => reason + \" handled\");"],"expected":"no handled"},
+      {"args":["const p = new MyPromise((res, rej) => { res(1); rej(\"x\"); }); return [p.state, p.value];"],"expected":["fulfilled",1]},
+      {"args":["const s = []; MyPromise.resolve(\"a\").then((v) => s.push(v)); s.push(\"sync\"); await wait(); return s;"],"expected":["sync","a"]},
+      {"args":["return await new MyPromise(() => { throw new Error(\"broken\"); }).then(() => \"no\").catch((e) => e.message);"],"expected":"broken"},
+      {"args":["return await MyPromise.resolve(1).then((n) => new MyPromise((res) => setTimeout(res, 5, n + 1))).then((n) => n * 3);"],"expected":6},
+      {"args":["return await new MyPromise((res) => res({ then(ok) { ok(\"thenable\"); } }));"],"expected":"thenable"},
+      {"args":["const s = []; await MyPromise.reject(\"x\").finally(() => s.push(\"clean\")).catch((r) => s.push(\"caught \" + r)); return s;"],"expected":["clean","caught x"]},
+      {"args":["return await MyPromise.resolve(\"kept\").then(undefined, () => \"no\").finally(() => \"ignored\");"],"expected":"kept"},
+      {"args":["const p = MyPromise.resolve(5); return [MyPromise.resolve(p) === p, p.then() instanceof MyPromise];"],"expected":[true,true]},
+      {"args":["const s = [], p = new MyPromise((r) => setTimeout(r, 5)); p.then(() => s.push(1)); p.then(() => s.push(2)); await p; return s;"],"expected":[1,2]}
+    ]
+  }
+}

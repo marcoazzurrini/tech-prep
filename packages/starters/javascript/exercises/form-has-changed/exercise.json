@@ -1,0 +1,20 @@
+{
+  "title": "Unsaved Changes",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function hasChanged(saved, draft) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return hasChanged({ theme: \"dark\", tabs: [1, 2] }, { tabs: [1, 2], theme: \"dark\" });"],"expected":false},
+      {"args":["return hasChanged({ font: { size: 12 } }, { font: { size: 14 } });"],"expected":true},
+      {"args":["return [hasChanged({ zoom: NaN }, { zoom: NaN }), hasChanged({ zoom: NaN }, { zoom: null })];"],"expected":[false,true]},
+      {"args":["return [hasChanged({ note: undefined }, {}), hasChanged({}, { note: undefined })];"],"expected":[true,true]},
+      {"args":["return [hasChanged({ tabs: [1, 2] }, { tabs: [2, 1] }), hasChanged({ tabs: [] }, { tabs: {} })];"],"expected":[true,true]},
+      {"args":["return [hasChanged({ a: { b: { c: [true] } } }, { a: { b: { c: [true] } } }), hasChanged(null, {})];"],"expected":[false,true]},
+      {"args":["return [hasChanged(\"5\", 5), hasChanged({ n: 1 }, { n: 1, m: 2 }), hasChanged({ a: undefined }, { b: undefined })];"],"expected":[true,true,true]}
+    ]
+  }
+}

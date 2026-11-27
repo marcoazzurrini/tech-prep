@@ -1,0 +1,20 @@
+{
+  "title": "Call Back Later",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: wait(ms) fulfils after ms. wait() lets every queued callback run first.\nexport const wait = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport class MyPromise {\n  constructor(executor) {\n    this.state = \"pending\";\n    this.value = undefined;\n\n    const settle = (state, value) => {\n      if (this.state !== \"pending\") {\n        return;\n      }\n      this.state = state;\n      this.value = value;\n    };\n\n    const resolve = (value) => settle(\"fulfilled\", value);\n    const reject = (reason) => settle(\"rejected\", reason);\n\n    try {\n      executor(resolve, reject);\n    } catch (error) {\n      reject(error);\n    }\n  }\n\n  then(onFulfilled, onRejected) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; new MyPromise((resolve) => resolve(1)).then((v) => s.push(\"got \" + v)); s.push(\"sync\"); await wait(); return s;"],"expected":["sync","got 1"]},
+      {"args":["const s = [], p = new MyPromise((r) => r(\"a\")); p.then(() => s.push(1)); p.then(() => s.push(2)); await wait(); return s;"],"expected":[1,2]},
+      {"args":["const s = []; new MyPromise((res) => setTimeout(res, 5, \"late\")).then((v) => s.push(v)); s.push(\"sync\"); await wait(20); return s;"],"expected":["sync","late"]},
+      {"args":["const s = []; new MyPromise((res, rej) => rej(\"no\")).then(() => s.push(\"ok\"), (r) => s.push(r)); await wait(); return s;"],"expected":["no"]},
+      {"args":["const s = []; new MyPromise((res, rej) => setTimeout(rej, 5, \"late no\")).then(null, (r) => s.push(r)); await wait(20); return s;"],"expected":["late no"]},
+      {"args":["let go; const s = [], p = new MyPromise((r) => (go = r)); p.then(() => s.push(2)); go(); s.push(1); await wait(); return s;"],"expected":[1,2]},
+      {"args":["const s = []; const p = new MyPromise((res, rej) => rej(\"x\")); p.then((v) => s.push(v)); await wait(); return [s, p.state];"],"expected":[[],"rejected"]}
+    ]
+  }
+}

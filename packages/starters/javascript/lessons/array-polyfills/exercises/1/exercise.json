@@ -1,0 +1,19 @@
+{
+  "title": "Your Own filter",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "Array.prototype.myFilter = function (callback) {\n  // your code\n};\n"
+    },
+    "tests": [
+      {"args":["return [5, 12, 8].myFilter((n) => n > 6);"],"expected":[12,8]},
+      {"args":["return [\"a\", \"b\", \"c\"].myFilter((item, i) => i !== 1);"],"expected":["a","c"]},
+      {"args":["return [1, 2, 3].myFilter((n, i, list) => list.length === 3 && n !== 2);"],"expected":[1,3]},
+      {"args":["const list = [1, 2]; const kept = list.myFilter(() => true); return [kept, kept !== list];"],"expected":[[1,2],true]},
+      {"args":["return [[0, \"\", null, \"x\", 4].myFilter((v) => v), [].myFilter(() => true)];"],"expected":[["x",4],[]]},
+      {"args":["const list = [3, 4]; list.myFilter(() => false); return list;"],"expected":[3,4]}
+    ]
+  }
+}

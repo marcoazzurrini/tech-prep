@@ -1,0 +1,18 @@
+{
+  "title": "Pipe from Several Arguments",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function pipe(...fns) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const area = pipe((w, h) => w * h, (a) => a + \" m2\"); return area(3, 4);"],"expected":"12 m2"},
+      {"args":["return pipe((...xs) => xs.length)(1, 2, 3);"],"expected":3},
+      {"args":["return pipe()(\"same\");"],"expected":"same"},
+      {"args":["return pipe((a, b) => a + b, (n) => n * 10, (n) => n - 1)(1, 2);"],"expected":29},
+      {"args":["return pipe(Math.max, String)(4, 9, 2);"],"expected":"9"}
+    ]
+  }
+}

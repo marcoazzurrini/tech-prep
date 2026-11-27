@@ -1,0 +1,20 @@
+{
+  "title": "Shared Printers",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function printAll(jobs, count) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const jobs = [30, 5, 5].map((ms) => (p) => new Promise((r) => setTimeout(r, ms, p))); return await printAll(jobs, 2);"],"expected":[0,1,1]},
+      {"args":["const jobs = [5, 30, 5, 5].map((ms) => (p) => new Promise((r) => setTimeout(r, ms, p))); return await printAll(jobs, 2);"],"expected":[0,1,0,0]},
+      {"args":["const jobs = [5, 5, 5].map((ms) => async (p) => p); return await printAll(jobs, 1);"],"expected":[0,0,0]},
+      {"args":["const jobs = [5, 5].map((ms) => async (p) => p); return await printAll(jobs, 4);"],"expected":[0,1]},
+      {"args":["return await printAll([], 3);"],"expected":[]},
+      {"args":["const jobs = [async () => \"ok\", async () => { throw new Error(\"jam\"); }]; return await printAll(jobs, 2).catch((e) => e.message);"],"expected":"jam"},
+      {"args":["const jobs = [\"memo\", \"map\"].map((doc) => async (p) => doc + \" on \" + p); return await printAll(jobs, 2);"],"expected":["memo on 0","map on 1"]}
+    ]
+  }
+}

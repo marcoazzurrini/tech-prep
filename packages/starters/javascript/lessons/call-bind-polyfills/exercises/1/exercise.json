@@ -1,0 +1,19 @@
+{
+  "title": "Call It on an Object",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function callWith(fn, target, ...args) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return callWith(function (n) { return this.price * n; }, { price: 3 }, 4);"],"expected":12},
+      {"args":["const user = { name: \"Ada\" }; callWith(function () { return this.name; }, user); return Reflect.ownKeys(user).length;"],"expected":1},
+      {"args":["const box = { fn: 1, key: 2 }; callWith(function () {}, box); return box;"],"expected":{"fn":1,"key":2}},
+      {"args":["return callWith(function (a, b, c) { return [this.id, a, b, c]; }, { id: 9 }, 1, 2, 3);"],"expected":[9,1,2,3]},
+      {"args":["const shop = { items: [] }; callWith(function (item) { this.items.push(item); }, shop, \"pen\"); return shop;"],"expected":{"items":["pen"]}},
+      {"args":["return callWith(function () { return Object.keys(this); }, { a: 1, b: 2 });"],"expected":["a","b"]}
+    ]
+  }
+}

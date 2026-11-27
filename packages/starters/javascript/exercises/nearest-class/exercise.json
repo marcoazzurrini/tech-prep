@@ -1,0 +1,20 @@
+{
+  "title": "Nearest Class",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function nearestClass(value, classes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return nearestClass([1, 2], [Object, Array]);"],"expected":"Array"},
+      {"args":["class Pet {} class Cat extends Pet {} return nearestClass(new Cat(), [Pet, Cat]);"],"expected":"Cat"},
+      {"args":["class Pet {} class Cat extends Pet {} class Kitten extends Cat {} return nearestClass(new Kitten(), [Pet, Cat]);"],"expected":"Cat"},
+      {"args":["return [nearestClass({}, [Array]), nearestClass(Object.create(null), [Object])];"],"expected":[null,null]},
+      {"args":["return [nearestClass(\"text\", [String, Object]), nearestClass(7, [Number]), nearestClass(null, [Object])];"],"expected":[null,null,null]},
+      {"args":["class Pet {} const pet = new Pet(); return nearestClass(Object.create(pet), [Object, Pet]);"],"expected":"Pet"},
+      {"args":["return nearestClass(function walk() {}, [Object, Function]);"],"expected":"Function"}
+    ]
+  }
+}

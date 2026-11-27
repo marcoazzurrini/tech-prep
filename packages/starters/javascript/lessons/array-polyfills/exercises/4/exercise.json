@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "Array.prototype.myForEach = function (callback, thisArg) {\n  for (let i = 0; i < this.length; i++) {\n    if (i in this) callback.call(thisArg, this[i], i);\n  }\n};\n\nconst shelf = { label: \"Shelf\" };\nconst books = [\"Dune\", , undefined, \"Emma\"];\n\nbooks.myForEach(function (book, i) {\n  console.log(`${this.label} ${i}: ${book}`);\n}, shelf);"
+    },
+    "expected": "Shelf 0: Dune\nShelf 2: undefined\nShelf 3: Emma"
+  }
+}

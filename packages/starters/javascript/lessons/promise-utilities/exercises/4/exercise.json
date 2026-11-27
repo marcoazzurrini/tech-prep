@@ -1,0 +1,19 @@
+{
+  "title": "Wait as Told",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a task that rejects with \"down\" until ms have passed, then fulfils with \"up\".\nexport const upAfter = (ms) => {\n  let up = false;\n  setTimeout(() => {\n    up = true;\n  }, ms);\n  return async () => {\n    if (!up) {\n      throw new Error(\"down\");\n    }\n    return \"up\";\n  };\n};\n\n\nexport async function retryWithDelays(fn, delays) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await retryWithDelays(upAfter(20), [45]);"],"expected":"up"},
+      {"args":["return await retryWithDelays(upAfter(40), [10]).catch((e) => e.message);"],"expected":"down"},
+      {"args":["return await retryWithDelays(upAfter(30), [5, 50]);"],"expected":"up"},
+      {"args":["let n = 0; await retryWithDelays(async () => { n++; throw new Error(\"x\"); }, [1, 1, 1]).catch(() => {}); return n;"],"expected":4},
+      {"args":["return await retryWithDelays(async () => { throw new Error(\"no tries left\"); }, []).catch((e) => e.message);"],"expected":"no tries left"},
+      {"args":["let n = 0; return await retryWithDelays(async () => { if (++n < 3) throw new Error(\"x\"); return n; }, [1, 1, 1]);"],"expected":3}
+    ]
+  }
+}

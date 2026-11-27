@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "Function.prototype.myBind = function (thisArg, ...early) {\n  const fn = this;\n  return function (...later) {\n    return fn.apply(thisArg, [...early, ...later]);\n  };\n};\n\nfunction price(base, tax, tip) {\n  return `${this.currency}${base + tax + tip}`;\n}\n\nconst euro = { currency: \"EUR \" };\nconst withTax = price.myBind(euro, 10, 2);\n\nconsole.log(withTax(1));\nconsole.log(withTax.call({ currency: \"USD \" }, 5));\nconsole.log(withTax.myBind({ currency: \"GBP \" }, 0)());"
+    },
+    "expected": "EUR 13\nEUR 17\nEUR 12"
+  }
+}

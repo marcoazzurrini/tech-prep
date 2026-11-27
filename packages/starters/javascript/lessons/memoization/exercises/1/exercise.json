@@ -1,0 +1,19 @@
+{
+  "title": "Count the Hits",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function memoize(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const double = memoize((x) => { n += 1; return x * 2; }); return [double(4), double(4), n];"],"expected":[8,8,1]},
+      {"args":["const len = memoize((s) => s.length); len(\"tea\"); len(\"tea\"); len(\"jam\"); len(\"tea\"); return len.hits;"],"expected":2},
+      {"args":["let n = 0; const f = memoize(() => { n += 1; return 0; }); f(\"x\"); f(\"x\"); return [n, f.hits];"],"expected":[1,1]},
+      {"args":["const f = memoize((x) => x); return f.hits;"],"expected":0},
+      {"args":["let n = 0; const f = memoize(() => n++); const g = memoize(() => n++); f(1); g(1); return [n, f.hits, g.hits];"],"expected":[2,0,0]},
+      {"args":["const f = memoize((x) => x + 1); return [f(1), f(2), f(1)];"],"expected":[2,3,2]}
+    ]
+  }
+}

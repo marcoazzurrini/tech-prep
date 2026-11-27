@@ -1,0 +1,18 @@
+{
+  "title": "Remove the Right One",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Emitter {\n  constructor() {\n    this.listeners = new Map();\n  }\n\n  on(name, listener) {\n    if (!this.listeners.has(name)) {\n      this.listeners.set(name, []);\n    }\n    this.listeners.get(name).push(listener);\n    return () => this.off(name, listener);\n  }\n\n  off(name, listener) {\n    const list = this.listeners.get(name) ?? [];\n    const index = list.indexOf(listener);\n    list.splice(index, 1);\n  }\n\n  emit(name, ...args) {\n    for (const listener of [...(this.listeners.get(name) ?? [])]) {\n      listener(...args);\n    }\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const e = new Emitter(); const log = []; e.on(\"tap\", () => log.push(\"ring\")); e.off(\"tap\", () => {}); e.emit(\"tap\"); return log;"],"expected":["ring"]},
+      {"args":["const e = new Emitter(); const log = []; const f = () => log.push(\"f\"); e.on(\"t\", f); e.off(\"t\", f); e.emit(\"t\"); return log;"],"expected":[]},
+      {"args":["const e = new Emitter(); const log = []; const stop = e.on(\"t\", () => log.push(1)); stop(); stop(); e.emit(\"t\"); return log;"],"expected":[]},
+      {"args":["const e = new Emitter(); const stop = e.on(\"t\", () => 1); e.on(\"t\", () => 2); stop(); stop(); return e.listeners.get(\"t\").length;"],"expected":1},
+      {"args":["const e = new Emitter(); const log = []; e.on(\"t\", () => log.push(1)); e.off(\"other\", () => {}); e.emit(\"t\"); return log;"],"expected":[1]}
+    ]
+  }
+}

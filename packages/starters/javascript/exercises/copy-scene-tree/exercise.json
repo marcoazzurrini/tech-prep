@@ -1,0 +1,20 @@
+{
+  "title": "Copy a Scene Tree",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Sprite {\n  constructor(name) {\n    this.name = name;\n    this.children = [];\n    this.parent = null;\n  }\n\n  add(child) {\n    child.parent = this;\n    this.children.push(child);\n    return child;\n  }\n\n  path() {\n    return this.parent ? `${this.parent.path()}/${this.name}` : this.name;\n  }\n}\n\nexport function copyTree(root) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const r = new Sprite(\"w\"); r.add(new Sprite(\"tree\")); const c = copyTree(r); return [c.children[0].parent === c, c !== r];"],"expected":[true,true]},
+      {"args":["const r = new Sprite(\"w\"); const hut = r.add(new Sprite(\"hut\")); copyTree(r).children[0].name = \"inn\"; return hut.name;"],"expected":"hut"},
+      {"args":["const r = new Sprite(\"w\"); const c = copyTree(r); return [c instanceof Sprite, c.parent, c.children !== r.children];"],"expected":[true,null,true]},
+      {"args":["const r = new Sprite(\"w\"); const c = copyTree(r); c.add(new Sprite(\"rock\")); return [r.children.length, c.children.length];"],"expected":[0,1]},
+      {"args":["const hp = Symbol(\"hp\"); const r = new Sprite(\"w\"); r[hp] = { n: 1 }; const c = copyTree(r); return [c[hp].n, c[hp] !== r[hp]];"],"expected":[1,true]},
+      {"args":["const t = new Sprite(\"w\").add(new Sprite(\"t\")); const c = copyTree(t), p = c.parent; return [p.children[0] === c, p !== t.parent];"],"expected":[true,true]},
+      {"args":["const a = new Sprite(\"w\").add(new Sprite(\"a\")); a.add(new Sprite(\"b\")); return copyTree(a).children[0].path();"],"expected":"w/a/b"}
+    ]
+  }
+}

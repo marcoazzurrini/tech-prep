@@ -1,0 +1,18 @@
+{
+  "title": "A Queue That Keeps Going",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests. tracker() gives a log and two ways to make a task:\n// t.job(name, ms) logs \"start name\", waits ms, logs \"end name\" and fulfils with name.\n// t.fail(name, ms) logs \"start name\", waits ms, logs \"fail name\" and rejects.\n// wait(ms, value) fulfils with value after ms.\nexport const wait = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport function tracker() {\n  const log = [];\n  const job = (name, ms) => async () => {\n    log.push(\"start \" + name);\n    await wait(ms);\n    log.push(\"end \" + name);\n    return name;\n  };\n  const fail = (name, ms) => async () => {\n    log.push(\"start \" + name);\n    await wait(ms);\n    log.push(\"fail \" + name);\n    throw new Error(name + \" failed\");\n  };\n  return { log, job, fail };\n}\n\n\nexport function createQueue(limit) {\n  let running = 0;\n  const waiting = [];\n\n  function startNext() {\n    if (running >= limit || waiting.length === 0) {\n      return;\n    }\n    const { task, resolve, reject } = waiting.shift();\n    running += 1;\n    task().then((value) => {\n      running -= 1;\n      resolve(value);\n      startNext();\n    }, reject);\n  }\n\n  return {\n    add(task) {\n      return new Promise((resolve, reject) => {\n        waiting.push({ task, resolve, reject });\n        startNext();\n      });\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const t = tracker(), q = createQueue(2); return await Promise.all([\"a\", \"b\", \"c\"].map((name) => q.add(t.job(name, 5))));"],"expected":["a","b","c"]},
+      {"args":["const t = tracker(), q = createQueue(2); q.add(t.job(\"a\", 30)); q.add(t.job(\"b\", 5)); await q.add(t.job(\"c\", 40)); return t.log;"],"expected":["start a","start b","end b","start c","end a","end c"]},
+      {"args":["const t = tracker(); return await createQueue(1).add(t.fail(\"a\", 5)).catch((e) => e.message);"],"expected":"a failed"},
+      {"args":["const t = tracker(), q = createQueue(1); q.add(t.fail(\"a\", 5)).catch(() => q.add(t.job(\"b\", 5))); await wait(40); return t.log;"],"expected":["start a","fail a","start b","end b"]},
+      {"args":["const t = tracker(), q = createQueue(1); q.add(t.job(\"a\", 5)); await wait(30); await q.add(t.job(\"b\", 5)); return t.log;"],"expected":["start a","end a","start b","end b"]}
+    ]
+  }
+}

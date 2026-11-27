@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "Array.prototype.myMap = function (callback) {\n  const result = [];\n  for (let i = 0; i < this.length; i++) {\n    result.push(callback(this[i], i, this));\n  }\n  return result;\n};\n\nconst marks = [7, , 9];\nlet calls = 0;\nconst mine = marks.myMap((m) => { calls++; return m * 2; });\nconst real = marks.map((m) => m * 2);\n\nconsole.log(calls);\nconsole.log(1 in mine, 1 in real);\nconsole.log(mine.join(\",\"), real.join(\",\"));"
+    },
+    "expected": "3\ntrue false\n14,NaN,18 14,,18"
+  }
+}

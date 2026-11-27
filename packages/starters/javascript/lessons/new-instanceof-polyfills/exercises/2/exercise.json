@@ -1,0 +1,19 @@
+{
+  "title": "Keep the Right Result",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function myNew(Ctor, ...args) {\n  const obj = Object.create(Ctor.prototype);\n  const result = Ctor.apply(obj, args);\n  return result || obj;\n}\n"
+    },
+    "tests": [
+      {"args":["function A() { this.n = 1; return 7; } return myNew(A).n;"],"expected":1},
+      {"args":["function A() { this.n = 1; return { n: 2 }; } return myNew(A).n;"],"expected":2},
+      {"args":["function A() { this.n = 3; return \"text\"; } return myNew(A).n;"],"expected":3},
+      {"args":["function A() { this.n = 4; return null; } return myNew(A).n;"],"expected":4},
+      {"args":["const make = () => 5; function A() { return make; } return myNew(A) === make;"],"expected":true},
+      {"args":["function A() { this.n = 6; return true; } A.prototype.get = function () { return this.n; }; return myNew(A).get();"],"expected":6}
+    ]
+  }
+}

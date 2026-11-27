@@ -1,0 +1,19 @@
+{
+  "title": "Only the First Time",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Emitter {\n  constructor() {\n    this.listeners = new Map();\n  }\n\n  on(name, listener) {\n    if (!this.listeners.has(name)) {\n      this.listeners.set(name, []);\n    }\n    this.listeners.get(name).push(listener);\n    return () => this.off(name, listener);\n  }\n\n  off(name, listener) {\n    const list = this.listeners.get(name) ?? [];\n    this.listeners.set(name, list.filter((item) => item !== listener));\n  }\n\n  once(name, listener) {\n    // your code\n  }\n\n  emit(name, ...args) {\n    for (const listener of this.listeners.get(name) ?? []) {\n      listener(...args);\n    }\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const e = new Emitter(), log = []; e.once(\"ready\", (ms) => log.push(ms)); e.emit(\"ready\", 40); e.emit(\"ready\", 50); return log;"],"expected":[40]},
+      {"args":["const e = new Emitter(); const log = []; e.once(\"t\", (a, b) => log.push(a * b)); e.emit(\"t\", 3, 4); return log;"],"expected":[12]},
+      {"args":["const e = new Emitter(); const log = []; const stop = e.once(\"t\", () => log.push(1)); stop(); e.emit(\"t\"); return log;"],"expected":[]},
+      {"args":["const e = new Emitter(); let n = 0; e.once(\"t\", () => n++); e.on(\"t\", () => (n += 10)); e.emit(\"t\"); e.emit(\"t\"); return n;"],"expected":21},
+      {"args":["const e = new Emitter(); let n = 0; e.once(\"t\", () => { n += 1; e.emit(\"t\"); }); e.emit(\"t\"); return n;"],"expected":1},
+      {"args":["const e = new Emitter(); let n = 0; e.once(\"t\", () => n++); e.once(\"t\", () => (n += 10)); e.emit(\"t\"); e.emit(\"t\"); return n;"],"expected":11}
+    ]
+  }
+}

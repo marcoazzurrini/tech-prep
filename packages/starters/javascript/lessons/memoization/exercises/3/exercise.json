@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function memoize(fn) {\n  const cache = new Map();\n  return (n) => {\n    if (!cache.has(n)) cache.set(n, fn(n));\n    return cache.get(n);\n  };\n}\n\nlet calls = 0;\nconst ways = memoize((n) => {\n  calls += 1;\n  return n <= 1 ? 1 : ways(n - 1) + ways(n - 2);\n});\n\nconsole.log(ways(10));\nconsole.log(calls);\nconsole.log(ways(12));\nconsole.log(calls);"
+    },
+    "expected": "89\n11\n233\n13"
+  }
+}

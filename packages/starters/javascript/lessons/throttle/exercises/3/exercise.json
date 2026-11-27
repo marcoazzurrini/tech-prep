@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function debounce(fn, ms) {\n  let timer;\n  return (x) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(x), ms);\n  };\n}\n\nfunction throttle(fn, ms) {\n  let waiting = false;\n  return (x) => {\n    if (waiting) return;\n    waiting = true;\n    fn(x);\n    setTimeout(() => (waiting = false), ms);\n  };\n}\n\nconst d = debounce((x) => console.log(\"d\" + x), 40);\nconst t = throttle((x) => console.log(\"t\" + x), 40);\n\nfor (const at of [0, 20, 80]) {\n  setTimeout(() => (d(at), t(at)), at);\n}"
+    },
+    "expected": "t0\nd20\nt80\nd80"
+  }
+}

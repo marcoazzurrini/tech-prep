@@ -1,0 +1,19 @@
+{
+  "title": "Bound, Then Built",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "Function.prototype.myBind = function (thisArg, ...early) {\n  // your code\n};\n"
+    },
+    "tests": [
+      {"args":["function Box(w, h) { this.area = w * h; } const W = Box.myBind(null, 10); return [new W(3).area, new W(3) instanceof Box];"],"expected":[30,true]},
+      {"args":["function hi(greet, mark) { return greet + \" \" + this.name + mark; } return hi.myBind({ name: \"Ada\" }, \"Hi\")(\"!\");"],"expected":"Hi Ada!"},
+      {"args":["const target = {}; function Pet(name) { this.name = name; } new (Pet.myBind(target, \"Rex\"))(); return target;"],"expected":{}},
+      {"args":["function show() { return this.n; } const f = show.myBind({ n: 1 }); return [f(), f.call({ n: 2 })];"],"expected":[1,1]},
+      {"args":["function list(...items) { return items; } return list.myBind(null, 1, 2)(3, 4);"],"expected":[1,2,3,4]},
+      {"args":["class Point { constructor(x, y) { this.x = x; this.y = y; } } const P = Point.myBind(null, 7); return new P(8);"],"expected":{"x":7,"y":8}}
+    ]
+  }
+}

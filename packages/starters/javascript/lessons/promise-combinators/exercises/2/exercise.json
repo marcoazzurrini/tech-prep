@@ -1,0 +1,19 @@
+{
+  "title": "Wait for Every Outcome",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that fulfils with value after ms, and one that rejects.\nexport const later = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport const failLater = (ms, message) => {\n  const promise = new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\n  promise.catch(() => {}); // so it is never reported as unhandled\n  return promise;\n};\n\n\nexport function promiseAllSettled(list) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const r = await promiseAllSettled([later(30, \"a\"), failLater(5, \"b\"), \"c\"]); return r.map((x) => x.status);"],"expected":["fulfilled","rejected","fulfilled"]},
+      {"args":["const r = await promiseAllSettled([later(30, \"a\"), failLater(5, \"b\")]); return [r[0].value, r[1].reason.message];"],"expected":["a","b"]},
+      {"args":["return await Promise.race([promiseAllSettled([]), later(30, \"still pending\")]);"],"expected":[]},
+      {"args":["const r = await promiseAllSettled(new Set([1, later(5, 2)])); return r.map((x) => x.value);"],"expected":[1,2]},
+      {"args":["return await promiseAllSettled([failLater(5, \"x\")]).then(() => \"fulfilled\", () => \"rejected\");"],"expected":"fulfilled"},
+      {"args":["const [r] = await promiseAllSettled([7]); return Object.keys(r).sort();"],"expected":["status","value"]}
+    ]
+  }
+}

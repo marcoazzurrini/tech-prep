@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function promiseRace(list) {\n  return new Promise((resolve, reject) => {\n    for (const item of list) Promise.resolve(item).then(resolve, reject);\n  });\n}\n\nconst later = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\nconst fail = (ms, text) => new Promise((resolve, reject) => setTimeout(reject, ms, new Error(text)));\n\npromiseRace([later(30, \"slow\"), fail(10, \"broken\")]).catch((error) => console.log(\"lost: \" + error.message));\npromiseRace([later(30, \"slow\"), 7]).then((value) => console.log(\"won: \" + value));\npromiseRace([]).then(() => console.log(\"empty settled\"));\nsetTimeout(() => console.log(\"end\"), 50);"
+    },
+    "expected": "won: 7\nlost: broken\nend"
+  }
+}

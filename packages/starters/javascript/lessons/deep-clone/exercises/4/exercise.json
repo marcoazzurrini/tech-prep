@@ -1,0 +1,19 @@
+{
+  "title": "Keep the Class",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cloneInstance(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["class Point { constructor(x) { this.x = x; } double() { return this.x * 2; } } return cloneInstance(new Point(4)).double();"],"expected":8},
+      {"args":["class Tag { constructor(n) { this.n = n; } } const t = new Tag(1); const c = cloneInstance(t); return [c instanceof Tag, c !== t];"],"expected":[true,true]},
+      {"args":["const bare = Object.create(null); bare.id = 3; const c = cloneInstance(bare); return [Object.getPrototypeOf(c), c.id];"],"expected":[null,3]},
+      {"args":["const key = Symbol(\"key\"); const c = cloneInstance({ [key]: { n: 1 } }); return c[key].n;"],"expected":1},
+      {"args":["const key = Symbol(\"key\"); const inner = { n: 1 }; const c = cloneInstance({ [key]: inner }); return c[key] !== inner;"],"expected":true},
+      {"args":["class Box { items = [{ n: 1 }]; } const b = new Box(); const c = cloneInstance(b); c.items[0].n = 5; return [b.items, c.items];"],"expected":[[{"n":1}],[{"n":5}]]}
+    ]
+  }
+}

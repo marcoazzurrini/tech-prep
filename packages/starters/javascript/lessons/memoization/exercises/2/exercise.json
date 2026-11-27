@@ -1,0 +1,18 @@
+{
+  "title": "Key by Every Argument",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function memoize(fn) {\n  const cache = new Map();\n\n  return (...args) => {\n    if (!cache.has(args[0])) {\n      cache.set(args[0], fn(...args));\n    }\n\n    return cache.get(args[0]);\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const area = memoize((w, h) => w * h); return [area(2, 3), area(2, 5)];"],"expected":[6,10]},
+      {"args":["let n = 0; const area = memoize((w, h) => { n += 1; return w * h; }); area(2, 3); area(2, 3); area(3, 2); return n;"],"expected":2},
+      {"args":["const count = memoize((...xs) => xs.length); return [count(\"a,b\"), count(\"a\", \"b\")];"],"expected":[1,2]},
+      {"args":["const shop = { fee: 5, total: memoize(function (p) { return p + this.fee; }) }; return shop.total(10);"],"expected":15},
+      {"args":["let n = 0; const f = memoize(() => { n += 1; return \"x\"; }); f(); f(); return n;"],"expected":1}
+    ]
+  }
+}

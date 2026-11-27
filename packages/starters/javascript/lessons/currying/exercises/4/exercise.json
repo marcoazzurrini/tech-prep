@@ -1,0 +1,19 @@
+{
+  "title": "A List with No End",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function list(item) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return list(\"tea\")(\"jam\")(\"milk\")();"],"expected":["tea","jam","milk"]},
+      {"args":["return list(1)();"],"expected":[1]},
+      {"args":["const start = list(\"x\"); return [start(\"y\")(), start(\"z\")()];"],"expected":[["x","y"],["x","z"]]},
+      {"args":["return list(0)(false)(\"\")();"],"expected":[0,false,""]},
+      {"args":["const two = list(1)(2); two(3)(); return two();"],"expected":[1,2]},
+      {"args":["return typeof list(1)(2);"],"expected":"function"}
+    ]
+  }
+}

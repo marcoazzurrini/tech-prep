@@ -1,0 +1,20 @@
+{
+  "title": "Memoize by Identity",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function memoize(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const f = memoize((a, b) => { n++; return a + b; }); return [f(1, 2), f(1, 2), f(2, 1), n];"],"expected":[3,3,3,2]},
+      {"args":["let n = 0; const f = memoize((o) => { n++; return o.v; }); const a = { v: 1 }; f(a); f(a); f({ v: 1 }); return n;"],"expected":2},
+      {"args":["let n = 0; const f = memoize((...xs) => { n++; return xs.length; }); return [f(1), f(1, undefined), f(1), n];"],"expected":[1,2,1,2]},
+      {"args":["let n = 0; const f = memoize(() => ++n); return [f(), f(), n];"],"expected":[1,1,1]},
+      {"args":["const shop = { tax: 2, add: memoize(function (p) { return p + this.tax; }) }; return shop.add(5);"],"expected":7},
+      {"args":["let n = 0; const f = memoize((x) => { n++; return x; }); f(\"1\"); f(1); f(NaN); f(NaN); return n;"],"expected":3},
+      {"args":["let n = 0; const f = memoize(() => { n++; }); f(1); f(1); return n;"],"expected":1}
+    ]
+  }
+}

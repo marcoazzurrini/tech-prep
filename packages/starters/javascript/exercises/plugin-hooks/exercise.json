@@ -1,0 +1,21 @@
+{
+  "title": "Plugin Hooks",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createHooks() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const h = createHooks(), log = []; h.tap(\"save\", (f) => log.push(f)); return [h.run(\"save\", \"a.js\"), log, h.run(\"open\")];"],"expected":[[],["a.js"],[]]},
+      {"args":["const h = createHooks(); let n = 0; h.tap(\"s\", () => { throw Error(\"full\"); }); h.tap(\"s\", () => n++); return [h.run(\"s\"), n];"],"expected":[["full"],1]},
+      {"args":["const h = createHooks(); h.tap(\"s\", () => { throw Error(\"a\"); }); h.tap(\"s\", () => { throw Error(\"b\"); }); return h.run(\"s\");"],"expected":["a","b"]},
+      {"args":["const h = createHooks(); let n = 0; const off = h.tap(\"s\", () => n++); h.run(\"s\"); off(); h.run(\"s\"); return n;"],"expected":1},
+      {"args":["const h = createHooks(); let n = 0; h.tapOnce(\"s\", () => n++); h.run(\"s\"); h.run(\"s\"); return n;"],"expected":1},
+      {"args":["const h = createHooks(); let n = 0; h.tapOnce(\"s\", () => { n++; throw Error(\"x\"); }); return [h.run(\"s\"), h.run(\"s\"), n];"],"expected":[["x"],[],1]},
+      {"args":["const h = createHooks(); let n = 0; h.tap(\"s\", (a, b) => (n += a * b)); h.tap(\"t\", () => (n += 100)); h.run(\"s\", 2, 5); return n;"],"expected":10},
+      {"args":["const h = createHooks(), log = []; h.tapOnce(\"s\", () => log.push(1)); h.tap(\"s\", () => log.push(2)); h.run(\"s\"); return log;"],"expected":[1,2]}
+    ]
+  }
+}

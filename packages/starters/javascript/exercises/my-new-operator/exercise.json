@@ -1,0 +1,21 @@
+{
+  "title": "My New Operator",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function myNew(Ctor, ...args) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function P(x) { this.x = x; } P.prototype.twice = function () { return this.x * 2; }; return myNew(P, 4).twice();"],"expected":8},
+      {"args":["function P(a, b) { this.sum = a + b; } const p = myNew(P, 2, 3); return [p.sum, p instanceof P];"],"expected":[5,true]},
+      {"args":["function P() { this.a = 1; return { b: 2 }; } return JSON.stringify(myNew(P));"],"expected":"{\"b\":2}"},
+      {"args":["function P() { this.a = 1; return 99; } return myNew(P).a;"],"expected":1},
+      {"args":["function P() { this.a = 2; return null; } return myNew(P).a;"],"expected":2},
+      {"args":["const list = [1]; function P() { this.a = 1; return list; } return myNew(P) === list;"],"expected":true},
+      {"args":["function P() {} P.prototype = 5; return Object.getPrototypeOf(myNew(P)) === Object.prototype;"],"expected":true},
+      {"args":["try { myNew(42); return \"no error\"; } catch (error) { return error.name; }"],"expected":"TypeError"}
+    ]
+  }
+}

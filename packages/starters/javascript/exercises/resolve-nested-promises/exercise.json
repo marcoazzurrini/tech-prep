@@ -1,0 +1,20 @@
+{
+  "title": "Resolve Nested Promises",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that fulfils with value after ms, and one that rejects.\nexport const later = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nexport const failLater = (ms, message) => {\n  const promise = new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\n  promise.catch(() => {}); // so it is never reported as unhandled\n  return promise;\n};\n\n\nexport function resolveDeep(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const r = await resolveDeep({ user: later(20, \"Ada\"), tags: [later(5, \"a\"), \"b\"] }); return [r.user, r.tags];"],"expected":["Ada",["a","b"]]},
+      {"args":["return await resolveDeep(later(5, [later(5, 1)]));"],"expected":[1]},
+      {"args":["return [await resolveDeep(7), await resolveDeep(null), await resolveDeep(\"text\")];"],"expected":[7,null,"text"]},
+      {"args":["return await resolveDeep([[later(30, 1)], [later(5, 2), [later(15, 3)]]]);"],"expected":[[1],[2,[3]]]},
+      {"args":["return await resolveDeep({ a: [later(40, 1)], b: { c: failLater(5, \"lost\") } }).catch((e) => e.message);"],"expected":"lost"},
+      {"args":["const r = await Promise.race([resolveDeep({ list: [], box: {} }), later(30)]); return r ? [r.list, r.box] : \"still pending\";"],"expected":[[],{}]},
+      {"args":["return await Promise.race([resolveDeep([later(50), { b: failLater(5, \"lost\") }]).catch((e) => e.message), later(30, \"waited\")]);"],"expected":"lost"}
+    ]
+  }
+}

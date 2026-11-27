@@ -1,0 +1,19 @@
+{
+  "title": "Try Again Only When It Helps",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function retryIf(fn, times, shouldRetry) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; return await retryIf(async () => { if (++n < 3) throw new Error(\"busy\"); return n; }, 5, () => true);"],"expected":3},
+      {"args":["let n = 0; await retryIf(async () => { n++; throw new Error(\"bad input\"); }, 5, () => false).catch(() => {}); return n;"],"expected":1},
+      {"args":["return await retryIf(async () => { throw new Error(\"bad input\"); }, 5, () => false).catch((e) => e.message);"],"expected":"bad input"},
+      {"args":["let n = 0; return await retryIf(async () => { throw new Error(\"down \" + ++n); }, 3, () => true).catch((e) => [n, e.message]);"],"expected":[3,"down 3"]},
+      {"args":["let n = 0; return await retryIf(async () => { throw ++n; }, 5, (e) => e < 2).catch((e) => \"stopped at \" + e);"],"expected":"stopped at 2"},
+      {"args":["return await retryIf(async () => \"first time\", 3, () => true);"],"expected":"first time"}
+    ]
+  }
+}

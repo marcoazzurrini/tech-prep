@@ -1,0 +1,18 @@
+{
+  "title": "Request Layers",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a layer that logs \"name in\", calls the handler, then logs \"name out\".\nexport const layer = (log, name) => (handler) => (request) => {\n  log.push(`${name} in`);\n  const response = handler(request);\n  log.push(`${name} out`);\n  return response;\n};\n\nexport function withLayers(handler, layers) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const log = []; const h = withLayers((r) => r + 1, [layer(log, \"a\"), layer(log, \"b\")]); return [h(1), log];"],"expected":[2,["a in","b in","b out","a out"]]},
+      {"args":["return withLayers((r) => r * 2, [])(4);"],"expected":8},
+      {"args":["const plus = (h) => (r) => h(r + 1); const twice = (h) => (r) => h(r * 2); return withLayers((r) => r, [plus, twice])(3);"],"expected":8},
+      {"args":["const log = []; const h = withLayers((r) => r, [layer(log, \"x\")]); return [h(\"a\"), h(\"b\"), log.length];"],"expected":["a","b",4]},
+      {"args":["let n = 0; const count = (h) => { n++; return h; }; const h = withLayers((r) => r, [count, count]); h(1); h(2); return n;"],"expected":2}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Somewhere on the Chain",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function hasInChain(obj, proto) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [hasInChain([1, 2], Array.prototype), hasInChain([1, 2], Object.prototype)];"],"expected":[true,true]},
+      {"args":["const base = { kind: \"base\" }; const mid = Object.create(base); return hasInChain(Object.create(mid), base);"],"expected":true},
+      {"args":["const plan = {}; return hasInChain(plan, plan);"],"expected":false},
+      {"args":["return hasInChain(Object.create(null), Object.prototype);"],"expected":false},
+      {"args":["return [hasInChain(\"text\", String.prototype), hasInChain(7, Number.prototype)];"],"expected":[false,false]},
+      {"args":["return [hasInChain(null, Object.prototype), hasInChain(undefined, Object.prototype)];"],"expected":[false,false]},
+      {"args":["return [hasInChain(() => 1, Function.prototype), hasInChain({}, Array.prototype)];"],"expected":[true,false]}
+    ]
+  }
+}

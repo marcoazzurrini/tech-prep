@@ -1,0 +1,20 @@
+{
+  "title": "Undo Snapshots",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function takeSnapshot(state) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const state = { title: \"Draft\", lines: [\"Hi\"] }; const snap = takeSnapshot(state); state.lines.push(\"there\"); return snap;"],"expected":{"title":"Draft","lines":["Hi"]}},
+      {"args":["const state = { doc: { meta: { words: 2 } } }; const snap = takeSnapshot(state); state.doc.meta.words = 9; return snap.doc;"],"expected":{"meta":{"words":2}}},
+      {"args":["const state = { saved: new Date(0) }; const snap = takeSnapshot(state); state.saved.setTime(500); return snap.saved.getTime();"],"expected":0},
+      {"args":["const m = new Map([[\"ada\", { at: 1 }]]); const snap = takeSnapshot({ m }); m.get(\"ada\").at = 4; return snap.m.get(\"ada\");"],"expected":{"at":1}},
+      {"args":["const state = { open: new Set([\"a.txt\"]) }; const snap = takeSnapshot(state); state.open.add(\"b.txt\"); return [...snap.open];"],"expected":["a.txt"]},
+      {"args":["const bold = { on: true }; const snap = takeSnapshot({ a: bold, b: [bold] }); return [snap.a === snap.b[0], snap.a !== bold];"],"expected":[true,true]},
+      {"args":["return [takeSnapshot(null), takeSnapshot(3), takeSnapshot(\"x\"), takeSnapshot({ n: null })];"],"expected":[null,3,"x",{"n":null}]}
+    ]
+  }
+}

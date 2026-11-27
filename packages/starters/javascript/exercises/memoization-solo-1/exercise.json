@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function memoize(fn) {\n  const cache = new Map();\n  return (...args) => {\n    const key = JSON.stringify(args);\n    if (!cache.has(key)) cache.set(key, fn(...args));\n    return cache.get(key);\n  };\n}\n\nlet runs = 0;\nconst area = memoize((room) => {\n  runs += 1;\n  return room.w * room.h;\n});\n\nconst hall = { w: 2, h: 5 };\nconsole.log(area(hall));\nhall.w = 4;\nconsole.log(area(hall));\nconsole.log(area({ h: 5, w: 4 }));\nconsole.log(area({ w: 4, h: 5 }));\nconsole.log(runs);"
+    },
+    "expected": "10\n20\n20\n20\n3"
+  }
+}

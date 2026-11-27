@@ -1,0 +1,19 @@
+{
+  "title": "Spam Guard",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function spamGuard(post, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const send = spamGuard(() => {}, 20); const r = [send(\"a\", \"hi\"), send(\"a\", \"yo\")]; await wait(40); return r;"],"expected":[true,false]},
+      {"args":["const send = spamGuard(() => {}, 20); const r = [send(\"a\", \"x\"), send(\"b\", \"x\")]; await wait(40); return r;"],"expected":[true,true]},
+      {"args":["let n = 0; const send = spamGuard(() => n++, 20); send(\"a\", \"x\"); await wait(40); send(\"a\", \"y\"); await wait(40); return n;"],"expected":2},
+      {"args":["const send = spamGuard(() => {}, 20); send(\"a\", \"x\"); send(\"b\", \"x\"); const r = send(\"a\", \"y\"); await wait(40); return r;"],"expected":false},
+      {"args":["let n = 0; const send = spamGuard(() => n++, 20); send(\"a\", \"x\"); send(\"a\", \"y\"); send(\"a\", \"z\"); await wait(40); return n;"],"expected":1},
+      {"args":["const s = []; const send = spamGuard((u, t) => s.push(u + t), 20); send(\"a\", \"x\"); send(\"b\", \"y\"); await wait(40); return s;"],"expected":["ax","by"]}
+    ]
+  }
+}

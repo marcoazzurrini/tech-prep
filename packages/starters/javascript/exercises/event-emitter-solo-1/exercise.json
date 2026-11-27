@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Emitter {\n  listeners = new Map();\n  on(name, fn) {\n    this.listeners.set(name, [...(this.listeners.get(name) ?? []), fn]);\n    return () => this.off(name, fn);\n  }\n  off(name, fn) {\n    const list = this.listeners.get(name) ?? [];\n    this.listeners.set(name, list.filter((item) => item !== fn));\n  }\n  emit(name, ...args) {\n    for (const fn of this.listeners.get(name) ?? []) fn(...args);\n  }\n}\n\nconst tv = new Emitter();\nconst show = (channel) => console.log(`show ${channel}`);\ntv.on(\"switch\", show);\nconst stop = tv.on(\"switch\", show);\ntv.emit(\"switch\", 1);\nstop();\ntv.emit(\"switch\", 2);\ntv.on(\"switch\", (channel) => console.log(`log ${channel}`));\ntv.emit(\"switch\", 3);"
+    },
+    "expected": "show 1\nshow 1\nlog 3"
+  }
+}

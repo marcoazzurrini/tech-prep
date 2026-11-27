@@ -1,0 +1,20 @@
+{
+  "title": "Compare Nested Values",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function deepEqual(a, b) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return deepEqual({ a: [1, { b: 2 }] }, { a: [1, { b: 2 }] });"],"expected":true},
+      {"args":["return [deepEqual(new Date(0), new Date(1)), deepEqual({ d: new Date(5) }, { d: new Date(5) })];"],"expected":[false,true]},
+      {"args":["return [deepEqual([], {}), deepEqual(new Date(0), {}), deepEqual({}, new Date(0))];"],"expected":[false,false,false]},
+      {"args":["return [deepEqual(NaN, NaN), deepEqual(0, -0), deepEqual(\"1\", 1), deepEqual(null, {})];"],"expected":[true,false,false,false]},
+      {"args":["return [deepEqual({ x: 1, y: 2 }, { y: 2, x: 1 }), deepEqual({ x: 1 }, { x: 1, y: 2 })];"],"expected":[true,false]},
+      {"args":["return [deepEqual({ k: undefined }, { j: undefined }), deepEqual([1, [2, [3]]], [1, [2, [3]]])];"],"expected":[false,true]},
+      {"args":["return [deepEqual([1, 2], [1, 2, 3]), deepEqual([[]], [{}])];"],"expected":[false,false]}
+    ]
+  }
+}

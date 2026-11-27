@@ -1,0 +1,20 @@
+{
+  "title": "A Start of undefined",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function reduce(list, reducer, start) {\n  let index = 0;\n  let total = start;\n\n  if (start === undefined) {\n    if (list.length === 0) {\n      throw new TypeError(\"Reduce of empty array with no initial value\");\n    }\n    total = list[0];\n    index = 1;\n  }\n\n  for (; index < list.length; index++) {\n    total = reducer(total, list[index], index, list);\n  }\n  return total;\n}\n"
+    },
+    "tests": [
+      {"args":["return reduce([1, 2], (a, b) => a + b);"],"expected":3},
+      {"args":["return reduce([\"a\", \"b\"], (a, b) => a + b, undefined);"],"expected":"undefinedab"},
+      {"args":["return reduce([], (a, b) => a + b, undefined) === undefined;"],"expected":true},
+      {"args":["try { reduce([], (a, b) => a + b); return \"no error\"; } catch (error) { return error.name; }"],"expected":"TypeError"},
+      {"args":["return [reduce([4], () => \"never\"), reduce([4], (a, b) => a * b, 3)];"],"expected":[4,12]},
+      {"args":["let n = 0; reduce([1, 2, 3], () => n++, undefined); return n;"],"expected":3},
+      {"args":["return reduce([\"x\", \"y\"], (acc, item, i) => acc + i + item, \"\");"],"expected":"0x1y"}
+    ]
+  }
+}

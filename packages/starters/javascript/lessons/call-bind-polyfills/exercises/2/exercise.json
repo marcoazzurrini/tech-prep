@@ -1,0 +1,19 @@
+{
+  "title": "No Array Given",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "Function.prototype.myApply = function (thisArg, args) {\n  const key = Symbol(\"fn\");\n  thisArg[key] = this;\n  const result = thisArg[key](...args);\n  delete thisArg[key];\n  return result;\n};\n"
+    },
+    "tests": [
+      {"args":["return (function () { return this.size; }).myApply({ size: 2 });"],"expected":2},
+      {"args":["return (function (a, b) { return this.n + a + b; }).myApply({ n: 1 }, [2, 3]);"],"expected":6},
+      {"args":["return (function (...all) { return [this.id, all.length]; }).myApply({ id: 5 }, null);"],"expected":[5,0]},
+      {"args":["return (function (...all) { return all.length; }).myApply({}, undefined);"],"expected":0},
+      {"args":["const obj = { a: 1 }; (function () {}).myApply(obj); return Reflect.ownKeys(obj);"],"expected":["a"]},
+      {"args":["return (function (x) { return x === undefined; }).myApply({}, [undefined]);"],"expected":true}
+    ]
+  }
+}

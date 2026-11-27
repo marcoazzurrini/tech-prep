@@ -1,0 +1,21 @@
+{
+  "title": "Chain the Steps",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: wait(ms) fulfils after ms. wait() lets every queued callback run first.\nexport const wait = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport class MyPromise {\n  constructor(executor) {\n    this.state = \"pending\";\n    this.value = undefined;\n    this.callbacks = [];\n\n    const settle = (state, value) => {\n      if (this.state !== \"pending\") {\n        return;\n      }\n      this.state = state;\n      this.value = value;\n      this.callbacks.forEach((callback) => queueMicrotask(callback));\n      this.callbacks = [];\n    };\n\n    const resolve = (value) => settle(\"fulfilled\", value);\n    const reject = (reason) => settle(\"rejected\", reason);\n\n    try {\n      executor(resolve, reject);\n    } catch (error) {\n      reject(error);\n    }\n  }\n\n  then(onFulfilled, onRejected) {\n    const run = () => {\n      const callback = this.state === \"fulfilled\" ? onFulfilled : onRejected;\n      if (typeof callback === \"function\") {\n        callback(this.value);\n      }\n    };\n\n    if (this.state === \"pending\") {\n      this.callbacks.push(run);\n    } else {\n      queueMicrotask(run);\n    }\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const p = new MyPromise((resolve) => resolve(2)).then((n) => n * 10); await wait(); return [p instanceof MyPromise, p.value];"],"expected":[true,20]},
+      {"args":["const s = []; new MyPromise((resolve) => resolve(1)).then((n) => n + 1).then((n) => s.push(n)); await wait(); return s;"],"expected":[2]},
+      {"args":["const p = new MyPromise((res) => res(1)).then(() => { throw new Error(\"bad\"); }); await wait(); return [p.state, p.value.message];"],"expected":["rejected","bad"]},
+      {"args":["const p = new MyPromise((resolve) => resolve(\"tea\")).then(undefined, () => \"x\"); await wait(); return [p.state, p.value];"],"expected":["fulfilled","tea"]},
+      {"args":["const s = []; new MyPromise((_, rej) => rej(\"no\")).then(() => s.push(\"ok\")).then(null, (r) => s.push(r)); await wait(); return s;"],"expected":["no"]},
+      {"args":["const p = new MyPromise((res, rej) => rej(\"no\")).then(undefined, (r) => r + \" handled\"); await wait(); return [p.state, p.value];"],"expected":["fulfilled","no handled"]},
+      {"args":["const p = new MyPromise((resolve) => setTimeout(resolve, 5, 3)).then((n) => n * 2); await wait(20); return p.value;"],"expected":6},
+      {"args":["const a = new MyPromise((resolve) => resolve(1)); const b = a.then(); return b !== a && b instanceof MyPromise;"],"expected":true}
+    ]
+  }
+}
