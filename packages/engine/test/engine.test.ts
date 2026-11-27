@@ -825,7 +825,7 @@ describe("lessons", () => {
     expect(scheduler.displayStage(course, "dynamic-arrays")).toBe("learning");
   });
 
-  test("an unaided solo solve passes the concept, starts its reviews and opens the next lesson", () => {
+  test("an unaided solo solve passes the concept, with no rating yet, and opens the next lesson", () => {
     const solo = soloOf(course, "dynamic-arrays");
     solve(course, solo, "solo");
 
@@ -836,7 +836,22 @@ describe("lessons", () => {
 
     expect(handed.result?.outcome).toBe("solved");
     expect(scheduler.lessonStatus(course, "dynamic-arrays")).toBe("done");
-    expect(memory.cardOf(course, "dynamic-arrays")).not.toBeNull();
+
+    // The solo task is solved with the lesson still in mind, so it is not a recall.
+    const card = memory.cardOf(course, "dynamic-arrays");
+
+    if (!card) {
+      throw new Error("A learned concept has a card.");
+    }
+
+    expect(memory.awaitsFirstRecall(card)).toBe(true);
+    expect(database.lastExplicitReview(course, "dynamic-arrays")).toBeNull();
+    expect(
+      scheduler.conceptStatus(course, "dynamic-arrays").due
+    ).not.toBeNull();
+    expect(
+      scheduler.conceptStatus(course, "dynamic-arrays").retrievability
+    ).toBeNull();
     expect(scheduler.problemStatus(course, solo)).toBe("solved");
     expect(scheduler.lessonStatus(course, "hash-set")).toBe("todo");
     expect(scheduler.nextLesson(course)).toBe("hash-set");
@@ -907,6 +922,40 @@ describe("reviews", () => {
     expect(scheduler.nextDue(course)).not.toBeNull();
   });
 
+  test("the first recall is due the next day, from the start of that day", () => {
+    const tomorrow = memory.startOfDay(new Date());
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    expect(memory.cardOf(course, "hash-set")?.due.getTime()).toBe(
+      tomorrow.getTime()
+    );
+    expect(
+      memory.isDue(course, "hash-set", new Date(tomorrow.getTime() - 1))
+    ).toBe(false);
+    expect(memory.isDue(course, "hash-set", tomorrow)).toBe(true);
+  });
+
+  test("a concept is due for the whole of its due day, not from the hour it was reviewed", () => {
+    // Its own course, so the reviews of the tests around this one stay as they are.
+    const mine = content.courseById("mini");
+    const evening = new Date(2026, 0, 10, 22, 30);
+
+    scheduler.pass(mine, "first-idea", evening);
+
+    const firstRecall = new Date(2026, 0, 11, 8);
+    expect(memory.isDue(mine, "first-idea", firstRecall)).toBe(true);
+
+    const card = memory.explicitReview(mine, "first-idea", {}, 3, firstRecall);
+    const morning = memory.startOfDay(card.due);
+
+    // The first rating comes at the first recall, and the gap in days starts there.
+    expect(card.due.getTime()).toBeGreaterThan(firstRecall.getTime() + DAY);
+    expect(
+      memory.isDue(mine, "first-idea", new Date(morning.getTime() - 1))
+    ).toBe(false);
+    expect(memory.isDue(mine, "first-idea", morning)).toBe(true);
+  });
+
   test("due concepts are reviewed with a problem whose concepts are all passed", () => {
     const later = new Date(Date.now() + 60 * DAY);
     const plan = scheduler.reviewPlan(course, later);
@@ -936,12 +985,13 @@ describe("reviews", () => {
   });
 
   test("practising an encompassing concept gives partial credit to the passed concept below", () => {
-    const before = memory.cardOf(course, "hash-set");
+    const grades = new Map([["sequence-starts", 3 as const]]);
+    const tomorrow = new Date(Date.now() + DAY);
 
-    if (!before) {
-      throw new Error("hash-set should have a card once passed.");
-    }
+    // A concept with no recall yet has no memory to add to: it must be recalled itself first.
+    expect(fire.propagate(course, {}, grades, tomorrow).credited).toEqual([]);
 
+    const before = memory.explicitReview(course, "hash-set", {}, 3, tomorrow);
     const later = new Date(Date.now() + 5 * DAY);
 
     const result = fire.propagate(
@@ -1586,7 +1636,7 @@ describe("jq course", () => {
     expect(lessons.movesOn(course, review, null, "solved_with_help")).toBe(
       false
     );
-    // Both solo tasks of this lesson are solved, so the last one stays with its verdict.
+    // Both solo tasks of this lesson are solved, so no task of the lesson is left to open.
     expect(lessons.movesOn(course, solo, lesson, "solved")).toBe(false);
     practice.pauseAttempt(course, solo);
   });

@@ -86,7 +86,9 @@ A lesson has two steps, with support that fades from one to the next.
 
 - **Step 1, with the lesson.** The learner reads the lesson and solves its guided problem with the lesson beside it. A worked example first, then a problem with support, is the order that works for new material. Solving the guided problem moves the concept to `learning`. It never touches FSRS. With several guided tasks, the concept moves when all of them are solved.
 - **Step 2, alone.** The lesson closes and the learner solves the concept's solo problem. Recalling the idea without the text is what makes it last, and it shows honestly whether the lesson worked. With several solo tasks, the concept is learned when every one is solved alone; an unaided solve before the last one is recorded with no verdict.
-- **Solved without help**: the concept becomes `passed`, its FSRS card is created and given a first Good review, and its dependents may unlock.
+- **Solved without help**: the concept becomes `passed` and its dependents may unlock. It gets no FSRS rating yet. The solo tasks come minutes after the lesson, while the idea is still in mind, so they show the lesson worked but they are not a recall.
+- **The first recall** is due the next day. It is the first FSRS rating, and FSRS sets every gap after it. Until then the concept takes no rating, no implicit credit and no penalty.
+- **The app moves on.** The answer that makes a lesson learned opens the next lesson by itself.
 - **Solved with help** or **gave up**: the concept stays `learning`, `fail_count` goes up, and the solo problem waits a day. The lesson stays readable meanwhile.
 - **Never stuck**: while a solo problem waits, the course moves on to the next open lesson (ALEKS-style switching to another frontier concept).
 
@@ -96,6 +98,7 @@ A lesson opens when every prerequisite of its concept is passed.
 
 Here a struggle is evidence of forgetting, so it is recorded. A pass is an FSRS Good review and a fail is Again.
 
+- A concept is due for the whole of its due day, from the start of that day. Counting from the hour would make a concept learned late in the evening impossible to review before that hour.
 - A concept is reviewed at most once a day. After a failed review the tutor teaches and retries with a new exercise, but that retry is practice only. Repeating an item on the same day adds little to long-term memory.
 - A concept becomes `mastered` on a later unaided pass in a review. A review names nothing, so solving it without a hint means the learner chose the approach. A fail drops it back to `passed`.
 
@@ -108,6 +111,7 @@ After an explicit review of concept `c` with a passing grade, credit flows **dow
 - Implicit credit `x` updates `d`'s FSRS card as a partial Good review: the new stability is `S · (S_good / S)^x`, where `S_good` is the stability a full Good review would give. FSRS already gives smaller gains when recall is still high, which discounts early repetitions as FIRe requires.
 - Credit at or above 0.9 counts as a full Good review.
 - Without implicit credit, a concept the learner has just used inside a harder exercise would still come up for its own review. With many concepts these wasted reviews pile up.
+- **A concept with no recall yet gets no implicit credit.** It has no memory to add to. Only a problem tagged with it can give it its first rating.
 - **Weak concepts get no implicit credit.** A concept with two or more lapses, or whose last explicit grade was Again, must be reviewed explicitly (Math Academy's "speed < 1" rule).
 
 After a failed review (Again) of concept `c`, a penalty flows **up**: every passed concept that encompasses `c`, with path weight `x`, has its due date brought forward to `now + (due - now) · (1 - x)`. Its stability is unchanged.

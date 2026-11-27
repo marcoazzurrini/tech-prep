@@ -24,6 +24,10 @@ const scheduler = fsrs(
 
 const DAY_MS = 86_400_000;
 
+/** The start of a date's day, on the learner's clock. */
+export const startOfDay = (date: Date): Date =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
 export const parseCard = (json: string): Card => {
   const raw = JSON.parse(json);
 
@@ -40,8 +44,12 @@ export const cardOf = (course: Course, conceptId: string): Card | null => {
   return row.card ? parseCard(row.card) : null;
 };
 
+/** True while a concept has been learned but not recalled yet: its card has no rating. */
+export const awaitsFirstRecall = (card: Card): boolean =>
+  card.state === State.New;
+
 export const retrievability = (card: Card, now = new Date()): number => {
-  if (card.state === State.New) {
+  if (awaitsFirstRecall(card)) {
     return 0;
   }
 
@@ -86,6 +94,24 @@ const save = (course: Course, conceptId: string, card: Card): void => {
     ...conceptRow(course, conceptId),
     card: JSON.stringify(card),
   });
+};
+
+/**
+ * A concept that was just learned gets a card with no rating, due the next day. The tasks at
+ * the end of a lesson are solved while the idea is still in mind, so they are not a recall.
+ */
+export const scheduleFirstRecall = (
+  course: Course,
+  conceptId: string,
+  now = new Date()
+): Card => {
+  const due = startOfDay(now);
+  due.setDate(due.getDate() + 1);
+
+  const card: Card = { ...createEmptyCard<Card>(now), due };
+  save(course, conceptId, card);
+
+  return card;
 };
 
 /** A full review of a concept with an FSRS grade. Creates the card if needed. */
@@ -157,7 +183,8 @@ export const pullForward = (
 ): Card | null => {
   const card = cardOf(course, conceptId);
 
-  if (!card || card.due.getTime() <= now.getTime()) {
+  // A first recall keeps its day: there is no memory to have weakened yet.
+  if (!card || awaitsFirstRecall(card) || card.due.getTime() <= now.getTime()) {
     return null;
   }
 
@@ -171,6 +198,10 @@ export const pullForward = (
   return next;
 };
 
+/**
+ * A concept is due for the whole of its due day. Counting from the hour would make a concept
+ * learned late in the evening impossible to review before that hour.
+ */
 export const isDue = (
   course: Course,
   conceptId: string,
@@ -178,7 +209,5 @@ export const isDue = (
 ): boolean => {
   const card = cardOf(course, conceptId);
 
-  return Boolean(
-    card && card.state !== State.New && card.due.getTime() <= now.getTime()
-  );
+  return Boolean(card && startOfDay(card.due).getTime() <= now.getTime());
 };

@@ -374,7 +374,9 @@ const runCode = (course: Course, { slug }: Slug) => {
 const resultView = (
   course: Course,
   result: ReturnType<typeof finishAttempt>,
-  attempt: AttemptRow
+  attempt: AttemptRow,
+  /** True when this attempt is what made its lesson learned. */
+  learned = false
 ) => ({
   concepts:
     "concepts" in result && result.concepts
@@ -394,17 +396,25 @@ const resultView = (
   mode: attempt.mode,
   // True when the app opens the next task by itself.
   moves_on: movesOn(course, attempt, lessonOf(course, attempt), result.outcome),
+  // A lesson that was just learned leads straight to the next one.
+  next_lesson: learned ? nextLesson(course) : null,
   outcome: result.outcome,
 });
 
 /** The learner pressed Submit on a problem. */
 const submitCode = (course: Course, { slug }: Slug) => {
   const open = attemptOn(course, slug);
+  const lessonId = lessonOf(course, open);
+  const wasLearned = lessonId === null || isPassed(course, lessonId);
   const handed = submitProblem(course, open);
+
+  // Learned by this answer, not before it: practising a learned lesson stays on it.
+  const learned =
+    lessonId !== null && !wasLearned && isPassed(course, lessonId);
 
   return {
     finished: handed.finished,
-    result: handed.result && resultView(course, handed.result, open),
+    result: handed.result && resultView(course, handed.result, open, learned),
     run: runView(handed.run),
   };
 };

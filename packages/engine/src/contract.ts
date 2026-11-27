@@ -165,6 +165,8 @@ export interface Result {
   mode: Mode | null;
   /** True when the app opens the next task by itself: the answer was right. */
   moves_on: boolean;
+  /** The lesson the app opens next, when this answer made its lesson learned. */
+  next_lesson: string | null;
   concepts: {
     id: string;
     name: string;

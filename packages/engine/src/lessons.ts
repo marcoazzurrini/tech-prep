@@ -143,8 +143,9 @@ export const startLesson = (
 
 /**
  * True when the app opens the next task by itself after an attempt ended. A right answer
- * moves on. What stays on screen has something to read: a solution after giving up, a solo
- * task that needed help, or the last solo task with its verdict.
+ * moves on. What stays on screen has something to read: a solution after giving up, or a
+ * solo task that needed help. The last solo task opens no task of its lesson: when it makes
+ * the lesson learned, the app opens the next lesson.
  */
 export const movesOn = (
   course: Course,
