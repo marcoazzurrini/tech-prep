@@ -1,0 +1,18 @@
+{
+  "title": "An Async Countdown",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countdown(from) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const out = []; for await (const n of countdown(3)) out.push(n); return out;"],"expected":[3,2,1]},
+      {"args":["const c = countdown(2); const out = []; for await (const n of c) out.push(n); for await (const n of c) out.push(n); return out;"],"expected":[2,1,2,1]},
+      {"args":["const out = []; for await (const n of countdown(0)) out.push(n); return out;"],"expected":[]},
+      {"args":["return typeof countdown(1)[Symbol.asyncIterator];"],"expected":"function"},
+      {"args":["return typeof countdown(1)[Symbol.iterator];"],"expected":"undefined"}
+    ]
+  }
+}

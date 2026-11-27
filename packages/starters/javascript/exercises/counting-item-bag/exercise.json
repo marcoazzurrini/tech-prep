@@ -1,0 +1,19 @@
+{
+  "title": "Counting Item Bag",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Bag {\n  add(item) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const bag = new Bag().add(\"pear\").add(\"fig\").add(\"pear\"); return [...bag];"],"expected":["pear","pear","fig"]},
+      {"args":["const bag = new Bag().add(\"a\"); return [[...bag], [...bag]];"],"expected":[["a"],["a"]]},
+      {"args":["return [...new Bag()];"],"expected":[]},
+      {"args":["return [`${new Bag().add(\"a\").add(\"a\")}`, `${new Bag().add(\"a\")}`, `${new Bag()}`];"],"expected":["2 items","1 item","0 items"]},
+      {"args":["return new Bag().add(\"x\").add(\"y\").add(\"x\") * 10;"],"expected":30},
+      {"args":["return Object.prototype.toString.call(new Bag());"],"expected":"[object Bag]"}
+    ]
+  }
+}

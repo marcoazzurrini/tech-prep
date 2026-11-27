@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const id = Symbol(\"id\");\nconst base = { shared: true };\nconst item = Object.assign(Object.create(base), { 2: \"b\", name: \"pen\", 1: \"a\", [id]: 9 });\nObject.defineProperty(item, \"secret\", { value: \"x\", enumerable: false });\n\nconst copy = { ...item };\n\nconsole.log(Reflect.ownKeys(item).map(String).join(\",\"));\nconsole.log(Object.keys(copy).join(\",\"));\nconsole.log(\"shared\" in copy, id in copy);\nconsole.log(JSON.stringify(item));"
+    },
+    "expected": "1,2,name,secret,Symbol(id)\n1,2,name\nfalse true\n{\"1\":\"a\",\"2\":\"b\",\"name\":\"pen\"}"
+  }
+}

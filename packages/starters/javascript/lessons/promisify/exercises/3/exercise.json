@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function promisify(fn) {\n  return function (...args) {\n    return new Promise((resolve, reject) => {\n      fn.call(this, ...args, (error, value) => (error ? reject(error) : resolve(value)));\n    });\n  };\n}\n\nconst garage = {\n  cars: 4,\n  free(callback) {\n    callback(null, 10 - this.cars);\n  },\n};\n\ngarage.freeAsync = promisify(garage.free);\nconst freeAsync = garage.freeAsync;\n\ngarage.freeAsync().then((n) => console.log(\"free: \" + n));\nfreeAsync().catch((error) => console.log(error.name));"
+    },
+    "expected": "free: 6\nTypeError"
+  }
+}

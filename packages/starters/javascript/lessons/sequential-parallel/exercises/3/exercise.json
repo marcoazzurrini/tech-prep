@@ -1,0 +1,18 @@
+{
+  "title": "Price Every Item",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function cartPrices(items, priceOf) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await cartPrices([\"tea\", \"bread\"], async (item) => item.length);"],"expected":[3,5]},
+      {"args":["return await cartPrices([], async () => 1);"],"expected":[]},
+      {"args":["const s = []; const p = cartPrices([\"a\", \"b\", \"c\"], async (x) => s.push(x)); const now = [...s]; await p; return now;"],"expected":["a","b","c"]},
+      {"args":["const f = (x) => new Promise((r) => setTimeout(r, x.length * 10, x)); return await cartPrices([\"melon\", \"fig\"], f);"],"expected":["melon","fig"]},
+      {"args":["return await cartPrices([\"tea\"], async () => { throw new Error(\"no price\"); }).catch((e) => e.message);"],"expected":"no price"}
+    ]
+  }
+}

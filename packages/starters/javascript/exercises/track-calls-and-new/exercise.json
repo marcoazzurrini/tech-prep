@@ -1,0 +1,19 @@
+{
+  "title": "Track Calls and New",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function track(fn, log) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const log = []; const add = track((a, b) => a + b, log); return [add(2, 3), log];"],"expected":[5,["call"]]},
+      {"args":["class P { constructor(x) { this.x = x; } } const log = []; const p = new (track(P, log))(4); return [p.x, p instanceof P, log];"],"expected":[4,true,["new"]]},
+      {"args":["function hi(name) {} const t = track(hi, []); return [t.name, t.length, typeof t];"],"expected":["hi",1,"function"]},
+      {"args":["const log = []; const f = track(function () { return this.n; }, log); return [f.call({ n: 7 }), log];"],"expected":[7,["call"]]},
+      {"args":["class Pt {} const T = track(Pt, []); try { T(); return \"ran\"; } catch (e) { return e.name; }"],"expected":"TypeError"},
+      {"args":["class S { static tag = \"x\"; } return track(S, []).tag;"],"expected":"x"}
+    ]
+  }
+}

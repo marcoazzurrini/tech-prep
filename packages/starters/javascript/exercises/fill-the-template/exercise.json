@@ -1,0 +1,23 @@
+{
+  "title": "Fill the Template",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "fillTemplate"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fillTemplate(template, data) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Hi {{name}}!",{"name":"Ada"}],"expected":"Hi Ada!"},
+      {"args":["{{user.city}}, {{user.country}}",{"user":{"city":"Rome","country":"IT"}}],"expected":"Rome, IT"},
+      {"args":["[{{missing}}|{{a.b.c}}]",{"a":{}}],"expected":"[|]"},
+      {"args":["{{ count }} items",{"count":0}],"expected":"0 items"},
+      {"args":["[{{constructor}}]",{}],"expected":"[]"},
+      {"args":["no tags here",{"x":1}],"expected":"no tags here"},
+      {"args":["{{a}}{{a}}",{"a":"x"}],"expected":"xx"},
+      {"args":["[{{price * 2}}]",{"price":5}],"expected":"[]"}
+    ]
+  }
+}

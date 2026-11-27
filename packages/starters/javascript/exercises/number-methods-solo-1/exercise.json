@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log((0.000456).toPrecision(2));\nconsole.log((1999).toPrecision(2));\nconsole.log((10).toString(2));\nconsole.log((35).toString(36));\nconsole.log(Number.isInteger(\"7\"));\nconsole.log((3.14159).toFixed(3));"
+    },
+    "expected": "0.00046\n2.0e+3\n1010\nz\nfalse\n3.142"
+  }
+}

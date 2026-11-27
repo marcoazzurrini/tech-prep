@@ -1,0 +1,22 @@
+{
+  "title": "Upcoming Birthdays",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "upcomingBirthdays"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function upcomingBirthdays(people, today) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"Ada","birthday":"1990-12-10"},{"name":"Ben","birthday":"1985-03-02"},{"name":"Cy","birthday":"2001-07-20"}],"2024-07-01"],"expected":["Cy","Ada","Ben"]},
+      {"args":[[{"name":"Ada","birthday":"1990-12-10"},{"name":"Ben","birthday":"1985-03-02"},{"name":"Cy","birthday":"2001-07-20"}],"2024-03-02"],"expected":["Ben","Cy","Ada"]},
+      {"args":[[{"name":"Max","birthday":"1999-03-01"},{"name":"Lea","birthday":"2000-02-29"}],"2025-02-28"],"expected":["Lea","Max"]},
+      {"args":[[{"name":"Max","birthday":"1999-03-01"},{"name":"Lea","birthday":"2000-02-29"}],"2024-02-28"],"expected":["Lea","Max"]},
+      {"args":[[{"name":"Ny","birthday":"1995-01-01"},{"name":"Eve","birthday":"1980-12-31"}],"2024-12-31"],"expected":["Eve","Ny"]},
+      {"args":[[{"name":"Sam","birthday":"1970-05-05"},{"name":"Kai","birthday":"1992-05-05"}],"2024-06-01"],"expected":["Sam","Kai"]},
+      {"args":[[],"2024-01-01"],"expected":[]}
+    ]
+  }
+}

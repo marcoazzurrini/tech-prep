@@ -1,0 +1,18 @@
+{
+  "title": "Add Days",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addDays(date, days) {\n  date.setUTCDate(date.getUTCDate() + days);\n  return date;\n}\n"
+    },
+    "tests": [
+      {"args":["const d = new Date(\"2024-01-30\"); const e = addDays(d, 3); return [d.toISOString(), e.toISOString()];"],"expected":["2024-01-30T00:00:00.000Z","2024-02-02T00:00:00.000Z"]},
+      {"args":["return addDays(new Date(\"2024-03-01\"), -1).toISOString();"],"expected":"2024-02-29T00:00:00.000Z"},
+      {"args":["return addDays(new Date(\"2024-12-31T12:00:00Z\"), 1).toISOString();"],"expected":"2025-01-01T12:00:00.000Z"},
+      {"args":["const d = new Date(\"2024-05-01\"); addDays(d, 10); return d.getUTCDate();"],"expected":1},
+      {"args":["const d = new Date(\"2024-05-01\"); return addDays(d, 0) !== d;"],"expected":true}
+    ]
+  }
+}

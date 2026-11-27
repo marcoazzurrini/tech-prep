@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Account {\n  owner = \"Ada\";\n  #pin = 1234;\n  [Symbol.for(\"kind\")] = \"basic\";\n\n  balance() {\n    return 0;\n  }\n}\n\nconst account = new Account();\nconst looped = [];\nfor (const key in account) looped.push(key);\n\nconsole.log(looped.join(\",\"));\nconsole.log(Reflect.ownKeys(account).length);\nconsole.log(Object.getOwnPropertyNames(Account.prototype).join(\",\"));\nconsole.log(JSON.stringify({ ...account }));"
+    },
+    "expected": "owner\n2\nconstructor,balance\n{\"owner\":\"Ada\"}"
+  }
+}

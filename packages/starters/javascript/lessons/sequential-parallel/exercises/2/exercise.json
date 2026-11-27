@@ -1,0 +1,18 @@
+{
+  "title": "Load the Page Faster",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function loadPage(getUser, getNews) {\n  const user = await getUser();\n  const news = await getNews();\n  return { user, news };\n}\n"
+    },
+    "tests": [
+      {"args":["return await loadPage(async () => \"ana\", async () => [\"rain\"]);"],"expected":{"user":"ana","news":["rain"]}},
+      {"args":["const s = []; const p = loadPage(async () => s.push(\"user\"), async () => s.push(\"news\")); const now = [...s]; await p; return now;"],"expected":["user","news"]},
+      {"args":["let k = 0; const t = (ms) => () => new Promise((r) => setTimeout(() => r(++k), ms)); return await loadPage(t(30), t(5));"],"expected":{"user":2,"news":1}},
+      {"args":["return await loadPage(async () => \"bo\", async () => { throw new Error(\"news is down\"); }).catch((e) => e.message);"],"expected":"news is down"},
+      {"args":["const page = await loadPage(() => Promise.resolve(\"cy\"), () => Promise.resolve([])); return [page.user, page.news.length];"],"expected":["cy",0]}
+    ]
+  }
+}

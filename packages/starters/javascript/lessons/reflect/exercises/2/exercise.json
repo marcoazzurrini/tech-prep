@@ -1,0 +1,18 @@
+{
+  "title": "Remove the Keys",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function removeKeys(obj, keys) {\n  const kept = [];\n\n  for (const key of keys) {\n    delete obj[key];\n  }\n\n  return kept;\n}\n"
+    },
+    "tests": [
+      {"args":["const o = { a: 1, b: 2 }; return [removeKeys(o, [\"a\"]), o];"],"expected":[[],{"b":2}]},
+      {"args":["return removeKeys(Object.freeze({ a: 1, b: 2 }), [\"a\", \"b\"]);"],"expected":["a","b"]},
+      {"args":["const o = Object.defineProperty({ x: 1 }, \"id\", { value: 7 }); return [removeKeys(o, [\"id\", \"x\"]), Object.keys(o)];"],"expected":[["id"],[]]},
+      {"args":["return removeKeys({}, [\"nothing\"]);"],"expected":[]},
+      {"args":["const o = Object.seal({ a: 1 }); return [removeKeys(o, [\"a\", \"b\"]), o.a];"],"expected":[["a"],1]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Base() {\n  this.kind = new.target.name;\n}\n\nclass Gift {}\n\nconst made = Reflect.construct(Base, [], Gift);\nconsole.log(made.kind, made instanceof Gift, made instanceof Base);\n\nconst shelf = { count: 1 };\nconst other = {};\n\nconsole.log(Reflect.set(shelf, \"count\", 9, other));\nconsole.log(shelf.count, other.count);"
+    },
+    "expected": "Gift true false\ntrue\n1 9"
+  }
+}

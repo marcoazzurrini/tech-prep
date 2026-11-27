@@ -1,0 +1,18 @@
+{
+  "title": "A Range for in",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeRange(min, max) {\n  return { min, max };\n}\n"
+    },
+    "tests": [
+      {"args":["const r = makeRange(1, 5); return [3 in r, 9 in r];"],"expected":[true,false]},
+      {"args":["const r = makeRange(1, 5); return [1 in r, 5 in r, 0 in r];"],"expected":[true,true,false]},
+      {"args":["const r = makeRange(-2, 2); return [-2 in r, 2.5 in r, 1.5 in r];"],"expected":[true,false,true]},
+      {"args":["const r = makeRange(10, 20); return [\"15\" in r, \"x\" in r];"],"expected":[true,false]},
+      {"args":["return \"min\" in makeRange(1, 5);"],"expected":false}
+    ]
+  }
+}

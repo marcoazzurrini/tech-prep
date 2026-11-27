@@ -3638,10 +3638,46 @@
     "concepts": ["sequential-parallel"]
   },
   {
+    "slug": "run-in-batches",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["sequential-parallel"]
+  },
+  {
+    "slug": "import-records",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["sequential-parallel"]
+  },
+  {
+    "slug": "sequential-parallel-review-1",
+    "topic": "async",
+    "difficulty": "hard",
+    "concepts": ["sequential-parallel", "reduce"]
+  },
+  {
     "slug": "promisify-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["promisify"]
+  },
+  {
+    "slug": "add-async-methods",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promisify"]
+  },
+  {
+    "slug": "callback-style",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promisify"]
+  },
+  {
+    "slug": "load-all-notes",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["promisify", "promise-all"]
   },
   {
     "slug": "async-iteration-solo-1",
@@ -3650,10 +3686,58 @@
     "concepts": ["async-iteration"]
   },
   {
+    "slug": "watch-job-status",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-iteration"]
+  },
+  {
+    "slug": "message-channel",
+    "topic": "async",
+    "difficulty": "hard",
+    "concepts": ["async-iteration"]
+  },
+  {
+    "slug": "async-iteration-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["async-iteration", "generator-control"]
+  },
+  {
     "slug": "execution-order-solo-1",
     "topic": "async",
     "difficulty": "easy",
     "concepts": ["execution-order"]
+  },
+  {
+    "slug": "execution-order-solo-2",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["execution-order"]
+  },
+  {
+    "slug": "execution-order-review-1",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["execution-order"]
+  },
+  {
+    "slug": "execution-order-review-2",
+    "topic": "async",
+    "difficulty": "medium",
+    "concepts": ["execution-order"]
+  },
+  {
+    "slug": "execution-order-review-3",
+    "topic": "async",
+    "difficulty": "hard",
+    "concepts": ["execution-order", "async-functions"]
+  },
+  {
+    "slug": "execution-order-review-4",
+    "topic": "async",
+    "difficulty": "hard",
+    "concepts": ["execution-order", "promise-errors"]
   },
   {
     "slug": "module-basics-solo-1",
@@ -3806,10 +3890,46 @@
     "concepts": ["well-known-symbols"]
   },
   {
+    "slug": "closed-interval",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["well-known-symbols"]
+  },
+  {
+    "slug": "well-known-symbols-review-1",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["well-known-symbols"]
+  },
+  {
+    "slug": "counting-item-bag",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["well-known-symbols", "generators", "object-to-primitive"]
+  },
+  {
     "slug": "enumeration-rules-solo-1",
     "topic": "metaprogramming",
     "difficulty": "easy",
     "concepts": ["enumeration-rules"]
+  },
+  {
+    "slug": "describe-keys",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["enumeration-rules"]
+  },
+  {
+    "slug": "enumeration-rules-review-1",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["enumeration-rules"]
+  },
+  {
+    "slug": "every-reachable-name",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["enumeration-rules", "prototype-chain"]
   },
   {
     "slug": "reflect-solo-1",
@@ -3818,10 +3938,46 @@
     "concepts": ["reflect"]
   },
   {
+    "slug": "assign-what-you-can",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["reflect", "enumeration-rules"]
+  },
+  {
+    "slug": "reflect-review-1",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["reflect"]
+  },
+  {
+    "slug": "object-command-runner",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["reflect", "freeze-seal"]
+  },
+  {
     "slug": "proxy-basics-solo-1",
     "topic": "metaprogramming",
     "difficulty": "easy",
     "concepts": ["proxy-basics"]
+  },
+  {
+    "slug": "negative-index-array",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["proxy-basics"]
+  },
+  {
+    "slug": "proxy-basics-review-1",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["proxy-basics"]
+  },
+  {
+    "slug": "watch-for-changes",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["proxy-basics", "sameness"]
   },
   {
     "slug": "proxy-traps-solo-1",
@@ -3830,10 +3986,46 @@
     "concepts": ["proxy-traps"]
   },
   {
+    "slug": "track-calls-and-new",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["proxy-traps"]
+  },
+  {
+    "slug": "proxy-traps-review-1",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["proxy-traps"]
+  },
+  {
+    "slug": "logged-map",
+    "topic": "metaprogramming",
+    "difficulty": "hard",
+    "concepts": ["proxy-traps", "map", "bind"]
+  },
+  {
     "slug": "dynamic-code-solo-1",
     "topic": "metaprogramming",
     "difficulty": "easy",
     "concepts": ["dynamic-code"]
+  },
+  {
+    "slug": "fill-the-template",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["dynamic-code"]
+  },
+  {
+    "slug": "dynamic-code-review-1",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["dynamic-code"]
+  },
+  {
+    "slug": "dynamic-code-review-2",
+    "topic": "metaprogramming",
+    "difficulty": "medium",
+    "concepts": ["dynamic-code", "closures", "strict-mode"]
   },
   {
     "slug": "math-solo-1",
@@ -3842,10 +4034,46 @@
     "concepts": ["math"]
   },
   {
+    "slug": "round-to-nearest-step",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["math"]
+  },
+  {
+    "slug": "math-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["math"]
+  },
+  {
+    "slug": "score-summary",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["math", "reduce"]
+  },
+  {
     "slug": "number-methods-solo-1",
     "topic": "stdlib",
     "difficulty": "easy",
     "concepts": ["number-methods"]
+  },
+  {
+    "slug": "file-size-label",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["number-methods"]
+  },
+  {
+    "slug": "number-methods-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["number-methods"]
+  },
+  {
+    "slug": "invert-hex-colour",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["number-methods", "parse-numbers"]
   },
   {
     "slug": "dates-solo-1",
@@ -3854,16 +4082,70 @@
     "concepts": ["dates"]
   },
   {
+    "slug": "add-months-clamped",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["dates"]
+  },
+  {
+    "slug": "dates-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["dates"]
+  },
+  {
+    "slug": "is-real-calendar-day",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["dates", "destructuring-arrays"]
+  },
+  {
     "slug": "temporal-solo-1",
     "topic": "stdlib",
     "difficulty": "easy",
     "concepts": ["temporal"]
   },
   {
+    "slug": "add-working-days",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["temporal"]
+  },
+  {
+    "slug": "temporal-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["temporal"]
+  },
+  {
+    "slug": "upcoming-birthdays",
+    "topic": "stdlib",
+    "difficulty": "hard",
+    "concepts": ["temporal", "sort"]
+  },
+  {
     "slug": "intl-solo-1",
     "topic": "stdlib",
     "difficulty": "easy",
     "concepts": ["intl"]
+  },
+  {
+    "slug": "cart-summary-line",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["intl"]
+  },
+  {
+    "slug": "intl-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["intl"]
+  },
+  {
+    "slug": "leaderboard-lines",
+    "topic": "stdlib",
+    "difficulty": "hard",
+    "concepts": ["intl", "string-comparison", "sort"]
   },
   {
     "slug": "memoization-solo-1",

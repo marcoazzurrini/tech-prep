@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const stock = { pens: 4, inks: 0 };\n\nconsole.log(Reflect.has(stock, \"inks\"));\nconsole.log(Reflect.deleteProperty(stock, \"inks\"));\nconsole.log(Reflect.get(stock, \"inks\"));\nconsole.log(Reflect.set(stock, \"pens\", 5) && stock.pens);\nconsole.log(Reflect.ownKeys(stock).join(\",\"));"
+    },
+    "expected": "true\ntrue\nundefined\n5\npens"
+  }
+}

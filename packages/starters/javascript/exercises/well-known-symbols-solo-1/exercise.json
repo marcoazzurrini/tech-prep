@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Weekday {\n  static [Symbol.hasInstance](value) {\n    return [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"].includes(value);\n  }\n}\n\nconst days = [\"Mon\", \"Sat\"];\nconst extra = { length: 1, 0: \"Sun\", [Symbol.isConcatSpreadable]: true };\n\nconsole.log(\"Mon\" instanceof Weekday);\nconsole.log(\"Sat\" instanceof Weekday);\nconsole.log(new Weekday() instanceof Weekday);\nconsole.log(days.concat(extra).join(\",\"));"
+    },
+    "expected": "true\nfalse\nfalse\nMon,Sat,Sun"
+  }
+}

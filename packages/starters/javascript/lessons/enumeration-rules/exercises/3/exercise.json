@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sizes = [\"S\", \"M\", \"L\"];\nsizes.preferred = \"M\";\n\nconst keys = [];\nfor (const key in sizes) keys.push(key);\n\nconsole.log(keys.length);\nconsole.log(keys[0] + 1);\nconsole.log(Object.getOwnPropertyNames(sizes).length);"
+    },
+    "expected": "4\n01\n5"
+  }
+}

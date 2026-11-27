@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const launch = new Date(\"2024-06-01\");\nconst review = new Date(\"2024-06-11\");\n\nconsole.log((review - launch) / 86_400_000);\nconsole.log(new Date(3_600_000).toISOString());\nconsole.log(launch.getTime() === new Date(\"2024-06-01\").getTime());\nconsole.log(launch == new Date(\"2024-06-01\"));"
+    },
+    "expected": "10\n1970-01-01T01:00:00.000Z\ntrue\nfalse"
+  }
+}

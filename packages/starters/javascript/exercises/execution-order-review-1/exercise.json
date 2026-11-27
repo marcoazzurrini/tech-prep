@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "setTimeout(() => {\n  console.log(\"timer A\");\n  Promise.resolve().then(() => console.log(\"micro in A\"));\n}, 0);\n\nPromise.resolve().then(() => {\n  console.log(\"micro 1\");\n  setTimeout(() => console.log(\"timer B\"), 20);\n});\n\nconsole.log(\"script\");"
+    },
+    "expected": "script\nmicro 1\ntimer A\nmicro in A\ntimer B"
+  }
+}

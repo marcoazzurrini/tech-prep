@@ -1,0 +1,19 @@
+{
+  "title": "Object Command Runner",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function runCommands(target, commands) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return runCommands({ a: 1 }, [[\"get\", \"a\"], [\"set\", \"b\", 2], [\"get\", \"b\"], [\"keys\"]]);"],"expected":[1,true,2,["a","b"]]},
+      {"args":["return runCommands({ a: 1 }, [[\"has\", \"a\"], [\"has\", \"toString\"], [\"delete\", \"a\"], [\"has\", \"a\"]]);"],"expected":[true,true,true,false]},
+      {"args":["return runCommands(Object.freeze({ a: 1 }), [[\"set\", \"a\", 5], [\"delete\", \"a\"], [\"get\", \"a\"]]);"],"expected":[false,false,1]},
+      {"args":["return runCommands(Object.seal({ a: 1 }), [[\"set\", \"a\", 5], [\"set\", \"z\", 1], [\"keys\"]]);"],"expected":[true,false,["a"]]},
+      {"args":["return runCommands({}, [[\"get\", \"nope\"], [\"jump\"], [\"delete\", \"nope\"]]);"],"expected":[null,"unknown",true]},
+      {"args":["return runCommands([7], [[\"keys\"], [\"set\", \"length\", 0], [\"get\", \"0\"]]);"],"expected":[["0","length"],true,null]}
+    ]
+  }
+}

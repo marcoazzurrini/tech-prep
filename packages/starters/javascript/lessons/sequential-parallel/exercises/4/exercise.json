@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nasync function scan(page) {\n  await delay(page.ms);\n  console.log(\"scanned \" + page.name);\n}\n\nasync function scanAll(pages, size) {\n  for (let i = 0; i < pages.length; i += size) {\n    await Promise.all(pages.slice(i, i + size).map((page) => scan(page)));\n    console.log(\"next\");\n  }\n}\n\nscanAll([{ name: \"a\", ms: 40 }, { name: \"b\", ms: 10 }, { name: \"c\", ms: 10 }], 2);"
+    },
+    "expected": "scanned b\nscanned a\nnext\nscanned c\nnext"
+  }
+}

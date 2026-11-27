@@ -1,0 +1,20 @@
+{
+  "title": "Watch a Job",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function watchJob(check) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = [\"queued\", \"running\", \"done\", \"x\"]; let i = 0; return await Array.fromAsync(watchJob(async () => s[i++]));"],"expected":["queued","running","done"]},
+      {"args":["let n = 0; await Array.fromAsync(watchJob(async () => (++n === 2 ? \"done\" : \"wait\"))); return n;"],"expected":2},
+      {"args":["return await Array.fromAsync(watchJob(async () => \"done\"));"],"expected":["done"]},
+      {"args":["let n = 0; const g = watchJob(async () => (n++, \"wait\"))[Symbol.asyncIterator](); await g.next(); await g.next(); return n;"],"expected":2},
+      {"args":["const s = [\"wait\", \"failed\", \"x\"]; let i = 0; return await Array.fromAsync(watchJob(async () => s[i++]));"],"expected":["wait","failed"]},
+      {"args":["return await Array.fromAsync(watchJob(async () => { throw new Error(\"lost\"); })).catch((e) => e.message);"],"expected":"lost"},
+      {"args":["let n = 0; watchJob(async () => (n++, \"done\")); return n;"],"expected":0}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function load() {\n  console.log(\"load: start\");\n  await null;\n  console.log(\"load: after await\");\n}\n\nsetTimeout(() => console.log(\"timeout\"), 0);\n\nPromise.resolve()\n  .then(() => console.log(\"then 1\"))\n  .then(() => console.log(\"then 2\"));\n\nload();\nconsole.log(\"sync\");"
+    },
+    "expected": "load: start\nsync\nthen 1\nload: after await\nthen 2\ntimeout"
+  }
+}

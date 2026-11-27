@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = {\n  rate: 2,\n  get price() {\n    return this.rate * 10;\n  },\n  set price(value) {\n    this.rate = value / 10;\n  },\n};\n\nconst sale = { rate: 1 };\n\nconsole.log(Reflect.get(base, \"price\"));\nconsole.log(Reflect.get(base, \"price\", sale));\n\nReflect.set(base, \"price\", 50, sale);\nconsole.log(base.rate, sale.rate);"
+    },
+    "expected": "20\n10\n2 5"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "A Fallback Value",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withDefault(obj, fallback) {\n  // your code\n  return obj;\n}\n"
+    },
+    "tests": [
+      {"args":["const p = withDefault({ a: 1 }, 0); return [p.a, p.b];"],"expected":[1,0]},
+      {"args":["const p = withDefault({}, \"none\"); return [p.name, \"name\" in p];"],"expected":["none",false]},
+      {"args":["const p = withDefault({}, 0); p.n += 5; return p.n;"],"expected":5},
+      {"args":["const o = { a: 1 }; const p = withDefault(o, 0); p.b = 2; return o;"],"expected":{"a":1,"b":2}},
+      {"args":["return String(withDefault({}, 0));"],"expected":"[object Object]"},
+      {"args":["const p = withDefault({ a: undefined }, 7); return p.a === undefined;"],"expected":true}
+    ]
+  }
+}

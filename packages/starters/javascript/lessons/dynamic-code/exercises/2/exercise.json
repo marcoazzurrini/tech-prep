@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "globalThis.mode = \"global\";\n\nfunction check() {\n  const mode = \"inner\";\n  const evaluate = eval;\n  return [eval(\"mode\"), evaluate(\"mode\"), eval?.(\"mode\")];\n}\n\nconsole.log(check().join(\",\"));\n\n(0, eval)(\"var made = 'yes';\");\nconsole.log(globalThis.made);"
+    },
+    "expected": "inner,global,global\nyes"
+  }
+}

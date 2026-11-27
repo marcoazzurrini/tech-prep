@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function save() {\n  console.log(\"save: start\");\n  await null;\n  console.log(\"save: end\");\n}\n\nPromise.resolve().then(() => console.log(\"then\"));\nsave();\nconsole.log(\"sync end\");"
+    },
+    "expected": "save: start\nsync end\nthen\nsave: end"
+  }
+}

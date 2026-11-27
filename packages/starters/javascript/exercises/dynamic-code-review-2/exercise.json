@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeCounter() {\n  let count = 0;\n  return (code) => eval(code);\n}\n\nconst run = makeCounter();\nrun(\"count += 2\");\nconsole.log(run(\"count\"));\n\nconst loose = new Function(\n  \"return typeof this;\",\n);\nconst strict = new Function(\n  '\"use strict\"; return typeof this;',\n);\nconsole.log(loose(), strict());\nconsole.log(run(\"typeof makeCounter\"));"
+    },
+    "expected": "2\nobject undefined\nfunction"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Name the Weekday",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "weekdayName"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function weekdayName(year, month, day) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[2024,1,15],"expected":"Monday"},
+      {"args":[2024,2,29],"expected":"Thursday"},
+      {"args":[2000,1,1],"expected":"Saturday"},
+      {"args":[2024,12,25],"expected":"Wednesday"},
+      {"args":[1970,1,1],"expected":"Thursday"},
+      {"args":[2023,10,1],"expected":"Sunday"}
+    ]
+  }
+}

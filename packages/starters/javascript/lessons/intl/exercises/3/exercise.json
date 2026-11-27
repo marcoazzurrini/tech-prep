@@ -1,0 +1,21 @@
+{
+  "title": "Polish File Count",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "polishFiles"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function polishFiles(n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1],"expected":"1 plik"},
+      {"args":[2],"expected":"2 pliki"},
+      {"args":[5],"expected":"5 plików"},
+      {"args":[12],"expected":"12 plików"},
+      {"args":[22],"expected":"22 pliki"},
+      {"args":[1.5],"expected":"1.5 pliku"}
+    ]
+  }
+}

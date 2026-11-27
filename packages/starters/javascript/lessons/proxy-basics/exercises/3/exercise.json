@@ -1,0 +1,18 @@
+{
+  "title": "Numbers Only",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function onlyNumbers(obj) {\n  return new Proxy(obj, {\n    set(target, key, value) {\n      if (typeof value !== \"number\") {\n        throw new TypeError(`${String(key)} must be a number`);\n      }\n\n      target[key] = value;\n    },\n  });\n}\n"
+    },
+    "tests": [
+      {"args":["const p = onlyNumbers({}); p.x = 2; return p.x;"],"expected":2},
+      {"args":["const p = onlyNumbers({}); p.x = 1; p.y = 2.5; return p.x + p.y;"],"expected":3.5},
+      {"args":["try { onlyNumbers({}).x = \"a\"; return \"no error\"; } catch (e) { return e.name; }"],"expected":"TypeError"},
+      {"args":["const o = {}; const p = onlyNumbers(o); try { p.x = \"a\"; } catch {} return \"x\" in o;"],"expected":false},
+      {"args":["const o = { a: 1 }; onlyNumbers(o).a = 5; return o.a;"],"expected":5}
+    ]
+  }
+}

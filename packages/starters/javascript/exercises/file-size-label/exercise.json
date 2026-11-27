@@ -1,0 +1,22 @@
+{
+  "title": "File Size Label",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "fileSize"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fileSize(bytes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[512],"expected":"512 B"},
+      {"args":[0],"expected":"0 B"},
+      {"args":[1024],"expected":"1.0 KB"},
+      {"args":[1536],"expected":"1.5 KB"},
+      {"args":[1500000],"expected":"1.4 MB"},
+      {"args":[123456789],"expected":"117.7 MB"},
+      {"args":[5368709120],"expected":"5.0 GB"}
+    ]
+  }
+}

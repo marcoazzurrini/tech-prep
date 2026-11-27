@@ -1,0 +1,20 @@
+{
+  "title": "Watch for Changes",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function watch(obj, onChange) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const log = []; const w = watch({ a: 1 }, (k, o, n) => log.push(`${k}:${o}->${n}`)); w.a = 2; w.b = 3; return log;"],"expected":["a:1->2","b:undefined->3"]},
+      {"args":["const log = []; const w = watch({ a: 1 }, (k) => log.push(k)); w.a = 1; return log;"],"expected":[]},
+      {"args":["const log = []; const w = watch({ n: NaN }, (k, o, n) => log.push(`${o}->${n}`)); w.n = NaN; w.n = 0; return log;"],"expected":["NaN->0"]},
+      {"args":["const log = []; const w = watch({ z: 0 }, (k) => log.push(k)); w.z = -0; return log.length;"],"expected":1},
+      {"args":["const o = {}; const w = watch(o, () => {}); w.x = 5; return o.x;"],"expected":5},
+      {"args":["const o = { a: 1 }; let seen; const w = watch(o, () => { seen = o.a; }); w.a = 9; return seen;"],"expected":9},
+      {"args":["const w = watch({ a: 1 }, () => {}); return [w.a, Object.keys(w)];"],"expected":[1,["a"]]}
+    ]
+  }
+}

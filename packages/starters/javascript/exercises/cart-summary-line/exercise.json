@@ -1,0 +1,20 @@
+{
+  "title": "Cart Summary",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "cartSummary"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cartSummary(items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"tea","price":2.5},{"name":"cake","price":3.25},{"name":"jam","price":7}]],"expected":"3 items (tea, cake, and jam) for $12.75"},
+      {"args":[[{"name":"tea","price":2.5}]],"expected":"1 item (tea) for $2.50"},
+      {"args":[[{"name":"bread","price":1200},{"name":"wine","price":15.99}]],"expected":"2 items (bread and wine) for $1,215.99"},
+      {"args":[[]],"expected":"Your cart is empty"},
+      {"args":[[{"name":"a","price":1},{"name":"b","price":1},{"name":"c","price":1},{"name":"d","price":1}]],"expected":"4 items (a, b, c, and d) for $4.00"}
+    ]
+  }
+}

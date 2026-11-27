@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Basket {\n  constructor(...items) {\n    this.items = items;\n  }\n\n  [Symbol.toPrimitive](hint) {\n    return hint === \"number\" ? this.items.length : this.items.join(\"+\");\n  }\n\n  get [Symbol.toStringTag]() {\n    return \"Basket\";\n  }\n}\n\nconst basket = new Basket(\"egg\", \"jam\");\n\nconsole.log(basket * 10);\nconsole.log(basket + \"!\");\nconsole.log(Object.prototype.toString.call(basket));"
+    },
+    "expected": "20\negg+jam!\n[object Basket]"
+  }
+}

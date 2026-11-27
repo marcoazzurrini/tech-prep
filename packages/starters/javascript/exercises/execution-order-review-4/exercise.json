@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "Promise.resolve()\n  .then(() => console.log(\"ok 1\"))\n  .then(() => console.log(\"ok 2\"));\n\nPromise.reject(new Error(\"no\"))\n  .then(() => console.log(\"never\"))\n  .catch(() => console.log(\"caught\"));\n\nconsole.log(\"start\");"
+    },
+    "expected": "start\nok 1\nok 2\ncaught"
+  }
+}

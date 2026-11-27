@@ -1,0 +1,18 @@
+{
+  "title": "Build Them All",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function buildAll(Class, argLists) {\n  return argLists.map((args) => Class(...args));\n}\n"
+    },
+    "tests": [
+      {"args":["class P { constructor(x, y) { this.sum = x + y; } } return buildAll(P, [[1, 2], [3, 4]]).map((p) => p.sum);"],"expected":[3,7]},
+      {"args":["return buildAll(Date, [[0], [1000]]).map((d) => d.getTime());"],"expected":[0,1000]},
+      {"args":["return buildAll(Array, [[3], [1, 2]]).map((a) => a.length);"],"expected":[3,2]},
+      {"args":["class Q {} return buildAll(Q, [[], []]).every((q) => q instanceof Q);"],"expected":true},
+      {"args":["return buildAll(Map, []);"],"expected":[]}
+    ]
+  }
+}

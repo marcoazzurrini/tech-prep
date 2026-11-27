@@ -1,0 +1,20 @@
+{
+  "title": "Short Day Label",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shortDay"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function shortDay(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["2024-01-15"],"expected":"Mon 15 Jan"},
+      {"args":["2000-02-29"],"expected":"Tue 29 Feb"},
+      {"args":["2024-12-25"],"expected":"Wed 25 Dec"},
+      {"args":["1970-01-01"],"expected":"Thu 1 Jan"},
+      {"args":["2024-06-01"],"expected":"Sat 1 Jun"}
+    ]
+  }
+}

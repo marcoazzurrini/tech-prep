@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const promisify = (fn) => (...args) =>\n  new Promise((resolve, reject) => {\n    fn(...args, (error, value) => (error ? reject(error) : resolve(value)));\n  });\n\nfunction split(text, separator, callback) {\n  if (typeof text !== \"string\") {\n    throw new TypeError(\"not text\");\n  }\n  callback(null, text.split(separator), text.length);\n}\n\nconst splitAsync = promisify(split);\nsplitAsync(\"a-b-c\", \"-\").then((value) => console.log(value.join(\"+\")));\nsplitAsync(42, \"-\").catch((error) => console.log(error.name));\nconsole.log(\"called both\");"
+    },
+    "expected": "called both\na+b+c\nTypeError"
+  }
+}

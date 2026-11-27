@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const calls = [];\n\nconst square = new Proxy((n) => n * n, {\n  apply(target, thisArg, args) {\n    calls.push(args.length);\n    return Reflect.apply(target, thisArg, args) + 1;\n  },\n});\n\nclass Tag {\n  constructor(label) {\n    this.label = label;\n  }\n}\n\nconst Loud = new Proxy(Tag, {\n  construct(target, [label], newTarget) {\n    return Reflect.construct(target, [label.toUpperCase()], newTarget);\n  },\n});\n\nconsole.log(square(3), square(2, 9));\nconsole.log(calls.join(\",\"));\nconsole.log(new Loud(\"sale\").label, new Loud(\"x\") instanceof Tag);"
+    },
+    "expected": "10 5\n1,2\nSALE true"
+  }
+}

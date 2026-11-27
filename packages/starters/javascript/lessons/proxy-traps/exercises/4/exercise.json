@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const plan = Object.freeze({ seats: 4 });\n\nconst attempts = [\n  () => new Proxy(plan, { get: () => 10 }).seats,\n  () => \"seats\" in new Proxy(plan, { has: () => false }),\n  () => new Proxy({ seats: 4 }, { get: () => 10 }).seats,\n  () => new Proxy(new Map(), {}).size,\n];\n\nfor (const attempt of attempts) {\n  try {\n    console.log(attempt());\n  } catch (error) {\n    console.log(error.name);\n  }\n}"
+    },
+    "expected": "TypeError\nTypeError\n10\nTypeError"
+  }
+}

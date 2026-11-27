@@ -1,0 +1,18 @@
+{
+  "title": "Keep Every Value",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function promisifyMany(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const f = (a, cb) => cb(null, a, a * 2); return await promisifyMany(f)(3);"],"expected":[3,6]},
+      {"args":["const f = (cb) => setTimeout(cb, 5, null, \"x\", \"y\", \"z\"); return await promisifyMany(f)();"],"expected":["x","y","z"]},
+      {"args":["const f = (cb) => cb(null); return await promisifyMany(f)();"],"expected":[]},
+      {"args":["const f = (cb) => cb(new Error(\"broken\")); return await promisifyMany(f)().catch((e) => e.message);"],"expected":"broken"},
+      {"args":["const f = (a, b, cb) => cb(null, a + b); return await promisifyMany(f)(2, 5);"],"expected":[7]}
+    ]
+  }
+}

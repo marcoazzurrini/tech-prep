@@ -1,0 +1,18 @@
+{
+  "title": "Every Name, Page by Page",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function* allNames(getPage) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const out = []; for await (const n of allNames(async (i) => [[\"a\", \"b\"], [\"c\"]][i] ?? [])) out.push(n); return out;"],"expected":["a","b","c"]},
+      {"args":["const out = []; for await (const n of allNames(async () => [])) out.push(n); return out;"],"expected":[]},
+      {"args":["const s = []; const g = allNames(async (i) => (s.push(i), i < 3 ? [\"x\", \"y\"] : [])); await g.next(); await g.next(); return s;"],"expected":[0]},
+      {"args":["const g = allNames(async (i) => (i < 1 ? [\"solo\"] : [])); return [(await g.next()).done, (await g.next()).done];"],"expected":[false,true]},
+      {"args":["const p = [[\"a\"], [], [\"c\"]]; const out = []; for await (const n of allNames(async (i) => p[i])) out.push(n); return out;"],"expected":["a"]}
+    ]
+  }
+}

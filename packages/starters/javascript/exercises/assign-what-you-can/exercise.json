@@ -1,0 +1,20 @@
+{
+  "title": "Assign What You Can",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function assignWhatYouCan(target, source) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = {}; assignWhatYouCan(t, { a: 1, b: 2 }); return t;"],"expected":{"a":1,"b":2}},
+      {"args":["return assignWhatYouCan(Object.freeze({ a: 0 }), { a: 1, b: 2 });"],"expected":["a","b"]},
+      {"args":["const s = Symbol(\"s\"); const t = {}; assignWhatYouCan(t, { [s]: 5 }); return t[s];"],"expected":5},
+      {"args":["const t = Object.defineProperty({}, \"id\", { value: 1 }); return [assignWhatYouCan(t, { id: 2, n: 3 }), t.n];"],"expected":[["id"],3]},
+      {"args":["const src = Object.defineProperty({ a: 1 }, \"h\", { value: 2 }); const t = {}; assignWhatYouCan(t, src); return Object.keys(t);"],"expected":["a"]},
+      {"args":["const s = Symbol(\"s\"); return assignWhatYouCan(Object.preventExtensions({}), { [s]: 1 }).map(String);"],"expected":["Symbol(s)"]},
+      {"args":["const t = { set v(x) { this.got = x; } }; assignWhatYouCan(t, { v: 9 }); return t.got;"],"expected":9}
+    ]
+  }
+}

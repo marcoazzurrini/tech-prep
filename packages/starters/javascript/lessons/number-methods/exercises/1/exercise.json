@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const total = 19.999;\n\nconsole.log(total.toFixed(2));\nconsole.log(total.toFixed(0));\nconsole.log(typeof total.toFixed(1));\nconsole.log((0.5).toFixed(0) + 1);"
+    },
+    "expected": "20.00\n20\nstring\n11"
+  }
+}

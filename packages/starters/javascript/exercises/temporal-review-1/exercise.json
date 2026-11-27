@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const start = Temporal.PlainDate.from(\"2025-01-31\");\nconst once = start.add({ months: 1 });\n\nconsole.log(once.toString());\nconsole.log(once.add({ months: 1 }).toString());\nconsole.log(start.add({ months: 2 }).toString());\nconsole.log(Temporal.PlainDate.compare(once, start));\nconsole.log(start.until(once).days);\nconsole.log(Temporal.Duration.from({ minutes: 90 }).total(\"hours\"));"
+    },
+    "expected": "2025-02-28\n2025-03-28\n2025-03-31\n1\n28\n1.5"
+  }
+}

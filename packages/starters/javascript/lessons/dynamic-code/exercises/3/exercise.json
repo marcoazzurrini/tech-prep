@@ -1,0 +1,19 @@
+{
+  "title": "Build a Function",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeFunction(params, body) {\n  return new Function(body);\n}\n"
+    },
+    "tests": [
+      {"args":["return makeFunction([\"a\", \"b\"], \"return a * b;\")(3, 4);"],"expected":12},
+      {"args":["return makeFunction([], \"return 7;\")();"],"expected":7},
+      {"args":["return makeFunction([], \"return this === undefined;\")();"],"expected":true},
+      {"args":["try { makeFunction([], \"notDeclared = 1;\")(); return \"no error\"; } catch (e) { return e.name; }"],"expected":"ReferenceError"},
+      {"args":["return makeFunction([\"x\"], \"return typeof x;\")(\"s\");"],"expected":"string"},
+      {"args":["return makeFunction([\"n\"], \"return n + 1;\").length;"],"expected":1}
+    ]
+  }
+}

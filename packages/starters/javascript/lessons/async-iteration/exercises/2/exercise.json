@@ -1,0 +1,18 @@
+{
+  "title": "A List to Await",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fromList(values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const out = []; for await (const v of fromList([1, 2])) out.push(v); return out;"],"expected":[1,2]},
+      {"args":["return typeof fromList([])[Symbol.asyncIterator];"],"expected":"function"},
+      {"args":["const it = fromList([\"a\"])[Symbol.asyncIterator](); const p = it.next(); return [p instanceof Promise, await p];"],"expected":[true,{"value":"a","done":false}]},
+      {"args":["const it = fromList([])[Symbol.asyncIterator](); return (await it.next()).done;"],"expected":true},
+      {"args":["const l = fromList([7]); const out = []; for await (const v of l) out.push(v); for await (const v of l) out.push(v); return out;"],"expected":[7,7]}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Hex Code",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "toHexCode"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toHexCode(n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[255],"expected":"0x00FF"},
+      {"args":[4096],"expected":"0x1000"},
+      {"args":[0],"expected":"0x0000"},
+      {"args":[48879],"expected":"0xBEEF"},
+      {"args":[10],"expected":"0x000A"},
+      {"args":[65535],"expected":"0xFFFF"}
+    ]
+  }
+}

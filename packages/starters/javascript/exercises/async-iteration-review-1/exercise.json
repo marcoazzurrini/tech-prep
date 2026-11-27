@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function* feed() {\n  try {\n    yield \"news\";\n    yield \"sport\";\n    yield \"weather\";\n  } finally {\n    console.log(\"feed closed\");\n  }\n}\n\nasync function read() {\n  for await (const item of feed()) {\n    if (item === \"sport\") break;\n    console.log(item);\n  }\n  console.log(\"after loop\");\n}\n\nread();\nconsole.log(\"reading\");"
+    },
+    "expected": "reading\nnews\nfeed closed\nafter loop"
+  }
+}
