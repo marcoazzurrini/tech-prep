@@ -1,0 +1,21 @@
+{
+  "title": "Every Nth Item",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "everyNth"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function everyNth(list, n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[1,2,3,4,5,6],2],"expected":[2,4,6]},
+      {"args":[["a","b","c"],1],"expected":["a","b","c"]},
+      {"args":[[1,2],3],"expected":[]},
+      {"args":[[],2],"expected":[]},
+      {"args":[[1,2,3,4,5,6,7],3],"expected":[3,6]},
+      {"args":[["x","y","z"],3],"expected":["z"]}
+    ]
+  }
+}

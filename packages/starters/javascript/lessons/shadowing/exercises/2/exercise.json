@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const lamp = {\n  level: 1,\n  brighter() {\n    this.level *= 2;\n  },\n};\n\nconst desk = Object.create(lamp);\nconst hall = Object.create(lamp);\n\ndesk.brighter();\ndesk.brighter();\nlamp.brighter();\nhall.brighter();\n\nconsole.log(desk.level, hall.level, lamp.level);\nconsole.log(Object.hasOwn(hall, \"level\"));"
+    },
+    "expected": "4 4 2\ntrue"
+  }
+}

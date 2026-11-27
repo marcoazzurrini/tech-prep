@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Order(id) {\n  this.id = id;\n  Order.made += 1;\n}\n\nOrder.made = 0;\nOrder.prototype.made = 100;\n\nconst a = new Order(1);\nconst b = new Order(2);\n\nconsole.log(Order.made, a.made, b.id);\nconsole.log(Object.hasOwn(a, \"made\"), Object.hasOwn(Order, \"made\"));\nconsole.log(Order.prototype.constructor.made, Order.length);\nconsole.log(a.length, Order.prototype.id);"
+    },
+    "expected": "2 100 2\nfalse true\n2 1\nundefined undefined"
+  }
+}

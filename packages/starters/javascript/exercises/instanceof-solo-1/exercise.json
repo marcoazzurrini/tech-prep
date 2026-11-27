@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Song() {}\nfunction Album() {}\n\nconst song = new Song();\nAlbum.prototype = Song.prototype;\n\nconsole.log(song instanceof Song, song instanceof Album);\nconsole.log(new Album() instanceof Song);\nconsole.log(new Album().constructor === Album);"
+    },
+    "expected": "true true\ntrue\nfalse"
+  }
+}

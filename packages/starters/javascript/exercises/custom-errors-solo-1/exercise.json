@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class AppError extends Error {\n  constructor(message, options) {\n    super(message, options);\n    this.name = \"AppError\";\n  }\n}\n\nclass DbError extends AppError {}\n\nconst low = new RangeError(\"pool is full\");\nconst error = new DbError(\"query failed\", { cause: low });\n\nconsole.log(error.name);\nconsole.log(error instanceof AppError, error instanceof RangeError);\nconsole.log(error.cause instanceof RangeError);\nconsole.log(String(error));"
+    },
+    "expected": "AppError\ntrue false\ntrue\nAppError: query failed"
+  }
+}

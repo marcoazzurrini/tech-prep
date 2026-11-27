@@ -1,0 +1,20 @@
+{
+  "title": "Final Balance",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "finalBalance"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function finalBalance(start, transactions) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[10,[{"type":"deposit","amount":5},{"type":"withdraw","amount":12}]],"expected":3},
+      {"args":[10,[]],"expected":10},
+      {"args":[5,[{"type":"withdraw","amount":9},{"type":"deposit","amount":1}]],"expected":6},
+      {"args":[0,[{"type":"deposit","amount":3},{"type":"withdraw","amount":3}]],"expected":0},
+      {"args":[20,[{"type":"withdraw","amount":5},{"type":"withdraw","amount":20},{"type":"withdraw","amount":15}]],"expected":0}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "One Shared Method",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Rect(width, height) {\n  this.width = width;\n  this.height = height;\n}\n\n// add area() here\n"
+    },
+    "tests": [
+      {"args":["return new Rect(2, 3).area();"],"expected":6},
+      {"args":["const r = new Rect(5, 5); r.width = 2; return r.area();"],"expected":10},
+      {"args":["return typeof Rect.prototype.area;"],"expected":"function"},
+      {"args":["return Object.hasOwn(new Rect(1, 1), \"area\");"],"expected":false},
+      {"args":["return new Rect(1, 2).area === new Rect(3, 4).area;"],"expected":true}
+    ]
+  }
+}

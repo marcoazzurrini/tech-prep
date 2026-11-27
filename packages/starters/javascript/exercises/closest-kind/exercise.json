@@ -1,0 +1,20 @@
+{
+  "title": "Closest Kind",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function closestKind(value, constructors) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function Cat() {} return closestKind(new Cat(), [Object, Cat]);"],"expected":"Cat"},
+      {"args":["return closestKind([1, 2], [Object, Array]);"],"expected":"Array"},
+      {"args":["return [closestKind({}, [Array, Object]), closestKind({}, [Array])];"],"expected":["Object",null]},
+      {"args":["return closestKind(Object.create(null), [Object]);"],"expected":null},
+      {"args":["return [closestKind(5, [Number, Object]), closestKind(null, [Object])];"],"expected":[null,null]},
+      {"args":["function Cat() {} const tom = new Cat(); return closestKind(Object.create(tom), [Object, Cat]);"],"expected":"Cat"},
+      {"args":["function A() {} function B() {} B.prototype = Object.create(A.prototype); return closestKind(new B(), [A, Object, B]);"],"expected":"B"}
+    ]
+  }
+}

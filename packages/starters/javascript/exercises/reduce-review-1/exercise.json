@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seen = [];\nconst out = [10, 20, 30].reduce((acc, n, i) => {\n  seen.push(i);\n  return acc + n;\n});\nconsole.log(out, seen.join(\",\"));\n\nconsole.log([{ n: 1 }].reduce((acc, item) => acc + item.n).n);\nconsole.log(typeof [{ n: 1 }, { n: 2 }].reduce((acc, item) => acc + item.n));\n\nconst shared = [];\nconst result = [1].reduce((list, n) => { list.push(n); return list; }, shared);\nconsole.log(result === shared, shared.length);"
+    },
+    "expected": "60 1,2\n1\nstring\ntrue 1"
+  }
+}

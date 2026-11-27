@@ -1,0 +1,20 @@
+{
+  "title": "Labels for Paid Orders",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "shippingLabels"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function shippingLabels(orders) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"id":1,"paid":true,"address":{"city":"Turin"}},{"id":2,"paid":false,"address":{"city":"Oslo"}}]],"expected":["#1 to TURIN"]},
+      {"args":[[{"id":3,"paid":true},{"id":4,"paid":true,"address":null}]],"expected":[]},
+      {"args":[[{"id":5,"paid":true,"address":{}},{"id":6,"paid":true,"address":{"city":""}}]],"expected":[]},
+      {"args":[[{"id":7,"paid":true,"address":{"city":"lima"}},{"id":8,"paid":true,"address":{"city":"Rome"}}]],"expected":["#7 to LIMA","#8 to ROME"]},
+      {"args":[[]],"expected":[]}
+    ]
+  }
+}

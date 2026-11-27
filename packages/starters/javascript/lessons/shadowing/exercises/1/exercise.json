@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const plan = { seats: 5, storage: \"10 GB\" };\nconst team = Object.create(plan);\nconst solo = Object.create(plan);\n\nteam.seats = 20;\nsolo.storage = \"1 GB\";\ndelete solo.seats;\n\nconsole.log(team.seats, solo.seats);\nconsole.log(team.storage, solo.storage);\nconsole.log(plan.seats, plan.storage);\n\ndelete solo.storage;\nconsole.log(solo.storage);"
+    },
+    "expected": "20 5\n10 GB 1 GB\n5 10 GB\n10 GB"
+  }
+}

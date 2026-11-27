@@ -1,0 +1,20 @@
+{
+  "title": "With a Temporary Setting",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withSetting(settings, key, value, task) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = { theme: \"light\" }; const seen = withSetting(s, \"theme\", \"dark\", () => s.theme); return [seen, s.theme];"],"expected":["dark","light"]},
+      {"args":["const s = { theme: \"light\" }; try { withSetting(s, \"theme\", \"dark\", () => { throw new Error(\"x\"); }); } catch {} return s;"],"expected":{"theme":"light"}},
+      {"args":["try { withSetting({}, \"debug\", true, () => { throw new Error(\"oops\"); }); } catch (e) { return e.message; }"],"expected":"oops"},
+      {"args":["const s = {}; withSetting(s, \"debug\", true, () => 1); return Object.hasOwn(s, \"debug\");"],"expected":false},
+      {"args":["const s = {}; try { withSetting(s, \"debug\", true, () => { throw 1; }); } catch {} return Object.keys(s);"],"expected":[]},
+      {"args":["const s = { size: undefined }; withSetting(s, \"size\", 5, () => 0); return Object.hasOwn(s, \"size\");"],"expected":true},
+      {"args":["const s = { lang: \"en\" }; return withSetting(s, \"lang\", \"fr\", () => withSetting(s, \"lang\", \"de\", () => s.lang) + s.lang);"],"expected":"defr"}
+    ]
+  }
+}

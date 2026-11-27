@@ -1,0 +1,21 @@
+{
+  "title": "Longest Streak",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "longestStreak"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function longestStreak(log, goal) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"day":"Mon","minutes":30},{"day":"Tue","minutes":40},{"day":"Wed","minutes":5},{"day":"Thu","minutes":35}],30],"expected":2},
+      {"args":[[],10],"expected":0},
+      {"args":[[{"day":"Mon","minutes":5},{"day":"Tue","minutes":0}],10],"expected":0},
+      {"args":[[{"day":"Mon","minutes":10},{"day":"Tue","minutes":0},{"day":"Wed","minutes":12},{"day":"Thu","minutes":15},{"day":"Fri","minutes":10}],10],"expected":3},
+      {"args":[[{"day":"Mon","minutes":60}],60],"expected":1},
+      {"args":[[{"day":"Mon","minutes":20},{"day":"Tue","minutes":20},{"day":"Wed","minutes":0},{"day":"Thu","minutes":20}],0],"expected":4}
+    ]
+  }
+}

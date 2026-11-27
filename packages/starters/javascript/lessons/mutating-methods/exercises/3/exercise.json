@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ranks = [\"gold\", \"silver\", \"bronze\"];\nconst copy = ranks;\nconst flipped = copy.reverse();\nflipped.fill(\"none\", 1);\n\nconsole.log(ranks.join(\",\"));\nconsole.log(flipped === ranks);\nconsole.log(ranks.length);"
+    },
+    "expected": "bronze,none,none\ntrue\n3"
+  }
+}

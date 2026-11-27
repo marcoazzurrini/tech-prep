@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Locker {\n  #code;\n\n  constructor(code) {\n    this._owner = \"Ada\";\n    this.#code = code;\n  }\n\n  open(code) {\n    return code === this.#code;\n  }\n}\n\nconst locker = new Locker(42);\n\nlocker._owner = \"Leo\";\nlocker[\"#code\"] = 0;\n\nconsole.log(locker.open(0));\nconsole.log(locker.open(42));\nconsole.log(Object.keys(locker).join(\",\"));\nconsole.log(JSON.stringify(locker));"
+    },
+    "expected": "false\ntrue\n_owner,#code\n{\"_owner\":\"Leo\",\"#code\":0}"
+  }
+}

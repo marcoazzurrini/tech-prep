@@ -1,0 +1,22 @@
+{
+  "title": "Cleanup Stack",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeStack() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const log = []; { using s = makeStack(); s.defer(() => log.push(1)); s.defer(() => log.push(2)); } return log;"],"expected":[2,1]},
+      {"args":["const log = []; const s = makeStack(); s.defer(() => log.push(\"a\")); s[Symbol.dispose](); s[Symbol.dispose](); return log;"],"expected":["a"]},
+      {"args":["const log = []; try { using s = makeStack(); s.defer(() => log.push(\"x\")); throw 1; } catch { log.push(\"caught\"); } return log;"],"expected":["x","caught"]},
+      {"args":["const log = []; const s = makeStack(); s.defer(() => log.push(\"a\")); s.defer(() => log.push(\"b\")); return log;"],"expected":[]},
+      {"args":["const s = makeStack(); s.defer(() => { throw new Error(\"bad\"); }); try { s[Symbol.dispose](); } catch (e) { return e.message; }"],"expected":"bad"},
+      {"args":["const log = []; try { using s = makeStack(); s.defer(() => log.push(1)); s.defer(() => { throw 0; }); } catch {} return log;"],"expected":[1]},
+      {"args":["try { using s = makeStack(); s.defer(() => { throw 1; }); s.defer(() => { throw 2; }); } catch (e) { return e; }"],"expected":2},
+      {"args":["const s = makeStack(); s[Symbol.dispose](); return \"nothing to clean\";"],"expected":"nothing to clean"},
+      {"args":["const log = []; { using s = makeStack(); s.defer(() => log.push(1)); log.push(0); s.defer(() => log.push(2)); } return log;"],"expected":[0,2,1]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const animal = { legs: 4, sound: \"...\" };\nconst dog = Object.create(animal);\ndog.sound = \"woof\";\nconst puppy = Object.create(dog);\npuppy.age = 1;\n\nconsole.log(Object.keys(puppy).join(\",\"));\nconsole.log(\"legs\" in puppy, Object.hasOwn(puppy, \"sound\"));\n\nconst keys = [];\nfor (const key in puppy) {\n  keys.push(key);\n}\n\nconsole.log(keys.join(\",\"));\nconsole.log(\"toString\" in puppy, keys.includes(\"toString\"));"
+    },
+    "expected": "age\ntrue false\nage,sound,legs\ntrue false"
+  }
+}

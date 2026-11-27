@@ -1,0 +1,21 @@
+{
+  "title": "Retry Transient Failures",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class TransientError extends Error {}\nexport class RetryError extends Error {}\n\nexport function retry(task, times) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return retry(() => \"ok\", 3);"],"expected":"ok"},
+      {"args":["let n = 0; return retry(() => { n += 1; if (n < 3) throw new TransientError(\"busy\"); return n; }, 5);"],"expected":3},
+      {"args":["let n = 0; try { retry(() => { n += 1; throw new TypeError(\"bug\"); }, 5); } catch (e) { return [e.name, n]; }"],"expected":["TypeError",1]},
+      {"args":["try { retry(() => { throw new TransientError(\"busy\"); }, 2); } catch (e) { return [e.name, e.attempts, e.message]; }"],"expected":["RetryError",2,"failed after 2 attempts"]},
+      {"args":["let n = 0; try { retry(() => { n += 1; throw new TransientError(\"try \" + n); }, 3); } catch (e) { return e.cause.message; }"],"expected":"try 3"},
+      {"args":["const e = new RetryError(4, { cause: 1 }); return [e instanceof Error, String(e), e.attempts, e.cause];"],"expected":[true,"RetryError: failed after 4 attempts",4,1]},
+      {"args":["class Busy extends TransientError {} let n = 0; return retry(() => { n += 1; if (n === 1) throw new Busy(\"b\"); return n; }, 2);"],"expected":2},
+      {"args":["let n = 0; try { retry(() => { n += 1; throw new TransientError(\"x\"); }, 4); } catch (e) { return n; }"],"expected":4}
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Wallet Balance",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Wallet(start) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const w = new Wallet(10); w.deposit(5); return w.balance();"],"expected":15},
+      {"args":["const w = new Wallet(10); return [w.withdraw(4), w.balance()];"],"expected":[6,6]},
+      {"args":["const a = new Wallet(1); const b = new Wallet(2); a.deposit(10); return [a.balance(), b.balance()];"],"expected":[11,2]},
+      {"args":["const w = new Wallet(5); try { w.withdraw(9); } catch (e) { return [e.name, w.balance()]; } return \"no error\";"],"expected":["RangeError",5]},
+      {"args":["return JSON.stringify(new Wallet(10));"],"expected":"{}"},
+      {"args":["const { deposit, balance } = new Wallet(1); deposit(2); return balance();"],"expected":3}
+    ]
+  }
+}

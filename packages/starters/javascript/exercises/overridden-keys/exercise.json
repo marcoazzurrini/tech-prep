@@ -1,0 +1,19 @@
+{
+  "title": "Overridden Keys",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function overriddenKeys(obj) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const base = { a: 1, b: 2 }; const obj = Object.create(base); obj.a = 5; obj.c = 3; return overriddenKeys(obj);"],"expected":["a"]},
+      {"args":["return overriddenKeys({ name: \"Ada\", toString: 1 });"],"expected":["toString"]},
+      {"args":["const top = { x: 1 }; const mid = Object.create(top); const obj = Object.create(mid); obj.x = 2; return overriddenKeys(obj);"],"expected":["x"]},
+      {"args":["return overriddenKeys(Object.create({ a: 1 }));"],"expected":[]},
+      {"args":["const obj = Object.create({ a: 1 }); obj.a = undefined; obj.b = 2; return overriddenKeys(obj);"],"expected":["a"]},
+      {"args":["const obj = Object.create({ a: 1, b: 2 }); obj.b = 0; obj.a = 0; return overriddenKeys(obj);"],"expected":["b","a"]}
+    ]
+  }
+}

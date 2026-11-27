@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Cup() {}\nCup.prototype.size = \"small\";\n\nconst first = new Cup();\n\nCup.prototype.size = \"medium\";\nCup.prototype = { size: \"large\" };\n\nconst second = new Cup();\nCup.prototype.size = \"huge\";\n\nconsole.log(first.size, second.size);\nconsole.log(first.constructor === Cup, second.constructor === Cup);\nconsole.log(Object.getPrototypeOf(second) === Cup.prototype);"
+    },
+    "expected": "medium huge\ntrue false\ntrue"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Combination Locker",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Locker {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const l = new Locker(1234); return [l.open(1111), l.open(1234), l.isBlocked()];"],"expected":[false,true,false]},
+      {"args":["const l = new Locker(7); l.open(1); l.open(2); l.open(3); return [l.isBlocked(), l.open(7)];"],"expected":[true,false]},
+      {"args":["const l = new Locker(7); l.open(1); l.open(2); l.open(7); l.open(3); l.open(4); return [l.isBlocked(), l.open(7)];"],"expected":[false,true]},
+      {"args":["const l = new Locker(7); return [l.changeCode(5, 9), l.changeCode(7, 9), l.open(7), l.open(9)];"],"expected":[false,true,false,true]},
+      {"args":["const l = new Locker(7); [1, 2, 3].forEach((g) => l.open(g)); return [l.changeCode(7, 8), l.open(8)];"],"expected":[false,false]},
+      {"args":["const l = new Locker(7); return [Object.keys(l), JSON.stringify(l), \"code\" in l];"],"expected":[[],"{}",false]}
+    ]
+  }
+}

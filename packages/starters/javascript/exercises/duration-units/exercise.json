@@ -1,0 +1,20 @@
+{
+  "title": "Duration Units",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Duration {\n  constructor(seconds) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const d = new Duration(150); return [d.seconds, d.minutes, d.label];"],"expected":[150,2.5,"2:30"]},
+      {"args":["const d = new Duration(0); d.minutes = 1.5; return [d.seconds, d.label];"],"expected":[90,"1:30"]},
+      {"args":["const d = new Duration(10); try { d.seconds = -1; } catch (e) { return [e.name, d.seconds]; } return \"no error\";"],"expected":["RangeError",10]},
+      {"args":["try { new Duration(2.5); return \"made\"; } catch (e) { return e.name; }"],"expected":"RangeError"},
+      {"args":["const d = new Duration(5); try { d.minutes = 0.01; } catch (e) { return [e.name, d.seconds]; } return \"no error\";"],"expected":["RangeError",5]},
+      {"args":["const d = new Duration(3605); return [d.label, new Duration(9).label, Object.keys(d)];"],"expected":["60:05","0:09",[]]},
+      {"args":["const label = Object.getOwnPropertyDescriptor(Duration.prototype, \"label\"); return [typeof label.get, label.set === undefined];"],"expected":["function",true]}
+    ]
+  }
+}

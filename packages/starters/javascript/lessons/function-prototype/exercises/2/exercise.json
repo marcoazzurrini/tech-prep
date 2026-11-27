@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Song(title) {\n  this.title = title;\n}\n\nSong.play = function () {\n  return \"on the function\";\n};\n\nSong.prototype.play = function () {\n  return \"Playing \" + this.title;\n};\n\nconst song = new Song(\"Blue\");\n\nconsole.log(song.play(), Song.play());\nconsole.log(Object.getPrototypeOf(song) === Song.prototype);\nconsole.log(Object.getPrototypeOf(Song) === Song.prototype);\nconsole.log(typeof song.prototype, typeof Song.prototype);"
+    },
+    "expected": "Playing Blue on the function\ntrue\nfalse\nundefined object"
+  }
+}

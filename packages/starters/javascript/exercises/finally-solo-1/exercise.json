@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "for (const n of [1, 2, 3, 4]) {\n  try {\n    if (n === 2) {\n      continue;\n    }\n    if (n === 4) {\n      break;\n    }\n    console.log(\"try \" + n);\n  } finally {\n    console.log(\"finally \" + n);\n  }\n}"
+    },
+    "expected": "try 1\nfinally 1\nfinally 2\ntry 3\nfinally 3\nfinally 4"
+  }
+}

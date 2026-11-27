@@ -1,0 +1,18 @@
+{
+  "title": "Copy of the Same Kind",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Track(title) {\n  this.title = title;\n}\n\nTrack.prototype = {\n  label() {\n    return \"Track: \" + this.title;\n  },\n};\n\nexport function copyWithTitle(item, title) {\n  return new item.constructor(title);\n}\n"
+    },
+    "tests": [
+      {"args":["return copyWithTitle(new Track(\"A\"), \"B\").label();"],"expected":"Track: B"},
+      {"args":["return new Track(\"A\").constructor === Track;"],"expected":true},
+      {"args":["return Object.getPrototypeOf(copyWithTitle(new Track(\"A\"), \"B\")) === Track.prototype;"],"expected":true},
+      {"args":["return String(copyWithTitle(new Track(\"A\"), \"B\").title);"],"expected":"B"},
+      {"args":["return new Track(\"Hey\").label();"],"expected":"Track: Hey"}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "The First Coupon",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Coupon(code) {\n  this.code = code;\n}\n\nexport const welcome = new Coupon(\"HELLO\");\n\nCoupon.prototype = {\n  describe() {\n    return \"Coupon \" + this.code;\n  },\n};\n"
+    },
+    "tests": [
+      {"args":["return welcome instanceof Coupon;"],"expected":true},
+      {"args":["return welcome.describe();"],"expected":"Coupon HELLO"},
+      {"args":["return new Coupon(\"SAVE\") instanceof Coupon;"],"expected":true},
+      {"args":["return new Coupon(\"SAVE\").describe();"],"expected":"Coupon SAVE"},
+      {"args":["return welcome.constructor === Coupon;"],"expected":true}
+    ]
+  }
+}

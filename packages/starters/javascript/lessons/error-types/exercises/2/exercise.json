@@ -1,0 +1,19 @@
+{
+  "title": "Error to Plain Object",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toPlain(error) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return toPlain(new TypeError(\"bad type\"));"],"expected":{"name":"TypeError","message":"bad type"}},
+      {"args":["return toPlain(new Error(\"save failed\", { cause: new RangeError(\"too big\") }));"],"expected":{"name":"Error","message":"save failed","cause":{"name":"RangeError","message":"too big"}}},
+      {"args":["return toPlain(new Error(\"\"));"],"expected":{"name":"Error","message":""}},
+      {"args":["const e = new Error(\"full\"); e.name = \"DiskError\"; return toPlain(e);"],"expected":{"name":"DiskError","message":"full"}},
+      {"args":["return toPlain(new Error(\"a\", { cause: new Error(\"b\", { cause: new SyntaxError(\"c\") }) }));"],"expected":{"name":"Error","message":"a","cause":{"name":"Error","message":"b","cause":{"name":"SyntaxError","message":"c"}}}},
+      {"args":["return toPlain(new Error(\"not found\", { cause: 404 }));"],"expected":{"name":"Error","message":"not found","cause":404}}
+    ]
+  }
+}

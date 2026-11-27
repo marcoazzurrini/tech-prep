@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function open(name) {\n  console.log(\"open \" + name);\n  return {\n    [Symbol.dispose]() {\n      console.log(\"close \" + name);\n    },\n  };\n}\n\ntry {\n  using first = open(\"first\");\n  using nothing = null;\n  using second = { name: \"second\" };\n  console.log(\"body\");\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "open first\nclose first\nTypeError"
+  }
+}

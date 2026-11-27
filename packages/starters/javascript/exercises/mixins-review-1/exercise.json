@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let reads = 0;\n\nconst extras = {\n  wave() { return \"wave\"; },\n  get id() { reads += 1; return reads; },\n};\n\nclass Host {\n  greet() { return \"hello\"; }\n}\n\nObject.assign(Host.prototype, extras);\n\nconst keys = [];\nfor (const key in new Host()) keys.push(key);\n\nconsole.log(keys.join(\",\"));\nconsole.log(new Host().id + new Host().id);\nconsole.log(reads);\nconsole.log(Host.prototype.wave === extras.wave);"
+    },
+    "expected": "wave,id\n2\n1\ntrue"
+  }
+}

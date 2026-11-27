@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const nums = [1, 2, 3];\nconsole.log(nums.reduce((a, b) => a + b));\nconsole.log(nums.reduce((a, b) => a + b, \"0\"));\nconsole.log([[1, 2], [3]].reduce((all, part) => all.concat(part)).length);\n\ntry {\n  console.log([].reduce((a, b) => a + b, []).length);\n  console.log([].reduce((a, b) => a + b));\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "6\n0123\n3\n0\nTypeError"
+  }
+}

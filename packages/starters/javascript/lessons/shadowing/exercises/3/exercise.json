@@ -1,0 +1,18 @@
+{
+  "title": "Tags of One Note",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const note = {\n  tags: [],\n  addTag(tag) {\n    this.tags.push(tag);\n    return this.tags.length;\n  },\n};\n"
+    },
+    "tests": [
+      {"args":["const a = Object.create(note); const b = Object.create(note); a.addTag(\"work\"); return b.tags.length;"],"expected":0},
+      {"args":["const a = Object.create(note); a.addTag(\"x\"); return a.addTag(\"y\");"],"expected":2},
+      {"args":["const a = Object.create(note); a.addTag(\"work\"); return Object.hasOwn(a, \"tags\");"],"expected":true},
+      {"args":["const a = Object.create(note); a.addTag(\"x\"); return note.tags.length;"],"expected":0},
+      {"args":["const a = Object.create(note); a.addTag(\"x\"); a.addTag(\"y\"); return a.tags;"],"expected":["x","y"]}
+    ]
+  }
+}

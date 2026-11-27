@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const plain = {};\nconst bare = Object.create(null);\nconst list = [\"a\"];\n\nconsole.log(plain instanceof Object, bare instanceof Object);\nconsole.log(list instanceof Array, list instanceof Object);\nconsole.log(\"a\" instanceof String, 0 instanceof Object);\nconsole.log(Object.create(list) instanceof Array);"
+    },
+    "expected": "true false\ntrue true\nfalse false\ntrue"
+  }
+}

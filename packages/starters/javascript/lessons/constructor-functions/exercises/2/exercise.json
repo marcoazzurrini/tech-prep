@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Box(size) {\n  this.size = size;\n  if (size > 10) {\n    return { size: 10 };\n  }\n  return \"small\";\n}\n\nconst a = new Box(3);\nconst b = new Box(30);\n\nconsole.log(a.size, b.size);\nconsole.log(typeof a);\nconsole.log(Object.getPrototypeOf(a) === Box.prototype, Object.getPrototypeOf(b) === Box.prototype);"
+    },
+    "expected": "3 10\nobject\ntrue false"
+  }
+}

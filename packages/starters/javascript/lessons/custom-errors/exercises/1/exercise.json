@@ -1,0 +1,19 @@
+{
+  "title": "Timeout Error",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class TimeoutError {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const e = new TimeoutError(500); return [e.name, e.message, e.ms];"],"expected":["TimeoutError","Timed out after 500 ms",500]},
+      {"args":["return new TimeoutError(10) instanceof Error;"],"expected":true},
+      {"args":["return String(new TimeoutError(20));"],"expected":"TimeoutError: Timed out after 20 ms"},
+      {"args":["try { throw new TimeoutError(1); } catch (e) { return e instanceof TimeoutError; }"],"expected":true},
+      {"args":["return Object.getPrototypeOf(TimeoutError) === Error;"],"expected":true},
+      {"args":["return new TimeoutError(30).ms + new TimeoutError(12).ms;"],"expected":42}
+    ]
+  }
+}

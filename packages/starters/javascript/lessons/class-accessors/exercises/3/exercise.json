@@ -1,0 +1,18 @@
+{
+  "title": "Unit Settings",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Units {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [Units.default, Units.all];"],"expected":["cm",["mm","cm","m"]]},
+      {"args":["Units.all.push(\"km\"); return Units.all.length;"],"expected":3},
+      {"args":["Units.default = \"m\"; const chosen = Units.default; Units.default = \"cm\"; return chosen;"],"expected":"m"},
+      {"args":["try { Units.default = \"km\"; } catch (e) { return [e.name, Units.default]; } return \"no error\";"],"expected":["RangeError","cm"]},
+      {"args":["return [Object.keys(Units), Object.hasOwn(Units, \"default\"), Object.hasOwn(Units, \"all\")];"],"expected":[[],true,true]}
+    ]
+  }
+}

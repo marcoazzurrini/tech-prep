@@ -1,0 +1,19 @@
+{
+  "title": "Comparable Values",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const comparable = {\n  // your code\n};\n\nexport class Version {\n  constructor(major, minor) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["return [new Version(1, 2).lessThan(new Version(1, 10)), new Version(2, 0).greaterThan(new Version(1, 9))];"],"expected":[true,true]},
+      {"args":["return [new Version(1, 2).equals(new Version(1, 2)), new Version(1, 2).equals(new Version(2, 1))];"],"expected":[true,false]},
+      {"args":["const v = (a, b) => new Version(a, b); return [v(1, 5).between(v(1, 0), v(2, 0)), v(3, 0).between(v(1, 0), v(2, 0))];"],"expected":[true,false]},
+      {"args":["const v = (a, b) => new Version(a, b); return [v(1, 0).between(v(1, 0), v(1, 0)), v(1, 3).lessThan(v(1, 3))];"],"expected":[true,false]},
+      {"args":["const a = { n: 2, compareTo(o) { return this.n - o.n; }, ...comparable }; return [a.lessThan({ n: 3 }), a.equals({ n: 2 })];"],"expected":[true,true]},
+      {"args":["return [new Version(1, 0).lessThan === comparable.lessThan, Object.hasOwn(new Version(1, 0), \"lessThan\")];"],"expected":[true,false]}
+    ]
+  }
+}

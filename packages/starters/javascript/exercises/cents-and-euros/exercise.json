@@ -1,0 +1,21 @@
+{
+  "title": "Cents and Euros",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Price {\n  constructor(cents) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const p = new Price(1999); return [p.cents, p.euros];"],"expected":[1999,19.99]},
+      {"args":["const p = new Price(0); p.euros = 19.99; return [p.cents, p.euros];"],"expected":[1999,19.99]},
+      {"args":["const p = new Price(0); p.euros = 1.234; return p.cents;"],"expected":123},
+      {"args":["const p = new Price(5); try { p.cents = 2.5; } catch (e) { return [e.name, p.cents]; } return \"no error\";"],"expected":["RangeError",5]},
+      {"args":["const p = new Price(5); try { p.euros = -1; } catch (e) { return [e.name, p.cents]; } return \"no error\";"],"expected":["RangeError",5]},
+      {"args":["try { new Price(-1); return \"made\"; } catch (e) { return e.name; }"],"expected":"RangeError"},
+      {"args":["return [JSON.stringify(new Price(1999)), JSON.stringify(new Price(0))];"],"expected":["{\"cents\":1999,\"euros\":19.99}","{\"cents\":0,\"euros\":0}"]},
+      {"args":["const a = Price.zero; a.cents = 50; return [Price.zero.cents, a === Price.zero, Object.keys(a)];"],"expected":[0,false,[]]}
+    ]
+  }
+}

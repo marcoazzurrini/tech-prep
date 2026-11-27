@@ -1,0 +1,19 @@
+{
+  "title": "Track a Resource",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function track(log, name) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const log = []; { using a = track(log, \"a\"); log.push(\"work\"); } return log;"],"expected":["open a","work","close a"]},
+      {"args":["const log = []; track(log, \"x\"); return log;"],"expected":["open x"]},
+      {"args":["const log = []; const r = track(log, \"x\"); r[Symbol.dispose](); return log;"],"expected":["open x","close x"]},
+      {"args":["const log = []; function job() { using r = track(log, \"job\"); log.push(\"run\"); return log.length; } return [job(), log];"],"expected":[2,["open job","run","close job"]]},
+      {"args":["return typeof track([], \"x\")[Symbol.dispose];"],"expected":"function"},
+      {"args":["const log = []; { using a = track(log, \"a\"); } { using b = track(log, \"b\"); } return log;"],"expected":["open a","close a","open b","close b"]}
+    ]
+  }
+}

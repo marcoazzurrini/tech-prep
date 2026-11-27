@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let count = 0;\n\nfunction take() {\n  try {\n    if (count === 2) {\n      throw new Error(\"empty\");\n    }\n    return count;\n  } catch {\n    return -1;\n  } finally {\n    count += 1;\n    if (count > 3) {\n      return 99;\n    }\n  }\n}\n\nconsole.log(take());\nconsole.log(take());\nconsole.log(take());\nconsole.log(take());"
+    },
+    "expected": "0\n1\n-1\n99"
+  }
+}

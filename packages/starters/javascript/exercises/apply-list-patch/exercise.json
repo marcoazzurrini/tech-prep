@@ -1,0 +1,19 @@
+{
+  "title": "Apply a Patch",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function applyPatch(list, patch) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return applyPatch([1, 2, 3], [, 20]);"],"expected":[1,20,3]},
+      {"args":["return applyPatch([\"a\", \"b\", \"c\"], [, , \"z\"]);"],"expected":["a","b","z"]},
+      {"args":["return applyPatch([\"a\", \"b\"], [undefined]).map(String);"],"expected":["undefined","b"]},
+      {"args":["const list = [1, 2]; const patch = [9, 8]; const out = applyPatch(list, patch); return [list, out];"],"expected":[[1,2],[9,8]]},
+      {"args":["return applyPatch([5, 6], []);"],"expected":[5,6]},
+      {"args":["const list = [1]; return applyPatch(list, []) === list;"],"expected":false}
+    ]
+  }
+}

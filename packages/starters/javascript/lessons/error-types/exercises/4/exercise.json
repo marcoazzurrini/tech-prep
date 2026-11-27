@@ -1,0 +1,21 @@
+{
+  "title": "Split the Bill",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function splitBill(total, people) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return splitBill(30, 3);"],"expected":10},
+      {"args":["return splitBill(10, 3);"],"expected":3.33},
+      {"args":["try { splitBill(\"30\", 3); } catch (e) { return [e instanceof TypeError, e.message.length > 0]; }"],"expected":[true,true]},
+      {"args":["try { splitBill(30, \"2\"); } catch (e) { return e instanceof TypeError; }"],"expected":true},
+      {"args":["try { splitBill(30, 0); } catch (e) { return [e instanceof RangeError, e.message.length > 0]; }"],"expected":[true,true]},
+      {"args":["try { splitBill(30, 2.5); } catch (e) { return e instanceof RangeError; }"],"expected":true},
+      {"args":["try { splitBill(30, -2); } catch (e) { return e instanceof RangeError; }"],"expected":true},
+      {"args":["return splitBill(0, 4);"],"expected":0}
+    ]
+  }
+}

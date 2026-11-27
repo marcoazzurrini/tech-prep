@@ -1,0 +1,19 @@
+{
+  "title": "Rotate a List",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function rotateRight(list, k) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return rotateRight([1, 2, 3, 4, 5], 2);"],"expected":[4,5,1,2,3]},
+      {"args":["return rotateRight([1, 2, 3], 3);"],"expected":[1,2,3]},
+      {"args":["return rotateRight([1, 2, 3], 4);"],"expected":[3,1,2]},
+      {"args":["return rotateRight([\"a\"], 0);"],"expected":["a"]},
+      {"args":["return rotateRight([], 3);"],"expected":[]},
+      {"args":["const a = [1, 2, 3]; const r = rotateRight(a, 1); return [r, a, r === a];"],"expected":[[3,1,2],[1,2,3],false]}
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Move a Card",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function moveCard(board, from, index, to) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const b = { todo: [\"a\", \"b\"], done: [] }; return moveCard(b, \"todo\", 0, \"done\");"],"expected":{"todo":["b"],"done":["a"]}},
+      {"args":["const b = { todo: [\"a\", \"b\"], done: [\"z\"] }; return moveCard(b, \"done\", 0, \"todo\");"],"expected":{"todo":["a","b","z"],"done":[]}},
+      {"args":["const b = { todo: [\"a\", \"b\"], done: [] }; moveCard(b, \"todo\", 1, \"done\"); return b;"],"expected":{"todo":["a","b"],"done":[]}},
+      {"args":["const b = { todo: [\"a\", \"b\", \"c\"] }; return moveCard(b, \"todo\", 0, \"todo\");"],"expected":{"todo":["b","c","a"]}},
+      {"args":["const b = { todo: [\"a\"], doing: [\"x\"], done: [] }; const n = moveCard(b, \"todo\", 0, \"done\"); return n.doing === b.doing;"],"expected":true},
+      {"args":["const b = { todo: [\"a\"], done: [] }; const n = moveCard(b, \"todo\", 0, \"done\"); return [n === b, n.todo === b.todo];"],"expected":[false,false]}
+    ]
+  }
+}

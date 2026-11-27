@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = [1, , 3];\nconst flipped = base.toReversed();\nconst copy = base.slice();\nconst joined = base.concat([4, [5]]);\n\nconsole.log(1 in flipped, 1 in copy);\nconsole.log(joined.length);\nconsole.log(Object.keys(base.toSpliced(0, 0)).length);\n\ntry {\n  base.with(-4, 0);\n  console.log(\"ok\");\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "true false\n5\n3\nRangeError"
+  }
+}

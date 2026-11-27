@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Lamp(colour) {\n  this.colour = colour;\n  this.on = false;\n  return colour === \"red\" ? [\"red\"] : 0;\n}\n\nconst blue = new Lamp(\"blue\");\nconst red = new Lamp(\"red\");\n\nconsole.log(blue.colour, blue.on);\nconsole.log(red.colour, red.length);\nconsole.log(new Lamp(\"blue\") === blue);"
+    },
+    "expected": "blue false\nundefined 1\nfalse"
+  }
+}

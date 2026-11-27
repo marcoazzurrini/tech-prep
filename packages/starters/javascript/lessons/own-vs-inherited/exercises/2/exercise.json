@@ -1,0 +1,18 @@
+{
+  "title": "Inherited Keys",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function inheritedKeys(obj) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const obj = Object.create({ a: 1, b: 2 }); obj.c = 3; return inheritedKeys(obj);"],"expected":["a","b"]},
+      {"args":["const obj = Object.create({ a: 1, b: 2 }); obj.a = 9; return inheritedKeys(obj);"],"expected":["b"]},
+      {"args":["return inheritedKeys({ x: 1, y: 2 });"],"expected":[]},
+      {"args":["const obj = Object.create({ city: \"Rome\" }); obj.hasOwnProperty = \"yes\"; return inheritedKeys(obj);"],"expected":["city"]},
+      {"args":["const top = { a: 1 }; const mid = Object.create(top); mid.b = 2; return inheritedKeys(Object.create(mid));"],"expected":["b","a"]}
+    ]
+  }
+}

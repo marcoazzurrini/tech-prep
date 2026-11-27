@@ -1,0 +1,19 @@
+{
+  "title": "Currency Registry",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Currency(code) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return new Currency(\"EUR\").code;"],"expected":"EUR"},
+      {"args":["return new Currency(\"USD\") === new Currency(\"USD\");"],"expected":true},
+      {"args":["return new Currency(\"GBP\") === new Currency(\"JPY\");"],"expected":false},
+      {"args":["return Object.getPrototypeOf(new Currency(\"CHF\")) === Currency.prototype;"],"expected":true},
+      {"args":["const a = new Currency(\"SEK\"); a.rate = 11; return new Currency(\"SEK\").rate;"],"expected":11},
+      {"args":["return Object.keys(new Currency(\"NOK\"));"],"expected":["code"]}
+    ]
+  }
+}

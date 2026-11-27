@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const lane = [\"a\", \"b\", \"c\", \"d\", \"e\"];\n\nfor (let i = 0; i < lane.length; i++) {\n  if (lane[i] === \"b\" || lane[i] === \"c\") lane.splice(i, 1);\n}\nconsole.log(lane.join(\"\"));\n\nconst out = lane.reverse().splice(1, 1, \"x\", \"y\");\nconsole.log(out.join(\"\"));\nconsole.log(lane.join(\"\"));\nconsole.log(lane.unshift());"
+    },
+    "expected": "acde\nd\nexyca\n5"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Real Money",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Money {\n  #cents;\n\n  constructor(cents) {\n    this.#cents = cents;\n  }\n\n  equals(other) {\n    return this.#cents === other.#cents;\n  }\n\n  static isMoney(value) {\n    return value.#cents !== undefined;\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["return [new Money(250).equals(new Money(250)), new Money(0).equals(new Money(1))];"],"expected":[true,false]},
+      {"args":["return new Money(250).equals({ cents: 250 });"],"expected":false},
+      {"args":["return [Money.isMoney(new Money(1)), Money.isMoney({ cents: 1 })];"],"expected":[true,false]},
+      {"args":["return [Money.isMoney(5), Money.isMoney(null), Money.isMoney(\"cash\"), Money.isMoney(undefined)];"],"expected":[false,false,false,false]},
+      {"args":["return [new Money(1).equals(null), new Money(1).equals(1)];"],"expected":[false,false]}
+    ]
+  }
+}

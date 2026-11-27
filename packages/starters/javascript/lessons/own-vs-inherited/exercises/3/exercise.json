@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = { plan: \"free\", seats: 1 };\nconst account = Object.create(base);\naccount.owner = \"Kim\";\naccount.seats = 3;\n\nconst copy = { ...account };\nconst saved = JSON.parse(JSON.stringify(account));\n\nconsole.log(Object.keys(copy).join(\",\"));\nconsole.log(copy.plan, saved.plan, account.plan);\nconsole.log(saved.seats, Object.getPrototypeOf(saved) === base);"
+    },
+    "expected": "owner,seats\nundefined undefined free\n3 false"
+  }
+}

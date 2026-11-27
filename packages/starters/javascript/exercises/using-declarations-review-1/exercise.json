@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const log = [];\n\nfunction hold(name) {\n  log.push(\"+\" + name);\n  return {\n    [Symbol.dispose]() {\n      log.push(\"-\" + name);\n    },\n  };\n}\n\nfunction inner() {\n  using b = hold(\"b\");\n  using c = hold(\"c\");\n  return log.length;\n}\n\nfunction outer() {\n  using a = hold(\"a\");\n  log.push(inner());\n  return log.length;\n}\n\nconsole.log(outer());\nconsole.log(log.join(\" \"));"
+    },
+    "expected": "6\n+a +b +c -c -b 3 -a"
+  }
+}

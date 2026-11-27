@@ -1,0 +1,19 @@
+{
+  "title": "Safe Replace",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function replaceAt(list, index, value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = [\"a\", \"b\", \"c\"]; return [replaceAt(a, 1, \"x\"), a];"],"expected":[["a","x","c"],["a","b","c"]]},
+      {"args":["return replaceAt([\"a\", \"b\", \"c\"], -1, \"z\");"],"expected":["a","b","z"]},
+      {"args":["const a = [1, 2]; const r = replaceAt(a, 2, 9); return [r, r === a];"],"expected":[[1,2],false]},
+      {"args":["return replaceAt([1, 2], -3, 9);"],"expected":[1,2]},
+      {"args":["return replaceAt([], 0, 1);"],"expected":[]},
+      {"args":["const a = [1, 2]; return replaceAt(a, 0, 1) === a;"],"expected":false}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const settings = { theme: \"dark\" };\n\nconst checks = [\n  () => settings.theme.toUpperCase(),\n  () => settings.font.size,\n  () => settings.theme(),\n  () => colour,\n  () => new Array(-3),\n];\n\nfor (const check of checks) {\n  try {\n    console.log(check());\n  } catch (error) {\n    console.log(error.name);\n  }\n}"
+    },
+    "expected": "DARK\nTypeError\nTypeError\nReferenceError\nRangeError"
+  }
+}

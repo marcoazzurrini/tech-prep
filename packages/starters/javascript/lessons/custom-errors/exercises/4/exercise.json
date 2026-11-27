@@ -1,0 +1,20 @@
+{
+  "title": "Handle Known Failures",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class NetworkError extends Error {}\nexport class OfflineError extends NetworkError {}\nexport class AuthError extends Error {}\n\nexport function handle(task) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return handle(() => 42);"],"expected":42},
+      {"args":["return handle(() => { throw new NetworkError(\"server down\"); });"],"expected":"retry later"},
+      {"args":["return handle(() => { throw new OfflineError(\"no wifi\"); });"],"expected":"retry later"},
+      {"args":["return handle(() => { throw new AuthError(\"no token\"); });"],"expected":"denied"},
+      {"args":["try { handle(() => { throw new TypeError(\"bug\"); }); } catch (e) { return \"thrown: \" + e.name; }"],"expected":"thrown: TypeError"},
+      {"args":["try { handle(() => { throw \"text\"; }); } catch (e) { return \"thrown: \" + e; }"],"expected":"thrown: text"},
+      {"args":["try { handle(() => { throw new Error(\"disk full\"); }); } catch (e) { return \"thrown: \" + e.message; }"],"expected":"thrown: disk full"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const shelf = [undefined, , \"jam\"];\nconsole.log(shelf.length);\nconsole.log(0 in shelf);\nconsole.log(1 in shelf);\nconsole.log(shelf[0] === shelf[1]);"
+    },
+    "expected": "3\ntrue\nfalse\ntrue"
+  }
+}
