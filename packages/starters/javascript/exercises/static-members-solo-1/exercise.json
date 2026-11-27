@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Counter {\n  static total = 0;\n\n  constructor() {\n    Counter.total += 1;\n  }\n\n  static isSelf() {\n    return this === Counter;\n  }\n}\n\nconst a = new Counter();\nconst b = new Counter();\nconsole.log(Counter.total);\nconsole.log(a.total);\nconsole.log(Counter.isSelf());\nconsole.log(typeof b.isSelf);"
+    },
+    "expected": "2\nundefined\ntrue\nundefined"
+  }
+}

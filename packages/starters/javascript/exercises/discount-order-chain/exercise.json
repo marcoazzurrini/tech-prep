@@ -1,0 +1,18 @@
+{
+  "title": "Discounted Order",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Order {\n  constructor(prices) {\n    // your code\n  }\n\n  static currency() {\n    // your code\n  }\n\n  get total() {\n    // your code\n  }\n\n  receipt() {\n    // your code\n  }\n}\n\nexport class DiscountedOrder extends Order {\n  constructor(prices, percent) {\n    // your code\n  }\n\n  static currency() {\n    // your code\n  }\n\n  get total() {\n    // your code\n  }\n\n  receipt() {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const o = new Order([20, 30]); return [o.total, o.receipt()];"],"expected":[50,"USD 50"]},
+      {"args":["const o = new Order([]); return [o.total, o.receipt()];"],"expected":[0,"USD 0"]},
+      {"args":["const d = new DiscountedOrder([20, 80], 25); return [d.total, d.receipt()];"],"expected":[75,"USD-PROMO 75 (25% off)"]},
+      {"args":["const d = new DiscountedOrder([40, 60], 0); return [d.total, d.receipt()];"],"expected":[100,"USD-PROMO 100 (0% off)"]},
+      {"args":["const d = new DiscountedOrder([50], 100); return [d instanceof Order, d.total, d.receipt()];"],"expected":[true,0,"USD-PROMO 0 (100% off)"]}
+    ]
+  }
+}

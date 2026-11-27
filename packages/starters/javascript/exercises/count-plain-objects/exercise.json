@@ -1,0 +1,18 @@
+{
+  "title": "Count Plain Objects",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countPlainObjects(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return countPlainObjects({ a: { b: 1 }, c: [new Date(), {}] });"],"expected":3},
+      {"args":["return countPlainObjects([1, null, new Map(), /a/]);"],"expected":0},
+      {"args":["const bare = Object.create(null); bare.x = {}; return countPlainObjects(bare);"],"expected":2},
+      {"args":["function Box() { this.inner = {}; } return countPlainObjects({ a: new Box(), b: {} });"],"expected":2},
+      {"args":["return countPlainObjects(null);"],"expected":0}
+    ]
+  }
+}

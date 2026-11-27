@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = { name: \"base\" };\n\nObject.defineProperty(base, \"id\", { value: 1, enumerable: true });\nObject.defineProperty(base, \"secret\", { value: 2 });\n\nconst copy = { ...base };\ncopy.id = 10;\n\nconsole.log(copy.id, base.id);\nconsole.log(Object.keys(copy).join(\",\"));\nconsole.log(Object.getOwnPropertyDescriptor(copy, \"id\").writable);\nconsole.log(Object.getOwnPropertyNames(base).length);"
+    },
+    "expected": "10 1\nname,id\ntrue\n3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Add a Serial Number",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addSerial(device, serial) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const d = addSerial({ name: \"Lamp\" }, \"L-1\"); return [d.serial, Object.keys(d)];"],"expected":["L-1",["name","serial"]]},
+      {"args":["const d = addSerial({}, \"A\"); try { d.serial = \"B\"; } catch (e) { return [e.name, d.serial]; } return \"no error\";"],"expected":["TypeError","A"]},
+      {"args":["const d = { name: \"Pen\" }; return addSerial(d, \"P\") === d;"],"expected":true},
+      {"args":["const d = addSerial({ name: \"Pen\" }, \"P\"); d.name = \"Pencil\"; return d.name;"],"expected":"Pencil"},
+      {"args":["return JSON.stringify(addSerial({ name: \"Cup\" }, \"C-9\"));"],"expected":"{\"name\":\"Cup\",\"serial\":\"C-9\"}"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function demo() {\n  const seen = [typeof helper];\n\n  try {\n    seen.push(typeof Box);\n  } catch (error) {\n    seen.push(error.name);\n  }\n\n  class Box {}\n  function helper() {}\n\n  seen.push(typeof Box);\n\n  return seen;\n}\n\nconsole.log(demo().join(\" \"));"
+    },
+    "expected": "function ReferenceError function"
+  }
+}

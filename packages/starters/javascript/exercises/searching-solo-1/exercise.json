@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const nums = [4, 7, 4, 9];\n\nconsole.log(nums.find((n) => n > 5));\nconsole.log(nums.findLastIndex((n) => n === 4));\nconsole.log(nums.indexOf(4, 1));\nconsole.log([].every((n) => n > 100));\nconsole.log([NaN].includes(NaN));"
+    },
+    "expected": "7\n2\n2\ntrue\ntrue"
+  }
+}

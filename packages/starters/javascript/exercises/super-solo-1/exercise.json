@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Sensor {\n  constructor(unit) {\n    this.unit = unit;\n  }\n\n  read(n) {\n    return `${n}${this.unit}`;\n  }\n}\n\nclass ScaledSensor extends Sensor {\n  read(n) {\n    console.log(super.unit);\n    return super.read(n * 10);\n  }\n}\n\nconst s = new ScaledSensor(\"m\");\nconsole.log(s.read(3));\nconsole.log(s.unit);"
+    },
+    "expected": "undefined\n30m\nm"
+  }
+}

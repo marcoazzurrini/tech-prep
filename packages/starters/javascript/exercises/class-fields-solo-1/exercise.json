@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Thermostat {\n  target = 20;\n  history = [this.target];\n\n  constructor(target) {\n    if (target !== undefined) {\n      this.target = target;\n    }\n\n    this.history.push(this.target);\n  }\n}\n\nconst hall = new Thermostat();\nconst attic = new Thermostat(15);\n\nconsole.log(hall.history.join(\",\"));\nconsole.log(attic.history.join(\",\"));\nconsole.log(hall.history === attic.history);\nconsole.log(Object.keys(attic).join(\",\"));"
+    },
+    "expected": "20,20\n20,15\nfalse\ntarget,history"
+  }
+}

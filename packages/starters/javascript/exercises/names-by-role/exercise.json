@@ -1,0 +1,20 @@
+{
+  "title": "Names by Role",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "namesByRole"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function namesByRole(users) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"Ada","role":"dev"},{"name":"Bo","role":"qa"},{"name":"Cy","role":"dev"}]],"expected":{"dev":["Ada","Cy"],"qa":["Bo"]}},
+      {"args":[[]],"expected":{}},
+      {"args":[[{"name":"Lin","role":"ops"}]],"expected":{"ops":["Lin"]}},
+      {"args":[[{"name":"A","role":"constructor"},{"name":"B","role":"constructor"}]],"expected":{"constructor":["A","B"]}},
+      {"args":[[{"name":"Zoe","role":"pm"},{"name":"Max","role":"dev"},{"name":"Kai","role":"pm"}]],"expected":{"pm":["Zoe","Kai"],"dev":["Max"]}}
+    ]
+  }
+}

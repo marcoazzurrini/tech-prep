@@ -1,0 +1,18 @@
+{
+  "title": "Custom JSON for Money",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createMoney(amount, currency) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const m = createMoney(15, 'USD'); return [m.amount, m.currency, JSON.stringify(m)];"],"expected":[15,"USD","\"15 USD\""]},
+      {"args":["return JSON.stringify({ total: createMoney(40, 'EUR') });"],"expected":"{\"total\":\"40 EUR\"}"},
+      {"args":["return JSON.stringify([createMoney(0, 'GBP'), createMoney(9.5, 'USD')]);"],"expected":"[\"0 GBP\",\"9.5 USD\"]"},
+      {"args":["const m = createMoney(5, 'JPY'); m.amount = 12; return JSON.stringify(m);"],"expected":"\"12 JPY\""},
+      {"args":["return typeof createMoney(1, 'EUR').toJSON;"],"expected":"function"}
+    ]
+  }
+}

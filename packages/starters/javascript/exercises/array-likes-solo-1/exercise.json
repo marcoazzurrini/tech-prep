@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const data = { 0: \"x\", 2: \"z\", 3: \"w\", name: \"n\", length: 3 };\nconst a = Array.from(data);\nconst b = Array.prototype.slice.call(data, 1);\n\nconsole.log(a.length, 1 in a);\nconsole.log(b.length, 0 in b);\nconsole.log(Array.prototype.join.call(data, \"-\"));"
+    },
+    "expected": "3 true\n2 false\nx--z"
+  }
+}

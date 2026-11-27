@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Device() {}\nDevice.prototype.kind = \"hardware\";\nfunction Phone() {}\nPhone.prototype = Object.create(Device.prototype);\nconst p = new Phone();\nconsole.log(p.kind);\nconsole.log(p instanceof Phone, p instanceof Device);\nconsole.log(p.constructor === Device);\nPhone.prototype.constructor = Phone;\nconsole.log(p.constructor === Phone);"
+    },
+    "expected": "hardware\ntrue true\ntrue\ntrue"
+  }
+}

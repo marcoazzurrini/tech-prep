@@ -1,0 +1,19 @@
+{
+  "title": "Rating Label",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function averageRating(ratings) {\n  if (ratings.length === 0) {\n    throw new Error(\"no ratings\");\n  }\n\n  let sum = 0;\n\n  for (const rating of ratings) {\n    sum += rating.stars;\n  }\n\n  return sum / ratings.length;\n}\n\nexport function ratingLabel(ratings) {\n  try {\n    return averageRating(ratings).toFixed(1);\n  } catch {\n    return \"not rated\";\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["return ratingLabel([{ stars: 4 }, { stars: 5 }]);"],"expected":"4.5"},
+      {"args":["return ratingLabel([]);"],"expected":"not rated"},
+      {"args":["try { return ratingLabel(null); } catch (error) { return \"thrown: \" + error.name; }"],"expected":"thrown: TypeError"},
+      {"args":["try { return ratingLabel([{ stars: 5 }, null]); } catch (error) { return \"thrown: \" + error.name; }"],"expected":"thrown: TypeError"},
+      {"args":["return ratingLabel([{ stars: 3 }]);"],"expected":"3.0"},
+      {"args":["try { return ratingLabel(undefined); } catch (error) { return \"thrown: \" + error.name; }"],"expected":"thrown: TypeError"}
+    ]
+  }
+}

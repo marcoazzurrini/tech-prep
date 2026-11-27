@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fake = { [Symbol.toStringTag]: \"Array\" };\nconst bare = Object.create(null);\nconsole.log(Object.prototype.toString.call(fake));\nconsole.log(Array.isArray(fake));\nconsole.log(Object.prototype.toString.call(bare));\nconsole.log(bare instanceof Object);"
+    },
+    "expected": "[object Array]\nfalse\n[object Object]\nfalse"
+  }
+}

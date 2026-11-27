@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function makeChecker(limit) {\n  try {\n    return (amount) => {\n      if (amount > limit) {\n        throw new Error(\"over the limit\");\n      }\n\n      return \"ok\";\n    };\n  } catch {\n    console.log(\"caught in makeChecker\");\n  }\n}\n\nconst check = makeChecker(100);\n\nconsole.log(check(50));\n\ntry {\n  console.log(check(500));\n} catch (error) {\n  console.log(\"caught outside: \" + error.message);\n}"
+    },
+    "expected": "ok\ncaught outside: over the limit"
+  }
+}

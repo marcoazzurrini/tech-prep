@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = 5;\nconst b = new Number(5);\n\nconsole.log(typeof a, typeof b);\nconsole.log(a === b);\nconsole.log(a.toFixed === b.toFixed);\nconsole.log(typeof Number(\"5\"), typeof new Number(\"5\"));"
+    },
+    "expected": "number object\nfalse\ntrue\nnumber object"
+  }
+}

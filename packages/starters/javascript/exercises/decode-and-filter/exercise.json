@@ -1,0 +1,20 @@
+{
+  "title": "Decode and Filter",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "decodeAndFilter"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function decodeAndFilter(text, dropKeys) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["{\"b\":2,\"a\":1,\"secret\":\"x\"}",["secret"]],"expected":[["a",1],["b",2]]},
+      {"args":["{\"user\":{\"name\":\"Ada\",\"pin\":9},\"pin\":1}",["pin"]],"expected":[["user",{"name":"Ada"}]]},
+      {"args":["{\"z\":true,\"m\":null,\"a\":0}",[]],"expected":[["a",0],["m",null],["z",true]]},
+      {"args":["{\"items\":[{\"id\":1,\"tmp\":true},{\"id\":2,\"tmp\":false}],\"tmp\":0}",["tmp"]],"expected":[["items",[{"id":1},{"id":2}]]]},
+      {"args":["{\"only\":1}",["only"]],"expected":[]}
+    ]
+  }
+}

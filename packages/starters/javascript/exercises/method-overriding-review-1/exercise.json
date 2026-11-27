@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Card {\n  constructor() {\n    console.log(this.badge());\n  }\n  get label() {\n    return \"card\";\n  }\n  badge() {\n    return this.label + \":\" + this.tier;\n  }\n}\n\nclass GoldCard extends Card {\n  tier = \"gold\";\n  get label() {\n    return \"vip\";\n  }\n  run = () => \"gold-run\";\n}\n\nclass BlackCard extends GoldCard {\n  run() {\n    return \"black-run\";\n  }\n}\n\nconst card = new BlackCard();\nconsole.log(card.badge());\nconsole.log(card.run());"
+    },
+    "expected": "vip:undefined\nvip:gold\ngold-run"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = { v: 1 };\nconst nested = [box, , [[2, , 3]]];\nconst once = nested.flat();\n\nconsole.log(once.length);\nconsole.log(once[0] === box);\nconsole.log(once[1].length);\nconsole.log(JSON.stringify(nested.flat(Infinity)));"
+    },
+    "expected": "2\ntrue\n3\n[{\"v\":1},2,3]"
+  }
+}

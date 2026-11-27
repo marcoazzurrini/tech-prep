@@ -1,0 +1,20 @@
+{
+  "title": "The Keeper",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Player {\n  constructor(name) {\n    this.name = name;\n    this.points = 0;\n  }\n\n  score(points) {\n    this.points += points;\n\n    return this.points;\n  }\n}\n\nexport class Keeper {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const k = new Keeper(\"Ana\"); return [k.name, k.points];"],"expected":["Ana",0]},
+      {"args":["const k = new Keeper(\"Ana\"); k.score(3); return k.save();"],"expected":5},
+      {"args":["const k = new Keeper(\"Ana\"); k.save(); k.save(); return k.points;"],"expected":4},
+      {"args":["return new Keeper(\"Ana\") instanceof Player;"],"expected":true},
+      {"args":["return Object.getPrototypeOf(Keeper.prototype) === Player.prototype;"],"expected":true},
+      {"args":["return [Object.hasOwn(Keeper.prototype, \"save\"), Object.hasOwn(Keeper.prototype, \"score\")];"],"expected":[true,false]},
+      {"args":["return \"save\" in new Player(\"Bo\");"],"expected":false}
+    ]
+  }
+}

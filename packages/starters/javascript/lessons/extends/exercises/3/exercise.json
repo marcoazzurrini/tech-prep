@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Vehicle {}\nclass Car extends Vehicle {}\nclass Taxi extends Car {}\nclass Bike extends Vehicle {}\n\nconst taxi = new Taxi();\nconst car = new Car();\n\nconsole.log(taxi instanceof Vehicle);\nconsole.log(car instanceof Taxi);\nconsole.log(taxi instanceof Bike);\nconsole.log(taxi.constructor === Car);\nconsole.log(Object.getPrototypeOf(Taxi.prototype) === Car.prototype);"
+    },
+    "expected": "true\nfalse\nfalse\nfalse\ntrue"
+  }
+}

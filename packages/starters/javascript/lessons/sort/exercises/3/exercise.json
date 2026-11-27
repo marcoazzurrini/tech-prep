@@ -1,0 +1,18 @@
+{
+  "title": "Rank Players",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function rankPlayers(players) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = [{ name: \"Ada\", score: 50, id: 2 }, { name: \"Bo\", score: 50, id: 1 }]; return [rankPlayers(a), a[0].name];"],"expected":[["Bo","Ada"],"Ada"]},
+      {"args":["return rankPlayers([{ name: \"Lin\", score: 10, id: 1 }, { name: \"Jo\", score: 90, id: 2 }]);"],"expected":["Jo","Lin"]},
+      {"args":["return rankPlayers([{ name: \"A\", score: 5, id: 10 }, { name: \"B\", score: 5, id: 2 }, { name: \"C\", score: 8, id: 3 }]);"],"expected":["C","B","A"]},
+      {"args":["return rankPlayers([]);"],"expected":[]},
+      {"args":["return rankPlayers([{ name: \"Solo\", score: 0, id: 1 }]);"],"expected":["Solo"]}
+    ]
+  }
+}

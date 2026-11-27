@@ -1,0 +1,21 @@
+{
+  "title": "A Faithful Copy",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function faithfulCopy(source) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = faithfulCopy({ n: 2, get double() { return this.n * 2; } }); c.n = 5; return c.double;"],"expected":10},
+      {"args":["const s = { a: 1, list: [1] }; const c = faithfulCopy(s); return [c !== s, c.list === s.list, Object.keys(c)];"],"expected":[true,true,["a","list"]]},
+      {"args":["const c = faithfulCopy(Object.defineProperty({}, \"id\", { value: 7 })); try { c.id = 8; } catch (e) { return e.name; } return c.id;"],"expected":"TypeError"},
+      {"args":["const c = faithfulCopy(Object.defineProperty({ a: 1 }, \"id\", { value: 7 })); return [c.id, Object.keys(c)];"],"expected":[7,["a"]]},
+      {"args":["const c = faithfulCopy(Object.defineProperty({}, \"k\", { value: 1 })); try { delete c.k; } catch {} return \"k\" in c;"],"expected":true},
+      {"args":["const c = faithfulCopy({ _v: 1, set v(x) { this._v = x * 2; } }); c.v = 4; return c._v;"],"expected":8},
+      {"args":["const s = { n: 1, get up() { return this.n + 1; } }; const c = faithfulCopy(s); c.n = 9; return [s.up, c.up];"],"expected":[2,10]},
+      {"args":["return Object.keys(faithfulCopy({}));"],"expected":[]}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Highest Score by Team",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "highestScoreByTeam"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function highestScoreByTeam(players) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"team":"red","score":10},{"team":"red","score":25},{"team":"blue","score":15}]],"expected":{"red":25,"blue":15}},
+      {"args":[[{"team":null,"score":-5},{"score":-2}]],"expected":{"unassigned":-2}},
+      {"args":[[]],"expected":{}},
+      {"args":[[{"team":"red","score":-10},{"team":"red","score":0}]],"expected":{"red":0}},
+      {"args":[[{"team":"","score":7},{"team":"","score":3}]],"expected":{"":7}},
+      {"args":[[{"team":"toString","score":4},{"team":"toString","score":9}]],"expected":{"toString":9}}
+    ]
+  }
+}

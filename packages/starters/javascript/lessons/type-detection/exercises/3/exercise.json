@@ -1,0 +1,18 @@
+{
+  "title": "Is Plain Object",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isPlainObject(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [isPlainObject({}), isPlainObject({ a: 1 }), isPlainObject(Object.create(null))];"],"expected":[true,true,true]},
+      {"args":["return [isPlainObject(null), isPlainObject(undefined), isPlainObject(42), isPlainObject(\"a\")];"],"expected":[false,false,false,false]},
+      {"args":["return [isPlainObject([]), isPlainObject(new Date()), isPlainObject(new Map()), isPlainObject(/a/)];"],"expected":[false,false,false,false]},
+      {"args":["function Box() {} return [isPlainObject(new Box()), isPlainObject(() => {})];"],"expected":[false,false]},
+      {"args":["return isPlainObject(Object.create({ a: 1 }));"],"expected":false}
+    ]
+  }
+}

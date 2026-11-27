@@ -1,0 +1,18 @@
+{
+  "title": "Tasks by Deadline",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function tasksByDeadline(tasks) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = [{ title: \"tax\", daysLeft: 10 }, { title: \"rent\", daysLeft: 2 }]; return [tasksByDeadline(a), a[0].title];"],"expected":[["rent","tax"],"tax"]},
+      {"args":["return tasksByDeadline([{ title: \"a\", daysLeft: 100 }, { title: \"b\", daysLeft: 9 }, { title: \"c\", daysLeft: 9 }]);"],"expected":["b","c","a"]},
+      {"args":["return tasksByDeadline([{ title: \"late\", daysLeft: -1 }, { title: \"today\", daysLeft: 0 }]);"],"expected":["late","today"]},
+      {"args":["return tasksByDeadline([]);"],"expected":[]},
+      {"args":["return tasksByDeadline([{ title: \"only\", daysLeft: 5 }]);"],"expected":["only"]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const stops = [\"North\", \"Central\", \"South\"];\nconsole.log(stops.at(-1));\nconsole.log(stops.at(-3));\nconsole.log(stops[-1]);"
+    },
+    "expected": "South\nNorth\nundefined"
+  }
+}

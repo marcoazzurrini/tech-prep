@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const host = {\n  code: \"H1\",\n  make() {\n    return () => this.code;\n  },\n};\nconst fn = host.make();\nconst alt = { code: \"H2\", fn };\nconsole.log(fn());\nconsole.log(alt.fn());\nconsole.log(fn.bind(alt)());\ntry {\n  new fn();\n} catch (err) {\n  console.log(err.name);\n}"
+    },
+    "expected": "H1\nH1\nH1\nTypeError"
+  }
+}

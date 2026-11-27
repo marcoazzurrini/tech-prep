@@ -1,0 +1,20 @@
+{
+  "title": "Sweep Unreachable Nodes",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sweepNodes"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sweepNodes(nodes, roots, removeEdges) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"r":["a","b"],"a":["b"],"b":["a"]},["r"],[["r","a"]]],"expected":[]},
+      {"args":[{"r":["a","b"],"a":["b"],"b":["a"]},["r"],[["r","a"],["r","b"]]],"expected":["a","b"]},
+      {"args":[{"r":["a"],"a":["b"],"b":["c"],"c":[]},["r"],[["a","b"]]],"expected":["b","c"]},
+      {"args":[{"r":["a"],"a":["b"],"b":[]},["r"],[]],"expected":[]},
+      {"args":[{"r1":["a"],"r2":["a"],"a":["b"],"b":[]},["r1","r2"],[["r1","a"]]],"expected":[]}
+    ]
+  }
+}

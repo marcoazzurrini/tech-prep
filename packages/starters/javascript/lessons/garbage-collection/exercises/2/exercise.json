@@ -1,0 +1,20 @@
+{
+  "title": "Find Unreachable Nodes",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "findUnreachable"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function findUnreachable(graph, roots) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"a":["b"],"b":["a"],"c":["d"],"d":[]},["c"]],"expected":["a","b"]},
+      {"args":[{"root":["x"],"x":["root"]},["root"]],"expected":[]},
+      {"args":[{"a":["b"],"b":["c"],"c":[]},[]],"expected":["a","b","c"]},
+      {"args":[{"r":["a"],"a":["b"],"b":[],"orphan":["r"]},["r"]],"expected":["orphan"]},
+      {"args":[{"r1":["a"],"r2":["b"],"a":[],"b":[],"c":["c"]},["r1","r2"]],"expected":["c"]}
+    ]
+  }
+}

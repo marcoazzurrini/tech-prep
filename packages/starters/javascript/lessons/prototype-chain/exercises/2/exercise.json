@@ -1,0 +1,18 @@
+{
+  "title": "Length of the Chain",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function chainLength(obj) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return chainLength({});"],"expected":1},
+      {"args":["return chainLength(Object.create({}));"],"expected":2},
+      {"args":["const a = {}; const b = Object.create(a); const c = Object.create(b); return chainLength(c);"],"expected":3},
+      {"args":["return chainLength(Object.prototype);"],"expected":0},
+      {"args":["const a = { x: 1 }; return [chainLength(a), chainLength(Object.create(a))];"],"expected":[1,2]}
+    ]
+  }
+}

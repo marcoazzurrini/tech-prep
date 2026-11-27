@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Lamp {\n  constructor(colour) {\n    this.colour = colour;\n  }\n\n  describe() {\n    return `${this.colour} lamp`;\n  }\n}\n\nconst lamp = new Lamp(\"red\");\n\nconsole.log(typeof Lamp);\nconsole.log(typeof lamp);\nconsole.log(Object.hasOwn(lamp, \"describe\"));\nconsole.log(Lamp.prototype.constructor === Lamp);\nconsole.log(lamp.constructor.name);\nconsole.log(Object.keys(lamp).length);"
+    },
+    "expected": "function\nobject\nfalse\ntrue\nLamp\n1"
+  }
+}

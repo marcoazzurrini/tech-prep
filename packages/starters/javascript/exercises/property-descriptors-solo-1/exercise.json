@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const account = { owner: \"Ada\" };\n\nObject.defineProperty(account, \"balance\", { value: 100 });\n\ntry {\n  account.balance = 500;\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(account.balance);\nconsole.log(Object.keys(account).join(\",\"));\nconsole.log(JSON.stringify(account));"
+    },
+    "expected": "TypeError\n100\nowner\n{\"owner\":\"Ada\"}"
+  }
+}

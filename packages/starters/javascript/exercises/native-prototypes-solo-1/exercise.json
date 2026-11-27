@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const list = [1, 2];\nconst text = \"hi\";\n\nconsole.log(list.toString === Object.prototype.toString);\nconsole.log(list.toString());\nconsole.log(Object.getPrototypeOf(Array.prototype) === Object.prototype);\nconsole.log(text.toUpperCase === String.prototype.toUpperCase);\nconsole.log(Boolean(new Boolean(false)));"
+    },
+    "expected": "false\n1,2\ntrue\ntrue\ntrue"
+  }
+}

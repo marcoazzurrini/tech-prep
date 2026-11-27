@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Base {\n  tag() {\n    return `base:${this.label}`;\n  }\n}\n\nclass Child extends Base {\n  constructor(label) {\n    super();\n    this.label = label;\n  }\n\n  show() {\n    return super.tag();\n  }\n}\n\nconst child = new Child(\"alpha\");\nconst other = { label: \"beta\", tag() { return \"other\"; } };\n\nconsole.log(child.show());\nconsole.log(child.show.call(other));"
+    },
+    "expected": "base:alpha\nbase:beta"
+  }
+}

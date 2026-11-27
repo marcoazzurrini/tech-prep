@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Base(id) {\n  this.id = id;\n}\nBase.prototype.code = function () {\n  return \"B\" + this.id;\n};\nfunction Sub(id) {\n  Base.call(this, id);\n}\nSub.prototype.early = () => \"gone\";\nSub.prototype = Object.create(Base.prototype);\nSub.prototype.constructor = Sub;\nSub.prototype.code = function () {\n  return Base.prototype.code.call(this) + \"-S\";\n};\nconst s = new Sub(3);\nconsole.log(s.code());\nconsole.log(typeof s.early);\nconsole.log(Object.hasOwn(s, \"id\"));\nconsole.log(s instanceof Base, s.constructor === Sub);"
+    },
+    "expected": "B3-S\nundefined\ntrue\ntrue true"
+  }
+}

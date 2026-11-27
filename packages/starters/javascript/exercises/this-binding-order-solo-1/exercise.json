@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function who() {\n  return this ? this.name : \"none\";\n}\nconst inner = { name: \"Inner\", who };\nconst outer = { name: \"Outer\", inner };\nconst bound = who.bind({ name: \"First\" }).bind({ name: \"Second\" });\nconsole.log(outer.inner.who());\nconsole.log(bound());\nconsole.log(bound.call(outer));\nconsole.log(who.apply(outer));"
+    },
+    "expected": "Inner\nFirst\nFirst\nOuter"
+  }
+}

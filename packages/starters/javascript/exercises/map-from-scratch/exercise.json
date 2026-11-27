@@ -1,0 +1,19 @@
+{
+  "title": "Map from Scratch",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function installMyMap(proto) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const P = Array.prototype; try { installMyMap(P); return [2, 4, 6].myMap((x) => x + 1); } finally { delete P.myMap; }"],"expected":[3,5,7]},
+      {"args":["const P = Array.prototype; try { installMyMap(P); return [\"a\",\"b\"].myMap((v,i,a) => v+i+a.length); } finally { delete P.myMap; }"],"expected":["a02","b12"]},
+      {"args":["const P = Array.prototype; const a = [1, 2]; try { installMyMap(P); a.myMap((x) => x * 2); return a; } finally { delete P.myMap; }"],"expected":[1,2]},
+      {"args":["const P = Array.prototype; try { installMyMap(P); return [].myMap((x) => x + 1); } finally { delete P.myMap; }"],"expected":[]},
+      {"args":["const p = { myMap() { return \"old\"; } }; installMyMap(p); return Object.create(p).myMap((x) => x);"],"expected":"old"},
+      {"args":["const p = {}; installMyMap(p); const o = Object.assign(Object.create(p), { 0: 3, 1: 4, length: 2 }); return o.myMap((x) => x * 2);"],"expected":[6,8]}
+    ]
+  }
+}

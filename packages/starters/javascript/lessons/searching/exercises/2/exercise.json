@@ -1,0 +1,18 @@
+{
+  "title": "Last Passing Student",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function lastPassingStudent(entries) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = [{ student: \"Lin\", score: 70 }, { student: \"Bo\", score: 85 }]; return [lastPassingStudent(a), a[0].student];"],"expected":["Bo","Lin"]},
+      {"args":["return lastPassingStudent([{ student: \"Lin\", score: 60 }, { student: \"Bo\", score: 40 }]);"],"expected":"Lin"},
+      {"args":["return lastPassingStudent([{ student: \"Lin\", score: 30 }, { student: \"Bo\", score: 59 }]);"],"expected":"none"},
+      {"args":["return lastPassingStudent([]);"],"expected":"none"},
+      {"args":["const a = [{ student: \"Ada\", score: 90 }, { student: \"Cy\", score: 60 }]; return [lastPassingStudent(a), a[1].student];"],"expected":["Cy","Cy"]}
+    ]
+  }
+}

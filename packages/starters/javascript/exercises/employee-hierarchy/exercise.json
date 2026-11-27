@@ -1,0 +1,18 @@
+{
+  "title": "Employee Hierarchy",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Employee(name, basePay) {\n  // your code\n}\n\nexport function Manager(name, basePay, bonus) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const e = new Employee(\"Ada\", 5000); return [e.name, e.basePay, e.totalPay()];"],"expected":["Ada",5000,5000]},
+      {"args":["const m = new Manager(\"Grace\", 5000, 1200); return [m.name, m.basePay, m.bonus, m.totalPay()];"],"expected":["Grace",5000,1200,6200]},
+      {"args":["const m = new Manager(\"Lin\", 4000, 500); return [m instanceof Manager, m instanceof Employee, m.constructor === Manager];"],"expected":[true,true,true]},
+      {"args":["const m = new Manager(\"L\", 1, 2); return [\"name\", \"basePay\", \"bonus\"].map((k) => Object.hasOwn(m, k));"],"expected":[true,true,true]},
+      {"args":["return [Object.getPrototypeOf(Manager.prototype) === Employee.prototype, Manager.prototype !== Employee.prototype];"],"expected":[true,true]}
+    ]
+  }
+}

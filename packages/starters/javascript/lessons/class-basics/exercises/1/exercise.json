@@ -1,0 +1,18 @@
+{
+  "title": "Playlist",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Playlist {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const p = new Playlist(\"Road\"); p.add(\"Intro\"); p.add(\"Outro\"); return [p.name, p.songs, p.count()];"],"expected":["Road",["Intro","Outro"],2]},
+      {"args":["return [new Playlist(\"Road\").count(), new Playlist(\"Gym\").name];"],"expected":[0,"Gym"]},
+      {"args":["return Object.keys(new Playlist(\"Road\"));"],"expected":["name","songs"]},
+      {"args":["const a = new Playlist(\"A\"); const b = new Playlist(\"B\"); a.add(\"x\"); return [a.count(), b.count(), a.add === b.add];"],"expected":[1,0,true]},
+      {"args":["return [typeof Playlist, Object.hasOwn(Playlist.prototype, \"count\"), Object.hasOwn(new Playlist(\"A\"), \"count\")];"],"expected":["function",true,false]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Unit {\n  static suffix = \" units\";\n\n  static show(amount) {\n    return `${amount}${this.suffix}`;\n  }\n}\n\nclass Metres extends Unit {\n  static suffix = \"m\";\n}\n\nclass Count extends Unit {}\n\nconsole.log(Metres.show(5));\nconsole.log(Count.show(5));\nconsole.log(Object.hasOwn(Count, \"show\"));\nconsole.log(Object.getPrototypeOf(Metres) === Unit);"
+    },
+    "expected": "5m\n5 units\nfalse\ntrue"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const profile = { name: \"Ada\", tags: [\"js\"] };\nObject.freeze(profile);\n\ntry {\n  profile.tags = [];\n} catch (error) {\n  console.log(error.name);\n}\n\nprofile.tags.push(\"ts\");\nconsole.log(profile.tags.join(\",\"));\nconsole.log(Object.isFrozen(profile), Object.isFrozen(profile.tags));"
+    },
+    "expected": "TypeError\njs,ts\ntrue false"
+  }
+}

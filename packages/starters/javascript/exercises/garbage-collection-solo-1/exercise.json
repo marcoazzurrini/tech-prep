@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const a = { name: \"A\" };\nconst b = { name: \"B\" };\na.peer = b;\nb.peer = a;\nconst root = { first: a, second: b };\ndelete root.first;\nconsole.log(root.first);\nconsole.log(root.second.peer.name);\ndelete root.second.peer;\nconsole.log(root.second.peer);"
+    },
+    "expected": "undefined\nA\nundefined"
+  }
+}

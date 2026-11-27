@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Coin {\n  constructor(value) {\n    this.value = value;\n  }\n}\n\nfunction make(Kind, value) {\n  try {\n    return Kind(value).value;\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconsole.log(make(Coin, 5));\nconsole.log(make((value) => new Coin(value), 5));\nconsole.log(typeof Coin);"
+    },
+    "expected": "TypeError\n5\nfunction"
+  }
+}

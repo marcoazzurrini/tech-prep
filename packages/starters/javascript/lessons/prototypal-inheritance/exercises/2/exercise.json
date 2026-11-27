@@ -1,0 +1,18 @@
+{
+  "title": "Link Constructors",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function linkConstructors(Child, Parent) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function A() {} A.prototype.hi = () => 1; function B() {} linkConstructors(B, A); return new B().hi();"],"expected":1},
+      {"args":["function A() {} function B() {} linkConstructors(B, A); const b = new B(); return [b instanceof B, b instanceof A];"],"expected":[true,true]},
+      {"args":["function A() {} function B() {} linkConstructors(B, A); return new B().constructor === B;"],"expected":true},
+      {"args":["function A() {} function B() {} linkConstructors(B, A); B.prototype.x = 2; return \"x\" in new A();"],"expected":false},
+      {"args":["function A() {} function B() {} linkConstructors(B, A); return Object.getPrototypeOf(B.prototype) === A.prototype;"],"expected":true}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Text Pipeline Stages",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class TextStage {\n  get runs() {\n    // your code\n  }\n\n  transform(text) {\n    // your code\n  }\n\n  run(text) {\n    // your code\n  }\n}\n\nexport class TrimStage extends TextStage {\n  // your code\n}\n\nexport class ShoutStage extends TrimStage {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = new TextStage(); return [s.runs, s.run('  a '), s.runs];"],"expected":[0,"  a ",1]},
+      {"args":["const s = new TrimStage(); return [s.run('  hello  '), s.runs];"],"expected":["hello",1]},
+      {"args":["const s = new ShoutStage(); return [s.run('  hi  '), s.run('ok'), s.runs];"],"expected":["HI","OK",2]},
+      {"args":["const a = new TrimStage(); const b = new ShoutStage(); a.run(' x '); return [a.runs, b.runs, Object.keys(a).length];"],"expected":[1,0,0]},
+      {"args":["return [Object.hasOwn(TrimStage.prototype, 'run'), Object.hasOwn(ShoutStage.prototype, 'run')];"],"expected":[false,false]}
+    ]
+  }
+}

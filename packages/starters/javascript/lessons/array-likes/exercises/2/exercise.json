@@ -1,0 +1,20 @@
+{
+  "title": "Extract Indexed",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "extractIndexed"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function extractIndexed(source) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"0":"a","2":"c","length":3}],"expected":["a",null,"c"]},
+      {"args":[{"0":"a","1":"b"}],"expected":[]},
+      {"args":[{"0":"a","1":"b","2":"c","extra":"x","length":2}],"expected":["a","b"]},
+      {"args":[{"0":0,"1":false,"2":"","length":3}],"expected":[0,false,""]},
+      {"args":[{"length":0}],"expected":[]}
+    ]
+  }
+}

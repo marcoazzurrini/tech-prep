@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = { size: 1, items: [\"a\"] };\nObject.seal(box);\nbox.size = 2;\n\nObject.freeze(box);\nbox.items.push(\"b\");\n\nconsole.log(box.size);\nconsole.log(box.items.join(\",\"));\nconsole.log(Object.isSealed(box), Object.isFrozen(box));\nconsole.log(Object.isFrozen(Object.preventExtensions({})));"
+    },
+    "expected": "2\na,b\ntrue true\ntrue"
+  }
+}

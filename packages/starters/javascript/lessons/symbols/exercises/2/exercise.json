@@ -1,0 +1,18 @@
+{
+  "title": "Attach a Secret",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function attachSecret(obj, value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const u = { name: 'Ada' }; const k = attachSecret(u, 42); return [typeof k, u[k], Object.keys(u)];"],"expected":["symbol",42,["name"]]},
+      {"args":["const u = {}; const k1 = attachSecret(u, 1); const k2 = attachSecret(u, 2); return [k1 !== k2, u[k1], u[k2]];"],"expected":[true,1,2]},
+      {"args":["const u = { a: 1 }; attachSecret(u, 'hi'); return Object.getOwnPropertySymbols(u).length;"],"expected":1},
+      {"args":["const u = { a: 1 }; const k = attachSecret(u, 'ok'); return [{ ...u }[k], JSON.stringify(u)];"],"expected":["ok","{\"a\":1}"]},
+      {"args":["const u = {}; const k = attachSecret(u, null); return [k in u, u[k]];"],"expected":[true,null]}
+    ]
+  }
+}

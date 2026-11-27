@@ -1,0 +1,18 @@
+{
+  "title": "Tagged List",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class TaggedList extends Array {\n  constructor(tag, ...items) {\n    super();\n    // your code\n  }\n\n  describe() {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const l = new TaggedList('scores', 10, 20); return [l.tag, l.length, l[0], l[1], l.describe()];"],"expected":["scores",2,10,20,"scores (2)"]},
+      {"args":["const l = new TaggedList('single', 5); return [l.length, l[0], l.describe()];"],"expected":[1,5,"single (1)"]},
+      {"args":["const l = new TaggedList('empty'); return [Array.isArray(l), l.length, l.describe()];"],"expected":[true,0,"empty (0)"]},
+      {"args":["const d = new TaggedList('nums', 2, 4).map((n) => n * 3); return [d instanceof TaggedList, Array.isArray(d), d];"],"expected":[false,true,[6,12]]},
+      {"args":["const f = new TaggedList('nums', 1, 5, 9).filter((n) => n > 2); return [f instanceof TaggedList, f];"],"expected":[false,[5,9]]}
+    ]
+  }
+}

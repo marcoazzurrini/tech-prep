@@ -1,0 +1,18 @@
+{
+  "title": "Logged Counter",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Counter {\n  constructor(start = 0) {\n    // your code\n  }\n\n  static from(start) {\n    // your code\n  }\n\n  increment(step = 1) {\n    // your code\n  }\n\n  reset() {\n    // your code\n  }\n}\n\nexport class LoggedCounter extends Counter {\n  constructor(start = 0) {\n    // your code\n  }\n\n  increment(step = 1) {\n    // your code\n  }\n\n  reset() {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const c = new Counter(5); return [c.value, c.increment(3), c.value];"],"expected":[5,8,8]},
+      {"args":["const c = new LoggedCounter(); c.increment(); c.increment(4); return [c.value, c.history];"],"expected":[5,[0,1,5]]},
+      {"args":["const c = new LoggedCounter(2); c.increment(); c.reset(); return [c.value, c.history];"],"expected":[0,[2,3,0]]},
+      {"args":["const c = LoggedCounter.from(10); c.increment(5); return [c instanceof LoggedCounter, c.history];"],"expected":[true,[10,15]]},
+      {"args":["const c = Counter.from(7); c.reset(); return [c instanceof Counter, c instanceof LoggedCounter, c.value];"],"expected":[true,false,0]}
+    ]
+  }
+}

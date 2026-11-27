@@ -1,0 +1,19 @@
+{
+  "title": "Deep Freeze",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function deepFreeze(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const o = deepFreeze({ a: { b: 1 } }); try { o.a.b = 2; } catch (e) { return [e.name, o.a.b]; } return \"ok\";"],"expected":["TypeError",1]},
+      {"args":["const o = deepFreeze({ tags: [\"x\"] }); try { o.tags.push(\"y\"); } catch (e) { return e.name; } return \"ok\";"],"expected":"TypeError"},
+      {"args":["const o = { a: 1 }; return [deepFreeze(o) === o, Object.isFrozen(o)];"],"expected":[true,true]},
+      {"args":["return [deepFreeze(42), deepFreeze(null), deepFreeze(\"hi\")];"],"expected":[42,null,"hi"]},
+      {"args":["const a = { name: \"loop\" }; a.self = a; deepFreeze(a); return [Object.isFrozen(a), Object.isFrozen(a.self)];"],"expected":[true,true]},
+      {"args":["const o = deepFreeze({ a: [{ b: { c: 3 } }] }); return Object.isFrozen(o.a[0].b);"],"expected":true}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Event Log",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function EventLog() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const log = new EventLog(); log.add(\"start\").add(\"stop\"); return [log.size(), log.last(), log.entries];"],"expected":[2,"stop",["start","stop"]]},
+      {"args":["const log = new EventLog(); return [log.size(), log.last(), log.add(\"a\") === log];"],"expected":[0,null,true]},
+      {"args":["const log = new EventLog(); log.add(\"a\"); const keys = []; for (const key in log) keys.push(key); return keys;"],"expected":["entries"]},
+      {"args":["const a = new EventLog(); const b = new EventLog(); a.add(\"x\"); return [a.size(), b.size(), a.add === b.add, a.last === b.last];"],"expected":[1,0,true,true]},
+      {"args":["try { EventLog(); } catch (error) { return error.name; } return \"no error\";"],"expected":"TypeError"},
+      {"args":["return [Object.keys(new EventLog()), Object.hasOwn(new EventLog(), \"size\"), typeof EventLog.prototype.size];"],"expected":[["entries"],false,"function"]},
+      {"args":["const log = new EventLog(); return log.add(\"a\").add(\"b\").add(\"c\").size();"],"expected":3}
+    ]
+  }
+}

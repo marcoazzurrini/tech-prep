@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function keepParam(obj) {\n  return () => obj.tag;\n}\nlet item = { tag: \"v1\" };\nconst fromParam = keepParam(item);\nconst fromVar = () => item.tag;\nitem = null;\nconsole.log(fromParam());\nconsole.log(item);\ntry {\n  console.log(fromVar());\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "v1\nnull\nTypeError"
+  }
+}

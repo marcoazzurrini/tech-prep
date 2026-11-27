@@ -1,0 +1,12 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function a() {\n  try {\n    throw new Error(\"first\");\n  } catch {\n    return \"caught\";\n  } finally {\n    return \"override\";\n  }\n}\n\nfunction b() {\n  try {\n    throw new Error(\"first\");\n  } finally {\n    throw new Error(\"second\");\n  }\n}\n\nconsole.log(a());\ntry {\n  b();\n} catch (error) {\n  console.log(error.message);\n}"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const letters = [\"a\", \"b\", \"c\", \"d\"];\nletters[6] = \"g\";\nconsole.log(letters.length);\nletters.length = 2;\nletters.length = 4;\nconsole.log(letters[1]);\nconsole.log(letters[2]);"
+    },
+    "expected": "7\nb\nundefined"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Counter {\n  count = 0;\n  step = this.count + 1;\n\n  up = () => {\n    this.count += this.step;\n\n    return this.count;\n  };\n\n  down() {\n    return this.count - this.step;\n  }\n}\n\nconst a = new Counter();\nconst b = new Counter();\nconst sameUp = a.up === b.up;\n\nb.up = a.up;\n\nconsole.log(b.up());\nconsole.log(b.up());\nconsole.log(a.count, b.count);\nconsole.log(sameUp, a.down === b.down);"
+    },
+    "expected": "1\n2\n2 0\nfalse true"
+  }
+}

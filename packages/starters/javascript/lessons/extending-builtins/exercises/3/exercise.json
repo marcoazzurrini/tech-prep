@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class UpperMap extends Map {\n  set(key, value) {\n    return super.set(key.toUpperCase(), value);\n  }\n}\n\nconst m = new UpperMap([[\"id\", 7]]);\nconsole.log(m.get(\"ID\"));\nconsole.log(Object.getPrototypeOf(UpperMap) === Map);\nconsole.log(Object.getPrototypeOf(Map) === Object);"
+    },
+    "expected": "7\ntrue\nfalse"
+  }
+}

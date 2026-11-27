@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const row = { 0: \"red\", 1: \"blue\", length: 2 };\n\nfunction check() {\n  console.log(arguments.length, Array.isArray(arguments));\n}\n\ncheck(\"a\", \"b\", \"c\");\nconsole.log(Array.isArray(row), typeof row.push);\ntry {\n  console.log([...row].length);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "3 false\nfalse undefined\nTypeError"
+  }
+}

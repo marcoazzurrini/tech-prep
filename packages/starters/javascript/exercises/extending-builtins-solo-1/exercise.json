@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class WordList extends Array {\n  longest() {\n    return this.reduce((a, b) => (b.length > a.length ? b : a), \"\");\n  }\n}\n\nconst words = WordList.from([\"cat\", \"horse\", \"ant\"]);\nconst long = words.filter((w) => w.length > 3);\n\nconsole.log(words instanceof WordList);\nconsole.log(long instanceof WordList);\nconsole.log(long.longest());\nconsole.log(typeof Array.keys);"
+    },
+    "expected": "true\ntrue\nhorse\nundefined"
+  }
+}

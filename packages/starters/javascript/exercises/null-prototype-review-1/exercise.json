@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const defaults = { theme: \"light\" };\nconst prefs = { lang: \"en\" };\nObject.setPrototypeOf(prefs, defaults);\nconsole.log(prefs.theme);\nObject.setPrototypeOf(prefs, null);\nconsole.log(prefs.theme);\nconsole.log(\"toString\" in prefs);\ntry {\n  console.log(String(prefs));\n} catch (err) {\n  console.log(err.name);\n}"
+    },
+    "expected": "light\nundefined\nfalse\nTypeError"
+  }
+}

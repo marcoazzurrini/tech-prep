@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Song {\n  constructor(title) {\n    this.title = title;\n  }\n\n  play() {\n    return `Playing ${this.title}`;\n  }\n}\n\nSong.prototype.stop = () => \"Stopped\";\n\nconst seen = [];\nfor (const key in new Song(\"Intro\")) seen.push(key);\n\nconsole.log(seen.join(\",\"));\nconsole.log(Object.keys(new Song(\"Intro\")).join(\",\"));\nconsole.log(\"play\" in new Song(\"Intro\"));"
+    },
+    "expected": "title,stop\ntitle\ntrue"
+  }
+}

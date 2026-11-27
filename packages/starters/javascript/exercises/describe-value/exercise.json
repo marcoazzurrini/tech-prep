@@ -1,0 +1,18 @@
+{
+  "title": "Describe Value",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function describeValue(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [describeValue([1, 2]), describeValue({ [Symbol.toStringTag]: \"Array\" })];"],"expected":["array","plain-object"]},
+      {"args":["return [describeValue({ a: 1 }), describeValue(Object.create(null))];"],"expected":["plain-object","plain-object"]},
+      {"args":["return [describeValue(null), describeValue(undefined), describeValue(42)];"],"expected":["null","undefined","number"]},
+      {"args":["return [describeValue(new Date()), describeValue(/a/), describeValue(new Map())];"],"expected":["date","regexp","map"]},
+      {"args":["function Box() {} return [describeValue(new Box()), describeValue(() => {})];"],"expected":["object","function"]}
+    ]
+  }
+}

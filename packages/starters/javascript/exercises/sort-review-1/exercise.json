@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const nums = [-2, -10, 1];\nconst ref = nums.sort();\nconst words = [\"b\", \"a\", \"c\"].toSorted((x, y) => x - y);\nconst mixed = [undefined, 4, 9].toSorted((x, y) => y - x);\n\nconsole.log(nums.join(\",\"));\nconsole.log(ref === nums);\nconsole.log(words.join(\",\"));\nconsole.log(mixed.map(String).join(\",\"));"
+    },
+    "expected": "-10,-2,1\ntrue\nb,a,c\n9,4,undefined"
+  }
+}

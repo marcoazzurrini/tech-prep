@@ -1,0 +1,17 @@
+{
+  "title": "Always Log the End",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "stubs": {
+      "javascript": "export function runLogged(log, task) {\n  log.push(\"start\");\n  const result = task();\n  log.push(\"end\");\n  return result;\n}\n"
+    },
+    "tests": [
+      { "args": ["const log = []; const r = runLogged(log, () => 42); return { r, log };"] },
+      { "args": ["const log = []; const r = runLogged(log, () => { log.push(\"work\"); return \"ok\"; }); return { r, log };"] },
+      { "args": ["const log = []; let msg = \"\"; try { runLogged(log, () => { throw new Error(\"fail\"); }); } catch (e) { msg = e.message; } return { msg, log };"] },
+      { "args": ["const log = []; let msg = \"\"; try { runLogged(log, () => { log.push(\"mid\"); throw new Error(\"x\"); }); } catch (e) { msg = e.message; } return { msg, log };"] },
+      { "args": ["const log = []; const r = runLogged(log, () => false); return { r, log };"] }
+    ]
+  }
+}

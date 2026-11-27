@@ -1,0 +1,20 @@
+{
+  "title": "Report, Don't Crash",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function reporting(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return reporting((a, b) => a + b)(2, 3);"],"expected":{"ok":true,"value":5}},
+      {"args":["return reporting(() => { throw new Error(\"no stock\"); })();"],"expected":{"ok":false,"reason":"no stock"}},
+      {"args":["return reporting(() => { throw 404; })();"],"expected":{"ok":false,"reason":"404"}},
+      {"args":["const cart = { total: 9, pay: reporting(function () { return this.total; }) }; return cart.pay();"],"expected":{"ok":true,"value":9}},
+      {"args":["const safe = reporting((n) => { if (n < 0) throw new RangeError(\"negative\"); return n; }); return [safe(1), safe(-1)];"],"expected":[{"ok":true,"value":1},{"ok":false,"reason":"negative"}]},
+      {"args":["return reporting(() => { throw null; })();"],"expected":{"ok":false,"reason":"null"}},
+      {"args":["return reporting(() => null)();"],"expected":{"ok":true,"value":null}}
+    ]
+  }
+}

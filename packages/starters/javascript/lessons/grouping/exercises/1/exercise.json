@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const items = [\n  { id: 1, price: 8 },\n  { id: 2, price: 25 },\n  { id: 3, price: 12 },\n];\n\nconst grouped = Object.groupBy(items, (x) => (x.price >= 10 ? \"high\" : \"low\"));\ngrouped.low[0].price = 99;\n\nconsole.log(grouped.high.length, grouped.low.length);\nconsole.log(items[0].price);\nconsole.log(Object.getPrototypeOf(grouped), Object.hasOwn(grouped, \"high\"));"
+    },
+    "expected": "2 1\n99\nnull true"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sym = Symbol(\"k\");\nconst item = {\n  ok: true,\n  missing: undefined,\n  bad: Infinity,\n  fn() {},\n  [sym]: 1,\n};\nconsole.log(JSON.stringify(item));\nconsole.log(JSON.stringify([1, undefined, NaN, () => {}]));\nconsole.log(typeof JSON.stringify(() => {}));"
+    },
+    "expected": "{\"ok\":true,\"bad\":null}\n[1,null,null,null]\nundefined"
+  }
+}

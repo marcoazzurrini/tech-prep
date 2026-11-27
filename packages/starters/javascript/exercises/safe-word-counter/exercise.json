@@ -1,0 +1,18 @@
+{
+  "title": "Safe Word Counter",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countWords(words) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = countWords([\"cat\", \"dog\", \"cat\"]); return [c.cat, c.dog, Object.getPrototypeOf(c)];"],"expected":[2,1,null]},
+      {"args":["const c = countWords([\"toString\", \"toString\"]); return [c.toString, \"valueOf\" in c];"],"expected":[2,false]},
+      {"args":["const c = countWords([\"__proto__\", \"constructor\"]); return [c[\"__proto__\"], c.constructor];"],"expected":[1,1]},
+      {"args":["const c = countWords([]); return [Object.keys(c), \"toString\" in c, Object.getPrototypeOf(c)];"],"expected":[[],false,null]},
+      {"args":["const c = countWords([\"hasOwnProperty\", \"a\", \"hasOwnProperty\"]); return [c.hasOwnProperty, c.a];"],"expected":[2,1]}
+    ]
+  }
+}

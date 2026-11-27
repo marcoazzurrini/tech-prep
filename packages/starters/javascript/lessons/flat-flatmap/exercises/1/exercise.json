@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const data = [1, [2, [3]]];\n\nconsole.log(JSON.stringify(data.flat(0)));\nconsole.log(JSON.stringify(data.flat()));\nconsole.log(JSON.stringify(data.flat(2)));\nconsole.log(JSON.stringify([1, , [2, , 3]].flat()));"
+    },
+    "expected": "[1,[2,[3]]]\n[1,2,[3]]\n[1,2,3]\n[1,2,3]"
+  }
+}

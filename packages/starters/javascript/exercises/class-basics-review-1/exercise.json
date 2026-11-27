@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Printer {\n  constructor(name) {\n    this.name = name;\n  }\n\n  status() {\n    return \"ready\";\n  }\n}\n\nconst office = new Printer(\"Office\");\n\nPrinter.prototype.status = () => \"busy\";\n\nlet keys = \"\";\nfor (const key in office) keys += key;\n\nconsole.log(office.status());\nconsole.log(keys);\nconsole.log(typeof Printer, typeof office);\nconsole.log(Printer.prototype.constructor === office.constructor);"
+    },
+    "expected": "busy\nname\nfunction object\ntrue"
+  }
+}

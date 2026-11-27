@@ -1,0 +1,19 @@
+{
+  "title": "Join Records",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function joinRecords(list, separator) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return joinRecords({ 0: 'a', 2: 'c', length: 3 }, '-');"],"expected":"a-c"},
+      {"args":["return joinRecords(['x', null, undefined, 'y'], '/');"],"expected":"x/y"},
+      {"args":["return (function () { return joinRecords(arguments, ':'); })('one', null, 'two');"],"expected":"one:two"},
+      {"args":["return joinRecords('abc', '-');"],"expected":"a-b-c"},
+      {"args":["return joinRecords({ 0: 0, 1: false, 2: '', length: 3 }, ',');"],"expected":"0,false,"},
+      {"args":["return joinRecords({ tag: 'only' }, ',');"],"expected":""}
+    ]
+  }
+}

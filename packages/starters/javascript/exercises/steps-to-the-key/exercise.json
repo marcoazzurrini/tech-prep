@@ -1,0 +1,20 @@
+{
+  "title": "Steps to the Key",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stepsToKey(obj, key) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return stepsToKey({ a: 1 }, \"a\");"],"expected":0},
+      {"args":["return stepsToKey(Object.create({ a: 1 }), \"a\");"],"expected":1},
+      {"args":["const a = { x: 1 }; const b = Object.create(a); const c = Object.create(b); return [stepsToKey(c, \"x\"), stepsToKey(b, \"x\")];"],"expected":[2,1]},
+      {"args":["return stepsToKey({ a: 1 }, \"toString\");"],"expected":1},
+      {"args":["return stepsToKey({ a: 1 }, \"b\");"],"expected":-1},
+      {"args":["const a = { x: undefined }; return stepsToKey(Object.create(a), \"x\");"],"expected":1},
+      {"args":["const a = { x: 1 }; const b = Object.create(a); b.x = 2; return stepsToKey(Object.create(b), \"x\");"],"expected":1}
+    ]
+  }
+}

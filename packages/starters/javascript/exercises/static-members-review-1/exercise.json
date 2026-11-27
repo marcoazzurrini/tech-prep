@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Box {\n  static label = this.kind;\n  static kind = \"crate\";\n  static {\n    this.tag = `${this.kind}-1`;\n  }\n  static describe() {\n    return this.tag;\n  }\n}\n\nconst { describe } = Box;\nconsole.log(Box.label);\nconsole.log(Box.describe());\ntry {\n  console.log(describe());\n} catch (error) {\n  console.log(error.name);\n}\nconsole.log(new Box().constructor.kind);"
+    },
+    "expected": "undefined\ncrate-1\nTypeError\ncrate"
+  }
+}

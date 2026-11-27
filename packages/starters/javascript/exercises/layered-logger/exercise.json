@@ -1,0 +1,18 @@
+{
+  "title": "Layered Logger",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Logger(prefix) {\n  // your code\n}\n\nexport function TaggedLogger(prefix, tag) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return new Logger(\"APP\").record(\"start\").record(\"done\").entries;"],"expected":["APP: start","APP: done"]},
+      {"args":["return new TaggedLogger(\"APP\", \"DB\").record(\"open\").record(\"close\").entries;"],"expected":["APP: [DB] open","APP: [DB] close"]},
+      {"args":["const l = new TaggedLogger(\"S\", \"T\"); return [l instanceof TaggedLogger, l instanceof Logger, l.constructor === TaggedLogger];"],"expected":[true,true,true]},
+      {"args":["const a = new TaggedLogger(\"A\", \"1\"); const b = new TaggedLogger(\"B\", \"2\"); a.record(\"x\"); return [a.entries, b.entries];"],"expected":[["A: [1] x"],[]]},
+      {"args":["return [Object.hasOwn(Logger.prototype, \"record\"), Object.hasOwn(TaggedLogger.prototype, \"record\")];"],"expected":[true,true]}
+    ]
+  }
+}

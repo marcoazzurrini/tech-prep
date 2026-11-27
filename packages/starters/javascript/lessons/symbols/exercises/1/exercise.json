@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const x = Symbol(\"badge\");\nconst y = Symbol(\"badge\");\nconsole.log(x === y);\nconsole.log(x.description);\nconsole.log(String(x));\ntry {\n  console.log(\"\" + x);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "false\nbadge\nSymbol(badge)\nTypeError"
+  }
+}

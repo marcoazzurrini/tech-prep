@@ -1,0 +1,18 @@
+{
+  "title": "Tag Formatter",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Formatter {\n  open() {\n    // your code\n  }\n\n  close() {\n    // your code\n  }\n\n  wrap(text) {\n    // your code\n  }\n}\n\nexport class TagFormatter extends Formatter {\n  constructor(tag) {\n    // your code\n  }\n\n  open() {\n    // your code\n  }\n\n  close() {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["return new Formatter().wrap('hi');"],"expected":"[hi]"},
+      {"args":["return new TagFormatter('b').wrap('hi');"],"expected":"<b>hi</b>"},
+      {"args":["return new TagFormatter('em').wrap('');"],"expected":"<em></em>"},
+      {"args":["return Object.hasOwn(TagFormatter.prototype, 'wrap');"],"expected":false},
+      {"args":["const t = new TagFormatter('p'); return [t instanceof Formatter, t.open(), t.close()];"],"expected":[true,"<p>","</p>"]}
+    ]
+  }
+}

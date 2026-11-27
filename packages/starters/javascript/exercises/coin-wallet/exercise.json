@@ -1,0 +1,20 @@
+{
+  "title": "Coin Wallet",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Wallet {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const w = new Wallet(\"Ada\"); return [w.owner, w.coins, w.add(5), w.add(2), w.coins];"],"expected":["Ada",0,5,7,7]},
+      {"args":["const w = new Wallet(\"Ada\"); w.add(5); return [w.spend(3), w.coins, w.spend(3), w.coins];"],"expected":[true,2,false,2]},
+      {"args":["const w = new Wallet(\"Ada\"); w.add(4); return [w.spend(4), w.coins];"],"expected":[true,0]},
+      {"args":["const a = new Wallet(\"Ada\"); const b = new Wallet(\"Leo\"); a.add(9); return [a.transferTo(b, 4), a.coins, b.coins];"],"expected":[true,5,4]},
+      {"args":["const a = new Wallet(\"Ada\"); const b = new Wallet(\"Leo\"); a.add(1); return [a.transferTo(b, 4), a.coins, b.coins];"],"expected":[false,1,0]},
+      {"args":["return Object.keys(new Wallet(\"Ada\"));"],"expected":["owner","coins"]},
+      {"args":["const a = new Wallet(\"Ada\"); const b = new Wallet(\"Leo\"); return [a.add === b.add, Object.hasOwn(a, \"spend\")];"],"expected":[true,false]}
+    ]
+  }
+}

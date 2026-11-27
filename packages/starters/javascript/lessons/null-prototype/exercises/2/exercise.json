@@ -1,0 +1,18 @@
+{
+  "title": "Create Lookup",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createLookup(entries) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const m = createLookup([[\"a\", 1], [\"b\", 2]]); return [m.a, m.b, Object.getPrototypeOf(m)];"],"expected":[1,2,null]},
+      {"args":["const m = createLookup([[\"__proto__\", \"safe\"]]); return [m[\"__proto__\"], Object.getPrototypeOf(m)];"],"expected":["safe",null]},
+      {"args":["const m = createLookup([[\"toString\", 9]]); return [m.toString, \"valueOf\" in m];"],"expected":[9,false]},
+      {"args":["const m = createLookup([]); return [Object.keys(m), \"toString\" in m, Object.getPrototypeOf(m)];"],"expected":[[],false,null]},
+      {"args":["const m = createLookup([[\"x\", 1], [\"x\", 4]]); return [m.x, Object.keys(m)];"],"expected":[4,["x"]]}
+    ]
+  }
+}
