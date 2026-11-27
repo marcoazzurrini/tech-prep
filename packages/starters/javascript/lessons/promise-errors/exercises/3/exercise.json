@@ -1,0 +1,18 @@
+{
+  "title": "Read a Setting",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const settings = { theme: \"dark\", language: \"en\", size: \"large\" };\n\nfunction later(value, ms) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nexport function loadSetting(name) {\n  return later(name, 10).then((key) => {\n    if (key === \"password\") {\n      throw new Error(\"locked\");\n    }\n    if (!(key in settings)) {\n      throw new Error(\"missing\");\n    }\n    return settings[key];\n  });\n}\n\nexport function readSetting(name) {\n  return loadSetting(name).catch(() => \"off\");\n}\n"
+    },
+    "tests": [
+      {"args":["return readSetting(\"theme\");"],"expected":"dark"},
+      {"args":["return readSetting(\"volume\");"],"expected":"off"},
+      {"args":["return readSetting(\"password\").catch((error) => \"rejected: \" + error.message);"],"expected":"rejected: locked"},
+      {"args":["return readSetting(\"size\").catch(() => \"rejected\");"],"expected":"large"},
+      {"args":["return readSetting(\"font\").catch(() => \"rejected\");"],"expected":"off"}
+    ]
+  }
+}

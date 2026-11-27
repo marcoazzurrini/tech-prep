@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function load(name) {\n  console.log(\"load \" + name);\n  return name.toUpperCase();\n}\n\nconst tea = load(\"tea\");\nconsole.log(\"between\");\nconst jam = load(\"jam\");\n\ntea.then((value) => console.log(value));\njam.then((value) => console.log(value));\nconsole.log(\"end\");"
+    },
+    "expected": "load tea\nbetween\nload jam\nend\nTEA\nJAM"
+  }
+}

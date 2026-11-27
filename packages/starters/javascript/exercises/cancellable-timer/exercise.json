@@ -1,0 +1,18 @@
+{
+  "title": "Cancellable Timer",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function startTimer(ms, value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await startTimer(10, \"ding\").done;"],"expected":"ding"},
+      {"args":["const t = startTimer(10, \"ding\"); t.cancel(); try { await t.done; return \"fulfilled\"; } catch (e) { return e.message; }"],"expected":"cancelled"},
+      {"args":["const t = startTimer(10, \"ding\"); await t.done; t.cancel(); return await t.done;"],"expected":"ding"},
+      {"args":["const t = startTimer(30, \"ding\"); t.cancel(); t.cancel(); try { await t.done; } catch (e) { return e.message; }"],"expected":"cancelled"},
+      {"args":["const t = startTimer(10, 0); return [t.done instanceof Promise, typeof t.cancel, await t.done];"],"expected":[true,"function",0]}
+    ]
+  }
+}

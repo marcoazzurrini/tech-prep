@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const rooms = new Set([\"hall\", \"attic\", \"hall\", \"den\"]);\nconst [a, , c] = rooms;\nconst lengths = Array.from(rooms, (room) => room.length);\n\nconsole.log(a, c);\nconsole.log(lengths.join(\",\"));\nconsole.log(new Set(\"attic\").size);"
+    },
+    "expected": "hall den\n4,5,3\n4"
+  }
+}

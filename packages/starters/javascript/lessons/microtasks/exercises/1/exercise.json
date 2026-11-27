@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "setTimeout(() => console.log(\"A\"), 0);\n\nconst done = new Promise((resolve) => {\n  console.log(\"B\");\n  resolve();\n});\n\ndone.then(() => console.log(\"C\"));\nconsole.log(\"D\");"
+    },
+    "expected": "B\nD\nC\nA"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Inbox That Waits",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createInbox() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const box = createInbox(); box.put(\"a\"); return box.take();"],"expected":"a"},
+      {"args":["const box = createInbox(); const next = box.take(); box.put(\"b\"); return next;"],"expected":"b"},
+      {"args":["const box = createInbox(); box.put(1); box.put(2); return box.take().then((a) => box.take().then((b) => [a, b]));"],"expected":[1,2]},
+      {"args":["const box = createInbox(); box.take(); const second = box.take(); box.put(\"x\"); box.put(\"y\"); return second;"],"expected":"y"},
+      {"args":["const box = createInbox(); box.put(1); return box.take() instanceof Promise;"],"expected":true},
+      {"args":["const box = createInbox(); setTimeout(() => box.put(\"late\"), 20); return box.take();"],"expected":"late"},
+      {"args":["const a = createInbox(), b = createInbox(); a.put(1); b.put(2); return b.take();"],"expected":2}
+    ]
+  }
+}

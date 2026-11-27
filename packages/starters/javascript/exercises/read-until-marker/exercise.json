@@ -1,0 +1,18 @@
+{
+  "title": "Read Until a Marker",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readUntil(iterator, marker) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const it = [1, 2, 0, 3, 4].values(); return [readUntil(it, 0), [...it]];"],"expected":[[1,2],[3,4]]},
+      {"args":["const it = \"ab,cd\"[Symbol.iterator](); return [readUntil(it, \",\").join(\"\"), [...it].join(\"\")];"],"expected":["ab","cd"]},
+      {"args":["const it = [5, 6].values(); return [readUntil(it, 0), it.next().done];"],"expected":[[5,6],true]},
+      {"args":["const it = [0, 1].values(); return [readUntil(it, 0), [...it]];"],"expected":[[],[1]]},
+      {"args":["const it = [\"a\", \"/\", \"b\", \"/\", \"c\"].values(); return [readUntil(it, \"/\"), readUntil(it, \"/\"), readUntil(it, \"/\")];"],"expected":[["a"],["b"],["c"]]}
+    ]
+  }
+}

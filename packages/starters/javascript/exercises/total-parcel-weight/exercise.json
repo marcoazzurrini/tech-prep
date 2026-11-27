@@ -1,0 +1,20 @@
+{
+  "title": "Total Parcel Weight",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "totalWeight"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const weights = { p1: 2, p2: 5, p3: 1 };\n\nconst weigh = (id) =>\n  new Promise((resolve) => setTimeout(() => resolve(weights[id] ?? 0), 5));\n\nexport async function totalWeight(ids) {\n  return ids.reduce(async (sum, id) => sum + (await weigh(id)), 0);\n}\n"
+    },
+    "tests": [
+      {"args":[["p1","p2"]],"expected":7},
+      {"args":[[]],"expected":0},
+      {"args":[["p3"]],"expected":1},
+      {"args":[["p1","p2","p3"]],"expected":8},
+      {"args":[["p2","zz"]],"expected":5}
+    ]
+  }
+}

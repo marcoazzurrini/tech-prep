@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const draft = new Promise((resolve) => resolve(\"draft\"));\n\ndraft\n  .then((doc) => {\n    throw new TypeError(\"cannot publish \" + doc);\n  })\n  .catch((error) => {\n    if (error instanceof RangeError) {\n      return \"fixed\";\n    }\n    throw error;\n  })\n  .then(\n    (doc) => console.log(\"published \" + doc),\n    (error) => {\n      console.log(error.name);\n      return error;\n    }\n  )\n  .finally(() => console.log(\"closed\"))\n  .then((value) => console.log(value.message));"
+    },
+    "expected": "TypeError\nclosed\ncannot publish draft"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Cancel a Reminder",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function later(fn, ms) {\n  setTimeout(fn, ms);\n  // return a function that cancels the timer\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const cancel = later(() => n++, 10); cancel(); await new Promise((r) => setTimeout(r, 40)); return n;"],"expected":0},
+      {"args":["let n = 0; later(() => n++, 10); await new Promise((r) => setTimeout(r, 40)); return n;"],"expected":1},
+      {"args":["return typeof later(() => {}, 10);"],"expected":"function"},
+      {"args":["let n = 0; const cancel = later(() => n++, 10); await new Promise((r) => setTimeout(r, 40)); cancel(); return n;"],"expected":1},
+      {"args":["const s = []; later(() => s.push(1), 10)(); later(() => s.push(2), 10); await new Promise((r) => setTimeout(r, 40)); return s;"],"expected":[2]}
+    ]
+  }
+}

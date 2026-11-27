@@ -1,0 +1,20 @@
+{
+  "title": "Place an Order",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class OutOfStockError extends Error {}\nexport class PaymentError extends Error {}\n\nfunction later(value, ms) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nexport function reserve(order) {\n  return later(order, 10).then((o) => {\n    if (!o.item) {\n      throw new Error(\"no item\");\n    }\n    if (o.quantity > 5) {\n      throw new OutOfStockError(o.item);\n    }\n    return o;\n  });\n}\n\nexport function charge(order) {\n  return later(order, 10).then((o) => {\n    if (o.card === \"expired\") {\n      throw new PaymentError(o.card);\n    }\n    if (o.card === undefined) {\n      throw new TypeError(\"card is undefined\");\n    }\n    return \"paid \" + o.quantity + \" \" + o.item;\n  });\n}\n\nexport function placeOrder(order) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return placeOrder({ item: \"lamp\", quantity: 2, card: \"valid\" });"],"expected":"shipped lamp"},
+      {"args":["return placeOrder({ item: \"lamp\", quantity: 9, card: \"valid\" });"],"expected":"sold out"},
+      {"args":["return placeOrder({ item: \"desk\", quantity: 1, card: \"expired\" });"],"expected":"payment failed"},
+      {"args":["return placeOrder({ item: \"desk\", quantity: 7, card: \"expired\" });"],"expected":"sold out"},
+      {"args":["return placeOrder({ quantity: 1, card: \"valid\" }).catch((error) => \"rejected: \" + error.message);"],"expected":"rejected: no item"},
+      {"args":["return placeOrder({ item: \"chair\", quantity: 1 }).catch((error) => \"rejected: \" + error.name);"],"expected":"rejected: TypeError"},
+      {"args":["return placeOrder({ item: \"chair\", quantity: 9 });"],"expected":"sold out"}
+    ]
+  }
+}

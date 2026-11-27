@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* source() {\n  for (const word of [\"ox\", \"bee\", \"cat\"]) {\n    console.log(\"read \" + word);\n    yield word;\n  }\n}\n\nfunction* lengths(words) {\n  for (const word of words) yield word.length;\n}\n\nconst sizes = lengths(source());\nconsole.log(\"ready\");\nconsole.log(sizes.next().value);\nconsole.log(sizes.next().value);"
+    },
+    "expected": "ready\nread ox\n2\nread bee\n3"
+  }
+}

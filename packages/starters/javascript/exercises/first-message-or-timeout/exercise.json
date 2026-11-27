@@ -1,0 +1,19 @@
+{
+  "title": "First Message or Timeout",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstMessage(listen, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let send; const p = firstMessage((handler) => (send = handler), 50); send(\"hi\"); send(\"bye\"); return await p;"],"expected":"hi"},
+      {"args":["try { await firstMessage(() => {}, 10); return \"fulfilled\"; } catch (error) { return error.message; }"],"expected":"no message"},
+      {"args":["return await firstMessage((handler) => setTimeout(handler, 10, \"hi\"), 40);"],"expected":"hi"},
+      {"args":["try { return await firstMessage((handler) => setTimeout(handler, 40, \"hi\"), 10); } catch (e) { return e.message; }"],"expected":"no message"},
+      {"args":["return await firstMessage((handler) => handler(\"now\"), 10);"],"expected":"now"},
+      {"args":["const p = firstMessage((handler) => handler(1), 10); p.catch(() => {}); return p instanceof Promise;"],"expected":true}
+    ]
+  }
+}

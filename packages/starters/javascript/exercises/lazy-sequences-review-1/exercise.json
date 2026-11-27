@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* source() {\n  for (const n of [1, 2, 3, 4]) {\n    console.log(\"make \" + n);\n    yield n;\n  }\n}\n\nconst result = source()\n  .filter((n) => n % 2 === 0)\n  .map((n) => n * 10)\n  .take(1)\n  .toArray();\n\nconsole.log(result.join(\",\"));"
+    },
+    "expected": "make 1\nmake 2\n20"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const failed = new Promise((resolve, reject) => {\n  reject(new Error(\"timeout\"));\n});\nfailed.then(\n  (value) => console.log(\"value: \" + value),\n  (error) => console.log(\"reason: \" + error.message)\n);\n\nconst passed = new Promise((resolve) => resolve(\"ok\"));\npassed.catch((error) => console.log(\"never: \" + error.message));\npassed.then((value) => console.log(\"value: \" + value));"
+    },
+    "expected": "reason: timeout\nvalue: ok"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const p = new Promise((resolve) => {\n  console.log(\"making\");\n  resolve(\"cake\");\n});\n\np.then((dish) => console.log(\"eat \" + dish));\np.catch(() => console.log(\"no cake\"));\nconsole.log(\"waiting\");"
+    },
+    "expected": "making\nwaiting\neat cake"
+  }
+}

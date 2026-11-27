@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "setTimeout(() => console.log(\"timer\"), 0);\n\nconst ready = new Promise((resolve) => resolve());\n\nready\n  .then(() => console.log(\"a\"))\n  .then(() => {\n    queueMicrotask(() => console.log(\"b\"));\n  })\n  .then(() => console.log(\"c\"));"
+    },
+    "expected": "a\nb\nc\ntimer"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Add Later",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addLater(a, b, callback) {\n  setTimeout(() => {\n    return a + b;\n  }, 10);\n}\n"
+    },
+    "tests": [
+      {"args":["let sum; addLater(2, 3, (result) => (sum = result)); await new Promise((r) => setTimeout(r, 40)); return sum;"],"expected":5},
+      {"args":["let sum = \"nothing yet\"; addLater(2, 3, (result) => (sum = result)); return sum;"],"expected":"nothing yet"},
+      {"args":["let sum; addLater(\"tea\", \"pot\", (result) => (sum = result)); await new Promise((r) => setTimeout(r, 40)); return sum;"],"expected":"teapot"},
+      {"args":["let sum; addLater(-4, 4, (result) => (sum = result)); await new Promise((r) => setTimeout(r, 40)); return sum;"],"expected":0},
+      {"args":["let calls = 0; addLater(1, 2, () => calls++); await new Promise((r) => setTimeout(r, 40)); return calls;"],"expected":1}
+    ]
+  }
+}

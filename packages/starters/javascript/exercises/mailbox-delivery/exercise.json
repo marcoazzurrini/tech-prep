@@ -1,0 +1,19 @@
+{
+  "title": "Mailbox Delivery",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createMailbox() {\n  const listeners = [];\n\n  return {\n    listen(fn) {\n      listeners.push(fn);\n    },\n    send(message) {\n      // your code\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const box = createMailbox(), got = []; box.listen((m) => got.push(m)); box.send(\"hi\"); return got.length;"],"expected":0},
+      {"args":["const box = createMailbox(), got = []; box.send(\"hi\"); box.listen((m) => got.push(m)); await null; return got;"],"expected":["hi"]},
+      {"args":["const box = createMailbox(), got = []; box.send(1); box.send(2); box.listen((m) => got.push(m)); await null; return got;"],"expected":[1,2]},
+      {"args":["const b = createMailbox(), got = [], f = (m) => got.push(m); b.listen(f); b.listen(f); b.send(1); await null; return got;"],"expected":[1,1]},
+      {"args":["const b = createMailbox(), got = []; b.send(1); await null; b.listen((m) => got.push(m)); b.send(2); await null; return got;"],"expected":[2]},
+      {"args":["const a = createMailbox(), b = createMailbox(), got = []; a.listen((m) => got.push(m)); b.send(5); await null; return got;"],"expected":[]}
+    ]
+  }
+}

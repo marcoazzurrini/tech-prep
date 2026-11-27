@@ -1,0 +1,18 @@
+{
+  "title": "All Before the Deadline",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function allBeforeDeadline(tasks, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const w = (ms, v) => () => new Promise((r) => setTimeout(r, ms, v)); return allBeforeDeadline([w(10, \"a\"), w(5, \"b\")], 40);"],"expected":["a","b"]},
+      {"args":["const slow = () => new Promise((r) => setTimeout(r, 50, \"b\")); return allBeforeDeadline([slow], 20).catch((e) => e.message);"],"expected":"deadline passed"},
+      {"args":["return await allBeforeDeadline([() => Promise.reject(new Error(\"broken\"))], 30).catch((e) => e.message);"],"expected":"broken"},
+      {"args":["return await allBeforeDeadline([], 20);"],"expected":[]},
+      {"args":["const r = allBeforeDeadline([() => 1, () => Promise.resolve(2)], 20); return [r instanceof Promise, await r];"],"expected":[true,[1,2]]}
+    ]
+  }
+}

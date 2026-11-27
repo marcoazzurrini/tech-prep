@@ -1,0 +1,19 @@
+{
+  "title": "Track Loading State",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: promises that settle after ms, and a pause.\nexport const fulfilled = (value, ms = 0) => new Promise((resolve) => setTimeout(resolve, ms, value));\nexport const rejected = (message, ms = 0) =>\n  new Promise((resolve, reject) => setTimeout(reject, ms, new Error(message)));\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function withLoading(state, promise) {\n  // your code\n  return promise;\n}\n"
+    },
+    "tests": [
+      {"args":["const state = {}; withLoading(state, fulfilled(\"data\", 20)); return state.loading;"],"expected":true},
+      {"args":["const state = {}; const value = await withLoading(state, fulfilled(\"data\", 10)); return [value, state.loading];"],"expected":["data",false]},
+      {"args":["const state = {}; try { await withLoading(state, rejected(\"down\")); } catch (e) { return [e.message, state.loading]; }"],"expected":["down",false]},
+      {"args":["const state = { loading: false }; const p = withLoading(state, fulfilled(1)); return [state.loading, await p, state.loading];"],"expected":[true,1,false]},
+      {"args":["const state = {}; const p = withLoading(state, fulfilled(1, 30)); await wait(5); return state.loading;"],"expected":true},
+      {"args":["const p = withLoading({}, fulfilled(1)); return p instanceof Promise;"],"expected":true}
+    ]
+  }
+}

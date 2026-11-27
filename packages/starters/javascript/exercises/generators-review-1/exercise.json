@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* letters() {\n  console.log(\"start\");\n  yield* \"ab\";\n  console.log(\"middle\");\n  yield \"c\";\n  return \"d\";\n}\n\nconst gen = letters();\nconsole.log(\"made\");\nconsole.log([...gen].join(\"\"));\nconsole.log(gen[Symbol.iterator]() === gen);"
+    },
+    "expected": "made\nstart\nmiddle\nabc\ntrue"
+  }
+}

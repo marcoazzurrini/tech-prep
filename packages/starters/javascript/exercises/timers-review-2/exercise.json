@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "for (var i = 0; i < 3; i++) {\n  setTimeout((n) => console.log(n, i), i * 20, i);\n}"
+    },
+    "expected": "0 3\n1 3\n2 3"
+  }
+}

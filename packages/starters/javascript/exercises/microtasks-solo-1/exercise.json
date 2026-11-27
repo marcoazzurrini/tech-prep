@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"one\");\nsetTimeout(() => console.log(\"two\"), 0);\nqueueMicrotask(() => console.log(\"three\"));\nnew Promise((resolve) => resolve()).then(() => console.log(\"four\"));\nconsole.log(\"five\");"
+    },
+    "expected": "one\nfive\nthree\nfour\ntwo"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const lights = {\n  [Symbol.iterator]() {\n    let n = 0;\n    return {\n      next: () => ({ value: ++n, done: n > 3 }),\n      return: () => {\n        console.log(\"off\");\n        return { done: true };\n      },\n    };\n  },\n};\n\nconst [one, two] = lights;\nconsole.log(one + two);\nfor (const n of lights) if (n === 5) break;\nconsole.log(\"end\");\nfor (const n of lights) if (n === 1) break;"
+    },
+    "expected": "off\n3\nend\noff"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Cook Later",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cookLater(dish, ms) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await cookLater(\"soup\", 10);"],"expected":"soup is ready"},
+      {"args":["try { await cookLater(\"\", 10); return \"fulfilled\"; } catch (error) { return error.message; }"],"expected":"no dish"},
+      {"args":["let done = false; cookLater(\"rice\", 30).then(() => (done = true)); await new Promise((r) => setTimeout(r, 5)); return done;"],"expected":false},
+      {"args":["let done = false; cookLater(\"rice\", 10).then(() => (done = true)); await new Promise((r) => setTimeout(r, 40)); return done;"],"expected":true},
+      {"args":["return cookLater(\"tea\", 10) instanceof Promise;"],"expected":true}
+    ]
+  }
+}

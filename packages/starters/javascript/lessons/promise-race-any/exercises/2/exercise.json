@@ -1,0 +1,18 @@
+{
+  "title": "Fall Back When Slow",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstOrFallback(promise, ms, fallback) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const quick = new Promise((resolve) => setTimeout(resolve, 5, \"data\")); return await firstOrFallback(quick, 40, \"cached\");"],"expected":"data"},
+      {"args":["const slow = new Promise((resolve) => setTimeout(resolve, 50, \"data\")); return await firstOrFallback(slow, 20, \"cached\");"],"expected":"cached"},
+      {"args":["return await firstOrFallback(Promise.resolve(1), 10, 0);"],"expected":1},
+      {"args":["const bad = Promise.reject(new Error(\"broken\")); bad.catch(() => {}); return firstOrFallback(bad, 30).catch((e) => e.message);"],"expected":"broken"},
+      {"args":["return firstOrFallback(Promise.resolve(1), 10, 0) instanceof Promise;"],"expected":true}
+    ]
+  }
+}

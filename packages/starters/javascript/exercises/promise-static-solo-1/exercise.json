@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = {\n  then(resolve) {\n    resolve(\"from the box\");\n  },\n};\n\nconst fromBox = Promise.resolve(box);\nconsole.log(fromBox === box);\nconsole.log(Promise.resolve(fromBox) === fromBox);\nfromBox.then((text) => console.log(text));"
+    },
+    "expected": "false\ntrue\nfrom the box"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const prices = [5, 8, 3];\n\nfor (var i = 0; i < prices.length; i++) {\n  setTimeout(() => console.log(i, prices[i]), 0);\n}\n\nconsole.log(\"i is \" + i);"
+    },
+    "expected": "i is 3\n3 undefined\n3 undefined\n3 undefined"
+  }
+}

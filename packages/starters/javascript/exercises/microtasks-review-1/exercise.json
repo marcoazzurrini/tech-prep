@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "setTimeout(() => console.log(\"timer\"), 0);\n\nlet left = 2;\n\nfunction again() {\n  console.log(\"micro \" + left);\n  left -= 1;\n  if (left > 0) {\n    queueMicrotask(again);\n  }\n}\n\nnew Promise((resolve) => resolve())\n  .then(() => console.log(\"then 1\"))\n  .then(() => console.log(\"then 2\"));\nqueueMicrotask(again);\nconsole.log(\"sync\");"
+    },
+    "expected": "sync\nthen 1\nmicro 2\nthen 2\nmicro 1\ntimer"
+  }
+}

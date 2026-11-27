@@ -1757,7 +1757,8 @@
     "prereqs": ["for-of", "symbols", "spread"],
     "encompasses": [],
     "key_idea": "An iterable has a `[Symbol.iterator]()` method that returns an iterator. An iterator has a `next()` method that returns `{ value, done }`. `for...of`, spread and destructuring all use this.",
-    "solo": "iteration-protocol-solo-1"
+    "guided": 4,
+    "solo": ["iteration-protocol-solo-1", "read-until-marker"]
   },
   {
     "id": "custom-iterables",
@@ -1771,7 +1772,8 @@
       }
     ],
     "key_idea": "Give an object a `[Symbol.iterator]()` method and it works with `for...of` and spread. Each call should return a new iterator, so the object can be looped over twice.",
-    "solo": "custom-iterables-solo-1"
+    "guided": 4,
+    "solo": ["custom-iterables-solo-1", "step-range"]
   },
   {
     "id": "generators",
@@ -1784,8 +1786,9 @@
         "w": 0.4
       }
     ],
-    "key_idea": "A `function*` returns a generator, which is both an iterator and an iterable. Its body runs only when `next()` is called, and pauses at each `yield`.",
-    "solo": "generators-solo-1"
+    "key_idea": "A `function*` returns a generator, which is both an iterator and an iterable. Its body runs only when `next()` is called, and pauses at each `yield`. `yield*` hands over to another iterable.",
+    "guided": 4,
+    "solo": ["generators-solo-1", "flatten-nested-lists"]
   },
   {
     "id": "generator-control",
@@ -1798,8 +1801,9 @@
         "w": 0.6
       }
     ],
-    "key_idea": "`next(value)` sends a value in: it becomes the result of the paused `yield`. `return()` and `throw()` end the generator early, and `yield*` hands over to another iterable.",
-    "solo": "generator-control-solo-1"
+    "key_idea": "`next(value)` sends a value in: it becomes the result of the paused `yield`. `return()` ends the generator early, `throw()` throws an error at the paused `yield`, and a `finally` block in the generator still runs.",
+    "guided": 3,
+    "solo": ["generator-control-solo-1", "batch-collector"]
   },
   {
     "id": "lazy-sequences",
@@ -1813,7 +1817,8 @@
       }
     ],
     "key_idea": "A generator makes values only when asked, so it can describe an endless sequence. Iterator helpers such as `map`, `filter` and `take` are lazy too.",
-    "solo": "lazy-sequences-solo-1"
+    "guided": 4,
+    "solo": ["lazy-sequences-solo-1", "chunk-a-stream"]
   },
   {
     "id": "event-loop",
@@ -1822,7 +1827,8 @@
     "prereqs": ["call-stack", "first-class-functions"],
     "encompasses": [],
     "key_idea": "JavaScript runs one thing at a time. Code runs until the call stack is empty. Only then does the event loop take the next waiting task and run it.",
-    "solo": "event-loop-solo-1"
+    "guided": 3,
+    "solo": ["event-loop-solo-1", "run-in-slices"]
   },
   {
     "id": "timers",
@@ -1836,7 +1842,8 @@
       }
     ],
     "key_idea": "`setTimeout(fn, ms)` queues `fn` as a task after at least `ms` milliseconds. It returns an id that `clearTimeout` cancels. `setInterval` repeats until it is cleared.",
-    "solo": "timers-solo-1"
+    "guided": 4,
+    "solo": ["timers-solo-1", "countdown-with-stop"]
   },
   {
     "id": "async-callbacks",
@@ -1845,7 +1852,8 @@
     "prereqs": ["timers", "try-catch"],
     "encompasses": [],
     "key_idea": "An asynchronous function takes a callback and calls it later, by convention with the error first. A `try` around the call cannot catch an error thrown in the callback, because the `try` has finished by then.",
-    "solo": "async-callbacks-solo-1"
+    "guided": 4,
+    "solo": ["async-callbacks-solo-1", "run-steps-in-order"]
   },
   {
     "id": "promise-basics",
@@ -1854,7 +1862,8 @@
     "prereqs": ["async-callbacks"],
     "encompasses": [],
     "key_idea": "A promise stands for a result that comes later. It starts pending, and settles once: fulfilled with a value or rejected with a reason. The function given to `new Promise` runs at once.",
-    "solo": "promise-basics-solo-1"
+    "guided": 4,
+    "solo": ["promise-basics-solo-1", "first-message-or-timeout"]
   },
   {
     "id": "promise-then",
@@ -1868,7 +1877,8 @@
       }
     ],
     "key_idea": "`then` registers a callback for the value and returns a new promise. The callback always runs later, after the current code has finished, even if the promise is already settled.",
-    "solo": "promise-then-solo-1"
+    "guided": 4,
+    "solo": ["promise-then-solo-1", "track-loading-state"]
   },
   {
     "id": "promise-chaining",
@@ -1882,7 +1892,8 @@
       }
     ],
     "key_idea": "What a `then` callback returns becomes the value of the next `then`. If it returns a promise, the chain waits for it. Forgetting the `return` breaks the chain.",
-    "solo": "promise-chaining-solo-1"
+    "guided": 4,
+    "solo": ["promise-chaining-solo-1", "apply-steps-in-order"]
   },
   {
     "id": "promise-errors",
@@ -1896,7 +1907,8 @@
       }
     ],
     "key_idea": "A rejection skips every `then` until it reaches a `catch`. A `throw` in a callback rejects the next promise. After a `catch` that returns, the chain carries on as fulfilled.",
-    "solo": "promise-errors-solo-1"
+    "guided": 4,
+    "solo": ["promise-errors-solo-1", "first-source-that-answers"]
   },
   {
     "id": "microtasks",
@@ -1914,7 +1926,8 @@
       }
     ],
     "key_idea": "Promise callbacks wait in the microtask queue. When the current code ends, every microtask runs before the next task, so a `then` callback runs before a `setTimeout` of 0.",
-    "solo": "microtasks-solo-1"
+    "guided": 3,
+    "solo": ["microtasks-solo-1", "mailbox-delivery"]
   },
   {
     "id": "promise-static",
@@ -1923,7 +1936,8 @@
     "prereqs": ["promise-chaining"],
     "encompasses": [],
     "key_idea": "`Promise.resolve(x)` gives a promise fulfilled with `x`, and follows `x` if it is a promise or a thenable. `Promise.reject` gives a rejected one. `Promise.withResolvers` hands out the promise with its `resolve` and `reject`.",
-    "solo": "promise-static-solo-1"
+    "guided": 4,
+    "solo": ["promise-static-solo-1", "wait-for-guests"]
   },
   {
     "id": "promise-all",
@@ -1937,7 +1951,8 @@
       }
     ],
     "key_idea": "`Promise.all` waits for every promise and gives the values in the order of the input. It rejects as soon as one rejects. `Promise.allSettled` waits for all of them and never rejects.",
-    "solo": "promise-all-solo-1"
+    "guided": 3,
+    "solo": ["promise-all-solo-1", "all-with-fallback"]
   },
   {
     "id": "promise-race-any",
@@ -1951,7 +1966,8 @@
       }
     ],
     "key_idea": "`Promise.race` settles like the first promise to settle. `Promise.any` fulfils with the first one to fulfil, and rejects with an `AggregateError` only when all reject.",
-    "solo": "promise-race-any-solo-1"
+    "guided": 4,
+    "solo": ["promise-race-any-solo-1", "first-to-succeed"]
   },
   {
     "id": "async-functions",
@@ -1965,7 +1981,8 @@
       }
     ],
     "key_idea": "An `async` function always returns a promise. What it returns becomes the fulfilled value, and what it throws becomes the rejection.",
-    "solo": "async-functions-solo-1"
+    "guided": 4,
+    "solo": ["async-functions-solo-1", "never-throw-on-call"]
   },
   {
     "id": "await",
@@ -1983,7 +2000,8 @@
       }
     ],
     "key_idea": "`await` pauses its function until the promise settles, then gives the value. The rest of the program keeps running. The code after an `await` always runs later, as a microtask.",
-    "solo": "await-solo-1"
+    "guided": 3,
+    "solo": ["await-solo-1", "follow-the-route"]
   },
   {
     "id": "async-errors",
@@ -1997,7 +2015,8 @@
       }
     ],
     "key_idea": "`await` throws when its promise rejects, so `try` and `catch` work. A promise that is returned without `await` settles after the `try` block has ended, so its rejection is not caught.",
-    "solo": "async-errors-solo-1"
+    "guided": 4,
+    "solo": ["async-errors-solo-1", "load-with-backup"]
   },
   {
     "id": "sequential-parallel",

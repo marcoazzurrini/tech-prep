@@ -1,0 +1,18 @@
+{
+  "title": "A Queue You Can Loop Over",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeQueue(people) {\n  return {\n    people,\n    index: 0,\n    [Symbol.iterator]() {\n      this.index = 0;\n      return this;\n    },\n    next() {\n      if (this.index === this.people.length) return { value: undefined, done: true };\n      return { value: this.people[this.index++], done: false };\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const q = makeQueue([\"Ada\", \"Bo\"]); return [[...q], [...q]];"],"expected":[["Ada","Bo"],["Ada","Bo"]]},
+      {"args":["const q = makeQueue([1, 2]); const out = []; for (const a of q) for (const b of q) out.push(a * 10 + b); return out;"],"expected":[11,12,21,22]},
+      {"args":["const q = makeQueue([\"x\", \"y\", \"z\"]); const out = []; for (const a of q) for (const b of q) out.push(a + b); return out.length;"],"expected":9},
+      {"args":["return [...makeQueue([])];"],"expected":[]},
+      {"args":["const q = makeQueue([7]); const [first] = q; return [first, ...q];"],"expected":[7,7]}
+    ]
+  }
+}

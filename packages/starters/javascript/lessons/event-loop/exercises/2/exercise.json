@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let status = \"waiting\";\nsetTimeout(() => {\n  status = \"done\";\n}, 0);\n\nfor (let round = 1; round <= 3; round++) {\n  console.log(round, status);\n}\n\nsetTimeout(() => console.log(\"later\", status), 20);"
+    },
+    "expected": "1 waiting\n2 waiting\n3 waiting\nlater done"
+  }
+}

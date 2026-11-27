@@ -1,0 +1,18 @@
+{
+  "title": "Busy While Working",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function withBusyFlag(state, task) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const state = {}; const result = await withBusyFlag(state, async () => 5); return [result, state.busy];"],"expected":[5,false]},
+      {"args":["const state = {}; return await withBusyFlag(state, async () => state.busy);"],"expected":true},
+      {"args":["const s = {}; const m = await withBusyFlag(s, async () => { throw Error(\"x\"); }).catch((e) => e.message); return [m, s.busy];"],"expected":["x",false]},
+      {"args":["const state = {}; await withBusyFlag(state, () => { throw new Error(\"y\"); }).catch(() => {}); return state.busy;"],"expected":false},
+      {"args":["const s = {}; const p = withBusyFlag(s, () => new Promise((r) => setTimeout(r, 20))); const was = s.busy; await p; return was;"],"expected":true}
+    ]
+  }
+}

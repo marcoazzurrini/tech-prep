@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const later = (ms, value) =>\n  new Promise((resolve) => setTimeout(() => resolve(value), ms));\n\nPromise.allSettled([later(20, \"a\"), Promise.reject(new Error(\"b\")), \"c\"]).then((results) => {\n  for (const result of results) {\n    console.log(result.status, result.value ?? result.reason.message);\n  }\n});\n\nPromise.all([]).then((list) => console.log(\"empty\", list.length));"
+    },
+    "expected": "empty 0\nfulfilled a\nrejected b\nfulfilled c"
+  }
+}

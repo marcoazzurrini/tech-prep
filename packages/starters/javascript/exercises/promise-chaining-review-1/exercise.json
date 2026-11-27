@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function later(value, ms) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nlater(1, 10)\n  .then((n) => {\n    later(n + 1, 10).then((m) => console.log(\"inner \" + m));\n    return n + 10;\n  })\n  .then((n) => {\n    console.log(\"outer \" + n);\n    return later(n * 2, 35);\n  })\n  .then((n) => console.log(\"last \" + n));"
+    },
+    "expected": "outer 11\ninner 2\nlast 22"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Loop Over a Grid",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Grid {\n  constructor(rows) {\n    this.rows = rows;\n  }\n\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...new Grid([[1, 2], [3, 4]])];"],"expected":[1,2,3,4]},
+      {"args":["return [...new Grid([])];"],"expected":[]},
+      {"args":["return [...new Grid([[], [5], []])];"],"expected":[5]},
+      {"args":["const g = new Grid([[\"a\"]]); return [[...g], [...g]];"],"expected":[["a"],["a"]]},
+      {"args":["const g = new Grid([[1, 2]]); g.rows.push([3]); return [...g];"],"expected":[1,2,3]}
+    ]
+  }
+}

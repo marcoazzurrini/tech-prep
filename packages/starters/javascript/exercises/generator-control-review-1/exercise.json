@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* pages() {\n  try {\n    yield 1;\n    yield 2;\n    yield 3;\n  } finally {\n    console.log(\"done reading\");\n  }\n}\n\nconst [first, second] = pages();\nconsole.log(first + second);\nconst book = pages();\nconsole.log([...book].length);\nconsole.log(book.return(9).value);"
+    },
+    "expected": "done reading\n3\ndone reading\n3\n9"
+  }
+}

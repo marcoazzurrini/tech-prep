@@ -1,0 +1,18 @@
+{
+  "title": "Chain Them All",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function* chainAll(...sources) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...chainAll([1, 2], \"ab\", new Set([3]))];"],"expected":[1,2,"a","b",3]},
+      {"args":["const g = chainAll([1], [2]); return [g.next().value, g.next().value, g.next().done];"],"expected":[1,2,true]},
+      {"args":["return [...chainAll([[1, 2]], [3])];"],"expected":[[1,2],3]},
+      {"args":["return [...chainAll(\"\", [], \"x\")];"],"expected":["x"]},
+      {"args":["return [...chainAll()];"],"expected":[]}
+    ]
+  }
+}

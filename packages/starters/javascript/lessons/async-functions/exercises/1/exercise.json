@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function count() {\n  return 3;\n}\n\nasync function nothing() {}\n\nconst result = count();\nconsole.log(typeof result);\nresult.then((n) => console.log(n + 1));\nnothing().then((value) => console.log(value));"
+    },
+    "expected": "object\n4\nundefined"
+  }
+}

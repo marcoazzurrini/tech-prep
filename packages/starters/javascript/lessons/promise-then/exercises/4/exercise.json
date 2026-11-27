@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const upload = new Promise((resolve) => {\n  setTimeout(resolve, 10, \"photo.png\");\n});\n\nupload\n  .finally(() => console.log(\"progress bar hidden\"))\n  .then((file) => console.log(\"uploaded \" + file))\n  .finally(() => console.log(\"all done\"));"
+    },
+    "expected": "progress bar hidden\nuploaded photo.png\nall done"
+  }
+}

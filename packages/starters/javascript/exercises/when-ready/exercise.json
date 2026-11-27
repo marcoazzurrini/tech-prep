@@ -1,0 +1,19 @@
+{
+  "title": "Wait Until Ready",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function whenReady(check, ms, maxTries, onReady) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = [null, 7]; whenReady(() => a.shift(), 5, 9, (v) => a.push(v)); await new Promise((r) => setTimeout(r, 50)); return a;"],"expected":[7]},
+      {"args":["const s = []; whenReady(() => (s.push(1), null), 5, 3, (v) => s.push(v)); await new Promise((r) => setTimeout(r, 50)); return s;"],"expected":[1,1,1,null]},
+      {"args":["let got; whenReady(() => \"ok\", 5, 3, (v) => (got = v)); return got;"],"expected":"ok"},
+      {"args":["let got = \"none\"; whenReady(() => 0, 5, 3, (v) => (got = v)); return got;"],"expected":0},
+      {"args":["let calls = 0; whenReady(() => \"ok\", 5, 3, () => calls++); await new Promise((r) => setTimeout(r, 30)); return calls;"],"expected":1},
+      {"args":["let n = 0; whenReady(() => (n++, null), 5, 1, () => {}); await new Promise((r) => setTimeout(r, 30)); return n;"],"expected":1}
+    ]
+  }
+}

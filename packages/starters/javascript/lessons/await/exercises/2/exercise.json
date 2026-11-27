@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms, value) =>\n  new Promise((resolve) => setTimeout(() => resolve(value), ms));\n\nasync function step(name, ms) {\n  console.log(name + \" starts\");\n  await delay(ms, null);\n  console.log(name + \" ends\");\n}\n\nstep(\"wash\", 30);\nstep(\"dry\", 10);\nconsole.log(\"both started\");"
+    },
+    "expected": "wash starts\ndry starts\nboth started\ndry ends\nwash ends"
+  }
+}

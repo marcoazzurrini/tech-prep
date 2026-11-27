@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const fail = (ms, message) =>\n  new Promise((resolve, reject) => setTimeout(() => reject(new Error(message)), ms));\n\nPromise.any([fail(50, \"north\"), fail(10, \"south\"), fail(30, \"east\")]).catch((error) => {\n  console.log(error.name);\n  console.log(error.errors.map((reason) => reason.message).join(\",\"));\n});\n\nPromise.any([]).catch((error) => console.log(\"empty\", error.errors.length));\n\nPromise.race([]).then(() => console.log(\"race done\"));"
+    },
+    "expected": "empty 0\nAggregateError\nnorth,south,east"
+  }
+}

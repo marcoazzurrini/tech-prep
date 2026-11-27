@@ -1,0 +1,19 @@
+{
+  "title": "First to Succeed",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstToSucceed(tasks) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await firstToSucceed([() => Promise.reject(new Error(\"a\")), () => Promise.resolve(\"b\")]);"],"expected":{"index":1,"value":"b"}},
+      {"args":["const w = (ms, v) => () => new Promise((r) => setTimeout(r, ms, v)); return firstToSucceed([w(40, \"x\"), w(10, \"y\")]);"],"expected":{"index":1,"value":"y"}},
+      {"args":["return await firstToSucceed([() => Promise.resolve(0)]);"],"expected":{"index":0,"value":0}},
+      {"args":["const no = () => Promise.reject(new Error(\"no\")); return await firstToSucceed([no, no]).catch((e) => [e.name, e.errors.length]);"],"expected":["AggregateError",2]},
+      {"args":["return await firstToSucceed([]).catch((e) => [e.name, e.errors.length]);"],"expected":["AggregateError",0]},
+      {"args":["const log = []; const t = (n) => () => { log.push(n); return Promise.resolve(n); }; firstToSucceed([t(1), t(2)]); return log;"],"expected":[1,2]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const word = \"tidy\";\nconst letters = word[Symbol.iterator]();\nconst [first, second] = letters;\n\nconsole.log(first + second);\nconsole.log(letters.next().value);\nconsole.log([...letters].join(\"\"));\nconsole.log([...word].length);"
+    },
+    "expected": "ti\nd\ny\n4"
+  }
+}

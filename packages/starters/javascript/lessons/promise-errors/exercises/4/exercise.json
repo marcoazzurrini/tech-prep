@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ticket = new Promise((resolve, reject) => reject(new Error(\"sold out\")));\n\nticket\n  .then(\n    (seat) => console.log(\"seat \" + seat),\n    (error) => {\n      console.log(\"first: \" + error.message);\n      return 0;\n    }\n  )\n  .then(\n    (seat) => {\n      throw new Error(\"no seat \" + seat);\n    },\n    (error) => console.log(\"second: \" + error.message)\n  )\n  .catch((error) => console.log(\"third: \" + error.message));"
+    },
+    "expected": "first: sold out\nthird: no seat 0"
+  }
+}

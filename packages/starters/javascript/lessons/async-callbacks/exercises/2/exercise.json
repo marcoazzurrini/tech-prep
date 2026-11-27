@@ -1,0 +1,19 @@
+{
+  "title": "Parse Later",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function parseLater(text, callback) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let got; parseLater('{\"tea\": 2}', (e, v) => (got = [e, v])); await new Promise((r) => setTimeout(r, 20)); return got;"],"expected":[null,{"tea":2}]},
+      {"args":["let got; parseLater(\"{tea\", (e, v) => (got = [e.name, typeof v])); await new Promise((r) => setTimeout(r, 20)); return got;"],"expected":["SyntaxError","undefined"]},
+      {"args":["let calls = 0; parseLater(\"[1, 2]\", () => calls++); return calls;"],"expected":0},
+      {"args":["let calls = 0; parseLater(\"{tea\", () => calls++); return calls;"],"expected":0},
+      {"args":["let calls = 0; parseLater(\"{tea\", () => calls++); await new Promise((r) => setTimeout(r, 20)); return calls;"],"expected":1},
+      {"args":["let got; parseLater(\"[1, 2]\", (error, value) => (got = value)); await new Promise((r) => setTimeout(r, 20)); return got;"],"expected":[1,2]}
+    ]
+  }
+}

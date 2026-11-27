@@ -1,0 +1,18 @@
+{
+  "title": "Tag Index",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class TagIndex {\n  constructor() {\n    this.tags = new Map();\n  }\n\n  add(tag, item) {\n    if (!this.tags.has(tag)) this.tags.set(tag, []);\n    this.tags.get(tag).push(item);\n  }\n\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = new TagIndex(); t.add(\"js\", \"a\"); t.add(\"css\", \"b\"); t.add(\"js\", \"c\"); return [...t];"],"expected":[["js","a"],["js","c"],["css","b"]]},
+      {"args":["return [...new TagIndex()];"],"expected":[]},
+      {"args":["const t = new TagIndex(); t.add(\"x\", 1); return [[...t], [...t]];"],"expected":[[["x",1]],[["x",1]]]},
+      {"args":["const t = new TagIndex(); t.add(\"x\", 1); t.add(\"y\", 2); return Object.fromEntries(new Map(t));"],"expected":{"x":1,"y":2}},
+      {"args":["const t = new TagIndex(); t.add(\"a\", 1); t.add(\"b\", 2); let n = 0; for (const x of t) for (const y of t) n++; return n;"],"expected":4}
+    ]
+  }
+}

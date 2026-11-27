@@ -1,0 +1,18 @@
+{
+  "title": "Open the Gate",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createGate() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const gate = createGate(); gate.open(\"go\"); return gate.opened;"],"expected":"go"},
+      {"args":["const gate = createGate(); setTimeout(() => gate.open(5), 10); return gate.opened.then((n) => n + 1);"],"expected":6},
+      {"args":["const gate = createGate(); gate.open(1); gate.open(2); return gate.opened;"],"expected":1},
+      {"args":["const a = createGate(), b = createGate(); a.open(\"a\"); b.open(\"b\"); return b.opened;"],"expected":"b"},
+      {"args":["return createGate().opened instanceof Promise;"],"expected":true}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Stock Report",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stockReport"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const stock = { tea: 12, cake: 0, jam: 5 };\n\nconst fetchStock = (item) =>\n  new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (Object.hasOwn(stock, item)) {\n        resolve(stock[item]);\n      } else {\n        reject(new Error(\"unknown item\"));\n      }\n    }, 10);\n  });\n\nexport function stockReport(items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["tea","cake"]],"expected":["tea: 12","cake: 0"]},
+      {"args":[["jam","soup"]],"expected":["jam: 5","soup: unknown item"]},
+      {"args":[[]],"expected":[]},
+      {"args":[["milk","bread"]],"expected":["milk: unknown item","bread: unknown item"]},
+      {"args":[["cake","tea","jam"]],"expected":["cake: 0","tea: 12","jam: 5"]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function brew(drink) {\n  console.log(\"start \" + drink);\n  return drink + \" ready\";\n}\n\nconst cup = brew(\"tea\");\nconsole.log(cup instanceof Promise);\ncup.then((text) => console.log(text));\nconsole.log(\"end\");"
+    },
+    "expected": "start tea\ntrue\nend\ntea ready"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Keep Paid Orders",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "paidOrderIds"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const isPaid = async (order) => order.paid === true;\n\nexport function paidOrderIds(orders) {\n  return orders.filter(isPaid).map((order) => order.id);\n}\n"
+    },
+    "tests": [
+      {"args":[[{"id":"a","paid":true},{"id":"b","paid":false}]],"expected":["a"]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"id":"x","paid":false},{"id":"y","paid":false}]],"expected":[]},
+      {"args":[[{"id":"c","paid":true},{"id":"d","paid":false},{"id":"e","paid":true}]],"expected":["c","e"]},
+      {"args":[[{"id":"f","paid":true}]],"expected":["f"]}
+    ]
+  }
+}

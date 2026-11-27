@@ -1,0 +1,21 @@
+{
+  "title": "All the Prices",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "priceList"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const prices = { tea: 3, cake: 4, jam: 2 };\n\nconst fetchPrice = (item) =>\n  new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (Object.hasOwn(prices, item)) {\n        resolve(prices[item]);\n      } else {\n        reject(new Error(\"no price for \" + item));\n      }\n    }, 10);\n  });\n\nexport function priceList(items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["tea","cake"]],"expected":[3,4]},
+      {"args":[["jam","tea","jam"]],"expected":[2,3,2]},
+      {"args":[[]],"expected":[]},
+      {"args":[["tea","soup"]],"expected":"no price for soup"},
+      {"args":[["bread"]],"expected":"no price for bread"},
+      {"args":[["cake"]],"expected":[4]}
+    ]
+  }
+}

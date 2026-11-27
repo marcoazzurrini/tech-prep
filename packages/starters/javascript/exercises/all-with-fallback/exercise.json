@@ -1,0 +1,19 @@
+{
+  "title": "All with Fallback",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function allWithFallback(promises, fallback) {\n  return Promise.all(promises);\n}\n"
+    },
+    "tests": [
+      {"args":["return await allWithFallback([Promise.resolve(1), Promise.reject(new Error(\"x\")), 3], 0);"],"expected":[1,0,3]},
+      {"args":["return await allWithFallback([], \"none\");"],"expected":[]},
+      {"args":["return await allWithFallback([Promise.reject(new Error(\"a\")), Promise.reject(new Error(\"b\"))], null);"],"expected":[null,null]},
+      {"args":["const slow = new Promise((resolve) => setTimeout(resolve, 30, \"slow\")); return await allWithFallback([slow, \"fast\"], \"-\");"],"expected":["slow","fast"]},
+      {"args":["const p = allWithFallback([Promise.reject(new Error(\"x\"))], 0); return await p.then(() => \"fulfilled\", () => \"rejected\");"],"expected":"fulfilled"},
+      {"args":["return await allWithFallback([Promise.resolve(false), Promise.resolve(0)], 9);"],"expected":[false,0]}
+    ]
+  }
+}

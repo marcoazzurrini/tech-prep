@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const best = new Promise((resolve) => {\n  for (const score of [7, 9, 4]) {\n    resolve(score);\n  }\n});\nbest.then((score) => console.log(\"score \" + score));\n\nconst shop = new Promise((resolve, reject) => {\n  reject(new Error(\"closed\"));\n  resolve(\"open\");\n});\nshop.catch((error) => console.log(\"shop \" + error.message));"
+    },
+    "expected": "score 7\nshop closed"
+  }
+}

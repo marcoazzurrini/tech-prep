@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const job = new Promise((resolve, reject) => reject(new Error(\"timeout\")));\n\njob\n  .then((result) => console.log(\"done \" + result))\n  .catch((error) => error.message.length)\n  .finally(() => {\n    console.log(\"cleanup\");\n    return 99;\n  })\n  .then((value) => console.log(\"value \" + value));"
+    },
+    "expected": "cleanup\nvalue 7"
+  }
+}

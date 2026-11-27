@@ -1,0 +1,18 @@
+{
+  "title": "Countdown with Stop",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countdown(from, ms, onTick, onDone) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; countdown(3, 10, (n) => s.push(n), () => s.push(\"go\")); await new Promise((r) => setTimeout(r, 60)); return s;"],"expected":[3,2,1,"go"]},
+      {"args":["const s = []; countdown(2, 10, (n) => s.push(n), () => s.push(\"go\")); return s;"],"expected":[2,1,"go"]},
+      {"args":["const s = []; countdown(3, 10, (n) => s.push(n), () => s.push(\"go\"))(); await new Promise((r) => setTimeout(r, 40)); return s;"],"expected":[]},
+      {"args":["let done = 0; countdown(1, 10, () => {}, () => done++); await new Promise((r) => setTimeout(r, 40)); return done;"],"expected":1},
+      {"args":["return typeof countdown(1, 10, () => {}, () => {});"],"expected":"function"}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Repeat a Value",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function repeat(item, times) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...repeat(\"hi\", 3)];"],"expected":["hi","hi","hi"]},
+      {"args":["return Array.from(repeat(0, 0));"],"expected":[]},
+      {"args":["let total = 0; for (const n of repeat(5, 4)) total += n; return total;"],"expected":20},
+      {"args":["return [...repeat(null, 2)];"],"expected":[null,null]},
+      {"args":["return typeof repeat(\"a\", 1)[Symbol.iterator];"],"expected":"function"}
+    ]
+  }
+}

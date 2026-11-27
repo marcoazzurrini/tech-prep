@@ -1,0 +1,19 @@
+{
+  "title": "Retry a Flaky Loader",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "// For the tests: a loader that fails `failures` times, then gives `value`.\nexport const flaky = (failures, value) => {\n  const load = (callback) =>\n    setTimeout(() => {\n      load.calls++;\n      if (load.calls <= failures) {\n        callback(new Error(\"fail \" + load.calls));\n      } else {\n        callback(null, value);\n      }\n    }, 0);\n\n  load.calls = 0;\n  return load;\n};\n\n// For the tests: a promise that settles after ms.\nexport const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nexport function loadWithRetry(load, tries, done) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["let got; loadWithRetry(flaky(2, \"data\"), 3, (error, value) => (got = value)); await wait(30); return got;"],"expected":"data"},
+      {"args":["let got; loadWithRetry(flaky(3, \"data\"), 3, (error) => (got = error.message)); await wait(30); return got;"],"expected":"fail 3"},
+      {"args":["const load = flaky(9, \"data\"); loadWithRetry(load, 3, () => {}); await wait(40); return load.calls;"],"expected":3},
+      {"args":["const load = flaky(0, \"data\"); let ends = 0; loadWithRetry(load, 3, () => ends++); await wait(30); return [load.calls, ends];"],"expected":[1,1]},
+      {"args":["let got; loadWithRetry(flaky(1, \"data\"), 1, (error) => (got = error.message)); await wait(30); return got;"],"expected":"fail 1"},
+      {"args":["let ends = 0; loadWithRetry(flaky(9, \"data\"), 2, () => ends++); await wait(30); return ends;"],"expected":1}
+    ]
+  }
+}

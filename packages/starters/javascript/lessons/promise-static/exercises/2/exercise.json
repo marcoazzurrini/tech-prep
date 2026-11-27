@@ -1,0 +1,19 @@
+{
+  "title": "A Value Later",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function laterValue(value, ms) {\n  return {\n    // your code\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["return laterValue(1, 0) instanceof Promise;"],"expected":false},
+      {"args":["return typeof laterValue(1, 0).then;"],"expected":"function"},
+      {"args":["return Promise.resolve(laterValue(\"hi\", 10));"],"expected":"hi"},
+      {"args":["return Promise.resolve(laterValue(3, 10)).then((n) => n * 2);"],"expected":6},
+      {"args":["let on = false; Promise.resolve(laterValue(1, 40)).then(() => (on = true)); await new Promise((r) => setTimeout(r, 9)); return on;"],"expected":false},
+      {"args":["return new Promise((resolve) => resolve(laterValue([1, 2], 5)));"],"expected":[1,2]}
+    ]
+  }
+}

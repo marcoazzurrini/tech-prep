@@ -1,0 +1,19 @@
+{
+  "title": "Paged Feed",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function feed(fetchPage) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...feed((page) => (page < 2 ? [page * 10, page * 10 + 1] : []))];"],"expected":[0,1,10,11]},
+      {"args":["let calls = 0; const it = feed((page) => (calls++, [page])); it.next(); return calls;"],"expected":1},
+      {"args":["let calls = 0; const it = feed((page) => (calls++, [page, page])); it.next(); it.next(); return calls;"],"expected":1},
+      {"args":["let calls = 0; const it = feed((page) => (calls++, [page, page])); it.next(); it.next(); it.next(); return calls;"],"expected":2},
+      {"args":["return [...feed(() => [])];"],"expected":[]},
+      {"args":["return [...feed((page) => (page === 1 ? [] : [page]))];"],"expected":[0]}
+    ]
+  }
+}

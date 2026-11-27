@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const menu = new Map([[\"soup\", 4], [\"pie\", 6], [\"tea\", 2]]);\nconst prices = menu.values();\n\nconsole.log(prices.next().value);\nconsole.log([...prices].join(\",\"));\nconsole.log(prices.next().done);\nconsole.log([...menu.keys()].length);"
+    },
+    "expected": "4\n6,2\ntrue\n3"
+  }
+}

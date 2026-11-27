@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function serve(table, dish) {\n  console.log(\"table \" + table + \": \" + dish);\n}\n\nsetTimeout(serve, 30, 2, \"soup\");\nserve(1, \"water\");\nsetTimeout(serve, 0, 5, \"bread\");\nconsole.log(\"orders taken\");"
+    },
+    "expected": "table 1: water\norders taken\ntable 5: bread\ntable 2: soup"
+  }
+}

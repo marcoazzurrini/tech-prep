@@ -1,0 +1,19 @@
+{
+  "title": "Wait for Guests",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function waitForGuests(names) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const party = waitForGuests([\"ana\", \"bo\"]); party.arrive(\"bo\"); party.arrive(\"ana\"); return party.arrived;"],"expected":["bo","ana"]},
+      {"args":["return waitForGuests([]).arrived;"],"expected":[]},
+      {"args":["let on = false; const p = waitForGuests([\"ana\", \"bo\"]); p.arrived.then(() => (on = true)); p.arrive(\"ana\"); await null; return on;"],"expected":false},
+      {"args":["const p = waitForGuests([\"ana\"]); p.arrive(\"zed\"); p.arrive(\"ana\"); return p.arrived;"],"expected":["ana"]},
+      {"args":["const p = waitForGuests([\"ana\", \"bo\"]); p.arrive(\"ana\"); p.arrive(\"ana\"); p.arrive(\"bo\"); return p.arrived;"],"expected":["ana","bo"]},
+      {"args":["const p = waitForGuests([\"ana\", \"bo\"]); setTimeout(() => p.arrive(\"bo\"), 20); p.arrive(\"ana\"); return p.arrived;"],"expected":["ana","bo"]}
+    ]
+  }
+}

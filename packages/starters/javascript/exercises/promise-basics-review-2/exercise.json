@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "try {\n  const p = new Promise(() => {\n    console.log(\"start\");\n    JSON.parse(\"{\");\n    console.log(\"never\");\n  });\n  console.log(\"created\");\n  p.catch((error) => console.log(\"rejected: \" + error.name));\n} catch (error) {\n  console.log(\"caught: \" + error.name);\n}\n\nconsole.log(\"end\");"
+    },
+    "expected": "start\ncreated\nend\nrejected: SyntaxError"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* countUp() {\n  let n = 1;\n  while (true) yield n++;\n}\n\nconst it = countUp()\n  .filter((n) => n % 3 === 0)\n  .map((n) => n + 1);\n\nconsole.log(it.next().value);\nconsole.log(it.next().value);\nconsole.log(it.take(2).toArray().join(\",\"));\nconst [a, b] = countUp().drop(3);\nconsole.log(a + b);"
+    },
+    "expected": "4\n7\n10,13\n9"
+  }
+}

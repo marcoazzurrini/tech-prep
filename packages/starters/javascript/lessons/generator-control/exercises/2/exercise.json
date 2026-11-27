@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* seats() {\n  try {\n    yield \"A\";\n    yield \"B\";\n  } finally {\n    console.log(\"released\");\n  }\n}\n\nfor (const seat of seats()) {\n  console.log(seat);\n  break;\n}\n\nconst s = seats();\ns.next();\nconsole.log(s.return(\"gone\").value);"
+    },
+    "expected": "A\nreleased\nreleased\ngone"
+  }
+}

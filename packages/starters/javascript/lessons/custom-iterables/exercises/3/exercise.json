@@ -1,0 +1,18 @@
+{
+  "title": "Loop Over a Stack",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Stack {\n  constructor() {\n    this.items = [];\n  }\n\n  push(value) {\n    this.items.push(value);\n    return this;\n  }\n\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...new Stack().push(1).push(2).push(3)];"],"expected":[3,2,1]},
+      {"args":["return [...new Stack()];"],"expected":[]},
+      {"args":["const [top] = new Stack().push(\"a\").push(\"b\"); return top;"],"expected":"b"},
+      {"args":["const s = new Stack().push(1).push(2); return [[...s], s.items];"],"expected":[[2,1],[1,2]]},
+      {"args":["const s = new Stack().push(\"x\"); return [[...s], [...s]];"],"expected":[["x"],["x"]]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const reminder = setTimeout(() => console.log(\"call mum\"), 40);\n\nsetTimeout(() => {\n  console.log(\"mum called first\");\n  clearTimeout(reminder);\n}, 10);\n\nsetTimeout(console.log, 0, \"lunch\", 12);"
+    },
+    "expected": "lunch 12\nmum called first"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ticket = new Promise((resolve, reject) => {\n  setTimeout(() => reject(new Error(\"sold out\")), 10);\n  resolve(\"seat 4\");\n});\n\nticket.then(\n  (seat) => console.log(\"booked \" + seat),\n  (error) => console.log(\"failed: \" + error.message)\n);\nticket.finally(() => console.log(\"closed\"));\nconsole.log(\"checking\");"
+    },
+    "expected": "checking\nbooked seat 4\nclosed"
+  }
+}

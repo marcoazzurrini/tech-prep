@@ -1,0 +1,19 @@
+{
+  "title": "Never Throw on Call",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function promiseOf(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const add = promiseOf((a, b) => a + b); const p = add(2, 3); return [p instanceof Promise, await p];"],"expected":[true,5]},
+      {"args":["const f = promiseOf(() => { throw new Error(\"no\"); }); return f().catch((e) => \"rejected: \" + e.message);"],"expected":"rejected: no"},
+      {"args":["const f = promiseOf(() => { throw new Error(\"x\"); }); try { f().catch(() => {}); return \"no throw\"; } catch { return \"threw\"; }"],"expected":"no throw"},
+      {"args":["return await promiseOf(() => Promise.resolve(7))();"],"expected":7},
+      {"args":["const shop = { name: \"Kiosk\", hello: promiseOf(function () { return this.name; }) }; return await shop.hello();"],"expected":"Kiosk"},
+      {"args":["const f = promiseOf(() => Promise.reject(new Error(\"late\"))); return f().catch((e) => e.message);"],"expected":"late"}
+    ]
+  }
+}

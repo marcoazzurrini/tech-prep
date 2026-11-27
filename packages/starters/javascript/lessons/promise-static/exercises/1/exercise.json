@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const first = Promise.resolve(\"tea\");\nconst second = Promise.resolve(first);\nconst third = new Promise((resolve) => resolve(first));\n\nconsole.log(first === second);\nconsole.log(first === third);\nthird.then((drink) => console.log(drink));"
+    },
+    "expected": "true\nfalse\ntea"
+  }
+}

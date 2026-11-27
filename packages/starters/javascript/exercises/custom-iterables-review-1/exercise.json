@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const pair = {\n  items: [\"a\", \"b\"],\n  [Symbol.iterator]() {\n    this.index = 0;\n    return this;\n  },\n  next() {\n    if (this.index === this.items.length) return { value: undefined, done: true };\n    return { value: this.items[this.index++], done: false };\n  },\n};\n\nconst out = [];\nfor (const x of pair) for (const y of pair) out.push(x + y);\nconsole.log(out.join(\",\"));\nconsole.log([...pair].length);"
+    },
+    "expected": "aa,ab\n2"
+  }
+}

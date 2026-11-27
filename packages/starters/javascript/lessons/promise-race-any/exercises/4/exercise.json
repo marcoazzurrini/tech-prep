@@ -1,0 +1,18 @@
+{
+  "title": "Explain the Failure",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function explainFailure(promises) {\n  return Promise.any(promises);\n}\n"
+    },
+    "tests": [
+      {"args":["return explainFailure([Promise.reject(Error(\"x\")), Promise.reject(Error(\"y\"))]).catch((e) => e.message);"],"expected":"failed: x, y"},
+      {"args":["return explainFailure([Promise.reject(Error(\"x\"))]).catch((e) => e.name);"],"expected":"Error"},
+      {"args":["return await explainFailure([Promise.reject(new Error(\"x\")), Promise.resolve(\"ok\")]);"],"expected":"ok"},
+      {"args":["const late = new Promise((r) => setTimeout(r, 30, \"late\")); return explainFailure([Promise.reject(Error(\"x\")), late]);"],"expected":"late"},
+      {"args":["const no = (m) => Promise.reject(Error(m)); return explainFailure([no(\"tea\"), no(\"jam\"), no(\"cake\")]).catch((e) => e.message);"],"expected":"failed: tea, jam, cake"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Work in Slices",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function runInSlices(items, size, handle, done) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = []; runInSlices([1, 2, 3, 4, 5], 2, (x) => s.push(x), () => {}); return s;"],"expected":[1,2,3,4,5]},
+      {"args":["const s = []; runInSlices([1, 2, 3], 2, (x) => s.push(x), () => {}); await new Promise((r) => setTimeout(r, 30)); return s;"],"expected":[1,2,3]},
+      {"args":["const s = []; runInSlices([1, 2], 1, (x) => s.push(x), () => 0); s.push(0); await new Promise((r) => setTimeout(r, 30)); return s;"],"expected":[1,0,2]},
+      {"args":["let n = 0, e = 0; runInSlices([1, 2, 3], 5, () => n++, () => e++); await new Promise((r) => setTimeout(r, 20)); return [n, e];"],"expected":[3,1]},
+      {"args":["let ends = 0; runInSlices([1, 2, 3], 1, () => {}, () => ends++); return ends;"],"expected":0},
+      {"args":["let ends = 0; runInSlices([1, 2, 3, 4], 1, () => {}, () => ends++); await new Promise((r) => setTimeout(r, 50)); return ends;"],"expected":1},
+      {"args":["const s = []; runInSlices([], 3, (x) => s.push(x), () => s.push(\"done\")); return s;"],"expected":["done"]}
+    ]
+  }
+}

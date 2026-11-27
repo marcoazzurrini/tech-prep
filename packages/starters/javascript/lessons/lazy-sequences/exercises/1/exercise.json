@@ -1,0 +1,18 @@
+{
+  "title": "Take the First Few",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function* take(source, n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...take([1, 2, 3, 4], 2)];"],"expected":[1,2]},
+      {"args":["return [...take(\"ab\", 5)];"],"expected":["a","b"]},
+      {"args":["return [...take([1, 2], 0)];"],"expected":[]},
+      {"args":["let made = 0; function* nat() { while (true) yield ++made; } const r = [...take(nat(), 3)]; return [r, made];"],"expected":[[1,2,3],3]},
+      {"args":["let made = 0; function* nat() { while (true) yield ++made; } [...take(nat(), 0)]; return made;"],"expected":0}
+    ]
+  }
+}

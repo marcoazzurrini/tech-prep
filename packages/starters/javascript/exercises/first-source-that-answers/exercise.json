@@ -1,0 +1,19 @@
+{
+  "title": "First Source That Answers",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function wait(ms, value) {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n\nexport function failAfter(ms, message) {\n  return new Promise((resolve, reject) => setTimeout(() => reject(new Error(message)), ms));\n}\n\nexport function firstAnswer(sources) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return firstAnswer([() => wait(10, \"a\"), () => wait(10, \"b\")]);"],"expected":"a"},
+      {"args":["return firstAnswer([() => failAfter(10, \"down\"), () => wait(10, \"b\")]);"],"expected":"b"},
+      {"args":["return firstAnswer([() => failAfter(5, \"x\"), () => failAfter(5, \"y\")]).catch((e) => e.message);"],"expected":"y"},
+      {"args":["let calls = 0; const s = () => wait(10, ++calls); await firstAnswer([s, s, s]); return calls;"],"expected":1},
+      {"args":["return firstAnswer([() => failAfter(5, \"x\"), () => failAfter(5, \"y\"), () => wait(5, \"z\")]);"],"expected":"z"},
+      {"args":["return firstAnswer([]).catch((e) => e.message);"],"expected":"no sources"}
+    ]
+  }
+}

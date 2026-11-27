@@ -1,0 +1,20 @@
+{
+  "title": "Collect by Hand",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "collect"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function collect(iterable) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["abc"],"expected":["a","b","c"]},
+      {"args":[[3,1,2]],"expected":[3,1,2]},
+      {"args":[[]],"expected":[]},
+      {"args":[""],"expected":[]},
+      {"args":[[null,0,"x"]],"expected":[null,0,"x"]}
+    ]
+  }
+}
