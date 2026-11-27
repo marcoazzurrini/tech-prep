@@ -580,17 +580,40 @@ const runCase = (testCase: Case, conv: Converter) => {
 
 const results: CaseOutcome[] = [];
 
+// A promise the learner's code rejects and never handles would end the whole run.
+// It fails the test it happened in instead.
+let unhandled: unknown[] = [];
+
+process.on("unhandledRejection", (reason) => {
+  unhandled.push(reason);
+});
+
 for (const testCase of request.cases) {
   captured = [];
+  unhandled = [];
   const start = performance.now();
   let outcome: CaseOutcome;
 
   try {
     // oxlint-disable-next-line no-await-in-loop -- cases run one at a time so console output is captured per case
     const actual = await runCase(testCase, new Converter());
-    outcome = { actual: actual === undefined ? null : actual };
+    // Copied now, so code still running later cannot change what this test returned.
+    // JSON, not structuredClone: the result is sent as JSON, so it keeps what JSON keeps.
+    // oxlint-disable-next-line unicorn/prefer-structured-clone -- see above
+    const kept: unknown = JSON.parse(JSON.stringify(actual ?? null));
+    outcome = { actual: kept };
   } catch (error) {
     outcome = { error: describe(error) };
+  }
+
+  // Give a rejection made during this test the chance to be reported.
+  // oxlint-disable-next-line no-await-in-loop -- see above
+  await Bun.sleep(0);
+
+  if (unhandled.length > 0 && outcome.error === undefined) {
+    outcome = {
+      error: `A promise was rejected and nothing handled it.\n${describe(unhandled[0])}`,
+    };
   }
 
   outcome.stdout = captured.join("\n");

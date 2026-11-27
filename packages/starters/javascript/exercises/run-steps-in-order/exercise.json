@@ -10,7 +10,7 @@
     "tests": [
       {"args":["const s = []; runInOrder([step(s, \"a\", 30), step(s, \"b\", 0)], () => s.push(\"end\")); await wait(60); return s;"],"expected":["a","b","end"]},
       {"args":["const s = []; runInOrder([step(s, \"a\", 0), step(s, \"b\", 0), step(s, \"c\", 0)], () => s.push(\"end\")); await wait(40); return s;"],"expected":["a","b","c","end"]},
-      {"args":["const s = []; runInOrder([step(s, \"a\", 10)], () => s.push(\"end\")); return s;"],"expected":["a","end"]},
+      {"args":["const s = []; runInOrder([step(s, \"a\", 10)], () => s.push(\"end\")); await wait(30); return s;"],"expected":["a","end"]},
       {"args":["const s = []; runInOrder([], () => s.push(\"end\")); return s;"],"expected":["end"]},
       {"args":["const s = []; runInOrder([(next) => next(), (next) => next()], () => s.push(\"end\")); return s;"],"expected":["end"]},
       {"args":["let ends = 0; runInOrder([step([], \"a\", 0), step([], \"b\", 0)], () => ends++); await wait(30); return ends;"],"expected":1}

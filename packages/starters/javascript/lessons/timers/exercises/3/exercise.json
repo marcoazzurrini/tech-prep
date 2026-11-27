@@ -9,7 +9,7 @@
     },
     "tests": [
       {"args":["const s = []; tick(3, 10, (n) => s.push(n)); await new Promise((r) => setTimeout(r, 60)); return s;"],"expected":[1,2,3]},
-      {"args":["const s = []; tick(2, 10, (n) => s.push(n)); return s;"],"expected":[1,2]},
+      {"args":["const s = []; tick(2, 10, (n) => s.push(n)); await new Promise((r) => setTimeout(r, 40)); return s;"],"expected":[1,2]},
       {"args":["const s = []; tick(1, 10, (n) => s.push(n)); await new Promise((r) => setTimeout(r, 40)); return s;"],"expected":[1]},
       {"args":["const s = []; tick(2, 5, (n) => s.push(n)); await new Promise((r) => setTimeout(r, 50)); return s;"],"expected":[1,2]},
       {"args":["const s = []; tick(4, 5, (n) => s.push(n * 10)); await new Promise((r) => setTimeout(r, 50)); return s;"],"expected":[10,20,30,40]}
