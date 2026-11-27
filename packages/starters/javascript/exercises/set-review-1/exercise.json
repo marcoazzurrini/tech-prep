@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seen = new Set();\n\nfor (const x of [0, -0, NaN, \"NaN\", NaN, null, undefined, null]) {\n  seen.add(x);\n}\n\nconsole.log(seen.size);\nconsole.log(seen.has(-0));\nconsole.log([...seen].map(String).join(\",\"));\nconsole.log(seen.delete(undefined), seen.delete(undefined));"
+    },
+    "expected": "5\ntrue\n0,NaN,NaN,null,undefined\ntrue false"
+  }
+}

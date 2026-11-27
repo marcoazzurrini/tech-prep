@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const readings = new Int16Array([40000, -32769]);\nconsole.log(readings.join(\",\"));\n\nconst pixels = new Uint8ClampedArray([254.5, 255.5, 1.5, -0.4]);\nconsole.log(pixels.join(\",\"));\n\nconst exact = new Float64Array(1);\nexact[0] = 0.1 + 0.2;\nconsole.log(exact[0] === 0.1 + 0.2);\n\nconsole.log(new Uint8Array([NaN, \"7\", 1.99]).join(\",\"));"
+    },
+    "expected": "-25536,32767\n254,255,2,0\ntrue\n0,7,1"
+  }
+}

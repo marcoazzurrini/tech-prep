@@ -1,0 +1,22 @@
+{
+  "title": "Dates to ISO Format",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "toIsoDates"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toIsoDates(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Due 05/09/2026, paid 12/10/2026."],"expected":"Due 2026-09-05, paid 2026-10-12."},
+      {"args":["Bad 31/13/2026 date"],"expected":"Bad 31/13/2026 date"},
+      {"args":["Start 00/01/2026"],"expected":"Start 00/01/2026"},
+      {"args":["no dates"],"expected":"no dates"},
+      {"args":["1/2/2026 is too short"],"expected":"1/2/2026 is too short"},
+      {"args":["31/12/1999-01/01/2000"],"expected":"1999-12-31-2000-01-01"},
+      {"args":["Code 123/04/20261"],"expected":"Code 123/04/20261"}
+    ]
+  }
+}

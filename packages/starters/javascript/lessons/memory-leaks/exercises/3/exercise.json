@@ -1,0 +1,19 @@
+{
+  "title": "Close the Sessions",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createSessions() {\n  const all = [];\n  let nextId = 1;\n\n  return {\n    open(user) {\n      const id = nextId++;\n      all.push({ id, user, closed: false });\n      return id;\n    },\n    close(id) {\n      const session = all.find((s) => s.id === id);\n      if (session) {\n        session.closed = true;\n      }\n    },\n    activeUsers() {\n      return all.filter((s) => !s.closed).map((s) => s.user);\n    },\n    stored() {\n      return all.length;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const s = createSessions(); const a = s.open(\"Ada\"); s.open(\"Bo\"); s.close(a); return [s.activeUsers(), s.stored()];"],"expected":[["Bo"],1]},
+      {"args":["const s = createSessions(); s.close(99); return s.stored();"],"expected":0},
+      {"args":["const s = createSessions(); const a = s.open(\"Ada\"); s.close(a); s.close(a); return s.stored();"],"expected":0},
+      {"args":["const s = createSessions(); const a = s.open(\"x\"), b = s.open(\"y\"); s.close(b); s.close(a); return [s.stored(), s.activeUsers()];"],"expected":[0,[]]},
+      {"args":["const s = createSessions(); s.open(\"Ada\"); const b = s.open(\"Bo\"); s.open(\"Cy\"); s.close(b); return [s.activeUsers(), s.stored()];"],"expected":[["Ada","Cy"],2]},
+      {"args":["const s = createSessions(); const a = s.open(\"A\"); s.close(a); const b = s.open(\"B\"); return a === b;"],"expected":false}
+    ]
+  }
+}

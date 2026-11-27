@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const sale = \"Sale! sale! SALE!\";\n\nconsole.log(sale.match(/sale/gi).length);\nconsole.log(sale.replace(/sale/i, \"deal\"));\nconsole.log(new RegExp(\"v1.0\").test(\"v100\"));\nconsole.log(new RegExp(RegExp.escape(\"v1.0\")).test(\"v100\"));"
+    },
+    "expected": "3\ndeal! sale! SALE!\ntrue\nfalse"
+  }
+}

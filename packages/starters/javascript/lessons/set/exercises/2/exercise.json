@@ -1,0 +1,21 @@
+{
+  "title": "Distinct Box Sizes",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "distinctSizes"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function distinctSizes(boxes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"w":2,"h":3},{"w":3,"h":2},{"w":2,"h":2}]],"expected":2},
+      {"args":[[]],"expected":0},
+      {"args":[[{"w":1,"h":1},{"w":1,"h":1},{"w":1,"h":1}]],"expected":1},
+      {"args":[[{"w":1,"h":12},{"w":11,"h":2},{"w":12,"h":1}]],"expected":2},
+      {"args":[[{"w":4,"h":5}]],"expected":1},
+      {"args":[[{"w":2,"h":6},{"w":3,"h":4},{"w":6,"h":2}]],"expected":2}
+    ]
+  }
+}

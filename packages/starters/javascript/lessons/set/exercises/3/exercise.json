@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const tags = new Set([\"b\", \"a\"]);\ntags.add(\"c\").add(\"a\");\n\ntags.delete(\"b\");\ntags.add(\"b\");\n\nconsole.log([...tags].join(\",\"));\nconsole.log(tags.size, tags.length);\nconsole.log([...tags.entries()][0].join(\"-\"));"
+    },
+    "expected": "a,c,b\n3 undefined\na-a"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Find a Contact",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "findContact"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function findContact(names, query) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["Zoë","Ana","Émile"],"zoe"],"expected":"Zoë"},
+      {"args":[["Ana","ANA"],"ana"],"expected":"Ana"},
+      {"args":[["Ana"],"Anna"],"expected":""},
+      {"args":[[],"x"],"expected":""},
+      {"args":[["Jose","José"],"JOSÉ"],"expected":"Jose"},
+      {"args":[["Lucía","Luca"],"luca"],"expected":"Luca"}
+    ]
+  }
+}

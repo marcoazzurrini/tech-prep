@@ -1,0 +1,21 @@
+{
+  "title": "Words with a Vowel",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countWithVowel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "const vowel = /[aeiou]/gi;\n\nexport function countWithVowel(words) {\n  let count = 0;\n\n  for (const word of words) {\n    if (vowel.test(word)) {\n      count++;\n    }\n  }\n\n  return count;\n}\n"
+    },
+    "tests": [
+      {"args":[["at","on","in"]],"expected":3},
+      {"args":[["sky","Ok","dry"]],"expected":1},
+      {"args":[["a","e","i","o"]],"expected":4},
+      {"args":[[]],"expected":0},
+      {"args":[["tree","tree","tree"]],"expected":3},
+      {"args":[["rhythm"]],"expected":0}
+    ]
+  }
+}

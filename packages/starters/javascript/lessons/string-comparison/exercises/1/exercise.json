@@ -1,0 +1,21 @@
+{
+  "title": "First in Alphabetical Order",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "firstAlphabetically"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstAlphabetically(words) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["pear","Apple","banana"]],"expected":"Apple"},
+      {"args":[["b","A"]],"expected":"A"},
+      {"args":[["Zoo"]],"expected":"Zoo"},
+      {"args":[["delta","Charlie","bravo","alpha"]],"expected":"alpha"},
+      {"args":[[]],"expected":""},
+      {"args":[["mango","Melon","MAN"]],"expected":"MAN"}
+    ]
+  }
+}

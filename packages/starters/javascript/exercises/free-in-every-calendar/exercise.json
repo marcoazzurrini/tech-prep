@@ -1,0 +1,21 @@
+{
+  "title": "Free in Every Calendar",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sharedFreeHours"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sharedFreeHours(calendars) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[[9,10,11,14],[10,11,15],[11,10,9]]],"expected":[10,11]},
+      {"args":[[[8,9]]],"expected":[8,9]},
+      {"args":[[]],"expected":[]},
+      {"args":[[[9,10],[11,12]]],"expected":[]},
+      {"args":[[[13,9,9,10],[10,13,9]]],"expected":[9,10,13]},
+      {"args":[[[1,2],[],[1,2]]],"expected":[]}
+    ]
+  }
+}

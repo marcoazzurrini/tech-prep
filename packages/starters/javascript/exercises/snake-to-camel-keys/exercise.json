@@ -1,0 +1,21 @@
+{
+  "title": "Snake Keys to Camel Keys",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "camelKeys"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function camelKeys(value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"user_id":1,"first_name":"Ada"}],"expected":{"userId":1,"firstName":"Ada"}},
+      {"args":[{"address_line_2":"Flat 3","zip":"N1"}],"expected":{"addressLine2":"Flat 3","zip":"N1"}},
+      {"args":[{"order":{"total_price":10,"line_items":[{"item_code":"A1"},{"item_code":"B2"}]}}],"expected":{"order":{"totalPrice":10,"lineItems":[{"itemCode":"A1"},{"itemCode":"B2"}]}}},
+      {"args":[[{"is_open":true},2,"keep_me"]],"expected":[{"isOpen":true},2,"keep_me"]},
+      {"args":[{"last_login":null,"note":"snake_case_value"}],"expected":{"lastLogin":null,"note":"snake_case_value"}},
+      {"args":[5],"expected":5}
+    ]
+  }
+}

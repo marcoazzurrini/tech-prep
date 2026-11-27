@@ -1,0 +1,21 @@
+{
+  "title": "First Spelling of Each Word",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "distinctWords"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function distinctWords(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["The cat saw the Cat"],"expected":["The","cat","saw"]},
+      {"args":[""],"expected":[]},
+      {"args":["  Hi   hi HI there "],"expected":["Hi","there"]},
+      {"args":["a A b B a"],"expected":["a","b"]},
+      {"args":["Constructor constructor toString"],"expected":["Constructor","toString"]},
+      {"args":["one"],"expected":["one"]}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Find Long Words",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "findLongWords"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function findLongWords(text, min) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["The quick brown fox",5],"expected":["quick","brown"]},
+      {"args":["a bb ccc",2],"expected":["bb","ccc"]},
+      {"args":["",1],"expected":[]},
+      {"args":["well-known re-use",4],"expected":["well","known"]},
+      {"args":["abc123defg",4],"expected":["defg"]},
+      {"args":["Hi",3],"expected":[]}
+    ]
+  }
+}

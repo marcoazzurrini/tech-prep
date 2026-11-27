@@ -1,0 +1,19 @@
+{
+  "title": "Blocked Word Filter",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeWordFilter(words) {\n  const blocked = new RegExp(`\\\\b(?:${words.join(\"|\")})\\\\b`, \"gi\");\n\n  return {\n    isBlocked: (text) => blocked.test(text),\n    censor: (text) => text.replace(blocked, (word) => \"*\".repeat(word.length)),\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const f = makeWordFilter([\"spam\", \"scam\"]); return [f.isBlocked(\"Spam here\"), f.isBlocked(\"spam\")];"],"expected":[true,true]},
+      {"args":["const f = makeWordFilter([\"bad\"]); return [\"bad\", \"bad\", \"bad\"].map((text) => f.isBlocked(text));"],"expected":[true,true,true]},
+      {"args":["const f = makeWordFilter([\"bad\"]); return [f.isBlocked(\"so bad\"), f.isBlocked(\"fine\"), f.isBlocked(\"bad\")];"],"expected":[true,false,true]},
+      {"args":["const f = makeWordFilter([\"spam\"]); return [f.censor(\"Spam, spam!\"), f.isBlocked(\"spam\")];"],"expected":["****, ****!",true]},
+      {"args":["const f = makeWordFilter([\"bad\"]); return [f.isBlocked(\"badge\"), f.censor(\"badge bad\")];"],"expected":[false,"badge ***"]},
+      {"args":["const f = makeWordFilter([\"scam\"]); return [f.isBlocked(\"a scam\"), f.isBlocked(\"SCAM\")];"],"expected":[true,true]}
+    ]
+  }
+}

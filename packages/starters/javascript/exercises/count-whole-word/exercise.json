@@ -1,0 +1,21 @@
+{
+  "title": "Count a Whole Word",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countWholeWord"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countWholeWord(text, word) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Cat catalog cat.","cat"],"expected":2},
+      {"args":["bobcat","cat"],"expected":0},
+      {"args":["","a"],"expected":0},
+      {"args":["The the THE","the"],"expected":3},
+      {"args":["a-cat-b","cat"],"expected":1},
+      {"args":["cat_food cat","cat"],"expected":1}
+    ]
+  }
+}

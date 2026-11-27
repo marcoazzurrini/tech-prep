@@ -1,0 +1,22 @@
+{
+  "title": "Strip Markup",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "stripMarkup"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function stripMarkup(html) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["<p>Hi <b>Ada</b></p>"],"expected":"Hi Ada"},
+      {"args":["no tags"],"expected":"no tags"},
+      {"args":["<a href=\"/x\">link</a> and <i>more</i>"],"expected":"link and more"},
+      {"args":["<br>"],"expected":""},
+      {"args":["  <p>  spaced   out </p> "],"expected":"spaced out"},
+      {"args":["<ul>\n<li>One</li>\n<li>Two</li>\n</ul>"],"expected":"One Two"},
+      {"args":["a<br>b"],"expected":"ab"}
+    ]
+  }
+}

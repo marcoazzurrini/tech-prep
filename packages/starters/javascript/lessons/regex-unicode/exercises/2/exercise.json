@@ -1,0 +1,22 @@
+{
+  "title": "Initials in Any Script",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "initials"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function initials(name) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Émile Zola"],"expected":"ÉZ"},
+      {"args":["anna-lena ørsted"],"expected":"ALØ"},
+      {"args":["李 小龙"],"expected":"李小"},
+      {"args":["Dr. Ōtani"],"expected":"DŌ"},
+      {"args":["123 go"],"expected":"G"},
+      {"args":["   "],"expected":""},
+      {"args":["ada lovelace"],"expected":"AL"}
+    ]
+  }
+}

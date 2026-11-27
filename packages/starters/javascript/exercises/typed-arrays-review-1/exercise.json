@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const buffer = new ArrayBuffer(8);\nconst bytes = new Uint8Array(buffer);\nconst tail = new Uint8Array(buffer, 6);\nconsole.log(tail.length);\n\ntail[1] = 260;\nbytes[0] = -2;\nconsole.log(bytes[7], bytes[0]);\nconsole.log(new Float64Array(buffer).length);\n\ntry {\n  new Int16Array(new ArrayBuffer(3));\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "2\n4 254\n1\nRangeError"
+  }
+}

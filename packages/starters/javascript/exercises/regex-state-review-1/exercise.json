@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const vowels = /[aeiou]/gi;\nconst names = [\"Ada\", \"Bo\", \"Cy\", \"Eve\"];\n\nconst result = names.map((name) => vowels.test(name));\nconsole.log(result.join(\",\"));\nconsole.log(vowels.lastIndex);\nconsole.log(\"Eve\".match(vowels).length, vowels.lastIndex);"
+    },
+    "expected": "true,true,false,true\n1\n2 0"
+  }
+}

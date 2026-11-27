@@ -1,0 +1,19 @@
+{
+  "title": "Fix the Message Bus",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createBus() {\n  const listeners = new Set();\n\n  return {\n    on(fn) {\n      listeners.add((value) => fn(value));\n    },\n    off(fn) {\n      listeners.delete(fn);\n    },\n    emit(value) {\n      for (const listener of listeners) {\n        listener(value);\n      }\n    },\n    count() {\n      return listeners.size;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const bus = createBus(); const f = () => {}; bus.on(f); bus.off(f); return bus.count();"],"expected":0},
+      {"args":["const b = createBus(), got = []; const f = (v) => got.push(v); b.on(f); b.emit(1); b.off(f); b.emit(2); return got;"],"expected":[1]},
+      {"args":["const bus = createBus(); bus.on(() => {}); bus.on(() => {}); return bus.count();"],"expected":2},
+      {"args":["const bus = createBus(); const f = () => {}, g = () => {}; bus.on(f); bus.on(g); bus.off(f); return bus.count();"],"expected":1},
+      {"args":["const bus = createBus(); const f = () => {}; bus.on(f); bus.on(f); return bus.count();"],"expected":1},
+      {"args":["const bus = createBus(); bus.off(() => {}); return bus.count();"],"expected":0}
+    ]
+  }
+}

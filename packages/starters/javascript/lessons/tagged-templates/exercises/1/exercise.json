@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function sizes(strings, ...values) {\n  return strings.length + \" \" + values.length;\n}\n\nfunction kind(strings, value) {\n  return typeof value;\n}\n\nconsole.log(sizes`a${1}b`);\nconsole.log(sizes`${1}${2}`);\nconsole.log(sizes`plain`);\nconsole.log(kind`n=${7}`);"
+    },
+    "expected": "2 1\n3 2\n1 0\nnumber"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Image File",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "isImageFile"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isImageFile(name) {\n  return /\\.png|jpe?g|gif$/i.test(name);\n}\n"
+    },
+    "tests": [
+      {"args":["cat.png"],"expected":true},
+      {"args":["photo.JPEG"],"expected":true},
+      {"args":["notes.png.txt"],"expected":false},
+      {"args":["jpgfile"],"expected":false},
+      {"args":["anim.gif"],"expected":true},
+      {"args":["gif"],"expected":false},
+      {"args":["a.jpg"],"expected":true}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const levels = new Uint8Array([260, -2, 7.8]);\nconst temps = new Int8Array([100, 130, -130]);\nconst shades = new Uint8ClampedArray([-20, 999, 1.5, 0.5]);\n\nconsole.log(levels.join(\",\"));\nconsole.log(temps.join(\",\"));\nconsole.log(shades.join(\",\"));"
+    },
+    "expected": "4,254,7\n100,-126,126\n0,255,2,0"
+  }
+}

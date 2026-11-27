@@ -1,0 +1,20 @@
+{
+  "title": "Price Watchers",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createWatcher() {\n  const watchers = new Map();\n\n  function listFor(key) {\n    if (!watchers.has(key)) {\n      watchers.set(key, new Set());\n    }\n    return watchers.get(key);\n  }\n\n  return {\n    watch(key, fn) {\n      listFor(key).add(fn);\n      return () => listFor(key).delete(fn);\n    },\n    notify(key, value) {\n      const list = listFor(key);\n      for (const fn of list) {\n        fn(value);\n      }\n      return list.size;\n    },\n    keysHeld() {\n      return watchers.size;\n    },\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["const w = createWatcher(); const stop = w.watch(\"tea\", () => {}); stop(); return w.keysHeld();"],"expected":0},
+      {"args":["const w = createWatcher(), xs = []; const s = w.watch(\"t\", (v) => xs.push(v)); w.notify(\"t\", 3); s(); w.notify(\"t\", 4); return xs;"],"expected":[3]},
+      {"args":["const w = createWatcher(); const s1 = w.watch(\"a\", () => {}); w.watch(\"a\", () => {}); s1(); return w.keysHeld();"],"expected":1},
+      {"args":["const w = createWatcher(); const s = w.watch(\"a\", () => {}); s(); s(); w.watch(\"b\", () => {}); return w.keysHeld();"],"expected":1},
+      {"args":["const w = createWatcher(), f = () => {}; const s = w.watch(\"a\", f); w.watch(\"b\", f); s(); return [w.notify(\"a\"), w.notify(\"b\")];"],"expected":[0,1]},
+      {"args":["const w = createWatcher(); return [w.notify(\"none\", 1), w.keysHeld()];"],"expected":[0,0]},
+      {"args":["const w = createWatcher(); for (let i = 0; i < 50; i++) w.watch(`k${i}`, () => {})(); return w.keysHeld();"],"expected":0}
+    ]
+  }
+}

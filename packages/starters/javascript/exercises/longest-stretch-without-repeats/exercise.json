@@ -1,0 +1,23 @@
+{
+  "title": "Longest Stretch Without Repeats",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "longestDistinctRun"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function longestDistinctRun(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["abcabcbb"],"expected":3},
+      {"args":["bbbb"],"expected":1},
+      {"args":[""],"expected":0},
+      {"args":["pwwkew"],"expected":3},
+      {"args":["abcdef"],"expected":6},
+      {"args":["abba"],"expected":2},
+      {"args":["dvdf"],"expected":3},
+      {"args":["a b a"],"expected":3}
+    ]
+  }
+}

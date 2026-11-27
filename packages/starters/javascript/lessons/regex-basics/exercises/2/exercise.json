@@ -1,0 +1,21 @@
+{
+  "title": "Count the Todos",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "countTodos"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function countTodos(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["TODO: fix, todo: test"],"expected":2},
+      {"args":[""],"expected":0},
+      {"args":["Todo todo TODO"],"expected":3},
+      {"args":["nothing here"],"expected":0},
+      {"args":["todotodo"],"expected":2},
+      {"args":["to do"],"expected":0}
+    ]
+  }
+}

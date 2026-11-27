@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const text = \"Ann 31, Bob 4, Cy 27\";\n\nconsole.log(text.match(/(\\w+) (\\d+)/)[2]);\nconsole.log(text.match(/\\d+/g).join(\"+\"));\nconsole.log(text.replace(/\\d+/g, (n) => n * 2));\nconsole.log(text.search(/Bob/));\nconsole.log(text.match(/Dee/g));"
+    },
+    "expected": "31\n31+4+27\nAnn 62, Bob 8, Cy 54\n8\nnull"
+  }
+}

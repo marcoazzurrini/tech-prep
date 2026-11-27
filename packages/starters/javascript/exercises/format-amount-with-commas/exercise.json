@@ -1,0 +1,23 @@
+{
+  "title": "Format an Amount",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "formatAmount"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function formatAmount(amount) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["1234567.891"],"expected":"1,234,567.891"},
+      {"args":["-1234"],"expected":"-1,234"},
+      {"args":["999"],"expected":"999"},
+      {"args":["1000.5"],"expected":"1,000.5"},
+      {"args":["0.123456"],"expected":"0.123456"},
+      {"args":["-1234567.0001"],"expected":"-1,234,567.0001"},
+      {"args":["12"],"expected":"12"},
+      {"args":["1000000"],"expected":"1,000,000"}
+    ]
+  }
+}

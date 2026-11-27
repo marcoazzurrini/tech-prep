@@ -1,0 +1,22 @@
+{
+  "title": "Highlight a Term",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "highlightTerm"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function highlightTerm(text, term) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Tea or tea?","tea"],"expected":"[Tea] or [tea]?"},
+      {"args":["I write C++ and c++","c++"],"expected":"I write [C++] and [c++]"},
+      {"args":["Price: $5 or $50"," $5 "],"expected":"Price: [$5] or [$5]0"},
+      {"args":["Nothing here","tea"],"expected":"Nothing here"},
+      {"args":["Keep me","   "],"expected":"Keep me"},
+      {"args":["a.b and axb","a.b"],"expected":"[a.b] and axb"},
+      {"args":["","x"],"expected":""}
+    ]
+  }
+}

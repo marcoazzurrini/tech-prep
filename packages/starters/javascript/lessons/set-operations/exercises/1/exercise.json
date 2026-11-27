@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const red = new Set([1, 2, 3, 4]);\nconst blue = new Set([3, 4, 5]);\n\nconsole.log([...red.difference(blue)].join(\",\"));\nconsole.log([...blue.difference(red)].join(\",\"));\nconsole.log([...blue.symmetricDifference(red)].join(\",\"));\nconsole.log([...blue.union(red)].join(\",\"));\nconsole.log(red.size);"
+    },
+    "expected": "1,2\n5\n5,1,2\n3,4,5,1,2\n4"
+  }
+}

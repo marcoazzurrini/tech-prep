@@ -1,0 +1,21 @@
+{
+  "title": "Read the Settings",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "readSettings"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readSettings(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["width=10; height=20"],"expected":{"width":"10","height":"20"}},
+      {"args":["mode=dark"],"expected":{"mode":"dark"}},
+      {"args":[""],"expected":{}},
+      {"args":["a=1;b=2 ;  c=3"],"expected":{"a":"1","b":"2","c":"3"}},
+      {"args":["size=12; size=14"],"expected":{"size":"14"}},
+      {"args":["no settings here"],"expected":{}}
+    ]
+  }
+}

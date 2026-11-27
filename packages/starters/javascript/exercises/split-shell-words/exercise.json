@@ -1,0 +1,20 @@
+{
+  "title": "Split Shell Words",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function splitWords(command) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return splitWords('git commit -m \"first try\"');"],"expected":["git","commit","-m","first try"]},
+      {"args":["return splitWords(\"  ls   -la  \");"],"expected":["ls","-la"]},
+      {"args":["return splitWords('echo \"\" done');"],"expected":["echo","","done"]},
+      {"args":["return [splitWords(\"\"), splitWords(\"   \")];"],"expected":[[],[]]},
+      {"args":["return splitWords('\"one\" \"two words\"');"],"expected":["one","two words"]},
+      {"args":["try { splitWords('say \"hi there'); return \"no error\"; } catch (e) { return [e.name, e.message]; }"],"expected":["SyntaxError","Unclosed quote at 4"]},
+      {"args":["try { splitWords('a \"b\" \"c'); return \"no error\"; } catch (e) { return [e.name, e.message]; }"],"expected":["SyntaxError","Unclosed quote at 6"]}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const version = \"a.b.c\";\n\nconsole.log(version.replace(\".\", \"-\"));\nconsole.log(version.replace(/./g, \"-\"));\nconsole.log(version.replace(/\\./g, \"-\"));\nconsole.log(new RegExp(\"\\.\").test(\"abc\"));"
+    },
+    "expected": "a-b.c\n-----\na-b-c\ntrue"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Add the Euro Sign",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function money(strings, ...values) {\n  let out = \"\";\n\n  strings.forEach((str, i) => {\n    out += str + \"€\" + values[i];\n  });\n\n  return out;\n}\n"
+    },
+    "tests": [
+      {"args":["return money`Total: ${5}`;"],"expected":"Total: €5"},
+      {"args":["return money`${3} + ${4}`;"],"expected":"€3 + €4"},
+      {"args":["return money`no price`;"],"expected":"no price"},
+      {"args":["return money`${10}`;"],"expected":"€10"},
+      {"args":["return money`Pay ${2.5} now`;"],"expected":"Pay €2.5 now"}
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Fill the Placeholders",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "fillPlaceholders"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fillPlaceholders(template, data) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Hi {name}, you owe {amount}.",{"name":"Ada","amount":12}],"expected":"Hi Ada, you owe 12."},
+      {"args":["{a}{b}{a}",{"a":"x","b":"y"}],"expected":"xyx"},
+      {"args":["Dear {title} {name}",{"name":"Lin"}],"expected":"Dear {title} Lin"},
+      {"args":["{count} items",{"count":0}],"expected":"0 items"},
+      {"args":["{a} {b}",{"a":"{b}","b":"B"}],"expected":"{b} B"},
+      {"args":["{toString} and {user_id}",{"user_id":7}],"expected":"{toString} and 7"},
+      {"args":["No fields",{"x":1}],"expected":"No fields"}
+    ]
+  }
+}

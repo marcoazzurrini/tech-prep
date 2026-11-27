@@ -1,0 +1,18 @@
+{
+  "title": "All the Pieces",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function pieces(strings, ...values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return pieces`a${1}b${2}`;"],"expected":["a",1,"b",2]},
+      {"args":["return pieces`${\"x\"}`;"],"expected":["x"]},
+      {"args":["return pieces`plain`;"],"expected":["plain"]},
+      {"args":["return pieces`${true} and ${[1, 2]}`;"],"expected":[true," and ",[1,2]]},
+      {"args":["return pieces``;"],"expected":[]}
+    ]
+  }
+}

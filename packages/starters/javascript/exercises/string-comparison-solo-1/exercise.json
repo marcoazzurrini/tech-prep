@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(\"apple\" < \"Banana\");\nconsole.log(\"apple\".toUpperCase() < \"Banana\".toUpperCase());\nconsole.log(Math.sign(\"apple\".localeCompare(\"Banana\", \"en\")));\nconsole.log(\"Café\".localeCompare(\"cafe\", \"en\", { sensitivity: \"base\" }) === 0);\nconsole.log(Math.sign(\"x20\".localeCompare(\"x3\", \"en\", { numeric: true })));"
+    },
+    "expected": "false\ntrue\n-1\ntrue\n1"
+  }
+}

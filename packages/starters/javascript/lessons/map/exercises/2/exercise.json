@@ -1,0 +1,18 @@
+{
+  "title": "Cheap Items",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function cheapItems(prices, limit) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return cheapItems(new Map([[\"tea\", 3], [\"cake\", 5], [\"jam\", 2]]), 3);"],"expected":["tea","jam"]},
+      {"args":["return cheapItems(new Map(), 10);"],"expected":[]},
+      {"args":["return cheapItems(new Map([[\"a\", 1], [\"b\", 9]]), 0);"],"expected":[]},
+      {"args":["return cheapItems(new Map([[7, 1], [2, 1]]), 1);"],"expected":[7,2]},
+      {"args":["return cheapItems(new Map([[\"x\", 4], [\"y\", 4], [\"z\", 5]]), 4);"],"expected":["x","y"]}
+    ]
+  }
+}

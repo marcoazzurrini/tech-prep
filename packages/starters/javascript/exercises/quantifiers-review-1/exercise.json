@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const path = \"/home/ada/notes/todo.txt\";\n\nconsole.log(path.match(/\\/.*\\//)[0]);\nconsole.log(path.match(/\\/.*?\\//)[0]);\nconsole.log(path.match(/[^\\/]+$/)[0]);\nconsole.log(/^\\w{3,4}$/.test(\"note\"));"
+    },
+    "expected": "/home/ada/notes/\n/home/\ntodo.txt\ntrue"
+  }
+}

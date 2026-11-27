@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const thumbs = \"👍🏽\";\n\nconsole.log(thumbs.length);\nconsole.log([...thumbs].length);\nconsole.log(thumbs.codePointAt(0) === \"👍\".codePointAt(0));\nconsole.log(\"\\u00f1\" === \"n\\u0303\".normalize());\nconsole.log(\"👍\".codePointAt(1) === \"👍\".charCodeAt(1));"
+    },
+    "expected": "4\n2\ntrue\ntrue\ntrue"
+  }
+}

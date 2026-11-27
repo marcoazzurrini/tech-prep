@@ -1,0 +1,19 @@
+{
+  "title": "Object Ids",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createIdTracker() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const idOf = createIdTracker(); const a = {}, b = {}; return [idOf(a), idOf(b), idOf(a)];"],"expected":[1,2,1]},
+      {"args":["const idOf = createIdTracker(); return [idOf({}), idOf({}), idOf({})];"],"expected":[1,2,3]},
+      {"args":["const idOf = createIdTracker(); const a = { id: 9 }; idOf(a); return Object.keys(a);"],"expected":["id"]},
+      {"args":["const idOf = createIdTracker(); const a = Object.freeze({}); return [idOf(a), idOf(a)];"],"expected":[1,1]},
+      {"args":["const first = createIdTracker(), second = createIdTracker(); const a = {}; first({}); return [first(a), second(a)];"],"expected":[2,1]},
+      {"args":["const idOf = createIdTracker(); const list = [], fn = () => 1; return [idOf(list), idOf(fn), idOf(list)];"],"expected":[1,2,1]}
+    ]
+  }
+}

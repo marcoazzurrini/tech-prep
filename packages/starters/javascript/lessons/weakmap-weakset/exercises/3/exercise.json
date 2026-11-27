@@ -1,0 +1,18 @@
+{
+  "title": "Run Each Job Once",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createRunner(work) {\n  return function run(job) {\n    if (job.done) {\n      return false;\n    }\n    job.done = true;\n    work(job);\n    return true;\n  };\n}\n"
+    },
+    "tests": [
+      {"args":["let n = 0; const run = createRunner(() => n++); const job = {}; return [run(job), run(job), n];"],"expected":[true,false,1]},
+      {"args":["const run = createRunner(() => {}); const job = { id: 1 }; run(job); return Object.keys(job);"],"expected":["id"]},
+      {"args":["let n = 0; const run = createRunner(() => n++); const job = Object.freeze({}); return [run(job), run(job), n];"],"expected":[true,false,1]},
+      {"args":["const seen = []; const run = createRunner((j) => seen.push(j.id)); run({ id: 1 }); run({ id: 1 }); return seen;"],"expected":[1,1]},
+      {"args":["const a = createRunner(() => {}), b = createRunner(() => {}); const job = {}; a(job); return b(job);"],"expected":true}
+    ]
+  }
+}

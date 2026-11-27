@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const city = \"Amsterdam\";\n\nconsole.log(city.slice(-3));\nconsole.log(city.substring(-3));\nconsole.log(city.slice(2, 5));\nconsole.log(city.substring(6, 1));\nconsole.log(city.slice(6, 1) === \"\");"
+    },
+    "expected": "dam\nAmsterdam\nste\nmster\ntrue"
+  }
+}

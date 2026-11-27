@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function cooked(strings) {\n  return strings[0].length;\n}\n\nfunction raw(strings) {\n  return strings.raw[0].length;\n}\n\nconsole.log(cooked`\\n\\n`);\nconsole.log(raw`\\n\\n`);\nconsole.log(String.raw`${\"a\\tb\"}`.length);\nconsole.log(String.raw`tab:\\t!`);"
+    },
+    "expected": "2\n4\n3\ntab:\\t!"
+  }
+}

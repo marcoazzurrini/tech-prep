@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const settings = new WeakMap();\nconst handler = () => 1;\n\nsettings.set(handler, \"fn\").set([], \"list\");\nconsole.log(settings.get(handler));\nconsole.log(settings.delete(handler));\nconsole.log(settings.delete(handler));\n\ntry {\n  new WeakMap([[\"x\", 1]]);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "fn\ntrue\nfalse\nTypeError"
+  }
+}

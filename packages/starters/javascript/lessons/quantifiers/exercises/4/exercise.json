@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const date = \"2024-01-15\";\n\nconsole.log(date.match(/.+-/)[0]);\nconsole.log(date.match(/.+?-/)[0]);\nconsole.log(\"aaa\".match(/a+a/)[0]);\nconsole.log(\"aaa\".match(/a+?a/)[0]);"
+    },
+    "expected": "2024-01-\n2024-\naaa\naa"
+  }
+}

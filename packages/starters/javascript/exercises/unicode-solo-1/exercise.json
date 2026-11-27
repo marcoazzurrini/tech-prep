@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const word = \"na\\u00efve\";\nconst apart = word.normalize(\"NFD\");\n\nconsole.log(word.length);\nconsole.log(apart.length);\nconsole.log(apart === word);\nconsole.log(apart.normalize() === word);\nconsole.log([...\"🎉🎉\"].length);"
+    },
+    "expected": "5\n6\nfalse\ntrue\n2"
+  }
+}

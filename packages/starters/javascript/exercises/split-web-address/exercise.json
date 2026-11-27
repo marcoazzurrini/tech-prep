@@ -1,0 +1,23 @@
+{
+  "title": "Split a Web Address",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "splitAddress"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function splitAddress(url) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["https://shop.example.com:8080/cart"],"expected":{"protocol":"https","host":"shop.example.com","port":8080,"path":"/cart"}},
+      {"args":["http://localhost"],"expected":{"protocol":"http","host":"localhost","port":null,"path":"/"}},
+      {"args":["ftp://files.org"],"expected":null},
+      {"args":["https://site.io/a/b?q=1"],"expected":{"protocol":"https","host":"site.io","port":null,"path":"/a/b?q=1"}},
+      {"args":["https://:80/x"],"expected":null},
+      {"args":["https//site.io"],"expected":null},
+      {"args":["http://my-site.dev:3000"],"expected":{"protocol":"http","host":"my-site.dev","port":3000,"path":"/"}},
+      {"args":["https://site.io:/x"],"expected":null}
+    ]
+  }
+}

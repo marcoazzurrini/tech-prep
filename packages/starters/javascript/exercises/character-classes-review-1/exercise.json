@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const notes = \"#a\\nb#\\n#c\";\n\nconsole.log(notes.match(/^#/g).length);\nconsole.log(notes.match(/^#/gm).length);\nconsole.log(/[A-z]/.test(\"^\"));\nconsole.log(/c.d/.test(\"c\\nd\"));"
+    },
+    "expected": "1\n2\ntrue\nfalse"
+  }
+}

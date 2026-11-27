@@ -1,0 +1,21 @@
+{
+  "title": "Letters Beyond ASCII",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "foreignLetters"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function foreignLetters(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Ä b γ"],"expected":"Äγ"},
+      {"args":["plain"],"expected":""},
+      {"args":["Crème brûlée"],"expected":"èûé"},
+      {"args":["Москва 2024"],"expected":"Москва"},
+      {"args":["naïve café"],"expected":"ïé"},
+      {"args":["😀 ok"],"expected":""}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "The Last Character",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "lastCharacter"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function lastCharacter(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["ok👍🏽"],"expected":"👍🏽"},
+      {"args":["abc"],"expected":"c"},
+      {"args":[""],"expected":""},
+      {"args":["café"],"expected":"é"},
+      {"args":["go🇮🇹"],"expected":"🇮🇹"},
+      {"args":["hi 👨‍👩‍👧"],"expected":"👨‍👩‍👧"}
+    ]
+  }
+}

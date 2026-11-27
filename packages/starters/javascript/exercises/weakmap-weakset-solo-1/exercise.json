@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const marks = new WeakSet();\nconst a = {};\n\nmarks.add(a).add(a);\nconsole.log(marks.has(a));\nconsole.log(marks.has({}));\nconsole.log(typeof marks.size);\n\ntry {\n  marks.add(\"a\");\n} catch (error) {\n  console.log(error.name);\n}\n\nconst key = Symbol(\"k\");\nconsole.log(new WeakMap([[key, \"ok\"]]).get(key));"
+    },
+    "expected": "true\nfalse\nundefined\nTypeError\nok"
+  }
+}

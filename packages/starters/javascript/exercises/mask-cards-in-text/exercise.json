@@ -1,0 +1,22 @@
+{
+  "title": "Hide Card Numbers in a Message",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "maskCards"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function maskCards(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["Paid with 4111 1111 1111 1234."],"expected":"Paid with **** **** **** 1234."},
+      {"args":["Order 12345, card 5500-0000-0000-0004"],"expected":"Order 12345, card ****-****-****-0004"},
+      {"args":["Cards 4111111111111111 and 340000000000009"],"expected":"Cards ************1111 and ***********0009"},
+      {"args":["Call 555-0100 today"],"expected":"Call 555-0100 today"},
+      {"args":["Ref 12345678901234567890 kept"],"expected":"Ref 12345678901234567890 kept"},
+      {"args":["no numbers"],"expected":"no numbers"},
+      {"args":["123412341234"],"expected":"********1234"}
+    ]
+  }
+}

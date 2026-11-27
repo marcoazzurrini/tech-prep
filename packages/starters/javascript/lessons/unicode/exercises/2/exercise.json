@@ -1,0 +1,20 @@
+{
+  "title": "Code Point Labels",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "codePointLabels"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function codePointLabels(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["hi"],"expected":["U+0068","U+0069"]},
+      {"args":["🍕"],"expected":["U+1F355"]},
+      {"args":[""],"expected":[]},
+      {"args":["é!"],"expected":["U+00E9","U+0021"]},
+      {"args":["a😀b"],"expected":["U+0061","U+1F600","U+0062"]}
+    ]
+  }
+}

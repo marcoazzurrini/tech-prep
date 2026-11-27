@@ -1,0 +1,21 @@
+{
+  "title": "Sort Contacts",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sortContacts"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sortContacts(contacts) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"first":"Ali","last":"Zane"},{"first":"Mia","last":"adams"},{"first":"Tom","last":"Baker"}]],"expected":[{"first":"Mia","last":"adams"},{"first":"Tom","last":"Baker"},{"first":"Ali","last":"Zane"}]},
+      {"args":[[{"first":"Lena","last":"Öberg"},{"first":"Bo","last":"oberg"},{"first":"Eva","last":"Nash"}]],"expected":[{"first":"Eva","last":"Nash"},{"first":"Bo","last":"oberg"},{"first":"Lena","last":"Öberg"}]},
+      {"args":[[{"first":"zoe","last":"King"},{"first":"Adam","last":"King"},{"first":"émile","last":"King"}]],"expected":[{"first":"Adam","last":"King"},{"first":"émile","last":"King"},{"first":"zoe","last":"King"}]},
+      {"args":[[{"first":"Iris","last":"Émond"},{"first":"Hal","last":"Ewing"},{"first":"Cy","last":"Duke"}]],"expected":[{"first":"Cy","last":"Duke"},{"first":"Iris","last":"Émond"},{"first":"Hal","last":"Ewing"}]},
+      {"args":[[{"first":"Ana","last":"Ruiz"}]],"expected":[{"first":"Ana","last":"Ruiz"}]},
+      {"args":[[]],"expected":[]}
+    ]
+  }
+}

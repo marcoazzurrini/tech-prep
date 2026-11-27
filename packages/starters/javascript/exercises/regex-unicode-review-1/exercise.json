@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const text = \"Dan 🇫🇷 9\";\n\nconsole.log(text.length);\nconsole.log(text.match(/./gu).length);\nconsole.log(text.match(/\\p{Emoji}/gu).length);\nconsole.log(text.match(/\\p{RGI_Emoji}/gv).length);"
+    },
+    "expected": "10\n8\n3\n1"
+  }
+}

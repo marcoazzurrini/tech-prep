@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seen = new Map();\nseen.set(\"x\", 1).set(7, 2).set(\"y\", 3);\n\nseen.set(7, 20);\nseen.delete(\"x\");\nseen.set(\"x\", 10);\nseen[\"z\"] = 5;\n\nconsole.log([...seen.keys()].join(\",\"));\nconsole.log([...seen.values()].join(\",\"));\nconsole.log(seen.size);"
+    },
+    "expected": "7,y,x\n20,3,10\n3"
+  }
+}

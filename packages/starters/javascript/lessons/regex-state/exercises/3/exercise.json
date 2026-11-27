@@ -1,0 +1,22 @@
+{
+  "title": "Number at a Position",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "numberAt"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function numberAt(text, position) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["abc 123 x",4],"expected":123},
+      {"args":["abc 123 x",3],"expected":null},
+      {"args":["abc 123 x",5],"expected":23},
+      {"args":["42",0],"expected":42},
+      {"args":["x9",0],"expected":null},
+      {"args":["7",1],"expected":null},
+      {"args":["10 20",2],"expected":null}
+    ]
+  }
+}

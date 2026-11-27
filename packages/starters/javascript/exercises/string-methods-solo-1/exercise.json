@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ref = \"INV-2024-0042\";\n\nconsole.log(ref.slice(4, -5));\nconsole.log(ref.split(\"-\").length);\nconsole.log(ref.indexOf(\"-\", 4));\nconsole.log(ref.replace(\"-\", \"/\"));\nconsole.log(\"42\".padStart(6, \"ab\"));"
+    },
+    "expected": "2024\n3\n8\nINV/2024-0042\nabab42"
+  }
+}

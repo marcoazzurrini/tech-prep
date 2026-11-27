@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seats = new Map([[1, \"Ada\"], [\"1\", \"Bo\"]]);\nseats.set(true, \"Cy\");\n\nconsole.log(seats.size);\nconsole.log(seats.get(1) + seats.get(\"1\"));\nconsole.log(seats.delete(2));\n\nseats.set(1, \"Di\");\nconsole.log([...seats.values()].join(\",\"));"
+    },
+    "expected": "3\nAdaBo\nfalse\nDi,Bo,Cy"
+  }
+}

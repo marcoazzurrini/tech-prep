@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const vowel = /[aeiou]/g;\nconst word = \"banana\";\n\nvowel.lastIndex = 2;\nconsole.log(vowel.exec(word).index, vowel.lastIndex);\nconsole.log(vowel.exec(word)[0], vowel.lastIndex);\n\nconst plain = /[aeiou]/;\nplain.lastIndex = 4;\nconsole.log(plain.exec(word).index, plain.lastIndex);"
+    },
+    "expected": "3 4\na 6\n1 4"
+  }
+}

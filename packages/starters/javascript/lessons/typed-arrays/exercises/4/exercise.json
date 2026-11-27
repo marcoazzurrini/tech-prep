@@ -1,0 +1,20 @@
+{
+  "title": "Values to Bytes",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "toBytes"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function toBytes(values) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[258]],"expected":[1,2]},
+      {"args":[[]],"expected":[]},
+      {"args":[[65535,0]],"expected":[255,255,0,0]},
+      {"args":[[1,256]],"expected":[0,1,1,0]},
+      {"args":[[4660,43981]],"expected":[18,52,171,205]}
+    ]
+  }
+}
