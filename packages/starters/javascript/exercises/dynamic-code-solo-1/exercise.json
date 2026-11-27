@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const price = 20;\n\nfunction sale() {\n  const price = 15;\n  return [eval(\"price\"), new Function(\"return typeof price;\")()];\n}\n\nconsole.log(sale().join(\",\"));\nconsole.log(eval(\"1; 2; 3\"));\nconsole.log(typeof eval(\"(function () {})\"));\nconsole.log(new Function(\"a\", \"b\", \"return a - b;\")(5, 3));"
+    },
+    "expected": "15,undefined\n3\nfunction\n2"
+  }
+}

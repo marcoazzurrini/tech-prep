@@ -1,0 +1,19 @@
+{
+  "title": "Describe the Keys",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function describeKeys(obj) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return describeKeys({ a: 1, b: 2 });"],"expected":{"visible":["a","b"],"hidden":[],"symbols":0,"inherited":[]}},
+      {"args":["const o = Object.defineProperty({ a: 1 }, \"b\", { value: 2 }); return describeKeys(o);"],"expected":{"visible":["a"],"hidden":["b"],"symbols":0,"inherited":[]}},
+      {"args":["return describeKeys({ [Symbol(\"x\")]: 1, [Symbol(\"y\")]: 2, z: 3 });"],"expected":{"visible":["z"],"hidden":[],"symbols":2,"inherited":[]}},
+      {"args":["const o = Object.create({ p: 1, q: 2 }); o.q = 3; return describeKeys(o);"],"expected":{"visible":["q"],"hidden":[],"symbols":0,"inherited":["p"]}},
+      {"args":["return describeKeys([7, 8]);"],"expected":{"visible":["0","1"],"hidden":["length"],"symbols":0,"inherited":[]}},
+      {"args":["class Pet { name = \"Rex\"; bark() {} } return describeKeys(new Pet());"],"expected":{"visible":["name"],"hidden":[],"symbols":0,"inherited":[]}}
+    ]
+  }
+}

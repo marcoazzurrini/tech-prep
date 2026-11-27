@@ -1,0 +1,21 @@
+{
+  "title": "Invert a Colour",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "invertColour"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function invertColour(hex) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["#ff8000"],"expected":"#007fff"},
+      {"args":["#000000"],"expected":"#ffffff"},
+      {"args":["#ffffff"],"expected":"#000000"},
+      {"args":["#123456"],"expected":"#edcba9"},
+      {"args":["#FFF0F5"],"expected":"#000f0a"},
+      {"args":["#7f7f7f"],"expected":"#808080"}
+    ]
+  }
+}

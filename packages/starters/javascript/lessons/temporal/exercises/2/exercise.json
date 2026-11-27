@@ -1,0 +1,20 @@
+{
+  "title": "End Time",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "endTime"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function endTime(start, minutes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["09:30",45],"expected":"10:15"},
+      {"args":["23:30",90],"expected":"01:00"},
+      {"args":["08:05",125],"expected":"10:10"},
+      {"args":["12:15",1440],"expected":"12:15"},
+      {"args":["00:00",0],"expected":"00:00"}
+    ]
+  }
+}

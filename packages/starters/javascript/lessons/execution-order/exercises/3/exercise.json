@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "setTimeout(() => {\n  console.log(\"timer 1\");\n  queueMicrotask(() => console.log(\"micro in timer 1\"));\n}, 0);\n\nsetTimeout(() => console.log(\"timer 2\"), 20);\n\nqueueMicrotask(() => {\n  console.log(\"micro in script\");\n  queueMicrotask(() => console.log(\"micro in micro\"));\n});"
+    },
+    "expected": "micro in script\nmicro in micro\ntimer 1\nmicro in timer 1\ntimer 2"
+  }
+}

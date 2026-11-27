@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Tags extends Array {\n  static get [Symbol.species]() {\n    return Array;\n  }\n\n  get [Symbol.toStringTag]() {\n    return \"Tags\";\n  }\n}\n\nconst tags = Tags.from([\"js\", \"css\"]);\nconst short = tags.filter((tag) => tag.length < 3);\nconst tagOf = (value) => Object.prototype.toString.call(value);\n\nconsole.log(tagOf(tags));\nconsole.log(tagOf(short));\nconsole.log(short instanceof Tags);\nconsole.log([0].concat(tags).length);"
+    },
+    "expected": "[object Tags]\n[object Array]\nfalse\n3"
+  }
+}

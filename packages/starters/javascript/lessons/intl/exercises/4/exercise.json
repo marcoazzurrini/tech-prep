@@ -1,0 +1,22 @@
+{
+  "title": "Time Since",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "sinceLabel"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sinceLabel(minutes) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[5],"expected":"5 minutes ago"},
+      {"args":[1],"expected":"1 minute ago"},
+      {"args":[59],"expected":"59 minutes ago"},
+      {"args":[60],"expected":"1 hour ago"},
+      {"args":[150],"expected":"2 hours ago"},
+      {"args":[1440],"expected":"1 day ago"},
+      {"args":[4000],"expected":"2 days ago"}
+    ]
+  }
+}

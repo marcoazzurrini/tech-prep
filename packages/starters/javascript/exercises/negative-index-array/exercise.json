@@ -1,0 +1,19 @@
+{
+  "title": "Negative Index Array",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withNegativeIndex(array) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const a = withNegativeIndex([1, 2, 3]); return [a[-1], a[-3], a[0]];"],"expected":[3,1,1]},
+      {"args":["const a = withNegativeIndex([\"x\"]); return [a[-2] === undefined, a[5] === undefined];"],"expected":[true,true]},
+      {"args":["const list = [1, 2, 3]; const a = withNegativeIndex(list); a[-1] = 9; return list;"],"expected":[1,2,9]},
+      {"args":["const a = withNegativeIndex([4, 5]); return [a.length, a.map((n) => n * 2), Array.isArray(a)];"],"expected":[2,[8,10],true]},
+      {"args":["const a = withNegativeIndex([1, 2]); a.push(3); return a[-1];"],"expected":3},
+      {"args":["const a = withNegativeIndex([\"a\", \"b\"]); return [a[\"-1\"], a[-1.5] === undefined];"],"expected":["b",true]}
+    ]
+  }
+}

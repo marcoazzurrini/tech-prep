@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function ring(name, callback) {\n  callback(new Error(\"busy\"));\n  callback(null, name + \" answered\");\n}\n\nfunction ringAsync(name) {\n  return new Promise((resolve, reject) => {\n    ring(name, (error, reply) => {\n      console.log(\"callback ran\");\n      if (error) reject(error);\n      else resolve(reply);\n    });\n  });\n}\n\nringAsync(\"Ana\").then(\n  (reply) => console.log(reply),\n  (error) => console.log(\"failed: \" + error.message)\n);\nconsole.log(\"calling\");"
+    },
+    "expected": "callback ran\ncallback ran\ncalling\nfailed: busy"
+  }
+}

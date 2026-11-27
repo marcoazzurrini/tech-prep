@@ -1,0 +1,21 @@
+{
+  "title": "Format an Amount",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "formatAmount"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function formatAmount(amount, digits) {\n  return amount.toFixed(digits);\n}\n"
+    },
+    "tests": [
+      {"args":[1.005,2],"expected":"1.01"},
+      {"args":[1.255,2],"expected":"1.26"},
+      {"args":[10.235,2],"expected":"10.24"},
+      {"args":[1.45,1],"expected":"1.5"},
+      {"args":[2.5,0],"expected":"3"},
+      {"args":[7,2],"expected":"7.00"}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const box = new Proxy({ pen: 1, ink: 2 }, {\n  has(target, key) {\n    return key !== \"ink\" && Reflect.has(target, key);\n  },\n  ownKeys(target) {\n    return Reflect.ownKeys(target).filter((key) => key !== \"pen\");\n  },\n  deleteProperty() {\n    return false;\n  },\n});\n\nconsole.log(\"pen\" in box, \"ink\" in box);\nconsole.log(Object.keys(box).join(\",\"));\n\ntry {\n  delete box.pen;\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(box.pen + box.ink);"
+    },
+    "expected": "true false\nink\nTypeError\n3"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Score Summary",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "summarize"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function summarize(scores) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[7,3,9,5]],"expected":{"lowest":3,"highest":9,"average":6}},
+      {"args":[[10]],"expected":{"lowest":10,"highest":10,"average":10}},
+      {"args":[[]],"expected":{"lowest":null,"highest":null,"average":null}},
+      {"args":[[2,3,3]],"expected":{"lowest":2,"highest":3,"average":2.7}},
+      {"args":[[-4,-1,-2,-3]],"expected":{"lowest":-4,"highest":-1,"average":-2.5}},
+      {"args":[[7,7,8,8,8,8,8,8]],"expected":{"lowest":7,"highest":8,"average":7.8}}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function report(score) {\n  const bonus = 5;\n  return eval(\"score + bonus\");\n}\n\nconsole.log(report(10));\nconsole.log(eval(\"let x = 2; x * x;\"));\nconsole.log(eval([1, 2]).length);\n\nlet total = 3;\neval(\"total *= 2\");\neval(\"var extra = 1;\");\nconsole.log(total, typeof extra);"
+    },
+    "expected": "15\n4\n2\n6 undefined"
+  }
+}

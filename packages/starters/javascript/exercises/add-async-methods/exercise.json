@@ -1,0 +1,19 @@
+{
+  "title": "Add Async Methods",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addAsyncMethods(obj) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const o = { n: 2, double(cb) { cb(null, this.n * 2); } }; addAsyncMethods(o); return await o.doubleAsync();"],"expected":4},
+      {"args":["const o = { add(a, b, cb) { setTimeout(cb, 5, null, a + b); } }; addAsyncMethods(o); return await o.addAsync(2, 3);"],"expected":5},
+      {"args":["const o = { fail(cb) { cb(new Error(\"nope\")); } }; addAsyncMethods(o); return await o.failAsync().catch((e) => e.message);"],"expected":"nope"},
+      {"args":["const o = { n: 1, get(cb) { cb(null, this.n); } }; return Object.keys(addAsyncMethods(o));"],"expected":["n","get","getAsync"]},
+      {"args":["const o = { n: 5, get(cb) { cb(null, this.n); } }; const { getAsync } = addAsyncMethods(o); return await getAsync();"],"expected":5},
+      {"args":["const o = { list(cb) { cb(null, [1, 2]); } }; addAsyncMethods(o); return o.listAsync() instanceof Promise;"],"expected":true}
+    ]
+  }
+}

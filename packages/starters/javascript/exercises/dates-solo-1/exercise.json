@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const day = new Date(Date.UTC(2024, 6, 4));\n\nconsole.log(day.getUTCMonth());\nconsole.log(day.getUTCDay());\nconsole.log(new Date(Date.UTC(2024, 0, 0)).toISOString().slice(0, 10));\nconsole.log(new Date(Date.UTC(2023, 1, 29)).getUTCDate());"
+    },
+    "expected": "6\n4\n2023-12-31\n1"
+  }
+}

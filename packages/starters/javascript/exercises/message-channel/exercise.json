@@ -1,0 +1,19 @@
+{
+  "title": "Message Channel",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createChannel() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = createChannel(); c.push(1); c.push(2); c.close(); return await Array.fromAsync(c);"],"expected":[1,2]},
+      {"args":["const c = createChannel(); setTimeout(() => { c.push(\"a\"); c.close(); }, 10); return await Array.fromAsync(c);"],"expected":["a"]},
+      {"args":["const c = createChannel(); const p = c[Symbol.asyncIterator]().next(); c.push(5); return await p;"],"expected":{"value":5,"done":false}},
+      {"args":["const c = createChannel(); const p = c[Symbol.asyncIterator]().next(); c.close(); return (await p).done;"],"expected":true},
+      {"args":["const c = createChannel(); c.close(); c.push(9); return await Array.fromAsync(c);"],"expected":[]},
+      {"args":["const c = createChannel(); setTimeout(() => c.push(\"b\"), 5); setTimeout(() => c.close(), 30); return await Array.fromAsync(c);"],"expected":["b"]}
+    ]
+  }
+}

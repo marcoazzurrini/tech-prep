@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function count(name, times) {\n  for (let i = 1; i <= times; i++) {\n    console.log(name + i);\n    await null;\n  }\n}\n\ncount(\"a\", 2);\ncount(\"b\", 3);\nconsole.log(\"go\");"
+    },
+    "expected": "a1\nb1\ngo\na2\nb2\nb3"
+  }
+}

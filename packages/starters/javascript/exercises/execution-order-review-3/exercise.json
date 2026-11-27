@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function inner() {\n  console.log(\"inner\");\n  return 1;\n}\n\nasync function outer() {\n  console.log(\"outer start\");\n  const value = await inner();\n  console.log(\"outer got \" + value);\n}\n\nouter();\nPromise.resolve()\n  .then(() => console.log(\"then A\"))\n  .then(() => console.log(\"then B\"));\nconsole.log(\"end\");"
+    },
+    "expected": "outer start\ninner\nend\nouter got 1\nthen A\nthen B"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const order = {\n  price: 5,\n  qty: 2,\n  total() {\n    return this.price * this.qty;\n  },\n};\n\nconst reads = [];\n\nconst spy = new Proxy(order, {\n  get(target, key, receiver) {\n    reads.push(key);\n    return Reflect.get(target, key, receiver);\n  },\n});\n\nconsole.log(spy.total());\nconsole.log(reads.join(\",\"));\nconsole.log(order.total(), reads.length);"
+    },
+    "expected": "10\ntotal,price,qty\n10 3"
+  }
+}

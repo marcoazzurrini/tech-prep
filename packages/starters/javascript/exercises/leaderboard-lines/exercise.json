@@ -1,0 +1,20 @@
+{
+  "title": "Leaderboard Lines",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "leaderboard"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function leaderboard(players) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"Ben","points":1200},{"name":"Ada","points":12500},{"name":"Cy","points":1200}]],"expected":["1st Ada: 12,500 points","2nd Ben: 1,200 points","3rd Cy: 1,200 points"]},
+      {"args":[[{"name":"zoe","points":50},{"name":"émile","points":50},{"name":"Eva","points":50}]],"expected":["1st émile: 50 points","2nd Eva: 50 points","3rd zoe: 50 points"]},
+      {"args":[[{"name":"Kim","points":1},{"name":"Lou","points":0}]],"expected":["1st Kim: 1 point","2nd Lou: 0 points"]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"name":"A","points":120},{"name":"B","points":110},{"name":"C","points":100},{"name":"D","points":90},{"name":"E","points":80},{"name":"F","points":70},{"name":"G","points":60},{"name":"H","points":50},{"name":"I","points":40},{"name":"J","points":30},{"name":"K","points":20},{"name":"L","points":10}]],"expected":["1st A: 120 points","2nd B: 110 points","3rd C: 100 points","4th D: 90 points","5th E: 80 points","6th F: 70 points","7th G: 60 points","8th H: 50 points","9th I: 40 points","10th J: 30 points","11th K: 20 points","12th L: 10 points"]}
+    ]
+  }
+}

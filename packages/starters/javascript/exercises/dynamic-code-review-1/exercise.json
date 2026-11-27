@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "globalThis.fee = 1;\n\nfunction total(price) {\n  const fee = 5;\n\n  return [\n    eval(\"price + fee\"),\n    (0, eval)(\"typeof price\"),\n    new Function(\"price\", \"return price + fee;\")(price),\n    eval?.(\"fee\"),\n  ];\n}\n\nconsole.log(total(10).join(\",\"));\nconsole.log(eval(\"var kept = 1; kept\"), typeof kept);"
+    },
+    "expected": "15,undefined,11,1\n1 undefined"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nconst steps = [[\"paint\", 40], [\"dry\", 10]];\n\nconst last = steps.reduce(async (previous, [name, ms]) => {\n  await delay(ms);\n  console.log(name + \" ready\");\n  await previous;\n  console.log(name + \" done\");\n}, Promise.resolve());\n\nlast.then(() => console.log(\"all done\"));"
+    },
+    "expected": "dry ready\npaint ready\npaint done\ndry done\nall done"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Import Records",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function importAll(ids, load, save) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await importAll([1, 2], async (id) => id * 10, async (record) => record + 1);"],"expected":[11,21]},
+      {"args":["return await importAll([], async (id) => id, async (r) => r);"],"expected":[]},
+      {"args":["const s = []; const p = importAll([1, 2], async (id) => s.push(id), async (r) => r); const now = [...s]; await p; return now;"],"expected":[1,2]},
+      {"args":["let k = 0; const w = (n) => new Promise((r) => setTimeout(r, n, n)); return await importAll([30, 5], w, async () => ++k);"],"expected":[2,1]},
+      {"args":["return await importAll([1], async () => { throw new Error(\"record gone\"); }, async (r) => r).catch((e) => e.message);"],"expected":"record gone"}
+    ]
+  }
+}

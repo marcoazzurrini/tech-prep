@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function* rolls() {\n  yield 4;\n  yield 6;\n}\n\nasync function main() {\n  const doubled = await Array.fromAsync(rolls(), (n) => n * 2);\n  console.log(doubled.join(\",\"));\n\n  const mixed = await Array.fromAsync([Promise.resolve(\"a\"), \"b\"]);\n  console.log(mixed.join(\",\"));\n\n  console.log(Array.from(rolls()).length);\n}\n\nmain();\nconsole.log(\"rolling\");"
+    },
+    "expected": "rolling\n8,12\na,b\n0"
+  }
+}

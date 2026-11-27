@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function* letters() {\n  yield \"a\";\n  console.log(\"between\");\n  yield \"b\";\n}\n\nasync function main() {\n  for await (const letter of letters()) {\n    console.log(letter);\n  }\n  console.log(\"end\");\n}\n\nmain();\nconsole.log(\"start\");"
+    },
+    "expected": "start\na\nbetween\nb\nend"
+  }
+}

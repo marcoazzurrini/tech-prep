@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const compact = new Intl.NumberFormat(\"en-US\", { notation: \"compact\" });\nconst percent = new Intl.NumberFormat(\"en-US\", { style: \"percent\" });\n\nconsole.log(compact.format(999_999));\nconsole.log(compact.format(1500));\nconsole.log(percent.format(0.075));\nconsole.log(new Intl.ListFormat(\"en-US\").format([\"red\", \"green\"]));\nconsole.log(new Intl.PluralRules(\"en-US\", { type: \"ordinal\" }).select(13));"
+    },
+    "expected": "1M\n1.5K\n8%\nred and green\nother"
+  }
+}

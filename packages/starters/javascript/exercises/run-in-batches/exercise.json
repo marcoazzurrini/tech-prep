@@ -1,0 +1,19 @@
+{
+  "title": "Run in Batches",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export async function runInBatches(tasks, size) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = (v) => () => Promise.resolve(v); return await runInBatches([t(1), t(2), t(3)], 2);"],"expected":[1,2,3]},
+      {"args":["return await runInBatches([], 3);"],"expected":[]},
+      {"args":["const s = []; const t = (v) => async () => s.push(v); const p = runInBatches([t(1), t(2), t(3)], 2); return [[...s], await p];"],"expected":[[1,2],[1,2,3]]},
+      {"args":["let k = 0; const t = (ms) => () => new Promise((r) => setTimeout(() => r(++k), ms)); return runInBatches([t(30), t(5), t(5)], 2);"],"expected":[2,1,3]},
+      {"args":["const t = (v, ms) => () => new Promise((r) => setTimeout(r, ms, v)); return await runInBatches([t(\"x\", 30), t(\"y\", 5)], 5);"],"expected":["x","y"]},
+      {"args":["return await runInBatches([() => Promise.reject(new Error(\"bad task\"))], 1).catch((e) => e.message);"],"expected":"bad task"}
+    ]
+  }
+}

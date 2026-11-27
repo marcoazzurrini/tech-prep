@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const scores = { ada: 9 };\nconst seen = [];\n\nconst tracked = new Proxy(scores, {\n  get(target, key, receiver) {\n    seen.push(key);\n    return Reflect.get(target, key, receiver);\n  },\n});\n\nscores.bo = 7;\nconsole.log(tracked.bo);\n\ntracked.cy = tracked.ada + 1;\nconsole.log(scores.cy);\nconsole.log(seen.join(\",\"));"
+    },
+    "expected": "7\n10\nbo,ada"
+  }
+}

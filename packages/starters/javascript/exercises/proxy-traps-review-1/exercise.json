@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const target = { a: 1 };\n\nconst view = new Proxy(target, {\n  ownKeys() {\n    return [\"a\", \"b\"];\n  },\n});\n\nconsole.log(Object.keys(view).join(\",\"));\nconsole.log(Reflect.ownKeys(view).join(\",\"));\nconsole.log(JSON.stringify({ ...view }));\nconsole.log(\"b\" in view, view.b);"
+    },
+    "expected": "a\na,b\n{\"a\":1}\nfalse undefined"
+  }
+}

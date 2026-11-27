@@ -1,0 +1,21 @@
+{
+  "title": "Add Working Days",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "addWorkingDays"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addWorkingDays(day, count) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["2024-05-03",1],"expected":"2024-05-06"},
+      {"args":["2024-05-06",5],"expected":"2024-05-13"},
+      {"args":["2024-05-04",1],"expected":"2024-05-06"},
+      {"args":["2024-05-01",0],"expected":"2024-05-01"},
+      {"args":["2024-12-27",3],"expected":"2025-01-01"},
+      {"args":["2024-02-26",12],"expected":"2024-03-13"}
+    ]
+  }
+}

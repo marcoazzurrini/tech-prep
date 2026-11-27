@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const day = Temporal.PlainDate.from(\"2024-03-31\");\nconst back = day.subtract({ months: 1 });\n\nconsole.log(day.month);\nconsole.log(back.toString());\nconsole.log(day.add({ days: 1 }).month);\nconsole.log(day.toString());"
+    },
+    "expected": "3\n2024-02-29\n4\n2024-03-31"
+  }
+}

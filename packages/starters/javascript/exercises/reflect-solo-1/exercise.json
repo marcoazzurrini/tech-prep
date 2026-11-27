@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const config = { mode: \"dark\" };\nObject.defineProperty(config, \"version\", { value: 3 });\n\nconsole.log(Reflect.set(config, \"version\", 4), config.version);\nconsole.log(Reflect.set(config, \"mode\", \"light\"), config.mode);\nconsole.log(Reflect.deleteProperty(config, \"version\"));\nconsole.log(Reflect.ownKeys([5, 6]).join(\",\"));"
+    },
+    "expected": "false 3\ntrue light\nfalse\n0,1,length"
+  }
+}

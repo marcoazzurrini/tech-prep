@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const digits = \"4071\";\n\nconsole.log(Math.max(...digits));\nconsole.log(Math.min([8]));\nconsole.log(Math.max([8, 9]));\nconsole.log(Math.max() < Math.min());\nconsole.log(Math.round(-7.5) + Math.round(7.5));"
+    },
+    "expected": "7\n8\nNaN\ntrue\n1"
+  }
+}

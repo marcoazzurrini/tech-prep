@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const old = new Date(Date.UTC(99, 0, 1));\nconsole.log(old.getUTCFullYear());\n\nconst first = new Date(\"2024-03-10\");\nconst second = new Date(first);\nsecond.setUTCMonth(second.getUTCMonth() + 1);\n\nconsole.log(first.getUTCMonth(), second.getUTCMonth());\nconsole.log(second > first);\nconsole.log(typeof (second - first));\nconsole.log(new Date(\"soon\").getUTCDate());"
+    },
+    "expected": "1999\n2 3\ntrue\nnumber\nNaN"
+  }
+}

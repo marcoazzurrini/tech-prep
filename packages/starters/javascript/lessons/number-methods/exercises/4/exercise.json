@@ -1,0 +1,19 @@
+{
+  "title": "A Whole Count",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function isWholeCount(value) {\n  return value % 1 === 0;\n}\n"
+    },
+    "tests": [
+      {"args":["return [isWholeCount(3), isWholeCount(0)];"],"expected":[true,true]},
+      {"args":["return [isWholeCount(\"3\"), isWholeCount(2.5)];"],"expected":[false,false]},
+      {"args":["return isWholeCount(-1);"],"expected":false},
+      {"args":["return isWholeCount(2 ** 60);"],"expected":false},
+      {"args":["return [isWholeCount(Infinity), isWholeCount(NaN)];"],"expected":[false,false]},
+      {"args":["return isWholeCount(Number.MAX_SAFE_INTEGER);"],"expected":true}
+    ]
+  }
+}

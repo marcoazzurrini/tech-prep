@@ -1,0 +1,19 @@
+{
+  "title": "Keys in Alphabetical Order",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function sortedKeys(obj) {\n  // your code\n  return obj;\n}\n"
+    },
+    "tests": [
+      {"args":["return Object.keys(sortedKeys({ b: 1, a: 2, c: 3 }));"],"expected":["a","b","c"]},
+      {"args":["return JSON.stringify(sortedKeys({ name: \"Ada\", age: 36 }));"],"expected":"{\"age\":36,\"name\":\"Ada\"}"},
+      {"args":["const out = []; for (const k in sortedKeys({ z: 1, y: 2 })) out.push(k); return out;"],"expected":["y","z"]},
+      {"args":["const o = { b: 1 }; const view = sortedKeys(o); o.a = 2; return Object.keys(view);"],"expected":["a","b"]},
+      {"args":["return Object.keys(sortedKeys({ 10: \"x\", 9: \"y\", b: 1 }));"],"expected":["10","9","b"]},
+      {"args":["const s = Symbol(\"s\"); return Reflect.ownKeys(sortedKeys({ b: 1, [s]: 2, a: 3 })).map(String);"],"expected":["a","b","Symbol(s)"]}
+    ]
+  }
+}

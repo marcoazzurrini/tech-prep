@@ -1,0 +1,18 @@
+{
+  "title": "Bake with a Promise",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "function bake(dish, onDone, onBurnt) {\n  setTimeout(() => {\n    if (dish === \"toast\") {\n      onBurnt(new Error(\"toast burnt\"));\n    } else {\n      onDone(dish + \" baked\");\n    }\n  }, 5);\n}\n\nexport function bakeAsync(dish) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return await bakeAsync(\"bread\");"],"expected":"bread baked"},
+      {"args":["return await bakeAsync(\"toast\").catch((e) => e.message);"],"expected":"toast burnt"},
+      {"args":["return bakeAsync(\"pie\") instanceof Promise;"],"expected":true},
+      {"args":["const [a, b] = await Promise.all([bakeAsync(\"pie\"), bakeAsync(\"cake\")]); return a + \", \" + b;"],"expected":"pie baked, cake baked"},
+      {"args":["return await bakeAsync(\"toast\").then(() => \"fulfilled\", (e) => e instanceof Error);"],"expected":true}
+    ]
+  }
+}

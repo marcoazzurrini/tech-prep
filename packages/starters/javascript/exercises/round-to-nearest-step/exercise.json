@@ -1,0 +1,23 @@
+{
+  "title": "Round to the Nearest Step",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "roundToStep"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function roundToStep(value, step) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[12,5],"expected":10},
+      {"args":[13,5],"expected":15},
+      {"args":[12.5,5],"expected":15},
+      {"args":[-12.5,5],"expected":-15},
+      {"args":[-13,5],"expected":-15},
+      {"args":[-12,5],"expected":-10},
+      {"args":[149,100],"expected":100},
+      {"args":[-2.25,0.5],"expected":-2.5}
+    ]
+  }
+}

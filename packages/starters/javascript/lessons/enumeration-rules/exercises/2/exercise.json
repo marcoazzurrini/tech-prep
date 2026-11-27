@@ -1,0 +1,18 @@
+{
+  "title": "A Public Copy",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function publicCopy(obj) {\n  return { ...obj };\n}\n"
+    },
+    "tests": [
+      {"args":["const s = Symbol(\"s\"); return Object.getOwnPropertySymbols(publicCopy({ a: 1, [s]: 2 })).length;"],"expected":0},
+      {"args":["return publicCopy({ a: 1, b: 2 });"],"expected":{"a":1,"b":2}},
+      {"args":["const s = Symbol(\"s\"); return Reflect.ownKeys(publicCopy({ [s]: 1, x: 3 })).map(String);"],"expected":["x"]},
+      {"args":["const o = Object.create({ inherited: 1 }); o.own = 2; return publicCopy(o);"],"expected":{"own":2}},
+      {"args":["const o = { a: 1 }; return publicCopy(o) !== o;"],"expected":true}
+    ]
+  }
+}

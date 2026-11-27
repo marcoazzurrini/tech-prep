@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const menu = { soup: 6 };\n\nconst priced = new Proxy(menu, {\n  get(target, key, receiver) {\n    return key in target ? Reflect.get(target, key, receiver) : \"ask\";\n  },\n  set(target, key, value, receiver) {\n    return Reflect.set(target, key, value * 2, receiver);\n  },\n});\n\npriced.salad = 4;\n\nconsole.log(priced.soup, priced.salad, priced.cake);\nconsole.log(menu.salad);\nconsole.log(Object.keys(priced).join(\",\"));"
+    },
+    "expected": "6 8 ask\n8\nsoup,salad"
+  }
+}

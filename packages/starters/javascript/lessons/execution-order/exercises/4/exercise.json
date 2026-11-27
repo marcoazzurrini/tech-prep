@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "async function walk() {\n  console.log(\"walk 1\");\n  await null;\n  console.log(\"walk 2\");\n  await null;\n  console.log(\"walk 3\");\n}\n\nwalk();\nPromise.resolve()\n  .then(() => console.log(\"then 1\"))\n  .then(() => console.log(\"then 2\"));"
+    },
+    "expected": "walk 1\nwalk 2\nthen 1\nwalk 3\nthen 2"
+  }
+}

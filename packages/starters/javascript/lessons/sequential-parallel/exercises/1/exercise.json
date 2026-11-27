@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nasync function boil(pot, ms) {\n  await delay(ms);\n  console.log(pot + \" boiled\");\n}\n\nasync function cook() {\n  for (const [pot, ms] of [[\"rice\", 40], [\"pasta\", 10], [\"eggs\", 20]]) {\n    await boil(pot, ms);\n  }\n  console.log(\"dinner\");\n}\n\ncook();\nconsole.log(\"cooking\");"
+    },
+    "expected": "cooking\nrice boiled\npasta boiled\neggs boiled\ndinner"
+  }
+}

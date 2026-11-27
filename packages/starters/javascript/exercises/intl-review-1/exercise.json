@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const yen = new Intl.NumberFormat(\"en-US\", { style: \"currency\", currency: \"JPY\" });\nconst when = new Intl.RelativeTimeFormat(\"en-US\");\n\nconsole.log(new Intl.NumberFormat(\"de-DE\").format(1234567.5));\nconsole.log((0.5).toLocaleString(\"en-US\", { style: \"percent\" }));\nconsole.log(yen.format(99.5));\nconsole.log(when.format(-1, \"day\"));\nconsole.log(new Intl.PluralRules(\"en-US\").select(1.0));"
+    },
+    "expected": "1.234.567,5\n50%\n¥100\n1 day ago\none"
+  }
+}

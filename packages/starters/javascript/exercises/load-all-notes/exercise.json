@@ -1,0 +1,20 @@
+{
+  "title": "Load All Notes",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function loadNotes(names, read) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const read = (n, cb) => setTimeout(cb, 5, null, n.toUpperCase()); return await loadNotes([\"a\", \"b\"], read);"],"expected":["A","B"]},
+      {"args":["return await loadNotes([], () => {});"],"expected":[]},
+      {"args":["const read = (n, cb) => cb(n === \"x\" ? new Error(\"no x\") : null, n); return loadNotes([\"a\", \"x\"], read).catch((e) => e.message);"],"expected":"no x"},
+      {"args":["const read = (n, cb) => setTimeout(cb, n === \"a\" ? 30 : 5, null, n); return await loadNotes([\"a\", \"b\"], read);"],"expected":["a","b"]},
+      {"args":["const s = []; const p = loadNotes([\"a\", \"b\"], (n, cb) => { s.push(n); cb(null, n); }); const now = [...s]; await p; return now;"],"expected":["a","b"]},
+      {"args":["return await loadNotes([\"a\"], (n, cb) => { cb(null, 1); cb(null, 2); });"],"expected":[1]},
+      {"args":["return await loadNotes([\"a\", \"b\"], (n, cb) => { cb(null, n); cb(new Error(\"late\")); });"],"expected":["a","b"]}
+    ]
+  }
+}

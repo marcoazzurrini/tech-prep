@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const amount = 2.5;\n\nconsole.log(amount.toFixed(0));\nconsole.log(-amount.toFixed(0));\nconsole.log(typeof -amount.toFixed(0));\nconsole.log((1e21).toFixed(2));\nconsole.log(Number.isSafeInteger(2 ** 53));\nconsole.log((255).toString(2).length);"
+    },
+    "expected": "3\n-3\nnumber\n1e+21\nfalse\n8"
+  }
+}

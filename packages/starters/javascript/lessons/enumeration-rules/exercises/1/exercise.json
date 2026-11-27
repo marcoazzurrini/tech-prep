@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const flag = Symbol(\"flag\");\nconst defaults = { lang: \"en\", theme: \"dark\" };\nconst prefs = Object.create(defaults);\nprefs.theme = \"light\";\nprefs[flag] = true;\nObject.defineProperty(prefs, \"version\", { value: 2, enumerable: false });\n\nconst looped = [];\nfor (const key in prefs) looped.push(key);\n\nconsole.log(looped.join(\",\"));\nconsole.log(Object.getOwnPropertyNames(prefs).join(\",\"));\nconsole.log(Reflect.ownKeys(prefs).length);"
+    },
+    "expected": "theme,lang\ntheme,version\n3"
+  }
+}

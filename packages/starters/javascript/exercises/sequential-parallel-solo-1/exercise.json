@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\n\nasync function heat(dish, ms) {\n  console.log(dish + \" in\");\n  await delay(ms);\n  console.log(dish + \" out\");\n  return dish;\n}\n\nasync function serve() {\n  const pie = heat(\"pie\", 40);\n  const soup = heat(\"soup\", 10);\n  console.log(await pie);\n  console.log(await soup);\n}\n\nserve();"
+    },
+    "expected": "pie in\nsoup in\nsoup out\npie out\npie\nsoup"
+  }
+}

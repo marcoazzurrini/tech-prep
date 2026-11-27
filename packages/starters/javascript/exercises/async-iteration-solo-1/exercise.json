@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const delay = (ms, value) => new Promise((resolve) => setTimeout(resolve, ms, value));\n\nasync function main() {\n  const answers = [delay(40, \"slow\"), delay(10, \"fast\")];\n  for await (const answer of answers) {\n    console.log(answer);\n  }\n  console.log(\"done\");\n}\n\nsetTimeout(() => console.log(\"timer\"), 20);\nmain();"
+    },
+    "expected": "timer\nslow\nfast\ndone"
+  }
+}

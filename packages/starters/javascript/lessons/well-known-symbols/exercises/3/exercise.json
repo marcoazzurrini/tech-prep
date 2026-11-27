@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const first = [1, 2];\nconst pair = [3, 4];\nconst extra = { length: 1, 0: 5, [Symbol.isConcatSpreadable]: true };\n\npair[Symbol.isConcatSpreadable] = false;\n\nconst result = first.concat(pair, extra, [6]);\n\nconsole.log(result.length);\nconsole.log(result[2].length);\nconsole.log(result[3]);"
+    },
+    "expected": "5\n2\n5"
+  }
+}

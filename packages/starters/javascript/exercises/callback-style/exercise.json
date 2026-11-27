@@ -1,0 +1,18 @@
+{
+  "title": "Callback Style",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function callbackify(fn) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const f = callbackify(async (a, b) => a + b); return await new Promise((r) => f(2, 3, (e, v) => r([e, v])));"],"expected":[null,5]},
+      {"args":["const f = callbackify(async () => { throw new Error(\"no\"); }); return await new Promise((r) => f((e) => r(e.message)));"],"expected":"no"},
+      {"args":["const f = callbackify(() => { throw new Error(\"sync\"); }); return await new Promise((r) => f((e) => r(e.message)));"],"expected":"sync"},
+      {"args":["const o = { n: 4, get: callbackify(async function () { return this.n; }) }; return new Promise((r) => o.get((e, v) => r(v)));"],"expected":4},
+      {"args":["let calls = 0; const f = callbackify(async () => 1); f(() => calls++); await new Promise((r) => setTimeout(r, 5)); return calls;"],"expected":1}
+    ]
+  }
+}

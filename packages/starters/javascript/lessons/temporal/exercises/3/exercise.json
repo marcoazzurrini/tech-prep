@@ -1,0 +1,20 @@
+{
+  "title": "Age on a Day",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "ageOn"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function ageOn(birthday, day) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["1990-06-15","2024-06-14"],"expected":33},
+      {"args":["1990-06-15","2024-06-15"],"expected":34},
+      {"args":["2010-12-31","2024-01-01"],"expected":13},
+      {"args":["2024-01-01","2024-12-31"],"expected":0},
+      {"args":["1985-03-01","2025-03-01"],"expected":40}
+    ]
+  }
+}

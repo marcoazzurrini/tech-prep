@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(Math.floor(-1.2));\nconsole.log(Math.ceil(-1.8));\nconsole.log(Math.trunc(-1.8));\nconsole.log(Math.round(-1.5));\nconsole.log(Math.round(1.5));"
+    },
+    "expected": "-2\n-1\n-1\n-1\n2"
+  }
+}

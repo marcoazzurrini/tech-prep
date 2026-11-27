@@ -2034,7 +2034,8 @@
       }
     ],
     "key_idea": "`await` inside a loop runs the work one after another. To run it together, start every promise first and then `await Promise.all`. `forEach` does not wait for an `async` callback.",
-    "solo": "sequential-parallel-solo-1"
+    "guided": 4,
+    "solo": ["sequential-parallel-solo-1", "run-in-batches"]
   },
   {
     "id": "promisify",
@@ -2048,7 +2049,8 @@
       }
     ],
     "key_idea": "To turn a callback function into a promise function, return a `new Promise` and call `resolve` or `reject` inside the callback.",
-    "solo": "promisify-solo-1"
+    "guided": 4,
+    "solo": ["promisify-solo-1", "add-async-methods"]
   },
   {
     "id": "async-iteration",
@@ -2062,7 +2064,8 @@
       }
     ],
     "key_idea": "`for await...of` loops over values that arrive later. An `async function*` can `await` and `yield`, and each `next()` returns a promise.",
-    "solo": "async-iteration-solo-1"
+    "guided": 4,
+    "solo": ["async-iteration-solo-1", "watch-job-status"]
   },
   {
     "id": "execution-order",
@@ -2080,7 +2083,8 @@
       }
     ],
     "key_idea": "To find the order of output, run all the synchronous code first, then every microtask, then one task, then the microtasks again.",
-    "solo": "execution-order-solo-1"
+    "guided": 4,
+    "solo": ["execution-order-solo-1", "execution-order-solo-2"]
   },
   {
     "id": "module-basics",
@@ -2179,7 +2183,8 @@
     ],
     "encompasses": [],
     "key_idea": "Well-known symbols are hooks into the language. `Symbol.iterator` drives `for...of`, `Symbol.toPrimitive` drives conversion, `Symbol.hasInstance` drives `instanceof`, and `Symbol.toStringTag` names the object.",
-    "solo": "well-known-symbols-solo-1"
+    "guided": 4,
+    "solo": ["well-known-symbols-solo-1", "closed-interval"]
   },
   {
     "id": "enumeration-rules",
@@ -2193,7 +2198,8 @@
       }
     ],
     "key_idea": "Each way of listing keys has its own rule. `Object.keys`, spread and JSON see own enumerable string keys. `for...in` adds inherited ones. `Reflect.ownKeys` sees every own key.",
-    "solo": "enumeration-rules-solo-1"
+    "guided": 3,
+    "solo": ["enumeration-rules-solo-1", "describe-keys"]
   },
   {
     "id": "reflect",
@@ -2202,7 +2208,8 @@
     "prereqs": ["enumeration-rules", "call-apply", "constructor-functions"],
     "encompasses": [],
     "key_idea": "`Reflect` holds the basic object operations as functions: `get`, `set`, `has`, `ownKeys`, `apply` and `construct`. They return a result where the operator would throw or fail silently.",
-    "solo": "reflect-solo-1"
+    "guided": 4,
+    "solo": ["reflect-solo-1", "assign-what-you-can"]
   },
   {
     "id": "proxy-basics",
@@ -2216,7 +2223,8 @@
       }
     ],
     "key_idea": "A `Proxy` wraps an object and runs your handler on each operation. A `get` trap sees every read and a `set` trap every write. Forward to `Reflect` to keep the normal behaviour.",
-    "solo": "proxy-basics-solo-1"
+    "guided": 3,
+    "solo": ["proxy-basics-solo-1", "negative-index-array"]
   },
   {
     "id": "proxy-traps",
@@ -2230,7 +2238,8 @@
       }
     ],
     "key_idea": "`has` handles `in`, `deleteProperty` handles `delete`, `ownKeys` handles key listing, and `apply` and `construct` handle calls. A trap may not lie about a property the target has locked.",
-    "solo": "proxy-traps-solo-1"
+    "guided": 4,
+    "solo": ["proxy-traps-solo-1", "track-calls-and-new"]
   },
   {
     "id": "dynamic-code",
@@ -2239,7 +2248,8 @@
     "prereqs": ["global-scope", "lexical-scope"],
     "encompasses": [],
     "key_idea": "`eval` runs a string as code in the current scope. `new Function` builds a function from strings that sees only the global scope. Both are slow and unsafe with outside input.",
-    "solo": "dynamic-code-solo-1"
+    "guided": 4,
+    "solo": ["dynamic-code-solo-1", "fill-the-template"]
   },
   {
     "id": "math",
@@ -2248,7 +2258,8 @@
     "prereqs": ["special-numbers"],
     "encompasses": [],
     "key_idea": "`Math.floor`, `Math.ceil`, `Math.round` and `Math.trunc` differ on negative numbers and on halves. `Math.max()` of nothing is `-Infinity`.",
-    "solo": "math-solo-1"
+    "guided": 4,
+    "solo": ["math-solo-1", "round-to-nearest-step"]
   },
   {
     "id": "number-methods",
@@ -2257,7 +2268,8 @@
     "prereqs": ["math", "to-string"],
     "encompasses": [],
     "key_idea": "`toFixed` rounds a number and returns a string. `Number.isInteger` and `Number.isSafeInteger` check a number without converting it.",
-    "solo": "number-methods-solo-1"
+    "guided": 4,
+    "solo": ["number-methods-solo-1", "file-size-label"]
   },
   {
     "id": "dates",
@@ -2266,7 +2278,8 @@
     "prereqs": ["to-number", "number-methods"],
     "encompasses": [],
     "key_idea": "A `Date` holds one number: the milliseconds since the start of 1970, in UTC. Months count from 0. A value out of range rolls over, so day 0 is the last day of the month before.",
-    "solo": "dates-solo-1"
+    "guided": 4,
+    "solo": ["dates-solo-1", "add-months-clamped"]
   },
   {
     "id": "temporal",
@@ -2275,7 +2288,8 @@
     "prereqs": ["dates"],
     "encompasses": [],
     "key_idea": "`Temporal` replaces `Date`. Its objects never change, months count from 1, and a date, a time, an exact instant and a time zone are separate types.",
-    "solo": "temporal-solo-1"
+    "guided": 4,
+    "solo": ["temporal-solo-1", "add-working-days"]
   },
   {
     "id": "intl",
@@ -2284,7 +2298,8 @@
     "prereqs": ["dates", "string-comparison"],
     "encompasses": [],
     "key_idea": "`Intl` formats numbers, dates and lists for a locale. `Intl.NumberFormat` writes currency and percent, and `Intl.PluralRules` picks the right plural form.",
-    "solo": "intl-solo-1"
+    "guided": 4,
+    "solo": ["intl-solo-1", "cart-summary-line"]
   },
   {
     "id": "memoization",

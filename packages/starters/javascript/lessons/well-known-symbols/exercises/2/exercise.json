@@ -1,0 +1,18 @@
+{
+  "title": "Positive Numbers Only",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class PositiveNumber {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [5 instanceof PositiveNumber, 0.5 instanceof PositiveNumber];"],"expected":[true,true]},
+      {"args":["return [-2 instanceof PositiveNumber, 0 instanceof PositiveNumber];"],"expected":[false,false]},
+      {"args":["return [\"5\" instanceof PositiveNumber, null instanceof PositiveNumber];"],"expected":[false,false]},
+      {"args":["return [NaN instanceof PositiveNumber, Infinity instanceof PositiveNumber];"],"expected":[false,true]},
+      {"args":["return new PositiveNumber() instanceof PositiveNumber;"],"expected":false}
+    ]
+  }
+}

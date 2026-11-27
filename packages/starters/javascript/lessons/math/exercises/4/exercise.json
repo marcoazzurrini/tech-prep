@@ -1,0 +1,18 @@
+{
+  "title": "Random Item",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function randomItem(list) {\n  return list[Math.round(Math.random() * list.length)];\n}\n"
+    },
+    "tests": [
+      {"args":["const list = [\"a\", \"b\", \"c\"]; for (let i = 0; i < 300; i++) if (!list.includes(randomItem(list))) return false; return true;"],"expected":true},
+      {"args":["return randomItem([\"only\"]);"],"expected":"only"},
+      {"args":["const seen = new Set(); for (let i = 0; i < 500; i++) seen.add(randomItem([\"w\", \"x\", \"y\", \"z\"])); return [...seen].sort();"],"expected":["w","x","y","z"]},
+      {"args":["let n = 0; for (let i = 0; i < 3000; i++) if (randomItem([1, 2, 3]) === 1) n++; return n > 850 && n < 1150;"],"expected":true},
+      {"args":["return randomItem([]) === undefined;"],"expected":true}
+    ]
+  }
+}
