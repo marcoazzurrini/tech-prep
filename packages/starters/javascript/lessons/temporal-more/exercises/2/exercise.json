@@ -1,0 +1,21 @@
+{
+  "title": "Length of a Day",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "hoursOnDay"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function hoursOnDay(date, zone) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["2024-07-01","Asia/Tokyo"],"expected":24},
+      {"args":["2024-03-10","America/New_York"],"expected":23},
+      {"args":["2024-11-03","America/New_York"],"expected":25},
+      {"args":["2024-10-27","Europe/London"],"expected":25},
+      {"args":["2024-10-28","Europe/London"],"expected":24},
+      {"args":["2024-04-07","Australia/Lord_Howe"],"expected":24.5}
+    ]
+  }
+}

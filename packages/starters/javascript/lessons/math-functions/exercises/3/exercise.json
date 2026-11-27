@@ -1,0 +1,23 @@
+{
+  "title": "Angle of a Point",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "angleOf"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function angleOf(x, y) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[1,1],"expected":45},
+      {"args":[0,1],"expected":90},
+      {"args":[-1,0],"expected":180},
+      {"args":[0,-1],"expected":270},
+      {"args":[1,-1],"expected":315},
+      {"args":[3,4],"expected":53},
+      {"args":[-3,-4],"expected":233},
+      {"args":[5,0],"expected":0}
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const term = Temporal.PlainYearMonth.from(\"2023-12\");\nconst next = term.add({ months: 2 });\nconst day = Temporal.PlainMonthDay.from({ month: 4, day: 31 });\n\nconsole.log(next.toString());\nconsole.log(next.daysInMonth);\nconsole.log(next.toPlainDate({ day: 30 }).toString());\nconsole.log(day.toString());"
+    },
+    "expected": "2024-02\n29\n2024-02-29\n04-30"
+  }
+}

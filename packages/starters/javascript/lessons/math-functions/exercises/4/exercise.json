@@ -1,0 +1,20 @@
+{
+  "title": "Small Amounts Vanish",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "totalOf"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function totalOf(amounts) {\n  let total = 0;\n\n  for (const amount of amounts) {\n    total += amount;\n  }\n\n  return total;\n}\n"
+    },
+    "tests": [
+      {"args":[[0.1,0.2,0.3]],"expected":0.6},
+      {"args":[[0.7,0.1,0.1,0.1]],"expected":1},
+      {"args":[[10000000000000000,1,1,-10000000000000000]],"expected":2},
+      {"args":[[100000000000000000000,0.5,-100000000000000000000]],"expected":0.5},
+      {"args":[[5,10,20]],"expected":35}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Name or Gone",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function ownerName(ref) {\n  return ref.deref().name;\n}\n"
+    },
+    "tests": [
+      {"args":["return ownerName(new WeakRef({ name: \"Ada\" }));"],"expected":"Ada"},
+      {"args":["return ownerName({ deref: () => undefined });"],"expected":"gone"},
+      {"args":["const user = { name: \"Bo\" }; const ref = new WeakRef(user); return [ownerName(ref), ownerName(ref)];"],"expected":["Bo","Bo"]},
+      {"args":["return ownerName({ deref: () => ({ name: \"\" }) });"],"expected":""},
+      {"args":["return [ownerName({ deref: () => undefined }), ownerName({ deref: () => ({ name: \"Cy\" }) })];"],"expected":["gone","Cy"]}
+    ]
+  }
+}

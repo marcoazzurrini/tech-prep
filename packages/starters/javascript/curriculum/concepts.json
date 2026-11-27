@@ -1691,6 +1691,25 @@
     "solo": ["map-solo-1", "pair-adds-up-to-target"]
   },
   {
+    "id": "map-grouping",
+    "name": "Map.groupBy and getOrInsert",
+    "topic": "collections",
+    "prereqs": ["map", "grouping"],
+    "encompasses": [
+      {
+        "id": "map",
+        "w": 0.5
+      },
+      {
+        "id": "grouping",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "`Map.groupBy(items, fn)` groups items into a `Map`, so a key can be any value and keeps its type. `getOrInsert(key, value)` returns the value under a key, and stores `value` first when the key is missing. `getOrInsertComputed` calls a function only when the key is missing.",
+    "guided": 3,
+    "solo": ["map-grouping-solo-1", "room-bookings-by-day"]
+  },
+  {
     "id": "set",
     "name": "Set",
     "topic": "collections",
@@ -1739,6 +1758,21 @@
     "key_idea": "A leak is memory that is still reachable but never used again. The usual causes are a cache that only grows, a timer that is never cleared and a closure that holds a large value.",
     "guided": 3,
     "solo": ["memory-leaks-solo-1", "recently-used-cache"]
+  },
+  {
+    "id": "weakref",
+    "name": "WeakRef and FinalizationRegistry",
+    "topic": "collections",
+    "prereqs": ["memory-leaks"],
+    "encompasses": [
+      {
+        "id": "memory-leaks",
+        "w": 0.3
+      }
+    ],
+    "key_idea": "A `WeakRef` points at an object without keeping it alive. `deref()` gives the object, or `undefined` once it has been collected. A `FinalizationRegistry` may call you back after an object is collected, but never promises when, or whether.",
+    "guided": 4,
+    "solo": ["weakref-solo-1", "cache-large-reports"]
   },
   {
     "id": "typed-arrays",
@@ -1819,6 +1853,21 @@
     "key_idea": "A generator makes values only when asked, so it can describe an endless sequence. Iterator helpers such as `map`, `filter` and `take` are lazy too.",
     "guided": 4,
     "solo": ["lazy-sequences-solo-1", "chunk-a-stream"]
+  },
+  {
+    "id": "iterator-helpers",
+    "name": "More Iterator Helpers",
+    "topic": "iteration",
+    "prereqs": ["lazy-sequences", "reduce"],
+    "encompasses": [
+      {
+        "id": "lazy-sequences",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`flatMap` is lazy like `map`. `reduce`, `forEach`, `some`, `every` and `find` use up the iterator, and the last three stop early and close it. `Iterator.concat` joins iterables one after another, and `Iterator.zip` walks several side by side.",
+    "guided": 4,
+    "solo": ["iterator-helpers-solo-1", "order-in-batches"]
   },
   {
     "id": "event-loop",
@@ -2262,6 +2311,21 @@
     "solo": ["math-solo-1", "round-to-nearest-step"]
   },
   {
+    "id": "math-functions",
+    "name": "Powers, Roots and Logarithms",
+    "topic": "stdlib",
+    "prereqs": ["math"],
+    "encompasses": [
+      {
+        "id": "math",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`**` and `Math.pow` raise to a power, `Math.sqrt` and `Math.cbrt` take roots, and `Math.log`, `Math.log2` and `Math.log10` undo powers. Angles are in radians. `Math.sumPrecise` adds a list without rounding errors along the way.",
+    "guided": 4,
+    "solo": ["math-functions-solo-1", "years-to-reach-goal"]
+  },
+  {
     "id": "number-methods",
     "name": "Formatting and Checking Numbers",
     "topic": "stdlib",
@@ -2292,6 +2356,21 @@
     "solo": ["temporal-solo-1", "add-working-days"]
   },
   {
+    "id": "temporal-more",
+    "name": "More Temporal Types",
+    "topic": "stdlib",
+    "prereqs": ["temporal"],
+    "encompasses": [
+      {
+        "id": "temporal",
+        "w": 0.5
+      }
+    ],
+    "key_idea": "`Temporal.Instant` is an exact moment, counted from 1970 like a `Date`. A `ZonedDateTime` knows its day can have 23 or 25 hours. `PlainYearMonth` and `PlainMonthDay` hold part of a date, such as a billing month or a birthday. `until` and `round` take the units you want.",
+    "guided": 4,
+    "solo": ["temporal-more-solo-1", "parking-fee"]
+  },
+  {
     "id": "intl",
     "name": "Intl",
     "topic": "stdlib",
@@ -2300,6 +2379,21 @@
     "key_idea": "`Intl` formats numbers, dates and lists for a locale. `Intl.NumberFormat` writes currency and percent, and `Intl.PluralRules` picks the right plural form.",
     "guided": 4,
     "solo": ["intl-solo-1", "cart-summary-line"]
+  },
+  {
+    "id": "time-zones",
+    "name": "Local Time and Time Zones",
+    "topic": "stdlib",
+    "prereqs": ["dates", "intl"],
+    "encompasses": [
+      {
+        "id": "dates",
+        "w": 0.4
+      }
+    ],
+    "key_idea": "`new Date(2024, 0, 1)` and `getHours` use the time zone of the machine. `Date.UTC` and `getUTCHours` do not. A date-only string such as `\"2024-01-01\"` is read as UTC, but one with a time and no `Z` is read as local time.",
+    "guided": 4,
+    "solo": ["time-zones-solo-1", "utc-offset-label"]
   },
   {
     "id": "memoization",

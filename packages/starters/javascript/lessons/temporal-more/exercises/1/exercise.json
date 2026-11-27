@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const start = Temporal.Instant.fromEpochMilliseconds(86_400_000);\nconst later = start.add({ minutes: 90 });\n\nconsole.log(start.toString());\nconsole.log(later.epochMilliseconds - start.epochMilliseconds);\nconsole.log(later.toZonedDateTimeISO(\"Asia/Kolkata\").hour);\nconsole.log(later.day);"
+    },
+    "expected": "1970-01-02T00:00:00Z\n5400000\n7\nundefined"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const london = { timeZone: \"Europe/London\", hour: \"2-digit\", minute: \"2-digit\" };\nconst first = new Date(\"2024-10-27T00:30:00Z\");\nconst second = new Date(\"2024-10-27T01:30:00Z\");\n\nconsole.log(first.toLocaleTimeString(\"en-GB\", london));\nconsole.log(second.toLocaleTimeString(\"en-GB\", london));\nconsole.log(new Date(\"2024-10-27T02:30:00+02:00\").getTime() === first.getTime());\n\nconst day = new Date(2024, 9, 27);\nconst result = day.setDate(32);\nconsole.log(typeof result, day.getMonth(), day.getDate());\nconsole.log(new Date(\"2024-10-27\").getUTCHours());"
+    },
+    "expected": "01:30\n01:30\ntrue\nnumber 10 1\n0"
+  }
+}

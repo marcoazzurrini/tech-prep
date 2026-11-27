@@ -1,0 +1,19 @@
+{
+  "title": "First Seats",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function firstSeats(rows, n) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return firstSeats([{ row: \"A\", seats: 2 }, { row: \"B\", seats: 3 }], 4);"],"expected":["A1","A2","B1","B2"]},
+      {"args":["return firstSeats([{ row: \"C\", seats: 1 }], 5);"],"expected":["C1"]},
+      {"args":["return firstSeats([], 3);"],"expected":[]},
+      {"args":["return firstSeats(new Set([{ row: \"A\", seats: 0 }, { row: \"B\", seats: 1 }]), 2);"],"expected":["B1"]},
+      {"args":["let read = 0; function* rows() { while (true) { read++; yield { row: \"Z\", seats: 2 }; } } return [firstSeats(rows(), 3), read];"],"expected":[["Z1","Z2","Z1"],2]},
+      {"args":["let read = 0; function* rows() { while (true) { read++; yield { row: \"Z\", seats: 2 }; } } return [firstSeats(rows(), 2), read];"],"expected":[["Z1","Z2"],1]}
+    ]
+  }
+}

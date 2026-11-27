@@ -1,0 +1,18 @@
+{
+  "title": "Room Bookings by Day",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function bookingPlan(bookings) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return [...bookingPlan([[1, \"A\", \"Ada\"], [1, \"B\", \"Bo\"], [1, \"A\", \"Cy\"]])].map(([d, r]) => [d, [...r]]);"],"expected":[[1,[["A",["Ada","Cy"]],["B",["Bo"]]]]]},
+      {"args":["return [...bookingPlan([])];"],"expected":[]},
+      {"args":["return [...bookingPlan([[2, \"A\", \"Ada\"], [1, \"A\", \"Bo\"], [2, \"A\", \"Cy\"]])].map(([d, r]) => [d, [...r]]);"],"expected":[[2,[["A",["Ada","Cy"]]]],[1,[["A",["Bo"]]]]]},
+      {"args":["const plan = bookingPlan([[3, \"B\", \"Di\"], [3, \"C\", \"Ed\"]]); return [plan.size, plan.get(3).get(\"C\")];"],"expected":[1,["Ed"]]},
+      {"args":["const plan = bookingPlan([[1, \"A\", \"Ada\"]]); return [plan.has(\"1\"), plan.get(1) instanceof Map];"],"expected":[false,true]}
+    ]
+  }
+}

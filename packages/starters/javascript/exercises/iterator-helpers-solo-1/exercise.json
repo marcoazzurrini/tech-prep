@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const shelves = [[\"pen\", \"ink\"], [], [\"pad\"]];\nconst items = shelves.values().flatMap((shelf) => shelf);\n\nconsole.log(items.some((item) => item === \"ink\"));\nconsole.log(items.next().value);\nconsole.log(items.reduce((count) => count + 1, 0));"
+    },
+    "expected": "true\nundefined\n0"
+  }
+}

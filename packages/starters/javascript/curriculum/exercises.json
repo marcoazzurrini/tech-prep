@@ -3056,6 +3056,30 @@
     "concepts": ["map", "sort"]
   },
   {
+    "slug": "map-grouping-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["map-grouping"]
+  },
+  {
+    "slug": "room-bookings-by-day",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["map-grouping"]
+  },
+  {
+    "slug": "map-grouping-review-1",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["map-grouping"]
+  },
+  {
+    "slug": "leaderboard-with-ties",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["map-grouping", "sort"]
+  },
+  {
     "slug": "set-solo-1",
     "topic": "collections",
     "difficulty": "easy",
@@ -3150,6 +3174,30 @@
     "topic": "collections",
     "difficulty": "hard",
     "concepts": ["memory-leaks", "closures"]
+  },
+  {
+    "slug": "weakref-solo-1",
+    "topic": "collections",
+    "difficulty": "easy",
+    "concepts": ["weakref"]
+  },
+  {
+    "slug": "cache-large-reports",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["weakref"]
+  },
+  {
+    "slug": "weakref-review-1",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["weakref"]
+  },
+  {
+    "slug": "drop-freed-entries",
+    "topic": "collections",
+    "difficulty": "medium",
+    "concepts": ["weakref", "map", "sort"]
   },
   {
     "slug": "typed-arrays-solo-1",
@@ -3294,6 +3342,30 @@
     "topic": "iteration",
     "difficulty": "medium",
     "concepts": ["lazy-sequences", "first-class-functions"]
+  },
+  {
+    "slug": "iterator-helpers-solo-1",
+    "topic": "iteration",
+    "difficulty": "easy",
+    "concepts": ["iterator-helpers"]
+  },
+  {
+    "slug": "order-in-batches",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["iterator-helpers"]
+  },
+  {
+    "slug": "iterator-helpers-review-1",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["iterator-helpers"]
+  },
+  {
+    "slug": "interleave-sources",
+    "topic": "iteration",
+    "difficulty": "medium",
+    "concepts": ["iterator-helpers", "generators"]
   },
   {
     "slug": "event-loop-solo-1",
@@ -4052,6 +4124,30 @@
     "concepts": ["math", "reduce"]
   },
   {
+    "slug": "math-functions-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["math-functions"]
+  },
+  {
+    "slug": "years-to-reach-goal",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["math-functions"]
+  },
+  {
+    "slug": "math-functions-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["math-functions"]
+  },
+  {
+    "slug": "round-up-to-power-of-two",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["math-functions", "bitwise"]
+  },
+  {
     "slug": "number-methods-solo-1",
     "topic": "stdlib",
     "difficulty": "easy",
@@ -4124,6 +4220,30 @@
     "concepts": ["temporal", "sort"]
   },
   {
+    "slug": "temporal-more-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["temporal-more"]
+  },
+  {
+    "slug": "parking-fee",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["temporal-more"]
+  },
+  {
+    "slug": "temporal-more-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["temporal-more"]
+  },
+  {
+    "slug": "monthly-payment-totals",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["temporal-more", "grouping", "sort"]
+  },
+  {
     "slug": "intl-solo-1",
     "topic": "stdlib",
     "difficulty": "easy",
@@ -4146,6 +4266,30 @@
     "topic": "stdlib",
     "difficulty": "hard",
     "concepts": ["intl", "string-comparison", "sort"]
+  },
+  {
+    "slug": "time-zones-solo-1",
+    "topic": "stdlib",
+    "difficulty": "easy",
+    "concepts": ["time-zones"]
+  },
+  {
+    "slug": "utc-offset-label",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["time-zones"]
+  },
+  {
+    "slug": "time-zones-review-1",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["time-zones"]
+  },
+  {
+    "slug": "shop-open-check",
+    "topic": "stdlib",
+    "difficulty": "medium",
+    "concepts": ["time-zones", "string-comparison"]
   },
   {
     "slug": "memoization-solo-1",

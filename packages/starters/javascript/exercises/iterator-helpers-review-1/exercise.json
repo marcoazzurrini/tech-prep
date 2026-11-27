@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function* pages() {\n  try {\n    yield [\"a\", \"b\"];\n    yield [\"c\"];\n    yield [\"d\", \"e\"];\n  } finally {\n    console.log(\"done\");\n  }\n}\n\nconsole.log(pages().flatMap((page) => page).every((l) => l < \"d\"));\nconsole.log(pages().flatMap((page) => page).reduce((s, l) => s + l));"
+    },
+    "expected": "done\nfalse\ndone\nabcde"
+  }
+}

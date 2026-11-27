@@ -1,0 +1,21 @@
+{
+  "title": "Kickoff Around the World",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "kickoffTimes"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function kickoffTimes(moment, zones) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["2024-07-14T19:00:00Z",["Europe/Rome","Asia/Tokyo","America/New_York"]],"expected":["21:00","04:00","15:00"]},
+      {"args":["2024-01-14T19:00:00Z",["Europe/Rome","Asia/Tokyo","America/New_York"]],"expected":["20:00","04:00","14:00"]},
+      {"args":["2024-03-10T12:00:00+05:30",["UTC","Asia/Kolkata"]],"expected":["06:30","12:00"]},
+      {"args":["2024-12-31T23:30:00Z",["Australia/Sydney","Pacific/Honolulu"]],"expected":["10:30","13:30"]},
+      {"args":["2024-10-27T00:30:00Z",["Europe/London"]],"expected":["01:30"]},
+      {"args":["2024-06-01T12:00:00Z",[]],"expected":[]}
+    ]
+  }
+}

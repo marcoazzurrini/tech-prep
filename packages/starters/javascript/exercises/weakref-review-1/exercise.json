@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const seen = [];\nconst registry = new FinalizationRegistry((label) => seen.push(label));\nconst invoice = { id: 9 };\nconst first = new WeakRef(invoice);\nconst second = new WeakRef(invoice);\n\nregistry.register(invoice, { label: \"inv-9\" }, invoice);\nconsole.log(first.deref() === second.deref());\nconsole.log(registry.unregister({ id: 9 }));\nconsole.log(registry.unregister(invoice));\nconsole.log(seen.length);\n\ntry {\n  registry.register(invoice, \"late\", \"inv-9\");\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "true\nfalse\ntrue\n0\nTypeError"
+  }
+}

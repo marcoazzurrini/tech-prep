@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const open = Temporal.ZonedDateTime.from(\"2024-10-26T09:00[Europe/London]\");\nconst close = Temporal.ZonedDateTime.from(\"2024-10-27T09:00[Europe/London]\");\nconst wait = Temporal.Duration.from({ minutes: 150 });\n\nconsole.log(open.until(close).toString());\nconsole.log(open.until(close, { largestUnit: \"days\" }).toString());\nconsole.log(wait.round({ smallestUnit: \"hours\" }).toString());\nconsole.log(wait.round({ smallestUnit: \"hours\", roundingMode: \"floor\" }).toString());"
+    },
+    "expected": "PT25H\nP1D\nPT3H\nPT2H"
+  }
+}

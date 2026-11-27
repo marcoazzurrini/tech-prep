@@ -1,0 +1,21 @@
+{
+  "title": "Parking Fee",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "parkingFee"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function parkingFee(entry, exit, rate) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["2024-05-01T08:00:00Z","2024-05-01T10:00:00Z",3],"expected":6},
+      {"args":["2024-05-01T08:00:00Z","2024-05-01T10:01:00Z",3],"expected":9},
+      {"args":["2024-05-01T08:00:00Z","2024-05-01T08:00:01Z",4],"expected":4},
+      {"args":["2024-05-01T09:30:00+02:00","2024-05-01T08:00:00Z",5],"expected":5},
+      {"args":["2024-05-01T08:00:00Z","2024-05-03T09:00:01Z",2],"expected":100},
+      {"args":["2024-05-01T12:00:00Z","2024-05-01T12:00:00Z",3],"expected":0}
+    ]
+  }
+}

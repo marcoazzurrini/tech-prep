@@ -1,0 +1,21 @@
+{
+  "title": "Leaderboard with Ties",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "leaderboard"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function leaderboard(players) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"Ada","score":9},{"name":"Bo","score":7},{"name":"Cy","score":9}]],"expected":[[9,["Ada","Cy"]],[7,["Bo"]]]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"name":"Di","score":5},{"name":"Ed","score":10},{"name":"Fi","score":100}]],"expected":[[100,["Fi"]],[10,["Ed"]],[5,["Di"]]]},
+      {"args":[[{"name":"Gus","score":0},{"name":"Hal","score":-3},{"name":"Ivy","score":0}]],"expected":[[0,["Gus","Ivy"]],[-3,["Hal"]]]},
+      {"args":[[{"name":"Jo","score":2},{"name":"Kai","score":2},{"name":"Lu","score":2}]],"expected":[[2,["Jo","Kai","Lu"]]]},
+      {"args":[[{"name":"Mo","score":1.5},{"name":"Nia","score":1},{"name":"Oz","score":20},{"name":"Pi","score":1}]],"expected":[[20,["Oz"]],[1.5,["Mo"]],[1,["Nia","Pi"]]]}
+    ]
+  }
+}

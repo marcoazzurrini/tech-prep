@@ -1,0 +1,20 @@
+{
+  "title": "Order in Batches",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function findOrder(batches, id) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return findOrder([[{ id: 1, item: \"tea\" }], [{ id: 2, item: \"jam\" }]], 2);"],"expected":{"id":2,"item":"jam"}},
+      {"args":["return findOrder([[], [{ id: 5, item: \"pen\" }, { id: 5, item: \"ink\" }]], 5);"],"expected":{"id":5,"item":"pen"}},
+      {"args":["return findOrder([[{ id: 1, item: \"tea\" }]], 9);"],"expected":null},
+      {"args":["return findOrder([], 1);"],"expected":null},
+      {"args":["return findOrder(new Set([[{ id: 4, item: \"cup\" }]]), 4);"],"expected":{"id":4,"item":"cup"}},
+      {"args":["let read = 0; function* feed() { while (true) yield [{ id: ++read, item: \"box\" }]; } return [findOrder(feed(), 3), read];"],"expected":[{"id":3,"item":"box"},3]},
+      {"args":["let shut = 0; function* f() { try { yield [{ id: 1 }]; yield []; } finally { shut = 1; } } findOrder(f(), 1); return shut;"],"expected":1}
+    ]
+  }
+}

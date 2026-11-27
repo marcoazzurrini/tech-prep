@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "console.log(Math.pow(10, -2));\nconsole.log(Math.sqrt(-25));\nconsole.log(Math.cbrt(-125));\nconsole.log(64 ** 1 / 2);"
+    },
+    "expected": "0.01\nNaN\n-5\n32"
+  }
+}

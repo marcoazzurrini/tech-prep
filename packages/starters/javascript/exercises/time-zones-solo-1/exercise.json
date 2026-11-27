@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const party = new Date(2024, 11, 31, 23, 0);\nparty.setHours(party.getHours() + 2);\nconsole.log(party.getFullYear(), party.getMonth(), party.getDate());\n\nconsole.log(new Date(\"2024-06-01T12:00:00-04:00\").toISOString());\nconsole.log(new Date(\"2024-06-01\").getTime() === Date.UTC(2024, 5, 1));\nconsole.log(new Date(\"2024-06-01T00:00\").getTime() === new Date(2024, 5, 1).getTime());\n\nconst tokyo = { timeZone: \"Asia/Tokyo\", hour: \"2-digit\", minute: \"2-digit\" };\nconsole.log(new Date(\"2024-06-01T20:30:00Z\").toLocaleTimeString(\"en-GB\", tokyo));"
+    },
+    "expected": "2025 0 1\n2024-06-01T16:00:00.000Z\ntrue\ntrue\n05:30"
+  }
+}

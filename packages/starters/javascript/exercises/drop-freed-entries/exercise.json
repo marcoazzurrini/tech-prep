@@ -1,0 +1,18 @@
+{
+  "title": "Drop Freed Entries",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function dropFreed(cache) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const c = new Map([[\"b\", { deref: () => undefined }], [\"a\", { deref: () => undefined }]]); return [dropFreed(c), c.size];"],"expected":[["a","b"],0]},
+      {"args":["const c = new Map([[\"x\", { deref: () => ({ n: 1 }) }]]); return [dropFreed(c), [...c.keys()]];"],"expected":[[],["x"]]},
+      {"args":["const d = { deref: () => undefined }; const c = new Map([[\"m\", d], [\"k\", { deref: () => c }], [\"c\", d]]); return dropFreed(c);"],"expected":["c","m"]},
+      {"args":["return dropFreed(new Map());"],"expected":[]},
+      {"args":["const d = { deref: () => undefined }; const c = new Map([[\"pear\", d], [\"fig\", d], [\"kiwi\", d]]); return dropFreed(c);"],"expected":["fig","kiwi","pear"]}
+    ]
+  }
+}
