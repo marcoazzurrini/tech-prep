@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Counter {\n  #n = 0;\n  n = 10;\n\n  bump() {\n    this.#n += 1;\n    return this.#n;\n  }\n\n  static owns(value) {\n    return #n in value;\n  }\n}\n\nconst counter = new Counter();\ncounter.bump();\nconst copy = { ...counter };\n\nconsole.log(counter.bump());\nconsole.log(JSON.stringify(copy));\nconsole.log(Counter.owns(copy));\ntry {\n  console.log(counter.bump.call(copy));\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "2\n{\"n\":10}\nfalse\nTypeError"
+  }
+}

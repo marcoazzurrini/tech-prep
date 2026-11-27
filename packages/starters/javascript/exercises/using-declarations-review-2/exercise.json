@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Session {\n  static open = 0;\n\n  constructor(user) {\n    this.user = user;\n    Session.open += 1;\n  }\n\n  [Symbol.dispose]() {\n    Session.open -= 1;\n    console.log(\"bye \" + this.user);\n  }\n}\n\nfunction greeter(user) {\n  using session = new Session(user);\n  return () => `hi ${session.user}, open: ${Session.open}`;\n}\n\nconst greet = greeter(\"Ada\");\nconsole.log(greet());\n\n{\n  using session = new Session(\"Bo\");\n  console.log(Session.open);\n}\nconsole.log(Session.open);"
+    },
+    "expected": "bye Ada\nhi Ada, open: 0\n1\nbye Bo\n0"
+  }
+}

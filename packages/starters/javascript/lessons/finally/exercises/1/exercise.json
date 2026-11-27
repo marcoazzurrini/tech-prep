@@ -3,15 +3,16 @@
   "check": {
     "type": "function",
     "calls": "script",
+    "compare": "exact",
     "stubs": {
       "javascript": "export function runLogged(log, task) {\n  log.push(\"start\");\n  const result = task();\n  log.push(\"end\");\n  return result;\n}\n"
     },
     "tests": [
-      { "args": ["const log = []; const r = runLogged(log, () => 42); return { r, log };"] },
-      { "args": ["const log = []; const r = runLogged(log, () => { log.push(\"work\"); return \"ok\"; }); return { r, log };"] },
-      { "args": ["const log = []; let msg = \"\"; try { runLogged(log, () => { throw new Error(\"fail\"); }); } catch (e) { msg = e.message; } return { msg, log };"] },
-      { "args": ["const log = []; let msg = \"\"; try { runLogged(log, () => { log.push(\"mid\"); throw new Error(\"x\"); }); } catch (e) { msg = e.message; } return { msg, log };"] },
-      { "args": ["const log = []; const r = runLogged(log, () => false); return { r, log };"] }
+      {"args":["const log = []; return [runLogged(log, () => 42), log];"],"expected":[42,["start","end"]]},
+      {"args":["const log = []; return [runLogged(log, () => { log.push(\"work\"); return \"ok\"; }), log];"],"expected":["ok",["start","work","end"]]},
+      {"args":["const log = []; try { runLogged(log, () => { throw new Error(\"fail\"); }); } catch (e) { log.push(e.message); } return log;"],"expected":["start","end","fail"]},
+      {"args":["const log = []; try { runLogged(log, () => { log.push(\"mid\"); throw 7; }); } catch (e) { log.push(e); } return log;"],"expected":["start","mid","end",7]},
+      {"args":["const log = []; return [runLogged(log, () => false), log];"],"expected":[false,["start","end"]]}
     ]
   }
 }

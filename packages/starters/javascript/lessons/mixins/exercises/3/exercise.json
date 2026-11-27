@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const Prefixed = (Base) =>\n  class extends Base {\n    label() { return `new ${super.label()}`; }\n  };\n\nconst Short = (Base) =>\n  class extends Base {\n    label() { return super.label().slice(0, 5); }\n  };\n\nclass Item {\n  label() { return \"notebook\"; }\n}\n\nclass A extends Prefixed(Short(Item)) {}\nclass B extends Short(Prefixed(Item)) {}\n\nconsole.log(new A().label());\nconsole.log(new B().label());\nconsole.log(new B() instanceof Item);"
+    },
+    "expected": "new noteb\nnew n\ntrue"
+  }
+}

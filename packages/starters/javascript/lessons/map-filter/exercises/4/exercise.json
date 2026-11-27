@@ -1,0 +1,20 @@
+{
+  "title": "Titles of Done Tasks",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "doneTitles"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function doneTitles(tasks) {\n  const titles = tasks.forEach((task) => {\n    if (task.done) {\n      return task.title.toUpperCase();\n    }\n  });\n\n  return titles;\n}\n"
+    },
+    "tests": [
+      {"args":[[{"title":"write","done":true},{"title":"test","done":false},{"title":"ship","done":true}]],"expected":["WRITE","SHIP"]},
+      {"args":[[{"title":"plan","done":false}]],"expected":[]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"title":"Review","done":true}]],"expected":["REVIEW"]},
+      {"args":[[{"title":"a","done":true},{"title":"b","done":true}]],"expected":["A","B"]}
+    ]
+  }
+}

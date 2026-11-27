@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function job(name) {\n  return {\n    [Symbol.dispose]() {\n      console.log(\"free \" + name);\n    },\n  };\n}\n\nfunction work() {\n  using first = job(\"first\");\n  try {\n    using second = job(\"second\");\n    return \"done\";\n  } finally {\n    console.log(\"finally\");\n  }\n}\n\nconsole.log(work());"
+    },
+    "expected": "free second\nfinally\nfree first\ndone"
+  }
+}

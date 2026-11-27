@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function check(task) {\n  try {\n    task();\n    return \"fine\";\n  } catch (error) {\n    return error.name;\n  }\n}\n\nconst order = { total: 5 };\n\nconsole.log(check(() => order.total.toFixed(2)));\nconsole.log(check(() => order.total.toFixed(500)));\nconsole.log(check(() => order.discount.toFixed(2)));\nconsole.log(check(() => price * 2));\nconsole.log(check(() => JSON.parse(\"[1, 2,]\")));\n\nlet price = 10;"
+    },
+    "expected": "fine\nRangeError\nTypeError\nReferenceError\nSyntaxError"
+  }
+}

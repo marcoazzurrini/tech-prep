@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const letters = [\"a\", \"b\", \"c\"];\nconsole.log(letters.reduce((text, s, i) => text + s + i, \"\"));\n\nconsole.log([2, 3, 4].reduce((product, n) => product * n, 1));\nconsole.log([5, 1, 8].reduce((best, n) => (n > best ? n : best), 0));"
+    },
+    "expected": "a0b1c2\n24\n8"
+  }
+}

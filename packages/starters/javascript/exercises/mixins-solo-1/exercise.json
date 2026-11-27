@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const Flying = (Base) =>\n  class extends Base {\n    move() { return `${super.move()}, flies`; }\n  };\n\nclass Animal {\n  move() { return \"walks\"; }\n}\n\nclass Bird extends Flying(Animal) {}\nclass Bat extends Flying(Animal) {}\nconst FlyingAnimal = Flying(Animal);\n\nconsole.log(new Bird().move());\nconsole.log(Object.getPrototypeOf(Bird) === Object.getPrototypeOf(Bat));\nconsole.log(new Bat() instanceof FlyingAnimal);\nconsole.log(Object.getPrototypeOf(Object.getPrototypeOf(Bird)) === Animal);"
+    },
+    "expected": "walks, flies\nfalse\nfalse\ntrue"
+  }
+}

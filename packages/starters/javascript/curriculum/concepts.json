@@ -999,7 +999,8 @@
       }
     ],
     "key_idea": "Assigning a property creates it on the object itself and never changes the prototype. In an inherited method, `this` is still the object the call started on.",
-    "solo": "shadowing-solo-1"
+    "guided": 4,
+    "solo": ["shadowing-solo-1", "overridden-keys"]
   },
   {
     "id": "own-vs-inherited",
@@ -1017,7 +1018,8 @@
       }
     ],
     "key_idea": "`Object.keys` and `Object.hasOwn` see only own properties. `in` and `for...in` also see inherited ones.",
-    "solo": "own-vs-inherited-solo-1"
+    "guided": 3,
+    "solo": ["own-vs-inherited-solo-1", "price-list-total"]
   },
   {
     "id": "constructor-functions",
@@ -1031,7 +1033,8 @@
       }
     ],
     "key_idea": "`new F()` makes an object, links it to `F.prototype`, runs `F` with `this` set to it, and returns it. If `F` returns an object, that object is returned instead.",
-    "solo": "constructor-functions-solo-1"
+    "guided": 3,
+    "solo": ["constructor-functions-solo-1", "currency-registry"]
   },
   {
     "id": "function-prototype",
@@ -1045,7 +1048,8 @@
       }
     ],
     "key_idea": "Every function has a `prototype` object. Objects made with `new F()` get it as their prototype, so methods put on it are shared by all of them. Its `constructor` points back at `F`.",
-    "solo": "function-prototype-solo-1"
+    "guided": 4,
+    "solo": ["function-prototype-solo-1", "add-shared-methods"]
   },
   {
     "id": "instanceof",
@@ -1059,7 +1063,8 @@
       }
     ],
     "key_idea": "`obj instanceof F` is true when `F.prototype` is somewhere on the prototype chain of `obj`. It does not look at which function made the object.",
-    "solo": "instanceof-solo-1"
+    "guided": 3,
+    "solo": ["instanceof-solo-1", "closest-kind"]
   },
   {
     "id": "native-prototypes",
@@ -1192,7 +1197,8 @@
       }
     ],
     "key_idea": "A name that starts with `#` is private: only code inside the class body can use it. `#x in obj` tests whether an object has it.",
-    "solo": "private-members-solo-1"
+    "guided": 4,
+    "solo": ["private-members-solo-1", "combination-locker"]
   },
   {
     "id": "class-accessors",
@@ -1206,7 +1212,8 @@
       }
     ],
     "key_idea": "`get` and `set` in a class define an accessor on the prototype. Every instance shares it, and it is not an own property.",
-    "solo": "class-accessors-solo-1"
+    "guided": 3,
+    "solo": ["class-accessors-solo-1", "duration-units"]
   },
   {
     "id": "extends",
@@ -1280,7 +1287,8 @@
       }
     ],
     "key_idea": "A class can extend only one class. A mixin adds methods from another source: copy them onto the prototype, or write a function that takes a class and returns a subclass.",
-    "solo": "mixins-solo-1"
+    "guided": 3,
+    "solo": ["mixins-solo-1", "comparable-values"]
   },
   {
     "id": "try-catch",
@@ -1304,7 +1312,8 @@
       }
     ],
     "key_idea": "A `finally` block runs whether the `try` finished, threw or returned. A `return` inside `finally` replaces the result of the `try`.",
-    "solo": "finally-solo-1"
+    "guided": 3,
+    "solo": ["finally-solo-1", "with-temporary-setting"]
   },
   {
     "id": "error-types",
@@ -1318,7 +1327,8 @@
       }
     ],
     "key_idea": "An error object has a `name`, a `message` and a `stack`. JavaScript throws a `TypeError` for a wrong kind of value, a `ReferenceError` for an unknown name and a `RangeError` for a value out of range.",
-    "solo": "error-types-solo-1"
+    "guided": 4,
+    "solo": ["error-types-solo-1", "load-port-setting"]
   },
   {
     "id": "custom-errors",
@@ -1332,7 +1342,8 @@
       }
     ],
     "key_idea": "Extend `Error` to make your own error class, and test for it with `instanceof`. Pass `{ cause }` to keep the original error when you wrap one.",
-    "solo": "custom-errors-solo-1"
+    "guided": 4,
+    "solo": ["custom-errors-solo-1", "http-failure-kinds"]
   },
   {
     "id": "using-declarations",
@@ -1341,7 +1352,8 @@
     "prereqs": ["finally", "symbols"],
     "encompasses": [],
     "key_idea": "`using x = resource` calls `resource[Symbol.dispose]()` when the block ends, even if it throws. Several resources are disposed in reverse order.",
-    "solo": "using-declarations-solo-1"
+    "guided": 3,
+    "solo": ["using-declarations-solo-1", "cleanup-stack"]
   },
   {
     "id": "array-basics",
@@ -1365,7 +1377,8 @@
       }
     ],
     "key_idea": "An array can have holes: indexes with no property at all. A hole reads as `undefined`, but `forEach` and `map` skip it. `Array(3)` makes three holes.",
-    "solo": "sparse-arrays-solo-1"
+    "guided": 3,
+    "solo": ["sparse-arrays-solo-1", "fill-empty-slots"]
   },
   {
     "id": "mutating-methods",
@@ -1379,7 +1392,8 @@
       }
     ],
     "key_idea": "`push`, `pop`, `shift`, `unshift`, `splice`, `reverse`, `sort` and `fill` change the array itself. Know what each returns: `push` gives the new length, and `splice` gives the removed items.",
-    "solo": "mutating-methods-solo-1"
+    "guided": 3,
+    "solo": ["mutating-methods-solo-1", "move-list-item"]
   },
   {
     "id": "copying-methods",
@@ -1393,7 +1407,8 @@
       }
     ],
     "key_idea": "`slice`, `concat`, `toSorted`, `toReversed`, `toSpliced` and `with` leave the array as it is and return a new one.",
-    "solo": "copying-methods-solo-1"
+    "guided": 3,
+    "solo": ["copying-methods-solo-1", "rotate-list-right"]
   },
   {
     "id": "map-filter",
@@ -1402,7 +1417,8 @@
     "prereqs": ["copying-methods", "first-class-functions"],
     "encompasses": [],
     "key_idea": "`map` returns a new array with the callback's result for each item. `filter` keeps the items whose callback returns a truthy value. The callback gets the item, its index and the array.",
-    "solo": "map-filter-solo-1"
+    "guided": 4,
+    "solo": ["map-filter-solo-1", "every-nth-item"]
   },
   {
     "id": "reduce",
@@ -1416,7 +1432,8 @@
       }
     ],
     "key_idea": "`reduce` folds an array into one value. The callback gets the value so far and the next item, and returns the new value. Always pass a start value.",
-    "solo": "reduce-solo-1"
+    "guided": 4,
+    "solo": ["reduce-solo-1", "account-balance-after"]
   },
   {
     "id": "searching",

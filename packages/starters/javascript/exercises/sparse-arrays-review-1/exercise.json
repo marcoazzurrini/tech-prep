@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const grid = [0, , 2];\ngrid[4] = 4;\n\nlet sum = 0;\ngrid.forEach((n) => (sum += n));\nconsole.log(sum);\nconsole.log(grid.length);\n\nlet empty = 0;\nfor (const n of grid) if (n === undefined) empty++;\nconsole.log(empty);\n\nconst tripled = grid.map((n) => n * 3);\nconsole.log(3 in tripled, JSON.stringify(tripled));"
+    },
+    "expected": "6\n5\n2\nfalse [0,null,6,null,12]"
+  }
+}

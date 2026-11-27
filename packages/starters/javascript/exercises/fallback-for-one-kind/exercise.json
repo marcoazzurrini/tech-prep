@@ -1,0 +1,21 @@
+{
+  "title": "Fallback for One Kind",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function onlyCatch(ErrorClass, fn, fallback) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const f = onlyCatch(RangeError, (n) => { if (n < 0) throw new RangeError(\"x\"); return n / 2; }, 0); return [f(4), f(-4)];"],"expected":[2,0]},
+      {"args":["const f = onlyCatch(RangeError, (box) => box.size, \"none\"); try { return f(null); } catch (e) { return \"thrown: \" + e.name; }"],"expected":"thrown: TypeError"},
+      {"args":["return onlyCatch(Error, () => { throw new TypeError(\"t\"); }, \"fallback\")();"],"expected":"fallback"},
+      {"args":["const f = onlyCatch(Error, () => { throw \"text\"; }, 1); try { return f(); } catch (e) { return \"thrown: \" + e; }"],"expected":"thrown: text"},
+      {"args":["const box = { size: 3, read: onlyCatch(TypeError, function () { return this.size; }, -1) }; return box.read();"],"expected":3},
+      {"args":["return onlyCatch(TypeError, (a, b) => a + b, 0)(2, 5);"],"expected":7},
+      {"args":["return onlyCatch(SyntaxError, JSON.parse, null)(\"{bad\");"],"expected":null},
+      {"args":["return onlyCatch(SyntaxError, (n) => n, \"x\")(null);"],"expected":null}
+    ]
+  }
+}

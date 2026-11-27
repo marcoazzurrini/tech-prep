@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Rectangle {\n  constructor(width, height) {\n    this.width = width;\n    this.height = height;\n  }\n\n  get area() {\n    return this.width * this.height;\n  }\n}\n\nconst box = new Rectangle(2, 3);\nbox.width = 5;\n\nconsole.log(box.area);\nconsole.log(Object.keys(box).join(\",\"));\nconsole.log(JSON.stringify(box));\nconsole.log(\"area\" in box);\nconsole.log(Object.hasOwn(box, \"area\"));"
+    },
+    "expected": "15\nwidth,height\n{\"width\":5,\"height\":3}\ntrue\nfalse"
+  }
+}

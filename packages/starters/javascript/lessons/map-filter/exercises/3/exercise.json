@@ -1,0 +1,19 @@
+{
+  "title": "Known Readings",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function knownReadings(readings) {\n  return readings.filter(Boolean);\n}\n"
+    },
+    "tests": [
+      {"args":["return knownReadings([4, 0, null, 9]);"],"expected":[4,0,9]},
+      {"args":["return knownReadings([0, undefined, 3, null]);"],"expected":[0,3]},
+      {"args":["return knownReadings([\"\", \"low\", null]);"],"expected":["","low"]},
+      {"args":["return knownReadings([null, undefined]);"],"expected":[]},
+      {"args":["return knownReadings([false, 0, 1]);"],"expected":[false,0,1]},
+      {"args":["return knownReadings([]);"],"expected":[]}
+    ]
+  }
+}

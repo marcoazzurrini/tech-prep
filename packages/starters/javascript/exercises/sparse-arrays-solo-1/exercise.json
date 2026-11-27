@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const week = new Array(2);\nweek.push(\"Wed\");\nconsole.log(week.length);\nconsole.log(week.at(0));\n\nlet calls = 0;\nweek.forEach(() => calls++);\nconsole.log(calls);\nconsole.log(0 in [...week]);"
+    },
+    "expected": "3\nundefined\n1\ntrue"
+  }
+}

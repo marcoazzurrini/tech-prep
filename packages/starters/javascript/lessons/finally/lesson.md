@@ -5,110 +5,103 @@
 **Code**
 
 ```js
-let locked = false;
+const door = { open: false };
 
-function runTask(shouldFail) {
-  locked = true;
+function deliver(parcel) {
+  door.open = true;
   try {
-    console.log("start");
-    if (shouldFail) {
-      throw new Error("disk full");
+    if (parcel.weight > 20) {
+      throw new Error("too heavy");
     }
-    console.log("done");
+    console.log("delivered");
   } finally {
-    locked = false;
-    console.log("unlocked");
+    door.open = false;
+    console.log("door shut");
   }
 }
 
-runTask(false);
-console.log("locked:", locked);
+deliver({ weight: 5 });
 
 try {
-  runTask(true);
+  deliver({ weight: 30 });
 } catch (error) {
-  console.log("caught:", error.message);
+  console.log("caught: " + error.message);
 }
-console.log("locked:", locked);
+
+console.log("open: " + door.open);
 ```
 
 **Output**
 
 ```text
-start
-done
-unlocked
-locked: false
-start
-unlocked
-caught: disk full
-locked: false
+delivered
+door shut
+door shut
+caught: too heavy
+open: false
 ```
 
-**Rule:** A `finally` block runs whenever code leaves `try`, whether it finished normally, caught an error or threw an uncaught one.
+**Rule:** A `finally` block runs every time the code leaves `try`: when `try` finishes, and when it throws. An error that no `catch` takes climbs on after `finally` has run.
 
-`try { ... } finally { ... }` needs no `catch`. It runs cleanup and lets the error keep climbing.
+`try { ... } finally { ... }` needs no `catch`. It does the cleanup and lets the error go on up the stack.
 
-When a `catch` block is present, it runs before `finally`. If `catch` rethrows, `finally` still runs first.
+`catch` runs before `finally`. If `catch` throws, `finally` still runs.
 
-**Common mistake:** putting cleanup after `try...catch` instead of in `finally`.
+**Common mistake:** putting the cleanup at the end of `try`.
 
 **Wrong**
 
 ```js
-let locked = false;
+const door = { open: false };
 
-function save(data) {
-  locked = true;
+function deliver(parcel) {
+  door.open = true;
   try {
-    if (!data) {
-      throw new Error("empty");
+    if (parcel.weight > 20) {
+      throw new Error("too heavy");
     }
+    console.log("delivered");
+    «door.open = false;»
   } catch (error) {
-    throw error;
+    console.log("not delivered: " + error.message);
   }
-  «locked = false;»
 }
 
-try {
-  save("");
-} catch {
-  console.log("locked:", locked);
-}
+deliver({ weight: 30 });
+console.log("open: " + door.open);
 ```
 
 **Output**
 
 ```text
-locked: true
+not delivered: too heavy
+open: true
 ```
 
 **Fix**
 
 ```js
-let locked = false;
+const door = { open: false };
 
-function save(data) {
-  locked = true;
+function deliver(parcel) {
+  door.open = true;
   try {
-    if (!data) {
-      throw new Error("empty");
+    if (parcel.weight > 20) {
+      throw new Error("too heavy");
     }
+    console.log("delivered");
   } catch (error) {
-    throw error;
+    console.log("not delivered: " + error.message);
   } «finally {
-    locked = false;
+    door.open = false;
   }»
 }
 
-try {
-  save("");
-} catch {
-  console.log("locked:", locked);
-}
+deliver({ weight: 30 });
+console.log("open: " + door.open);
 ```
 
-The rethrow skipped the line after `try...catch`, leaving `locked` as `true`. Putting the reset in `finally` runs it before the error leaves `save`.
+The `throw` skipped the rest of `try`, so the door stayed open. In `finally`, the cleanup runs on every path.
 
 <!-- task -->
 
@@ -117,31 +110,34 @@ The rethrow skipped the line after `try...catch`, leaving `locked` as `true`. Pu
 **Code**
 
 ```js
-function readDraft() {
+function closeTicket() {
   let status = "open";
+
   try {
+    console.log("try");
     return status;
   } finally {
     status = "closed";
-    console.log("in finally:", status);
+    console.log("finally");
   }
 }
 
-console.log("returned:", readDraft());
+console.log("returned " + closeTicket());
 ```
 
 **Output**
 
 ```text
-in finally: closed
-returned: open
+try
+finally
+returned open
 ```
 
-**Rule:** `finally` runs before a `return` leaves the function. The expression after `return` is evaluated before `finally` runs, so reassigning a primitive variable inside `finally` does not change the returned value.
+**Rule:** A `return` in `try` first works out its value. Then `finally` runs. Then the function returns the value it already worked out.
 
-`break` and `continue` inside a loop wait for `finally` the same way.
+`status = "closed"` came too late. The value `"open"` was already chosen.
 
-If `return` gives back an object, changing a property on that object inside `finally` still shows in the returned object. Both hold the same reference.
+`break` and `continue` in a loop wait for `finally` in the same way.
 
 <!-- task -->
 
@@ -177,70 +173,78 @@ from finally
 fallback
 ```
 
-**Rule:** A `return`, `throw`, `break` or `continue` inside `finally` replaces whatever exit was waiting from `try` or `catch`. A `return` in `finally` silently erases an uncaught error.
+**Rule:** A `return` or `throw` inside `finally` replaces the result of `try` and `catch`. A `return` there beats the earlier `return`. It also beats an error, and the error is lost.
 
-`throw` inside `finally` replaces a pending `return` or `throw`. The earlier error is lost.
+`throw` inside `finally` replaces an earlier `return` or error in the same way.
 
-**Common mistake:** returning a fallback from `finally`.
+**Common mistake:** a `return` in `finally`.
 
 **Wrong**
 
 ```js
-function readLimit(config) {
-  let limit = 10;
+const cart = { busy: false, items: [] };
+
+function addItem(item) {
+  cart.busy = true;
   try {
-    if (config.limit <= 0) {
-      throw new Error("bad limit");
+    if (item.price < 0) {
+      throw new Error("bad price");
     }
-    limit = config.limit;
+    cart.items.push(item);
   } finally {
-    «return limit;»
+    cart.busy = false;
+    «return cart.items.length;»
   }
 }
 
 try {
-  console.log(readLimit({ limit: -5 }));
+  console.log(addItem({ price: 5 }));
+  console.log(addItem({ price: -1 }));
 } catch (error) {
-  console.log("caught:", error.message);
+  console.log("caught: " + error.message);
 }
 ```
 
 **Output**
 
 ```text
-10
+1
+1
 ```
 
 **Fix**
 
 ```js
-function readLimit(config) {
-  let limit = 10;
+const cart = { busy: false, items: [] };
+
+function addItem(item) {
+  cart.busy = true;
   try {
-    if (config.limit <= 0) {
-      throw new Error("bad limit");
+    if (item.price < 0) {
+      throw new Error("bad price");
     }
-    limit = config.limit;
+    cart.items.push(item);
+    «return cart.items.length;»
   } finally {
-    console.log("checked");
+    cart.busy = false;
   }
-  «return limit;»
 }
 
 try {
-  console.log(readLimit({ limit: -5 }));
+  console.log(addItem({ price: 5 }));
+  console.log(addItem({ price: -1 }));
 } catch (error) {
-  console.log("caught:", error.message);
+  console.log("caught: " + error.message);
 }
 ```
 
-`return` in `finally` cancelled the thrown error, so the caller got `10` instead of an error. Keep `finally` for cleanup, and return after the block.
+The `return` in `finally` threw away the error, so the bad price looked like a success. Return from `try`, and keep `finally` for cleanup.
 
 <!-- task -->
 
 ## Remember
 
-- `finally` runs whenever code leaves `try` or `catch`, even on `return`, `break`, `continue` or an uncaught `throw`.
-- `try...finally` needs no `catch`. It runs cleanup and lets the error keep climbing.
-- A `return` expression is evaluated before `finally` runs, and `finally` finishes before the caller gets the value.
-- A `return` or `throw` inside `finally` replaces the pending result or error. Keep `finally` for cleanup only.
+- `finally` runs every time the code leaves `try` or `catch`: on a normal end, a `return`, a `break` or a `throw`.
+- `try...finally` needs no `catch`. It cleans up and lets the error climb on.
+- A `return` value is worked out before `finally` runs.
+- A `return` or `throw` in `finally` replaces the earlier result or error. Keep `finally` for cleanup.

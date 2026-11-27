@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Cat() {}\nfunction Dog() {}\n\nconst tom = new Cat();\nconst odd = Object.create(Dog.prototype);\n\nconsole.log(tom instanceof Cat, tom instanceof Dog);\nconsole.log(odd instanceof Dog, odd instanceof Object);\n\nObject.setPrototypeOf(tom, Dog.prototype);\n\nconsole.log(tom instanceof Cat, tom instanceof Dog);"
+    },
+    "expected": "true false\ntrue true\nfalse true"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Logged Runs",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export const Logged = (Base) =>\n  class extends Base {\n    // your code\n  };\n"
+    },
+    "tests": [
+      {"args":["class Doubler { run(x) { return x * 2; } } const d = new (Logged(Doubler))(); return [d.run(2), d.run(5), d.log];"],"expected":[4,10,[2,5]]},
+      {"args":["class Upper { run(s) { return s.toUpperCase(); } } const u = new (Logged(Upper))(); return [u.run(\"a\"), u instanceof Upper];"],"expected":["A",true]},
+      {"args":["class Same { run(x) { return x; } } return new (Logged(Same))().log;"],"expected":[]},
+      {"args":["class Same { run(x) { return x; } } const S = Logged(Same); const a = new S(); a.run(1); return new S().log;"],"expected":[]},
+      {"args":["class Named { constructor(n) { this.n = n; } run() { return this.n; } } const x = new (Logged(Named))(\"Ada\"); return x.run(1);"],"expected":"Ada"}
+    ]
+  }
+}

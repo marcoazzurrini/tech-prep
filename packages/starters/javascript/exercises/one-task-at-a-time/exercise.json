@@ -1,0 +1,21 @@
+{
+  "title": "One Task at a Time",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function makeRunner() {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const run = makeRunner(); return [run(() => 1), run(() => 2)];"],"expected":[1,2]},
+      {"args":["const run = makeRunner(); try { run(() => run(() => 2)); } catch (e) { return e.message; }"],"expected":"busy"},
+      {"args":["const run = makeRunner(); let called = false; try { run(() => run(() => { called = true; })); } catch {} return called;"],"expected":false},
+      {"args":["const run = makeRunner(); try { run(() => { throw new Error(\"x\"); }); } catch {} return run(() => \"free\");"],"expected":"free"},
+      {"args":["const run = makeRunner(); try { run(() => { throw new Error(\"x\"); }); } catch (e) { return e.message; }"],"expected":"x"},
+      {"args":["const r = makeRunner(); return r(() => { try { r(() => 1); } catch {} try { r(() => 2); } catch (e) { return e.message; } });"],"expected":"busy"},
+      {"args":["const run = makeRunner(); try { run(() => run(() => 1)); } catch {} return run(() => \"again\");"],"expected":"again"},
+      {"args":["const a = makeRunner(); const b = makeRunner(); return a(() => b(() => \"both\"));"],"expected":"both"}
+    ]
+  }
+}

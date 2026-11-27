@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const first = new RangeError(\"too far\");\nfirst.name = \"TypeError\";\n\nconsole.log(first instanceof TypeError);\nconsole.log(String(first));\n\nconst second = TypeError(\"no new\");\nconsole.log(second instanceof Error, second.name);\n\nconst third = new Error(\"save failed\", { cause: first });\nconsole.log(third.cause instanceof RangeError, JSON.stringify(third));"
+    },
+    "expected": "false\nTypeError: too far\ntrue TypeError\ntrue {}"
+  }
+}

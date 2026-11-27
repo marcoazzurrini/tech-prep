@@ -1,0 +1,18 @@
+{
+  "title": "Keep the Parse Error",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class ImportError extends Error {\n  constructor(message) {\n    super(message);\n    this.name = \"ImportError\";\n  }\n}\n\nexport function importUsers(text) {\n  try {\n    return JSON.parse(text);\n  } catch {\n    throw new ImportError(\"bad file\");\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["try { importUsers(\"[oops\"); } catch (e) { return [e.name, e.message, e.cause instanceof SyntaxError]; }"],"expected":["ImportError","bad file",true]},
+      {"args":["return importUsers('[{\"name\": \"Ada\"}]').length;"],"expected":1},
+      {"args":["return new ImportError(\"x\", { cause: 5 }).cause;"],"expected":5},
+      {"args":["try { importUsers(\"{\"); } catch (e) { return e instanceof ImportError && e instanceof Error; }"],"expected":true},
+      {"args":["const e = new ImportError(\"x\"); return [e.name, \"cause\" in e];"],"expected":["ImportError",false]}
+    ]
+  }
+}

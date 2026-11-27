@@ -1,0 +1,19 @@
+{
+  "title": "Add Shared Methods",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function addMethods(Constructor, methods) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["function Dog(n) { this.n = n; } addMethods(Dog, { bark() { return this.n + \" barks\"; } }); return new Dog(\"Rex\").bark();"],"expected":"Rex barks"},
+      {"args":["function Dog() {} const d = new Dog(); addMethods(Dog, { sit() { return \"sits\"; } }); return d.sit();"],"expected":"sits"},
+      {"args":["function Dog() {} addMethods(Dog, { sit() {} }); return [new Dog().constructor === Dog, Object.keys(new Dog())];"],"expected":[true,[]]},
+      {"args":["function Dog() {} addMethods(Dog, { a: () => 1 }); addMethods(Dog, { b: () => 2 }); const d = new Dog(); return d.a() + d.b();"],"expected":3},
+      {"args":["function Dog() {} addMethods(Dog, { a() {} }); const keys = []; for (const k in new Dog()) keys.push(k); return keys;"],"expected":["a"]},
+      {"args":["function Dog() {} return addMethods(Dog, {}) === Dog;"],"expected":true}
+    ]
+  }
+}

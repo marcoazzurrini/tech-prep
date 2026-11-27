@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Purse() {}\nPurse.prototype.coins = [];\nPurse.prototype.total = 0;\nPurse.prototype.add = function (coin) {\n  this.coins.push(coin);\n  this.total += coin;\n};\n\nconst a = new Purse();\nconst b = new Purse();\na.add(2);\nb.add(5);\n\nPurse.prototype = { total: 100 };\nconst c = new Purse();\n\nconsole.log(a.total, b.total, c.total);\nconsole.log(a.coins.length, c.coins);\nconsole.log(a.constructor === Purse, c.constructor === Object);"
+    },
+    "expected": "2 5 100\n2 undefined\ntrue true"
+  }
+}

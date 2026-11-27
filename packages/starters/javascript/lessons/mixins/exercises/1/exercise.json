@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const greeter = {\n  hello() {\n    return `hello from ${this.name}`;\n  },\n};\n\nclass Guest {\n  constructor(name) {\n    this.name = name;\n  }\n\n  hello() {\n    return \"class hello\";\n  }\n}\n\nObject.assign(Guest.prototype, greeter);\n\nconst guest = new Guest(\"Ada\");\n\nconsole.log(guest.hello());\nconsole.log(Object.hasOwn(guest, \"hello\"));\nconsole.log(Guest.prototype.hello === greeter.hello);"
+    },
+    "expected": "hello from Ada\nfalse\ntrue"
+  }
+}

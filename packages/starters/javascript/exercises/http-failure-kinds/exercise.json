@@ -1,0 +1,21 @@
+{
+  "title": "HTTP Failure Kinds",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class HttpError extends Error {}\nexport class ClientError extends HttpError {}\nexport class ServerError extends HttpError {}\n\nexport function errorForStatus(status, message) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const e = errorForStatus(404, \"no page\"); return [e.name, e.status, e.message, e instanceof ClientError, e instanceof HttpError];"],"expected":["ClientError",404,"no page",true,true]},
+      {"args":["const e = errorForStatus(503, \"busy\"); return [e.name, e.status, e instanceof ServerError, e instanceof ClientError];"],"expected":["ServerError",503,true,false]},
+      {"args":["return errorForStatus(500, \"x\") instanceof ClientError;"],"expected":false},
+      {"args":["const e = errorForStatus(302, \"moved\"); return [e.name, e instanceof ClientError, e instanceof ServerError];"],"expected":["HttpError",false,false]},
+      {"args":["return errorForStatus(418, \"teapot\") instanceof Error;"],"expected":true},
+      {"args":["return new ServerError(502, \"bad gateway\").status;"],"expected":502},
+      {"args":["return String(new ClientError(400, \"bad input\"));"],"expected":"ClientError: bad input"},
+      {"args":["return [errorForStatus(499, \"a\").name, errorForStatus(599, \"b\").name, errorForStatus(600, \"c\").name];"],"expected":["ClientError","ServerError","HttpError"]}
+    ]
+  }
+}

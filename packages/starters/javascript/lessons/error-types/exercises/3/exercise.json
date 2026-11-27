@@ -1,0 +1,19 @@
+{
+  "title": "Read the Count",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function readCount(text) {\n  try {\n    const data = JSON.parse(text);\n\n    if (data.count < 0) {\n      throw new RangeError(\"count is negative\");\n    }\n\n    return data.count;\n  } catch {\n    return null;\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["return readCount('{\"count\": 3}');"],"expected":3},
+      {"args":["return readCount(\"{count: 3}\");"],"expected":null},
+      {"args":["try { return readCount('{\"count\": -1}'); } catch (e) { return \"thrown: \" + e.name; }"],"expected":"thrown: RangeError"},
+      {"args":["try { return readCount(\"null\"); } catch (e) { return \"thrown: \" + e.name; }"],"expected":"thrown: TypeError"},
+      {"args":["return readCount(\"\");"],"expected":null},
+      {"args":["return readCount('{\"count\": 0}');"],"expected":0}
+    ]
+  }
+}

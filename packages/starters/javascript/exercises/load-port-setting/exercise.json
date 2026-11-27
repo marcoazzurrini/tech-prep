@@ -1,0 +1,21 @@
+{
+  "title": "Load the Port Setting",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function loadPort(text) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return loadPort('{\"port\": 8080}');"],"expected":8080},
+      {"args":["try { loadPort(\"{port: 80}\"); } catch (e) { return [e.name, e.message, e.cause instanceof SyntaxError]; }"],"expected":["Error","settings are not valid JSON",true]},
+      {"args":["try { loadPort('{\"port\": \"80\"}'); } catch (e) { return e.name; }"],"expected":"TypeError"},
+      {"args":["try { loadPort(\"{}\"); } catch (e) { return e.name; }"],"expected":"TypeError"},
+      {"args":["try { loadPort('{\"port\": 70000}'); } catch (e) { return e.name; }"],"expected":"RangeError"},
+      {"args":["try { loadPort('{\"port\": 80.5}'); } catch (e) { return e.name; }"],"expected":"RangeError"},
+      {"args":["try { loadPort('{\"port\": 0}'); } catch (e) { return e.name; }"],"expected":"RangeError"},
+      {"args":["return loadPort('{\"port\": 65535, \"host\": \"local\"}');"],"expected":65535}
+    ]
+  }
+}

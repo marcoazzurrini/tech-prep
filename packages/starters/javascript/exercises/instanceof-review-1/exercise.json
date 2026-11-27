@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Key() {}\nconst first = new Key();\n\nKey.prototype.size = 1;\nconst second = new Key();\n\nKey.prototype = { size: 2 };\nconst third = new Key();\n\nconsole.log(first instanceof Key, second instanceof Key, third instanceof Key);\nconsole.log(first.size, third.size);\n\nObject.setPrototypeOf(first, Key.prototype);\n\nconsole.log(first instanceof Key, second.constructor === Key, third.constructor === Key);"
+    },
+    "expected": "false false true\n1 2\ntrue true false"
+  }
+}

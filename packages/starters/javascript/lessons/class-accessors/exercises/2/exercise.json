@@ -1,0 +1,19 @@
+{
+  "title": "Slider",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Slider {\n  constructor(min, max) {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const s = new Slider(0, 50); s.value = 25; return [s.value, s.percent];"],"expected":[25,50]},
+      {"args":["const s = new Slider(10, 20); return [s.value, s.percent];"],"expected":[10,0]},
+      {"args":["const s = new Slider(0, 10); try { s.value = 11; } catch (e) { return [e.name, s.value]; } return \"no error\";"],"expected":["RangeError",0]},
+      {"args":["const s = new Slider(5, 10); try { s.value = 4; } catch (e) { return [e.name, s.value]; } return \"no error\";"],"expected":["RangeError",5]},
+      {"args":["const s = new Slider(0, 10); s.value = 10; return [s.percent, Object.hasOwn(s, \"value\"), Object.hasOwn(s, \"percent\")];"],"expected":[100,false,false]},
+      {"args":["return [Object.hasOwn(Slider.prototype, \"value\"), Object.hasOwn(Slider.prototype, \"percent\")];"],"expected":[true,true]}
+    ]
+  }
+}

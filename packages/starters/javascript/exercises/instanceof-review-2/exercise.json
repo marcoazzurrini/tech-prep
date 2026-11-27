@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Box(item) {\n  this.item = item;\n  if (item === \"gift\") {\n    return Object.create(Box.prototype);\n  }\n  if (item === \"empty\") {\n    return {};\n  }\n}\n\nconst a = new Box(\"book\");\nconst b = new Box(\"gift\");\nconst c = new Box(\"empty\");\n\nconsole.log(a instanceof Box, b instanceof Box, c instanceof Box);\nconsole.log(a.item, b.item, c.item);\nconsole.log(b.constructor === Box, c.constructor === Object);"
+    },
+    "expected": "true true false\nbook undefined undefined\ntrue true"
+  }
+}

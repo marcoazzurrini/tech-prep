@@ -1862,10 +1862,46 @@
     "concepts": ["shadowing"]
   },
   {
+    "slug": "overridden-keys",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["shadowing"]
+  },
+  {
+    "slug": "shadowing-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["shadowing"]
+  },
+  {
+    "slug": "shadowing-review-2",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["shadowing", "freeze-seal"]
+  },
+  {
     "slug": "own-vs-inherited-solo-1",
     "topic": "prototypes",
     "difficulty": "easy",
     "concepts": ["own-vs-inherited"]
+  },
+  {
+    "slug": "price-list-total",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["own-vs-inherited"]
+  },
+  {
+    "slug": "changed-settings",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["own-vs-inherited"]
+  },
+  {
+    "slug": "own-vs-inherited-review-2",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["own-vs-inherited", "property-order"]
   },
   {
     "slug": "constructor-functions-solo-1",
@@ -1874,16 +1910,70 @@
     "concepts": ["constructor-functions"]
   },
   {
+    "slug": "currency-registry",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["constructor-functions"]
+  },
+  {
+    "slug": "constructor-functions-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["constructor-functions"]
+  },
+  {
+    "slug": "wallet-balance",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["constructor-functions", "private-state"]
+  },
+  {
     "slug": "function-prototype-solo-1",
     "topic": "prototypes",
     "difficulty": "easy",
     "concepts": ["function-prototype"]
   },
   {
+    "slug": "add-shared-methods",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["function-prototype"]
+  },
+  {
+    "slug": "function-prototype-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["function-prototype"]
+  },
+  {
+    "slug": "function-prototype-review-2",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["function-prototype", "function-properties"]
+  },
+  {
     "slug": "instanceof-solo-1",
     "topic": "prototypes",
     "difficulty": "easy",
     "concepts": ["instanceof"]
+  },
+  {
+    "slug": "closest-kind",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["instanceof"]
+  },
+  {
+    "slug": "instanceof-review-1",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["instanceof"]
+  },
+  {
+    "slug": "instanceof-review-2",
+    "topic": "prototypes",
+    "difficulty": "medium",
+    "concepts": ["instanceof", "constructor-functions"]
   },
   {
     "slug": "native-prototypes-solo-1",
@@ -2084,10 +2174,46 @@
     "concepts": ["private-members"]
   },
   {
+    "slug": "combination-locker",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["private-members"]
+  },
+  {
+    "slug": "private-members-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["private-members"]
+  },
+  {
+    "slug": "issued-tokens",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["private-members", "static-members"]
+  },
+  {
     "slug": "class-accessors-solo-1",
     "topic": "classes",
     "difficulty": "easy",
     "concepts": ["class-accessors"]
+  },
+  {
+    "slug": "duration-units",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-accessors"]
+  },
+  {
+    "slug": "class-accessors-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-accessors"]
+  },
+  {
+    "slug": "cents-and-euros",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["class-accessors", "private-members", "json"]
   },
   {
     "slug": "extends-solo-1",
@@ -2192,6 +2318,24 @@
     "concepts": ["mixins"]
   },
   {
+    "slug": "comparable-values",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["mixins"]
+  },
+  {
+    "slug": "mixins-review-1",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["mixins"]
+  },
+  {
+    "slug": "undo-for-any-store",
+    "topic": "classes",
+    "difficulty": "medium",
+    "concepts": ["mixins", "private-members", "super"]
+  },
+  {
     "slug": "try-catch-solo-1",
     "topic": "errors",
     "difficulty": "easy",
@@ -2222,10 +2366,46 @@
     "concepts": ["finally"]
   },
   {
+    "slug": "with-temporary-setting",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["finally"]
+  },
+  {
+    "slug": "finally-review-1",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["finally"]
+  },
+  {
+    "slug": "one-task-at-a-time",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["finally", "closures"]
+  },
+  {
     "slug": "error-types-solo-1",
     "topic": "errors",
     "difficulty": "easy",
     "concepts": ["error-types"]
+  },
+  {
+    "slug": "load-port-setting",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["error-types"]
+  },
+  {
+    "slug": "error-types-review-1",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["error-types"]
+  },
+  {
+    "slug": "fallback-for-one-kind",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["error-types", "function-wrappers"]
   },
   {
     "slug": "custom-errors-solo-1",
@@ -2234,10 +2414,46 @@
     "concepts": ["custom-errors"]
   },
   {
+    "slug": "http-failure-kinds",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["custom-errors"]
+  },
+  {
+    "slug": "custom-errors-review-1",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["custom-errors"]
+  },
+  {
+    "slug": "retry-transient-failures",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["custom-errors", "try-catch"]
+  },
+  {
     "slug": "using-declarations-solo-1",
     "topic": "errors",
     "difficulty": "easy",
+    "concepts": ["using-declarations", "finally"]
+  },
+  {
+    "slug": "cleanup-stack",
+    "topic": "errors",
+    "difficulty": "medium",
     "concepts": ["using-declarations"]
+  },
+  {
+    "slug": "using-declarations-review-1",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["using-declarations"]
+  },
+  {
+    "slug": "using-declarations-review-2",
+    "topic": "errors",
+    "difficulty": "medium",
+    "concepts": ["using-declarations", "closures", "static-members"]
   },
   {
     "slug": "array-basics-solo-1",
@@ -2270,10 +2486,46 @@
     "concepts": ["sparse-arrays"]
   },
   {
+    "slug": "fill-empty-slots",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["sparse-arrays"]
+  },
+  {
+    "slug": "sparse-arrays-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["sparse-arrays"]
+  },
+  {
+    "slug": "apply-list-patch",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["sparse-arrays", "pass-by-sharing"]
+  },
+  {
     "slug": "mutating-methods-solo-1",
     "topic": "arrays",
     "difficulty": "easy",
     "concepts": ["mutating-methods"]
+  },
+  {
+    "slug": "move-list-item",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["mutating-methods"]
+  },
+  {
+    "slug": "mutating-methods-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["mutating-methods"]
+  },
+  {
+    "slug": "recently-opened-files",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["mutating-methods", "private-state"]
   },
   {
     "slug": "copying-methods-solo-1",
@@ -2282,16 +2534,70 @@
     "concepts": ["copying-methods"]
   },
   {
+    "slug": "rotate-list-right",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["copying-methods"]
+  },
+  {
+    "slug": "copying-methods-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["copying-methods"]
+  },
+  {
+    "slug": "move-board-card",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["copying-methods", "immutable-updates"]
+  },
+  {
     "slug": "map-filter-solo-1",
     "topic": "arrays",
     "difficulty": "easy",
     "concepts": ["map-filter"]
   },
   {
+    "slug": "every-nth-item",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["map-filter"]
+  },
+  {
+    "slug": "map-filter-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["map-filter"]
+  },
+  {
+    "slug": "paid-order-labels",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["map-filter", "optional-chaining"]
+  },
+  {
     "slug": "reduce-solo-1",
     "topic": "arrays",
     "difficulty": "easy",
     "concepts": ["reduce"]
+  },
+  {
+    "slug": "account-balance-after",
+    "topic": "arrays",
+    "difficulty": "easy",
+    "concepts": ["reduce"]
+  },
+  {
+    "slug": "reduce-review-1",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["reduce"]
+  },
+  {
+    "slug": "longest-streak",
+    "topic": "arrays",
+    "difficulty": "medium",
+    "concepts": ["reduce", "destructuring-objects"]
   },
   {
     "slug": "searching-solo-1",

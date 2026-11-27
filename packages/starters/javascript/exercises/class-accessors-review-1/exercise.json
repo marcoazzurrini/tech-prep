@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Badge {\n  #text = \"\";\n  constructor(text) { this.text = text; }\n  get text() { return this.#text; }\n  set text(value) { this.#text = value.trim().toUpperCase(); }\n}\n\nclass Note {\n  text = \"draft\";\n  get text() { return \"hidden\"; }\n}\n\nconst badge = new Badge(\"  vip \");\nbadge.text += \"!\";\n\nconsole.log(badge.text);\nconsole.log(Object.keys(badge).length);\nconsole.log(new Note().text);\nconsole.log(Object.keys(new Note()).join(\",\"));"
+    },
+    "expected": "VIP!\n0\ndraft\ntext"
+  }
+}

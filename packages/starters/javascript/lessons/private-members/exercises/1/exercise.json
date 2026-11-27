@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Player {\n  #score = 5;\n  score = 1;\n\n  bump() {\n    this.#score += 10;\n    return this.#score;\n  }\n}\n\nconst player = new Player();\n\nconsole.log(player.bump());\nconsole.log(player.score);\nconsole.log(Object.keys(player).length);\nconsole.log(player[\"#score\"]);"
+    },
+    "expected": "15\n1\n1\nundefined"
+  }
+}

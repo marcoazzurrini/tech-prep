@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const shape = { sides: 4, colour: \"grey\" };\nconst tile = Object.create(shape);\ntile.colour = \"white\";\ntile.size = 10;\n\nconsole.log(Object.keys(tile).length);\nconsole.log(Object.values(tile).join(\",\"));\nconsole.log(\"sides\" in tile, Object.hasOwn(tile, \"sides\"));\n\nlet count = 0;\nfor (const key in tile) {\n  count += 1;\n}\n\nconsole.log(count);"
+    },
+    "expected": "2\nwhite,10\ntrue false\n3"
+  }
+}

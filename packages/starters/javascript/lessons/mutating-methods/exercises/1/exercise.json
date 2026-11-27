@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const stack = [];\nconsole.log(stack.pop());\nconsole.log(stack.push(\"a\", \"b\", \"c\"));\nconsole.log(stack.shift());\nconsole.log(stack.unshift(\"z\"));\nconsole.log(stack.join(\"\"));"
+    },
+    "expected": "undefined\n3\na\n3\nzbc"
+  }
+}

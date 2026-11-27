@@ -1,0 +1,20 @@
+{
+  "title": "Add a Rank",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "withRank"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function withRank(players) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[[{"name":"Ada"},{"name":"Bo"}]],"expected":[{"name":"Ada","rank":1},{"name":"Bo","rank":2}]},
+      {"args":[[]],"expected":[]},
+      {"args":[[{"name":"Cy","points":40}]],"expected":[{"name":"Cy","points":40,"rank":1}]},
+      {"args":[[{"name":"Di","rank":7},{"name":"Ed","rank":1}]],"expected":[{"name":"Di","rank":1},{"name":"Ed","rank":2}]},
+      {"args":[[{"name":"A"},{"name":"B"},{"name":"C"}]],"expected":[{"name":"A","rank":1},{"name":"B","rank":2},{"name":"C","rank":3}]}
+    ]
+  }
+}

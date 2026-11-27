@@ -1,0 +1,21 @@
+{
+  "title": "Price List Total",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "orderTotal"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function orderTotal(prices, items) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[{"tea":3,"cake":5},["tea","cake","tea"]],"expected":11},
+      {"args":[{"tea":3},["tea","constructor"]],"expected":3},
+      {"args":[{"tea":3},["toString","valueOf"]],"expected":0},
+      {"args":[{"hasOwnProperty":2,"tea":3},["hasOwnProperty","tea"]],"expected":5},
+      {"args":[{"tea":0,"jam":4},["tea","jam","bread"]],"expected":4},
+      {"args":[{},[]],"expected":0}
+    ]
+  }
+}

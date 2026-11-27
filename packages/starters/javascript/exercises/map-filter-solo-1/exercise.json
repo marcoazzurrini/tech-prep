@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const words = [\"0\", \"\", \"no\", \"false\"];\nconsole.log(words.filter(Boolean).length);\n\nconst lengths = words.map((word) => word.length);\nconsole.log(lengths.join(\",\"));\nconsole.log(lengths.filter((n, i) => n > i).join(\",\"));\n\nlet seen = 0;\nconst out = words.forEach(() => seen++);\nconsole.log(seen, out);"
+    },
+    "expected": "3\n1,0,2,5\n1,5\n4 undefined"
+  }
+}

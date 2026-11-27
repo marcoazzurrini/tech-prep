@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const letters = [\"a\", \"b\", \"c\", \"d\", \"e\"];\n\nconsole.log(letters.slice(1, -1).join(\"\"));\nconsole.log(letters.slice(-3, -1).join(\"\"));\nconsole.log(letters.slice(4, 10).join(\"\"));\nconsole.log(letters.concat([\"f\", [\"g\"]]).length);"
+    },
+    "expected": "bcd\ncd\ne\n7"
+  }
+}

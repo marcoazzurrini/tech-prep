@@ -1,0 +1,18 @@
+{
+  "title": "Take a Batch",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function takeBatch(queue, size) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const q = [1, 2, 3, 4, 5]; const batch = takeBatch(q, 2); return [batch, q];"],"expected":[[1,2],[3,4,5]]},
+      {"args":["const q = [\"a\"]; return [takeBatch(q, 3), q];"],"expected":[["a"],[]]},
+      {"args":["const q = []; return [takeBatch(q, 2), q];"],"expected":[[],[]]},
+      {"args":["const q = [1, 2]; return [takeBatch(q, 0), q];"],"expected":[[],[1,2]]},
+      {"args":["const q = [7, 8, 9]; const before = q; takeBatch(q, 1); return [q === before, q];"],"expected":[true,[8,9]]}
+    ]
+  }
+}

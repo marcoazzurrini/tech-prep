@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Book {\n  #id = 1;\n\n  static has(value) {\n    return #id in value;\n  }\n\n  static read(value) {\n    return value.#id;\n  }\n}\n\nclass Film {\n  #id = 1;\n}\n\nconsole.log(Book.has(new Book()));\nconsole.log(Book.has(new Film()));\nconsole.log(Book.has(Book));\ntry {\n  console.log(Book.read(new Film()));\n} catch (error) {\n  console.log(error.name);\n}\nconsole.log(Book.read(new Book()));"
+    },
+    "expected": "true\nfalse\nfalse\nTypeError\n1"
+  }
+}

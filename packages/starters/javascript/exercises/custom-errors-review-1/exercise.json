@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class QueueError extends Error {\n  name = \"QueueError\";\n}\n\nclass FullError extends QueueError {\n  constructor(size) {\n    super(`queue holds ${size}`);\n    this.size = size;\n  }\n}\n\nconst full = new FullError(3);\nconst outer = new QueueError(\"push failed\", { cause: full });\n\nconsole.log(full.name, full.message);\nconsole.log(outer.cause.size);\nconsole.log(outer.cause instanceof QueueError);\nconsole.log(Object.keys(full).join(\",\"));"
+    },
+    "expected": "QueueError queue holds 3\n3\ntrue\nname,size"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const base = { 2: \"two\", label: \"base\", 1: \"one\" };\nconst item = Object.create(base);\nitem.label = \"item\";\nitem.note = \"new\";\nitem[10] = \"ten\";\n\nconst keys = [];\nfor (const key in item) {\n  keys.push(key);\n}\n\nconsole.log(keys.join(\",\"));\nconsole.log(Object.keys(item).join(\",\"));\nconsole.log(item[1], Object.hasOwn(item, 1));"
+    },
+    "expected": "10,label,note,1,2\n10,label,note\none false"
+  }
+}

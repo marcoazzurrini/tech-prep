@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const parts = [\"10\", \"10\", \"10\", \"10\"];\nconsole.log(parts.map(parseInt).join(\",\"));\n\nconsole.log([\"1\", \"2\", \"3\"].map((s, i) => s * i).join(\",\"));\nconsole.log([\"a\", \"b\"].map((s, i, all) => all.length).join(\",\"));"
+    },
+    "expected": "10,NaN,2,3\n0,2,6\n2,2"
+  }
+}

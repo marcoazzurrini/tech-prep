@@ -1,0 +1,18 @@
+{
+  "title": "Thermostat",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Thermostat {\n  constructor(target) {\n    // your code\n  }\n\n  set(value) {\n    // your code\n  }\n\n  target() {\n    // your code\n  }\n\n  static made() {\n    // your code\n  }\n}\n"
+    },
+    "tests": [
+      {"args":["const t = new Thermostat(21); return [t.target(), t.set(40), t.set(5), t.target()];"],"expected":[21,30,10,10]},
+      {"args":["return [new Thermostat(50).target(), new Thermostat(2).target(), new Thermostat(18).set(18)];"],"expected":[30,10,18]},
+      {"args":["const before = Thermostat.made(); new Thermostat(20); new Thermostat(25); return Thermostat.made() - before;"],"expected":2},
+      {"args":["return [Object.keys(new Thermostat(20)), Object.keys(Thermostat)];"],"expected":[[],[]]},
+      {"args":["return Object.getOwnPropertyNames(Thermostat.prototype);"],"expected":["constructor","set","target"]}
+    ]
+  }
+}

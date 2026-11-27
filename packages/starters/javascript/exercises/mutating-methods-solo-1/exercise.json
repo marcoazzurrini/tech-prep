@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const cart = [\"pen\", \"ink\", \"pad\", \"cap\"];\nconst out = cart.splice(-3, 2, \"tape\");\n\nconsole.log(out.join(\",\"));\nconsole.log(cart.join(\",\"));\nconsole.log(cart.splice(1, 0).length);\nconsole.log(cart.push(cart.shift()));\nconsole.log(cart.join(\",\"));"
+    },
+    "expected": "ink,pad\npen,tape,cap\n0\n3\ntape,cap,pen"
+  }
+}

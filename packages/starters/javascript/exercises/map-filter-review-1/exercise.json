@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const ids = [\"1\", \"2\", \"3\"];\nconsole.log(ids.map(parseInt).filter(Boolean).length);\n\nconst rows = [{ n: 1 }, { n: 2 }];\nconst kept = rows.filter(() => true);\nkept[0].n = 9;\nconsole.log(rows[0].n, kept === rows);\n\nconsole.log([3, 1, 2].map((x, i, arr) => arr[arr.length - 1 - i]).join(\"\"));\nconsole.log([\"a\", \"b\"].map((s) => { s.toUpperCase(); }).length);"
+    },
+    "expected": "1\n9 false\n213\n2"
+  }
+}

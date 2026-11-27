@@ -1,0 +1,18 @@
+{
+  "title": "With or Without new",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Ticket(film) {\n  this.film = film;\n}\n"
+    },
+    "tests": [
+      {"args":["return new Ticket(\"Dune\").film;"],"expected":"Dune"},
+      {"args":["return Ticket(\"Up\").film;"],"expected":"Up"},
+      {"args":["return Object.getPrototypeOf(Ticket(\"Up\")) === Ticket.prototype;"],"expected":true},
+      {"args":["return Ticket(\"Heat\") === Ticket(\"Heat\");"],"expected":false},
+      {"args":["return Object.keys(Ticket(\"Heat\"));"],"expected":["film"]}
+    ]
+  }
+}

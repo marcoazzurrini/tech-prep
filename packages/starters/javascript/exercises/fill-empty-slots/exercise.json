@@ -1,0 +1,19 @@
+{
+  "title": "Fill Empty Slots",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function fillHoles(list, value) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return fillHoles([1, , 3], 0);"],"expected":[1,0,3]},
+      {"args":["return fillHoles(new Array(3), 7);"],"expected":[7,7,7]},
+      {"args":["const r = fillHoles([\"a\", undefined, , \"d\"], \"-\"); return [r.length, r[1] === undefined, r[2]];"],"expected":[4,true,"-"]},
+      {"args":["const list = [, \"b\"]; fillHoles(list, \"a\"); return 0 in list;"],"expected":false},
+      {"args":["const list = [1, 2]; const r = fillHoles(list, 0); return [r, r === list];"],"expected":[[1,2],false]},
+      {"args":["return fillHoles([], 1);"],"expected":[]}
+    ]
+  }
+}

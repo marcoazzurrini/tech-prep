@@ -1,0 +1,20 @@
+{
+  "title": "Longest Word",
+  "check": {
+    "type": "function",
+    "function": {
+      "javascript": "longestWord"
+    },
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function longestWord(words) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":[["tea","coffee","milk"]],"expected":"coffee"},
+      {"args":[["ab","cd","e"]],"expected":"ab"},
+      {"args":[[]],"expected":""},
+      {"args":[["solo"]],"expected":"solo"},
+      {"args":[["a","bbb","cc","ddd"]],"expected":"bbb"}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "A Timer Object",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function Timer(seconds) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["return JSON.stringify(new Timer(30));"],"expected":"{\"seconds\":30,\"running\":false}"},
+      {"args":["return String(new Timer(12).seconds);"],"expected":"12"},
+      {"args":["return new Timer(5).running === false;"],"expected":true},
+      {"args":["return Object.keys(new Timer(0));"],"expected":["seconds","running"]},
+      {"args":["return Object.getPrototypeOf(new Timer(9)) === Timer.prototype;"],"expected":true}
+    ]
+  }
+}

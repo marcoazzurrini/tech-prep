@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class Cart {\n  #prices = [3, 4];\n\n  get total() {\n    return this.#prices[0] + this.#prices[1];\n  }\n}\n\nconst cart = new Cart();\nconst literal = { get total() { return 7; } };\n\nconsole.log(JSON.stringify({ ...cart }));\nconsole.log(JSON.stringify({ ...literal }));\nconsole.log(\"total\" in cart);\nconsole.log(Object.getOwnPropertyNames(Cart.prototype).join(\",\"));"
+    },
+    "expected": "{}\n{\"total\":7}\ntrue\nconstructor,total"
+  }
+}

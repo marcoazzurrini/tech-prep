@@ -1,0 +1,19 @@
+{
+  "title": "Recently Opened",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export function createRecent(max) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const r = createRecent(3); r.open(\"a\"); r.open(\"b\"); return r.list();"],"expected":["b","a"]},
+      {"args":["const r = createRecent(2); r.open(\"a\"); r.open(\"b\"); r.open(\"c\"); return r.list();"],"expected":["c","b"]},
+      {"args":["const r = createRecent(3); r.open(\"a\"); r.open(\"b\"); r.open(\"a\"); return r.list();"],"expected":["a","b"]},
+      {"args":["const r = createRecent(3); for (const f of [\"a\", \"b\", \"c\", \"b\", \"d\"]) r.open(f); return r.list();"],"expected":["d","b","c"]},
+      {"args":["const r = createRecent(2); r.open(\"a\"); r.list().push(\"x\"); return r.list();"],"expected":["a"]},
+      {"args":["const a = createRecent(2); const b = createRecent(2); a.open(\"x\"); return [a.list(), b.list()];"],"expected":[["x"],[]]}
+    ]
+  }
+}

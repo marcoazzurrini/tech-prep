@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const team = {\n  members: [],\n  size: 0,\n  join(name) {\n    this.members.push(name);\n    this.size += 1;\n  },\n};\n\nconst red = Object.create(team);\nconst blue = Object.create(team);\n\nred.join(\"Ada\");\nblue.join(\"Kim\");\nblue.join(\"Lin\");\n\nconsole.log(red.size, blue.size, team.size);\nconsole.log(red.members.length, team.members.join(\",\"));\nconsole.log(Object.hasOwn(red, \"members\"), Object.hasOwn(red, \"size\"));"
+    },
+    "expected": "1 2 0\n3 Ada,Kim,Lin\nfalse true"
+  }
+}

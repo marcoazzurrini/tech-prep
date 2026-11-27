@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "class ShippingError extends Error {\n  constructor(message) {\n    super(message);\n    this.name = this.constructor.name;\n  }\n}\n\nclass AddressError extends ShippingError {}\nclass WeightError extends ShippingError {}\n\nfunction advice(error) {\n  if (error instanceof AddressError) {\n    return \"check the address\";\n  }\n  if (error instanceof ShippingError) {\n    return \"call the courier\";\n  }\n  return \"unknown problem\";\n}\n\nconsole.log(advice(new WeightError(\"too heavy\")));\nconsole.log(advice(new AddressError(\"no street\")));\nconsole.log(advice(new Error(\"disk full\")));\nconsole.log(new WeightError(\"too heavy\").name);"
+    },
+    "expected": "call the courier\ncheck the address\nunknown problem\nWeightError"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const robot = {\n  battery: 100,\n  name: \"unit\",\n  work() {\n    this.battery -= 30;\n  },\n};\n\nconst r1 = Object.create(robot);\nconst r2 = Object.create(robot);\n\nr1.work();\nr1.name = \"R1\";\nrobot.battery = 50;\nr2.work();\n\nconsole.log(r1.battery, r2.battery, robot.battery);\nconsole.log(r1.name, r2.name);\n\ndelete r1.battery;\nconsole.log(r1.battery);"
+    },
+    "expected": "70 20 50\nR1 unit\n50"
+  }
+}

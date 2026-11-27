@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const account = {\n  set nickname(value) {\n    this.display = value.trim();\n  },\n};\nObject.defineProperty(account, \"plan\", { value: \"free\" });\n\nconst user = Object.create(account);\nuser.nickname = \"  Ada  \";\n\ntry {\n  user.plan = \"pro\";\n} catch (error) {\n  console.log(error.name);\n}\n\nconsole.log(user.display, user.nickname);\nconsole.log(Object.hasOwn(user, \"nickname\"), user.plan);"
+    },
+    "expected": "TypeError\nAda undefined\nfalse free"
+  }
+}

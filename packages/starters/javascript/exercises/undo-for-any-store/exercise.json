@@ -1,0 +1,20 @@
+{
+  "title": "Undo for Any Store",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class MemoryStore {\n  #data = {};\n\n  get(key) {\n    return this.#data[key];\n  }\n\n  set(key, value) {\n    this.#data[key] = value;\n    return this;\n  }\n}\n\nexport function addUndo(Base) {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const s = new (addUndo(MemoryStore))(); s.set(\"a\", 1); s.set(\"a\", 2); return [s.undo(), s.get(\"a\")];"],"expected":[true,1]},
+      {"args":["const s = new (addUndo(MemoryStore))(); s.set(\"a\", 1); s.set(\"b\", 2); s.undo(); s.undo(); return [s.get(\"a\") ?? \"none\", s.undo()];"],"expected":["none",false]},
+      {"args":["const s = new (addUndo(MemoryStore))(); return [s.undo(), s.set(\"a\", 1) === s, s instanceof MemoryStore];"],"expected":[false,true,true]},
+      {"args":["const S = addUndo(MemoryStore); const a = new S(); const b = new S(); a.set(\"k\", 1); return [b.undo(), a.undo(), Object.keys(a)];"],"expected":[false,true,[]]},
+      {"args":["const s = new (addUndo(class { v = 7; get() { return this.v; } set(k, x) { this.v = x; } }))(); s.set(0, 8); s.undo(); return s.v;"],"expected":7},
+      {"args":["const s = new (addUndo(class { get() {} set(k, v) { this.v = v; return \"ok\"; } }))(); return [s.set(0, 7), Object.keys(s)];"],"expected":["ok",["v"]]},
+      {"args":["class N { constructor(n) { this.n = n; } get() {} set() {} } return new (addUndo(N))(\"Ada\").n;"],"expected":"Ada"}
+    ]
+  }
+}

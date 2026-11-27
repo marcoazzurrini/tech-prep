@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function step(name) {\n  return {\n    [Symbol.dispose]() {\n      console.log(\"end \" + name);\n    },\n  };\n}\n\nfunction run() {\n  using a = step(\"a\");\n  {\n    using b = step(\"b\");\n    console.log(\"inner\");\n  }\n  using c = step(\"c\");\n  throw new Error(\"stop\");\n}\n\ntry {\n  run();\n} catch (error) {\n  console.log(error.message);\n}"
+    },
+    "expected": "inner\nend b\nend c\nend a\nstop"
+  }
+}

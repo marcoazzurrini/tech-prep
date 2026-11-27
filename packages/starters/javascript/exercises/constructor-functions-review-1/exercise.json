@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Point(x) {\n  this.x = x;\n  if (x < 0) {\n    return { x: 0 };\n  }\n  if (x > 99) {\n    return null;\n  }\n}\n\nconst a = new Point(5);\nconst b = new Point(-3);\nconst c = new Point(500);\n\nconsole.log(a.x, b.x, c.x);\nconsole.log(Object.getPrototypeOf(b) === Point.prototype, Object.getPrototypeOf(c) === Point.prototype);\n\ntry {\n  console.log(Point(-1).x);\n} catch (error) {\n  console.log(error.name);\n}"
+    },
+    "expected": "5 0 500\nfalse true\nTypeError"
+  }
+}

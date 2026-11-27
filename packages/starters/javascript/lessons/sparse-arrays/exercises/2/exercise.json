@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const rack = [\"a\", \"b\", \"c\", \"d\"];\ndelete rack[0];\nrack[6] = \"g\";\nconsole.log(rack.length);\nconsole.log(Object.keys(rack).length);\nconsole.log(0 in rack, 5 in rack, 6 in rack);"
+    },
+    "expected": "7\n4\nfalse false true"
+  }
+}

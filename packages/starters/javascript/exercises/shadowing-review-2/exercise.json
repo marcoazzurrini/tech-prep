@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "const config = Object.freeze({ mode: \"dark\", tags: [] });\nconst user = Object.create(config);\n\ntry {\n  user.mode = \"light\";\n} catch (error) {\n  console.log(error.name);\n}\n\nuser.tags.push(\"beta\");\nuser.level = 3;\n\nconsole.log(user.mode, config.tags.length, Object.hasOwn(user, \"level\"));\n\nObject.defineProperty(user, \"mode\", { value: \"light\" });\n\nconsole.log(user.mode, config.mode);"
+    },
+    "expected": "TypeError\ndark 1 true\nlight dark"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "function Car(brand) {\n  this.brand = brand;\n}\n\nCar.prototype.wheels = 4;\nCar.prototype.describe = function () {\n  return this.brand + \" on \" + this.wheels;\n};\n\nconst a = new Car(\"Fiat\");\nconst b = new Car(\"Audi\");\nb.wheels = 3;\n\nconsole.log(a.describe(), b.describe());\nconsole.log(Object.hasOwn(a, \"describe\"), \"describe\" in a);\nconsole.log(a.constructor === Car, Car.prototype.constructor === Car);"
+    },
+    "expected": "Fiat on 4 Audi on 3\nfalse true\ntrue true"
+  }
+}

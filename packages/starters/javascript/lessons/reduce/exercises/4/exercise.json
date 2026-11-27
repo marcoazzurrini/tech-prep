@@ -1,0 +1,13 @@
+{
+  "title": "What does it print?",
+  "check": {
+    "type": "value",
+    "compare": "loose",
+    "source": {
+      "run": "code",
+      "language": "javascript",
+      "code": "let calls = 0;\nconst firstBig = [3, 12, 7, 20].reduce((found, n) => {\n  calls++;\n  return found ?? (n > 10 ? n : null);\n}, null);\nconsole.log(firstBig, calls);\n\nconsole.log([\"x\", \"y\", \"z\"].reduceRight((text, s) => text + s));\nconsole.log([1, 2, 3].reduceRight((list, n) => [...list, n * 10], []).join(\",\"));"
+    },
+    "expected": "12 4\nzyx\n30,20,10"
+  }
+}

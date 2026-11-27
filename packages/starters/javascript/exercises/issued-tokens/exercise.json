@@ -1,0 +1,20 @@
+{
+  "title": "Issued Tokens",
+  "check": {
+    "type": "function",
+    "calls": "script",
+    "compare": "exact",
+    "stubs": {
+      "javascript": "export class Token {\n  // your code\n}\n"
+    },
+    "tests": [
+      {"args":["const t = Token.issue(\"Ada\"); return [t.owner, Token.verify(t)];"],"expected":["Ada",true]},
+      {"args":["try { new Token(\"Ada\"); return \"made\"; } catch (error) { return error.name; }"],"expected":"TypeError"},
+      {"args":["Token.issue(\"Leo\"); try { new Token(\"Max\"); return \"made\"; } catch (error) { return error.name; }"],"expected":"TypeError"},
+      {"args":["return [Token.verify({ owner: \"Ada\" }), Token.verify(\"Ada\"), Token.verify(null), Token.verify(undefined)];"],"expected":[false,false,false,false]},
+      {"args":["const before = Token.count(); Token.issue(\"A\"); Token.issue(\"B\"); return Token.count() - before;"],"expected":2},
+      {"args":["const before = Token.count(); try { new Token(\"X\"); } catch {} return [Token.count() - before, Object.keys(Token)];"],"expected":[0,[]]},
+      {"args":["const t = Token.issue(\"Sam\"); return [Object.keys(t), Token.verify(Object.create(Object.getPrototypeOf(t)))];"],"expected":[["owner"],false]}
+    ]
+  }
+}
