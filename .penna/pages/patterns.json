@@ -160,7 +160,7 @@
          "id": "tPyEj",
          "type": "text",
          "name": "Note",
-         "text": "Four regions, left to right",
+         "text": "Three regions, left to right",
          "style": {
           "color": "var(--color-mute)",
           "fontSize": 14,
@@ -237,48 +237,6 @@
            ]
           },
           {
-           "id": "hCh8W",
-           "type": "frame",
-           "name": "Region / Lessons",
-           "style": {
-            "display": "flex",
-            "flexDirection": "column",
-            "alignItems": "center",
-            "justifyContent": "center",
-            "gap": 4,
-            "background": "var(--color-sidebar)",
-            "width": 150,
-            "borderRight": "1px solid var(--color-border)",
-            "alignSelf": "stretch"
-           },
-           "children": [
-            {
-             "id": "x9n9H",
-             "type": "text",
-             "text": "Lessons",
-             "style": {
-              "color": "var(--color-ink)",
-              "fontSize": 14,
-              "fontWeight": 600,
-              "textAlign": "center"
-             },
-             "name": "Lessons"
-            },
-            {
-             "id": "RxT5A",
-             "type": "text",
-             "text": "340",
-             "style": {
-              "color": "var(--color-mute)",
-              "fontSize": 13,
-              "fontFamily": "JetBrains Mono",
-              "textAlign": "center"
-             },
-             "name": "340"
-            }
-           ]
-          },
-          {
            "id": "7ZXaa",
            "type": "frame",
            "name": "Region / Lesson",
@@ -296,7 +254,7 @@
             {
              "id": "mWz7a",
              "type": "text",
-             "text": "Lesson",
+             "text": "Session",
              "style": {
               "color": "var(--color-ink)",
               "fontSize": 14,
@@ -404,7 +362,7 @@
             {
              "id": "daj37",
              "type": "text",
-             "text": "The rail and the lessons column keep a fixed width. The lesson takes the rest of the window.",
+             "text": "The rail keeps a fixed width. The session takes the rest of the window, and shows its content in one centred column 880px wide.",
              "style": {
               "color": "var(--color-body)",
               "fontSize": 15,
@@ -442,7 +400,7 @@
             {
              "id": "KazEt",
              "type": "text",
-             "text": "Nothing scales up on a large display. A wider window gives the extra room to the lesson.",
+             "text": "Nothing scales up on a large display. A wider window leaves the column as it is.",
              "style": {
               "color": "var(--color-body)",
               "fontSize": 15,
@@ -556,7 +514,7 @@
             {
              "id": "2v26Z",
              "type": "text",
-             "text": "Content in the lesson stays aligned to the left edge. It never centres or stretches to fill.",
+             "text": "No course outline sits beside the work, so nothing names the topic of a task.",
              "style": {
               "color": "var(--color-body)",
               "fontSize": 15,
@@ -614,7 +572,7 @@
          "id": "dLrj6",
          "type": "text",
          "name": "Title",
-         "text": "Lesson pane",
+         "text": "Exercise pane",
          "style": {
           "color": "var(--color-ink)",
           "fontSize": 20,
@@ -626,7 +584,7 @@
          "id": "8h8Dk",
          "type": "text",
          "name": "Note",
-         "text": "One thing on screen at a time",
+         "text": "An extra exercise from the tutor",
          "style": {
           "color": "var(--color-mute)",
           "fontSize": 14,
@@ -867,262 +825,6 @@
              }
             }
            ]
-          },
-          {
-           "id": "kQLFp",
-           "type": "frame",
-           "name": "B",
-           "style": {
-            "display": "flex",
-            "flexDirection": "column",
-            "alignItems": "flex-start",
-            "gap": 10
-           },
-           "children": [
-            {
-             "id": "qNnE9",
-             "type": "frame",
-             "name": "Problem pane",
-             "style": {
-              "display": "flex",
-              "flexDirection": "column",
-              "alignItems": "flex-start",
-              "width": 360,
-              "height": 420,
-              "border": "1px solid var(--color-border)",
-              "borderRadius": 8,
-              "overflow": "hidden",
-              "background": "var(--color-panel)",
-              "flexShrink": 0
-             },
-             "children": [
-              {
-               "id": "WRx8c",
-               "type": "frame",
-               "name": "Region / Top bar",
-               "style": {
-                "display": "flex",
-                "flexDirection": "column",
-                "alignItems": "center",
-                "justifyContent": "center",
-                "gap": 4,
-                "background": "var(--color-panel)",
-                "alignSelf": "stretch",
-                "height": 48,
-                "borderBottom": "1px solid var(--color-border)",
-                "flexShrink": 0
-               },
-               "children": [
-                {
-                 "id": "S48RX",
-                 "type": "text",
-                 "text": "Top bar",
-                 "style": {
-                  "color": "var(--color-ink)",
-                  "fontSize": 14,
-                  "fontWeight": 600,
-                  "textAlign": "center"
-                 },
-                 "name": "Top bar"
-                },
-                {
-                 "id": "hEqfT",
-                 "type": "text",
-                 "text": "48",
-                 "style": {
-                  "color": "var(--color-mute)",
-                  "fontSize": 13,
-                  "fontFamily": "JetBrains Mono",
-                  "textAlign": "center"
-                 },
-                 "name": "48"
-                }
-               ]
-              },
-              {
-               "id": "9YzGM",
-               "type": "frame",
-               "name": "Region / Statement",
-               "style": {
-                "display": "flex",
-                "flexDirection": "column",
-                "alignItems": "center",
-                "justifyContent": "center",
-                "gap": 4,
-                "background": "var(--color-panel)",
-                "alignSelf": "stretch",
-                "height": 110,
-                "borderBottom": "1px solid var(--color-border)",
-                "flexShrink": 0
-               },
-               "children": [
-                {
-                 "id": "ZULxu",
-                 "type": "text",
-                 "text": "Statement",
-                 "style": {
-                  "color": "var(--color-ink)",
-                  "fontSize": 14,
-                  "fontWeight": 600,
-                  "textAlign": "center"
-                 },
-                 "name": "Statement"
-                },
-                {
-                 "id": "CEzAU",
-                 "type": "text",
-                 "text": "its own height, at most 42%",
-                 "style": {
-                  "color": "var(--color-mute)",
-                  "fontSize": 13,
-                  "fontFamily": "JetBrains Mono",
-                  "textAlign": "center"
-                 },
-                 "name": "its own height, at most…"
-                }
-               ]
-              },
-              {
-               "id": "cTdbS",
-               "type": "frame",
-               "name": "Region / Editor",
-               "style": {
-                "display": "flex",
-                "flexDirection": "column",
-                "alignItems": "center",
-                "justifyContent": "center",
-                "gap": 4,
-                "background": "var(--color-canvas)",
-                "alignSelf": "stretch",
-                "flex": "1 1 0"
-               },
-               "children": [
-                {
-                 "id": "fp7Nk",
-                 "type": "text",
-                 "text": "Editor",
-                 "style": {
-                  "color": "var(--color-ink)",
-                  "fontSize": 14,
-                  "fontWeight": 600,
-                  "textAlign": "center"
-                 },
-                 "name": "Editor"
-                },
-                {
-                 "id": "jBLa3",
-                 "type": "text",
-                 "text": "takes the rest",
-                 "style": {
-                  "color": "var(--color-mute)",
-                  "fontSize": 13,
-                  "fontFamily": "JetBrains Mono",
-                  "textAlign": "center"
-                 },
-                 "name": "takes the rest"
-                }
-               ]
-              },
-              {
-               "id": "t3uzb",
-               "type": "frame",
-               "name": "Region / Tests",
-               "style": {
-                "display": "flex",
-                "flexDirection": "column",
-                "alignItems": "center",
-                "justifyContent": "center",
-                "gap": 4,
-                "background": "var(--color-panel)",
-                "alignSelf": "stretch",
-                "height": 70,
-                "borderTop": "1px solid var(--color-border)",
-                "flexShrink": 0
-               },
-               "children": [
-                {
-                 "id": "QfBks",
-                 "type": "text",
-                 "text": "Tests",
-                 "style": {
-                  "color": "var(--color-ink)",
-                  "fontSize": 14,
-                  "fontWeight": 600,
-                  "textAlign": "center"
-                 },
-                 "name": "Tests"
-                },
-                {
-                 "id": "GdBDt",
-                 "type": "text",
-                 "text": "docked, at most 30%",
-                 "style": {
-                  "color": "var(--color-mute)",
-                  "fontSize": 13,
-                  "fontFamily": "JetBrains Mono",
-                  "textAlign": "center"
-                 },
-                 "name": "docked, at most 30%"
-                }
-               ]
-              },
-              {
-               "id": "CEiMn",
-               "type": "frame",
-               "name": "Region / Footer",
-               "style": {
-                "display": "flex",
-                "flexDirection": "column",
-                "alignItems": "center",
-                "justifyContent": "center",
-                "gap": 4,
-                "background": "var(--color-panel)",
-                "alignSelf": "stretch",
-                "height": 52,
-                "borderTop": "1px solid var(--color-border)",
-                "flexShrink": 0
-               },
-               "children": [
-                {
-                 "id": "3GYmZ",
-                 "type": "text",
-                 "text": "Footer",
-                 "style": {
-                  "color": "var(--color-ink)",
-                  "fontSize": 14,
-                  "fontWeight": 600,
-                  "textAlign": "center"
-                 },
-                 "name": "Footer"
-                },
-                {
-                 "id": "QNyTL",
-                 "type": "text",
-                 "text": "64",
-                 "style": {
-                  "color": "var(--color-mute)",
-                  "fontSize": 13,
-                  "fontFamily": "JetBrains Mono",
-                  "textAlign": "center"
-                 },
-                 "name": "64"
-                }
-               ]
-              }
-             ]
-            },
-            {
-             "id": "KJyhw",
-             "type": "text",
-             "name": "Caption",
-             "text": "A problem",
-             "style": {
-              "color": "var(--color-mute)",
-              "fontSize": 13,
-              "lineHeight": "18px"
-             }
-            }
-           ]
           }
          ]
         },
@@ -1166,7 +868,7 @@
             {
              "id": "hS6zK",
              "type": "text",
-             "text": "The tutor decides what the pane shows: one exercise, or one problem.",
+             "text": "An extra exercise from the tutor covers the session until the learner closes it.",
              "style": {
               "color": "var(--color-body)",
               "fontSize": 15,
@@ -1212,82 +914,6 @@
               "maxWidth": 560
              },
              "name": "The body scrolls. The t…"
-            }
-           ]
-          },
-          {
-           "id": "M4keg",
-           "type": "frame",
-           "name": "Rule",
-           "style": {
-            "display": "flex",
-            "alignItems": "flex-start",
-            "gap": 10
-           },
-           "children": [
-            {
-             "id": "7LtqN",
-             "type": "frame",
-             "name": "Mark",
-             "style": {
-              "width": 6,
-              "height": 6,
-              "borderRadius": "50%",
-              "background": "var(--color-mute)",
-              "marginTop": 9,
-              "flexShrink": 0
-             },
-             "children": []
-            },
-            {
-             "id": "jrjdy",
-             "type": "text",
-             "text": "On a problem, the statement takes only the height it needs, so the editor gets the rest.",
-             "style": {
-              "color": "var(--color-body)",
-              "fontSize": 15,
-              "lineHeight": "24px",
-              "maxWidth": 560
-             },
-             "name": "On a problem, the state…"
-            }
-           ]
-          },
-          {
-           "id": "nYrfV",
-           "type": "frame",
-           "name": "Rule",
-           "style": {
-            "display": "flex",
-            "alignItems": "flex-start",
-            "gap": 10
-           },
-           "children": [
-            {
-             "id": "B3gYw",
-             "type": "frame",
-             "name": "Mark",
-             "style": {
-              "width": 6,
-              "height": 6,
-              "borderRadius": "50%",
-              "background": "var(--color-mute)",
-              "marginTop": 9,
-              "flexShrink": 0
-             },
-             "children": []
-            },
-            {
-             "id": "eytbh",
-             "type": "text",
-             "text": "Tests dock above the footer and scroll on their own when they grow.",
-             "style": {
-              "color": "var(--color-body)",
-              "fontSize": 15,
-              "lineHeight": "24px",
-              "maxWidth": 560
-             },
-             "name": "Tests dock above the fo…"
             }
            ]
           }
@@ -2693,162 +2319,6 @@
          "type": "text",
          "name": "Caption",
          "text": "An open exercise: the primary action is last.",
-         "style": {
-          "color": "var(--color-mute)",
-          "fontSize": 13,
-          "lineHeight": "18px"
-         }
-        }
-       ]
-      },
-      {
-       "id": "9QgTy",
-       "type": "frame",
-       "name": "Footer / Problem",
-       "style": {
-        "display": "flex",
-        "flexDirection": "column",
-        "alignItems": "flex-start",
-        "gap": 10,
-        "alignSelf": "stretch"
-       },
-       "children": [
-        {
-         "id": "TddzF",
-         "type": "frame",
-         "name": "Surface",
-         "style": {
-          "display": "flex",
-          "background": "var(--color-panel)",
-          "border": "1px solid var(--color-border)",
-          "borderRadius": 8,
-          "overflow": "hidden",
-          "width": 900
-         },
-         "children": [
-          {
-           "id": "8EzMA",
-           "type": "frame",
-           "name": "Footer",
-           "style": {
-            "display": "flex",
-            "alignItems": "center",
-            "gap": 10,
-            "padding": "0px 32px",
-            "borderTop": "none",
-            "alignSelf": "stretch",
-            "height": 64,
-            "flexShrink": 0,
-            "flex": "1 1 0"
-           },
-           "children": [
-            {
-             "id": "yJs3j",
-             "type": "frame",
-             "name": "Left",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "flex": "1 1 0",
-              "minWidth": 0
-             },
-             "children": []
-            },
-            {
-             "id": "ymaQs",
-             "type": "frame",
-             "name": "Show hint",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "height": 32,
-              "flexShrink": 0,
-              "background": "var(--color-raised)",
-              "border": "1px solid var(--color-border-strong)"
-             },
-             "children": [
-              {
-               "id": "7uZ9c",
-               "type": "text",
-               "name": "Label",
-               "text": "Show hint",
-               "style": {
-                "color": "var(--color-ink)",
-                "fontSize": 14,
-                "fontWeight": 500,
-                "whiteSpace": "pre"
-               }
-              }
-             ]
-            },
-            {
-             "id": "ctbZK",
-             "type": "frame",
-             "name": "Run tests",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "height": 32,
-              "flexShrink": 0,
-              "background": "var(--color-raised)",
-              "border": "1px solid var(--color-border-strong)"
-             },
-             "children": [
-              {
-               "id": "tJAXy",
-               "type": "text",
-               "name": "Label",
-               "text": "Run tests",
-               "style": {
-                "color": "var(--color-ink)",
-                "fontSize": 14,
-                "fontWeight": 500,
-                "whiteSpace": "pre"
-               }
-              }
-             ]
-            },
-            {
-             "id": "zkHi3",
-             "type": "frame",
-             "name": "Submit",
-             "style": {
-              "display": "flex",
-              "alignItems": "center",
-              "padding": "0px 14px",
-              "borderRadius": 999,
-              "height": 32,
-              "flexShrink": 0,
-              "background": "var(--color-light)"
-             },
-             "children": [
-              {
-               "id": "KNzq3",
-               "type": "text",
-               "name": "Label",
-               "text": "Submit",
-               "style": {
-                "color": "var(--color-on-light)",
-                "fontSize": 14,
-                "fontWeight": 500,
-                "whiteSpace": "pre"
-               }
-              }
-             ]
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "id": "PxCen",
-         "type": "text",
-         "name": "Caption",
-         "text": "A problem: Run tests checks the code. Submit also hands it to the tutor.",
          "style": {
           "color": "var(--color-mute)",
           "fontSize": 13,

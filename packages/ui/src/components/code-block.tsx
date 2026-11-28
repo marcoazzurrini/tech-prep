@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { cx } from "../lib/cx";
 import { highlight } from "../lib/highlight";
 
@@ -48,13 +50,21 @@ interface EditorStatusProps {
   mode: string;
   file: string;
   cursor: string;
+  /** Shown at the end of the strip. */
+  children?: ReactNode;
 }
 
 /** The strip under the editor: Vim mode, file name and cursor position. */
-export const EditorStatus = ({ mode, file, cursor }: EditorStatusProps) => (
+export const EditorStatus = ({
+  mode,
+  file,
+  cursor,
+  children,
+}: EditorStatusProps) => (
   <div className="tp-editor-status">
     <b>{mode}</b>
     <span className="tp-editor-status__file">{file}</span>
     <span>{cursor}</span>
+    {children}
   </div>
 );

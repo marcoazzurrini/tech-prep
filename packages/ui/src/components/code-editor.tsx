@@ -26,6 +26,8 @@ import {
 } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
 import { Vim, getCM, vim } from "@replit/codemirror-vim";
+import type { CodeMirror } from "@replit/codemirror-vim";
+import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import { cx } from "../lib/cx";
@@ -36,7 +38,7 @@ import "./code-editor.css";
 const theme = EditorView.theme(
   {
     "&": {
-      backgroundColor: "var(--color-canvas)",
+      backgroundColor: "var(--editor-surface)",
       color: "var(--color-body)",
       height: "100%",
     },
@@ -56,7 +58,7 @@ const theme = EditorView.theme(
       color: "var(--color-canvas) !important",
     },
     ".cm-gutters": {
-      backgroundColor: "var(--color-canvas)",
+      backgroundColor: "var(--editor-surface)",
       border: "none",
       color: "var(--color-dim)",
     },
@@ -70,7 +72,7 @@ const theme = EditorView.theme(
       outline: "none",
     },
     ".cm-panels": {
-      backgroundColor: "var(--color-canvas)",
+      backgroundColor: "var(--editor-surface)",
       color: "var(--color-body)",
     },
     ".cm-scroller": {
@@ -117,6 +119,11 @@ const GRAMMARS = new Map<string, () => Extension>([
   ["typescript", () => javascript({ typescript: true })],
 ]);
 
+/** What `:w` does in each open editor. Vim commands are defined once, for every editor. */
+const saves = new WeakMap<CodeMirror, () => void>();
+
+Vim.defineEx("write", "w", (cm: CodeMirror) => saves.get(cm)?.());
+
 interface CodeEditorProps {
   /** The text the editor opens with. Change `key` to load other text. */
   initialValue: string;
@@ -127,7 +134,15 @@ interface CodeEditorProps {
   readOnly?: boolean;
   /** A few lines tall, for a short answer such as a jq filter. It opens ready to type. */
   compact?: boolean;
+  /** A rounded card on the raised surface, for the answer at the foot of a session task. */
+  card?: boolean;
+  /** Shown at the end of the status strip, such as a note and the button that hands in. */
+  status?: ReactNode;
   onChange?: (value: string) => void;
+  /** The learner wrote the file with `:w`. */
+  onSave?: () => void;
+  /** The learner pressed ⌘↵ to hand the answer in. */
+  onSubmit?: () => void;
 }
 
 /** The light in-app editor: Vim keys, line numbers and the syntax tokens. */
@@ -137,10 +152,16 @@ export const CodeEditor = ({
   file,
   readOnly = false,
   compact = false,
+  card = false,
+  status,
   onChange,
+  onSave,
+  onSubmit,
 }: CodeEditorProps) => {
   const host = useRef<HTMLDivElement>(null);
   const changed = useRef(onChange);
+  const saved = useRef(onSave);
+  const submitted = useRef(onSubmit);
   // The editor owns its text after it opens; the parent remounts it with `key` to load other text.
   const initial = useRef(initialValue);
   const [mode, setMode] = useState("NORMAL");
@@ -148,7 +169,9 @@ export const CodeEditor = ({
 
   useEffect(() => {
     changed.current = onChange;
-  }, [onChange]);
+    saved.current = onSave;
+    submitted.current = onSubmit;
+  }, [onChange, onSave, onSubmit]);
 
   useEffect(() => {
     if (!host.current) {
@@ -173,6 +196,14 @@ export const CodeEditor = ({
           EditorState.tabSize.of(language === "python" ? 4 : 2),
           EditorState.readOnly.of(readOnly),
           keymap.of([
+            {
+              key: "Mod-Enter",
+              run: () => {
+                submitted.current?.();
+
+                return true;
+              },
+            },
             ...closeBracketsKeymap,
             ...defaultKeymap,
             ...historyKeymap,
@@ -198,6 +229,10 @@ export const CodeEditor = ({
 
     const cm = getCM(view);
 
+    if (cm) {
+      saves.set(cm, () => saved.current?.());
+    }
+
     cm?.on("vim-mode-change", (event: { mode: string }) => {
       setMode(MODES.get(event.mode) ?? event.mode.toUpperCase());
     });
@@ -212,9 +247,17 @@ export const CodeEditor = ({
   }, [language, readOnly, compact]);
 
   return (
-    <div className={cx("tp-editor", compact && "tp-editor--compact")}>
+    <div
+      className={cx(
+        "tp-editor",
+        compact && "tp-editor--compact",
+        card && "tp-editor--card"
+      )}
+    >
       <div className="tp-editor__view" ref={host} />
-      <EditorStatus cursor={cursor} file={file} mode={mode} />
+      <EditorStatus cursor={cursor} file={file} mode={mode}>
+        {status}
+      </EditorStatus>
     </div>
   );
 };

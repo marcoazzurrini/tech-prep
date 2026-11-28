@@ -8,9 +8,9 @@ body {
 }
 
 /*
- * The macOS window buttons are wider than the rail. A title strip across the rail and the
- * lessons column holds them, so no line or text sits behind the buttons. Its bottom line
- * meets the line under the lesson's top bar.
+ * The macOS window buttons are wider than the rail. A title strip above the rail holds
+ * them, so no line sits behind the buttons. Its bottom line meets the line under the top
+ * bar, which starts further right, clear of the buttons.
  */
 .tp-shell {
   grid-template-rows: 48px minmax(0, 1fr);
@@ -20,31 +20,21 @@ body {
   grid-row: 1 / span 2;
 }
 
-.tp-shell > .tp-rail,
-.tp-shell > .tp-course-nav {
+.tp-shell > .tp-rail {
   grid-row: 2;
 }
 
 .tp-shell::before {
   grid-row: 1;
-  grid-column: 1 / span 2;
-  border-right: 1px solid var(--color-border);
+  grid-column: 1;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-sidebar);
   content: "";
   -webkit-app-region: drag;
 }
 
-/*
- * A focused screen has no lessons column. The strip then covers the rail only, and the top
- * bar starts further right, clear of the window buttons.
- */
-.tp-shell--focus::before {
-  grid-column: 1;
-  border-right: 0;
-}
-
-.tp-shell--focus .tp-top-bar {
+.tp-shell .tp-top-bar,
+.tp-shell .tp-session-bar {
   padding-left: 40px;
 }
 
@@ -54,6 +44,7 @@ body {
 
 /* The bars along the top drag the window, as a native title bar would. */
 .tp-top-bar,
+.tp-session-bar,
 .tp-tutor__header {
   -webkit-app-region: drag;
 }

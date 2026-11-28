@@ -319,37 +319,3 @@ export const LessonText = ({ title, text, children }: LessonTextProps) => (
     {children}
   </article>
 );
-
-interface YourTurnProps {
-  /** Such as "Your turn · with the lesson". */
-  label: string;
-  title: string;
-  children: ReactNode;
-}
-
-/** The task that follows a lesson, set apart so the learner sees where reading ends and doing starts. */
-export const YourTurn = ({ label, title, children }: YourTurnProps) => (
-  <section className="tp-your-turn">
-    <p className="tp-your-turn__label">{label}</p>
-    <h2>{title}</h2>
-    {children}
-  </section>
-);
-
-interface TaskTextProps {
-  /** Chips above the title, such as "Review 1 of 2" and the difficulty. */
-  chips?: ReactNode;
-  /** The problem's name. A short task is headed by the first line of its statement. */
-  title: ReactNode;
-  /** The statement, and the verdict once the problem is finished. */
-  children: ReactNode;
-}
-
-/** A problem to read beside the editor: chips, a large title, then the statement. */
-export const TaskText = ({ chips, title, children }: TaskTextProps) => (
-  <article className="tp-task-text">
-    {chips && <div className="tp-task-text__chips">{chips}</div>}
-    <h1>{title}</h1>
-    {children}
-  </article>
-);

@@ -21,7 +21,7 @@ Everything below serves those two goals with as little wasted practice as possib
 | Choosing the next lesson and the next review | Extra exercises when the learner asks for practice |
 | Credit flow (FIRe), penalties, unlocking | Grading open answers, per concept, against a rubric |
 
-The app leads the course through the engine: it opens lessons and reviews and grades what the learner hands in. The tutor helps beside it and never chooses what comes next.
+The app leads the course through the engine: it runs each session, opens lessons and reviews, and grades what the learner hands in. The tutor helps beside it and never chooses what comes next.
 
 Rule of thumb: facts and arithmetic live in code; judgement lives in the agent. The agent's judgements enter the engine through tool parameters.
 
@@ -84,11 +84,10 @@ Each concept gets pass or fail. There are no middle grades.
 
 A lesson has two steps, with support that fades from one to the next.
 
-- **Step 1, with the lesson.** The learner reads the lesson and solves its guided problem with the lesson beside it. A worked example first, then a problem with support, is the order that works for new material. Solving the guided problem moves the concept to `learning`. It never touches FSRS. With several guided tasks, the concept moves when all of them are solved.
+- **Step 1, with the lesson.** The learner reads the lesson and solves its guided problem, and may open the lesson again while they do. A lesson in parts is read one part at a time, each followed by its task. A worked example first, then a problem with support, is the order that works for new material. Solving the guided problem moves the concept to `learning`. It never touches FSRS. With several guided tasks, the concept moves when all of them are solved.
 - **Step 2, alone.** The lesson closes and the learner solves the concept's solo problem. Recalling the idea without the text is what makes it last, and it shows honestly whether the lesson worked. With several solo tasks, the concept is learned when every one is solved alone; an unaided solve before the last one is recorded with no verdict.
 - **Solved without help**: the concept becomes `passed` and its dependents may unlock. It gets no FSRS rating yet. The solo tasks come minutes after the lesson, while the idea is still in mind, so they show the lesson worked but they are not a recall.
 - **The first recall** is due the next day. It is the first FSRS rating, and FSRS sets every gap after it. Until then the concept takes no rating, no implicit credit and no penalty.
-- **The app moves on.** The answer that makes a lesson learned opens the next lesson by itself.
 - **Solved with help** or **gave up**: the concept stays `learning`, `fail_count` goes up, and the solo problem waits a day. The lesson stays readable meanwhile.
 - **Never stuck**: while a solo problem waits, the course moves on to the next open lesson (ALEKS-style switching to another frontier concept).
 
@@ -120,7 +119,7 @@ Every review is logged with `implicit_credit` (null for explicit reviews) and th
 
 ## Choosing the next task
 
-Lessons and reviews are chosen apart. The learner picks which to do; the app shows how many reviews are due.
+The learner picks a course and how long to study. A session takes the reviews that are due first, then the next lesson, and goes on until the time is used. The time is checked between tasks, so a task is never cut short.
 
 **The next lesson** is the first concept, in course order, that is not passed, whose prerequisites are all passed, and whose solo problem is not waiting after a struggle.
 
@@ -131,7 +130,7 @@ FSRS runs with `enable_short_term: false`, so no concept is scheduled again on t
 ## Interleaving and recognition
 
 - **Learning phase:** blocked practice with labels. A lesson and its two problems are explicitly about one concept.
-- **Review phase:** unlabelled. The review screen shows no lesson, no chapter and no lessons column, and the tutor never says which concept a review is from. Repetition compression already mixes topics.
+- **Review phase:** unlabelled. A review shows no lesson, no chapter and no concept until it is answered, and the tutor never says which concept a review is from. Repetition compression already mixes topics.
 - **Recognition** is trained by the reviews themselves: the learner sees a problem with nothing that names its pattern and must choose the approach. A hint that names it turns the review into a fail.
 - Learners tend to feel interleaved practice is less productive than blocked practice, even when it works better (Kornell & Bjork 2008).
 

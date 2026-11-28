@@ -1,10 +1,9 @@
-// A lesson as the learner goes through it: its text in parts, each beside one guided task,
-// then the tasks to solve alone. The rules for what opens next live here, so the app only
+// A lesson as the learner goes through it: its text in parts, each followed by one guided
+// task, then the tasks to solve alone. The rules for what starts live here, so the app only
 // shows what it is given.
 
 import { concept, guidedSlugs, lessonText, soloSlugs } from "./content.ts";
 import type { Course } from "./content.ts";
-import type { AttemptRow, Outcome } from "./db.ts";
 import { hasLesson } from "./exercises.ts";
 import { startProblem } from "./practice.ts";
 import {
@@ -22,9 +21,9 @@ import {
  */
 export const TASK_MARKER = "<!-- task -->";
 
-/** One part of a lesson: one idea, shown alone beside its guided task. */
+/** One part of a lesson: one idea, read alone, then practised in its guided task. */
 export interface LessonPart {
-  /** Its name on the trail in the top bar. */
+  /** Its short name. */
   name: string;
   /** The heading above its text. */
   title: string;
@@ -139,29 +138,4 @@ export const startLesson = (
   } else if (soloWait(course, id) === null) {
     startProblem(course, soloProgress(course, id).current, "solo");
   }
-};
-
-/**
- * True when the app opens the next task by itself after an attempt ended. A right answer
- * moves on. What stays on screen has something to read: a solution after giving up, or a
- * solo task that needed help. The last solo task opens no task of its lesson: when it makes
- * the lesson learned, the app opens the next lesson.
- */
-export const movesOn = (
-  course: Course,
-  attempt: AttemptRow,
-  lesson: string | null,
-  outcome: Outcome
-): boolean => {
-  if (attempt.mode === "guided") {
-    return outcome === "solved" || outcome === "solved_with_help";
-  }
-
-  if (outcome !== "solved") {
-    return false;
-  }
-
-  return attempt.mode === "solo" && lesson
-    ? soloProgress(course, lesson).done < soloProgress(course, lesson).total
-    : attempt.mode === "review";
 };

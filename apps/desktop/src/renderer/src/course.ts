@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import type { Difficulty } from "./types";
 
 export const DIFFICULTY: Record<Difficulty, string> = {
@@ -35,3 +37,25 @@ export const inDays = (iso: string, now = new Date()): string => {
 /** Call the engine bridge. The contract types what each method takes and answers. */
 export const engine: typeof window.tp.engine = (method, ...params) =>
   window.tp.engine(method, ...params);
+
+/** True when a key press belongs to something the learner is typing in. */
+const isTyping = (target: EventTarget | null): boolean =>
+  target instanceof HTMLElement &&
+  (target.matches("input, textarea, button") ||
+    target.closest(".cm-editor") !== null);
+
+/** Run `action` when the learner presses Enter outside a text field, while `enabled`. */
+export const useEnter = (action: () => void, enabled = true): void => {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (enabled && e.key === "Enter" && !e.metaKey && !isTyping(e.target)) {
+        e.preventDefault();
+        action();
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+
+    return () => window.removeEventListener("keydown", onKey);
+  }, [action, enabled]);
+};

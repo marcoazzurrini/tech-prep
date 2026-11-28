@@ -22,12 +22,6 @@
   letter-spacing: -0.01em;
 }
 
-.tp-page__eyebrow,
-.tp-page__lead,
-.tp-page__footnote {
-  margin: 0;
-}
-
 .tp-page__eyebrow {
   color: var(--color-mute);
   font-size: 14px;
@@ -38,31 +32,12 @@
   font: 400 16px/26px var(--font-sans);
 }
 
-.tp-page__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 16px;
-  margin-top: 8px;
-}
-
-.tp-page__note {
-  color: var(--color-mute);
-  font-size: 14px;
-}
-
 .tp-page__label {
   margin: 20px 0 0;
   color: var(--color-mute);
   font: 600 13px/18px var(--font-sans);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.tp-page__footnote {
-  margin-top: 8px;
-  color: var(--color-mute);
-  font: 400 14px/22px var(--font-sans);
 }
 
 .tp-list {
@@ -110,17 +85,4 @@
   gap: 12px;
   color: var(--color-mute);
   font-size: 14px;
-}
-
-.tp-count {
-  display: inline-flex;
-  align-items: center;
-  height: 24px;
-  padding: 0 10px;
-  border: 1px solid var(--color-accent-line);
-  border-radius: var(--radius-full);
-  background: var(--color-accent-bg);
-  color: var(--color-accent);
-  font: 600 13px/18px var(--font-sans);
-  white-space: nowrap;
 }
