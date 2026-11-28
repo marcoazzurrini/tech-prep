@@ -54,13 +54,6 @@
   font: 700 13px/16px var(--font-sans);
 }
 
-.tp-rail__divider {
-  width: 24px;
-  margin: 2px 0;
-  border: 0;
-  border-top: 1px solid var(--color-border);
-}
-
 .tp-rail__spacer {
   flex: 1;
 }

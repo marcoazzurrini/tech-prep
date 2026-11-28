@@ -163,10 +163,8 @@ export interface Run {
 export interface Result {
   outcome: "solved" | "solved_with_help" | "gave_up" | "paused";
   mode: Mode | null;
-  /** True when the app opens the next task by itself: the answer was right. */
-  moves_on: boolean;
-  /** The lesson the app opens next, when this answer made its lesson learned. */
-  next_lesson: string | null;
+  /** True when this answer is what made its concept learned. */
+  learned: boolean;
   concepts: {
     id: string;
     name: string;
@@ -228,13 +226,15 @@ export interface Course {
       status: LessonStatus;
       /** False while the lesson text or its problems are missing. */
       written: boolean;
+      /** When a learned concept comes back for review. */
+      next_review: string | null;
     }[];
   }[];
 }
 
-/** One part of a lesson: one idea, shown alone beside its guided task. */
+/** One part of a lesson: one idea, read alone, then practised in its guided task. */
 export interface LessonPart {
-  /** Its name on the trail in the top bar. */
+  /** Its short name. */
   name: string;
   /** The heading above its text. */
   title: string;
@@ -269,20 +269,27 @@ export interface Lesson {
   wait_until: string | null;
 }
 
-/** From the bridge's `reviews` method. */
-export interface Reviews {
-  due: number;
-  problems: number;
-  minutes: number;
-  tracks: {
+/** From the bridge's `today` method: what a session of the open course holds. */
+export interface Today {
+  /** How many days the learner has studied this course, counting today. */
+  day: number;
+  /** What is due for review, and the tasks that cover it. */
+  reviews: { concepts: number; tasks: number; minutes: number };
+  /** The concept to learn next. Null when no concept is open. */
+  concept: {
     id: string;
     name: string;
-    initials: string;
-    due: number;
-    problems: number;
+    /** Tasks still to do with the lesson, and tasks still to do alone. */
+    guided: number;
+    solo: number;
     minutes: number;
-    next_due: string | null;
-  }[];
+  } | null;
+  /** Stable: kept through a later review. Learning: learned, not stable yet. */
+  progress: { total: number; stable: number; learning: number };
+  /** The share of learned concepts the learner would recall now, from 0 to 1. Null before the first review. */
+  memory: number | null;
+  /** When the next review falls due, among the concepts not due today. */
+  next_due: string | null;
 }
 
 /** Every bridge method: its parameters and its reply. */
@@ -329,8 +336,9 @@ export interface Methods {
     params: { course?: string } | undefined;
     result: { problem: Problem | null };
   };
-  reviews: { params: undefined; result: Reviews };
   session: { params: undefined; result: Session };
+  /** What a session of the open course holds today. */
+  today: { params: undefined; result: Today };
 }
 
 export type Method = keyof Methods;

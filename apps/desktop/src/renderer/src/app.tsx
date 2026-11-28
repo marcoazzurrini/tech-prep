@@ -1,72 +1,59 @@
-import { AppShell, Badge, Rail, RailDivider, RailItem } from "@tech-prep/ui";
-import { CalendarCheck } from "lucide-react";
+import { AppShell, Badge, Rail, RailItem } from "@tech-prep/ui";
 import { useCallback, useEffect, useState } from "react";
 
+import { ConceptsScreen } from "./concepts";
 import { engine } from "./course";
 import { ExerciseScreen } from "./exercise";
-import { LessonScreen } from "./lesson";
-import { Lessons } from "./lessons";
-import { ReviewSession, ReviewsScreen } from "./reviews";
+import { SessionScreen } from "./session";
+import { LENGTHS, TodayScreen } from "./today";
 import { Tutor } from "./tutor";
-import type { Course, Session } from "./types";
+import type { Course, Session, Today } from "./types";
 
 /** What the main pane shows. */
 type View =
-  | { kind: "lesson"; id: string }
-  /** The list of what is due, per track. */
-  | { kind: "reviews" }
-  /** A review session in progress. */
-  | { kind: "review"; planned: number; track?: string };
+  /** What today's session holds. */
+  | { kind: "today" }
+  /** A session in progress, and when it started. */
+  | { kind: "session"; started: number }
+  /** Every concept of the course. */
+  | { kind: "concepts" };
 
-/** The lesson that opened by itself, and what its footer says about the one just learned. */
-interface Arrival {
-  id: string;
-  note: string;
-}
+const TODAY: View = { kind: "today" };
 
-/** The arrival note, when it belongs to the lesson on screen. */
-const introFor = (arrival: Arrival | null, id: string): string | undefined =>
-  arrival?.id === id ? arrival.note : undefined;
+/** Where the session length the learner last picked is kept. */
+const LENGTH_KEY = "tp:session-minutes";
+const DEFAULT_MINUTES = 15;
+
+const savedMinutes = (): number => {
+  const saved = Number(localStorage.getItem(LENGTH_KEY));
+
+  return LENGTHS.includes(saved) ? saved : DEFAULT_MINUTES;
+};
 
 export const App = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [view, setView] = useState<View | null>(null);
-  /** Chapters the learner opened. */
-  const [open, setOpen] = useState<Set<string>>(new Set());
-  /** The current chapter, when the learner closed it. */
-  const [closed, setClosed] = useState<Set<string>>(new Set());
+  const [today, setToday] = useState<Today | null>(null);
+  /** The hour of the day when the app last loaded, for the greeting. */
+  const [hour, setHour] = useState(0);
+  const [view, setView] = useState<View>(TODAY);
+  const [minutes, setMinutes] = useState(savedMinutes);
   const [tutorOpen, setTutorOpen] = useState(false);
-
-  const [arrival, setArrival] = useState<Arrival | null>(null);
+  /** What the tutor pane's header says about the session. */
+  const [context, setContext] = useState("");
 
   const refresh = useCallback(() => {
     const load = async () => {
-      const [nextCourse, nextSession] = await Promise.all([
+      const [nextCourse, nextSession, nextToday] = await Promise.all([
         engine("course"),
         engine("session"),
+        engine("today"),
       ]);
 
       setCourse(nextCourse);
       setSession(nextSession);
-
-      // On start, go back to what was open: a review, or the lesson the learner was on.
-      setView((current) => {
-        if (current) {
-          return current;
-        }
-
-        if (nextSession.attempt?.mode === "review") {
-          return { kind: "review", planned: 1 };
-        }
-
-        const id =
-          nextSession.attempt?.lesson ??
-          nextCourse.next_lesson ??
-          nextCourse.topics[0]?.lessons[0]?.id;
-
-        return id ? { id, kind: "lesson" } : { kind: "reviews" };
-      });
+      setToday(nextToday);
+      setHour(new Date().getHours());
     };
 
     void load();
@@ -78,92 +65,32 @@ export const App = () => {
     return window.tp.onEngineChanged(refresh);
   }, [refresh]);
 
-  const lessonId = view?.kind === "lesson" ? view.id : null;
-
-  // The chapter of the lesson on screen is open unless the learner closed it.
-  const currentTopic = course?.topics.find((t) =>
-    t.lessons.some((l) => l.id === lessonId)
-  )?.id;
-
-  const openTopics =
-    currentTopic && !closed.has(currentTopic)
-      ? new Set([...open, currentTopic])
-      : open;
-
-  const toggleTopic = (topic: string) => {
-    const flip = (all: Set<string>) => {
-      const next = new Set(all);
-
-      if (!next.delete(topic)) {
-        next.add(topic);
-      }
-
-      return next;
-    };
-
-    // The current chapter is open by default, so closing it is what gets remembered.
-    if (topic === currentTopic) {
-      setClosed(flip);
-    } else {
-      setOpen(flip);
-    }
-  };
-
-  /** Change what the main pane shows. An extra exercise on screen closes, so it never blocks the way. */
-  const go = useCallback(
-    (next: View) => {
-      const leave = async () => {
-        await engine("exercise.close");
-        refresh();
-      };
-
-      void leave();
-      setView(next);
-    },
-    [refresh]
-  );
-
-  const select = useCallback(
-    (id: string, note?: string) => {
-      setArrival(note ? { id, note } : null);
-      go({ id, kind: "lesson" });
-    },
-    [go]
-  );
-
-  /** Start the reviews of one track, or of every track when none is named. */
-  const startReviews = useCallback((track?: string) => {
-    const start = async () => {
-      const reviews = await engine("reviews");
-      const chosen = reviews.tracks.find((t) => t.id === track);
-
-      setView({
-        kind: "review",
-        planned: chosen?.problems ?? reviews.problems,
-        track,
-      });
-    };
-
-    void start();
+  const pickMinutes = useCallback((value: number) => {
+    localStorage.setItem(LENGTH_KEY, String(value));
+    setMinutes(value);
   }, []);
 
-  /** Open another course, on the lesson the learner should do next in it. */
+  const openTutor = useCallback(() => setTutorOpen(true), []);
+  const toggleTutor = useCallback(() => setTutorOpen((o) => !o), []);
+
+  const toToday = useCallback(() => {
+    setContext("");
+    setView(TODAY);
+    refresh();
+  }, [refresh]);
+
+  /** Open another course, on its Today screen. */
   const switchCourse = useCallback(
     (id: string) => {
       const change = async () => {
         await engine("exercise.close");
         await engine("course.select", { course: id });
-        const next = await engine("course");
-        const lesson = next.next_lesson ?? next.topics[0]?.lessons[0]?.id;
-
-        setCourse(next);
-        setView(lesson ? { id: lesson, kind: "lesson" } : { kind: "reviews" });
-        refresh();
+        toToday();
       };
 
       void change();
     },
-    [refresh]
+    [toToday]
   );
 
   // Cmd+L opens the tutor and puts the cursor in it.
@@ -188,21 +115,30 @@ export const App = () => {
     return () => window.removeEventListener("keydown", onKey, true);
   }, []);
 
-  if (!course || !session || !view) {
+  if (!course || !session || !today) {
     return null;
   }
 
-  const openTutor = () => setTutorOpen(true);
-  const toggleTutor = () => setTutorOpen((o) => !o);
-  const inLesson = view.kind === "lesson";
-  const lessons = course.topics.flatMap((t) => t.lessons);
-  const shown = lessons.find((l) => l.id === lessonId);
-  // The lesson after the one on screen, for "Next lesson".
-  const after = lessons[lessons.findIndex((l) => l.id === lessonId) + 1];
-
+  const inSession = view.kind === "session";
   let pane = null;
 
-  if (session.exercise) {
+  if (view.kind === "session") {
+    pane = (
+      <SessionScreen
+        course={course.subject.id}
+        exercise={session.exercise}
+        key={view.started}
+        started={view.started}
+        minutes={minutes}
+        tutorOpen={tutorOpen}
+        onChanged={refresh}
+        onContext={setContext}
+        onEnd={toToday}
+        onOpenTutor={openTutor}
+        onToggleTutor={toggleTutor}
+      />
+    );
+  } else if (session.exercise) {
     // The tutor put an extra exercise on screen. It stays until the learner closes it.
     pane = (
       <ExerciseScreen
@@ -213,102 +149,49 @@ export const App = () => {
         onToggleTutor={toggleTutor}
       />
     );
-  } else if (view.kind === "lesson") {
-    pane = (
-      <LessonScreen
-        id={view.id}
-        key={view.id}
-        intro={introFor(arrival, view.id)}
-        next={course.next_lesson ?? after?.id ?? null}
-        tutorOpen={tutorOpen}
-        onChanged={refresh}
-        onOpenTutor={openTutor}
-        onSelect={select}
-        onToggleTutor={toggleTutor}
-      />
-    );
-  } else if (view.kind === "reviews") {
-    pane = (
-      <ReviewsScreen
-        tutorOpen={tutorOpen}
-        onStart={startReviews}
-        onToggleTutor={toggleTutor}
-      />
-    );
+  } else if (view.kind === "concepts") {
+    pane = <ConceptsScreen course={course} onBack={toToday} />;
   } else {
     pane = (
-      <ReviewSession
-        nextLesson={course.next_lesson}
-        only={view.track}
-        planned={view.planned}
-        track={course.subject.name}
-        tutorOpen={tutorOpen}
-        onChanged={refresh}
-        onEnd={() => setView({ kind: "reviews" })}
-        onOpenLesson={select}
-        onOpenTutor={openTutor}
-        onToggleTutor={toggleTutor}
+      <TodayScreen
+        course={course}
+        hour={hour}
+        minutes={minutes}
+        today={today}
+        onConcepts={() => setView({ kind: "concepts" })}
+        onMinutes={pickMinutes}
+        onStart={() => setView({ kind: "session", started: Date.now() })}
       />
     );
   }
 
   return (
     <AppShell
-      nav={
-        inLesson ? (
-          <Lessons
-            course={course}
-            open={openTopics}
-            selected={lessonId}
-            onSelect={select}
-            onToggle={toggleTopic}
-          />
-        ) : undefined
-      }
       rail={
         <Rail>
-          <RailItem
-            active={!inLesson}
-            count={
-              course.courses.reduce((sum, c) => sum + c.due, 0) || undefined
-            }
-            label="Reviews"
-            onClick={() => {
-              // A review in progress stays open; leaving it is done with "End reviews".
-              if (view.kind !== "review") {
-                go({ kind: "reviews" });
-              }
-            }}
-          >
-            <CalendarCheck size={16} />
-          </RailItem>
-          <RailDivider />
           {course.courses.map((c) => {
             const current = c.id === course.subject.id;
 
             return (
               <RailItem
-                active={inLesson && current}
+                active={current}
+                count={c.due || undefined}
                 key={c.id}
                 label={c.name}
                 onClick={() => {
-                  // A review in progress stays open; leaving it is done with "End reviews".
-                  if (view.kind === "review" || (inLesson && current)) {
+                  // A session stays open until the learner ends it.
+                  if (inSession) {
                     return;
                   }
 
                   if (current) {
-                    const id = course.next_lesson ?? lessons[0]?.id;
-
-                    if (id) {
-                      select(id);
-                    }
+                    toToday();
                   } else {
                     switchCourse(c.id);
                   }
                 }}
               >
-                <Badge active={inLesson && current} initials={c.initials} />
+                <Badge active={current} initials={c.initials} />
               </RailItem>
             );
           })}
@@ -316,8 +199,7 @@ export const App = () => {
       }
       tutor={
         <Tutor
-          // A review's problem is not named to the tutor pane's header either way; the lesson's name is.
-          context={view.kind === "review" ? "Review" : shown?.name}
+          context={context || undefined}
           onClose={() => setTutorOpen(false)}
         />
       }

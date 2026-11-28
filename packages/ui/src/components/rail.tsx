@@ -45,7 +45,5 @@ export const RailItem = ({
   </button>
 );
 
-export const RailDivider = () => <hr className="tp-rail__divider" />;
-
 /** Pushes the items after it to the bottom of the rail. */
 export const RailSpacer = () => <span className="tp-rail__spacer" />;

@@ -1,4 +1,6 @@
 .tp-editor {
+  --editor-surface: var(--color-canvas);
+
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -9,7 +11,7 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  background: var(--color-canvas);
+  background: var(--editor-surface);
 }
 
 /* A short answer: five lines and the status strip. */
@@ -17,4 +19,35 @@
   flex: none;
   height: 132px;
   min-height: 0;
+}
+
+/* The answer at the foot of a session task: a rounded card, with the way to hand in inside it. */
+.tp-editor--card {
+  --editor-surface: var(--color-surface);
+
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.tp-editor--card.tp-editor--compact {
+  height: 192px;
+}
+
+.tp-editor--card .tp-editor-status {
+  gap: 12px;
+  height: 44px;
+  padding: 0 10px 0 16px;
+  border-bottom: 0;
+  background: var(--color-surface);
+}
+
+/* In the card, the file and the cursor sit together and the note is pushed to the end. */
+.tp-editor--card .tp-editor-status__file {
+  flex: none;
+}
+
+.tp-editor--card .tp-editor-status__file + span {
+  flex: 1;
 }

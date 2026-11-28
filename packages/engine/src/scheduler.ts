@@ -190,7 +190,7 @@ const attemptedRecently = (
 
 // ── Lessons ──────────────────────────────────────────────────────────────
 
-/** Where a lesson stands, for the lessons column. */
+/** Where a lesson stands, for the list of concepts. */
 export type LessonStatus = "locked" | "todo" | "started" | "partial" | "done";
 
 /** A lesson opens when every prerequisite of its concept is passed. */

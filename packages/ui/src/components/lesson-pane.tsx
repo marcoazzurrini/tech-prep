@@ -80,22 +80,3 @@ export const EmptyState = ({
     {children && <p>{children}</p>}
   </div>
 );
-
-/** Two panes side by side: the lesson on the left, the work on the right. */
-export const Split = ({ children }: { children: ReactNode }) => (
-  <div className="tp-split">{children}</div>
-);
-
-/** One side of a split. It scrolls by itself, or stacks an editor, the tests and a footer. */
-export const SplitSide = ({
-  children,
-  stack = false,
-}: {
-  children: ReactNode;
-  /** Lay the children out as a column that fills the height, for an editor with its footer. */
-  stack?: boolean;
-}) => (
-  <div className={cx("tp-split__side", stack && "tp-split__side--stack")}>
-    {children}
-  </div>
-);

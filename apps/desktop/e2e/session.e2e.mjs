@@ -74,21 +74,40 @@ const type = async (page, text) => {
   }, text);
 };
 
-const trail = (page) => page.locator(".tp-trail__item");
+const button = (page, name) => page.getByRole("button", { name });
 
-/** Wait until the trail shows this stop in this state. The screen reloads after an answer. */
-const stop = (page, index, state) =>
-  page.waitForFunction(
-    ([at, name]) => {
-      const stops = document.querySelectorAll(".tp-trail__item");
+/** Start the session from the Today screen. */
+const start = async (page) => {
+  await button(page, "Start session").click();
+};
 
-      return stops[at]?.classList.contains(name);
-    },
-    [index, `tp-trail__item--${state}`],
-    { timeout: 10_000 }
-  );
+/** Read the part on screen, then go on to its task. */
+const read = async (page) => {
+  await page.locator(".tp-lesson-text").waitFor();
+  await button(page, "Continue").click();
+  await page.locator(".cm-content").waitFor();
+};
 
-describe("a jq lesson", () => {
+/** Leave a finished task. The result is on screen until the learner goes on. */
+const proceed = async (page) => {
+  await button(page, "Why does this work?").waitFor();
+  await button(page, "Continue").click();
+  await button(page, "Why does this work?").waitFor({ state: "detached" });
+};
+
+/** Mark the first concepts of the open course as learned yesterday, so they are due today. */
+const LEARNED = `
+  const { concepts, savedCourse } = await import("./src/content.ts");
+  const { pass } = await import("./src/scheduler.ts");
+  const course = savedCourse();
+  const yesterday = new Date(Date.now() - 30 * 3_600_000);
+
+  for (const c of concepts(course).slice(0, 3)) {
+    pass(course, c.id, yesterday);
+  }
+`;
+
+describe("a jq session", () => {
   let app;
 
   before(async () => {
@@ -97,14 +116,24 @@ describe("a jq lesson", () => {
 
   after(() => app.close());
 
-  test("opens on its first part, with the later parts not reachable", async () => {
+  test("today names the next concept and what the session holds", async () => {
     const { page } = app;
 
-    // A part is headed by its own name. The lessons column names the lesson.
+    await page.getByRole("heading", { name: "What jq Does" }).waitFor();
+    await page.getByText("See the example, then 3 short tasks.").waitFor();
+    await page.getByText("2 tasks with the lesson closed.").waitFor();
+    // Nothing is learned yet, so nothing is due and no review is planned.
+    assert.equal(await page.getByText("Review", { exact: true }).count(), 0);
+  });
+
+  test("a concept starts with its first part, alone on screen", async () => {
+    const { page } = app;
+
+    await start(page);
     await page.getByRole("heading", { name: "The problem" }).waitFor();
-    assert.equal(await trail(page).count(), 4);
-    await stop(page, 0, "current");
-    assert.equal(await trail(page).nth(1).isDisabled(), true);
+    await page.getByText("New concept").waitFor();
+    assert.equal(await page.locator(".cm-content").count(), 0);
+    await read(page);
   });
 
   test("a wrong answer stays, and says which input it failed", async () => {
@@ -112,41 +141,38 @@ describe("a jq lesson", () => {
 
     await type(page, "jq '.name' data.json");
     await page.getByText("Differs").waitFor();
-    await page.getByRole("button", { name: "Submit" }).click();
+    await button(page, "Submit").click();
     await page.getByText("inputs pass").waitFor();
-    await stop(page, 0, "current");
   });
 
-  test("a right answer opens the next part by itself", async () => {
+  test("a right answer shows how it went, then the next part", async () => {
     const { page } = app;
 
     await type(page, "jq '.' data.json");
     await page.getByText("Matches").waitFor();
-    await page.getByRole("button", { name: "Submit" }).click();
-    await page.getByText("Part 1 was right.").waitFor();
-    await stop(page, 1, "current");
-    await stop(page, 0, "done");
+    await button(page, "Submit").click();
+    await page.getByText("Right on try 2.").waitFor();
+    await proceed(page);
+    await read(page);
   });
 
-  test("a finished part can be read again, and not changed", async () => {
+  test("the lesson can be opened beside a task done with it", async () => {
     const { page } = app;
 
-    await trail(page).nth(0).click();
-    await page.getByText("You solved this part.").waitFor();
-    assert.equal(await page.getByRole("button", { name: "Submit" }).count(), 0);
-    await page.getByRole("button", { name: "Back to part 2" }).click();
-    await page.getByRole("button", { name: "Submit" }).waitFor();
+    await button(page, "Open the lesson").click();
+    await page.getByRole("heading", { name: "What jq Does" }).waitFor();
+    await button(page, "Back to the task").click();
+    await page.getByText("Wanted output").waitFor();
   });
 
-  test("giving up shows a solution and asks for the task again", async () => {
+  test("not knowing shows a solution, and the task comes again", async () => {
     const { page } = app;
 
-    await page.getByRole("button", { name: "Give up" }).click();
+    await button(page, "I don't know").click();
     await page.getByText("A solution is shown.").waitFor();
-    await page.getByRole("button", { name: "Try again" }).click();
-    await page.getByRole("button", { name: "Submit" }).waitFor();
-    await stop(page, 1, "current");
-    // The new attempt has an answer area of its own: the solution is gone.
+    await page.getByText("Output of the solution").waitFor();
+    await proceed(page);
+    // The part was read already, so its task opens at once, with an empty answer area.
     await page.locator(".cm-content").waitFor();
     assert.equal(await page.getByText("Output of the solution").count(), 0);
   });
@@ -156,43 +182,98 @@ describe("a jq lesson", () => {
 
     await type(page, "jq '.city' data.json");
     await page.getByText("Matches").waitFor();
-    await page.getByRole("button", { name: "Submit" }).click();
-    await stop(page, 2, "current");
-
-    // The exercise shows the input and the command, and no output while typing.
+    await button(page, "Submit").click();
+    await proceed(page);
+    await read(page);
+    // The task shows the input and the command, and no output while typing.
     await page.getByText("jq '.pages' data.json").waitFor();
     assert.equal(await page.getByText("Wanted output").count(), 0);
-
     await type(page, "413");
-    await page.getByRole("button", { name: "Submit" }).click();
+    await button(page, "Submit").click();
     await page.getByText("That is not what comes out").waitFor();
-
     await type(page, "412");
-    await page.getByRole("button", { name: "Submit" }).click();
-    // The last part was right, so the lesson goes on to the tasks solved alone.
-    await stop(page, 3, "current");
+    await button(page, "Submit").click();
+    await proceed(page);
   });
 
-  test("the last task solved alone opens the next lesson by itself", async () => {
+  test("the tasks done alone make the concept learned", async () => {
     const { page } = app;
 
+    await page.getByText("On your own").waitFor();
     await type(page, "jq '.status' data.json");
     await page.getByText("Matches").waitFor();
-    await page.getByRole("button", { name: "Submit" }).click();
-    await page.getByText("Task 1 was right.").waitFor();
-
+    await button(page, "Submit").click();
+    await page.getByText("Right first time.").waitFor();
+    await proceed(page);
     await type(page, '{"ok": true, "count": 2}');
-    await page.getByRole("button", { name: "Submit" }).click();
+    await button(page, "Submit").click();
+    await page.getByText("learned · comes back tomorrow").waitFor();
+    await proceed(page);
+    // The session goes on with the next concept.
+    await page.getByRole("heading", { name: "Simple values" }).waitFor();
+  });
 
-    // The next lesson is on screen, and its footer says what happened to the one before.
+  test("ending the session shows what it did", async () => {
+    const { page } = app;
+
+    await button(page, "End session").click();
+    await page.getByRole("heading", { name: "Done." }).waitFor();
+    await page.getByText("new concept", { exact: true }).waitFor();
     await page
-      .getByText("What jq Does is learned. Its first review is tomorrow.")
+      .getByText("What jq Does comes back tomorrow, inside a review.")
       .waitFor();
-    await stop(page, 0, "current");
-    assert.equal(
-      await page.getByRole("button", { name: "Next lesson" }).count(),
-      0
+    await button(page, "Finish").click();
+    await button(page, "Start session").waitFor();
+  });
+
+  test("the concepts list shows where each stands, and a learned one can be read", async () => {
+    const { page } = app;
+
+    await button(page, "All concepts").click();
+    await page.getByText("Learned · review tomorrow").waitFor();
+    await button(page, "Read").click();
+    await page.getByRole("heading", { name: "What jq Does" }).waitFor();
+    assert.equal(await page.locator(".cm-content").count(), 0);
+    await button(page, "Back to concepts").click();
+    await button(page, "Back to today").click();
+    await button(page, "Start session").waitFor();
+  });
+});
+
+describe("a session with reviews due", () => {
+  let app;
+
+  before(async () => {
+    app = await launch("jq", (home) =>
+      execFileSync("bun", ["-e", LEARNED], {
+        cwd: ENGINE,
+        env: { ...process.env, TECHPREP_HOME: home },
+      })
     );
+  });
+
+  after(() => app.close());
+
+  test("today plans the reviews before the new concept", async () => {
+    const { page } = app;
+
+    await page.getByText("3 concepts to review, then this new one.").waitFor();
+    await page.getByText("3 concepts are due.").waitFor();
+  });
+
+  test("a review names no concept until it is answered", async () => {
+    const { page } = app;
+
+    await start(page);
+    await page.locator(".cm-content").waitFor();
+    await page
+      .locator(".tp-session-bar__block", { hasText: "Review" })
+      .waitFor();
+    assert.equal(await button(page, "Open the lesson").count(), 0);
+    assert.equal(await page.getByText("What jq Does").count(), 0);
+    await button(page, "Give up").click();
+    await page.getByText("This task practised").waitFor();
+    await page.getByText("comes back tomorrow").first().waitFor();
   });
 });
 
@@ -201,7 +282,7 @@ describe("an extra exercise from the tutor", () => {
 
   before(async () => {
     app = await launch("dsa");
-    await app.page.getByText("Step 1 of 2").waitFor();
+    await app.page.getByRole("button", { name: "Start session" }).waitFor();
   });
 
   after(() => app.close());
@@ -262,20 +343,19 @@ describe("an extra exercise from the tutor", () => {
     await page.getByText("The tutor is reading your answer.").waitFor();
   });
 
-  test("closing it goes back to the lesson", async () => {
+  test("closing it goes back to today", async () => {
     const { page } = app;
 
     const close = page.getByRole("button", { name: "Close exercise" });
 
     await close.click();
     await close.waitFor({ state: "detached" });
-    // The lesson's own exercise is back, with its editor.
-    await page.getByRole("button", { name: "Give up" }).waitFor();
+    await page.getByRole("button", { name: "Start session" }).waitFor();
     assert.equal(await page.getByText("Extra practice").count(), 0);
   });
 });
 
-describe("a code lesson", () => {
+describe("a session of code problems", () => {
   let app;
 
   before(async () => {
@@ -284,17 +364,31 @@ describe("a code lesson", () => {
 
   after(() => app.close());
 
-  test("solving the guided problem opens the solo problem by itself", async () => {
+  test("the lesson is read, then its problem is solved in the editor", async () => {
     const { page } = app;
 
-    await page.getByText("Step 1 of 2").waitFor();
+    await start(page);
+    await read(page);
+    await type(
+      page,
+      "export function firstAndLastLetters(words: string[]): string[] {\n  return words.map((w) => w[0]);\n}\n"
+    );
+    // Writing the file with :w runs the tests without handing the problem in.
+    await page.keyboard.type(":w\n");
+    await page.getByText("Tests · 1 of 8 passed").waitFor();
     await type(
       page,
       "export function firstAndLastLetters(words: string[]): string[] {\n  return words.map((w) => w[0] + w[w.length - 1]);\n}\n"
     );
-    await page.getByRole("button", { name: "Submit" }).click();
-    await page.getByText("Step 2 of 2").waitFor();
-    await page.getByText("That was right.").waitFor();
+    await button(page, "Submit").click();
+    await page.getByText("Right first time.").waitFor();
+  });
+
+  test("Enter goes on to the problem solved alone", async () => {
+    const { page } = app;
+
+    await page.keyboard.press("Enter");
+    await page.getByText("On your own").waitFor();
     await page
       .getByRole("heading", { name: "Concatenation of Array" })
       .waitFor();

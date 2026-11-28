@@ -109,26 +109,3 @@
   margin: 12px 0 0;
   color: var(--color-mute);
 }
-
-.tp-split {
-  display: grid;
-  flex: 1;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  min-height: 0;
-}
-
-.tp-split__side {
-  min-width: 0;
-  min-height: 0;
-  overflow-y: auto;
-}
-
-.tp-split__side + .tp-split__side {
-  border-left: 1px solid var(--color-border);
-}
-
-.tp-split__side--stack {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}

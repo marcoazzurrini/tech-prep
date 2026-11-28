@@ -22,32 +22,6 @@
   padding: 0;
 }
 
-.tp-outputs {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  border-top: 1px solid var(--color-border);
-  container-type: inline-size;
-}
-
-.tp-outputs__grid {
-  display: grid;
-  flex: 1;
-  grid-template-columns: minmax(0, 1fr);
-  min-width: 0;
-  min-height: 0;
-}
-
-/* With the input: beside the outputs when there is room, above them when there is not. */
-.tp-outputs__grid--input {
-  grid-template-rows: minmax(0, auto) minmax(0, 1fr);
-}
-
-.tp-outputs__grid--input > .tp-output {
-  max-height: 40cqh;
-  border-bottom: 1px solid var(--color-border);
-}
-
 @container (min-width: 760px) {
   .tp-outputs__grid--input {
     grid-template-rows: minmax(0, 1fr);
@@ -59,16 +33,6 @@
     border-right: 1px solid var(--color-border);
     border-bottom: 0;
   }
-}
-
-.tp-outputs__pair {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-  min-height: 0;
-}
-
-.tp-outputs__pair > .tp-output + .tp-output {
-  border-top: 1px solid var(--color-border);
 }
 
 .tp-output {
@@ -136,25 +100,6 @@
   margin: 0;
   color: var(--color-dim);
   font: 400 14px/24px var(--font-sans);
-}
-
-/* Panels one above the other, each as tall as its text: what a predict task shows. */
-.tp-output-stack {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-  overflow-y: auto;
-  border-top: 1px solid var(--color-border);
-}
-
-.tp-output-stack > .tp-output {
-  flex: none;
-  overflow: visible;
-}
-
-.tp-output-stack > .tp-output + .tp-output {
-  border-top: 1px solid var(--color-border);
 }
 
 /* A file name keeps its own spelling: names are case-sensitive in a terminal. */

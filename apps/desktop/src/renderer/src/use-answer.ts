@@ -5,8 +5,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { engine } from "./course";
-import type { Finished } from "./lesson-flow";
-import type { Code, Preview, Run } from "./types";
+import type { Code, GaveUp, Preview, Run } from "./types";
+
+/** How an exercise ended: what grading it did, and the worked solution if the learner gave up. */
+export interface Finished extends GaveUp {
+  /** How many times the learner handed an answer in. */
+  tries: number;
+}
 
 interface Options {
   slug: string;
@@ -34,6 +39,8 @@ export const useAnswer = ({
   const [solution, setSolution] = useState<string | null>(null);
   /** The answer that was handed in, kept to show once the exercise is finished. */
   const [handedIn, setHandedIn] = useState<string | null>(null);
+  /** Answers handed in that were not right. */
+  const misses = useRef(0);
   const text = useRef("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -141,7 +148,13 @@ export const useAnswer = ({
 
       if (handed.result) {
         setHandedIn(text.current);
-        onFinished({ result: handed.result, solution: null });
+        onFinished({
+          result: handed.result,
+          solution: null,
+          tries: misses.current + 1,
+        });
+      } else {
+        misses.current += 1;
       }
     });
 
@@ -156,7 +169,7 @@ export const useAnswer = ({
         );
       }
 
-      onFinished(gave);
+      onFinished({ ...gave, tries: misses.current });
     });
 
   return {

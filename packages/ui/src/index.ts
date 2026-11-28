@@ -10,15 +10,6 @@ export type { Tone } from "./components/chip";
 
 export { CodeBlock, EditorStatus } from "./components/code-block";
 
-export {
-  Chapter,
-  CourseHeader,
-  CourseNav,
-  Lesson,
-} from "./components/course-nav";
-
-export type { LessonStatus } from "./components/course-nav";
-
 export { CodeEditor } from "./components/code-editor";
 
 export {
@@ -32,12 +23,7 @@ export {
 
 export type { TestStatus } from "./components/exercise";
 
-export {
-  OutputPanel,
-  OutputPanels,
-  OutputStack,
-  TaskStrip,
-} from "./components/jq";
+export { OutputPanel, TaskStrip } from "./components/jq";
 
 export type { OutputState } from "./components/jq";
 
@@ -47,31 +33,40 @@ export {
   PaneBody,
   PaneFooter,
   PaneSection,
-  Split,
-  SplitSide,
   TaskHeader,
 } from "./components/lesson-pane";
 
-export { LessonText, TaskText, YourTurn } from "./components/lesson-text";
+export { LessonText } from "./components/lesson-text";
 
-export {
-  Count,
-  List,
-  ListRow,
-  Page,
-  PageActions,
-  PageLabel,
-  PageNote,
-} from "./components/page";
+export { List, ListRow, Page, PageLabel } from "./components/page";
 
 export { inline, lead, ProblemStatement } from "./components/problem-statement";
 
 export { Progress } from "./components/progress";
 
-export { Rail, RailDivider, RailItem, RailSpacer } from "./components/rail";
+export {
+  Card,
+  CardColumns,
+  CardStack,
+  Credit,
+  CreditRow,
+  Figure,
+  Figures,
+  Hero,
+  HeroNote,
+  LengthPicker,
+  PlanRow,
+  RunPanels,
+  SessionActions,
+  SessionBar,
+  SessionBody,
+  SessionHelp,
+  SessionNote,
+  SessionPane,
+} from "./components/session";
 
-export { Steps, TopBar, Trail } from "./components/top-bar";
+export { Rail, RailItem, RailSpacer } from "./components/rail";
 
-export type { TrailItem } from "./components/top-bar";
+export { TopBar, TutorToggle } from "./components/top-bar";
 
 export { Activity, Composer, Message, TutorPane } from "./components/tutor";

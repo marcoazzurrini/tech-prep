@@ -23,28 +23,9 @@ export const Page = ({ eyebrow, title, lead, children }: PageProps) => (
   </div>
 );
 
-/** A row of actions with a short note beside them. */
-export const PageActions = ({
-  children,
-  note,
-}: {
-  children: ReactNode;
-  note?: ReactNode;
-}) => (
-  <div className="tp-page__actions">
-    {children}
-    {note && <span className="tp-page__note">{note}</span>}
-  </div>
-);
-
 /** A small capital label that names the list under it. */
 export const PageLabel = ({ children }: { children: ReactNode }) => (
   <h2 className="tp-page__label">{children}</h2>
-);
-
-/** A quiet closing line. */
-export const PageNote = ({ children }: { children: ReactNode }) => (
-  <p className="tp-page__footnote">{children}</p>
 );
 
 /** A bordered list of rows. */
@@ -71,9 +52,4 @@ export const ListRow = ({ start, title, detail, end }: ListRowProps) => (
     </div>
     {end && <div className="tp-list__end">{end}</div>}
   </li>
-);
-
-/** A count that needs attention, such as reviews due. */
-export const Count = ({ children }: { children: ReactNode }) => (
-  <span className="tp-count">{children}</span>
 );

@@ -83,33 +83,3 @@ export const OutputPanel = ({
     </section>
   );
 };
-
-/** Panels one above the other, for a task with no output to compare. */
-export const OutputStack = ({ children }: { children: ReactNode }) => (
-  <div className="tp-output-stack">{children}</div>
-);
-
-interface OutputPanelsProps {
-  /** The input, when it is not shown beside the statement. */
-  input?: ReactNode;
-  yours: ReactNode;
-  wanted: ReactNode;
-}
-
-/** The panels under a jq filter: the input on the left, your output over the wanted output. */
-export const OutputPanels = ({ input, yours, wanted }: OutputPanelsProps) => (
-  <div className="tp-outputs">
-    <div
-      className={cx(
-        "tp-outputs__grid",
-        Boolean(input) && "tp-outputs__grid--input"
-      )}
-    >
-      {input}
-      <div className="tp-outputs__pair">
-        {yours}
-        {wanted}
-      </div>
-    </div>
-  </div>
-);

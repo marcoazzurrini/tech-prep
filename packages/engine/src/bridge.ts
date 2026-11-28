@@ -14,6 +14,7 @@ import {
   courseErrors,
   courses,
   guidedConcept,
+  guidedSlugs,
   problemIndex,
   savedCourse,
   selectCourse,
@@ -23,7 +24,13 @@ import {
 } from "./content.ts";
 import type { Course, ProblemInfo } from "./content.ts";
 import type { Method, Methods } from "./contract.ts";
-import { addHint, closeExtras, extraRow, openExtra } from "./db.ts";
+import {
+  addHint,
+  attemptsFor,
+  closeExtras,
+  extraRow,
+  openExtra,
+} from "./db.ts";
 import type { AttemptRow } from "./db.ts";
 import {
   checkView,
@@ -39,11 +46,10 @@ import { extraView, submitExtra } from "./extras.ts";
 import {
   guidedProgress,
   lessonParts,
-  movesOn,
   soloProgress,
   startLesson,
 } from "./lessons.ts";
-import { cardOf } from "./memory.ts";
+import { cardOf, startOfDay } from "./memory.ts";
 import {
   attemptOn,
   currentAttempt,
@@ -60,6 +66,7 @@ import type { finishAttempt } from "./practice.ts";
 import { short } from "./runner.ts";
 import type { RunResult } from "./runner.ts";
 import {
+  conceptStatuses,
   dueCount,
   isPassed,
   lessonStatus,
@@ -159,6 +166,9 @@ const courseView = (course: Course) => {
         .map((c) => ({
           id: c.id,
           name: c.name,
+          next_review: isPassed(course, c.id)
+            ? (cardOf(course, c.id)?.due.toISOString() ?? null)
+            : null,
           status: lessonStatus(course, c.id),
           written: hasLesson(course, c.id),
         }));
@@ -236,28 +246,64 @@ const peekLesson = (course: Course, { concept: id }: Params<"lesson.peek">) => {
   return { counted_as_help: false };
 };
 
-/** What is due in one course. */
-const track = (course: Course) => {
-  const plan = reviewPlan(course);
+/** How many days the learner has studied this course, counting today. */
+const studyDays = (course: Course, now: Date): number =>
+  new Set([
+    ...attemptsFor(course, {}).map((a) =>
+      startOfDay(new Date(a.started_at)).getTime()
+    ),
+    startOfDay(now).getTime(),
+  ]).size;
+
+/** The concept a session teaches next: what is left of it, and a rough time for that. */
+const upcoming = (course: Course, id: string) => {
+  const guided =
+    lessonStep(course, id) === 1
+      ? guidedSlugs(course, id).slice(guidedProgress(course, id).done)
+      : [];
+
+  const solo = soloSlugs(course, id).slice(soloProgress(course, id).done);
 
   return {
-    ...subject(course),
-    due: dueCount(course),
-    minutes: plan.reduce((sum, r) => sum + minutes(course, r.problem), 0),
-    next_due: nextDue(course),
-    problems: plan.length,
+    guided: guided.length,
+    id,
+    minutes: [...guided, ...solo].reduce(
+      (sum, slug) => sum + minutes(course, problemInfo(course, slug)),
+      0
+    ),
+    name: concept(course, id).name,
+    solo: solo.length,
   };
 };
 
-/** What is due, per track. Each course is one track. */
-const reviews = () => {
-  const tracks = courses().map(track);
+/** What a session of the course holds today: the reviews due, then the next concept. */
+const today = (course: Course) => {
+  const now = new Date();
+  const plan = reviewPlan(course, now);
+  const next = nextLesson(course, now);
+  const statuses = conceptStatuses(course, now);
+
+  const recalls = statuses.flatMap((s) =>
+    s.retrievability === null ? [] : [s.retrievability]
+  );
 
   return {
-    due: tracks.reduce((sum, t) => sum + t.due, 0),
-    minutes: tracks.reduce((sum, t) => sum + t.minutes, 0),
-    problems: tracks.reduce((sum, t) => sum + t.problems, 0),
-    tracks,
+    concept: next === null ? null : upcoming(course, next),
+    day: studyDays(course, now),
+    memory: recalls.length
+      ? recalls.reduce((sum, r) => sum + r, 0) / recalls.length
+      : null,
+    next_due: nextDue(course, now),
+    progress: {
+      learning: statuses.filter((s) => s.stage === "passed").length,
+      stable: statuses.filter((s) => s.stage === "mastered").length,
+      total: statuses.length,
+    },
+    reviews: {
+      concepts: dueCount(course, now),
+      minutes: plan.reduce((sum, r) => sum + minutes(course, r.problem), 0),
+      tasks: plan.length,
+    },
   };
 };
 
@@ -393,11 +439,8 @@ const resultView = (
           result: c.result,
         }))
       : [],
+  learned,
   mode: attempt.mode,
-  // True when the app opens the next task by itself.
-  moves_on: movesOn(course, attempt, lessonOf(course, attempt), result.outcome),
-  // A lesson that was just learned leads straight to the next one.
-  next_lesson: learned ? nextLesson(course) : null,
   outcome: result.outcome,
 });
 
@@ -478,8 +521,8 @@ const handlers: Handlers = {
   "lesson.peek": peekLesson,
   problem: (course, { slug }) => problemView(course, slug),
   "review.next": startReview,
-  reviews,
   session,
+  today,
 };
 
 const none = z.undefined();
@@ -510,8 +553,8 @@ const PARAMS: ParamSchemas = {
   "lesson.peek": z.object({ concept: z.string().min(1) }),
   problem: slugOnly,
   "review.next": z.object({ course: z.string().optional() }).optional(),
-  reviews: none,
   session: none,
+  today: none,
 };
 
 const isMethod = (name: string): name is Method =>

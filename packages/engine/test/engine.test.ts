@@ -1601,7 +1601,7 @@ describe("jq course", () => {
     expect(practice.currentAttempt(course)).toBeNull();
   });
 
-  test("the engine decides what starts and what moves on", () => {
+  test("the engine decides what starts", () => {
     // Nothing starts on a locked lesson, or on one that waits after a struggle.
     lessons.startLesson(course, "pipes", false);
     expect(practice.currentAttempt(course)).toBeNull();
@@ -1620,24 +1620,6 @@ describe("jq course", () => {
     }
 
     expect(solo.mode).toBe("solo");
-
-    const guided = { ...solo, mode: "guided" as const };
-    const review = { ...solo, mode: "review" as const };
-    const lesson = "what-jq-does";
-
-    // A right guided answer moves on, with or without help. A given-up one shows a solution.
-    expect(lessons.movesOn(course, guided, lesson, "solved")).toBe(true);
-    expect(lessons.movesOn(course, guided, lesson, "solved_with_help")).toBe(
-      true
-    );
-    expect(lessons.movesOn(course, guided, lesson, "gave_up")).toBe(false);
-    // A review moves on when it is solved alone.
-    expect(lessons.movesOn(course, review, null, "solved")).toBe(true);
-    expect(lessons.movesOn(course, review, null, "solved_with_help")).toBe(
-      false
-    );
-    // Both solo tasks of this lesson are solved, so no task of the lesson is left to open.
-    expect(lessons.movesOn(course, solo, lesson, "solved")).toBe(false);
     practice.pauseAttempt(course, solo);
   });
 });
@@ -1665,16 +1647,21 @@ const ask = (requests: object[]) => {
 
 describe("bridge", () => {
   test("it answers the contract's methods, with or without parameters", () => {
-    const [course, reviews, problem] = ask([
+    const [course, today, problem] = ask([
       { id: 1, method: "course" },
-      { id: 2, method: "reviews", params: null },
+      { id: 2, method: "today", params: null },
       { id: 3, method: "problem", params: { slug: "two-sum" } },
     ]);
 
     expect(course).toMatchObject({ id: 1, result: { subject: {} } });
-    expect(reviews).toMatchObject({
+    expect(today).toMatchObject({
       id: 2,
-      result: { tracks: [{}, {}, {}, {}] },
+      result: {
+        concept: { guided: 1, solo: 1 },
+        day: 1,
+        progress: { stable: 0 },
+        reviews: { tasks: 0 },
+      },
     });
     expect(problem).toMatchObject({
       id: 3,
